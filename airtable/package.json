@@ -1,0 +1,15 @@
+{
+  "name": "flowServices-servercode",
+  "version": "1.0.0",
+  "scripts": {
+    "debug": "npm run coderunner -- debug --config ./coderunner.js",
+    "deploy": "npm run coderunner -- deploy --config ./coderunner.js",
+    "coderunner": "node ../../node_modules/backendless-coderunner/bin/coderunner",
+    "docs": "node ../../scripts/generate-docs/generate-md.js ./src/index.js",
+    "market:publish": "node ../../scripts/market/publish.js",
+    "market:approve": "node ../../scripts/market/approve.js",
+    "market:make-shared": "node ../../scripts/market/make-shared.js"
+  },
+  "devDependencies": {},
+  "license": "MIT"
+}
