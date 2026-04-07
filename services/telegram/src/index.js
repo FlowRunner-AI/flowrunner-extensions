@@ -48,7 +48,7 @@ class Telegram {
     try {
       logger.debug(`${ logTag } - api request: [${ method }::${ url }] q=[${ JSON.stringify(query) }]`)
 
-      return await Backendless.Request[method](url).query(query).send(body)
+      return await Flowrunner.Request[method](url).query(query).send(body)
     } catch (error) {
       if (typeof error.body === 'object') {
         error = new ResponseError(
@@ -702,11 +702,11 @@ class Telegram {
 
 }
 
-Backendless.ServerCode.addService(Telegram, [
+Flowrunner.ServerCode.addService(Telegram, [
   {
     name: 'botToken',
     displayName: 'Bot Token',
-    type: Backendless.ServerCode.ConfigItems.TYPES.STRING,
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     hint: 'Your Telegram Bot Token. Get it from @BotFather on Telegram by creating a new bot.',
   },

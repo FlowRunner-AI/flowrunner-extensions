@@ -66,7 +66,7 @@ class Airtable {
     try {
       logger.debug(`${ logTag } - api request: [${ method }::${ url }] q=[${ JSON.stringify(query) }]`)
 
-      return await Backendless.Request[method](url)
+      return await Flowrunner.Request[method](url)
         .set(this.#getAccessTokenHeader())
         .query(query)
         .send(body)
@@ -157,7 +157,7 @@ class Airtable {
     params.append('refresh_token', refreshToken)
 
     try {
-      const response = await Backendless.Request.post(`${ OAUTH_BASE_URL }/token`)
+      const response = await Flowrunner.Request.post(`${ OAUTH_BASE_URL }/token`)
         .set(this.#getSecretTokenHeader())
         .set({ 'Content-Type': 'application/x-www-form-urlencoded' })
         .send(params.toString())
@@ -206,7 +206,7 @@ class Airtable {
     let codeExchangeResponse = {}
 
     try {
-      codeExchangeResponse = await Backendless.Request.post(`${ OAUTH_BASE_URL }/token`)
+      codeExchangeResponse = await Flowrunner.Request.post(`${ OAUTH_BASE_URL }/token`)
         .set(this.#getSecretTokenHeader())
         .set({ 'Content-Type': 'application/x-www-form-urlencoded' })
         .send(params.toString())
@@ -221,7 +221,7 @@ class Airtable {
     let userInfo = {}
 
     try {
-      userInfo = await Backendless.Request
+      userInfo = await Flowrunner.Request
         .get(`${ API_BASE_URL }/meta/whoami`)
         .set(this.#getAccessTokenHeader(codeExchangeResponse['access_token']))
 
@@ -1345,11 +1345,11 @@ class Airtable {
   }
 }
 
-Backendless.ServerCode.addService(Airtable, [
+Flowrunner.ServerCode.addService(Airtable, [
   {
     order: 0,
     displayName: 'Client ID',
-    type: Backendless.ServerCode.ConfigItems.TYPES.STRING,
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     name: 'clientId',
     hint: 'Your OAuth 2.0 Client ID from the Airtable Developer Hub (Create and manage OAuth integrations).',
@@ -1357,7 +1357,7 @@ Backendless.ServerCode.addService(Airtable, [
   {
     order: 1,
     displayName: 'Client Secret',
-    type: Backendless.ServerCode.ConfigItems.TYPES.STRING,
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     name: 'clientSecret',
     hint: 'Your OAuth 2.0 Client Secret from the Airtable Developer Hub (Required for secure authentication).',
