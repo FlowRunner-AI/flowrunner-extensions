@@ -708,6 +708,7 @@ Flowrunner.ServerCode.addService(Telegram, [
     displayName: 'Bot Token',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
+    shared: false,
     hint: 'Your Telegram Bot Token. Get it from @BotFather on Telegram by creating a new bot.',
   },
 ])
