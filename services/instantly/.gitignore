@@ -1,0 +1,10 @@
+# Test output files (tests themselves are in /testing-files/)
+test-results.log
+test-cache.json
+test-output.txt
+
+# Local configuration
+.env
+
+# API schema (large file, fetched separately)
+api-schema.json
