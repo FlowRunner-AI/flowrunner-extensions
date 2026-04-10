@@ -1,0 +1,10 @@
+{
+  "name": "flowrunner-service",
+  "version": "1.0.0",
+  "scripts": {},
+  "devDependencies": {},
+  "license": "MIT",
+  "dependencies": {
+    "@notionhq/client": "^2.2.15"
+  }
+}
