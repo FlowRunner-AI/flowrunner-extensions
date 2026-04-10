@@ -1,0 +1,11 @@
+{
+  "name": "flowrunner-service",
+  "version": "1.0.0",
+  "scripts": {},
+  "devDependencies": {},
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "form-data": "^4.0.2"
+  }
+}
