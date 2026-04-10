@@ -1,0 +1,10 @@
+{
+  "name": "flowrunner-service",
+  "version": "1.0.0",
+  "scripts": {},
+  "devDependencies": {},
+  "license": "MIT",
+  "dependencies": {
+    "mailersend": "^2.3.0"
+  }
+}
