@@ -1,4 +1,5 @@
 const { createClient } = require('backendless-console-sdk')
+const Backendless = require('backendless')
 
 const ClustersHosts = {
   'US': 'https://develop.backendless.com',
@@ -120,7 +121,7 @@ class BackendlessDataService {
     params.append('scope', this.scope)
 
     try {
-      const response = await Backendless.Request.post(`${ this.clusterURL }/developer/oauth2/token`)
+      const response = await Flowrunner.Request.post(`${ this.clusterURL }/developer/oauth2/token`)
         .set({ 'Content-Type': 'application/x-www-form-urlencoded' })
         .set(this.#getSecretTokenHeader())
         .send(params.toString())
@@ -149,7 +150,7 @@ class BackendlessDataService {
     params.append('redirect_uri', callbackObject.redirectURI)
     params.append('code', callbackObject.code)
 
-    const { expires_in, access_token, refresh_token } = await Backendless.Request
+    const { expires_in, access_token, refresh_token } = await Flowrunner.Request
       .post(`${ this.clusterURL }/developer/oauth2/token`)
       .set({ 'Content-Type': 'application/x-www-form-urlencoded' })
       .set(this.#getSecretTokenHeader())
@@ -158,7 +159,7 @@ class BackendlessDataService {
     let userInfo = {}
 
     try {
-      userInfo = await Backendless.Request
+      userInfo = await Flowrunner.Request
         .get(`${ this.clusterURL }/console/home/myaccount`)
         .set(this.#getAccessTokenHeader(access_token))
 
@@ -857,35 +858,39 @@ class BackendlessDataService {
   }
 }
 
-Backendless.ServerCode.addService(BackendlessDataService, [
+Flowrunner.ServerCode.addService(BackendlessDataService, [
   {
     displayName: 'Client ID',
-    type: Backendless.ServerCode.ConfigItems.TYPES.STRING,
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: false,
+    shared: true,
     name: 'clientId',
     hint: 'Your OAuth 2.0 Client ID from the Backendless Cluster',
   },
   {
     displayName: 'Client Secret',
-    type: Backendless.ServerCode.ConfigItems.TYPES.STRING,
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: false,
+    shared: true,
     name: 'clientSecret',
     hint: 'Your OAuth 2.0 Client Secret from the Backendless Cluster',
   },
   {
     displayName: 'Cluster Zone',
     name: 'clusterKey',
-    type: Backendless.ServerCode.ConfigItems.TYPES.CHOICE,
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.CHOICE,
     options: Object.keys(ClustersHosts),
     required: false,
+    shared: true,
     defaultValue: 'DevTest(SHOULD_NOT_BE_IN_PROD)',
     hint: 'Select the Backendless cluster where your app is located',
   },
   {
     displayName: 'Cluster Console URL',
     name: 'clusterConsoleURL',
-    type: Backendless.ServerCode.ConfigItems.TYPES.STRING,
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: false,
+    shared: false,
     defaultValue: '',
     hint: 'Provide when you need to specify your own Backendless PRO cluster. Example: https://develop.backendless.com',
   },
