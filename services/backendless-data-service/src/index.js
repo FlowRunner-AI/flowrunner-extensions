@@ -862,7 +862,7 @@ Flowrunner.ServerCode.addService(BackendlessDataService, [
   {
     displayName: 'Client ID',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required: false,
+    required: true,
     shared: true,
     name: 'clientId',
     hint: 'Your OAuth 2.0 Client ID from the Backendless Cluster',
@@ -870,7 +870,7 @@ Flowrunner.ServerCode.addService(BackendlessDataService, [
   {
     displayName: 'Client Secret',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required: false,
+    required: true,
     shared: true,
     name: 'clientSecret',
     hint: 'Your OAuth 2.0 Client Secret from the Backendless Cluster',
@@ -880,7 +880,7 @@ Flowrunner.ServerCode.addService(BackendlessDataService, [
     name: 'clusterKey',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.CHOICE,
     options: Object.keys(ClustersHosts),
-    required: false,
+    required: true,
     shared: true,
     defaultValue: 'DevTest(SHOULD_NOT_BE_IN_PROD)',
     hint: 'Select the Backendless cluster where your app is located',
