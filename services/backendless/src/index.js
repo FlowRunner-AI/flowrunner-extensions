@@ -1,5 +1,6 @@
 const path = require('path')
 const { createClient } = require('backendless-console-sdk')
+const Backendless = require('backendless')
 
 const ClustersHosts = {
   'US': 'https://develop.Flowrunner.com',
@@ -109,7 +110,7 @@ class BackendlessService {
         apiKey = appSettings.apiKeysMap.REST
       }
 
-      this.apiSDK = Flowrunner.initApp({
+      this.apiSDK = Backendless.initApp({
         appId,
         apiKey,
         serverURL,
