@@ -28,7 +28,20 @@ class Asana {
   constructor(config) {
     this.clientId = config.clientId
     this.clientSecret = config.clientSecret
-    this.scope = 'default'
+    this.scope = [
+      'workspaces:read',
+      'projects:read',
+      'projects:write',
+      'tasks:read',
+      'tasks:write',
+      'teams:read',
+      'users:read',
+      'tags:read',
+      'stories:write',
+      'attachments:write',
+      'project_templates:read',
+      'task_templates:read',
+    ].join(' ')
   }
 
   async #apiRequest({ url, method, body, query, logTag }) {
