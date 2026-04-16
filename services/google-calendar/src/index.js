@@ -26,6 +26,7 @@ const logger = {
 /**
  * @requireOAuth
  * @integrationName Google Calendar
+ * @integrationTriggersScope SINGLE_APP
  * @integrationIcon /icon.webp
  **/
 class GoogleCalendarService {
@@ -188,6 +189,17 @@ class GoogleCalendarService {
       overwrite: true,
       userData,
     }
+  }
+
+  /**
+   * @registerAs SYSTEM
+   * @paramDef {"type":"Object","label":"invocation","name":"invocation"}
+   * @returns {Object}
+   */
+  async handleTriggerPollingForEvent(invocation) {
+    logger.debug(`handleTriggerPollingForEvent.${ invocation.eventName }`)
+
+    return this[invocation.eventName](invocation)
   }
 
   // ========================================== DICTIONARIES ===========================================
@@ -652,6 +664,228 @@ class GoogleCalendarService {
       success: true,
       message: 'Event deleted successfully',
       eventId,
+    }
+  }
+
+  // ============================================ TRIGGERS =============================================
+
+  /**
+   * @private
+   */
+  #getEventTimestamp(timeObj) {
+    if (!timeObj) return null
+
+    if (timeObj.dateTime) {
+      return new Date(timeObj.dateTime).getTime()
+    }
+
+    if (timeObj.date) {
+      return new Date(timeObj.date).getTime()
+    }
+
+    return null
+  }
+
+  /**
+   * @operationName On Event Starting Soon
+   * @category Event Triggers
+   * @description Triggers when a calendar event is about to start within the specified lead time. Enables AI agents to send reminders, prepare meeting materials, or initiate pre-meeting workflows. Polling interval can be customized (minimum 30 seconds).
+   * @registerAs POLLING_TRIGGER
+   *
+   * @route POST /on-event-starting-soon
+   * @appearanceColor #f9566d #fb874b
+   * @executionTimeoutInSeconds 120
+   *
+   * @paramDef {"type":"String","label":"Calendar","name":"calendarId","description":"Calendar to monitor for upcoming events. Use 'primary' for the user's primary calendar.","required":true,"dictionary":"getCalendarsDictionary"}
+   * @paramDef {"type":"String","label":"Lead Time","name":"leadTimeMinutes","description":"How many minutes before the event start time to trigger the notification.","required":true,"uiComponent":{"type":"DROPDOWN","options":{"values":["5","10","15","30","60"]}}}
+   *
+   * @returns {Object}
+   * @sampleResult {"id":"abc123def456","summary":"Team Meeting","description":"Quarterly planning session","location":"Conference Room A","start":{"dateTime":"2025-01-20T10:00:00-05:00","timeZone":"America/New_York"},"end":{"dateTime":"2025-01-20T11:00:00-05:00","timeZone":"America/New_York"},"attendees":[{"email":"john@example.com","responseStatus":"accepted"}],"status":"confirmed","htmlLink":"https://www.google.com/calendar/event?eid=abc123def456"}
+   */
+  async onEventStartingSoon(invocation) {
+    const { calendarId, leadTimeMinutes } = invocation.triggerData
+    const leadMs = (parseInt(leadTimeMinutes, 10) || 15) * 60 * 1000
+
+    if (invocation.learningMode) {
+      const now = new Date()
+      const result = await this.#apiRequest({
+        logTag: 'onEventStartingSoon.learningMode',
+        method: 'get',
+        url: `${ API_BASE_URL }/calendars/${ encodeURIComponent(calendarId) }/events`,
+        query: {
+          timeMin: now.toISOString(),
+          maxResults: 1,
+          singleEvents: true,
+          orderBy: 'startTime',
+        },
+      })
+
+      const event = result.items?.[0] || null
+
+      return {
+        events: event ? [event] : [],
+        state: null,
+      }
+    }
+
+    const now = new Date()
+    const windowEnd = new Date(now.getTime() + leadMs)
+
+    const result = await this.#apiRequest({
+      logTag: 'onEventStartingSoon',
+      method: 'get',
+      url: `${ API_BASE_URL }/calendars/${ encodeURIComponent(calendarId) }/events`,
+      query: {
+        timeMin: now.toISOString(),
+        timeMax: windowEnd.toISOString(),
+        maxResults: 250,
+        singleEvents: true,
+        orderBy: 'startTime',
+      },
+    })
+
+    const events = result.items || []
+    const currentEventIds = new Set(events.map(e => e.id))
+
+    if (!invocation.state?.initialized) {
+      logger.debug(`onEventStartingSoon.init: found ${ events.length } events in window`)
+
+      return {
+        events: [],
+        state: {
+          initialized: true,
+          notifiedEventIds: events.map(e => e.id),
+        },
+      }
+    }
+
+    const previousIds = new Set(invocation.state.notifiedEventIds || [])
+    const newEvents = events.filter(e => !previousIds.has(e.id))
+
+    logger.debug(`onEventStartingSoon: ${ newEvents.length } new events in window`)
+
+    // Keep only IDs that are still in the current window + new ones
+    const updatedIds = [...invocation.state.notifiedEventIds.filter(id => currentEventIds.has(id))]
+
+    for (const e of newEvents) {
+      updatedIds.push(e.id)
+    }
+
+    return {
+      events: newEvents,
+      state: {
+        initialized: true,
+        notifiedEventIds: updatedIds,
+      },
+    }
+  }
+
+  /**
+   * @operationName On Event Ended
+   * @category Event Triggers
+   * @description Triggers when a calendar event has ended. Enables AI agents to send follow-up emails, create meeting summaries, log attendance, or initiate post-meeting workflows. Polling interval can be customized (minimum 30 seconds).
+   * @registerAs POLLING_TRIGGER
+   *
+   * @route POST /on-event-ended
+   * @appearanceColor #f9566d #fb874b
+   * @executionTimeoutInSeconds 120
+   *
+   * @paramDef {"type":"String","label":"Calendar","name":"calendarId","description":"Calendar to monitor for ended events. Use 'primary' for the user's primary calendar.","required":true,"dictionary":"getCalendarsDictionary"}
+   *
+   * @returns {Object}
+   * @sampleResult {"id":"abc123def456","summary":"Team Meeting","description":"Quarterly planning session","location":"Conference Room A","start":{"dateTime":"2025-01-20T10:00:00-05:00","timeZone":"America/New_York"},"end":{"dateTime":"2025-01-20T11:00:00-05:00","timeZone":"America/New_York"},"attendees":[{"email":"john@example.com","responseStatus":"accepted"}],"status":"confirmed","htmlLink":"https://www.google.com/calendar/event?eid=abc123def456"}
+   */
+  async onEventEnded(invocation) {
+    const { calendarId } = invocation.triggerData
+    const LOOKBACK_MS = 2 * 60 * 60 * 1000 // 2 hours
+
+    if (invocation.learningMode) {
+      const now = new Date()
+      const lookbackStart = new Date(now.getTime() - LOOKBACK_MS)
+
+      const result = await this.#apiRequest({
+        logTag: 'onEventEnded.learningMode',
+        method: 'get',
+        url: `${ API_BASE_URL }/calendars/${ encodeURIComponent(calendarId) }/events`,
+        query: {
+          timeMin: lookbackStart.toISOString(),
+          timeMax: now.toISOString(),
+          maxResults: 1,
+          singleEvents: true,
+          orderBy: 'startTime',
+        },
+      })
+
+      const events = result.items || []
+      const nowMs = now.getTime()
+      const endedEvent = events.find(e => {
+        const endMs = this.#getEventTimestamp(e.end)
+
+        return endMs && endMs <= nowMs
+      })
+
+      return {
+        events: endedEvent ? [endedEvent] : [],
+        state: null,
+      }
+    }
+
+    const now = new Date()
+    const nowMs = now.getTime()
+    const lookbackStart = new Date(nowMs - LOOKBACK_MS)
+
+    const result = await this.#apiRequest({
+      logTag: 'onEventEnded',
+      method: 'get',
+      url: `${ API_BASE_URL }/calendars/${ encodeURIComponent(calendarId) }/events`,
+      query: {
+        timeMin: lookbackStart.toISOString(),
+        timeMax: now.toISOString(),
+        maxResults: 250,
+        singleEvents: true,
+        orderBy: 'startTime',
+      },
+    })
+
+    const allEvents = result.items || []
+    const endedEvents = allEvents.filter(e => {
+      const endMs = this.#getEventTimestamp(e.end)
+
+      return endMs && endMs <= nowMs
+    })
+
+    const currentEndedIds = new Set(endedEvents.map(e => e.id))
+
+    if (!invocation.state?.initialized) {
+      logger.debug(`onEventEnded.init: found ${ endedEvents.length } ended events`)
+
+      return {
+        events: [],
+        state: {
+          initialized: true,
+          notifiedEventIds: endedEvents.map(e => e.id),
+        },
+      }
+    }
+
+    const previousIds = new Set(invocation.state.notifiedEventIds || [])
+    const newEndedEvents = endedEvents.filter(e => !previousIds.has(e.id))
+
+    logger.debug(`onEventEnded: ${ newEndedEvents.length } newly ended events`)
+
+    // Keep only IDs still in the lookback window + new ones
+    const updatedIds = [...invocation.state.notifiedEventIds.filter(id => currentEndedIds.has(id))]
+
+    for (const e of newEndedEvents) {
+      updatedIds.push(e.id)
+    }
+
+    return {
+      events: newEndedEvents,
+      state: {
+        initialized: true,
+        notifiedEventIds: updatedIds,
+      },
     }
   }
 }
