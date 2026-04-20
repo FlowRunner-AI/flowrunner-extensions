@@ -2,14 +2,6 @@ const path = require('path')
 const { createClient } = require('backendless-console-sdk')
 const Backendless = require('backendless')
 
-const ClustersHosts = {
-  'US': 'https://develop.Flowrunner.com',
-  'Europe': 'https://eu-develop.Flowrunner.com',
-  'Stage(SHOULD_NOT_BE_IN_PROD)': 'https://stage.Flowrunner.com',
-  'DevTest(SHOULD_NOT_BE_IN_PROD)': 'https://devtest.Flowrunner.com',
-  'Local(SHOULD_NOT_BE_IN_PROD)': 'http://localhost:3001',
-}
-
 const logger = {
   info: (...args) => console.log('[Backendless Service] info:', ...args),
   debug: (...args) => console.log('[Backendless Service] debug:', ...args),
@@ -80,6 +72,17 @@ const MethodCallTypes = {
 
 const SystemColumns = ['objectId', '___class', 'created', 'updated', 'ownerId']
 
+const ClusterZones = {
+  US:'US',
+  EU:'EU',
+  Custom:'Custom',
+}
+
+const ClustersHosts = {
+  [ClusterZones.US]: 'https://develop.Flowrunner.com',
+  [ClusterZones.EU]: 'https://eu-develop.Flowrunner.com',
+}
+
 /**
  *  @requireOAuth
  *  @integrationName Backendless
@@ -91,10 +94,22 @@ class BackendlessService {
   // ======================================= CONSTRUCTOR & PRIVATE UTILITIES ========================================
 
   constructor(config) {
-    this.clusterURL = config.clusterConsoleURL || ClustersHosts[config.clusterKey] || ClustersHosts['DevTest(SHOULD_NOT_BE_IN_PROD)']
+    const clusterZone = config.clusterZone || ClusterZones.US
 
-    this.clientId = config.clientId
-    this.clientSecret = config.clientSecret
+    if (clusterZone === ClusterZones.Custom) {
+      if (!config.customClientId || !config.customClientSecret || !config.customClientURL) {
+        throw new Error('Custom cluster zone requires customClientId, customClientSecret, and customClientURL to be specified')
+      }
+
+      this.clusterURL = config.customClientURL
+      this.clientId = config.customClientId
+      this.clientSecret = config.customClientSecret
+    } else {
+      this.clusterURL = ClustersHosts[clusterZone] || ClustersHosts[ClusterZones.US]
+      this.clientId = clusterZone === ClusterZones.EU ? config.clientId_EU : config.clientId_US
+      this.clientSecret = clusterZone === ClusterZones.EU ? config.clientSecret_EU : config.clientSecret_US
+    }
+
     this.scope = ''
   }
 
@@ -2224,39 +2239,73 @@ class BackendlessService {
 
 Flowrunner.ServerCode.addService(BackendlessService, [
   {
-    displayName: 'Client ID',
+    displayName: 'Client ID (US)',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: true,
-    name: 'clientId',
-    hint: 'Your OAuth 2.0 Client ID from the Backendless Cluster',
+    name: 'clientId_US',
+    hint: 'OAuth 2.0 Client ID for the US cluster',
   },
   {
-    displayName: 'Client Secret',
+    displayName: 'Client Secret (US)',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: true,
-    name: 'clientSecret',
-    hint: 'Your OAuth 2.0 Client Secret from the Backendless Cluster',
+    name: 'clientSecret_US',
+    hint: 'OAuth 2.0 Client Secret for the US cluster',
+  },
+  {
+    displayName: 'Client ID (EU)',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: true,
+    shared: true,
+    name: 'clientId_EU',
+    hint: 'OAuth 2.0 Client ID for the EU cluster',
+  },
+  {
+    displayName: 'Client Secret (EU)',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: true,
+    shared: true,
+    name: 'clientSecret_EU',
+    hint: 'OAuth 2.0 Client Secret for the EU cluster',
   },
   {
     displayName: 'Cluster Zone',
-    name: 'clusterKey',
+    name: 'clusterZone',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.CHOICE,
-    options: Object.keys(ClustersHosts),
+    options: [ClusterZones.US, ClusterZones.EU, ClusterZones.Custom],
     required: true,
-    shared: true,
-    defaultValue: 'DevTest(SHOULD_NOT_BE_IN_PROD)',
-    hint: 'Select the Backendless cluster where your app is located',
+    shared: false,
+    defaultValue: 'US',
+    hint: 'Select the Backendless cluster zone',
   },
   {
-    displayName: 'Cluster Console URL',
-    name: 'clusterConsoleURL',
+    displayName: 'Custom Client URL',
+    name: 'customClientURL',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: false,
     shared: false,
     defaultValue: '',
-    hint: 'Provide when you need to specify your own Backendless PRO cluster. Example: https://develop.Flowrunner.com',
+    hint: 'Console URL for your custom cluster. Example: https://your-backendless-pro-console.com',
+  },
+  {
+    displayName: 'Custom Client ID',
+    name: 'customClientId',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: false,
+    shared: false,
+    defaultValue: '',
+    hint: 'OAuth 2.0 Client ID for your custom cluster',
+  },
+  {
+    displayName: 'Custom Client Secret',
+    name: 'customClientSecret',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: false,
+    shared: false,
+    defaultValue: '',
+    hint: 'OAuth 2.0 Client Secret for your custom cluster',
   },
 ])
 
