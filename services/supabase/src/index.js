@@ -531,7 +531,7 @@ Flowrunner.ServerCode.addService(Supabase, [
   {
     name: 'supabaseUrl',
     displayName: 'Project URL',
-    type: 'STRING',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     hint: 'Your Supabase Project URL (e.g., https://xyz.supabase.co). Found in Settings > API.',
     order: 1,
@@ -539,7 +539,7 @@ Flowrunner.ServerCode.addService(Supabase, [
   {
     name: 'supabaseKey',
     displayName: 'API Key',
-    type: 'STRING',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     hint: 'Your Supabase API Key (anon or service_role). Found in Settings > API.',
     order: 2,
