@@ -1320,7 +1320,7 @@ Flowrunner.ServerCode.addService(NetSuiteService, [
   {
     name: 'clientId',
     displayName: 'Client ID',
-    type: 'STRING',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: true,
     hint: 'OAuth 2.0 Client ID from NetSuite Integration Record.',
@@ -1328,7 +1328,7 @@ Flowrunner.ServerCode.addService(NetSuiteService, [
   {
     name: 'clientSecret',
     displayName: 'Client Secret',
-    type: 'STRING',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: true,
     hint: 'OAuth 2.0 Client Secret from NetSuite Integration Record.',
@@ -1336,7 +1336,7 @@ Flowrunner.ServerCode.addService(NetSuiteService, [
   {
     name: 'accountId',
     displayName: 'Account ID',
-    type: 'STRING',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     hint: 'NetSuite Account ID. Found in Setup > Company > Company Information.',
   },

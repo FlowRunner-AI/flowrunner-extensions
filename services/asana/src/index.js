@@ -1424,7 +1424,7 @@ Flowrunner.ServerCode.addService(Asana, [
   {
     name: 'clientId',
     displayName: 'Client ID',
-    type: 'STRING',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: true,
     hint: 'OAuth2 Client ID for Asana API integration.',
@@ -1432,7 +1432,7 @@ Flowrunner.ServerCode.addService(Asana, [
   {
     name: 'clientSecret',
     displayName: 'Client Secret',
-    type: 'STRING',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: true,
     hint: 'OAuth2 Client Secret for Asana API integration.',
