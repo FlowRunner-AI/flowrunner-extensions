@@ -2750,7 +2750,7 @@ Flowrunner.ServerCode.addService(QuickBooksOnlineService, [
   {
     name: 'clientId',
     displayName: 'Client ID',
-    type: 'STRING',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     defaultValue: 'ABTuxy7q8kScfKl6wuWYNrcFoM40HyQoc3Th0mtjYTKpcEBBLE',
     required: true,
     shared: true,
@@ -2759,7 +2759,7 @@ Flowrunner.ServerCode.addService(QuickBooksOnlineService, [
   {
     name: 'clientSecret',
     displayName: 'Client Secret',
-    type: 'STRING',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     defaultValue: 'f895AgMpO93GJGcXv7LJrBV9REWnD9lsMpXXjGUp',
     required: true,
     shared: true,
@@ -2768,7 +2768,7 @@ Flowrunner.ServerCode.addService(QuickBooksOnlineService, [
   {
     name: 'environment',
     displayName: 'Environment',
-    type: 'CHOICE',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.CHOICE,
     defaultValue: 'Production',
     required: true,
     options: ['Production', 'Sandbox'],
