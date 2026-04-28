@@ -3,79 +3,79 @@ const { createClient } = require('backendless-console-sdk')
 const Backendless = require('backendless')
 
 const logger = {
-  info: (...args) => console.log('[Backendless Service] info:', ...args),
+  info : (...args) => console.log('[Backendless Service] info:', ...args),
   debug: (...args) => console.log('[Backendless Service] debug:', ...args),
   error: (...args) => console.log('[Backendless Service] error:', ...args),
-  warn: (...args) => console.log('[Backendless Service] warn:', ...args),
+  warn : (...args) => console.log('[Backendless Service] warn:', ...args),
 }
 
 const EventTypes = {
   // Cloud Code
   onTimerExecute: 'EXECUTE',
   // Counters
-  onCounterReset: 'RESET',
+  onCounterReset          : 'RESET',
   onCounterGetAndIncrement: 'GET_AND_INCREMENT',
   onCounterIncrementAndGet: 'INCREMENT_AND_GET',
   onCounterGetAndDecrement: 'GET_AND_DECREMENT',
   onCounterDecrementAndGet: 'DECREMENT_AND_GET',
-  onCounterAddAndGet: 'ADD_AND_GET',
-  onCounterGetAndAdd: 'GET_AND_ADD',
-  onCounterCompareAndSet: 'COMPARE_AND_SET',
+  onCounterAddAndGet      : 'ADD_AND_GET',
+  onCounterGetAndAdd      : 'GET_AND_ADD',
+  onCounterCompareAndSet  : 'COMPARE_AND_SET',
   // Data
   onRecordCreated: 'CREATE',
   onRecordUpdated: 'UPDATE',
   onRecordDeleted: 'DELETE',
   // Files
-  onFileCopied: 'COPY_FILE_OR_DIRECTORY',
-  onFileDeleted: 'DELETE_FILE_OR_DIRECTORY',
+  onFileCopied    : 'COPY_FILE_OR_DIRECTORY',
+  onFileDeleted   : 'DELETE_FILE_OR_DIRECTORY',
   onFileDownloaded: 'DOWNLOAD',
-  onFileMoved: 'MOVE_FILE_OR_DIRECTORY',
-  onFileRenamed: 'RENAME_FILE_OR_DIRECTORY',
-  onFileUploaded: 'UPLOAD',
+  onFileMoved     : 'MOVE_FILE_OR_DIRECTORY',
+  onFileRenamed   : 'RENAME_FILE_OR_DIRECTORY',
+  onFileUploaded  : 'UPLOAD',
   // Messaging
-  onPushNotificationPublished: 'PUBLISH',
+  onPushNotificationPublished       : 'PUBLISH',
   onPushNotificationWithTemplateSent: 'SEND_PUSH_NOTIFICATION_WITH_TEMPLATE',
   // Users
   onRegistered: 'REGISTER',
 }
 
 const WebhookServiceMap = {
-  EXECUTE: { service: 'TIMER_SERVICE' },
-  RESET: { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
-  GET_AND_INCREMENT: { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
-  INCREMENT_AND_GET: { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
-  GET_AND_DECREMENT: { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
-  DECREMENT_AND_GET: { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
-  ADD_AND_GET: { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
-  GET_AND_ADD: { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
-  COMPARE_AND_SET: { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
-  CREATE: { service: 'DATA_SERVICE' },
-  UPDATE: { service: 'DATA_SERVICE' },
-  DELETE: { service: 'DATA_SERVICE' },
-  COPY_FILE_OR_DIRECTORY: { service: 'FILE_SERVICE' },
-  DELETE_FILE_OR_DIRECTORY: { service: 'FILE_SERVICE' },
-  DOWNLOAD: { service: 'FILE_SERVICE' },
-  MOVE_FILE_OR_DIRECTORY: { service: 'FILE_SERVICE' },
-  RENAME_FILE_OR_DIRECTORY: { service: 'FILE_SERVICE' },
-  UPLOAD: { service: 'FILE_SERVICE' },
-  PUBLISH: { service: 'MESSAGING_SERVICE', enabledForConsole: true },
+  EXECUTE                             : { service: 'TIMER_SERVICE' },
+  RESET                               : { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
+  GET_AND_INCREMENT                   : { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
+  INCREMENT_AND_GET                   : { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
+  GET_AND_DECREMENT                   : { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
+  DECREMENT_AND_GET                   : { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
+  ADD_AND_GET                         : { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
+  GET_AND_ADD                         : { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
+  COMPARE_AND_SET                     : { service: 'ATOMIC_OPERATIONS', enabledForConsole: true },
+  CREATE                              : { service: 'DATA_SERVICE' },
+  UPDATE                              : { service: 'DATA_SERVICE' },
+  DELETE                              : { service: 'DATA_SERVICE' },
+  COPY_FILE_OR_DIRECTORY              : { service: 'FILE_SERVICE' },
+  DELETE_FILE_OR_DIRECTORY            : { service: 'FILE_SERVICE' },
+  DOWNLOAD                            : { service: 'FILE_SERVICE' },
+  MOVE_FILE_OR_DIRECTORY              : { service: 'FILE_SERVICE' },
+  RENAME_FILE_OR_DIRECTORY            : { service: 'FILE_SERVICE' },
+  UPLOAD                              : { service: 'FILE_SERVICE' },
+  PUBLISH                             : { service: 'MESSAGING_SERVICE', enabledForConsole: true },
   SEND_PUSH_NOTIFICATION_WITH_TEMPLATE: { service: 'MESSAGING_SERVICE', enabledForConsole: true },
-  REGISTER: { service: 'USER_SERVICE', enabledForConsole: true },
+  REGISTER                            : { service: 'USER_SERVICE', enabledForConsole: true },
 }
 
 const MethodTypes = Object.keys(EventTypes).reduce((acc, key) => ((acc[EventTypes[key]] = key), acc), {})
 
 const MethodCallTypes = {
-  SHAPE_EVENT: 'SHAPE_EVENT',
+  SHAPE_EVENT   : 'SHAPE_EVENT',
   FILTER_TRIGGER: 'FILTER_TRIGGER',
 }
 
 const SystemColumns = ['objectId', '___class', 'created', 'updated', 'ownerId']
 
 const ClusterZones = {
-  US:'US',
-  EU:'EU',
-  Custom:'Custom',
+  US        : 'US',
+  EU        : 'EU',
+  SelfHosted: 'SelfHosted',
 }
 
 const ClustersHosts = {
@@ -96,14 +96,14 @@ class BackendlessService {
   constructor(config) {
     const clusterZone = config.clusterZone || ClusterZones.US
 
-    if (clusterZone === ClusterZones.Custom) {
-      if (!config.customClientId || !config.customClientSecret || !config.customClientURL) {
-        throw new Error('Custom cluster zone requires customClientId, customClientSecret, and customClientURL to be specified')
+    if (clusterZone === ClusterZones.SelfHosted) {
+      if (!config.selfHostedClientId || !config.selfHostedClientSecret || !config.selfHostedClientURL) {
+        throw new Error('SelfHosted cluster zone requires selfHostedClientId, selfHostedClientSecret, and selfHostedClientURL to be specified')
       }
 
-      this.clusterURL = config.customClientURL
-      this.clientId = config.customClientId
-      this.clientSecret = config.customClientSecret
+      this.clusterURL = config.selfHostedClientURL
+      this.clientId = config.selfHostedClientId
+      this.clientSecret = config.selfHostedClientSecret
     } else {
       this.clusterURL = ClustersHosts[clusterZone] || ClustersHosts[ClusterZones.US]
       this.clientId = clusterZone === ClusterZones.EU ? config.clientId_EU : config.clientId_US
@@ -195,9 +195,9 @@ class BackendlessService {
         .send(params.toString())
 
       return {
-        token: response.access_token,
+        token              : response.access_token,
         expirationInSeconds: response.expires_in,
-        refreshToken: response.refresh_token || refreshToken,
+        refreshToken       : response.refresh_token || refreshToken,
       }
     } catch (error) {
       error = normalizeOauthError(error)
@@ -260,11 +260,11 @@ class BackendlessService {
     }
 
     return {
-      token: access_token,
-      refreshToken: refresh_token,
-      expirationInSeconds: expires_in,
-      overwrite: true,
-      connectionIdentityName: `${ userInfo.name } (${ userInfo.email })`,
+      token                     : access_token,
+      refreshToken              : refresh_token,
+      expirationInSeconds       : expires_in,
+      overwrite                 : true,
+      connectionIdentityName    : `${ userInfo.name } (${ userInfo.email })`,
       connectionIdentityImageURL: null,
     }
   }
@@ -366,7 +366,7 @@ class BackendlessService {
     logger.debug(`events: ${ JSON.stringify(events) }`)
 
     const response = await client.webhooks.saveWebhook(appId, {
-      url: invocation.callbackUrl,
+      url              : invocation.callbackUrl,
       enabledOperations: events,
     })
 
@@ -1257,7 +1257,7 @@ class BackendlessService {
       items: filteredApps.map(({ id, name }) => ({
         label: name,
         value: id,
-        note: `ID: ${ id } `,
+        note : `ID: ${ id } `,
       })),
     }
   }
@@ -1339,7 +1339,7 @@ class BackendlessService {
       items: filtered.map(timer => ({
         label: timer.timername,
         value: timer.id,
-        note: `${ timer.model } (${ timer.language })`,
+        note : `${ timer.model } (${ timer.language })`,
       })),
     }
   }
@@ -1423,7 +1423,7 @@ class BackendlessService {
       items: filteredTables.map(({ tableId, name }) => ({
         label: name,
         value: tableId,
-        note: `ID: ${ tableId } `,
+        note : `ID: ${ tableId } `,
       })),
     }
   }
@@ -1465,7 +1465,7 @@ class BackendlessService {
       items: filteredTables.map(({ tableId, name }) => ({
         label: name,
         value: name,
-        note: `ID: ${ tableId } `,
+        note : `ID: ${ tableId } `,
       })),
     }
   }
@@ -1512,7 +1512,7 @@ class BackendlessService {
       items: filteredTablesAndViews.map(({ id, name }) => ({
         label: name,
         value: name,
-        note: `ID: ${ id } `,
+        note : `ID: ${ id } `,
       })),
     }
   }
@@ -1595,7 +1595,7 @@ class BackendlessService {
       items: filteredPushTemplates.map(({ id, name }) => ({
         label: name,
         value: name,
-        note: `ID: ${ id }`,
+        note : `ID: ${ id }`,
       })),
     }
   }
@@ -1638,7 +1638,7 @@ class BackendlessService {
       items: filteredPdfTemplates.map(({ id, name }) => ({
         label: name,
         value: id,
-        note: `ID: ${ id }`,
+        note : `ID: ${ id }`,
       })),
     }
   }
@@ -1687,10 +1687,10 @@ class BackendlessService {
     return table.columns
       .filter(col => !SystemColumns.includes(col.name))
       .map(col => ({
-        type: col.dataType,
-        label: col.name,
-        name: col.name,
-        required: col.required,
+        type       : col.dataType,
+        label      : col.name,
+        name       : col.name,
+        required   : col.required,
         description: `Column type: "${ col.dataType }"`,
         uiComponent: this.#getUiComponentForColumnType(col.dataType),
       }))
@@ -2112,7 +2112,7 @@ class BackendlessService {
     return apiSdk.Messaging.sendEmailFromTemplate(
       emailTemplate,
       emailEnvelope,
-      attachments
+      attachments,
     )
   }
 
@@ -2167,9 +2167,9 @@ class BackendlessService {
 
     return client.pdf.generatePDF(appId, {
       template: JSON.stringify(template),
-      values: values || {},
-      name: fileName,
-      path: filePath,
+      values  : values || {},
+      name    : fileName,
+      path    : filePath,
     })
   }
 
@@ -2240,72 +2240,72 @@ class BackendlessService {
 Flowrunner.ServerCode.addService(BackendlessService, [
   {
     displayName: 'Client ID (US)',
-    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required: true,
-    shared: true,
-    name: 'clientId_US',
-    hint: 'OAuth 2.0 Client ID for the US cluster',
+    type       : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required   : true,
+    shared     : true,
+    name       : 'clientId_US',
+    hint       : 'OAuth 2.0 Client ID for the US cluster',
   },
   {
     displayName: 'Client Secret (US)',
-    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required: true,
-    shared: true,
-    name: 'clientSecret_US',
-    hint: 'OAuth 2.0 Client Secret for the US cluster',
+    type       : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required   : true,
+    shared     : true,
+    name       : 'clientSecret_US',
+    hint       : 'OAuth 2.0 Client Secret for the US cluster',
   },
   {
     displayName: 'Client ID (EU)',
-    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required: true,
-    shared: true,
-    name: 'clientId_EU',
-    hint: 'OAuth 2.0 Client ID for the EU cluster',
+    type       : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required   : true,
+    shared     : true,
+    name       : 'clientId_EU',
+    hint       : 'OAuth 2.0 Client ID for the EU cluster',
   },
   {
     displayName: 'Client Secret (EU)',
-    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required: true,
-    shared: true,
-    name: 'clientSecret_EU',
-    hint: 'OAuth 2.0 Client Secret for the EU cluster',
+    type       : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required   : true,
+    shared     : true,
+    name       : 'clientSecret_EU',
+    hint       : 'OAuth 2.0 Client Secret for the EU cluster',
   },
   {
-    displayName: 'Cluster Zone',
-    name: 'clusterZone',
-    type: Flowrunner.ServerCode.ConfigItems.TYPES.CHOICE,
-    options: [ClusterZones.US, ClusterZones.EU, ClusterZones.Custom],
-    required: true,
-    shared: false,
+    displayName : 'Cluster Zone',
+    name        : 'clusterZone',
+    type        : Flowrunner.ServerCode.ConfigItems.TYPES.CHOICE,
+    options     : [ClusterZones.US, ClusterZones.EU, ClusterZones.SelfHosted],
+    required    : true,
+    shared      : false,
     defaultValue: 'US',
-    hint: 'Select the Backendless cluster zone',
+    hint        : 'Select the Backendless cluster zone',
   },
   {
-    displayName: 'Custom Client URL',
-    name: 'customClientURL',
-    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required: false,
-    shared: false,
+    displayName : 'Self-Hosted Client URL',
+    name        : 'selfHostedClientURL',
+    type        : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required    : false,
+    shared      : false,
     defaultValue: '',
-    hint: 'Console URL for your custom cluster. Example: https://your-backendless-pro-console.com',
+    hint        : 'Console URL for your self-hosted cluster. Example: https://your-backendless-pro-console.com',
   },
   {
-    displayName: 'Custom Client ID',
-    name: 'customClientId',
-    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required: false,
-    shared: false,
+    displayName : 'Self-Hosted Client ID',
+    name        : 'selfHostedClientId',
+    type        : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required    : false,
+    shared      : false,
     defaultValue: '',
-    hint: 'OAuth 2.0 Client ID for your custom cluster',
+    hint        : 'OAuth 2.0 Client ID for your self-hosted cluster',
   },
   {
-    displayName: 'Custom Client Secret',
-    name: 'customClientSecret',
-    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required: false,
-    shared: false,
+    displayName : 'Self-Hosted Client Secret',
+    name        : 'selfHostedClientSecret',
+    type        : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required    : false,
+    shared      : false,
     defaultValue: '',
-    hint: 'OAuth 2.0 Client Secret for your custom cluster',
+    hint        : 'OAuth 2.0 Client Secret for your self-hosted cluster',
   },
 ])
 
