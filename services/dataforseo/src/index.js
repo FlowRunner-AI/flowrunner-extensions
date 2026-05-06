@@ -14,7 +14,7 @@ const logger = {
 
 /**
  * @integrationName DataForSEO
- * @integrationIcon /icon.svg
+ * @integrationIcon /logo.png
  */
 class DataForSEOService {
   /**
