@@ -14,6 +14,11 @@ module.exports = class EmailParser {
         }
 
         if (data) {
+          // parse-gmail-email only checks top-level parts; recurse for multipart/related and multipart/alternative emails.
+          if (!data.message && rawEmail.payload) {
+            data.message = this.extractMessageContent(rawEmail.payload)
+          }
+
           return resolve({
             rawEmailData: data,
             //
@@ -34,6 +39,42 @@ module.exports = class EmailParser {
         }
       })
     })
+  }
+
+  extractMessageContent(payload) {
+    if (payload.body?.data) {
+      return Buffer.from(payload.body.data, 'base64').toString('utf-8')
+    }
+
+    if (payload.parts) {
+      return this.searchPartsForContent(payload.parts)
+    }
+
+    return null
+  }
+
+  searchPartsForContent(parts) {
+    let textPlainContent = null
+
+    for (const part of parts) {
+      if (part.mimeType === 'text/html' && part.body?.data) {
+        return Buffer.from(part.body.data, 'base64').toString('utf-8')
+      }
+
+      if (part.mimeType === 'text/plain' && part.body?.data && !textPlainContent) {
+        textPlainContent = Buffer.from(part.body.data, 'base64').toString('utf-8')
+      }
+
+      if (part.parts) {
+        const nested = this.searchPartsForContent(part.parts)
+
+        if (nested) {
+          return nested
+        }
+      }
+    }
+
+    return textPlainContent
   }
 
   async parseThread(thread) {
