@@ -79,8 +79,8 @@ const ClusterZones = {
 }
 
 const ClustersHosts = {
-  [ClusterZones.US]: 'https://develop.Flowrunner.com',
-  [ClusterZones.EU]: 'https://eu-develop.Flowrunner.com',
+  [ClusterZones.US]: 'https://develop.backendless.com',
+  [ClusterZones.EU]: 'https://eu-develop.backendless.com',
 }
 
 /**
@@ -189,7 +189,7 @@ class BackendlessService {
     params.append('scope', this.scope)
 
     try {
-      const response = await Flowrunner.Request.post(`${ this.clusterURL }/developer/oauth2/token`)
+      const response = await Backendless.Request.post(`${ this.clusterURL }/developer/oauth2/token`)
         .set({ 'Content-Type': 'application/x-www-form-urlencoded' })
         .set(this.#getSecretTokenHeader())
         .send(params.toString())
@@ -225,7 +225,7 @@ class BackendlessService {
     try {
       logger.debug(`[executeCallback] callbackObject: ${ JSON.stringify(callbackObject, null, 2) }`)
 
-      callbackResult = await Flowrunner.Request
+      callbackResult = await Backendless.Request
         .post(`${ this.clusterURL }/developer/oauth2/token`)
         .set({ 'Content-Type': 'application/x-www-form-urlencoded' })
         .set(this.#getSecretTokenHeader())
@@ -246,7 +246,7 @@ class BackendlessService {
     let userInfo = {}
 
     try {
-      userInfo = await Flowrunner.Request
+      userInfo = await Backendless.Request
         .get(`${ this.clusterURL }/console/home/myaccount`)
         .set(this.#getAccessTokenHeader(access_token))
 
@@ -1936,7 +1936,7 @@ class BackendlessService {
    * @paramDef {"type":"String","label":"Content","name":"content","required":false,"description": "Text content to append. Examples: 'New log entry\n', 'John,Doe,john@example.com\n', '{\"timestamp\": \"2025-01-15\"}'. Use either this or Content From URL.","uiComponent":{"type":"MULTI_LINE_TEXT"}}
    * @paramDef {"type":"String","label":"Content From URL","name":"contentFromUrl","required":false,"description": "URL to fetch content for appending. Examples: 'https://api.example.com/data.txt', 'https://domain.com/report.csv'. Alternative to direct content input."}
    *
-   * @sampleResult {"fileName":"activity.log","directoryPath":"/logs","filePath":"/logs/activity.log","fileURL":"https://your-app.Flowrunner.app/api/files/logs/activity.log"}
+   * @sampleResult {"fileName":"activity.log","directoryPath":"/logs","filePath":"/logs/activity.log","fileURL":"https://your-app.backendless.app/api/files/logs/activity.log"}
    */
   async addToFile(appId, apiKey, directoryPath, fileName, content, contentFromUrl) {
     const apiSdk = await this.#getApiSdk(appId, apiKey)
@@ -1998,7 +1998,7 @@ class BackendlessService {
    * @paramDef {"type":"String","label":"Content","name":"content","required":true,"description": "File content as text. Examples: JSON data, CSV rows, HTML markup, plain text. Non-string values will be converted to JSON format.","uiComponent":{"type":"MULTI_LINE_TEXT"}}
    * @paramDef {"type":"Boolean","label":"Overwrite","name":"overwrite","required":false,"uiComponent":{"type":"TOGGLE"}, "description": "Enable to replace existing files with the same name. Disable to prevent accidental overwrites and fail if file exists."}
    *
-   * @sampleResult {"fileName":"user-report.json","directoryPath":"/reports","fileURL":"https://your-app.Flowrunner.app/api/files/reports/user-report.json","filePath":"/reports/user-report.json"}
+   * @sampleResult {"fileName":"user-report.json","directoryPath":"/reports","fileURL":"https://your-app.backendless.app/api/files/reports/user-report.json","filePath":"/reports/user-report.json"}
    */
   async createFile(appId, apiKey, directoryPath, fileName, content, overwrite) {
     const apiSdk = await this.#getApiSdk(appId, apiKey)
@@ -2041,7 +2041,7 @@ class BackendlessService {
    * @paramDef {"type":"Number","label":"Page Size","name":"pageSize","required":false,"uiComponent":{"type":"NUMERIC"},"description":"Number of items to return per page. Use with offset for pagination through large directories."}
    * @paramDef {"type":"Number","label":"Offset","name":"offset","required":false,"uiComponent":{"type":"NUMERIC"},"description":"Number of items to skip for pagination. Use with pageSize to paginate through large directories."}
    *
-   * @sampleResult {"data":[{"name":"documents","createdOn":1609459200000,"updatedOn":1609459200000,"publicUrl":"https://your-app.Flowrunner.app/api/files/documents","url":"documents"},{"name":"config.json","createdOn":1609459200000,"updatedOn":1609459200000,"publicUrl":"https://your-app.Flowrunner.app/api/files/config.json","size":1024,"url":"config.json"}],"totalRows":2}
+   * @sampleResult {"data":[{"name":"documents","createdOn":1609459200000,"updatedOn":1609459200000,"publicUrl":"https://your-app.backendless.app/api/files/documents","url":"documents"},{"name":"config.json","createdOn":1609459200000,"updatedOn":1609459200000,"publicUrl":"https://your-app.backendless.app/api/files/config.json","size":1024,"url":"config.json"}],"totalRows":2}
    */
   async listDirectory(appId, directoryPath, pattern, sub, sortBy, sortDirection, pageSize, offset) {
     const client = this.#getClient()
@@ -2157,7 +2157,7 @@ class BackendlessService {
    * @paramDef {"type":"String","label":"File Path","name":"filePath","required":true,"description":"Complete path where the PDF will be saved in Backendless storage. Example: `/path/to/folder`"}
    * @paramDef {"type":"String","label":"Template Values","name":"values","description":"Key\u2013value pairs for **dynamic fields** defined in the template's *Field List*."}
    *
-   * @sampleResult {"path":"path/to/folder/generated.pdf","__fileUrlAware":true,"fileURL":"https://test.Flowrunner.app/api/files/path/to/folder/generated.pdf"}
+   * @sampleResult {"path":"path/to/folder/generated.pdf","__fileUrlAware":true,"fileURL":"https://test.backendless.app/api/files/path/to/folder/generated.pdf"}
    */
   async generatePDF(appId, apiKey, templateId, fileName, filePath, values) {
     const client = this.#getClient()
