@@ -5,7 +5,7 @@ const logger = {
   warn: (...args) => console.log('[Leafy Plant] warn:', ...args),
 }
 
-const API_BASE_URL = 'https://diagnosis-6uvrn44owq-ew.a.run.app'
+const API_BASE_URL = 'https://leafyplant.app'
 
 const DEFAULT_SEARCH_LIMIT = 10
 
