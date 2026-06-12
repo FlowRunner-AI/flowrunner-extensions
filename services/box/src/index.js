@@ -25,7 +25,6 @@
 // ============================================================================
 
 const crypto = require('crypto')
-const FormData = require('form-data')
 
 // ============================================================================
 //  CONSTANTS
@@ -310,11 +309,8 @@ class Box {
       const resolvedName = fileName || decodeURIComponent(String(fileUrl).split('/').pop().split('?')[0])
       const fileBytes = await Flowrunner.Request.get(fileUrl).setEncoding(null)
 
-      // Use the form-data npm package (not the global web FormData): backendless-request's
-      // .form() drives form.getHeaders()/getLength(), which the web FormData lacks. The file
-      // part is a Buffer with a filename; do NOT set Content-Type manually — form.getHeaders()
-      // supplies the multipart boundary.
-      const formData = new FormData()
+      // Do NOT set Content-Type manually — the form supplies the multipart boundary.
+      const formData = new Flowrunner.Request.FormData()
       // attributes part MUST come BEFORE the file part (Box 400s on the reverse order).
       formData.append('attributes', JSON.stringify({ name: resolvedName, parent: { id: parentFolderId } }))
       formData.append('file', fileBytes, { filename: resolvedName })
