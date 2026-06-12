@@ -5,7 +5,7 @@ const logger = {
   warn: (...args) => console.log('[Leafy Plant] warn:', ...args),
 }
 
-const API_BASE_URL = 'https://leafyplant.app'
+const API_BASE_URL = 'https://leafyplant.app/v1'
 
 const DEFAULT_SEARCH_LIMIT = 10
 
@@ -73,26 +73,26 @@ class LeafyPlantService {
   /**
    * @operationName Identify Plant
    * @category Identification
-   * @description Identifies a plant species from a publicly accessible image URL. Returns the scientific name, a confidence score, common names, and plant family. Use the returned plant_name with Get Care Guide or Diagnose Plant.
-   * @route POST /identify
+   * @description Identifies a plant from a publicly accessible image URL. Returns ranked candidate species with scientific and common names, a confidence label, and a description of what was seen. Use a candidate's scientific name with Get Care Guide or Get Toxicity.
+   * @route POST /identify-url
    * @appearanceColor #3CB371 #5FD392
    * @executionTimeoutInSeconds 30
    *
    * @paramDef {"type":"String","label":"Image URL","name":"imageUrl","required":true,"description":"Public URL of the plant image (jpg/png/webp). Leafy fetches and processes it server-side."}
-   * @paramDef {"type":"String","label":"Language","name":"language","uiComponent":{"type":"DROPDOWN","options":{"values":["en","fr","pt"]}},"description":"Language for returned plant names and notes. Defaults to en."}
+   * @paramDef {"type":"String","label":"Language","name":"language","uiComponent":{"type":"DROPDOWN","options":{"values":["en","fr","pt"]}},"description":"Language for returned names and notes. Defaults to en."}
    *
    * @returns {Object}
-   * @sampleResult {"status":"ok","plant_name":"Monstera deliciosa","plant_id":"plant_monstera_deliciosa","confidence":0.92,"common_names":["Swiss cheese plant","Split-leaf philodendron"],"family":"Araceae","notes":"Tropical plant native to southern Mexico","language":"en"}
+   * @sampleResult {"candidates":[{"scientificName":"Monstera deliciosa","commonName":"Swiss Cheese Plant","genus":"Monstera","taxon":"plant","cosine":0.8275}],"genus":"Monstera","genus_fallback":[{"genus":"Monstera","cosine":0.8275}],"confidence":"probable","top_cosine":0.8275,"photos":1,"model":"gemini-2.5-flash","is_plant":true,"notes":"Large climbing Aroid with deeply lobed, fenestrated dark green leaves, typical of Monstera deliciosa."}
    */
   async identifyPlant(imageUrl, language) {
     const logTag = '[identifyPlant]'
 
     return await this.#apiRequest({
       logTag,
-      url: `${ API_BASE_URL }/identify`,
+      url: `${ API_BASE_URL }/identify/url`,
       method: 'post',
       body: clean({
-        image_url: imageUrl,
+        url: imageUrl,
         language: language || 'en',
       }),
     })
@@ -101,45 +101,44 @@ class LeafyPlantService {
   /**
    * @operationName Get Care Guide
    * @category Care
-   * @description Returns a detailed care guide for a plant including watering, light, humidity, temperature, fertilizing, repotting schedules, and common issues. Accepts a scientific or common plant name.
-   * @route POST /care
+   * @description Returns a care guide for a plant species, including watering, light, soil, and temperature guidance. Accepts a scientific or common plant name.
+   * @route GET /care
    * @appearanceColor #3CB371 #5FD392
    *
-   * @paramDef {"type":"String","label":"Plant Name","name":"plantName","required":true,"dictionary":"searchPlantsDictionary","description":"Scientific or common plant name. Search and select a plant, or type a name directly."}
+   * @paramDef {"type":"String","label":"Species","name":"species","required":true,"dictionary":"searchPlantsDictionary","description":"Scientific or common plant name. Search and select a plant, or type a name directly."}
    * @paramDef {"type":"String","label":"Language","name":"language","uiComponent":{"type":"DROPDOWN","options":{"values":["en","fr","pt"]}},"description":"Language for the returned care guide. Defaults to en."}
    *
    * @returns {Object}
-   * @sampleResult {"status":"ok","plant_name":"Monstera deliciosa","matched_profile":"monstera","language":"en","watering":"Water every 7-14 days, allow soil to dry between waterings","light":"Bright indirect light, tolerates lower light","humidity":"Prefers 60-80% humidity","temperature":"18-30C (64-86F)","fertilizing":"Balanced liquid fertilizer monthly during growing season","repotting":"Every 2 years in spring","common_issues":["Overwatering","Root rot","Spider mites"]}
+   * @sampleResult {"scientific_name":"Monstera deliciosa","common_en":"Monstera deliciosa","family":"Araceae","slug":"monstera-deliciosa","watering":{"days":7,"summary":"Moderate watering. Let the topsoil dry between waterings."},"light":{"level":"brightIndirect","summary":"Bright indirect light, no prolonged direct sun."},"soil":{"summary":"Peat-free, loam-based, humus-rich and well-drained compost, acid to neutral."},"temperature_c":{"min":18,"max":27}}
    */
-  async getCareGuide(plantName, language) {
+  async getCareGuide(species, language) {
     const logTag = '[getCareGuide]'
 
     return await this.#apiRequest({
       logTag,
       url: `${ API_BASE_URL }/care`,
-      method: 'post',
-      body: clean({
-        plantName,
-        language: language || 'en',
-      }),
+      method: 'get',
+      query: {
+        species,
+        lang: language || 'en',
+      },
     })
   }
 
   /**
    * @operationName Search Plants
    * @category Identification
-   * @description Searches the Leafy plant database by common or scientific name. Returns a list of matching plants with their IDs, family, and common names for use in Get Care Guide or Diagnose Plant.
+   * @description Searches the Leafy plant database by common or scientific name. Returns a list of matching plants with their family, genus, slug, and care/toxicity availability flags. Use a result's scientific name with Get Care Guide or Get Toxicity.
    * @route GET /search
    * @appearanceColor #3CB371 #5FD392
    *
    * @paramDef {"type":"String","label":"Query","name":"query","required":true,"description":"Search term (common or scientific plant name)."}
    * @paramDef {"type":"Number","label":"Limit","name":"limit","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of results (1-50). Defaults to 10."}
-   * @paramDef {"type":"String","label":"Language","name":"lang","uiComponent":{"type":"DROPDOWN","options":{"values":["en","fr","pt"]}},"description":"Language for returned names. Defaults to en."}
    *
    * @returns {Object}
-   * @sampleResult {"status":"ok","query":"monstera","results":[{"plant_id":"plant_monstera_deliciosa","name":"Monstera deliciosa","family":"Araceae","common_names":["Swiss cheese plant"]}],"total":3}
+   * @sampleResult {"query":"monstera","count":2,"results":[{"scientific_name":"Monstera deliciosa","common_en":"Monstera deliciosa","family":"Araceae","genus":"Monstera","slug":"monstera-deliciosa","care_available":true},{"scientific_name":"Monstera adansonii","common_en":"Swiss cheese vine","family":"Araceae","genus":"Monstera","slug":"monstera-adansonii","toxicity_level":"toxic"}]}
    */
-  async searchPlants(query, limit, lang) {
+  async searchPlants(query, limit) {
     const logTag = '[searchPlants]'
 
     return await this.#apiRequest({
@@ -149,58 +148,34 @@ class LeafyPlantService {
       query: {
         q: query,
         limit: limit || DEFAULT_SEARCH_LIMIT,
-        lang: lang || 'en',
       },
     })
   }
 
   /**
-   * @operationName Diagnose Plant
+   * @operationName Get Toxicity
    * @category Care
-   * @description Diagnoses likely plant health issues from a plant name and a list of observed symptoms. Returns a ranked list of probable diseases or pests with confidence scores and treatment recommendations.
-   * @route POST /diagnose
+   * @description Returns plant toxicity information for humans and pets. Provide a plant species and optionally an animal to check (e.g. cat, dog, horse). Indicates whether toxicity data is available and any notes.
+   * @route GET /toxicity
    * @appearanceColor #3CB371 #5FD392
-   * @executionTimeoutInSeconds 30
    *
-   * @paramDef {"type":"String","label":"Plant Name","name":"plantName","required":true,"dictionary":"searchPlantsDictionary","description":"Scientific or common plant name. Search and select a plant, or type a name directly."}
-   * @paramDef {"type":"Array<String>","label":"Symptoms","name":"userSymptoms","uiComponent":{"type":"MULTI_LINE_TEXT"},"description":"List of observed symptoms, e.g. yellow leaves, soft stem, musty smell."}
-   * @paramDef {"type":"String","label":"Language","name":"language","uiComponent":{"type":"DROPDOWN","options":{"values":["en","fr","pt"]}},"description":"Language for the diagnosis. Defaults to en."}
+   * @paramDef {"type":"String","label":"Species","name":"species","required":true,"dictionary":"searchPlantsDictionary","description":"Scientific or common plant name. Search and select a plant, or type a name directly."}
+   * @paramDef {"type":"String","label":"Animal","name":"animal","description":"Optional animal to check toxicity for, e.g. cat, dog, horse. Leave empty for general toxicity information."}
    *
    * @returns {Object}
-   * @sampleResult {"status":"ok","diagnosis":[{"name":"Root rot","confidence":0.87,"description":"Fungal decay of the roots caused by overwatering.","treatment":"Remove affected roots, repot in fresh dry soil, and reduce watering frequency."}]}
+   * @sampleResult {"scientific_name":"Monstera deliciosa","common_en":"Monstera deliciosa","family":"Araceae","slug":"monstera-deliciosa","toxicity_data_available":false,"note":"Toxicity data not yet sourced for this species."}
    */
-  async diagnosePlant(plantName, userSymptoms, language) {
-    const logTag = '[diagnosePlant]'
+  async getToxicity(species, animal) {
+    const logTag = '[getToxicity]'
 
     return await this.#apiRequest({
       logTag,
-      url: `${ API_BASE_URL }/diagnose`,
-      method: 'post',
-      body: clean({
-        plantName,
-        userSymptoms: userSymptoms && userSymptoms.length ? userSymptoms : undefined,
-        language: language || 'en',
-      }),
-    })
-  }
-
-  /**
-   * @operationName Health Check
-   * @category Utility
-   * @description Checks Leafy Plant API availability. Use this to validate connectivity and report the running service version.
-   * @route GET /health
-   * @appearanceColor #3CB371 #5FD392
-   *
-   * @returns {Object}
-   * @sampleResult {"status":"ok","service":"leafy-diagnosis","version":"1.1.0"}
-   */
-  async healthCheck() {
-    const logTag = '[healthCheck]'
-
-    return await this.#apiRequest({
-      logTag,
-      url: `${ API_BASE_URL }/health`,
+      url: `${ API_BASE_URL }/toxicity`,
       method: 'get',
+      query: {
+        species,
+        animal,
+      },
     })
   }
 
@@ -213,7 +188,7 @@ class LeafyPlantService {
   /**
    * @registerAs DICTIONARY
    * @operationName Search Plants Dictionary
-   * @description Provides a searchable list of plants from the Leafy database for selecting a plant name in Get Care Guide and Diagnose Plant. The option value is the plant name expected by those operations.
+   * @description Provides a searchable list of plants from the Leafy database for selecting a species in Get Care Guide and Get Toxicity. The option value is the scientific name expected by those operations.
    * @route POST /search-plants-dictionary
    * @paramDef {"type":"searchPlantsDictionary__payload","label":"Payload","name":"payload","description":"Contains the search string used to filter plants by common or scientific name."}
    * @returns {Object}
@@ -241,12 +216,12 @@ class LeafyPlantService {
 
     return {
       items: results.map(plant => {
-        const commonNames = (plant.common_names || []).join(', ')
-        const noteParts = [plant.family, commonNames].filter(Boolean)
+        const name = plant.scientific_name
+        const noteParts = [plant.family, plant.common_en].filter(Boolean)
 
         return {
-          label: plant.name,
-          value: plant.name,
+          label: plant.common_en ? `${ name } (${ plant.common_en })` : name,
+          value: name,
           note: noteParts.join(' - ') || undefined,
         }
       }),
