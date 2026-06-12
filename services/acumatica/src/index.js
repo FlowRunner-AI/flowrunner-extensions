@@ -490,7 +490,7 @@ class AcumaticaService {
   /**
    * @operationName Get Bill
    * @category Bills
-   * @description Retrieves bills from Acumatica by vendor reference number to verify a bill was created successfully or to look up bill details. Returns all bills matching the specified vendor reference.
+   * @description Retrieves bills from Acumatica by vendor reference number to verify a bill was created successfully or to look up bill details. Returns all bills matching the specified vendor reference, including their detail lines.
    *
    * @route POST /get-bill
    * @appearanceColor #33CCFF #66DDFF
@@ -498,7 +498,7 @@ class AcumaticaService {
    * @paramDef {"type":"String","label":"Vendor Reference","name":"vendorRef","required":true,"description":"The vendor's invoice or reference number to search for (e.g., 'INV-2025-001')."}
    *
    * @returns {Array}
-   * @sampleResult [{"ReferenceNbr":{"value":"000043"},"Type":{"value":"Bill"},"Vendor":{"value":"V000001"},"VendorRef":{"value":"INV-2025-001"},"Status":{"value":"Balanced"},"Date":{"value":"2025-01-15T00:00:00"},"Amount":{"value":50.00},"Balance":{"value":50.00}}]
+   * @sampleResult [{"ReferenceNbr":{"value":"000043"},"Type":{"value":"Bill"},"Vendor":{"value":"V000001"},"VendorRef":{"value":"INV-2025-001"},"Status":{"value":"Balanced"},"Date":{"value":"2025-01-15T00:00:00"},"Amount":{"value":50.00},"Balance":{"value":50.00},"Details":[{"Description":{"value":"Price Support"},"ExtendedCost":{"value":50.00},"Account":{"value":"5100"},"Qty":{"value":1},"UnitCost":{"value":50.00}}]}]
    */
   async getBill(vendorRef) {
     if (!vendorRef) {
@@ -510,6 +510,7 @@ class AcumaticaService {
       url   : `${ this.apiBaseUrl }/Bill`,
       query : {
         '$filter': `VendorRef eq '${ vendorRef }'`,
+        '$expand': 'Details',
       },
     }))
   }
@@ -719,15 +720,21 @@ class AcumaticaService {
     }
 
     return this.#withSession(async () => {
-      // Retrieve the Bill record with its files expanded. This is more reliable than
-      // hitting the standalone ".../files" sub-resource, which can throw a 400
+      // Look the bill up with a $filter (same proven approach as getBillByReferenceNbr) and
+      // expand its files. This avoids retrieving by key path (/Bill/Bill/{ref}), which also
+      // requires Type='Bill' to match and otherwise fails with "No entity satisfies the
+      // condition.", and it avoids the standalone ".../files" sub-resource, which can throw
       // "Operation is not valid due to the current state of the object." on some versions.
-      const bill = await this.#apiRequest({
+      const bills = await this.#apiRequest({
         logTag: 'getBillFiles',
-        url   : `${ this.apiBaseUrl }/Bill/Bill/${ encodeURIComponent(referenceNbr) }`,
-        query : { '$expand': 'files' },
+        url   : `${ this.apiBaseUrl }/Bill`,
+        query : {
+          '$filter': `ReferenceNbr eq '${ referenceNbr }'`,
+          '$expand': 'files',
+        },
       })
 
+      const bill = Array.isArray(bills) ? bills[0] : bills
       const files = bill?.files
 
       if (!Array.isArray(files)) {
