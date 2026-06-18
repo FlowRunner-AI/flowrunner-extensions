@@ -206,6 +206,23 @@ class Box {
     return list.length ? list : undefined
   }
 
+  // Normalize a downloaded file body to a Buffer. Flowrunner.Request auto-parses
+  // the response by Content-Type, so a JSON/text source comes back as a parsed
+  // object/array/string rather than bytes despite .setEncoding(null). Buffer.from
+  // on a parsed array would also misread elements as byte values, so re-serialize
+  // anything that isn't already a Buffer.
+  #toBuffer(body) {
+    if (Buffer.isBuffer(body)) {
+      return body
+    }
+
+    if (typeof body === 'string') {
+      return Buffer.from(body)
+    }
+
+    return Buffer.from(JSON.stringify(body))
+  }
+
   // ==========================================================================
   //  OAUTH2 SYSTEM METHODS
   // ==========================================================================
@@ -307,7 +324,7 @@ class Box {
       logger.debug(`uploadFile from ${ fileUrl } into folder ${ parentFolderId }`)
 
       const resolvedName = fileName || decodeURIComponent(String(fileUrl).split('/').pop().split('?')[0])
-      const fileBytes = await Flowrunner.Request.get(fileUrl).setEncoding(null)
+      const fileBytes = this.#toBuffer(await Flowrunner.Request.get(fileUrl).setEncoding(null))
 
       // Do NOT set Content-Type manually — the form supplies the multipart boundary.
       const formData = new Flowrunner.Request.FormData()
@@ -993,8 +1010,7 @@ class Box {
     try {
       logger.debug(`uploadLargeFile ${ fileName } into folder ${ parentFolderId }`)
 
-      const fileBytes = await Flowrunner.Request.get(fileUrl).setEncoding(null)
-      const buffer = Buffer.isBuffer(fileBytes) ? fileBytes : Buffer.from(fileBytes)
+      const buffer = this.#toBuffer(await Flowrunner.Request.get(fileUrl).setEncoding(null))
       const fileSize = buffer.length
 
       // 1) Create the upload session (returns part_size + session endpoints).
