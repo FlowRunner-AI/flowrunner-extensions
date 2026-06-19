@@ -332,8 +332,8 @@ class Apollo {
    * @paramDef {"type":"Array<String>","label":"Organization Locations","name":"organization_locations","description":"Company headquarters locations for targeting employees. Examples: ['San Francisco, CA', 'London, UK']. Filter by where companies are based.","uiComponent":{"type":"MULTI_LINE_TEXT"}}
    * @paramDef {"type":"Array<String>","label":"Organization Domains","name":"q_organization_domains_list","description":"Company domains to target employees from specific organizations. Examples: ['google.com', 'microsoft.com']. Use for account-based prospecting.","uiComponent":{"type":"MULTI_LINE_TEXT"}}
    * @paramDef {"type":"Array<String>","label":"Contact Email Status","name":"contact_email_status","description":"Filter by email verification status for better deliverability. Choose 'verified' and 'likely to engage' for outreach campaigns.","uiComponent":{"type":"DROPDOWN","options":{"values":["verified","unverified","likely to engage","unavailable"],"multiple":true}}}
-   * @paramDef {"type":"Array.<String>","label":"Organization IDs","name":"organization_ids","description":"Apollo organization IDs to restrict the search to.'"}
-   * @paramDef {"type":"Array.<String>","label":"Organization Employee Ranges","name":"organization_num_employees_ranges","description":"Employee count ranges in the format 'min,max'. e.g., '10,50'. '"}
+   * @paramDef {"type":"Array<String>","label":"Organization IDs","name":"organization_ids","description":"Apollo organization IDs to restrict the search to.'"}
+   * @paramDef {"type":"Array<String>","label":"Organization Employee Ranges","name":"organization_num_employees_ranges","description":"Employee count ranges in the format 'min,max'. e.g., '10,50'. '"}
    * @paramDef {"type":"String","label":"Keyword Filter","name":"q_keywords","description":"String of words to filter the results."}
    * @paramDef {"type":"Number","label":"Page","name":"page","description":"Page number for pagination."}
    * @paramDef {"type":"Number","label":"Results per Page","name":"per_page","description":"Number of results per page."}
