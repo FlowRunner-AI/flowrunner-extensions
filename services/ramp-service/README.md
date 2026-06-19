@@ -1,16 +1,15 @@
 # Ramp FlowRunner Extension
 
-Integrates with the Ramp corporate spend platform for card management, transaction monitoring, user provisioning, vendor and bill pay operations, and expense reimbursements. Authenticates via OAuth2 client credentials and supports both production and sandbox environments.
+Integrates with the Ramp corporate spend platform for card management, transaction monitoring, user provisioning, vendor and bill pay operations, and expense reimbursements. Authenticates via OAuth2 client credentials and supports production and sandbox environments.
 
 ## Ideal Use Cases
 
-- Monitoring new card transactions in real time for spend alerts and policy enforcement
-- Issuing, freezing, unfreezing, or terminating corporate cards from automation flows
-- Onboarding and offboarding employees by inviting users and managing their card access
-- Syncing AP bills and vendor records with external accounting or ERP systems
-- Automating reimbursement approval routing based on amount, user, or department
-- Building expense and AP dashboards from filtered transaction, bill, and reimbursement data
-- Reacting to newly submitted bills or reimbursements with approval workflows
+- Monitoring new card transactions for spend alerts and policy enforcement
+- Issuing, freezing, unfreezing, or terminating corporate cards
+- Onboarding and offboarding employees via user invites and card access
+- Syncing AP bills and vendor records with accounting or ERP systems
+- Automating reimbursement approval routing by amount, user, or department
+- Building expense and AP dashboards from filtered Ramp data
 
 ## List of Actions
 
@@ -64,6 +63,6 @@ Integrates with the Ramp corporate spend platform for card management, transacti
 
 ## Agent Ideas
 
-- When a **Ramp** "On New Transaction" trigger fires, use **Slack** "Send Message" to alert the finance channel with merchant, amount, and cardholder, then call **Google Sheets** "Append Row" to log it into a live spend tracker
-- When **Parseur** "On Document Processed" extracts an invoice, call **Ramp** "Create Vendor" if the vendor is new, then use **Ramp** "Get Bill" / "List Bills" to detect duplicates before AP entry
-- When a **Ramp** "On New Reimbursement" trigger fires, use **Gmail** "Send Message" to notify the approver with the receipt details, and after manual review call **Ramp** "Approve Reimbursement" to advance it for payment
+- When a **Ramp** "On New Transaction" trigger fires, use **Slack** "Send Message To Channel" to alert finance, then **Google Sheets** "Add Row" to log it into a spend tracker
+- When **Parseur** "On Document Processed (Realtime)" extracts an invoice, call **Ramp** "Create Vendor" for new vendors and "List Bills" to detect duplicates before AP entry
+- When a **Ramp** "On New Reimbursement" trigger fires, use **Gmail** "Send Message" to notify the approver, then call **Ramp** "Approve Reimbursement" after review

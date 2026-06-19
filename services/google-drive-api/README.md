@@ -1,6 +1,6 @@
 # Google Drive FlowRunner Extension
 
-Complete Google Drive automation for file management, content processing, and collaborative workflows. Upload, organize, share files, and trigger actions based on file system changes.
+Complete Google Drive automation for file management, content processing, and collaborative workflows. Upload, organize, share, copy, export, and read files, and trigger actions based on file system changes.
 
 ## Ideal Use Cases
 
@@ -28,6 +28,7 @@ Complete Google Drive automation for file management, content processing, and co
 - Find Multiple Files
 - Get File Content
 - Get File Data
+- Get Folder Listing
 - Move File
 - Rename File/Folder
 - Upload File
@@ -37,3 +38,9 @@ Complete Google Drive automation for file management, content processing, and co
 - On File Updated
 - On New File
 - On New Folder
+
+## Agent Ideas
+
+- When a **Google Drive** "On New File" trigger fires, use "Get File Content" to read the document and **Gmail** "Send Message" to email a summary to the team.
+- Use **PDF.co** "Parse Invoice with AI" on a downloaded invoice, then **Google Sheets** "Add Row" to log the data and **Google Drive** "Move File" to archive the original.
+- When a **Google Drive** "On New Folder" trigger fires, use "Add File Sharing Preference" to grant access and **Gmail** "Send Message" to notify collaborators.

@@ -1,110 +1,75 @@
 # Box FlowRunner Extension
 
-Connect FlowRunner to [Box](https://www.box.com/) to manage cloud files and folders, control
-sharing, and coordinate collaborators. The extension authenticates with OAuth2 and covers the
-full file and folder lifecycle — upload (including large, chunked uploads), download, organize,
-version, comment, task, apply metadata, share, search, and recover from trash — plus
-collaboration management and real-time webhook triggers on any item.
+Connect FlowRunner to [Box](https://www.box.com/) to manage cloud files and folders via OAuth2: upload, download, organize, version, comment, task, apply metadata, share, search, manage collaborators, recover from trash, and react to item events in real time.
 
 ## Ideal Use Cases
 
-- Upload generated documents, exports, or attachments straight into a Box folder.
-- Upload large files (over 50 MB) reliably with the chunked upload action.
-- Download a Box file into Backendless storage for further processing in a flow.
-- Organize content programmatically: create folders, move, copy, rename, or delete files and folders.
-- Manage a file's version history: list, fetch, promote, or delete older versions.
-- Collaborate on documents with comments and review/complete tasks.
-- Apply, read, and remove enterprise metadata templates on files.
-- Share files or folders by creating password-protected, expiring shared links.
-- Grant or revoke access by adding, updating, and removing collaborators (users or groups) on files and folders.
-- Find content across an account or enterprise with full-text search before acting on it.
-- Recover or permanently remove items from the trash.
-- React to Box events in real time (file, folder, and collaboration changes) with webhook triggers.
+- Upload or download files between Box and Backendless storage.
+- Organize, version, comment on, and task content.
+- Apply metadata and share via expiring, password-protected links.
+- Manage collaborators and search content before acting on it.
+- React to Box file, folder, and collaboration events in real time.
 
 ## List of Actions
 
-**Files**
-- Upload File
-- Upload Large File
-- Get File Info
-- Download File
-- Update File
-- Move File
-- Copy File
-- Delete File
-
-**Versions**
-- List File Versions
-- Get File Version
-- Promote File Version
-- Delete File Version
-
-**Folders**
-- Create Folder
-- Get Folder Info
-- List Folder Items
-- Update Folder
-- Move Folder
-- Copy Folder
-- Delete Folder
-
-**Sharing**
-- Create File Shared Link
-- Create Folder Shared Link
-- Remove Shared Link
-
-**Collaborations**
 - Add Collaboration
-- Get Collaboration
-- List Folder Collaborations
-- List File Collaborations
-- Update Collaboration
-- Remove Collaboration
-
-**Comments**
+- Copy File
+- Copy Folder
 - Create Comment
-- List File Comments
-- Get Comment
-- Update Comment
-- Delete Comment
-
-**Tasks**
-- Create Task
-- List File Tasks
-- Get Task
-- Update Task
-- Delete Task
-
-**Metadata**
+- Create File Shared Link
+- Create Folder
+- Create Folder Shared Link
 - Create Metadata Instance
-- Get Metadata Instance
-- List Metadata Instances
+- Create Task
+- Delete Comment
+- Delete File
+- Delete File Version
+- Delete Folder
 - Delete Metadata Instance
-
-**Trash**
+- Delete Task
+- Download File
+- Get Collaboration
+- Get Comment
+- Get Current User
+- Get File Info
+- Get File Version
+- Get Folder Info
+- Get Metadata Instance
+- Get Task
+- List File Collaborations
+- List File Comments
+- List File Tasks
+- List File Versions
+- List Folder Collaborations
+- List Folder Items
+- List Metadata Instances
 - List Trashed Items
-- Restore File
-- Restore Folder
+- Move File
+- Move Folder
 - Permanently Delete File
 - Permanently Delete Folder
-
-**Search & Account**
+- Promote File Version
+- Remove Collaboration
+- Remove Shared Link
+- Restore File
+- Restore Folder
 - Search Content
-- Get Current User
+- Update Collaboration
+- Update Comment
+- Update File
+- Update Folder
+- Update Task
+- Upload File
+- Upload Large File
 
 ## List of Triggers
 
-These are real-time webhook triggers (SINGLE_APP). Box delivers events to a callback URL; the
-extension verifies each delivery's signature using the webhook signature keys you set in the Box
-Developer Console.
+- On Collaboration Event
+- On File Event
+- On Folder Event
 
-- On File Event — fires when a watched file is uploaded, deleted, moved, renamed, and more.
-- On Folder Event — fires when a watched folder is created, renamed, moved, deleted, or a file is uploaded into it.
-- On Collaboration Event — fires when collaboration on a watched folder is created, accepted, rejected, updated, or removed.
+## Agent Ideas
 
-## Configuration
-
-- **Client ID** / **Client Secret** — from your Box app (developer.box.com).
-- **Webhook Primary Signature Key** / **Webhook Secondary Signature Key** — from the Box Developer
-  Console (your app → Webhooks → Manage signature keys). Required to verify incoming webhook payloads
-  for the triggers above.
+- When **Box** "On File Event" fires, use "Download File" and pass the URL to **PDF.co** "Parse Invoice with AI".
+- Use **Box** "Search Content" to find a report, then **Gmail** "Send Message" to email its link.
+- After **Box** "Upload File", log the file with **Google Sheets** "Add Row".

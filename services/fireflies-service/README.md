@@ -36,4 +36,4 @@ Integrates the Fireflies.ai meeting intelligence platform into FlowRunner workfl
 
 - When a **Fireflies.ai** "On New Transcript" trigger fires, call "Get Transcript Summary" to extract the AI overview and action items, then use **Notion** "Create Page" to file the meeting notes into a team workspace.
 - When a **Fireflies.ai** "On New Transcript" trigger fires, call "Get Transcript Summary" and use **Asana** "Create Task" for each extracted action item, assigning them based on the meeting participants.
-- When a **Google Calendar** "On Event Started" trigger fires for a Zoom/Meet/Teams call, use **Fireflies.ai** "Add Fred to Live Meeting" to send the notetaker bot, then **Slack** "Send Message To Channel" to notify the team that the meeting is being recorded.
+- When a **Dropbox** "On New File" trigger fires for a folder of recordings, call **Dropbox** "Get Temporary Link" and pass the URL to **Fireflies.ai** "Upload Audio" to transcribe each recording, then use **Slack** "Send Message To Channel" to notify the team that the transcript is being prepared.
