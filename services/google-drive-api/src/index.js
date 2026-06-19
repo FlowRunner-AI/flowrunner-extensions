@@ -54,6 +54,7 @@ const DEFAULT_SCOPE_STRING = DEFAULT_SCOPE_LIST.join(' ')
 
 /**
  *  @requireOAuth
+ *  @usesFileStorage
  *  @integrationName Google Drive
  *  @integrationIcon /icon.svg
  **/
@@ -61,8 +62,6 @@ class GoogleDrive {
   constructor(config, context) {
     this.clientId = config.clientId
     this.clientSecret = config.clientSecret
-
-    this.backendless = context.backendless
 
     this.scope = DEFAULT_SCOPE_STRING
   }
@@ -1193,12 +1192,12 @@ class GoogleDrive {
       file = await drive.files.get({ fileId, alt: 'media', supportsAllDrives: true }, { responseType: 'arraybuffer' })
     }
 
-    const url = await this.backendless.Files.saveFile(
-      targetDirectory || '/',
-      name,
-      Buffer.from(file.data),
-      true
-    )
+    const { url } = await this.flowrunner.Files.uploadFile(Buffer.from(file.data), {
+      filename: name,
+      generateUrl: true,
+      overwrite: true,
+      scope: 'FLOW',
+    })
 
     logMessage('[downloadFile] Saved file URL', { url })
 
@@ -1490,12 +1489,12 @@ class GoogleDrive {
       file = await drive.files.get({ fileId, alt: 'media', supportsAllDrives: true }, { responseType: 'arraybuffer' })
     }
 
-    const url = await Flowrunner.Files.saveFile(
-      targetFilePath || '/',
-      targetFileName || name,
-      Buffer.from(file.data),
-      true
-    )
+    const { url } = await this.flowrunner.Files.uploadFile(Buffer.from(file.data), {
+      filename: targetFileName || name,
+      generateUrl: true,
+      overwrite: true,
+      scope: 'FLOW',
+    })
 
     return {
       url,
