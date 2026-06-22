@@ -1,92 +1,92 @@
-"use strict";
+'use strict'
 
-const SERVICE_NAME = "Recruitee";
-const API_HOST = "https://api.recruitee.com";
-const DEFAULT_PAGE_SIZE = 30;
+const SERVICE_NAME = 'Recruitee'
+const API_HOST = 'https://api.recruitee.com'
+const DEFAULT_PAGE_SIZE = 30
 
 const logger = {
-  info: (...args) => console.log(`[${SERVICE_NAME} Service] info:`, ...args),
-  debug: (...args) => console.log(`[${SERVICE_NAME} Service] debug:`, ...args),
-  error: (...args) => console.log(`[${SERVICE_NAME} Service] error:`, ...args),
-  warn: (...args) => console.log(`[${SERVICE_NAME} Service] warn:`, ...args),
-};
+  info: (...args) => console.log(`[${ SERVICE_NAME } Service] info:`, ...args),
+  debug: (...args) => console.log(`[${ SERVICE_NAME } Service] debug:`, ...args),
+  error: (...args) => console.log(`[${ SERVICE_NAME } Service] error:`, ...args),
+  warn: (...args) => console.log(`[${ SERVICE_NAME } Service] warn:`, ...args),
+}
 
 function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 // Drops keys that are undefined, null, or empty-string so we never send noise as query params.
 // Keeps meaningful falsy values like 0 and false.
 function cleanupObject(obj) {
-  if (!obj || typeof obj !== "object") {
-    return obj;
+  if (!obj || typeof obj !== 'object') {
+    return obj
   }
 
-  const out = {};
+  const out = {}
 
   for (const [key, value] of Object.entries(obj)) {
-    if (value !== undefined && value !== null && value !== "") {
-      out[key] = value;
+    if (value !== undefined && value !== null && value !== '') {
+      out[key] = value
     }
   }
 
-  return out;
+  return out
 }
 
 // Normalizes a "one or many" input into an array of trimmed, non-empty values.
 function toArray(value) {
-  if (value === undefined || value === null || value === "") {
-    return [];
+  if (value === undefined || value === null || value === '') {
+    return []
   }
 
-  const list = Array.isArray(value) ? value : [value];
+  const list = Array.isArray(value) ? value : [value]
 
   return list.filter(
-    (item) => item !== undefined && item !== null && item !== "",
-  );
+    item => item !== undefined && item !== null && item !== ''
+  )
 }
 
 // Recruitee wraps collections under a resource key (e.g. { offers: [...] }). This pulls the first
 // array out regardless of the exact key name, so reads stay robust to envelope differences.
 function firstArray(data, keys = []) {
   if (Array.isArray(data)) {
-    return data;
+    return data
   }
 
-  if (!data || typeof data !== "object") {
-    return [];
+  if (!data || typeof data !== 'object') {
+    return []
   }
 
   for (const key of keys) {
     if (Array.isArray(data[key])) {
-      return data[key];
+      return data[key]
     }
   }
 
   for (const value of Object.values(data)) {
     if (Array.isArray(value)) {
-      return value;
+      return value
     }
   }
 
-  return [];
+  return []
 }
 
 // Maps raw items into dictionary entries and applies a case-insensitive search over the label/value.
 function toDictItems(items, mapFn, search) {
-  const term = (search || "").toLowerCase();
+  const term = (search || '').toLowerCase()
 
   return items
     .map(mapFn)
-    .filter((item) => item && (item.label || item.value))
+    .filter(item => item && (item.label || item.value))
     .filter(
-      (item) =>
+      item =>
         !term ||
-        String(item.label || "")
+        String(item.label || '')
           .toLowerCase()
           .includes(term) ||
-        String(item.value || "").toLowerCase() === term,
-    );
+        String(item.value || '').toLowerCase() === term
+    )
 }
 
 /**
@@ -101,30 +101,30 @@ class RecruiteeService {
    * @param {String} config.companyId
    */
   constructor(config) {
-    this.apiToken = config.apiToken;
-    this.companyId = config.companyId;
+    this.apiToken = config.apiToken
+    this.companyId = config.companyId
   }
 
   #getBaseUrl() {
-    return `${API_HOST}/c/${this.companyId}`;
+    return `${ API_HOST }/c/${ this.companyId }`
   }
 
   #authHeader() {
-    return { Authorization: `Bearer ${this.apiToken}` };
+    return { Authorization: `Bearer ${ this.apiToken }` }
   }
 
   #isRateLimited(error) {
-    const status = error?.status || error?.code || error?.statusCode;
+    const status = error?.status || error?.code || error?.statusCode
 
-    return status === 429 || /\b429\b/.test(error?.message || "");
+    return status === 429 || /\b429\b/.test(error?.message || '')
   }
 
   #retryAfterMs(error) {
     const header =
-      error?.headers?.["retry-after"] || error?.headers?.["Retry-After"];
-    const seconds = header ? parseInt(header, 10) : NaN;
+      error?.headers?.['retry-after'] || error?.headers?.['Retry-After']
+    const seconds = header ? parseInt(header, 10) : NaN
 
-    return Number.isFinite(seconds) ? Math.min(seconds, 30) * 1000 : 3000;
+    return Number.isFinite(seconds) ? Math.min(seconds, 30) * 1000 : 3000
   }
 
   #normalizeError(error, logTag) {
@@ -133,13 +133,13 @@ class RecruiteeService {
       error?.body?.errors ||
       error?.body?.error_fields ||
       error?.body?.message ||
-      error?.message;
+      error?.message
 
-    const message = typeof raw === "object" ? JSON.stringify(raw) : raw;
+    const message = typeof raw === 'object' ? JSON.stringify(raw) : raw
 
-    logger.error(`${logTag} - api error: ${message}`);
+    logger.error(`${ logTag } - api error: ${ message }`)
 
-    return new Error(message || `${SERVICE_NAME} API request failed.`);
+    return new Error(message || `${ SERVICE_NAME } API request failed.`)
   }
 
   /**
@@ -156,55 +156,55 @@ class RecruiteeService {
    * @returns {Promise<any>}
    */
   async #apiRequest({ url, method, body, query, headers, logTag }) {
-    method = (method || "get").toLowerCase();
+    method = (method || 'get').toLowerCase()
 
-    const cleanQuery = cleanupObject(query);
+    const cleanQuery = cleanupObject(query)
 
     const send = () => {
       const request = Flowrunner.Request[method](url)
         .set(this.#authHeader())
-        .set({ Accept: "application/json", ...(headers || {}) });
+        .set({ Accept: 'application/json', ...(headers || {}) })
 
       if (cleanQuery && Object.keys(cleanQuery).length) {
-        request.query(cleanQuery);
+        request.query(cleanQuery)
       }
 
       if (body !== undefined && body !== null) {
-        request.set({ "Content-Type": "application/json" });
+        request.set({ 'Content-Type': 'application/json' })
 
-        return request.send(body);
+        return request.send(body)
       }
 
-      return request;
-    };
+      return request
+    }
 
     logger.debug(
-      `${logTag} - api request: [${method}::${url}] q=[${JSON.stringify(cleanQuery)}]`,
-    );
+      `${ logTag } - api request: [${ method }::${ url }] q=[${ JSON.stringify(cleanQuery) }]`
+    )
 
     try {
-      return await send();
+      return await send()
     } catch (error) {
       if (this.#isRateLimited(error)) {
-        const wait = this.#retryAfterMs(error);
+        const wait = this.#retryAfterMs(error)
 
-        logger.warn(`${logTag} - rate limited, retrying in ${wait}ms`);
-        await sleep(wait);
+        logger.warn(`${ logTag } - rate limited, retrying in ${ wait }ms`)
+        await sleep(wait)
 
         try {
-          return await send();
+          return await send()
         } catch (retryError) {
           if (this.#isRateLimited(retryError)) {
             throw new Error(
-              `${SERVICE_NAME} rate limit reached, please retry shortly.`,
-            );
+              `${ SERVICE_NAME } rate limit reached, please retry shortly.`
+            )
           }
 
-          throw this.#normalizeError(retryError, logTag);
+          throw this.#normalizeError(retryError, logTag)
         }
       }
 
-      throw this.#normalizeError(error, logTag);
+      throw this.#normalizeError(error, logTag)
     }
   }
 
@@ -215,8 +215,8 @@ class RecruiteeService {
       confirmed: false,
       deleted: false,
       wouldDelete,
-      message: `Nothing was deleted. Turn on "Confirm" to permanently delete this ${noun} — this cannot be undone.`,
-    };
+      message: `Nothing was deleted. Turn on "Confirm" to permanently delete this ${ noun } — this cannot be undone.`,
+    }
   }
 
   /**
@@ -232,11 +232,11 @@ class RecruiteeService {
    */
   async testConnection() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/admin`,
-      logTag: "testConnection",
-    });
+      url: `${ this.#getBaseUrl() }/admin`,
+      logTag: 'testConnection',
+    })
 
-    const user = data?.admin || data?.current_user || data || {};
+    const user = data?.admin || data?.current_user || data || {}
 
     return {
       connected: true,
@@ -246,7 +246,7 @@ class RecruiteeService {
         name: user.name || null,
         email: user.email || null,
       },
-    };
+    }
   }
 
   // ───────────────────────────── Candidates ─────────────────────────────
@@ -255,29 +255,29 @@ class RecruiteeService {
   // disqualify the candidate on that job.
   async #getPlacement(jobId, candidateId) {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers/${jobId}/candidates/${candidateId}/placement`,
-      logTag: "getPlacement",
-    });
+      url: `${ this.#getBaseUrl() }/offers/${ jobId }/candidates/${ candidateId }/placement`,
+      logTag: 'getPlacement',
+    })
 
-    return data?.placement || data;
+    return data?.placement || data
   }
 
   // Best-effort lookup of an existing candidate by email, used for the "update if exists" option.
   async #findCandidateByEmail(email) {
     try {
       const data = await this.#apiRequest({
-        url: `${this.#getBaseUrl()}/candidates/check_presence`,
+        url: `${ this.#getBaseUrl() }/candidates/check_presence`,
         query: { email },
-        logTag: "findCandidateByEmail",
-      });
+        logTag: 'findCandidateByEmail',
+      })
 
-      const candidate = data?.candidate || firstArray(data, ["candidates"])[0];
+      const candidate = data?.candidate || firstArray(data, ['candidates'])[0]
 
-      return candidate && candidate.id ? candidate : null;
+      return candidate && candidate.id ? candidate : null
     } catch (error) {
-      logger.warn(`findCandidateByEmail - lookup skipped: ${error.message}`);
+      logger.warn(`findCandidateByEmail - lookup skipped: ${ error.message }`)
 
-      return null;
+      return null
     }
   }
 
@@ -301,51 +301,51 @@ class RecruiteeService {
    * @sampleResult {"candidates":[{"id":12345,"name":"Alex Carter","emails":["alex@example.com"],"created_at":"2025-01-20T09:00:00.000Z"}],"total":1}
    */
   async searchCandidates(searchText, jobId, status, page, limit, sortBy) {
-    const pageNum = Number(page) || 1;
-    const pageSize = Number(limit) || DEFAULT_PAGE_SIZE;
-    const sort = sortBy || "created_at_desc";
+    const pageNum = Number(page) || 1
+    const pageSize = Number(limit) || DEFAULT_PAGE_SIZE
+    const sort = sortBy || 'created_at_desc'
 
     if (searchText) {
       const data = await this.#apiRequest({
-        url: `${this.#getBaseUrl()}/search/new/candidates`,
+        url: `${ this.#getBaseUrl() }/search/new/candidates`,
         query: {
           query: searchText,
           page: pageNum,
           limit: pageSize,
           sort_by: sort,
         },
-        logTag: "searchCandidates",
-      });
+        logTag: 'searchCandidates',
+      })
 
-      const hits = firstArray(data, ["hits", "candidates"]);
+      const hits = firstArray(data, ['hits', 'candidates'])
 
-      return { candidates: hits, total: data?.total ?? hits.length };
+      return { candidates: hits, total: data?.total ?? hits.length }
     }
 
-    const query = { page: pageNum, limit: pageSize, sort };
+    const query = { page: pageNum, limit: pageSize, sort }
 
     if (jobId) {
-      query.offer_id = jobId;
+      query.offer_id = jobId
     }
 
-    if (status === "disqualified") {
-      query.disqualified = true;
-    } else if (status === "active") {
-      query.qualified = true;
+    if (status === 'disqualified') {
+      query.disqualified = true
+    } else if (status === 'active') {
+      query.qualified = true
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/candidates`,
+      url: `${ this.#getBaseUrl() }/candidates`,
       query,
-      logTag: "searchCandidates",
-    });
+      logTag: 'searchCandidates',
+    })
 
-    const candidates = firstArray(data, ["candidates"]);
+    const candidates = firstArray(data, ['candidates'])
 
     return {
       candidates,
       total: data?.total ?? data?.meta?.total_count ?? candidates.length,
-    };
+    }
   }
 
   /**
@@ -363,15 +363,15 @@ class RecruiteeService {
    */
   async getCandidate(candidateId) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/candidates/${candidateId}`,
-      logTag: "getCandidate",
-    });
+      url: `${ this.#getBaseUrl() }/candidates/${ candidateId }`,
+      logTag: 'getCandidate',
+    })
 
-    return data?.candidate || data;
+    return data?.candidate || data
   }
 
   /**
@@ -405,14 +405,14 @@ class RecruiteeService {
     coverLetter,
     cvUrl,
     tags,
-    updateIfExists,
+    updateIfExists
   ) {
     if (!name) {
-      throw new Error('"Full Name" is required.');
+      throw new Error('"Full Name" is required.')
     }
 
     if (updateIfExists && email) {
-      const existing = await this.#findCandidateByEmail(email);
+      const existing = await this.#findCandidateByEmail(email)
 
       if (existing && existing.id) {
         const updated = await this.updateCandidate(
@@ -420,10 +420,10 @@ class RecruiteeService {
           name,
           email,
           phone,
-          coverLetter,
-        );
+          coverLetter
+        )
 
-        return { ...updated, isNew: false };
+        return { ...updated, isNew: false }
       }
     }
 
@@ -435,25 +435,25 @@ class RecruiteeService {
       sources: source ? toArray(source) : undefined,
       remote_cv_url: cvUrl,
       tags: toArray(tags).length ? toArray(tags) : undefined,
-    });
+    })
 
-    const body = { candidate };
-    const offers = toArray(jobId).map((id) => Number(id) || id);
+    const body = { candidate }
+    const offers = toArray(jobId).map(id => Number(id) || id)
 
     if (offers.length) {
-      body.offers = offers;
+      body.offers = offers
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/candidates`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/candidates`,
+      method: 'post',
       body,
-      logTag: "createCandidate",
-    });
+      logTag: 'createCandidate',
+    })
 
-    const created = data?.candidate || data;
+    const created = data?.candidate || data
 
-    return { ...created, isNew: true };
+    return { ...created, isNew: true }
   }
 
   /**
@@ -475,7 +475,7 @@ class RecruiteeService {
    */
   async updateCandidate(candidateId, name, email, phone, coverLetter) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     const candidate = cleanupObject({
@@ -483,16 +483,16 @@ class RecruiteeService {
       emails: email ? toArray(email) : undefined,
       phones: phone ? toArray(phone) : undefined,
       cover_letter: coverLetter,
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/candidates/${candidateId}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/candidates/${ candidateId }`,
+      method: 'patch',
       body: { candidate },
-      logTag: "updateCandidate",
-    });
+      logTag: 'updateCandidate',
+    })
 
-    return data?.candidate || data;
+    return data?.candidate || data
   }
 
   /**
@@ -511,36 +511,36 @@ class RecruiteeService {
    */
   async deleteCandidate(candidateId, confirm) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     if (!confirm) {
-      let summary = { id: candidateId };
+      let summary = { id: candidateId }
 
       try {
-        const candidate = await this.getCandidate(candidateId);
+        const candidate = await this.getCandidate(candidateId)
 
         summary = {
           id: candidate.id,
           name: candidate.name,
           emails: candidate.emails,
-        };
+        }
       } catch (error) {
         logger.warn(
-          `deleteCandidate - preview lookup failed: ${error.message}`,
-        );
+          `deleteCandidate - preview lookup failed: ${ error.message }`
+        )
       }
 
-      return this.#deletePreview("candidate", summary);
+      return this.#deletePreview('candidate', summary)
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/candidates/${candidateId}`,
-      method: "delete",
-      logTag: "deleteCandidate",
-    });
+      url: `${ this.#getBaseUrl() }/candidates/${ candidateId }`,
+      method: 'delete',
+      logTag: 'deleteCandidate',
+    })
 
-    return { confirmed: true, deleted: true, candidateId };
+    return { confirmed: true, deleted: true, candidateId }
   }
 
   /**
@@ -560,27 +560,27 @@ class RecruiteeService {
    */
   async assignCandidateToJob(candidateId, jobId, stageId) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
     const placement = cleanupObject({
       candidate_id: Number(candidateId) || candidateId,
       offer_id: Number(jobId) || jobId,
       stage_id: stageId ? Number(stageId) || stageId : undefined,
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/placements`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/placements`,
+      method: 'post',
       body: { placement },
-      logTag: "assignCandidateToJob",
-    });
+      logTag: 'assignCandidateToJob',
+    })
 
-    return data?.placement || data;
+    return data?.placement || data
   }
 
   /**
@@ -601,43 +601,44 @@ class RecruiteeService {
    */
   async moveCandidateToStage(candidateId, jobId, stageId) {
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
     if (!stageId) {
-      throw new Error('"Stage" is required.');
+      throw new Error('"Stage" is required.')
     }
 
-    const candidateIds = toArray(candidateId);
+    const candidateIds = toArray(candidateId)
 
     if (!candidateIds.length) {
-      throw new Error('"Candidate(s)" is required.');
+      throw new Error('"Candidate(s)" is required.')
     }
 
-    const moved = [];
-    const failed = [];
+    const moved = []
+    const failed = []
 
     for (const id of candidateIds) {
       try {
-        const placement = await this.#getPlacement(jobId, id);
+        const placement = await this.#getPlacement(jobId, id)
 
         await this.#apiRequest({
-          url: `${this.#getBaseUrl()}/placements/${placement.id}/change_stage`,
-          method: "patch",
+          url: `${ this.#getBaseUrl() }/placements/${ placement.id }/change_stage`,
+          method: 'patch',
           body: { stage_id: Number(stageId) || stageId },
-          logTag: "moveCandidateToStage",
-        });
+          logTag: 'moveCandidateToStage',
+        })
 
-        moved.push(id);
+        moved.push(id)
       } catch (error) {
         logger.warn(
-          `moveCandidateToStage - candidate ${id} failed: ${error.message}`,
-        );
-        failed.push({ candidateId: id, error: error.message });
+          `moveCandidateToStage - candidate ${ id } failed: ${ error.message }`
+        )
+
+        failed.push({ candidateId: id, error: error.message })
       }
     }
 
-    return { jobId, stageId, moved, failed };
+    return { jobId, stageId, moved, failed }
   }
 
   /**
@@ -658,43 +659,44 @@ class RecruiteeService {
    */
   async disqualifyCandidate(candidateId, jobId, reasonId) {
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
-    const candidateIds = toArray(candidateId);
+    const candidateIds = toArray(candidateId)
 
     if (!candidateIds.length) {
-      throw new Error('"Candidate(s)" is required.');
+      throw new Error('"Candidate(s)" is required.')
     }
 
-    const disqualified = [];
-    const failed = [];
+    const disqualified = []
+    const failed = []
 
     for (const id of candidateIds) {
       try {
-        const placement = await this.#getPlacement(jobId, id);
+        const placement = await this.#getPlacement(jobId, id)
 
         await this.#apiRequest({
-          url: `${this.#getBaseUrl()}/placements/${placement.id}/disqualify`,
-          method: "patch",
+          url: `${ this.#getBaseUrl() }/placements/${ placement.id }/disqualify`,
+          method: 'patch',
           body: cleanupObject({
             disqualify_reason_id: reasonId
               ? Number(reasonId) || reasonId
               : undefined,
           }),
-          logTag: "disqualifyCandidate",
-        });
+          logTag: 'disqualifyCandidate',
+        })
 
-        disqualified.push(id);
+        disqualified.push(id)
       } catch (error) {
         logger.warn(
-          `disqualifyCandidate - candidate ${id} failed: ${error.message}`,
-        );
-        failed.push({ candidateId: id, error: error.message });
+          `disqualifyCandidate - candidate ${ id } failed: ${ error.message }`
+        )
+
+        failed.push({ candidateId: id, error: error.message })
       }
     }
 
-    return { jobId, reasonId: reasonId || null, disqualified, failed };
+    return { jobId, reasonId: reasonId || null, disqualified, failed }
   }
 
   /**
@@ -714,38 +716,39 @@ class RecruiteeService {
    */
   async restoreCandidate(candidateId, jobId) {
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
-    const candidateIds = toArray(candidateId);
+    const candidateIds = toArray(candidateId)
 
     if (!candidateIds.length) {
-      throw new Error('"Candidate(s)" is required.');
+      throw new Error('"Candidate(s)" is required.')
     }
 
-    const restored = [];
-    const failed = [];
+    const restored = []
+    const failed = []
 
     for (const id of candidateIds) {
       try {
-        const placement = await this.#getPlacement(jobId, id);
+        const placement = await this.#getPlacement(jobId, id)
 
         await this.#apiRequest({
-          url: `${this.#getBaseUrl()}/placements/${placement.id}/requalify`,
-          method: "patch",
-          logTag: "restoreCandidate",
-        });
+          url: `${ this.#getBaseUrl() }/placements/${ placement.id }/requalify`,
+          method: 'patch',
+          logTag: 'restoreCandidate',
+        })
 
-        restored.push(id);
+        restored.push(id)
       } catch (error) {
         logger.warn(
-          `restoreCandidate - candidate ${id} failed: ${error.message}`,
-        );
-        failed.push({ candidateId: id, error: error.message });
+          `restoreCandidate - candidate ${ id } failed: ${ error.message }`
+        )
+
+        failed.push({ candidateId: id, error: error.message })
       }
     }
 
-    return { jobId, restored, failed };
+    return { jobId, restored, failed }
   }
 
   /**
@@ -764,23 +767,23 @@ class RecruiteeService {
    */
   async addCandidateTags(candidateId, tags) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
-    const tagList = toArray(tags);
+    const tagList = toArray(tags)
 
     if (!tagList.length) {
-      throw new Error('"Tags" is required.');
+      throw new Error('"Tags" is required.')
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/candidates/${candidateId}/tags`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/candidates/${ candidateId }/tags`,
+      method: 'post',
       body: { tags: tagList },
-      logTag: "addCandidateTags",
-    });
+      logTag: 'addCandidateTags',
+    })
 
-    return { candidateId, tagsAdded: tagList };
+    return { candidateId, tagsAdded: tagList }
   }
 
   /**
@@ -799,23 +802,23 @@ class RecruiteeService {
    */
   async addCandidateSource(candidateId, source) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     if (!source) {
-      throw new Error('"Source" is required.');
+      throw new Error('"Source" is required.')
     }
 
-    const sources = toArray(source);
+    const sources = toArray(source)
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/candidates/${candidateId}/sources`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/candidates/${ candidateId }/sources`,
+      method: 'post',
       body: { sources },
-      logTag: "addCandidateSource",
-    });
+      logTag: 'addCandidateSource',
+    })
 
-    return { candidateId, sourcesAdded: sources };
+    return { candidateId, sourcesAdded: sources }
   }
 
   /**
@@ -834,26 +837,26 @@ class RecruiteeService {
    */
   async addCandidateToTalentPool(candidateId, talentPoolId) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     if (!talentPoolId) {
-      throw new Error('"Talent Pool" is required.');
+      throw new Error('"Talent Pool" is required.')
     }
 
     const placement = {
       candidate_id: Number(candidateId) || candidateId,
       offer_id: Number(talentPoolId) || talentPoolId,
-    };
+    }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/placements`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/placements`,
+      method: 'post',
       body: { placement },
-      logTag: "addCandidateToTalentPool",
-    });
+      logTag: 'addCandidateToTalentPool',
+    })
 
-    return data?.placement || data;
+    return data?.placement || data
   }
 
   /**
@@ -872,16 +875,16 @@ class RecruiteeService {
    */
   async parseCandidateCv(candidateId) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/candidates/${candidateId}/parse_cv`,
-      method: "post",
-      logTag: "parseCandidateCv",
-    });
+      url: `${ this.#getBaseUrl() }/candidates/${ candidateId }/parse_cv`,
+      method: 'post',
+      logTag: 'parseCandidateCv',
+    })
 
-    return { candidateId, parsed: true, result: data || null };
+    return { candidateId, parsed: true, result: data || null }
   }
 
   /**
@@ -900,28 +903,28 @@ class RecruiteeService {
    */
   async mergeCandidates(candidateId, duplicateId) {
     if (!candidateId) {
-      throw new Error('"Main Candidate" is required.');
+      throw new Error('"Main Candidate" is required.')
     }
 
     if (!duplicateId) {
-      throw new Error('"Duplicate Candidate" is required.');
+      throw new Error('"Duplicate Candidate" is required.')
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/candidates/${candidateId}/merge`,
-      method: "patch",
-      body: { ids: toArray(duplicateId).map((id) => Number(id) || id) },
-      logTag: "mergeCandidates",
-    });
+      url: `${ this.#getBaseUrl() }/candidates/${ candidateId }/merge`,
+      method: 'patch',
+      body: { ids: toArray(duplicateId).map(id => Number(id) || id) },
+      logTag: 'mergeCandidates',
+    })
 
-    return { candidateId, mergedFrom: duplicateId, merged: true };
+    return { candidateId, mergedFrom: duplicateId, merged: true }
   }
 
   // ───────────────────────────── Dictionaries ─────────────────────────────
 
   // Shared loader: fetches one page of a list endpoint and shapes it into dropdown entries.
   async #fetchDictionary({ url, keys, query, search, cursor, mapFn, logTag }) {
-    const page = Number(cursor) || 1;
+    const page = Number(cursor) || 1
 
     const data = await this.#apiRequest({
       url,
@@ -931,13 +934,13 @@ class RecruiteeService {
         page,
       }),
       logTag,
-    });
+    })
 
-    const raw = firstArray(data, keys);
-    const items = toDictItems(raw, mapFn, search);
-    const nextCursor = raw.length >= DEFAULT_PAGE_SIZE ? page + 1 : null;
+    const raw = firstArray(data, keys)
+    const items = toDictItems(raw, mapFn, search)
+    const nextCursor = raw.length >= DEFAULT_PAGE_SIZE ? page + 1 : null
 
-    return { items, cursor: nextCursor };
+    return { items, cursor: nextCursor }
   }
 
   /**
@@ -950,32 +953,32 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Senior Engineer","value":"987","note":"Berlin · published"}],"cursor":null}
    */
   async getJobsDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/offers`,
-      keys: ["offers"],
-      query: { scope: "not_archived", view_mode: "brief" },
+      url: `${ this.#getBaseUrl() }/offers`,
+      keys: ['offers'],
+      query: { scope: 'not_archived', view_mode: 'brief' },
       search,
       cursor,
-      logTag: "getJobsDictionary",
-      mapFn: (offer) => {
-        if (offer && offer.kind === "talent_pool") {
-          return null;
+      logTag: 'getJobsDictionary',
+      mapFn: offer => {
+        if (offer && offer.kind === 'talent_pool') {
+          return null
         }
 
         const where =
           offer?.location ||
           offer?.city ||
-          (offer?.locations && offer.locations[0]?.name);
+          (offer?.locations && offer.locations[0]?.name)
 
         return {
-          label: offer?.title || "Untitled job",
+          label: offer?.title || 'Untitled job',
           value: String(offer?.id),
-          note: [where, offer?.status].filter(Boolean).join(" · "),
-        };
+          note: [where, offer?.status].filter(Boolean).join(' · '),
+        }
       },
-    });
+    })
   }
 
   /**
@@ -988,20 +991,20 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Future Designers","value":"654","note":"talent pool"}],"cursor":null}
    */
   async getTalentPoolsDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/talent_pools`,
-      keys: ["talent_pools", "offers"],
+      url: `${ this.#getBaseUrl() }/talent_pools`,
+      keys: ['talent_pools', 'offers'],
       search,
       cursor,
-      logTag: "getTalentPoolsDictionary",
-      mapFn: (pool) => ({
-        label: pool?.title || "Untitled pool",
+      logTag: 'getTalentPoolsDictionary',
+      mapFn: pool => ({
+        label: pool?.title || 'Untitled pool',
         value: String(pool?.id),
-        note: "talent pool",
+        note: 'talent pool',
       }),
-    });
+    })
   }
 
   /**
@@ -1014,44 +1017,44 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Alex Carter","value":"12345","note":"alex@example.com"}],"cursor":null}
    */
   async getCandidatesDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     if (search) {
       const data = await this.#apiRequest({
-        url: `${this.#getBaseUrl()}/search/new/candidates`,
+        url: `${ this.#getBaseUrl() }/search/new/candidates`,
         query: {
           query: search,
           limit: DEFAULT_PAGE_SIZE,
           page: Number(cursor) || 1,
         },
-        logTag: "getCandidatesDictionary",
-      });
+        logTag: 'getCandidatesDictionary',
+      })
 
-      const hits = firstArray(data, ["hits", "candidates"]);
+      const hits = firstArray(data, ['hits', 'candidates'])
 
       return {
-        items: hits.map((c) => ({
-          label: c?.name || "Unnamed candidate",
+        items: hits.map(c => ({
+          label: c?.name || 'Unnamed candidate',
           value: String(c?.id),
-          note: (c?.emails && c.emails[0]) || "",
+          note: (c?.emails && c.emails[0]) || '',
         })),
         cursor:
           hits.length >= DEFAULT_PAGE_SIZE ? (Number(cursor) || 1) + 1 : null,
-      };
+      }
     }
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/candidates`,
-      keys: ["candidates"],
-      query: { sort: "created_at_desc" },
+      url: `${ this.#getBaseUrl() }/candidates`,
+      keys: ['candidates'],
+      query: { sort: 'created_at_desc' },
       cursor,
-      logTag: "getCandidatesDictionary",
-      mapFn: (c) => ({
-        label: c?.name || "Unnamed candidate",
+      logTag: 'getCandidatesDictionary',
+      mapFn: c => ({
+        label: c?.name || 'Unnamed candidate',
         value: String(c?.id),
-        note: (c?.emails && c.emails[0]) || "",
+        note: (c?.emails && c.emails[0]) || '',
       }),
-    });
+    })
   }
 
   /**
@@ -1064,21 +1067,21 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Referral","value":"7","note":""}],"cursor":null}
    */
   async getTagsDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/tags`,
-      keys: ["tags"],
+      url: `${ this.#getBaseUrl() }/tags`,
+      keys: ['tags'],
       search,
       cursor,
-      logTag: "getTagsDictionary",
-      mapFn: (tag) => ({
+      logTag: 'getTagsDictionary',
+      mapFn: tag => ({
         label: tag?.name || String(tag?.id),
         value: String(tag?.id ?? tag?.name),
         note:
-          tag?.taggings_count != null ? `${tag.taggings_count} candidates` : "",
+          tag?.taggings_count != null ? `${ tag.taggings_count } candidates` : '',
       }),
-    });
+    })
   }
 
   /**
@@ -1091,20 +1094,20 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"LinkedIn","value":"3","note":""}],"cursor":null}
    */
   async getSourcesDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/sources`,
-      keys: ["sources"],
+      url: `${ this.#getBaseUrl() }/sources`,
+      keys: ['sources'],
       search,
       cursor,
-      logTag: "getSourcesDictionary",
-      mapFn: (source) => ({
+      logTag: 'getSourcesDictionary',
+      mapFn: source => ({
         label: source?.name || String(source?.id),
         value: String(source?.id ?? source?.name),
-        note: "",
+        note: '',
       }),
-    });
+    })
   }
 
   /**
@@ -1117,20 +1120,20 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Not a fit","value":"42","note":""}],"cursor":null}
    */
   async getDisqualifyReasonsDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/disqualify_reasons`,
-      keys: ["disqualify_reasons"],
+      url: `${ this.#getBaseUrl() }/disqualify_reasons`,
+      keys: ['disqualify_reasons'],
       search,
       cursor,
-      logTag: "getDisqualifyReasonsDictionary",
-      mapFn: (reason) => ({
+      logTag: 'getDisqualifyReasonsDictionary',
+      mapFn: reason => ({
         label: reason?.name || String(reason?.id),
         value: String(reason?.id),
-        note: "",
+        note: '',
       }),
-    });
+    })
   }
 
   /**
@@ -1143,20 +1146,20 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Engineering","value":"5","note":""}],"cursor":null}
    */
   async getDepartmentsDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/departments`,
-      keys: ["departments"],
+      url: `${ this.#getBaseUrl() }/departments`,
+      keys: ['departments'],
       search,
       cursor,
-      logTag: "getDepartmentsDictionary",
-      mapFn: (dept) => ({
+      logTag: 'getDepartmentsDictionary',
+      mapFn: dept => ({
         label: dept?.name || String(dept?.id),
         value: String(dept?.id),
-        note: "",
+        note: '',
       }),
-    });
+    })
   }
 
   /**
@@ -1169,20 +1172,20 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Berlin","value":"21","note":"Germany"}],"cursor":null}
    */
   async getLocationsDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/locations`,
-      keys: ["locations"],
+      url: `${ this.#getBaseUrl() }/locations`,
+      keys: ['locations'],
       search,
       cursor,
-      logTag: "getLocationsDictionary",
-      mapFn: (loc) => ({
+      logTag: 'getLocationsDictionary',
+      mapFn: loc => ({
         label: loc?.name || loc?.city || String(loc?.id),
         value: String(loc?.id),
-        note: loc?.country || loc?.country_code || "",
+        note: loc?.country || loc?.country_code || '',
       }),
-    });
+    })
   }
 
   /**
@@ -1195,20 +1198,20 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Jane Recruiter","value":"111","note":"jane@example.com"}],"cursor":null}
    */
   async getAdminsDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/admins`,
-      keys: ["admins"],
+      url: `${ this.#getBaseUrl() }/admins`,
+      keys: ['admins'],
       search,
       cursor,
-      logTag: "getAdminsDictionary",
-      mapFn: (admin) => ({
+      logTag: 'getAdminsDictionary',
+      mapFn: admin => ({
         label: admin?.name || admin?.email || String(admin?.id),
         value: String(admin?.id),
-        note: admin?.email || "",
+        note: admin?.email || '',
       }),
-    });
+    })
   }
 
   /**
@@ -1221,37 +1224,37 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Applied","value":"3001","note":"apply"},{"label":"Interview","value":"3002","note":"interview"}],"cursor":null}
    */
   async getStagesDictionary(payload) {
-    const { search, criteria } = payload || {};
-    const jobId = criteria?.jobId;
+    const { search, criteria } = payload || {}
+    const jobId = criteria?.jobId
 
     if (!jobId) {
-      return { items: [], cursor: null };
+      return { items: [], cursor: null }
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers/${jobId}`,
-      logTag: "getStagesDictionary",
-    });
+      url: `${ this.#getBaseUrl() }/offers/${ jobId }`,
+      logTag: 'getStagesDictionary',
+    })
 
-    const offer = data?.offer || data;
+    const offer = data?.offer || data
     const stages =
       offer?.pipeline_template?.stages ||
       offer?.stages ||
-      firstArray(offer?.pipeline_template, ["stages"]) ||
-      [];
+      firstArray(offer?.pipeline_template, ['stages']) ||
+      []
 
     return {
       items: toDictItems(
         stages,
-        (stage) => ({
+        stage => ({
           label: stage?.name || String(stage?.id),
           value: String(stage?.id),
-          note: stage?.category || stage?.kind || "",
+          note: stage?.category || stage?.kind || '',
         }),
-        search,
+        search
       ),
       cursor: null,
-    };
+    }
   }
 
   // ───────────────────────────── Jobs ─────────────────────────────
@@ -1261,9 +1264,9 @@ class RecruiteeService {
     return (
       offer?.pipeline_template?.stages ||
       offer?.stages ||
-      firstArray(offer?.pipeline_template, ["stages"]) ||
+      firstArray(offer?.pipeline_template, ['stages']) ||
       []
-    );
+    )
   }
 
   /**
@@ -1285,22 +1288,22 @@ class RecruiteeService {
    */
   async listJobs(status, includeArchived, page, limit) {
     const query = cleanupObject({
-      scope: status || (includeArchived ? "archived" : "not_archived"),
+      scope: status || (includeArchived ? 'archived' : 'not_archived'),
       page: Number(page) || 1,
       limit: Number(limit) || DEFAULT_PAGE_SIZE,
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers`,
+      url: `${ this.#getBaseUrl() }/offers`,
       query,
-      logTag: "listJobs",
-    });
+      logTag: 'listJobs',
+    })
 
-    const jobs = firstArray(data, ["offers"]).filter(
-      (offer) => offer?.kind !== "talent_pool",
-    );
+    const jobs = firstArray(data, ['offers']).filter(
+      offer => offer?.kind !== 'talent_pool'
+    )
 
-    return { jobs, total: data?.total ?? jobs.length };
+    return { jobs, total: data?.total ?? jobs.length }
   }
 
   /**
@@ -1318,15 +1321,15 @@ class RecruiteeService {
    */
   async getJob(jobId) {
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers/${jobId}`,
-      logTag: "getJob",
-    });
+      url: `${ this.#getBaseUrl() }/offers/${ jobId }`,
+      logTag: 'getJob',
+    })
 
-    return data?.offer || data;
+    return data?.offer || data
   }
 
   /**
@@ -1356,35 +1359,35 @@ class RecruiteeService {
     locationId,
     employmentType,
     remote,
-    additionalFields,
+    additionalFields
   ) {
     if (!title) {
-      throw new Error('"Title" is required.');
+      throw new Error('"Title" is required.')
     }
 
     const offer = cleanupObject({
       title,
       description,
-      kind: "job",
+      kind: 'job',
       department_id: departmentId
         ? Number(departmentId) || departmentId
         : undefined,
       location_ids: locationId ? [Number(locationId) || locationId] : undefined,
       employment_type: employmentType,
-      remote: typeof remote === "boolean" ? remote : undefined,
-      ...(additionalFields && typeof additionalFields === "object"
+      remote: typeof remote === 'boolean' ? remote : undefined,
+      ...(additionalFields && typeof additionalFields === 'object'
         ? additionalFields
         : {}),
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/offers`,
+      method: 'post',
       body: { offer },
-      logTag: "createJob",
-    });
+      logTag: 'createJob',
+    })
 
-    return data?.offer || data;
+    return data?.offer || data
   }
 
   /**
@@ -1406,7 +1409,7 @@ class RecruiteeService {
    */
   async updateJob(jobId, title, description, departmentId, additionalFields) {
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
     const offer = cleanupObject({
@@ -1415,19 +1418,19 @@ class RecruiteeService {
       department_id: departmentId
         ? Number(departmentId) || departmentId
         : undefined,
-      ...(additionalFields && typeof additionalFields === "object"
+      ...(additionalFields && typeof additionalFields === 'object'
         ? additionalFields
         : {}),
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers/${jobId}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/offers/${ jobId }`,
+      method: 'patch',
       body: { offer },
-      logTag: "updateJob",
-    });
+      logTag: 'updateJob',
+    })
 
-    return data?.offer || data;
+    return data?.offer || data
   }
 
   /**
@@ -1446,29 +1449,29 @@ class RecruiteeService {
    */
   async updateJobStatus(jobId, status) {
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
     const allowed = [
-      "publish",
-      "unpublish",
-      "close",
-      "archive",
-      "unarchive",
-      "draft",
-    ];
+      'publish',
+      'unpublish',
+      'close',
+      'archive',
+      'unarchive',
+      'draft',
+    ]
 
     if (!allowed.includes(status)) {
-      throw new Error(`"New Status" must be one of: ${allowed.join(", ")}.`);
+      throw new Error(`"New Status" must be one of: ${ allowed.join(', ') }.`)
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers/${jobId}/${status}`,
-      method: "patch",
-      logTag: "updateJobStatus",
-    });
+      url: `${ this.#getBaseUrl() }/offers/${ jobId }/${ status }`,
+      method: 'patch',
+      logTag: 'updateJobStatus',
+    })
 
-    return data?.offer || data || { id: jobId, status };
+    return data?.offer || data || { id: jobId, status }
   }
 
   /**
@@ -1486,16 +1489,16 @@ class RecruiteeService {
    */
   async duplicateJob(jobId) {
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers/${jobId}/duplicate`,
-      method: "patch",
-      logTag: "duplicateJob",
-    });
+      url: `${ this.#getBaseUrl() }/offers/${ jobId }/duplicate`,
+      method: 'patch',
+      logTag: 'duplicateJob',
+    })
 
-    return data?.offer || data;
+    return data?.offer || data
   }
 
   /**
@@ -1514,30 +1517,30 @@ class RecruiteeService {
    */
   async deleteJob(jobId, confirm) {
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
     if (!confirm) {
-      let summary = { id: jobId };
+      let summary = { id: jobId }
 
       try {
-        const job = await this.getJob(jobId);
+        const job = await this.getJob(jobId)
 
-        summary = { id: job.id, title: job.title, status: job.status };
+        summary = { id: job.id, title: job.title, status: job.status }
       } catch (error) {
-        logger.warn(`deleteJob - preview lookup failed: ${error.message}`);
+        logger.warn(`deleteJob - preview lookup failed: ${ error.message }`)
       }
 
-      return this.#deletePreview("job", summary);
+      return this.#deletePreview('job', summary)
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers/${jobId}`,
-      method: "delete",
-      logTag: "deleteJob",
-    });
+      url: `${ this.#getBaseUrl() }/offers/${ jobId }`,
+      method: 'delete',
+      logTag: 'deleteJob',
+    })
 
-    return { confirmed: true, deleted: true, jobId };
+    return { confirmed: true, deleted: true, jobId }
   }
 
   /**
@@ -1557,25 +1560,25 @@ class RecruiteeService {
    */
   async tagJob(jobId, tags, action) {
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
-    const tagList = toArray(tags);
+    const tagList = toArray(tags)
 
     if (!tagList.length) {
-      throw new Error('"Tags" is required.');
+      throw new Error('"Tags" is required.')
     }
 
-    const remove = action === "remove";
+    const remove = action === 'remove'
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers/${jobId}/offer_tags`,
-      method: remove ? "delete" : "post",
+      url: `${ this.#getBaseUrl() }/offers/${ jobId }/offer_tags`,
+      method: remove ? 'delete' : 'post',
       body: { tags: tagList },
-      logTag: "tagJob",
-    });
+      logTag: 'tagJob',
+    })
 
-    return { jobId, action: remove ? "remove" : "add", tags: tagList };
+    return { jobId, action: remove ? 'remove' : 'add', tags: tagList }
   }
 
   /**
@@ -1596,19 +1599,19 @@ class RecruiteeService {
    */
   async getJobCandidates(jobId, page, limit) {
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers/${jobId}/placements`,
+      url: `${ this.#getBaseUrl() }/offers/${ jobId }/placements`,
       query: cleanupObject({
         page: Number(page) || 1,
         limit: Number(limit) || DEFAULT_PAGE_SIZE,
       }),
-      logTag: "getJobCandidates",
-    });
+      logTag: 'getJobCandidates',
+    })
 
-    return { jobId, placements: firstArray(data, ["placements"]) };
+    return { jobId, placements: firstArray(data, ['placements']) }
   }
 
   /**
@@ -1626,15 +1629,15 @@ class RecruiteeService {
    */
   async listPipelineStages(jobId) {
     if (!jobId) {
-      throw new Error('"Job" is required.');
+      throw new Error('"Job" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/offers/${jobId}`,
-      logTag: "listPipelineStages",
-    });
+      url: `${ this.#getBaseUrl() }/offers/${ jobId }`,
+      logTag: 'listPipelineStages',
+    })
 
-    return { jobId, stages: this.#extractStages(data?.offer || data) };
+    return { jobId, stages: this.#extractStages(data?.offer || data) }
   }
 
   // ───────────────────────────── Pipeline templates ─────────────────────────────
@@ -1652,11 +1655,11 @@ class RecruiteeService {
    */
   async listPipelineTemplates() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/pipeline_templates`,
-      logTag: "listPipelineTemplates",
-    });
+      url: `${ this.#getBaseUrl() }/pipeline_templates`,
+      logTag: 'listPipelineTemplates',
+    })
 
-    return { pipelineTemplates: firstArray(data, ["pipeline_templates"]) };
+    return { pipelineTemplates: firstArray(data, ['pipeline_templates']) }
   }
 
   /**
@@ -1674,15 +1677,15 @@ class RecruiteeService {
    */
   async getPipelineTemplate(templateId) {
     if (!templateId) {
-      throw new Error('"Pipeline Template" is required.');
+      throw new Error('"Pipeline Template" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/pipeline_templates/${templateId}`,
-      logTag: "getPipelineTemplate",
-    });
+      url: `${ this.#getBaseUrl() }/pipeline_templates/${ templateId }`,
+      logTag: 'getPipelineTemplate',
+    })
 
-    return data?.pipeline_template || data;
+    return data?.pipeline_template || data
   }
 
   /**
@@ -1700,17 +1703,17 @@ class RecruiteeService {
    */
   async createPipelineTemplate(name) {
     if (!name) {
-      throw new Error('"Name" is required.');
+      throw new Error('"Name" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/pipeline_templates`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/pipeline_templates`,
+      method: 'post',
       body: { pipeline_template: { name } },
-      logTag: "createPipelineTemplate",
-    });
+      logTag: 'createPipelineTemplate',
+    })
 
-    return data?.pipeline_template || data;
+    return data?.pipeline_template || data
   }
 
   /**
@@ -1729,21 +1732,21 @@ class RecruiteeService {
    */
   async updatePipelineTemplate(templateId, name) {
     if (!templateId) {
-      throw new Error('"Pipeline Template" is required.');
+      throw new Error('"Pipeline Template" is required.')
     }
 
     if (!name) {
-      throw new Error('"Name" is required.');
+      throw new Error('"Name" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/pipeline_templates/${templateId}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/pipeline_templates/${ templateId }`,
+      method: 'patch',
       body: { pipeline_template: { name } },
-      logTag: "updatePipelineTemplate",
-    });
+      logTag: 'updatePipelineTemplate',
+    })
 
-    return data?.pipeline_template || data;
+    return data?.pipeline_template || data
   }
 
   /**
@@ -1762,32 +1765,32 @@ class RecruiteeService {
    */
   async deletePipelineTemplate(templateId, confirm) {
     if (!templateId) {
-      throw new Error('"Pipeline Template" is required.');
+      throw new Error('"Pipeline Template" is required.')
     }
 
     if (!confirm) {
-      let summary = { id: templateId };
+      let summary = { id: templateId }
 
       try {
-        const template = await this.getPipelineTemplate(templateId);
+        const template = await this.getPipelineTemplate(templateId)
 
-        summary = { id: template.id, name: template.name };
+        summary = { id: template.id, name: template.name }
       } catch (error) {
         logger.warn(
-          `deletePipelineTemplate - preview lookup failed: ${error.message}`,
-        );
+          `deletePipelineTemplate - preview lookup failed: ${ error.message }`
+        )
       }
 
-      return this.#deletePreview("pipeline template", summary);
+      return this.#deletePreview('pipeline template', summary)
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/pipeline_templates/${templateId}`,
-      method: "delete",
-      logTag: "deletePipelineTemplate",
-    });
+      url: `${ this.#getBaseUrl() }/pipeline_templates/${ templateId }`,
+      method: 'delete',
+      logTag: 'deletePipelineTemplate',
+    })
 
-    return { confirmed: true, deleted: true, templateId };
+    return { confirmed: true, deleted: true, templateId }
   }
 
   /**
@@ -1807,21 +1810,21 @@ class RecruiteeService {
    */
   async addPipelineStage(templateId, name, category) {
     if (!templateId) {
-      throw new Error('"Pipeline Template" is required.');
+      throw new Error('"Pipeline Template" is required.')
     }
 
     if (!name) {
-      throw new Error('"Stage Name" is required.');
+      throw new Error('"Stage Name" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/pipeline_templates/${templateId}/stages`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/pipeline_templates/${ templateId }/stages`,
+      method: 'post',
       body: { stage: cleanupObject({ name, category }) },
-      logTag: "addPipelineStage",
-    });
+      logTag: 'addPipelineStage',
+    })
 
-    return data?.stage || data;
+    return data?.stage || data
   }
 
   /**
@@ -1841,21 +1844,21 @@ class RecruiteeService {
    */
   async updatePipelineStage(templateId, stageId, name) {
     if (!templateId) {
-      throw new Error('"Pipeline Template" is required.');
+      throw new Error('"Pipeline Template" is required.')
     }
 
     if (!stageId) {
-      throw new Error('"Stage ID" is required.');
+      throw new Error('"Stage ID" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/pipeline_templates/${templateId}/stages/${stageId}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/pipeline_templates/${ templateId }/stages/${ stageId }`,
+      method: 'patch',
       body: { stage: cleanupObject({ name }) },
-      logTag: "updatePipelineStage",
-    });
+      logTag: 'updatePipelineStage',
+    })
 
-    return data?.stage || data;
+    return data?.stage || data
   }
 
   /**
@@ -1876,39 +1879,39 @@ class RecruiteeService {
    */
   async deletePipelineStage(templateId, stageId, destinationStageId, confirm) {
     if (!templateId) {
-      throw new Error('"Pipeline Template" is required.');
+      throw new Error('"Pipeline Template" is required.')
     }
 
     if (!stageId) {
-      throw new Error('"Stage ID" is required.');
+      throw new Error('"Stage ID" is required.')
     }
 
     if (!destinationStageId) {
-      throw new Error('"Move Candidates To Stage ID" is required.');
+      throw new Error('"Move Candidates To Stage ID" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("pipeline stage", {
+      return this.#deletePreview('pipeline stage', {
         stageId,
         movedTo: destinationStageId,
-      });
+      })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/pipeline_templates/${templateId}/stages/delete_and_move_placements/${stageId}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/pipeline_templates/${ templateId }/stages/delete_and_move_placements/${ stageId }`,
+      method: 'patch',
       body: {
         destination_stage_id: Number(destinationStageId) || destinationStageId,
       },
-      logTag: "deletePipelineStage",
-    });
+      logTag: 'deletePipelineStage',
+    })
 
     return {
       confirmed: true,
       deleted: true,
       stageId,
       movedTo: destinationStageId,
-    };
+    }
   }
 
   // ───────────────────────────── Disqualify reasons ─────────────────────────────
@@ -1926,11 +1929,11 @@ class RecruiteeService {
    */
   async listDisqualifyReasons() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/disqualify_reasons`,
-      logTag: "listDisqualifyReasons",
-    });
+      url: `${ this.#getBaseUrl() }/disqualify_reasons`,
+      logTag: 'listDisqualifyReasons',
+    })
 
-    return { reasons: firstArray(data, ["disqualify_reasons"]) };
+    return { reasons: firstArray(data, ['disqualify_reasons']) }
   }
 
   /**
@@ -1948,17 +1951,17 @@ class RecruiteeService {
    */
   async createDisqualifyReason(name) {
     if (!name) {
-      throw new Error('"Name" is required.');
+      throw new Error('"Name" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/disqualify_reasons`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/disqualify_reasons`,
+      method: 'post',
       body: { disqualify_reason: { name } },
-      logTag: "createDisqualifyReason",
-    });
+      logTag: 'createDisqualifyReason',
+    })
 
-    return data?.disqualify_reason || data;
+    return data?.disqualify_reason || data
   }
 
   /**
@@ -1977,21 +1980,21 @@ class RecruiteeService {
    */
   async updateDisqualifyReason(reasonId, name) {
     if (!reasonId) {
-      throw new Error('"Reason" is required.');
+      throw new Error('"Reason" is required.')
     }
 
     if (!name) {
-      throw new Error('"Name" is required.');
+      throw new Error('"Name" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/disqualify_reasons/${reasonId}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/disqualify_reasons/${ reasonId }`,
+      method: 'patch',
       body: { disqualify_reason: { name } },
-      logTag: "updateDisqualifyReason",
-    });
+      logTag: 'updateDisqualifyReason',
+    })
 
-    return data?.disqualify_reason || data;
+    return data?.disqualify_reason || data
   }
 
   /**
@@ -2010,20 +2013,20 @@ class RecruiteeService {
    */
   async deleteDisqualifyReason(reasonId, confirm) {
     if (!reasonId) {
-      throw new Error('"Reason" is required.');
+      throw new Error('"Reason" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("disqualify reason", { id: reasonId });
+      return this.#deletePreview('disqualify reason', { id: reasonId })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/disqualify_reasons/${reasonId}`,
-      method: "delete",
-      logTag: "deleteDisqualifyReason",
-    });
+      url: `${ this.#getBaseUrl() }/disqualify_reasons/${ reasonId }`,
+      method: 'delete',
+      logTag: 'deleteDisqualifyReason',
+    })
 
-    return { confirmed: true, deleted: true, reasonId };
+    return { confirmed: true, deleted: true, reasonId }
   }
 
   // ───────────────────────────── Departments & locations ─────────────────────────────
@@ -2041,11 +2044,11 @@ class RecruiteeService {
    */
   async listDepartments() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/departments`,
-      logTag: "listDepartments",
-    });
+      url: `${ this.#getBaseUrl() }/departments`,
+      logTag: 'listDepartments',
+    })
 
-    return { departments: firstArray(data, ["departments"]) };
+    return { departments: firstArray(data, ['departments']) }
   }
 
   /**
@@ -2063,17 +2066,17 @@ class RecruiteeService {
    */
   async createDepartment(name) {
     if (!name) {
-      throw new Error('"Name" is required.');
+      throw new Error('"Name" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/departments`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/departments`,
+      method: 'post',
       body: { department: { name } },
-      logTag: "createDepartment",
-    });
+      logTag: 'createDepartment',
+    })
 
-    return data?.department || data;
+    return data?.department || data
   }
 
   /**
@@ -2092,20 +2095,20 @@ class RecruiteeService {
    */
   async deleteDepartment(departmentId, confirm) {
     if (!departmentId) {
-      throw new Error('"Department" is required.');
+      throw new Error('"Department" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("department", { id: departmentId });
+      return this.#deletePreview('department', { id: departmentId })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/departments/${departmentId}`,
-      method: "delete",
-      logTag: "deleteDepartment",
-    });
+      url: `${ this.#getBaseUrl() }/departments/${ departmentId }`,
+      method: 'delete',
+      logTag: 'deleteDepartment',
+    })
 
-    return { confirmed: true, deleted: true, departmentId };
+    return { confirmed: true, deleted: true, departmentId }
   }
 
   /**
@@ -2121,11 +2124,11 @@ class RecruiteeService {
    */
   async listLocations() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/locations`,
-      logTag: "listLocations",
-    });
+      url: `${ this.#getBaseUrl() }/locations`,
+      logTag: 'listLocations',
+    })
 
-    return { locations: firstArray(data, ["locations"]) };
+    return { locations: firstArray(data, ['locations']) }
   }
 
   /**
@@ -2145,17 +2148,17 @@ class RecruiteeService {
    */
   async createLocation(name, city, country) {
     if (!name) {
-      throw new Error('"Name" is required.');
+      throw new Error('"Name" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/locations`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/locations`,
+      method: 'post',
       body: { location: cleanupObject({ name, city, country }) },
-      logTag: "createLocation",
-    });
+      logTag: 'createLocation',
+    })
 
-    return data?.location || data;
+    return data?.location || data
   }
 
   /**
@@ -2174,20 +2177,20 @@ class RecruiteeService {
    */
   async deleteLocation(locationId, confirm) {
     if (!locationId) {
-      throw new Error('"Location" is required.');
+      throw new Error('"Location" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("location", { id: locationId });
+      return this.#deletePreview('location', { id: locationId })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/locations/${locationId}`,
-      method: "delete",
-      logTag: "deleteLocation",
-    });
+      url: `${ this.#getBaseUrl() }/locations/${ locationId }`,
+      method: 'delete',
+      logTag: 'deleteLocation',
+    })
 
-    return { confirmed: true, deleted: true, locationId };
+    return { confirmed: true, deleted: true, locationId }
   }
 
   // ───────────────────────────── Tags, sources, talent pools, team ─────────────────────────────
@@ -2205,11 +2208,11 @@ class RecruiteeService {
    */
   async listTags() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/tags`,
-      logTag: "listTags",
-    });
+      url: `${ this.#getBaseUrl() }/tags`,
+      logTag: 'listTags',
+    })
 
-    return { tags: firstArray(data, ["tags"]) };
+    return { tags: firstArray(data, ['tags']) }
   }
 
   /**
@@ -2225,11 +2228,11 @@ class RecruiteeService {
    */
   async listSources() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/sources`,
-      logTag: "listSources",
-    });
+      url: `${ this.#getBaseUrl() }/sources`,
+      logTag: 'listSources',
+    })
 
-    return { sources: firstArray(data, ["sources"]) };
+    return { sources: firstArray(data, ['sources']) }
   }
 
   /**
@@ -2248,15 +2251,15 @@ class RecruiteeService {
    */
   async listTalentPools(page, limit) {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/talent_pools`,
+      url: `${ this.#getBaseUrl() }/talent_pools`,
       query: cleanupObject({
         page: Number(page) || 1,
         limit: Number(limit) || DEFAULT_PAGE_SIZE,
       }),
-      logTag: "listTalentPools",
-    });
+      logTag: 'listTalentPools',
+    })
 
-    return { talentPools: firstArray(data, ["talent_pools", "offers"]) };
+    return { talentPools: firstArray(data, ['talent_pools', 'offers']) }
   }
 
   /**
@@ -2276,7 +2279,7 @@ class RecruiteeService {
    */
   async createTalentPool(title, description, departmentId) {
     if (!title) {
-      throw new Error('"Title" is required.');
+      throw new Error('"Title" is required.')
     }
 
     const talentPool = cleanupObject({
@@ -2285,16 +2288,16 @@ class RecruiteeService {
       department_id: departmentId
         ? Number(departmentId) || departmentId
         : undefined,
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/talent_pools`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/talent_pools`,
+      method: 'post',
       body: { talent_pool: talentPool },
-      logTag: "createTalentPool",
-    });
+      logTag: 'createTalentPool',
+    })
 
-    return data?.talent_pool || data?.offer || data;
+    return data?.talent_pool || data?.offer || data
   }
 
   /**
@@ -2310,11 +2313,11 @@ class RecruiteeService {
    */
   async listTeamMembers() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/admins`,
-      logTag: "listTeamMembers",
-    });
+      url: `${ this.#getBaseUrl() }/admins`,
+      logTag: 'listTeamMembers',
+    })
 
-    return { teamMembers: firstArray(data, ["admins"]) };
+    return { teamMembers: firstArray(data, ['admins']) }
   }
 
   /**
@@ -2327,20 +2330,20 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Standard Hiring","value":"7","note":""}],"cursor":null}
    */
   async getPipelineTemplatesDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/pipeline_templates`,
-      keys: ["pipeline_templates"],
+      url: `${ this.#getBaseUrl() }/pipeline_templates`,
+      keys: ['pipeline_templates'],
       search,
       cursor,
-      logTag: "getPipelineTemplatesDictionary",
-      mapFn: (template) => ({
+      logTag: 'getPipelineTemplatesDictionary',
+      mapFn: template => ({
         label: template?.name || String(template?.id),
         value: String(template?.id),
-        note: "",
+        note: '',
       }),
-    });
+    })
   }
 
   // ───────────────────────────── Notes ─────────────────────────────
@@ -2348,11 +2351,11 @@ class RecruiteeService {
   // Maps a friendly target type to its API path segment.
   #noteTargetPath(targetType) {
     return {
-      Candidate: "candidates",
-      Job: "offers",
-      "Talent Pool": "talent_pools",
-      Requisition: "requisitions",
-    }[targetType];
+      Candidate: 'candidates',
+      Job: 'offers',
+      'Talent Pool': 'talent_pools',
+      Requisition: 'requisitions',
+    }[targetType]
   }
 
   /**
@@ -2372,21 +2375,21 @@ class RecruiteeService {
    */
   async addCandidateNote(candidateId, body, visibility) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     if (!body) {
-      throw new Error('"Note" is required.');
+      throw new Error('"Note" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/candidates/${candidateId}/notes`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/candidates/${ candidateId }/notes`,
+      method: 'post',
       body: { note: cleanupObject({ body, visibility }) },
-      logTag: "addCandidateNote",
-    });
+      logTag: 'addCandidateNote',
+    })
 
-    return data?.note || data;
+    return data?.note || data
   }
 
   /**
@@ -2404,15 +2407,15 @@ class RecruiteeService {
    */
   async listCandidateNotes(candidateId) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/candidates/${candidateId}/notes`,
-      logTag: "listCandidateNotes",
-    });
+      url: `${ this.#getBaseUrl() }/candidates/${ candidateId }/notes`,
+      logTag: 'listCandidateNotes',
+    })
 
-    return { notes: firstArray(data, ["notes"]) };
+    return { notes: firstArray(data, ['notes']) }
   }
 
   /**
@@ -2432,30 +2435,30 @@ class RecruiteeService {
    * @sampleResult {"id":7790,"body":"Budget approved.","created_at":"2025-01-20T10:00:00.000Z"}
    */
   async addNote(targetType, targetId, body, visibility) {
-    const path = this.#noteTargetPath(targetType);
+    const path = this.#noteTargetPath(targetType)
 
     if (!path) {
       throw new Error(
-        '"Attach to" must be Candidate, Job, Talent Pool, or Requisition.',
-      );
+        '"Attach to" must be Candidate, Job, Talent Pool, or Requisition.'
+      )
     }
 
     if (!targetId) {
-      throw new Error('"Item ID" is required.');
+      throw new Error('"Item ID" is required.')
     }
 
     if (!body) {
-      throw new Error('"Note" is required.');
+      throw new Error('"Note" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/${path}/${targetId}/notes`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/${ path }/${ targetId }/notes`,
+      method: 'post',
       body: { note: cleanupObject({ body, visibility }) },
-      logTag: "addNote",
-    });
+      logTag: 'addNote',
+    })
 
-    return data?.note || data;
+    return data?.note || data
   }
 
   /**
@@ -2474,21 +2477,21 @@ class RecruiteeService {
    */
   async updateNote(noteId, body) {
     if (!noteId) {
-      throw new Error('"Note ID" is required.');
+      throw new Error('"Note ID" is required.')
     }
 
     if (!body) {
-      throw new Error('"Note" is required.');
+      throw new Error('"Note" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/notes/${noteId}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/notes/${ noteId }`,
+      method: 'patch',
       body: { note: { body } },
-      logTag: "updateNote",
-    });
+      logTag: 'updateNote',
+    })
 
-    return data?.note || data;
+    return data?.note || data
   }
 
   /**
@@ -2507,18 +2510,18 @@ class RecruiteeService {
    */
   async pinNote(noteId, pinned) {
     if (!noteId) {
-      throw new Error('"Note ID" is required.');
+      throw new Error('"Note ID" is required.')
     }
 
-    const action = pinned === false ? "unpin" : "pin";
+    const action = pinned === false ? 'unpin' : 'pin'
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/notes/${noteId}/${action}`,
-      method: "patch",
-      logTag: "pinNote",
-    });
+      url: `${ this.#getBaseUrl() }/notes/${ noteId }/${ action }`,
+      method: 'patch',
+      logTag: 'pinNote',
+    })
 
-    return { id: noteId, pinned: action === "pin" };
+    return { id: noteId, pinned: action === 'pin' }
   }
 
   /**
@@ -2537,20 +2540,20 @@ class RecruiteeService {
    */
   async deleteNote(noteId, confirm) {
     if (!noteId) {
-      throw new Error('"Note ID" is required.');
+      throw new Error('"Note ID" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("note", { id: noteId });
+      return this.#deletePreview('note', { id: noteId })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/notes/${noteId}`,
-      method: "delete",
-      logTag: "deleteNote",
-    });
+      url: `${ this.#getBaseUrl() }/notes/${ noteId }`,
+      method: 'delete',
+      logTag: 'deleteNote',
+    })
 
-    return { confirmed: true, deleted: true, noteId };
+    return { confirmed: true, deleted: true, noteId }
   }
 
   // ───────────────────────────── Tasks ─────────────────────────────
@@ -2573,29 +2576,29 @@ class RecruiteeService {
    */
   async createTask(title, dueDate, candidateId, assigneeId) {
     if (!title) {
-      throw new Error('"Title" is required.');
+      throw new Error('"Title" is required.')
     }
 
     const task = cleanupObject({
       title,
       due_date: dueDate,
       admin_id: assigneeId ? Number(assigneeId) || assigneeId : undefined,
-    });
+    })
 
     if (candidateId) {
       task.references = [
-        { id: Number(candidateId) || candidateId, type: "Candidate" },
-      ];
+        { id: Number(candidateId) || candidateId, type: 'Candidate' },
+      ]
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/tasks`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/tasks`,
+      method: 'post',
       body: { task },
-      logTag: "createTask",
-    });
+      logTag: 'createTask',
+    })
 
-    return data?.task || data;
+    return data?.task || data
   }
 
   /**
@@ -2614,19 +2617,19 @@ class RecruiteeService {
    * @sampleResult {"tasks":[{"id":4501,"title":"Call candidate","completed":false}]}
    */
   async listTasks(status, page, limit) {
-    const scopeMap = { open: "pending", completed: "completed", all: "all" };
+    const scopeMap = { open: 'pending', completed: 'completed', all: 'all' }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/tasks`,
+      url: `${ this.#getBaseUrl() }/tasks`,
       query: cleanupObject({
-        scope: scopeMap[status] || "pending",
+        scope: scopeMap[status] || 'pending',
         page: Number(page) || 1,
         limit: Number(limit) || DEFAULT_PAGE_SIZE,
       }),
-      logTag: "listTasks",
-    });
+      logTag: 'listTasks',
+    })
 
-    return { tasks: firstArray(data, ["tasks"]) };
+    return { tasks: firstArray(data, ['tasks']) }
   }
 
   /**
@@ -2644,15 +2647,15 @@ class RecruiteeService {
    */
   async getTask(taskId) {
     if (!taskId) {
-      throw new Error('"Task ID" is required.');
+      throw new Error('"Task ID" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/tasks/${taskId}`,
-      logTag: "getTask",
-    });
+      url: `${ this.#getBaseUrl() }/tasks/${ taskId }`,
+      logTag: 'getTask',
+    })
 
-    return data?.task || data;
+    return data?.task || data
   }
 
   /**
@@ -2673,23 +2676,23 @@ class RecruiteeService {
    */
   async updateTask(taskId, title, dueDate, completed) {
     if (!taskId) {
-      throw new Error('"Task ID" is required.');
+      throw new Error('"Task ID" is required.')
     }
 
     const task = cleanupObject({
       title,
       due_date: dueDate,
-      completed: typeof completed === "boolean" ? completed : undefined,
-    });
+      completed: typeof completed === 'boolean' ? completed : undefined,
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/tasks/${taskId}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/tasks/${ taskId }`,
+      method: 'patch',
       body: { task },
-      logTag: "updateTask",
-    });
+      logTag: 'updateTask',
+    })
 
-    return data?.task || data;
+    return data?.task || data
   }
 
   /**
@@ -2707,17 +2710,17 @@ class RecruiteeService {
    */
   async completeTask(taskId) {
     if (!taskId) {
-      throw new Error('"Task ID" is required.');
+      throw new Error('"Task ID" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/tasks/${taskId}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/tasks/${ taskId }`,
+      method: 'patch',
       body: { task: { completed: true } },
-      logTag: "completeTask",
-    });
+      logTag: 'completeTask',
+    })
 
-    return data?.task || { id: taskId, completed: true };
+    return data?.task || { id: taskId, completed: true }
   }
 
   /**
@@ -2736,20 +2739,20 @@ class RecruiteeService {
    */
   async deleteTask(taskId, confirm) {
     if (!taskId) {
-      throw new Error('"Task ID" is required.');
+      throw new Error('"Task ID" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("task", { id: taskId });
+      return this.#deletePreview('task', { id: taskId })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/tasks/${taskId}`,
-      method: "delete",
-      logTag: "deleteTask",
-    });
+      url: `${ this.#getBaseUrl() }/tasks/${ taskId }`,
+      method: 'delete',
+      logTag: 'deleteTask',
+    })
 
-    return { confirmed: true, deleted: true, taskId };
+    return { confirmed: true, deleted: true, taskId }
   }
 
   // ───────────────────────────── Activity & custom fields ─────────────────────────────
@@ -2772,12 +2775,12 @@ class RecruiteeService {
    * @sampleResult {"activities":[{"id":99001,"kind":"candidate_moved","created_at":"2025-01-20T10:00:00.000Z"}]}
    */
   async listActivity(candidateId, jobId, page, limit) {
-    let url = `${this.#getBaseUrl()}/tracking/activities`;
+    let url = `${ this.#getBaseUrl() }/tracking/activities`
 
     if (candidateId) {
-      url = `${this.#getBaseUrl()}/tracking/candidates/${candidateId}/activities`;
+      url = `${ this.#getBaseUrl() }/tracking/candidates/${ candidateId }/activities`
     } else if (jobId) {
-      url = `${this.#getBaseUrl()}/tracking/offers/${jobId}/activities`;
+      url = `${ this.#getBaseUrl() }/tracking/offers/${ jobId }/activities`
     }
 
     const data = await this.#apiRequest({
@@ -2786,10 +2789,10 @@ class RecruiteeService {
         page: Number(page) || 1,
         limit: Number(limit) || DEFAULT_PAGE_SIZE,
       }),
-      logTag: "listActivity",
-    });
+      logTag: 'listActivity',
+    })
 
-    return { activities: firstArray(data, ["activities"]) };
+    return { activities: firstArray(data, ['activities']) }
   }
 
   /**
@@ -2805,11 +2808,11 @@ class RecruiteeService {
    */
   async listFieldsets() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/custom_fields/fieldsets`,
-      logTag: "listFieldsets",
-    });
+      url: `${ this.#getBaseUrl() }/custom_fields/fieldsets`,
+      logTag: 'listFieldsets',
+    })
 
-    return { fieldsets: firstArray(data, ["fieldsets"]) };
+    return { fieldsets: firstArray(data, ['fieldsets']) }
   }
 
   /**
@@ -2827,17 +2830,17 @@ class RecruiteeService {
    */
   async createFieldset(name) {
     if (!name) {
-      throw new Error('"Name" is required.');
+      throw new Error('"Name" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/custom_fields/fieldsets`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/custom_fields/fieldsets`,
+      method: 'post',
       body: { fieldset: { name } },
-      logTag: "createFieldset",
-    });
+      logTag: 'createFieldset',
+    })
 
-    return data?.fieldset || data;
+    return data?.fieldset || data
   }
 
   /**
@@ -2856,20 +2859,20 @@ class RecruiteeService {
    */
   async deleteFieldset(fieldsetId, confirm) {
     if (!fieldsetId) {
-      throw new Error('"Field Set ID" is required.');
+      throw new Error('"Field Set ID" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("custom field set", { id: fieldsetId });
+      return this.#deletePreview('custom field set', { id: fieldsetId })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/custom_fields/fieldsets/${fieldsetId}`,
-      method: "delete",
-      logTag: "deleteFieldset",
-    });
+      url: `${ this.#getBaseUrl() }/custom_fields/fieldsets/${ fieldsetId }`,
+      method: 'delete',
+      logTag: 'deleteFieldset',
+    })
 
-    return { confirmed: true, deleted: true, fieldsetId };
+    return { confirmed: true, deleted: true, fieldsetId }
   }
 
   /**
@@ -2889,21 +2892,21 @@ class RecruiteeService {
    */
   async setCandidateCustomField(candidateId, fieldId, value) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     if (!fieldId) {
-      throw new Error('"Custom Field" is required.');
+      throw new Error('"Custom Field" is required.')
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/custom_fields/candidates/${candidateId}/fields`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/custom_fields/candidates/${ candidateId }/fields`,
+      method: 'post',
       body: { field: { id: Number(fieldId) || fieldId, values: [value] } },
-      logTag: "setCandidateCustomField",
-    });
+      logTag: 'setCandidateCustomField',
+    })
 
-    return { candidateId, fieldId, value };
+    return { candidateId, fieldId, value }
   }
 
   /**
@@ -2916,27 +2919,27 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Seniority","value":"777","note":"single_line"}],"cursor":null}
    */
   async getCustomFieldsDictionary(payload) {
-    const { search } = payload || {};
+    const { search } = payload || {}
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/custom_fields/fields/searchable`,
-      logTag: "getCustomFieldsDictionary",
-    });
+      url: `${ this.#getBaseUrl() }/custom_fields/fields/searchable`,
+      logTag: 'getCustomFieldsDictionary',
+    })
 
-    const fields = firstArray(data, ["fields", "custom_fields"]);
+    const fields = firstArray(data, ['fields', 'custom_fields'])
 
     return {
       items: toDictItems(
         fields,
-        (field) => ({
+        field => ({
           label: field?.name || String(field?.id),
           value: String(field?.id),
-          note: field?.kind || field?.type || "",
+          note: field?.kind || field?.type || '',
         }),
-        search,
+        search
       ),
       cursor: null,
-    };
+    }
   }
 
   // ───────────────────────────── Interviews & evaluations ─────────────────────────────
@@ -2968,18 +2971,18 @@ class RecruiteeService {
     endTime,
     jobId,
     location,
-    notifyParticipants,
+    notifyParticipants
   ) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     if (!title) {
-      throw new Error('"Title" is required.');
+      throw new Error('"Title" is required.')
     }
 
     if (!startTime) {
-      throw new Error('"Start Time" is required.');
+      throw new Error('"Start Time" is required.')
     }
 
     const event = cleanupObject({
@@ -2988,33 +2991,33 @@ class RecruiteeService {
       end_at: endTime,
       where: location,
       offer_id: jobId ? Number(jobId) || jobId : undefined,
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/candidates/${candidateId}/events`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/interview/candidates/${ candidateId }/events`,
+      method: 'post',
       body: { event },
-      logTag: "scheduleInterview",
-    });
+      logTag: 'scheduleInterview',
+    })
 
-    const created = data?.event || data;
-    let scheduled = false;
+    const created = data?.event || data
+    let scheduled = false
 
     if (notifyParticipants && created && created.id) {
       try {
         await this.#apiRequest({
-          url: `${this.#getBaseUrl()}/interview/events/${created.id}/schedule`,
-          method: "post",
-          logTag: "scheduleInterview",
-        });
+          url: `${ this.#getBaseUrl() }/interview/events/${ created.id }/schedule`,
+          method: 'post',
+          logTag: 'scheduleInterview',
+        })
 
-        scheduled = true;
+        scheduled = true
       } catch (error) {
-        logger.warn(`scheduleInterview - notify step failed: ${error.message}`);
+        logger.warn(`scheduleInterview - notify step failed: ${ error.message }`)
       }
     }
 
-    return { ...created, scheduled };
+    return { ...created, scheduled }
   }
 
   /**
@@ -3035,7 +3038,7 @@ class RecruiteeService {
    */
   async listInterviews(candidateId, fromDate, toDate) {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/events`,
+      url: `${ this.#getBaseUrl() }/interview/events`,
       query: cleanupObject({
         candidate_id: candidateId
           ? Number(candidateId) || candidateId
@@ -3043,10 +3046,10 @@ class RecruiteeService {
         date_from: fromDate,
         date_to: toDate,
       }),
-      logTag: "listInterviews",
-    });
+      logTag: 'listInterviews',
+    })
 
-    return { interviews: firstArray(data, ["events"]) };
+    return { interviews: firstArray(data, ['events']) }
   }
 
   /**
@@ -3064,15 +3067,15 @@ class RecruiteeService {
    */
   async getInterview(eventId) {
     if (!eventId) {
-      throw new Error('"Interview ID" is required.');
+      throw new Error('"Interview ID" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/events/${eventId}`,
-      logTag: "getInterview",
-    });
+      url: `${ this.#getBaseUrl() }/interview/events/${ eventId }`,
+      logTag: 'getInterview',
+    })
 
-    return data?.event || data;
+    return data?.event || data
   }
 
   /**
@@ -3094,7 +3097,7 @@ class RecruiteeService {
    */
   async updateInterview(eventId, title, startTime, endTime, location) {
     if (!eventId) {
-      throw new Error('"Interview ID" is required.');
+      throw new Error('"Interview ID" is required.')
     }
 
     const event = cleanupObject({
@@ -3102,16 +3105,16 @@ class RecruiteeService {
       start_at: startTime,
       end_at: endTime,
       where: location,
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/events/${eventId}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/interview/events/${ eventId }`,
+      method: 'patch',
       body: { event },
-      logTag: "updateInterview",
-    });
+      logTag: 'updateInterview',
+    })
 
-    return data?.event || data;
+    return data?.event || data
   }
 
   /**
@@ -3130,20 +3133,20 @@ class RecruiteeService {
    */
   async cancelInterview(eventId, confirm) {
     if (!eventId) {
-      throw new Error('"Interview ID" is required.');
+      throw new Error('"Interview ID" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("interview", { id: eventId });
+      return this.#deletePreview('interview', { id: eventId })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/events/${eventId}`,
-      method: "delete",
-      logTag: "cancelInterview",
-    });
+      url: `${ this.#getBaseUrl() }/interview/events/${ eventId }`,
+      method: 'delete',
+      logTag: 'cancelInterview',
+    })
 
-    return { confirmed: true, cancelled: true, eventId };
+    return { confirmed: true, cancelled: true, eventId }
   }
 
   /**
@@ -3164,23 +3167,23 @@ class RecruiteeService {
    */
   async submitScorecard(candidateId, rating, comment, jobId) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     const result = cleanupObject({
       rating: rating ? Number(rating) || rating : undefined,
       comment,
       offer_id: jobId ? Number(jobId) || jobId : undefined,
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/candidates/${candidateId}/results`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/interview/candidates/${ candidateId }/results`,
+      method: 'post',
       body: { result },
-      logTag: "submitScorecard",
-    });
+      logTag: 'submitScorecard',
+    })
 
-    return data?.result || data;
+    return data?.result || data
   }
 
   /**
@@ -3198,15 +3201,15 @@ class RecruiteeService {
    */
   async listScorecards(candidateId) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/candidates/${candidateId}/results/scorecards`,
-      logTag: "listScorecards",
-    });
+      url: `${ this.#getBaseUrl() }/interview/candidates/${ candidateId }/results/scorecards`,
+      logTag: 'listScorecards',
+    })
 
-    return { scorecards: firstArray(data, ["scorecards", "results"]) };
+    return { scorecards: firstArray(data, ['scorecards', 'results']) }
   }
 
   /**
@@ -3226,25 +3229,25 @@ class RecruiteeService {
    */
   async requestInterviewFeedback(candidateId, reviewerIds, message) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
-    const reviewers = toArray(reviewerIds).map((id) => Number(id) || id);
+    const reviewers = toArray(reviewerIds).map(id => Number(id) || id)
 
     if (!reviewers.length) {
-      throw new Error('"Reviewers" is required.');
+      throw new Error('"Reviewers" is required.')
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/candidates/${candidateId}/result_requests`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/interview/candidates/${ candidateId }/result_requests`,
+      method: 'post',
       body: {
         result_request: cleanupObject({ admin_ids: reviewers, message }),
       },
-      logTag: "requestInterviewFeedback",
-    });
+      logTag: 'requestInterviewFeedback',
+    })
 
-    return { candidateId, requestedFrom: reviewers };
+    return { candidateId, requestedFrom: reviewers }
   }
 
   /**
@@ -3260,16 +3263,16 @@ class RecruiteeService {
    */
   async listInterviewTemplates() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/templates`,
-      logTag: "listInterviewTemplates",
-    });
+      url: `${ this.#getBaseUrl() }/interview/templates`,
+      logTag: 'listInterviewTemplates',
+    })
 
     return {
       interviewTemplates: firstArray(data, [
-        "templates",
-        "interview_templates",
+        'templates',
+        'interview_templates',
       ]),
-    };
+    }
   }
 
   /**
@@ -3287,17 +3290,17 @@ class RecruiteeService {
    */
   async createInterviewTemplate(name) {
     if (!name) {
-      throw new Error('"Name" is required.');
+      throw new Error('"Name" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/templates`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/interview/templates`,
+      method: 'post',
       body: { template: { name } },
-      logTag: "createInterviewTemplate",
-    });
+      logTag: 'createInterviewTemplate',
+    })
 
-    return data?.template || data;
+    return data?.template || data
   }
 
   /**
@@ -3316,20 +3319,20 @@ class RecruiteeService {
    */
   async deleteInterviewTemplate(templateId, confirm) {
     if (!templateId) {
-      throw new Error('"Interview Template" is required.');
+      throw new Error('"Interview Template" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("interview template", { id: templateId });
+      return this.#deletePreview('interview template', { id: templateId })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/templates/${templateId}`,
-      method: "delete",
-      logTag: "deleteInterviewTemplate",
-    });
+      url: `${ this.#getBaseUrl() }/interview/templates/${ templateId }`,
+      method: 'delete',
+      logTag: 'deleteInterviewTemplate',
+    })
 
-    return { confirmed: true, deleted: true, templateId };
+    return { confirmed: true, deleted: true, templateId }
   }
 
   /**
@@ -3345,11 +3348,11 @@ class RecruiteeService {
    */
   async listInterviewSchedules() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/schedules`,
-      logTag: "listInterviewSchedules",
-    });
+      url: `${ this.#getBaseUrl() }/interview/schedules`,
+      logTag: 'listInterviewSchedules',
+    })
 
-    return { schedules: firstArray(data, ["schedules"]) };
+    return { schedules: firstArray(data, ['schedules']) }
   }
 
   /**
@@ -3365,11 +3368,11 @@ class RecruiteeService {
    */
   async listMeetingRooms() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/meeting_rooms`,
-      logTag: "listMeetingRooms",
-    });
+      url: `${ this.#getBaseUrl() }/interview/meeting_rooms`,
+      logTag: 'listMeetingRooms',
+    })
 
-    return { meetingRooms: firstArray(data, ["meeting_rooms"]) };
+    return { meetingRooms: firstArray(data, ['meeting_rooms']) }
   }
 
   /**
@@ -3385,11 +3388,11 @@ class RecruiteeService {
    */
   async listCalendars() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/interview/calendars`,
-      logTag: "listCalendars",
-    });
+      url: `${ this.#getBaseUrl() }/interview/calendars`,
+      logTag: 'listCalendars',
+    })
 
-    return { calendars: firstArray(data, ["calendars"]) };
+    return { calendars: firstArray(data, ['calendars']) }
   }
 
   /**
@@ -3402,20 +3405,20 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Technical Screen","value":"501","note":""}],"cursor":null}
    */
   async getInterviewTemplatesDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/interview/templates`,
-      keys: ["templates", "interview_templates"],
+      url: `${ this.#getBaseUrl() }/interview/templates`,
+      keys: ['templates', 'interview_templates'],
       search,
       cursor,
-      logTag: "getInterviewTemplatesDictionary",
-      mapFn: (template) => ({
+      logTag: 'getInterviewTemplatesDictionary',
+      mapFn: template => ({
         label: template?.name || String(template?.id),
         value: String(template?.id),
-        note: "",
+        note: '',
       }),
-    });
+    })
   }
 
   // ───────────────────────────── Communication ─────────────────────────────
@@ -3424,11 +3427,11 @@ class RecruiteeService {
   #emailTemplatePath(type) {
     return (
       {
-        Message: "email_templates",
-        "Event Invitation": "event_invitation_templates",
-        "Auto-reply": "auto_reply_templates",
-      }[type] || "email_templates"
-    );
+        Message: 'email_templates',
+        'Event Invitation': 'event_invitation_templates',
+        'Auto-reply': 'auto_reply_templates',
+      }[type] || 'email_templates'
+    )
   }
 
   /**
@@ -3450,15 +3453,15 @@ class RecruiteeService {
    */
   async sendEmail(candidateId, subject, body, templateId) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     if (!subject) {
-      throw new Error('"Subject" is required.');
+      throw new Error('"Subject" is required.')
     }
 
     if (!body) {
-      throw new Error('"Message" is required.');
+      throw new Error('"Message" is required.')
     }
 
     const message = cleanupObject({
@@ -3468,16 +3471,16 @@ class RecruiteeService {
       email_template_id: templateId
         ? Number(templateId) || templateId
         : undefined,
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/mailbox/send`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/mailbox/send`,
+      method: 'post',
       body: message,
-      logTag: "sendEmail",
-    });
+      logTag: 'sendEmail',
+    })
 
-    return data?.message || data;
+    return data?.message || data
   }
 
   /**
@@ -3498,19 +3501,19 @@ class RecruiteeService {
    */
   async scheduleEmail(candidateId, subject, body, sendAt) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     if (!subject) {
-      throw new Error('"Subject" is required.');
+      throw new Error('"Subject" is required.')
     }
 
     if (!body) {
-      throw new Error('"Message" is required.');
+      throw new Error('"Message" is required.')
     }
 
     if (!sendAt) {
-      throw new Error('"Send At" is required.');
+      throw new Error('"Send At" is required.')
     }
 
     const message = {
@@ -3518,16 +3521,16 @@ class RecruiteeService {
       subject,
       body,
       send_at: sendAt,
-    };
+    }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/mailbox/schedule`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/mailbox/schedule`,
+      method: 'post',
       body: message,
-      logTag: "scheduleEmail",
-    });
+      logTag: 'scheduleEmail',
+    })
 
-    return data?.message || data;
+    return data?.message || data
   }
 
   /**
@@ -3545,15 +3548,15 @@ class RecruiteeService {
    */
   async listEmailThreads(candidateId) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/mailbox/candidate/${candidateId}`,
-      logTag: "listEmailThreads",
-    });
+      url: `${ this.#getBaseUrl() }/mailbox/candidate/${ candidateId }`,
+      logTag: 'listEmailThreads',
+    })
 
-    return { threads: firstArray(data, ["threads"]) };
+    return { threads: firstArray(data, ['threads']) }
   }
 
   /**
@@ -3571,15 +3574,15 @@ class RecruiteeService {
    */
   async getEmailThread(threadId) {
     if (!threadId) {
-      throw new Error('"Thread ID" is required.');
+      throw new Error('"Thread ID" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/mailbox/threads/${threadId}`,
-      logTag: "getEmailThread",
-    });
+      url: `${ this.#getBaseUrl() }/mailbox/threads/${ threadId }`,
+      logTag: 'getEmailThread',
+    })
 
-    return data?.thread || data;
+    return data?.thread || data
   }
 
   /**
@@ -3596,16 +3599,16 @@ class RecruiteeService {
    * @sampleResult {"templates":[{"id":12,"name":"Rejection - polite"}]}
    */
   async listEmailTemplates(type) {
-    const path = this.#emailTemplatePath(type);
+    const path = this.#emailTemplatePath(type)
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/${path}`,
-      logTag: "listEmailTemplates",
-    });
+      url: `${ this.#getBaseUrl() }/${ path }`,
+      logTag: 'listEmailTemplates',
+    })
 
     return {
-      templates: firstArray(data, [path, "email_templates", "templates"]),
-    };
+      templates: firstArray(data, [path, 'email_templates', 'templates']),
+    }
   }
 
   /**
@@ -3626,23 +3629,23 @@ class RecruiteeService {
    */
   async createEmailTemplate(type, name, subject, body) {
     if (!name) {
-      throw new Error('"Name" is required.');
+      throw new Error('"Name" is required.')
     }
 
     if (!body) {
-      throw new Error('"Body" is required.');
+      throw new Error('"Body" is required.')
     }
 
-    const path = this.#emailTemplatePath(type);
+    const path = this.#emailTemplatePath(type)
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/${path}`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/${ path }`,
+      method: 'post',
       body: { email_template: cleanupObject({ name, subject, body }) },
-      logTag: "createEmailTemplate",
-    });
+      logTag: 'createEmailTemplate',
+    })
 
-    return data?.email_template || data;
+    return data?.email_template || data
   }
 
   /**
@@ -3662,25 +3665,25 @@ class RecruiteeService {
    */
   async deleteEmailTemplate(type, templateId, confirm) {
     if (!templateId) {
-      throw new Error('"Template ID" is required.');
+      throw new Error('"Template ID" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("email template", {
+      return this.#deletePreview('email template', {
         id: templateId,
-        type: type || "Message",
-      });
+        type: type || 'Message',
+      })
     }
 
-    const path = this.#emailTemplatePath(type);
+    const path = this.#emailTemplatePath(type)
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/${path}/${templateId}`,
-      method: "delete",
-      logTag: "deleteEmailTemplate",
-    });
+      url: `${ this.#getBaseUrl() }/${ path }/${ templateId }`,
+      method: 'delete',
+      logTag: 'deleteEmailTemplate',
+    })
 
-    return { confirmed: true, deleted: true, templateId };
+    return { confirmed: true, deleted: true, templateId }
   }
 
   /**
@@ -3699,26 +3702,26 @@ class RecruiteeService {
    */
   async sendSms(candidateId, message) {
     if (!candidateId) {
-      throw new Error('"Candidate" is required.');
+      throw new Error('"Candidate" is required.')
     }
 
     if (!message) {
-      throw new Error('"Message" is required.');
+      throw new Error('"Message" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/texting/messages`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/texting/messages`,
+      method: 'post',
       body: {
         message: {
           candidate_id: Number(candidateId) || candidateId,
           body: message,
         },
       },
-      logTag: "sendSms",
-    });
+      logTag: 'sendSms',
+    })
 
-    return data?.message || data;
+    return data?.message || data
   }
 
   /**
@@ -3736,16 +3739,16 @@ class RecruiteeService {
    */
   async listSmsThreads(candidateId) {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/texting/threads`,
+      url: `${ this.#getBaseUrl() }/texting/threads`,
       query: cleanupObject({
         candidate_id: candidateId
           ? Number(candidateId) || candidateId
           : undefined,
       }),
-      logTag: "listSmsThreads",
-    });
+      logTag: 'listSmsThreads',
+    })
 
-    return { threads: firstArray(data, ["threads"]) };
+    return { threads: firstArray(data, ['threads']) }
   }
 
   /**
@@ -3758,20 +3761,20 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Rejection - polite","value":"12","note":""}],"cursor":null}
    */
   async getEmailTemplatesDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/email_templates`,
-      keys: ["email_templates", "templates"],
+      url: `${ this.#getBaseUrl() }/email_templates`,
+      keys: ['email_templates', 'templates'],
       search,
       cursor,
-      logTag: "getEmailTemplatesDictionary",
-      mapFn: (template) => ({
+      logTag: 'getEmailTemplatesDictionary',
+      mapFn: template => ({
         label: template?.name || template?.title || String(template?.id),
         value: String(template?.id),
-        note: "",
+        note: '',
       }),
-    });
+    })
   }
 
   // ───────────────────────────── Requisitions ─────────────────────────────
@@ -3794,16 +3797,16 @@ class RecruiteeService {
    */
   async findRequisitions(status, page, limit) {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/requisitions`,
+      url: `${ this.#getBaseUrl() }/requisitions`,
       query: cleanupObject({
         scope: status,
         page: Number(page) || 1,
         limit: Number(limit) || DEFAULT_PAGE_SIZE,
       }),
-      logTag: "findRequisitions",
-    });
+      logTag: 'findRequisitions',
+    })
 
-    return { requisitions: firstArray(data, ["requisitions"]) };
+    return { requisitions: firstArray(data, ['requisitions']) }
   }
 
   /**
@@ -3821,15 +3824,15 @@ class RecruiteeService {
    */
   async getRequisition(requisitionId) {
     if (!requisitionId) {
-      throw new Error('"Requisition" is required.');
+      throw new Error('"Requisition" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/requisitions/${requisitionId}`,
-      logTag: "getRequisition",
-    });
+      url: `${ this.#getBaseUrl() }/requisitions/${ requisitionId }`,
+      logTag: 'getRequisition',
+    })
 
-    return data?.requisition || data;
+    return data?.requisition || data
   }
 
   /**
@@ -3850,7 +3853,7 @@ class RecruiteeService {
    */
   async createRequisition(title, departmentId, openings, additionalFields) {
     if (!title) {
-      throw new Error('"Title" is required.');
+      throw new Error('"Title" is required.')
     }
 
     const requisition = cleanupObject({
@@ -3859,19 +3862,19 @@ class RecruiteeService {
         ? Number(departmentId) || departmentId
         : undefined,
       openings: openings ? Number(openings) || openings : undefined,
-      ...(additionalFields && typeof additionalFields === "object"
+      ...(additionalFields && typeof additionalFields === 'object'
         ? additionalFields
         : {}),
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/requisitions`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/requisitions`,
+      method: 'post',
       body: { requisition },
-      logTag: "createRequisition",
-    });
+      logTag: 'createRequisition',
+    })
 
-    return data?.requisition || data;
+    return data?.requisition || data
   }
 
   /**
@@ -3892,7 +3895,7 @@ class RecruiteeService {
    */
   async updateRequisition(requisitionId, title, departmentId, openings) {
     if (!requisitionId) {
-      throw new Error('"Requisition" is required.');
+      throw new Error('"Requisition" is required.')
     }
 
     const requisition = cleanupObject({
@@ -3901,16 +3904,16 @@ class RecruiteeService {
         ? Number(departmentId) || departmentId
         : undefined,
       openings: openings ? Number(openings) || openings : undefined,
-    });
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/requisitions/${requisitionId}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/requisitions/${ requisitionId }`,
+      method: 'patch',
       body: { requisition },
-      logTag: "updateRequisition",
-    });
+      logTag: 'updateRequisition',
+    })
 
-    return data?.requisition || data;
+    return data?.requisition || data
   }
 
   /**
@@ -3930,23 +3933,23 @@ class RecruiteeService {
    */
   async updateRequisitionStatus(requisitionId, status, comment) {
     if (!requisitionId) {
-      throw new Error('"Requisition" is required.');
+      throw new Error('"Requisition" is required.')
     }
 
-    const allowed = ["approve", "reject", "archive", "cancel", "retrieve"];
+    const allowed = ['approve', 'reject', 'archive', 'cancel', 'retrieve']
 
     if (!allowed.includes(status)) {
-      throw new Error(`"New Status" must be one of: ${allowed.join(", ")}.`);
+      throw new Error(`"New Status" must be one of: ${ allowed.join(', ') }.`)
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/requisitions/${requisitionId}/${status}`,
-      method: "patch",
+      url: `${ this.#getBaseUrl() }/requisitions/${ requisitionId }/${ status }`,
+      method: 'patch',
       body: comment ? { comment } : undefined,
-      logTag: "updateRequisitionStatus",
-    });
+      logTag: 'updateRequisitionStatus',
+    })
 
-    return data?.requisition || data || { id: requisitionId, status };
+    return data?.requisition || data || { id: requisitionId, status }
   }
 
   /**
@@ -3965,20 +3968,20 @@ class RecruiteeService {
    */
   async deleteRequisition(requisitionId, confirm) {
     if (!requisitionId) {
-      throw new Error('"Requisition" is required.');
+      throw new Error('"Requisition" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("requisition", { id: requisitionId });
+      return this.#deletePreview('requisition', { id: requisitionId })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/requisitions/${requisitionId}`,
-      method: "delete",
-      logTag: "deleteRequisition",
-    });
+      url: `${ this.#getBaseUrl() }/requisitions/${ requisitionId }`,
+      method: 'delete',
+      logTag: 'deleteRequisition',
+    })
 
-    return { confirmed: true, deleted: true, requisitionId };
+    return { confirmed: true, deleted: true, requisitionId }
   }
 
   // ───────────────────────────── Saved searches & imports ─────────────────────────────
@@ -3996,11 +3999,11 @@ class RecruiteeService {
    */
   async listSavedSearches() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/search/segments`,
-      logTag: "listSavedSearches",
-    });
+      url: `${ this.#getBaseUrl() }/search/segments`,
+      logTag: 'listSavedSearches',
+    })
 
-    return { savedSearches: firstArray(data, ["segments"]) };
+    return { savedSearches: firstArray(data, ['segments']) }
   }
 
   /**
@@ -4019,22 +4022,22 @@ class RecruiteeService {
    */
   async createSavedSearch(name, filters) {
     if (!name) {
-      throw new Error('"Name" is required.');
+      throw new Error('"Name" is required.')
     }
 
     const segment = cleanupObject({
       name,
-      filters: filters && typeof filters === "object" ? filters : undefined,
-    });
+      filters: filters && typeof filters === 'object' ? filters : undefined,
+    })
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/search/segments`,
-      method: "post",
+      url: `${ this.#getBaseUrl() }/search/segments`,
+      method: 'post',
       body: { segment },
-      logTag: "createSavedSearch",
-    });
+      logTag: 'createSavedSearch',
+    })
 
-    return data?.segment || data;
+    return data?.segment || data
   }
 
   /**
@@ -4053,20 +4056,20 @@ class RecruiteeService {
    */
   async deleteSavedSearch(segmentId, confirm) {
     if (!segmentId) {
-      throw new Error('"Saved Search ID" is required.');
+      throw new Error('"Saved Search ID" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("saved search", { id: segmentId });
+      return this.#deletePreview('saved search', { id: segmentId })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/search/segments/${segmentId}`,
-      method: "delete",
-      logTag: "deleteSavedSearch",
-    });
+      url: `${ this.#getBaseUrl() }/search/segments/${ segmentId }`,
+      method: 'delete',
+      logTag: 'deleteSavedSearch',
+    })
 
-    return { confirmed: true, deleted: true, segmentId };
+    return { confirmed: true, deleted: true, segmentId }
   }
 
   /**
@@ -4082,11 +4085,11 @@ class RecruiteeService {
    */
   async listImports() {
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/imports`,
-      logTag: "listImports",
-    });
+      url: `${ this.#getBaseUrl() }/imports`,
+      logTag: 'listImports',
+    })
 
-    return { imports: firstArray(data, ["imports"]) };
+    return { imports: firstArray(data, ['imports']) }
   }
 
   /**
@@ -4104,15 +4107,15 @@ class RecruiteeService {
    */
   async getImport(importId) {
     if (!importId) {
-      throw new Error('"Import ID" is required.');
+      throw new Error('"Import ID" is required.')
     }
 
     const data = await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/imports/${importId}`,
-      logTag: "getImport",
-    });
+      url: `${ this.#getBaseUrl() }/imports/${ importId }`,
+      logTag: 'getImport',
+    })
 
-    return data?.import || data;
+    return data?.import || data
   }
 
   /**
@@ -4131,20 +4134,20 @@ class RecruiteeService {
    */
   async revertImport(importId, confirm) {
     if (!importId) {
-      throw new Error('"Import ID" is required.');
+      throw new Error('"Import ID" is required.')
     }
 
     if (!confirm) {
-      return this.#deletePreview("import", { id: importId });
+      return this.#deletePreview('import', { id: importId })
     }
 
     await this.#apiRequest({
-      url: `${this.#getBaseUrl()}/imports/${importId}/revert`,
-      method: "patch",
-      logTag: "revertImport",
-    });
+      url: `${ this.#getBaseUrl() }/imports/${ importId }/revert`,
+      method: 'patch',
+      logTag: 'revertImport',
+    })
 
-    return { confirmed: true, reverted: true, importId };
+    return { confirmed: true, reverted: true, importId }
   }
 
   /**
@@ -4157,21 +4160,21 @@ class RecruiteeService {
    * @sampleResult {"items":[{"label":"Backend Engineer","value":"2201","note":"pending"}],"cursor":null}
    */
   async getRequisitionsDictionary(payload) {
-    const { search, cursor } = payload || {};
+    const { search, cursor } = payload || {}
 
     return this.#fetchDictionary({
-      url: `${this.#getBaseUrl()}/requisitions`,
-      keys: ["requisitions"],
+      url: `${ this.#getBaseUrl() }/requisitions`,
+      keys: ['requisitions'],
       search,
       cursor,
-      logTag: "getRequisitionsDictionary",
-      mapFn: (requisition) => ({
+      logTag: 'getRequisitionsDictionary',
+      mapFn: requisition => ({
         label:
           requisition?.title || requisition?.name || String(requisition?.id),
         value: String(requisition?.id),
-        note: requisition?.status || "",
+        note: requisition?.status || '',
       }),
-    });
+    })
   }
 
   // ───────────────────────────── Triggers (polling) ─────────────────────────────
@@ -4192,38 +4195,38 @@ class RecruiteeService {
    * @sampleResult {"id":12345,"name":"Alex Carter","emails":["alex@example.com"],"created_at":"2025-01-20T09:00:00.000Z"}
    */
   async onNewCandidate(invocation) {
-    const jobId = invocation?.triggerData?.jobId;
+    const jobId = invocation?.triggerData?.jobId
     const { candidates } = await this.searchCandidates(
-      "",
+      '',
       jobId,
       null,
       1,
       DEFAULT_PAGE_SIZE,
-      "created_at_desc",
-    );
+      'created_at_desc'
+    )
 
     if (invocation?.learningMode) {
-      return { events: candidates.slice(0, 1), state: null };
+      return { events: candidates.slice(0, 1), state: null }
     }
 
-    const lastSeenId = invocation?.state?.lastSeenId;
-    const newestId = candidates[0]?.id ?? lastSeenId ?? null;
+    const lastSeenId = invocation?.state?.lastSeenId
+    const newestId = candidates[0]?.id ?? lastSeenId ?? null
 
     if (lastSeenId === undefined || lastSeenId === null) {
-      return { events: [], state: { lastSeenId: newestId } };
+      return { events: [], state: { lastSeenId: newestId } }
     }
 
-    const fresh = [];
+    const fresh = []
 
     for (const candidate of candidates) {
       if (String(candidate.id) === String(lastSeenId)) {
-        break;
+        break
       }
 
-      fresh.push(candidate);
+      fresh.push(candidate)
     }
 
-    return { events: fresh, state: { lastSeenId: newestId } };
+    return { events: fresh, state: { lastSeenId: newestId } }
   }
 
   /**
@@ -4242,37 +4245,37 @@ class RecruiteeService {
    * @sampleResult {"id":55501,"candidate_id":12345,"offer_id":987,"stage_name":"Applied","created_at":"2025-01-20T09:00:00.000Z"}
    */
   async onNewApplication(invocation) {
-    const jobId = invocation?.triggerData?.jobId;
+    const jobId = invocation?.triggerData?.jobId
 
     if (!jobId) {
-      return { events: [], state: invocation?.state || {} };
+      return { events: [], state: invocation?.state || {} }
     }
 
     const { placements } = await this.getJobCandidates(
       jobId,
       1,
-      DEFAULT_PAGE_SIZE,
-    );
+      DEFAULT_PAGE_SIZE
+    )
 
     if (invocation?.learningMode) {
-      return { events: placements.slice(0, 1), state: null };
+      return { events: placements.slice(0, 1), state: null }
     }
 
-    const lastSeenId = Number(invocation?.state?.lastSeenId) || 0;
+    const lastSeenId = Number(invocation?.state?.lastSeenId) || 0
     const maxId = placements.reduce(
       (max, placement) => Math.max(max, Number(placement.id) || 0),
-      lastSeenId,
-    );
+      lastSeenId
+    )
 
     if (!invocation?.state) {
-      return { events: [], state: { lastSeenId: maxId } };
+      return { events: [], state: { lastSeenId: maxId } }
     }
 
     const fresh = placements.filter(
-      (placement) => (Number(placement.id) || 0) > lastSeenId,
-    );
+      placement => (Number(placement.id) || 0) > lastSeenId
+    )
 
-    return { events: fresh, state: { lastSeenId: maxId } };
+    return { events: fresh, state: { lastSeenId: maxId } }
   }
 
   /**
@@ -4292,47 +4295,47 @@ class RecruiteeService {
    * @sampleResult {"id":55501,"candidate_id":12345,"offer_id":987,"stage_id":3002,"stage_name":"Interview"}
    */
   async onCandidateMovedToStage(invocation) {
-    const jobId = invocation?.triggerData?.jobId;
-    const stageId = invocation?.triggerData?.stageId;
+    const jobId = invocation?.triggerData?.jobId
+    const stageId = invocation?.triggerData?.stageId
 
     if (!jobId || !stageId) {
-      return { events: [], state: invocation?.state || {} };
+      return { events: [], state: invocation?.state || {} }
     }
 
-    const { placements } = await this.getJobCandidates(jobId, 1, 100);
-    const targetStage = String(stageId);
+    const { placements } = await this.getJobCandidates(jobId, 1, 100)
+    const targetStage = String(stageId)
 
-    const stageOf = (placement) =>
-      String(placement.stage_id ?? placement.stage?.id ?? "");
+    const stageOf = placement =>
+      String(placement.stage_id ?? placement.stage?.id ?? '')
 
     if (invocation?.learningMode) {
       const sample =
-        placements.find((placement) => stageOf(placement) === targetStage) ||
+        placements.find(placement => stageOf(placement) === targetStage) ||
         placements[0] ||
-        {};
+        {}
 
-      return { events: [sample], state: null };
+      return { events: [sample], state: null }
     }
 
-    const previous = invocation?.state?.stages || {};
-    const current = {};
-    const events = [];
+    const previous = invocation?.state?.stages || {}
+    const current = {}
+    const events = []
 
     for (const placement of placements) {
-      const sid = stageOf(placement);
+      const sid = stageOf(placement)
 
-      current[placement.id] = sid;
+      current[placement.id] = sid
 
       if (sid === targetStage && previous[placement.id] !== targetStage) {
-        events.push(placement);
+        events.push(placement)
       }
     }
 
     if (!invocation?.state) {
-      return { events: [], state: { stages: current } };
+      return { events: [], state: { stages: current } }
     }
 
-    return { events, state: { stages: current } };
+    return { events, state: { stages: current } }
   }
 
   /**
@@ -4351,42 +4354,42 @@ class RecruiteeService {
    * @sampleResult {"id":12345,"name":"Alex Carter","status":"hired"}
    */
   async onStatusChange(invocation) {
-    const eventType = invocation?.triggerData?.eventType;
-    let items = [];
+    const eventType = invocation?.triggerData?.eventType
+    let items = []
 
-    if (eventType === "Job published") {
-      items = (await this.listJobs("published", false, 1, DEFAULT_PAGE_SIZE))
-        .jobs;
+    if (eventType === 'Job published') {
+      items = (await this.listJobs('published', false, 1, DEFAULT_PAGE_SIZE))
+        .jobs
     } else {
-      const status = eventType === "Candidate hired" ? "hired" : "disqualified";
+      const status = eventType === 'Candidate hired' ? 'hired' : 'disqualified'
 
       items = (
         await this.searchCandidates(
-          "",
+          '',
           null,
           status,
           1,
           DEFAULT_PAGE_SIZE,
-          "created_at_desc",
+          'created_at_desc'
         )
-      ).candidates;
+      ).candidates
     }
 
     if (invocation?.learningMode) {
-      return { events: items.slice(0, 1), state: null };
+      return { events: items.slice(0, 1), state: null }
     }
 
-    const ids = items.map((item) => String(item.id));
+    const ids = items.map(item => String(item.id))
 
     if (!invocation?.state) {
-      return { events: [], state: { seen: ids } };
+      return { events: [], state: { seen: ids } }
     }
 
-    const seen = new Set(invocation.state.seen || []);
-    const fresh = items.filter((item) => !seen.has(String(item.id)));
-    const newSeen = Array.from(new Set([...ids, ...seen])).slice(0, 500);
+    const seen = new Set(invocation.state.seen || [])
+    const fresh = items.filter(item => !seen.has(String(item.id)))
+    const newSeen = Array.from(new Set([...ids, ...seen])).slice(0, 500)
 
-    return { events: fresh, state: { seen: newSeen } };
+    return { events: fresh, state: { seen: newSeen } }
   }
 
   /**
@@ -4395,9 +4398,9 @@ class RecruiteeService {
    * @returns {Object}
    */
   async handleTriggerPollingForEvent(invocation) {
-    logger.debug(`handleTriggerPollingForEvent.${invocation?.eventName}`);
+    logger.debug(`handleTriggerPollingForEvent.${ invocation?.eventName }`)
 
-    return this[invocation.eventName](invocation);
+    return this[invocation.eventName](invocation)
   }
 }
 
@@ -4499,21 +4502,21 @@ class RecruiteeService {
 
 Flowrunner.ServerCode.addService(RecruiteeService, [
   {
-    name: "apiToken",
-    displayName: "API Token",
+    name: 'apiToken',
+    displayName: 'API Token',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: false,
-    hint: "Your Personal API Token from Settings → Apps and plugins → Personal API tokens → + New token.",
+    hint: 'Your Personal API Token from Settings → Apps and plugins → Personal API tokens → + New token.',
   },
   {
-    name: "companyId",
-    displayName: "Company ID",
+    name: 'companyId',
+    displayName: 'Company ID',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: false,
-    hint: "Your Company ID (or the subdomain before .recruitee.com). Shown on the same API Tokens settings page.",
+    hint: 'Your Company ID (or the subdomain before .recruitee.com). Shown on the same API Tokens settings page.',
   },
-]);
+])
 
-module.exports = RecruiteeService;
+module.exports = RecruiteeService

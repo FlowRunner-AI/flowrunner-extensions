@@ -28,6 +28,7 @@ class Asana {
   constructor(config) {
     this.clientId = config.clientId
     this.clientSecret = config.clientSecret
+
     this.scope = [
       'workspaces:read',
       'projects:read',

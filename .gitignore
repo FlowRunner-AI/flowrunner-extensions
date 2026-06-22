@@ -1,3 +1,8 @@
 node_modules
 CLAUDE.local.md
 .claude/settings.local.json
+
+# Agent scratch memory — local, git-ignored space (never committed)
+.claude/agent-memory/
+# Agents must never create a .claude/ dir inside a service folder
+services/*/.claude/

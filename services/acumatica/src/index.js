@@ -6,10 +6,10 @@ const http = require('http')
 const DEFAULT_API_VERSION = '24.200.001'
 
 const logger = {
-  info : (...args) => console.log('[Acumatica Service] info:', ...args),
+  info: (...args) => console.log('[Acumatica Service] info:', ...args),
   debug: (...args) => console.log('[Acumatica Service] debug:', ...args),
   error: (...args) => console.log('[Acumatica Service] error:', ...args),
-  warn : (...args) => console.log('[Acumatica Service] warn:', ...args),
+  warn: (...args) => console.log('[Acumatica Service] warn:', ...args),
 }
 
 /**
@@ -33,9 +33,9 @@ class AcumaticaService {
 
   async #login() {
     const body = JSON.stringify({
-      name    : this.username,
+      name: this.username,
       password: this.password,
-      company : '',
+      company: '',
     })
 
     const loginUrl = new URL(`${ this.instanceUrl }/entity/auth/login`)
@@ -44,11 +44,11 @@ class AcumaticaService {
     return new Promise((resolve, reject) => {
       const req = protocol.request({
         hostname: loginUrl.hostname,
-        port    : loginUrl.port || (loginUrl.protocol === 'https:' ? 443 : 80),
-        path    : loginUrl.pathname,
-        method  : 'POST',
-        headers : {
-          'Content-Type'  : 'application/json',
+        port: loginUrl.port || (loginUrl.protocol === 'https:' ? 443 : 80),
+        path: loginUrl.pathname,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
           'Content-Length': Buffer.byteLength(body),
         },
       }, res => {
@@ -120,7 +120,7 @@ class AcumaticaService {
 
       const request = Flowrunner.Request[method](url)
         .set({
-          Cookie        : this.cookies,
+          Cookie: this.cookies,
           'Content-Type': 'application/json',
         })
 
@@ -183,7 +183,7 @@ class AcumaticaService {
 
     return this.#withSession(() => this.#apiRequest({
       logTag: 'validateVendor',
-      url   : `${ this.apiBaseUrl }/Vendor/${ encodeURIComponent(vendorId) }`,
+      url: `${ this.apiBaseUrl }/Vendor/${ encodeURIComponent(vendorId) }`,
     }))
   }
 
@@ -219,8 +219,8 @@ class AcumaticaService {
 
     return this.#withSession(() => this.#apiRequest({
       logTag: 'listVendors',
-      url   : `${ this.apiBaseUrl }/Vendor`,
-      query : Object.keys(query).length > 0 ? query : undefined,
+      url: `${ this.apiBaseUrl }/Vendor`,
+      query: Object.keys(query).length > 0 ? query : undefined,
     }))
   }
 
@@ -244,7 +244,7 @@ class AcumaticaService {
 
     return this.#withSession(() => this.#apiRequest({
       logTag: 'getVendor',
-      url   : `${ this.apiBaseUrl }/Vendor/${ encodeURIComponent(vendorId) }`,
+      url: `${ this.apiBaseUrl }/Vendor/${ encodeURIComponent(vendorId) }`,
     }))
   }
 
@@ -276,7 +276,7 @@ class AcumaticaService {
     }
 
     const vendor = {
-      VendorID  : { value: vendorId },
+      VendorID: { value: vendorId },
       VendorName: { value: vendorName },
     }
 
@@ -295,8 +295,8 @@ class AcumaticaService {
     return this.#withSession(() => this.#apiRequest({
       logTag: 'createVendor',
       method: 'put',
-      url   : `${ this.apiBaseUrl }/Vendor`,
-      body  : vendor,
+      url: `${ this.apiBaseUrl }/Vendor`,
+      body: vendor,
     }))
   }
 
@@ -343,8 +343,8 @@ class AcumaticaService {
 
     return this.#withSession(() => this.#apiRequest({
       logTag: 'checkDuplicateBill',
-      url   : `${ this.apiBaseUrl }/Bill`,
-      query : {
+      url: `${ this.apiBaseUrl }/Bill`,
+      query: {
         '$filter': `VendorID eq '${ vendorId }' and VendorRef eq '${ vendorRef }'`,
       },
     }))
@@ -382,9 +382,9 @@ class AcumaticaService {
     }
 
     const bill = {
-      Vendor   : { value: vendor },
+      Vendor: { value: vendor },
       VendorRef: { value: vendorRef },
-      Type     : { value: 'Bill' },
+      Type: { value: 'Bill' },
     }
 
     if (date) {
@@ -449,8 +449,8 @@ class AcumaticaService {
     return this.#withSession(() => this.#apiRequest({
       logTag: 'createBill',
       method: 'put',
-      url   : `${ this.apiBaseUrl }/Bill`,
-      body  : bill,
+      url: `${ this.apiBaseUrl }/Bill`,
+      body: bill,
     }))
   }
 
@@ -476,10 +476,10 @@ class AcumaticaService {
     return this.#withSession(() => this.#apiRequest({
       logTag: 'releaseBillFromHold',
       method: 'post',
-      url   : `${ this.apiBaseUrl }/Bill/ReleaseFromHold`,
-      body  : {
-        entity    : {
-          Type        : { value: 'Bill' },
+      url: `${ this.apiBaseUrl }/Bill/ReleaseFromHold`,
+      body: {
+        entity: {
+          Type: { value: 'Bill' },
           ReferenceNbr: { value: referenceNbr },
         },
         parameters: {},
@@ -507,8 +507,8 @@ class AcumaticaService {
 
     return this.#withSession(() => this.#apiRequest({
       logTag: 'getBill',
-      url   : `${ this.apiBaseUrl }/Bill`,
-      query : {
+      url: `${ this.apiBaseUrl }/Bill`,
+      query: {
         '$filter': `VendorRef eq '${ vendorRef }'`,
         '$expand': 'Details',
       },
@@ -544,7 +544,7 @@ class AcumaticaService {
 
     return this.#withSession(() => this.#apiRequest({
       logTag: 'searchBillsByDescription',
-      url   : `${ this.apiBaseUrl }/Bill`,
+      url: `${ this.apiBaseUrl }/Bill`,
       query,
     }))
   }
@@ -581,8 +581,8 @@ class AcumaticaService {
 
     return this.#withSession(() => this.#apiRequest({
       logTag: 'listBills',
-      url   : `${ this.apiBaseUrl }/Bill`,
-      query : Object.keys(query).length > 0 ? query : undefined,
+      url: `${ this.apiBaseUrl }/Bill`,
+      query: Object.keys(query).length > 0 ? query : undefined,
     }))
   }
 
@@ -606,8 +606,8 @@ class AcumaticaService {
 
     return this.#withSession(() => this.#apiRequest({
       logTag: 'getBillByReferenceNbr',
-      url   : `${ this.apiBaseUrl }/Bill`,
-      query : {
+      url: `${ this.apiBaseUrl }/Bill`,
+      query: {
         '$filter': `ReferenceNbr eq '${ referenceNbr }'`,
       },
     }))
@@ -636,7 +636,7 @@ class AcumaticaService {
       await this.#apiRequest({
         logTag: 'deleteBill',
         method: 'delete',
-        url   : `${ this.apiBaseUrl }/Bill/Bill/${ referenceNbr }`,
+        url: `${ this.apiBaseUrl }/Bill/Bill/${ referenceNbr }`,
       })
 
       return { deleted: true, referenceNbr }
@@ -685,7 +685,7 @@ class AcumaticaService {
 
         await Flowrunner.Request.put(uploadUrl)
           .set({
-            Cookie        : this.cookies,
+            Cookie: this.cookies,
             'Content-Type': 'application/octet-stream',
           })
           .send(fileData)
@@ -727,8 +727,8 @@ class AcumaticaService {
       // "Operation is not valid due to the current state of the object." on some versions.
       const bills = await this.#apiRequest({
         logTag: 'getBillFiles',
-        url   : `${ this.apiBaseUrl }/Bill`,
-        query : {
+        url: `${ this.apiBaseUrl }/Bill`,
+        query: {
           '$filter': `ReferenceNbr eq '${ referenceNbr }'`,
           '$expand': 'files',
         },
@@ -838,8 +838,8 @@ class AcumaticaService {
 
     return this.#withSession(() => this.#apiRequest({
       logTag: 'listGLAccounts',
-      url   : `${ this.apiBaseUrl }/Account`,
-      query : Object.keys(query).length > 0 ? query : undefined,
+      url: `${ this.apiBaseUrl }/Account`,
+      query: Object.keys(query).length > 0 ? query : undefined,
     }))
   }
 
@@ -875,8 +875,8 @@ class AcumaticaService {
 
     return this.#withSession(() => this.#apiRequest({
       logTag: 'listCreditTerms',
-      url   : `${ this.apiBaseUrl }/Terms`,
-      query : Object.keys(query).length > 0 ? query : undefined,
+      url: `${ this.apiBaseUrl }/Terms`,
+      query: Object.keys(query).length > 0 ? query : undefined,
     }))
   }
 
@@ -943,9 +943,9 @@ class AcumaticaService {
 
       const result = {
         customerID,
-        period         : { start, end },
+        period: { start, end },
         shipments_found: 0,
-        volumes        : [],
+        volumes: [],
       }
 
       if (!Array.isArray(shipments) || shipments.length === 0) {
@@ -972,7 +972,7 @@ class AcumaticaService {
           if (!skuMap[sku]) {
             skuMap[sku] = {
               sku,
-              description        : line.Description?.value || '',
+              description: line.Description?.value || '',
               total_cases_shipped: 0,
             }
           }
@@ -1005,7 +1005,7 @@ class AcumaticaService {
    */
   async getAPAccountBalance(vendorId) {
     const body = {
-      entity    : {},
+      entity: {},
       parameters: {},
     }
 
@@ -1016,7 +1016,7 @@ class AcumaticaService {
     return this.#withSession(() => this.#apiRequest({
       logTag: 'getAPAccountBalance',
       method: 'post',
-      url   : `${ this.apiBaseUrl }/Report/AP632000`,
+      url: `${ this.apiBaseUrl }/Report/AP632000`,
       body,
     }))
   }
@@ -1024,35 +1024,35 @@ class AcumaticaService {
 
 Flowrunner.ServerCode.addService(AcumaticaService, [
   {
-    order      : 0,
+    order: 0,
     displayName: 'Instance URL',
-    name       : 'instanceUrl',
-    type       : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required   : true,
-    hint       : 'Your Acumatica instance URL (e.g., https://mycompany.acumatica.com).',
+    name: 'instanceUrl',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: true,
+    hint: 'Your Acumatica instance URL (e.g., https://mycompany.acumatica.com).',
   },
   {
-    order      : 1,
+    order: 1,
     displayName: 'Username',
-    name       : 'username',
-    type       : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required   : true,
-    hint       : 'Acumatica API user login.',
+    name: 'username',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: true,
+    hint: 'Acumatica API user login.',
   },
   {
-    order      : 2,
+    order: 2,
     displayName: 'Password',
-    name       : 'password',
-    type       : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required   : true,
-    hint       : 'Acumatica API user password.',
+    name: 'password',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: true,
+    hint: 'Acumatica API user password.',
   },
   {
-    order      : 3,
+    order: 3,
     displayName: 'API Version',
-    name       : 'apiVersion',
-    type       : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required   : false,
-    hint       : `Endpoint version (default: ${ DEFAULT_API_VERSION }). Check your instance for supported versions.`,
+    name: 'apiVersion',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: false,
+    hint: `Endpoint version (default: ${ DEFAULT_API_VERSION }). Check your instance for supported versions.`,
   },
 ])

@@ -1,0 +1,97 @@
+{
+  "extends": [
+    "eslint-config-backendless"
+  ],
+  "parser": "espree",
+  "parserOptions": {
+    "ecmaVersion": 2023,
+    "sourceType": "module"
+  },
+  "globals": {
+    "Flowrunner": true
+  },
+  "rules": {
+    "radix": 0,
+    "max-len": 0,
+    "import/prefer-default-export": 0,
+    "import/no-cycle": 0,
+    "import/no-absolute-path": 0,
+    "import/no-extraneous-dependencies": 0,
+    "import/extensions": 0,
+    "no-promise-executor-return": 0,
+    "no-underscore-dangle": 0,
+    "no-mixed-operators": 0,
+    "global-require": 0,
+    "no-use-before-define": 0,
+    "class-methods-use-this": 0,
+    "no-await-in-loop": 0,
+    "camelcase": 0,
+    "consistent-return": 0,
+    "func-names": 0,
+    "no-param-reassign": 0,
+    "no-restricted-syntax": 0,
+    "no-continue": 0,
+    "guard-for-in": 0,
+    "no-inner-declarations": 0,
+    "no-plusplus": 0,
+    "arrow-body-style": 0,
+    "prefer-destructuring": 0,
+    "object-shorthand": 0,
+    "lines-between-class-members": 0,
+    "padded-blocks": 0,
+    "prefer-object-spread": 0,
+    "no-multiple-empty-lines": 0,
+    "template-curly-spacing": [
+      "warn",
+      "always"
+    ],
+    "import/newline-after-import": "warn",
+    "import/first": "warn",
+    "arrow-parens": [
+      "warn",
+      "as-needed"
+    ],
+    "operator-linebreak": [
+      "warn",
+      "after",
+      {
+        "overrides": {
+          "?": "before",
+          ":": "before"
+        }
+      }
+    ],
+    "object-curly-newline": [
+      "warn",
+      {
+        "multiline": true,
+        "consistent": true
+      }
+    ],
+    "key-spacing": [
+      "warn",
+      {
+        "mode": "strict"
+      }
+    ],
+    "quotes": [
+      "warn",
+      "single",
+      "avoid-escape"
+    ],
+    "semi": [
+      "warn",
+      "never"
+    ],
+    "comma-dangle": [
+      "warn",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "exports": "always-multiline",
+        "imports": "always-multiline",
+        "functions": "never"
+      }
+    ]
+  }
+}

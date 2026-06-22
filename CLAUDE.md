@@ -10,7 +10,7 @@ This is the FlowRunner Extensions repository, containing services that integrate
 
 ## Common Development Commands
 
-- **Linting**: `npm run lint` - Runs prettier formatting
+- **Linting**: `npm run lint` - Runs `eslint . --fix` (config: `.eslintrc.json`, extends `eslint-config-backendless`). Note: this lints/auto-fixes the **whole** repo; to avoid reformatting unrelated services, scope it with `npx eslint services/<name> --fix`. Some legacy services are not yet in the house style and a full `npm run lint` will rewrite them.
 
 ## Architecture & Structure
 

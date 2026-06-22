@@ -872,6 +872,54 @@ class GitHub {
   }
 
   /**
+     * @typedef {Object} getWorkflowsDictionary__payloadCriteria
+     * @paramDef {"type":"String","label":"Repository","name":"repository","required":true,"description":"Repository in format owner/repo","dictionary":"getRepositoriesDictionary"}
+     */
+
+  /**
+     * @typedef {Object} getWorkflowsDictionary__payload
+     * @paramDef {"type":"String","label":"Search","name":"search","description":"Filter workflows by name"}
+     * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor"}
+     * @paramDef {"type":"getWorkflowsDictionary__payloadCriteria","label":"Criteria","name":"criteria","required":true,"description":"Repository information"}
+     */
+
+  /**
+     * @registerAs DICTIONARY
+     * @operationName Get Workflows
+     * @category Actions
+     * @description Retrieves GitHub Actions workflows defined in a repository
+     * @route POST /get-workflows-dictionary
+     * @param {getWorkflowsDictionary__payload} payload
+     * @returns {DictionaryResponse}
+     * @sampleResult {"cursor":null,"items":[{"label":"CI","value":"161335","note":"File: .github/workflows/ci.yml"}]}
+     */
+  async getWorkflowsDictionary({ search, cursor, criteria }) {
+    const { owner, repo } = this.#parseRepository(criteria?.repository)
+    const page = cursor ? parseInt(cursor) : 1
+
+    const response = await this.#apiRequest({
+      url: `${ API_BASE_URL }/repos/${ owner }/${ repo }/actions/workflows`,
+      query: { per_page: 100, page },
+    })
+
+    let workflows = response?.workflows || []
+
+    if (search) {
+      const searchLower = search.toLowerCase()
+      workflows = workflows.filter(workflow => workflow.name.toLowerCase().includes(searchLower))
+    }
+
+    return {
+      items: workflows.map(workflow => ({
+        label: workflow.name,
+        value: String(workflow.id),
+        note: `File: ${ workflow.path }`,
+      })),
+      cursor: workflows.length === 100 ? String(page + 1) : null,
+    }
+  }
+
+  /**
      * @description Retrieves information about the authenticated user
      * @route POST /get-current-user
      * @operationName Get Current User
@@ -1407,6 +1455,125 @@ class GitHub {
       url: `${ API_BASE_URL }/repos/${ owner }/${ repo }/contents/${ path }`,
       method: 'delete',
       body: requestBody,
+    })
+  }
+
+  /**
+     * @description Retrieves the contents of a file or directory in a repository. When the path points to a file, GitHub returns a single object containing the Base64-encoded file content along with its sha, size and type ("file"). When the path points to a directory (or is empty, meaning the repository root), GitHub returns an array of entries, each describing a file or subdirectory with its name, path, sha, size and type. Use the optional ref to read from a specific branch, tag, or commit SHA.
+     * @route POST /get-repository-contents
+     * @operationName Get Contents
+     * @category Repositories
+     * @appearanceColor #24292f #57606a
+     *
+     * @paramDef {"type":"String","label":"Repository","name":"repository","required":true,"description":"Repository in format owner/repo","dictionary":"getRepositoriesDictionary"}
+     * @paramDef {"type":"String","label":"Path","name":"path","description":"The path to the file or directory. Leave empty to list the repository root directory."}
+     * @paramDef {"type":"String","label":"Ref","name":"ref","description":"The branch name, tag, or commit SHA to read from. Default: the repository's default branch.","dictionary":"getBranchesDictionary","dependsOn":["repository"]}
+     *
+     * @returns {Object}
+     * @sampleResult [{"name":"README.md","path":"README.md","sha":"9d0a391c42947019553579f500a399f264963a26","size":10,"type":"file","html_url":"https://github.com/octocat/Hello-World/blob/master/README.md","download_url":"https://raw.githubusercontent.com/octocat/Hello-World/master/README.md"},{"name":"src","path":"src","sha":"a84d88e7554fc1fa21bcbc4efae3c782a70d2b9d","size":0,"type":"dir","html_url":"https://github.com/octocat/Hello-World/tree/master/src","download_url":null}]
+     */
+  async getRepositoryContents(repository, path, ref) {
+    const { owner, repo } = this.#parseRepository(repository)
+
+    return await this.#apiRequest({
+      url: `${ API_BASE_URL }/repos/${ owner }/${ repo }/contents/${ path || '' }`,
+      query: this.#cleanObject({ ref }),
+    })
+  }
+
+  /**
+     * @description Retrieves a single file from a repository and returns its decoded UTF-8 text content. This is a convenience wrapper over the repository contents endpoint: it fetches the file, decodes the Base64 content GitHub returns, and provides the decoded text alongside the file's sha, size and URLs. Use the optional ref to read from a specific branch, tag, or commit SHA. Throws an error if the path points to a directory or is otherwise not a file. Intended for text files; binary files may not decode cleanly to UTF-8.
+     * @route POST /get-file-content
+     * @operationName Get File Content
+     * @category Repositories
+     * @appearanceColor #24292f #57606a
+     *
+     * @paramDef {"type":"String","label":"Repository","name":"repository","required":true,"description":"Repository in format owner/repo","dictionary":"getRepositoriesDictionary"}
+     * @paramDef {"type":"String","label":"Path","name":"path","required":true,"description":"The path to the file."}
+     * @paramDef {"type":"String","label":"Ref","name":"ref","description":"The branch name, tag, or commit SHA to read from. Default: the repository's default branch.","dictionary":"getBranchesDictionary","dependsOn":["repository"]}
+     *
+     * @returns {Object}
+     * @sampleResult {"path":"README.md","sha":"9d0a391c42947019553579f500a399f264963a26","size":24,"encoding":"utf-8","content":"# Hello-World\nMy first repo!\n","html_url":"https://github.com/octocat/Hello-World/blob/master/README.md","download_url":"https://raw.githubusercontent.com/octocat/Hello-World/master/README.md"}
+     */
+  async getFileContent(repository, path, ref) {
+    const { owner, repo } = this.#parseRepository(repository)
+
+    const file = await this.#apiRequest({
+      url: `${ API_BASE_URL }/repos/${ owner }/${ repo }/contents/${ path }`,
+      query: this.#cleanObject({ ref }),
+    })
+
+    if (Array.isArray(file) || !file || file.content === undefined) {
+      throw new Error(`Path is a directory or not a file: ${ path }`)
+    }
+
+    return {
+      path: file.path,
+      sha: file.sha,
+      size: file.size,
+      encoding: 'utf-8',
+      content: Buffer.from(file.content, 'base64').toString('utf-8'),
+      html_url: file.html_url,
+      download_url: file.download_url,
+    }
+  }
+
+  /**
+     * @description Lists commits for a repository. Returns the commits in reverse chronological order. You can narrow the results by branch or commit SHA to start from, a file or directory path, an author, and a date range. Supports pagination via per-page and page parameters.
+     * @route POST /list-commits
+     * @operationName List Commits
+     * @category Repositories
+     * @appearanceColor #24292f #57606a
+     *
+     * @paramDef {"type":"String","label":"Repository","name":"repository","required":true,"description":"Repository in format owner/repo","dictionary":"getRepositoriesDictionary"}
+     * @paramDef {"type":"String","label":"SHA or Branch","name":"sha","description":"Branch name or commit SHA to start listing commits from. Default: the repository's default branch.","dictionary":"getBranchesDictionary","dependsOn":["repository"]}
+     * @paramDef {"type":"String","label":"Path","name":"path","description":"Only return commits that touch this file or directory path."}
+     * @paramDef {"type":"String","label":"Author","name":"author","description":"GitHub login or email address to filter commits by author."}
+     * @paramDef {"type":"String","label":"Since","name":"since","description":"Only commits after this date will be returned. ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ)."}
+     * @paramDef {"type":"String","label":"Until","name":"until","description":"Only commits before this date will be returned. ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ)."}
+     * @paramDef {"type":"Number","label":"Per Page","name":"perPage","description":"Number of results per page (max 100). Default: 30.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     * @paramDef {"type":"Number","label":"Page","name":"page","description":"Page number of the results to fetch. Default: 1.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     *
+     * @returns {Object}
+     * @sampleResult [{"sha":"6dcb09b5b57875f334f61aebed695e2e4193db5e","commit":{"author":{"name":"Monalisa Octocat","email":"support@github.com","date":"2011-04-14T16:00:49Z"},"committer":{"name":"Monalisa Octocat","email":"support@github.com","date":"2011-04-14T16:00:49Z"},"message":"Fix all the bugs","comment_count":0},"author":{"login":"octocat","id":1},"committer":{"login":"octocat","id":1},"html_url":"https://github.com/octocat/Hello-World/commit/6dcb09b5b57875f334f61aebed695e2e4193db5e"}]
+     */
+  async listCommits(repository, sha, path, author, since, until, perPage, page) {
+    const { owner, repo } = this.#parseRepository(repository)
+
+    const query = this.#cleanObject({
+      sha,
+      path,
+      author,
+      since,
+      until,
+      per_page: perPage,
+      page,
+    })
+
+    return await this.#apiRequest({
+      url: `${ API_BASE_URL }/repos/${ owner }/${ repo }/commits`,
+      query,
+    })
+  }
+
+  /**
+     * @description Retrieves a single commit from a repository, identified by a commit SHA, branch name, or tag. The response includes the full commit details, including the author and committer, the commit message, the list of changed files with per-file additions/deletions, and aggregate stats for the commit.
+     * @route POST /get-commit
+     * @operationName Get Commit
+     * @category Repositories
+     * @appearanceColor #24292f #57606a
+     *
+     * @paramDef {"type":"String","label":"Repository","name":"repository","required":true,"description":"Repository in format owner/repo","dictionary":"getRepositoriesDictionary"}
+     * @paramDef {"type":"String","label":"Ref","name":"ref","required":true,"description":"The commit SHA, branch name, or tag to retrieve."}
+     *
+     * @returns {Object}
+     * @sampleResult {"sha":"6dcb09b5b57875f334f61aebed695e2e4193db5e","commit":{"author":{"name":"Monalisa Octocat","email":"support@github.com","date":"2011-04-14T16:00:49Z"},"committer":{"name":"Monalisa Octocat","email":"support@github.com","date":"2011-04-14T16:00:49Z"},"message":"Fix all the bugs"},"author":{"login":"octocat","id":1},"committer":{"login":"octocat","id":1},"html_url":"https://github.com/octocat/Hello-World/commit/6dcb09b5b57875f334f61aebed695e2e4193db5e","stats":{"total":108,"additions":104,"deletions":4},"files":[{"filename":"file1.txt","additions":10,"deletions":2,"changes":12,"status":"modified"}]}
+     */
+  async getCommit(repository, ref) {
+    const { owner, repo } = this.#parseRepository(repository)
+
+    return await this.#apiRequest({
+      url: `${ API_BASE_URL }/repos/${ owner }/${ repo }/commits/${ ref }`,
     })
   }
 
@@ -2975,6 +3142,220 @@ class GitHub {
       method: 'post',
       body: requestBody,
     })
+  }
+
+  /**
+     * @description Searches for repositories across GitHub using GitHub's search syntax (e.g. "tetris language:assembly stars:>100"). Returns matching repositories ranked by best match, or by the optional sort and order parameters. Results are paginated and the response includes the total number of matches and an incomplete_results flag indicating whether the search timed out before completion.
+     * @route POST /search-repositories
+     * @operationName Search Repositories
+     * @category Search
+     * @appearanceColor #24292f #57606a
+     *
+     * @paramDef {"type":"String","label":"Query","name":"query","required":true,"description":"The search query using GitHub search syntax (e.g. \"tetris language:assembly stars:>100\")."}
+     * @paramDef {"type":"String","label":"Sort","name":"sort","description":"The field to sort results by. Default: best match.","uiComponent":{"type":"DROPDOWN","options":[{"label":"Stars","value":"stars"},{"label":"Forks","value":"forks"},{"label":"Help Wanted Issues","value":"help-wanted-issues"},{"label":"Updated","value":"updated"}]}}
+     * @paramDef {"type":"String","label":"Order","name":"order","description":"The sort order. Default: desc.","uiComponent":{"type":"DROPDOWN","options":[{"label":"Descending","value":"desc"},{"label":"Ascending","value":"asc"}]}}
+     * @paramDef {"type":"Number","label":"Per Page","name":"perPage","description":"Number of results per page (max 100). Default: 30.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     * @paramDef {"type":"Number","label":"Page","name":"page","description":"Page number of the results to fetch. Default: 1.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     *
+     * @returns {Object}
+     * @sampleResult {"total_count":40,"incomplete_results":false,"items":[{"id":3081286,"name":"Tetris","full_name":"dtrupenn/Tetris","owner":{"login":"dtrupenn","id":872147},"private":false,"html_url":"https://github.com/dtrupenn/Tetris","description":"A C implementation of Tetris using Pennsim","stargazers_count":1,"language":"Assembly","forks_count":0}]}
+     */
+  async searchRepositories(query, sort, order, perPage, page) {
+    const searchQuery = this.#cleanObject({
+      q: query,
+      sort,
+      order,
+      per_page: perPage,
+      page,
+    })
+
+    return await this.#apiRequest({
+      url: `${ API_BASE_URL }/search/repositories`,
+      query: searchQuery,
+    })
+  }
+
+  /**
+     * @description Searches issues and pull requests across GitHub using GitHub's search syntax. GitHub's issue search covers both issues and pull requests, so results may include either type; you can scope the query with qualifiers such as "is:issue", "is:pr", "repo:owner/name", "is:open" or "label:bug". Results are paginated and the response includes the total number of matches and an incomplete_results flag.
+     * @route POST /search-issues
+     * @operationName Search Issues and Pull Requests
+     * @category Search
+     * @appearanceColor #24292f #57606a
+     *
+     * @paramDef {"type":"String","label":"Query","name":"query","required":true,"description":"The search query using GitHub search syntax (e.g. \"repo:octocat/Hello-World is:issue is:open label:bug\")."}
+     * @paramDef {"type":"String","label":"Sort","name":"sort","description":"The field to sort results by. Default: best match.","uiComponent":{"type":"DROPDOWN","options":[{"label":"Comments","value":"comments"},{"label":"Created","value":"created"},{"label":"Updated","value":"updated"}]}}
+     * @paramDef {"type":"String","label":"Order","name":"order","description":"The sort order. Default: desc.","uiComponent":{"type":"DROPDOWN","options":[{"label":"Descending","value":"desc"},{"label":"Ascending","value":"asc"}]}}
+     * @paramDef {"type":"Number","label":"Per Page","name":"perPage","description":"Number of results per page (max 100). Default: 30.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     * @paramDef {"type":"Number","label":"Page","name":"page","description":"Page number of the results to fetch. Default: 1.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     *
+     * @returns {Object}
+     * @sampleResult {"total_count":280,"incomplete_results":false,"items":[{"id":35802,"number":132,"title":"Line Number Indexes Beyond 20 Not Displayed","state":"open","html_url":"https://github.com/octocat/Spoon-Knife/issues/132","user":{"login":"Nick3C","id":90254},"labels":[{"name":"bug"}],"comments":15,"created_at":"2009-07-12T20:10:41Z","updated_at":"2009-07-19T09:23:43Z","body":"You should add a method..."}]}
+     */
+  async searchIssues(query, sort, order, perPage, page) {
+    const searchQuery = this.#cleanObject({
+      q: query,
+      sort,
+      order,
+      per_page: perPage,
+      page,
+    })
+
+    return await this.#apiRequest({
+      url: `${ API_BASE_URL }/search/issues`,
+      query: searchQuery,
+    })
+  }
+
+  // ======================================== ACTIONS (WORKFLOWS) ========================================
+
+  /**
+     * @description Lists all GitHub Actions workflows defined in a repository. Returns the total count and the workflow definitions, including each workflow's ID, name, path, and current state.
+     * @route POST /list-workflows
+     * @operationName List Workflows
+     * @category Actions
+     * @appearanceColor #24292f #57606a
+     *
+     * @paramDef {"type":"String","label":"Repository","name":"repository","required":true,"description":"Repository in format owner/repo","dictionary":"getRepositoriesDictionary"}
+     * @paramDef {"type":"Number","label":"Per Page","name":"perPage","description":"Number of results per page (max 100). Default: 30.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     * @paramDef {"type":"Number","label":"Page","name":"page","description":"Page number of the results to fetch. Default: 1.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     *
+     * @returns {Object}
+     * @sampleResult {"total_count":2,"workflows":[{"id":161335,"node_id":"MDg6V29ya2Zsb3cxNjEzMzU=","name":"CI","path":".github/workflows/ci.yml","state":"active","created_at":"2020-01-08T23:48:37.000-08:00","updated_at":"2020-01-08T23:50:21.000-08:00","url":"https://api.github.com/repos/octocat/Hello-World/actions/workflows/161335","html_url":"https://github.com/octocat/Hello-World/blob/master/.github/workflows/ci.yml","badge_url":"https://github.com/octocat/Hello-World/workflows/CI/badge.svg"}]}
+     */
+  async listWorkflows(repository, perPage, page) {
+    const { owner, repo } = this.#parseRepository(repository)
+
+    const query = this.#cleanObject({
+      per_page: perPage,
+      page,
+    })
+
+    return await this.#apiRequest({
+      url: `${ API_BASE_URL }/repos/${ owner }/${ repo }/actions/workflows`,
+      query,
+    })
+  }
+
+  /**
+     * @description Lists GitHub Actions workflow runs for a repository. Optionally scope the results to a single workflow by providing a workflow ID or filename, and filter by branch, triggering event, run status, or the user who triggered the run.
+     * @route POST /list-workflow-runs
+     * @operationName List Workflow Runs
+     * @category Actions
+     * @appearanceColor #24292f #57606a
+     *
+     * @paramDef {"type":"String","label":"Repository","name":"repository","required":true,"description":"Repository in format owner/repo","dictionary":"getRepositoriesDictionary"}
+     * @paramDef {"type":"String","label":"Workflow","name":"workflowId","description":"A workflow ID or filename to scope runs to. Leave empty to list runs across all workflows.","dictionary":"getWorkflowsDictionary","dependsOn":["repository"]}
+     * @paramDef {"type":"String","label":"Branch","name":"branch","description":"Returns runs associated with a branch name.","dictionary":"getBranchesDictionary","dependsOn":["repository"]}
+     * @paramDef {"type":"String","label":"Event","name":"event","description":"Returns runs triggered by the event specified (e.g. push, pull_request, workflow_dispatch)."}
+     * @paramDef {"type":"String","label":"Status","name":"status","description":"Returns runs with the check run status or conclusion specified.","uiComponent":{"type":"DROPDOWN","options":[{"label":"Queued","value":"queued"},{"label":"In Progress","value":"in_progress"},{"label":"Completed","value":"completed"},{"label":"Success","value":"success"},{"label":"Failure","value":"failure"},{"label":"Cancelled","value":"cancelled"},{"label":"Skipped","value":"skipped"},{"label":"Timed Out","value":"timed_out"},{"label":"Action Required","value":"action_required"}]}}
+     * @paramDef {"type":"String","label":"Actor","name":"actor","description":"Returns runs triggered by the user with this login.","dictionary":"getUsersDictionary"}
+     * @paramDef {"type":"Number","label":"Per Page","name":"perPage","description":"Number of results per page (max 100). Default: 30.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     * @paramDef {"type":"Number","label":"Page","name":"page","description":"Page number of the results to fetch. Default: 1.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     *
+     * @returns {Object}
+     * @sampleResult {"total_count":1,"workflow_runs":[{"id":30433642,"name":"CI","node_id":"MDEyOldvcmtmbG93IFJ1bjI2OTI4OQ==","head_branch":"main","head_sha":"acb5820ced9479c074f688cc328bf03f341a511d","run_number":562,"event":"push","status":"completed","conclusion":"success","workflow_id":161335,"url":"https://api.github.com/repos/octocat/Hello-World/actions/runs/30433642","html_url":"https://github.com/octocat/Hello-World/actions/runs/30433642","created_at":"2020-01-22T19:33:08Z","updated_at":"2020-01-22T19:33:08Z"}]}
+     */
+  async listWorkflowRuns(repository, workflowId, branch, event, status, actor, perPage, page) {
+    const { owner, repo } = this.#parseRepository(repository)
+
+    const query = this.#cleanObject({
+      branch,
+      event,
+      status,
+      actor,
+      per_page: perPage,
+      page,
+    })
+
+    const url = workflowId
+      ? `${ API_BASE_URL }/repos/${ owner }/${ repo }/actions/workflows/${ workflowId }/runs`
+      : `${ API_BASE_URL }/repos/${ owner }/${ repo }/actions/runs`
+
+    return await this.#apiRequest({ url, query })
+  }
+
+  /**
+     * @description Retrieves a single GitHub Actions workflow run by its ID, returning the full run object including status, conclusion, triggering event, commit, timing, and related URLs.
+     * @route POST /get-workflow-run
+     * @operationName Get Workflow Run
+     * @category Actions
+     * @appearanceColor #24292f #57606a
+     *
+     * @paramDef {"type":"String","label":"Repository","name":"repository","required":true,"description":"Repository in format owner/repo","dictionary":"getRepositoriesDictionary"}
+     * @paramDef {"type":"String","label":"Run ID","name":"runId","required":true,"description":"The unique identifier of the workflow run."}
+     *
+     * @returns {Object}
+     * @sampleResult {"id":30433642,"name":"CI","node_id":"MDEyOldvcmtmbG93IFJ1bjI2OTI4OQ==","head_branch":"main","head_sha":"acb5820ced9479c074f688cc328bf03f341a511d","run_number":562,"event":"push","status":"completed","conclusion":"success","workflow_id":161335,"url":"https://api.github.com/repos/octocat/Hello-World/actions/runs/30433642","html_url":"https://github.com/octocat/Hello-World/actions/runs/30433642","created_at":"2020-01-22T19:33:08Z","updated_at":"2020-01-22T19:33:08Z"}
+     */
+  async getWorkflowRun(repository, runId) {
+    const { owner, repo } = this.#parseRepository(repository)
+
+    return await this.#apiRequest({
+      url: `${ API_BASE_URL }/repos/${ owner }/${ repo }/actions/runs/${ runId }`,
+    })
+  }
+
+  /**
+     * @description Lists the jobs that belong to a GitHub Actions workflow run. By default returns jobs from the latest attempt; set the filter to 'all' to include jobs from previous attempts. Each job includes its status, conclusion, steps, and timing.
+     * @route POST /list-workflow-run-jobs
+     * @operationName List Workflow Run Jobs
+     * @category Actions
+     * @appearanceColor #24292f #57606a
+     *
+     * @paramDef {"type":"String","label":"Repository","name":"repository","required":true,"description":"Repository in format owner/repo","dictionary":"getRepositoriesDictionary"}
+     * @paramDef {"type":"String","label":"Run ID","name":"runId","required":true,"description":"The unique identifier of the workflow run."}
+     * @paramDef {"type":"String","label":"Filter","name":"filter","description":"Filters jobs by their attempt. Default: latest.","uiComponent":{"type":"DROPDOWN","options":[{"label":"Latest","value":"latest"},{"label":"All","value":"all"}]}}
+     * @paramDef {"type":"Number","label":"Per Page","name":"perPage","description":"Number of results per page (max 100). Default: 30.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     * @paramDef {"type":"Number","label":"Page","name":"page","description":"Page number of the results to fetch. Default: 1.","uiComponent":{"type":"NUMERIC_STEPPER"}}
+     *
+     * @returns {Object}
+     * @sampleResult {"total_count":1,"jobs":[{"id":399444496,"run_id":30433642,"node_id":"MDg6Q2hlY2tSdW4zOTk0NDQ0OTY=","head_sha":"acb5820ced9479c074f688cc328bf03f341a511d","status":"completed","conclusion":"success","name":"build","started_at":"2020-01-20T17:42:40Z","completed_at":"2020-01-20T17:44:39Z","steps":[{"name":"Set up job","status":"completed","conclusion":"success","number":1}],"url":"https://api.github.com/repos/octocat/Hello-World/actions/jobs/399444496","html_url":"https://github.com/octocat/Hello-World/runs/399444496"}]}
+     */
+  async listWorkflowRunJobs(repository, runId, filter, perPage, page) {
+    const { owner, repo } = this.#parseRepository(repository)
+
+    const query = this.#cleanObject({
+      filter,
+      per_page: perPage,
+      page,
+    })
+
+    return await this.#apiRequest({
+      url: `${ API_BASE_URL }/repos/${ owner }/${ repo }/actions/runs/${ runId }/jobs`,
+      query,
+    })
+  }
+
+  /**
+     * @description Manually triggers a GitHub Actions workflow that defines a 'workflow_dispatch' event. Specify the git ref (branch or tag) to run on and any inputs the workflow defines. GitHub returns no content on success, so this method returns { success: true }.
+     * @route POST /trigger-workflow-dispatch
+     * @operationName Trigger Workflow
+     * @category Actions
+     * @appearanceColor #24292f #57606a
+     *
+     * @paramDef {"type":"String","label":"Repository","name":"repository","required":true,"description":"Repository in format owner/repo","dictionary":"getRepositoriesDictionary"}
+     * @paramDef {"type":"String","label":"Workflow","name":"workflowId","required":true,"description":"The workflow ID or filename to run.","dictionary":"getWorkflowsDictionary","dependsOn":["repository"]}
+     * @paramDef {"type":"String","label":"Ref","name":"ref","required":true,"description":"The git reference (branch or tag) the workflow run should use.","dictionary":"getBranchesDictionary","dependsOn":["repository"]}
+     * @paramDef {"type":"Object","label":"Inputs","name":"inputs","description":"Key/value inputs that must match the workflow's defined workflow_dispatch inputs."}
+     *
+     * @returns {Object}
+     * @sampleResult {"success":true}
+     */
+  async triggerWorkflowDispatch(repository, workflowId, ref, inputs) {
+    const { owner, repo } = this.#parseRepository(repository)
+
+    const requestBody = this.#cleanObject({
+      ref,
+      inputs,
+    })
+
+    await this.#apiRequest({
+      url: `${ API_BASE_URL }/repos/${ owner }/${ repo }/actions/workflows/${ workflowId }/dispatches`,
+      method: 'post',
+      body: requestBody,
+    })
+
+    return { success: true }
   }
 
   // ======================================== TRIGGERS ========================================

@@ -1,0 +1,13 @@
+{
+  "name": "flowrunner-shared-extensions",
+  "version": "1.0.0",
+  "description": "FlowRunner extension services",
+  "scripts": {
+    "lint": "eslint . --fix"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-backendless": "^1.1.1"
+  },
+  "license": "MIT"
+}

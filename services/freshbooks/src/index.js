@@ -1,6 +1,6 @@
-"use strict";
+'use strict'
 
-const crypto = require("crypto");
+const crypto = require('crypto')
 
 /**
  * ============================================================================
@@ -19,273 +19,273 @@ const crypto = require("crypto");
 
 // ============================== 1. CONSTANTS ===============================
 
-const OAUTH_AUTH_URL = "https://auth.freshbooks.com/oauth/authorize/";
-const TOKEN_URL = "https://api.freshbooks.com/auth/oauth/token";
-const IDENTITY_URL = "https://api.freshbooks.com/auth/api/v1/users/me";
-const API_BASE = "https://api.freshbooks.com";
+const OAUTH_AUTH_URL = 'https://auth.freshbooks.com/oauth/authorize/'
+const TOKEN_URL = 'https://api.freshbooks.com/auth/oauth/token'
+const IDENTITY_URL = 'https://api.freshbooks.com/auth/api/v1/users/me'
+const API_BASE = 'https://api.freshbooks.com'
 
 // Scopes are immutable once a token is issued, so we request the full set up front.
 const DEFAULT_SCOPE_LIST = [
-  "user:profile:read",
-  "user:business:read",
-  "user:clients:read",
-  "user:clients:write",
-  "user:invoices:read",
-  "user:invoices:write",
-  "user:estimates:read",
-  "user:estimates:write",
-  "user:expenses:read",
-  "user:expenses:write",
-  "user:payments:read",
-  "user:payments:write",
-  "user:credit_notes:read",
-  "user:credit_notes:write",
-  "user:billable_items:read",
-  "user:billable_items:write",
-  "user:taxes:read",
-  "user:taxes:write",
-  "user:other_income:read",
-  "user:other_income:write",
-  "user:projects:read",
-  "user:projects:write",
-  "user:time_entries:read",
-  "user:time_entries:write",
-  "user:bills:read",
-  "user:bills:write",
-  "user:bill_vendors:read",
-  "user:bill_vendors:write",
-  "user:bill_payments:read",
-  "user:bill_payments:write",
-  "user:online_payments:read",
-  "user:online_payments:write",
-  "user:teams:read",
-  "user:teams:write",
-  "user:reports:read",
-];
+  'user:profile:read',
+  'user:business:read',
+  'user:clients:read',
+  'user:clients:write',
+  'user:invoices:read',
+  'user:invoices:write',
+  'user:estimates:read',
+  'user:estimates:write',
+  'user:expenses:read',
+  'user:expenses:write',
+  'user:payments:read',
+  'user:payments:write',
+  'user:credit_notes:read',
+  'user:credit_notes:write',
+  'user:billable_items:read',
+  'user:billable_items:write',
+  'user:taxes:read',
+  'user:taxes:write',
+  'user:other_income:read',
+  'user:other_income:write',
+  'user:projects:read',
+  'user:projects:write',
+  'user:time_entries:read',
+  'user:time_entries:write',
+  'user:bills:read',
+  'user:bills:write',
+  'user:bill_vendors:read',
+  'user:bill_vendors:write',
+  'user:bill_payments:read',
+  'user:bill_payments:write',
+  'user:online_payments:read',
+  'user:online_payments:write',
+  'user:teams:read',
+  'user:teams:write',
+  'user:reports:read',
+]
 
-const DEFAULT_SCOPE_STRING = DEFAULT_SCOPE_LIST.join(" ");
+const DEFAULT_SCOPE_STRING = DEFAULT_SCOPE_LIST.join(' ')
 
-const DEFAULT_PER_PAGE = 100;
+const DEFAULT_PER_PAGE = 100
 
 // Friendly currency list for the Currency picker (FreshBooks has no list endpoint for these).
 const COMMON_CURRENCIES = [
-  ["USD", "US Dollar"],
-  ["EUR", "Euro"],
-  ["GBP", "British Pound"],
-  ["CAD", "Canadian Dollar"],
-  ["AUD", "Australian Dollar"],
-  ["NZD", "New Zealand Dollar"],
-  ["JPY", "Japanese Yen"],
-  ["CHF", "Swiss Franc"],
-  ["INR", "Indian Rupee"],
-  ["SGD", "Singapore Dollar"],
-  ["HKD", "Hong Kong Dollar"],
-  ["ZAR", "South African Rand"],
-  ["MXN", "Mexican Peso"],
-  ["BRL", "Brazilian Real"],
-  ["SEK", "Swedish Krona"],
-  ["NOK", "Norwegian Krone"],
-  ["DKK", "Danish Krone"],
-  ["PLN", "Polish Zloty"],
-  ["AED", "UAE Dirham"],
-];
+  ['USD', 'US Dollar'],
+  ['EUR', 'Euro'],
+  ['GBP', 'British Pound'],
+  ['CAD', 'Canadian Dollar'],
+  ['AUD', 'Australian Dollar'],
+  ['NZD', 'New Zealand Dollar'],
+  ['JPY', 'Japanese Yen'],
+  ['CHF', 'Swiss Franc'],
+  ['INR', 'Indian Rupee'],
+  ['SGD', 'Singapore Dollar'],
+  ['HKD', 'Hong Kong Dollar'],
+  ['ZAR', 'South African Rand'],
+  ['MXN', 'Mexican Peso'],
+  ['BRL', 'Brazilian Real'],
+  ['SEK', 'Swedish Krona'],
+  ['NOK', 'Norwegian Krone'],
+  ['DKK', 'Danish Krone'],
+  ['PLN', 'Polish Zloty'],
+  ['AED', 'UAE Dirham'],
+]
 
 // Friendly invoice status label -> FreshBooks v3_status value (used for filtering).
 const INVOICE_STATUS_FILTER = {
-  Draft: "draft",
-  Sent: "sent",
-  Viewed: "viewed",
-  Paid: "paid",
-  "Partially Paid": "partial",
-  Overdue: "overdue",
-  Disputed: "disputed",
-};
+  Draft: 'draft',
+  Sent: 'sent',
+  Viewed: 'viewed',
+  Paid: 'paid',
+  'Partially Paid': 'partial',
+  Overdue: 'overdue',
+  Disputed: 'disputed',
+}
 
 // Friendly recurring-frequency label -> FreshBooks frequency code (<n><unit>).
 const RECURRING_FREQUENCY = {
-  Weekly: "w",
-  "Every 2 Weeks": "2w",
-  Monthly: "m",
-  "Every 3 Months": "3m",
-  "Every 6 Months": "6m",
-  Yearly: "y",
-};
+  Weekly: 'w',
+  'Every 2 Weeks': '2w',
+  Monthly: 'm',
+  'Every 3 Months': '3m',
+  'Every 6 Months': '6m',
+  Yearly: 'y',
+}
 
 // Friendly other-income category label -> FreshBooks category_name.
 const OTHER_INCOME_CATEGORY = {
-  Advertising: "advertising",
-  "In-Person Sales": "in_person_sales",
-  "Online Sales": "online_sales",
-  Rentals: "rentals",
-  Other: "other",
-};
+  Advertising: 'advertising',
+  'In-Person Sales': 'in_person_sales',
+  'Online Sales': 'online_sales',
+  Rentals: 'rentals',
+  Other: 'other',
+}
 
 // Friendly report name -> FreshBooks accounting report slug.
 const REPORT_SLUGS = {
-  "Profit & Loss": "profitloss",
-  "Tax Summary": "taxsummary",
-  "Accounts Aging": "accounts_aging",
-  "Invoice Details": "invoice_details",
-  "Payments Collected": "payments_collected",
-  "Expense Summary": "expense_summary",
-};
+  'Profit & Loss': 'profitloss',
+  'Tax Summary': 'taxsummary',
+  'Accounts Aging': 'accounts_aging',
+  'Invoice Details': 'invoice_details',
+  'Payments Collected': 'payments_collected',
+  'Expense Summary': 'expense_summary',
+}
 
 // Friendly trigger event label -> FreshBooks webhook event name.
 const TRIGGER_EVENTS = {
-  "New Invoice": "invoice.create",
-  "Invoice Updated": "invoice.update",
-  "New Payment": "payment.create",
-  "New Client": "client.create",
-  "Client Updated": "client.update",
-  "New Estimate": "estimate.create",
-  "New Expense": "expense.create",
-  "New Credit Note": "credit_note.create",
-  "New Item": "item.create",
-  "New Project": "project.create",
-  "New Time Entry": "time_entry.create",
-  "New Bill": "bill.create",
-  "New Tax": "tax.create",
-};
+  'New Invoice': 'invoice.create',
+  'Invoice Updated': 'invoice.update',
+  'New Payment': 'payment.create',
+  'New Client': 'client.create',
+  'Client Updated': 'client.update',
+  'New Estimate': 'estimate.create',
+  'New Expense': 'expense.create',
+  'New Credit Note': 'credit_note.create',
+  'New Item': 'item.create',
+  'New Project': 'project.create',
+  'New Time Entry': 'time_entry.create',
+  'New Bill': 'bill.create',
+  'New Tax': 'tax.create',
+}
 
 const logger = {
-  info: (...args) => console.log("[FreshBooks Service] info:", ...args),
-  debug: (...args) => console.log("[FreshBooks Service] debug:", ...args),
-  error: (...args) => console.log("[FreshBooks Service] error:", ...args),
-  warn: (...args) => console.log("[FreshBooks Service] warn:", ...args),
-};
+  info: (...args) => console.log('[FreshBooks Service] info:', ...args),
+  debug: (...args) => console.log('[FreshBooks Service] debug:', ...args),
+  error: (...args) => console.log('[FreshBooks Service] error:', ...args),
+  warn: (...args) => console.log('[FreshBooks Service] warn:', ...args),
+}
 
 // ============================== 2. HELPERS =================================
 
 function cleanupObject(data) {
-  if (!data) return data;
+  if (!data) return data
 
-  const result = {};
+  const result = {}
 
-  Object.keys(data).forEach((key) => {
-    if (data[key] !== undefined && data[key] !== null && data[key] !== "") {
-      result[key] = data[key];
+  Object.keys(data).forEach(key => {
+    if (data[key] !== undefined && data[key] !== null && data[key] !== '') {
+      result[key] = data[key]
     }
-  });
+  })
 
-  return Object.keys(result).length > 0 ? result : undefined;
+  return Object.keys(result).length > 0 ? result : undefined
 }
 
 // Filters a list client-side across one or more (possibly nested) properties.
 function searchFilter(list, props, searchString) {
-  if (!searchString) return list;
+  if (!searchString) return list
 
-  const needle = searchString.toLowerCase();
+  const needle = searchString.toLowerCase()
 
-  return list.filter((item) =>
-    props.some((prop) => {
-      const value = prop.split(".").reduce((acc, key) => acc?.[key], item);
+  return list.filter(item =>
+    props.some(prop => {
+      const value = prop.split('.').reduce((acc, key) => acc?.[key], item)
 
       return (
         value !== undefined &&
         value !== null &&
         String(value).toLowerCase().includes(needle)
-      );
-    }),
-  );
+      )
+    })
+  )
 }
 
 // FreshBooks money is always an object: { amount: "240.00", code: "USD" }.
 function toMoney(amount, code) {
-  if (amount === undefined || amount === null || amount === "")
-    return undefined;
+  if (amount === undefined || amount === null || amount === '')
+    return undefined
 
-  return { amount: String(amount), code: code || "USD" };
+  return { amount: String(amount), code: code || 'USD' }
 }
 
 function formatMoney(money) {
-  if (!money || money.amount === undefined) return "";
+  if (!money || money.amount === undefined) return ''
 
-  return `${money.code || ""} ${Number(money.amount).toFixed(2)}`.trim();
+  return `${ money.code || '' } ${ Number(money.amount).toFixed(2) }`.trim()
 }
 
 // Accepts whatever a DATE_PICKER hands us and returns the YYYY-MM-DD form FreshBooks expects.
 function formatDate(value) {
-  if (!value) return undefined;
+  if (!value) return undefined
 
-  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value)) {
-    return value.slice(0, 10);
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) {
+    return value.slice(0, 10)
   }
 
-  const date = new Date(value);
+  const date = new Date(value)
 
-  if (Number.isNaN(date.getTime())) return undefined;
+  if (Number.isNaN(date.getTime())) return undefined
 
-  return date.toISOString().slice(0, 10);
+  return date.toISOString().slice(0, 10)
 }
 
 // Time entries store length in seconds; users think in hours.
 function hoursToSeconds(hours) {
-  if (hours === undefined || hours === null || hours === "") return undefined;
+  if (hours === undefined || hours === null || hours === '') return undefined
 
-  return Math.round(Number(hours) * 3600);
+  return Math.round(Number(hours) * 3600)
 }
 
 // Builds the ISO-8601 UTC timestamp the time-tracking API expects (noon avoids date drift).
 function startedAt(date) {
-  const day = formatDate(date);
+  const day = formatDate(date)
 
-  return day ? `${day}T12:00:00.000Z` : new Date().toISOString();
+  return day ? `${ day }T12:00:00.000Z` : new Date().toISOString()
 }
 
 // FreshBooks sets an invoice due date as an offset (in days) from its issue date.
 function dueOffsetDays(createDate, dueDate) {
-  if (!dueDate) return undefined;
+  if (!dueDate) return undefined
 
-  const start = createDate ? new Date(createDate) : new Date();
-  const end = new Date(dueDate);
+  const start = createDate ? new Date(createDate) : new Date()
+  const end = new Date(dueDate)
 
   if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime()))
-    return undefined;
+    return undefined
 
-  const diff = Math.round((end.getTime() - start.getTime()) / 86400000);
+  const diff = Math.round((end.getTime() - start.getTime()) / 86400000)
 
-  return diff >= 0 ? diff : undefined;
+  return diff >= 0 ? diff : undefined
 }
 
 // Turns a FreshBooks error body into a plain-English message. Covers the three shapes
 // the API uses: accounting { response: { errors: [...] } }, projects/time { error: "..." },
 // and OAuth { error_description: "..." }.
 function describeError(error, fallback) {
-  const body = error?.body || error;
+  const body = error?.body || error
 
-  const fbErrors = body?.response?.errors;
+  const fbErrors = body?.response?.errors
 
   if (Array.isArray(fbErrors) && fbErrors.length > 0) {
     return fbErrors
-      .map((e) => e.message)
+      .map(e => e.message)
       .filter(Boolean)
-      .join("; ");
+      .join('; ')
   }
 
-  if (typeof body?.error === "string") return body.error;
+  if (typeof body?.error === 'string') return body.error
 
-  if (body?.error && typeof body.error === "object") {
-    if (body.error.message) return body.error.message;
+  if (body?.error && typeof body.error === 'object') {
+    if (body.error.message) return body.error.message
 
     const fieldMessages = Object.values(body.error).filter(
-      (v) => typeof v === "string",
-    );
+      v => typeof v === 'string'
+    )
 
-    if (fieldMessages.length > 0) return fieldMessages.join("; ");
+    if (fieldMessages.length > 0) return fieldMessages.join('; ')
   }
 
   if (Array.isArray(body?.errors) && body.errors.length > 0) {
     return body.errors
-      .map((e) => (typeof e === "string" ? e : e.message))
+      .map(e => (typeof e === 'string' ? e : e.message))
       .filter(Boolean)
-      .join("; ");
+      .join('; ')
   }
 
-  if (body?.error_description) return body.error_description;
-  if (body?.message && typeof body.message === "string") return body.message;
-  if (typeof body === "string") return body;
+  if (body?.error_description) return body.error_description
+  if (body?.message && typeof body.message === 'string') return body.message
+  if (typeof body === 'string') return body
 
-  return fallback || "Unexpected FreshBooks error.";
+  return fallback || 'Unexpected FreshBooks error.'
 }
 
 // ============================== 3. SERVICE =================================
@@ -298,81 +298,81 @@ function describeError(error, fallback) {
  */
 class FreshBooksService {
   constructor(config) {
-    this.clientId = config.clientId;
-    this.clientSecret = config.clientSecret;
-    this.scopes = DEFAULT_SCOPE_STRING;
+    this.clientId = config.clientId
+    this.clientSecret = config.clientSecret
+    this.scopes = DEFAULT_SCOPE_STRING
   }
 
   // -------------------------- auth + dual-id routing ------------------------
 
   #getAccessToken() {
-    const token = this.request.headers["oauth-access-token"];
+    const token = this.request.headers['oauth-access-token']
 
     if (!token) {
       throw new Error(
-        "Not connected to FreshBooks. Please connect your FreshBooks account.",
-      );
+        'Not connected to FreshBooks. Please connect your FreshBooks account.'
+      )
     }
 
-    return token;
+    return token
   }
 
   #getAccessTokenHeader() {
-    return { Authorization: `Bearer ${this.#getAccessToken()}` };
+    return { Authorization: `Bearer ${ this.#getAccessToken() }` }
   }
 
   #getSecretTokenHeader() {
     const credentials = Buffer.from(
-      `${this.clientId}:${this.clientSecret}`,
-    ).toString("base64");
+      `${ this.clientId }:${ this.clientSecret }`
+    ).toString('base64')
 
-    return { Authorization: `Basic ${credentials}` };
+    return { Authorization: `Basic ${ credentials }` }
   }
 
   // account_id (alphanumeric) drives all /accounting/account/<id>/... calls.
   #getAccountId() {
-    const accountId = this.request.headers["oauth-user-data-accountid"];
+    const accountId = this.request.headers['oauth-user-data-accountid']
 
     if (!accountId) {
       throw new Error(
-        "FreshBooks account not identified. Please reconnect your FreshBooks account.",
-      );
+        'FreshBooks account not identified. Please reconnect your FreshBooks account.'
+      )
     }
 
-    return accountId;
+    return accountId
   }
 
   // business_id (integer) drives /projects/business/<id>/... and /timetracking/business/<id>/... calls.
   #getBusinessId() {
-    const businessId = this.request.headers["oauth-user-data-businessid"];
+    const businessId = this.request.headers['oauth-user-data-businessid']
 
     if (!businessId) {
       throw new Error(
-        "FreshBooks business not identified. Please reconnect your FreshBooks account.",
-      );
+        'FreshBooks business not identified. Please reconnect your FreshBooks account.'
+      )
     }
 
-    return businessId;
+    return businessId
   }
 
   #accountingUrl(path) {
-    return `${API_BASE}/accounting/account/${this.#getAccountId()}/${path}`;
+    return `${ API_BASE }/accounting/account/${ this.#getAccountId() }/${ path }`
   }
 
   #projectsUrl(path) {
-    return `${API_BASE}/projects/business/${this.#getBusinessId()}/${path}`;
+    return `${ API_BASE }/projects/business/${ this.#getBusinessId() }/${ path }`
   }
 
   #timeUrl(path) {
-    return `${API_BASE}/timetracking/business/${this.#getBusinessId()}/${path}`;
+    return `${ API_BASE }/timetracking/business/${ this.#getBusinessId() }/${ path }`
   }
 
   #commentsUrl(path) {
-    return `${API_BASE}/comments/business/${this.#getBusinessId()}/${path}`;
+    return `${ API_BASE }/comments/business/${ this.#getBusinessId() }/${ path }`
   }
 
   #eventsUrl(path) {
-    return `${API_BASE}/events/account/${this.#getAccountId()}/${path}`;
+    return `${ API_BASE }/events/account/${ this.#getAccountId() }/${ path }`
   }
 
   /**
@@ -380,64 +380,64 @@ class FreshBooksService {
    * also satisfies FreshBooks' rule that Projects/Time GETs must omit Content-Type.
    */
   async #apiRequest({ url, method, body, query, logTag, headers }) {
-    method = method || "get";
+    method = method || 'get'
 
     logger.debug(
-      `${logTag} - [${method}::${url}] q=[${JSON.stringify(query || {})}]`,
-    );
+      `${ logTag } - [${ method }::${ url }] q=[${ JSON.stringify(query || {}) }]`
+    )
 
     try {
       const request = Flowrunner.Request[method](url)
         .set(this.#getAccessTokenHeader())
-        .set({ Accept: "application/json", "Api-Version": "alpha" });
+        .set({ Accept: 'application/json', 'Api-Version': 'alpha' })
 
       if (query) {
-        request.query(cleanupObject(query) || {});
+        request.query(cleanupObject(query) || {})
       }
 
       if (headers) {
-        request.set(headers);
+        request.set(headers)
       }
 
       if (body !== undefined) {
-        request.set({ "Content-Type": "application/json" });
+        request.set({ 'Content-Type': 'application/json' })
 
-        return await request.send(body);
+        return await request.send(body)
       }
 
-      return await request;
+      return await request
     } catch (error) {
-      const message = describeError(error, `${logTag} failed.`);
+      const message = describeError(error, `${ logTag } failed.`)
 
-      logger.error(`${logTag} - ${message}`);
+      logger.error(`${ logTag } - ${ message }`)
 
-      throw new Error(message);
+      throw new Error(message)
     }
   }
 
   // Unwraps the accounting envelope: { response: { result: { <key>: ... } } }.
   #unwrap(body, key) {
-    return body?.response?.result?.[key];
+    return body?.response?.result?.[key]
   }
 
   // Unwraps an accounting list, returning items plus paging meta.
   #unwrapList(body, key) {
-    const result = body?.response?.result || {};
+    const result = body?.response?.result || {}
 
     return {
       items: result[key] || [],
       page: result.page,
       pages: result.pages,
       total: result.total,
-    };
+    }
   }
 
   async #me() {
     const body = await Flowrunner.Request.get(IDENTITY_URL)
       .set(this.#getAccessTokenHeader())
-      .set({ Accept: "application/json", "Api-Version": "alpha" });
+      .set({ Accept: 'application/json', 'Api-Version': 'alpha' })
 
-    return body?.response || body;
+    return body?.response || body
   }
 
   // ============================ 4. OAUTH2 ==================================
@@ -448,13 +448,13 @@ class FreshBooksService {
    * @returns {String}
    */
   async getOAuth2ConnectionURL() {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams()
 
-    params.append("client_id", this.clientId);
-    params.append("response_type", "code");
-    params.append("scope", this.scopes);
+    params.append('client_id', this.clientId)
+    params.append('response_type', 'code')
+    params.append('scope', this.scopes)
 
-    return `${OAUTH_AUTH_URL}?${params.toString()}`;
+    return `${ OAUTH_AUTH_URL }?${ params.toString() }`
   }
 
   /**
@@ -476,42 +476,42 @@ class FreshBooksService {
    * @returns {executeCallback_ResultObject}
    */
   async executeCallback(callbackObject) {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams()
 
-    params.append("grant_type", "authorization_code");
-    params.append("client_id", this.clientId);
-    params.append("client_secret", this.clientSecret);
-    params.append("code", callbackObject.code);
-    params.append("redirect_uri", callbackObject.redirectURI);
+    params.append('grant_type', 'authorization_code')
+    params.append('client_id', this.clientId)
+    params.append('client_secret', this.clientSecret)
+    params.append('code', callbackObject.code)
+    params.append('redirect_uri', callbackObject.redirectURI)
 
     const tokenResponse = await Flowrunner.Request.post(TOKEN_URL)
-      .set({ "Content-Type": "application/x-www-form-urlencoded" })
-      .send(params.toString());
+      .set({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      .send(params.toString())
 
     // Resolve the primary business so every method can route accounting vs projects/time calls.
-    let accountId = "";
-    let businessId = "";
-    let businessName = "FreshBooks";
+    let accountId = ''
+    let businessId = ''
+    let businessName = 'FreshBooks'
 
     try {
       const identity = await Flowrunner.Request.get(IDENTITY_URL)
-        .set({ Authorization: `Bearer ${tokenResponse.access_token}` })
-        .set({ Accept: "application/json", "Api-Version": "alpha" });
+        .set({ Authorization: `Bearer ${ tokenResponse.access_token }` })
+        .set({ Accept: 'application/json', 'Api-Version': 'alpha' })
 
       const memberships =
-        (identity?.response || identity)?.business_memberships || [];
+        (identity?.response || identity)?.business_memberships || []
       const primary =
-        memberships.find((m) => m?.business?.account_id) || memberships[0];
+        memberships.find(m => m?.business?.account_id) || memberships[0]
 
       if (primary?.business) {
-        accountId = primary.business.account_id || "";
-        businessId = String(primary.business.id || "");
-        businessName = primary.business.name || businessName;
+        accountId = primary.business.account_id || ''
+        businessId = String(primary.business.id || '')
+        businessName = primary.business.name || businessName
       }
     } catch (error) {
       logger.warn(
-        `executeCallback - could not resolve identity: ${error.message}`,
-      );
+        `executeCallback - could not resolve identity: ${ error.message }`
+      )
     }
 
     return {
@@ -526,7 +526,7 @@ class FreshBooksService {
         businessId,
         businessName,
       },
-    };
+    }
   }
 
   /**
@@ -544,23 +544,23 @@ class FreshBooksService {
    * @returns {refreshToken_ResultObject}
    */
   async refreshToken(refreshToken) {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams()
 
-    params.append("grant_type", "refresh_token");
-    params.append("client_id", this.clientId);
-    params.append("client_secret", this.clientSecret);
-    params.append("refresh_token", refreshToken);
+    params.append('grant_type', 'refresh_token')
+    params.append('client_id', this.clientId)
+    params.append('client_secret', this.clientSecret)
+    params.append('refresh_token', refreshToken)
 
     const response = await Flowrunner.Request.post(TOKEN_URL)
-      .set({ "Content-Type": "application/x-www-form-urlencoded" })
-      .send(params.toString());
+      .set({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      .send(params.toString())
 
     // FreshBooks rotates + single-uses refresh tokens, so always persist the new one.
     return {
       token: response.access_token,
       expirationInSeconds: response.expires_in,
       refreshToken: response.refresh_token || refreshToken,
-    };
+    }
   }
 
   // ============================ 5. DICTIONARIES ============================
@@ -581,33 +581,33 @@ class FreshBooksService {
    * @sampleResult {"items":[{"label":"Acme Corp","value":"2280","note":"billing@acme.com"}],"cursor":null}
    */
   async getClientsDictionary(payload) {
-    const { search, cursor } = payload || {};
-    const page = cursor ? parseInt(cursor) : 1;
+    const { search, cursor } = payload || {}
+    const page = cursor ? parseInt(cursor) : 1
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("users/clients"),
+      url: this.#accountingUrl('users/clients'),
       query: { per_page: DEFAULT_PER_PAGE, page },
-      logTag: "getClientsDictionary",
-    });
+      logTag: 'getClientsDictionary',
+    })
 
-    const { items, pages } = this.#unwrapList(body, "clients");
+    const { items, pages } = this.#unwrapList(body, 'clients')
     const filtered = searchFilter(
       items,
-      ["organization", "fname", "lname", "email"],
-      search,
-    );
+      ['organization', 'fname', 'lname', 'email'],
+      search
+    )
 
     return {
       cursor: page < (pages || 1) ? String(page + 1) : null,
-      items: filtered.map((client) => ({
+      items: filtered.map(client => ({
         label:
           client.organization ||
-          `${client.fname || ""} ${client.lname || ""}`.trim() ||
-          `Client ${client.id}`,
+          `${ client.fname || '' } ${ client.lname || '' }`.trim() ||
+          `Client ${ client.id }`,
         value: String(client.id),
-        note: client.email || `ID: ${client.id}`,
+        note: client.email || `ID: ${ client.id }`,
       })),
-    };
+    }
   }
 
   /**
@@ -626,34 +626,34 @@ class FreshBooksService {
    * @sampleResult {"items":[{"label":"#0001 - Acme Corp (USD 1500.00)","value":"987","note":"Status: paid"}],"cursor":null}
    */
   async getInvoicesDictionary(payload) {
-    const { search, cursor } = payload || {};
-    const page = cursor ? parseInt(cursor) : 1;
+    const { search, cursor } = payload || {}
+    const page = cursor ? parseInt(cursor) : 1
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("invoices/invoices"),
+      url: this.#accountingUrl('invoices/invoices'),
       query: { per_page: DEFAULT_PER_PAGE, page },
-      logTag: "getInvoicesDictionary",
-    });
+      logTag: 'getInvoicesDictionary',
+    })
 
-    const { items, pages } = this.#unwrapList(body, "invoices");
+    const { items, pages } = this.#unwrapList(body, 'invoices')
     const filtered = searchFilter(
       items,
-      ["invoice_number", "current_organization", "fname", "lname"],
-      search,
-    );
+      ['invoice_number', 'current_organization', 'fname', 'lname'],
+      search
+    )
 
     return {
       cursor: page < (pages || 1) ? String(page + 1) : null,
-      items: filtered.map((invoice) => ({
-        label: `#${invoice.invoice_number || invoice.invoiceid} - ${
+      items: filtered.map(invoice => ({
+        label: `#${ invoice.invoice_number || invoice.invoiceid } - ${
           invoice.current_organization ||
-          `${invoice.fname || ""} ${invoice.lname || ""}`.trim() ||
-          "Client"
-        } (${formatMoney(invoice.amount)})`,
+          `${ invoice.fname || '' } ${ invoice.lname || '' }`.trim() ||
+          'Client'
+        } (${ formatMoney(invoice.amount) })`,
         value: String(invoice.invoiceid || invoice.id),
-        note: `Status: ${invoice.v3_status || invoice.display_status || "unknown"}`,
+        note: `Status: ${ invoice.v3_status || invoice.display_status || 'unknown' }`,
       })),
-    };
+    }
   }
 
   /**
@@ -672,30 +672,30 @@ class FreshBooksService {
    * @sampleResult {"items":[{"label":"Design work","value":"55","note":"USD 120.00"}],"cursor":null}
    */
   async getItemsDictionary(payload) {
-    const { search, cursor } = payload || {};
-    const page = cursor ? parseInt(cursor) : 1;
+    const { search, cursor } = payload || {}
+    const page = cursor ? parseInt(cursor) : 1
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("items/items"),
+      url: this.#accountingUrl('items/items'),
       query: { per_page: DEFAULT_PER_PAGE, page },
-      logTag: "getItemsDictionary",
-    });
+      logTag: 'getItemsDictionary',
+    })
 
-    const { items, pages } = this.#unwrapList(body, "items");
+    const { items, pages } = this.#unwrapList(body, 'items')
     const filtered = searchFilter(
       items,
-      ["name", "description", "sku"],
-      search,
-    );
+      ['name', 'description', 'sku'],
+      search
+    )
 
     return {
       cursor: page < (pages || 1) ? String(page + 1) : null,
-      items: filtered.map((item) => ({
-        label: item.name || `Item ${item.itemid}`,
+      items: filtered.map(item => ({
+        label: item.name || `Item ${ item.itemid }`,
         value: String(item.itemid || item.id),
-        note: item.unit_cost ? formatMoney(item.unit_cost) : item.sku || "",
+        note: item.unit_cost ? formatMoney(item.unit_cost) : item.sku || '',
       })),
-    };
+    }
   }
 
   /**
@@ -714,27 +714,27 @@ class FreshBooksService {
    * @sampleResult {"items":[{"label":"GST (5%)","value":"GST","note":"5%"}],"cursor":null}
    */
   async getTaxesDictionary(payload) {
-    const { search, cursor } = payload || {};
-    const page = cursor ? parseInt(cursor) : 1;
+    const { search, cursor } = payload || {}
+    const page = cursor ? parseInt(cursor) : 1
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("taxes/taxes"),
+      url: this.#accountingUrl('taxes/taxes'),
       query: { per_page: DEFAULT_PER_PAGE, page },
-      logTag: "getTaxesDictionary",
-    });
+      logTag: 'getTaxesDictionary',
+    })
 
-    const { items, pages } = this.#unwrapList(body, "taxes");
-    const filtered = searchFilter(items, ["name", "number"], search);
+    const { items, pages } = this.#unwrapList(body, 'taxes')
+    const filtered = searchFilter(items, ['name', 'number'], search)
 
     return {
       cursor: page < (pages || 1) ? String(page + 1) : null,
       // Value is the tax name (what an invoice line stores); the rate travels in the note.
-      items: filtered.map((tax) => ({
-        label: `${tax.name}${tax.amount ? ` (${tax.amount}%)` : ""}`,
+      items: filtered.map(tax => ({
+        label: `${ tax.name }${ tax.amount ? ` (${ tax.amount }%)` : '' }`,
         value: tax.name,
-        note: tax.amount ? `${tax.amount}%` : "",
+        note: tax.amount ? `${ tax.amount }%` : '',
       })),
-    };
+    }
   }
 
   /**
@@ -753,26 +753,26 @@ class FreshBooksService {
    * @sampleResult {"items":[{"label":"Meals & Entertainment","value":"121374834","note":""}],"cursor":null}
    */
   async getExpenseCategoriesDictionary(payload) {
-    const { search, cursor } = payload || {};
-    const page = cursor ? parseInt(cursor) : 1;
+    const { search, cursor } = payload || {}
+    const page = cursor ? parseInt(cursor) : 1
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("expenses/categories"),
+      url: this.#accountingUrl('expenses/categories'),
       query: { per_page: DEFAULT_PER_PAGE, page },
-      logTag: "getExpenseCategoriesDictionary",
-    });
+      logTag: 'getExpenseCategoriesDictionary',
+    })
 
-    const { items, pages } = this.#unwrapList(body, "categories");
-    const filtered = searchFilter(items, ["category"], search);
+    const { items, pages } = this.#unwrapList(body, 'categories')
+    const filtered = searchFilter(items, ['category'], search)
 
     return {
       cursor: page < (pages || 1) ? String(page + 1) : null,
-      items: filtered.map((category) => ({
-        label: category.category || `Category ${category.categoryid}`,
+      items: filtered.map(category => ({
+        label: category.category || `Category ${ category.categoryid }`,
         value: String(category.categoryid || category.id),
-        note: "",
+        note: '',
       })),
-    };
+    }
   }
 
   /**
@@ -791,30 +791,30 @@ class FreshBooksService {
    * @sampleResult {"items":[{"label":"Office Supplies Co","value":"1562","note":"orders@supplies.co"}],"cursor":null}
    */
   async getVendorsDictionary(payload) {
-    const { search, cursor } = payload || {};
-    const page = cursor ? parseInt(cursor) : 1;
+    const { search, cursor } = payload || {}
+    const page = cursor ? parseInt(cursor) : 1
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("bill_vendors/bill_vendors"),
+      url: this.#accountingUrl('bill_vendors/bill_vendors'),
       query: { per_page: DEFAULT_PER_PAGE, page },
-      logTag: "getVendorsDictionary",
-    });
+      logTag: 'getVendorsDictionary',
+    })
 
-    const { items, pages } = this.#unwrapList(body, "bill_vendors");
+    const { items, pages } = this.#unwrapList(body, 'bill_vendors')
     const filtered = searchFilter(
       items,
-      ["vendor_name", "primary_contact_email"],
-      search,
-    );
+      ['vendor_name', 'primary_contact_email'],
+      search
+    )
 
     return {
       cursor: page < (pages || 1) ? String(page + 1) : null,
-      items: filtered.map((vendor) => ({
-        label: vendor.vendor_name || `Vendor ${vendor.vendorid}`,
+      items: filtered.map(vendor => ({
+        label: vendor.vendor_name || `Vendor ${ vendor.vendorid }`,
         value: String(vendor.vendorid || vendor.id),
-        note: vendor.primary_contact_email || "",
+        note: vendor.primary_contact_email || '',
       })),
-    };
+    }
   }
 
   /**
@@ -833,27 +833,27 @@ class FreshBooksService {
    * @sampleResult {"items":[{"label":"Website Redesign","value":"153125","note":"fixed price"}],"cursor":null}
    */
   async getProjectsDictionary(payload) {
-    const { search, cursor } = payload || {};
-    const page = cursor ? parseInt(cursor) : 1;
+    const { search, cursor } = payload || {}
+    const page = cursor ? parseInt(cursor) : 1
 
     const body = await this.#apiRequest({
-      url: this.#projectsUrl("projects"),
+      url: this.#projectsUrl('projects'),
       query: { per_page: DEFAULT_PER_PAGE, page },
-      logTag: "getProjectsDictionary",
-    });
+      logTag: 'getProjectsDictionary',
+    })
 
-    const projects = body?.projects || [];
-    const pages = body?.meta?.pages;
-    const filtered = searchFilter(projects, ["title", "description"], search);
+    const projects = body?.projects || []
+    const pages = body?.meta?.pages
+    const filtered = searchFilter(projects, ['title', 'description'], search)
 
     return {
       cursor: page < (pages || 1) ? String(page + 1) : null,
-      items: filtered.map((project) => ({
-        label: project.title || `Project ${project.id}`,
+      items: filtered.map(project => ({
+        label: project.title || `Project ${ project.id }`,
         value: String(project.id),
-        note: (project.project_type || "").replace("_", " "),
+        note: (project.project_type || '').replace('_', ' '),
       })),
-    };
+    }
   }
 
   /**
@@ -871,21 +871,21 @@ class FreshBooksService {
    * @sampleResult {"items":[{"label":"US Dollar (USD)","value":"USD","note":""}],"cursor":null}
    */
   async getCurrenciesDictionary(payload) {
-    const { search } = payload || {};
-    const needle = (search || "").toLowerCase();
+    const { search } = payload || {}
+    const needle = (search || '').toLowerCase()
 
     const items = COMMON_CURRENCIES.filter(
       ([code, name]) =>
         !needle ||
         code.toLowerCase().includes(needle) ||
-        name.toLowerCase().includes(needle),
+        name.toLowerCase().includes(needle)
     ).map(([code, name]) => ({
-      label: `${name} (${code})`,
+      label: `${ name } (${ code })`,
       value: code,
-      note: "",
-    }));
+      note: '',
+    }))
 
-    return { cursor: null, items };
+    return { cursor: null, items }
   }
 
   // ============================ 6. RESOURCES ==============================
@@ -896,71 +896,71 @@ class FreshBooksService {
   async #getTaxMap() {
     try {
       const body = await this.#apiRequest({
-        url: this.#accountingUrl("taxes/taxes"),
+        url: this.#accountingUrl('taxes/taxes'),
         query: { per_page: DEFAULT_PER_PAGE },
-        logTag: "getTaxMap",
-      });
+        logTag: 'getTaxMap',
+      })
 
-      const map = {};
+      const map = {}
 
-      this.#unwrapList(body, "taxes").items.forEach((tax) => {
-        if (tax.name) map[String(tax.name).toLowerCase()] = tax.amount;
-      });
+      this.#unwrapList(body, 'taxes').items.forEach(tax => {
+        if (tax.name) map[String(tax.name).toLowerCase()] = tax.amount
+      })
 
-      return map;
+      return map
     } catch (error) {
-      logger.warn(`getTaxMap - ${error.message}`);
+      logger.warn(`getTaxMap - ${ error.message }`)
 
-      return {};
+      return {}
     }
   }
 
   // Resolves the logged-in user's identity id (required when logging time).
   async #getIdentityId() {
-    if (this.__identityId) return this.__identityId;
+    if (this.__identityId) return this.__identityId
 
     try {
-      const identity = await this.#me();
+      const identity = await this.#me()
 
-      this.__identityId = identity?.id;
+      this.__identityId = identity?.id
     } catch (error) {
-      logger.warn(`getIdentityId - ${error.message}`);
+      logger.warn(`getIdentityId - ${ error.message }`)
     }
 
-    return this.__identityId;
+    return this.__identityId
   }
 
   // Resolves the account's staff id (required when creating expenses). Owner is usually 1.
   async #getDefaultStaffId() {
-    if (this.__staffId) return this.__staffId;
+    if (this.__staffId) return this.__staffId
 
     try {
       const body = await this.#apiRequest({
-        url: this.#accountingUrl("users/staffs"),
+        url: this.#accountingUrl('users/staffs'),
         query: { per_page: 1 },
-        logTag: "getDefaultStaffId",
-      });
+        logTag: 'getDefaultStaffId',
+      })
 
-      const staff = this.#unwrapList(body, "staff").items;
+      const staff = this.#unwrapList(body, 'staff').items
 
-      this.__staffId = staff[0]?.id || staff[0]?.userid || 1;
+      this.__staffId = staff[0]?.id || staff[0]?.userid || 1
     } catch (error) {
-      this.__staffId = 1;
+      this.__staffId = 1
     }
 
-    return this.__staffId;
+    return this.__staffId
   }
 
   // Maps the friendly LineItem shape to FreshBooks invoice/estimate lines.
   async #mapLineItems(lineItems, currency) {
-    if (!Array.isArray(lineItems) || lineItems.length === 0) return undefined;
+    if (!Array.isArray(lineItems) || lineItems.length === 0) return undefined
 
-    const taxMap = lineItems.some((li) => li && li.tax)
+    const taxMap = lineItems.some(li => li && li.tax)
       ? await this.#getTaxMap()
-      : {};
+      : {}
 
-    return lineItems.map((li) => {
-      const price = li.unitPrice ?? li.unit_cost;
+    return lineItems.map(li => {
+      const price = li.unitPrice ?? li.unit_cost
 
       const line = {
         name: li.description || li.name,
@@ -968,18 +968,18 @@ class FreshBooksService {
         unit_cost: currency
           ? { amount: String(price ?? 0), code: currency }
           : { amount: String(price ?? 0) },
-      };
-
-      if (li.tax) {
-        line.taxName1 = li.tax;
-
-        const pct = taxMap[String(li.tax).toLowerCase()];
-
-        if (pct !== undefined) line.taxAmount1 = pct;
       }
 
-      return cleanupObject(line);
-    });
+      if (li.tax) {
+        line.taxName1 = li.tax
+
+        const pct = taxMap[String(li.tax).toLowerCase()]
+
+        if (pct !== undefined) line.taxAmount1 = pct
+      }
+
+      return cleanupObject(line)
+    })
   }
 
   // -------------------------------- Clients -------------------------------
@@ -1001,21 +1001,21 @@ class FreshBooksService {
     const query = {
       per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
       page: 1,
-    };
+    }
 
-    if (onlyWithOutstanding) query["search[has_outstanding]"] = true;
+    if (onlyWithOutstanding) query['search[has_outstanding]'] = true
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("users/clients"),
+      url: this.#accountingUrl('users/clients'),
       query,
-      logTag: "findClients",
-    });
+      logTag: 'findClients',
+    })
 
     return searchFilter(
-      this.#unwrapList(body, "clients").items,
-      ["organization", "fname", "lname", "email"],
-      search,
-    );
+      this.#unwrapList(body, 'clients').items,
+      ['organization', 'fname', 'lname', 'email'],
+      search
+    )
   }
 
   /**
@@ -1030,14 +1030,14 @@ class FreshBooksService {
    * @sampleResult {"id":2280,"fname":"Jane","lname":"Doe","organization":"Acme Corp","email":"jane@acme.com","vis_state":0}
    */
   async getClient(clientId) {
-    if (!clientId) throw new Error('"Client" is required.');
+    if (!clientId) throw new Error('"Client" is required.')
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`users/clients/${clientId}`),
-      logTag: "getClient",
-    });
+      url: this.#accountingUrl(`users/clients/${ clientId }`),
+      logTag: 'getClient',
+    })
 
-    return this.#unwrap(body, "client");
+    return this.#unwrap(body, 'client')
   }
 
   /**
@@ -1076,7 +1076,7 @@ class FreshBooksService {
     state,
     postalCode,
     country,
-    notes,
+    notes
   ) {
     const client = cleanupObject({
       fname: firstName,
@@ -1092,16 +1092,16 @@ class FreshBooksService {
       p_code: postalCode,
       p_country: country,
       note: notes,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("users/clients"),
-      method: "post",
+      url: this.#accountingUrl('users/clients'),
+      method: 'post',
       body: { client },
-      logTag: "createClient",
-    });
+      logTag: 'createClient',
+    })
 
-    return this.#unwrap(body, "client");
+    return this.#unwrap(body, 'client')
   }
 
   /**
@@ -1142,9 +1142,9 @@ class FreshBooksService {
     state,
     postalCode,
     country,
-    notes,
+    notes
   ) {
-    if (!clientId) throw new Error('"Client" is required.');
+    if (!clientId) throw new Error('"Client" is required.')
 
     const client = cleanupObject({
       fname: firstName,
@@ -1160,16 +1160,16 @@ class FreshBooksService {
       p_code: postalCode,
       p_country: country,
       note: notes,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`users/clients/${clientId}`),
-      method: "put",
+      url: this.#accountingUrl(`users/clients/${ clientId }`),
+      method: 'put',
       body: { client: client || {} },
-      logTag: "updateClient",
-    });
+      logTag: 'updateClient',
+    })
 
-    return this.#unwrap(body, "client");
+    return this.#unwrap(body, 'client')
   }
 
   /**
@@ -1185,20 +1185,20 @@ class FreshBooksService {
    * @sampleResult {"id":"2280","deleted":true,"archived":false}
    */
   async deleteClient(clientId, archiveInstead) {
-    if (!clientId) throw new Error('"Client" is required.');
+    if (!clientId) throw new Error('"Client" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`users/clients/${clientId}`),
-      method: "put",
+      url: this.#accountingUrl(`users/clients/${ clientId }`),
+      method: 'put',
       body: { client: { vis_state: archiveInstead ? 2 : 1 } },
-      logTag: "deleteClient",
-    });
+      logTag: 'deleteClient',
+    })
 
     return {
       id: clientId,
       deleted: !archiveInstead,
       archived: !!archiveInstead,
-    };
+    }
   }
 
   // -------------------------------- Invoices ------------------------------
@@ -1230,25 +1230,25 @@ class FreshBooksService {
     const query = {
       per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
       page: 1,
-    };
+    }
 
-    if (clientId) query["search[customerid]"] = clientId;
-    if (formatDate(fromDate)) query["search[date_min]"] = formatDate(fromDate);
-    if (formatDate(toDate)) query["search[date_max]"] = formatDate(toDate);
+    if (clientId) query['search[customerid]'] = clientId
+    if (formatDate(fromDate)) query['search[date_min]'] = formatDate(fromDate)
+    if (formatDate(toDate)) query['search[date_max]'] = formatDate(toDate)
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("invoices/invoices"),
+      url: this.#accountingUrl('invoices/invoices'),
       query,
-      logTag: "findInvoices",
-    });
+      logTag: 'findInvoices',
+    })
 
-    let items = this.#unwrapList(body, "invoices").items;
+    let items = this.#unwrapList(body, 'invoices').items
 
-    const wanted = INVOICE_STATUS_FILTER[status];
+    const wanted = INVOICE_STATUS_FILTER[status]
 
-    if (wanted) items = items.filter((invoice) => invoice.v3_status === wanted);
+    if (wanted) items = items.filter(invoice => invoice.v3_status === wanted)
 
-    return items;
+    return items
   }
 
   /**
@@ -1263,15 +1263,15 @@ class FreshBooksService {
    * @sampleResult {"invoiceid":987,"invoice_number":"0001","customerid":2280,"amount":{"amount":"1500.00","code":"USD"},"outstanding":{"amount":"0.00","code":"USD"},"v3_status":"paid","lines":[{"name":"Design work","qty":"10","unit_cost":{"amount":"120.00","code":"USD"}}]}
    */
   async getInvoice(invoiceId) {
-    if (!invoiceId) throw new Error('"Invoice" is required.');
+    if (!invoiceId) throw new Error('"Invoice" is required.')
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`invoices/invoices/${invoiceId}`),
-      query: { "include[]": "lines" },
-      logTag: "getInvoice",
-    });
+      url: this.#accountingUrl(`invoices/invoices/${ invoiceId }`),
+      query: { 'include[]': 'lines' },
+      logTag: 'getInvoice',
+    })
 
-    return this.#unwrap(body, "invoice");
+    return this.#unwrap(body, 'invoice')
   }
 
   /**
@@ -1304,15 +1304,15 @@ class FreshBooksService {
     poNumber,
     discountPercent,
     notes,
-    terms,
+    terms
   ) {
-    if (!clientId) throw new Error('"Client" is required.');
+    if (!clientId) throw new Error('"Client" is required.')
 
     if (!Array.isArray(lineItems) || lineItems.length === 0) {
-      throw new Error('"Line Items" is required — add at least one item.');
+      throw new Error('"Line Items" is required — add at least one item.')
     }
 
-    const createDate = formatDate(invoiceDate);
+    const createDate = formatDate(invoiceDate)
 
     const invoice = cleanupObject({
       customerid: clientId,
@@ -1325,16 +1325,16 @@ class FreshBooksService {
       notes,
       terms,
       lines: await this.#mapLineItems(lineItems, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("invoices/invoices"),
-      method: "post",
+      url: this.#accountingUrl('invoices/invoices'),
+      method: 'post',
       body: { invoice },
-      logTag: "createInvoice",
-    });
+      logTag: 'createInvoice',
+    })
 
-    return this.#unwrap(body, "invoice");
+    return this.#unwrap(body, 'invoice')
   }
 
   /**
@@ -1365,9 +1365,9 @@ class FreshBooksService {
     poNumber,
     discountPercent,
     notes,
-    terms,
+    terms
   ) {
-    if (!invoiceId) throw new Error('"Invoice" is required.');
+    if (!invoiceId) throw new Error('"Invoice" is required.')
 
     const invoice = cleanupObject({
       customerid: clientId,
@@ -1378,16 +1378,16 @@ class FreshBooksService {
       notes,
       terms,
       lines: await this.#mapLineItems(lineItems, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`invoices/invoices/${invoiceId}`),
-      method: "put",
+      url: this.#accountingUrl(`invoices/invoices/${ invoiceId }`),
+      method: 'put',
       body: { invoice: invoice || {} },
-      logTag: "updateInvoice",
-    });
+      logTag: 'updateInvoice',
+    })
 
-    return this.#unwrap(body, "invoice");
+    return this.#unwrap(body, 'invoice')
   }
 
   /**
@@ -1412,14 +1412,14 @@ class FreshBooksService {
     recipients,
     subject,
     message,
-    includePdf,
+    includePdf
   ) {
-    if (!invoiceId) throw new Error('"Invoice" is required.');
+    if (!invoiceId) throw new Error('"Invoice" is required.')
 
-    let invoice;
+    let invoice
 
-    if (sendMethod === "Mark as sent only") {
-      invoice = { action_mark_as_sent: true };
+    if (sendMethod === 'Mark as sent only') {
+      invoice = { action_mark_as_sent: true }
     } else {
       invoice = cleanupObject({
         action_email: true,
@@ -1430,21 +1430,21 @@ class FreshBooksService {
             : undefined,
         email_include_pdf: includePdf === undefined ? undefined : !!includePdf,
         invoice_customized_email: cleanupObject({ subject, body: message }),
-      });
+      })
     }
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`invoices/invoices/${invoiceId}`),
-      method: "put",
+      url: this.#accountingUrl(`invoices/invoices/${ invoiceId }`),
+      method: 'put',
       body: { invoice },
-      logTag: "sendInvoice",
-    });
+      logTag: 'sendInvoice',
+    })
 
     return {
       id: invoiceId,
       sent: true,
-      status: this.#unwrap(body, "invoice")?.v3_status,
-    };
+      status: this.#unwrap(body, 'invoice')?.v3_status,
+    }
   }
 
   /**
@@ -1460,20 +1460,20 @@ class FreshBooksService {
    * @sampleResult {"id":"987","deleted":true,"archived":false}
    */
   async deleteInvoice(invoiceId, archiveInstead) {
-    if (!invoiceId) throw new Error('"Invoice" is required.');
+    if (!invoiceId) throw new Error('"Invoice" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`invoices/invoices/${invoiceId}`),
-      method: "put",
+      url: this.#accountingUrl(`invoices/invoices/${ invoiceId }`),
+      method: 'put',
       body: { invoice: { vis_state: archiveInstead ? 2 : 1 } },
-      logTag: "deleteInvoice",
-    });
+      logTag: 'deleteInvoice',
+    })
 
     return {
       id: invoiceId,
       deleted: !archiveInstead,
       archived: !!archiveInstead,
-    };
+    }
   }
 
   // -------------------------------- Estimates -----------------------------
@@ -1496,19 +1496,19 @@ class FreshBooksService {
     const query = {
       per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
       page: 1,
-    };
+    }
 
-    if (clientId) query["search[customerid]"] = clientId;
-    if (formatDate(fromDate)) query["search[date_min]"] = formatDate(fromDate);
-    if (formatDate(toDate)) query["search[date_max]"] = formatDate(toDate);
+    if (clientId) query['search[customerid]'] = clientId
+    if (formatDate(fromDate)) query['search[date_min]'] = formatDate(fromDate)
+    if (formatDate(toDate)) query['search[date_max]'] = formatDate(toDate)
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("estimates/estimates"),
+      url: this.#accountingUrl('estimates/estimates'),
       query,
-      logTag: "findEstimates",
-    });
+      logTag: 'findEstimates',
+    })
 
-    return this.#unwrapList(body, "estimates").items;
+    return this.#unwrapList(body, 'estimates').items
   }
 
   /**
@@ -1523,15 +1523,15 @@ class FreshBooksService {
    * @sampleResult {"estimateid":55,"estimate_number":"E-0001","customerid":2280,"amount":{"amount":"800.00","code":"USD"},"ui_status":"sent","lines":[{"name":"Consulting","qty":"8","unit_cost":{"amount":"100.00","code":"USD"}}]}
    */
   async getEstimate(estimateId) {
-    if (!estimateId) throw new Error('"Estimate" is required.');
+    if (!estimateId) throw new Error('"Estimate" is required.')
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`estimates/estimates/${estimateId}`),
-      query: { "include[]": "lines" },
-      logTag: "getEstimate",
-    });
+      url: this.#accountingUrl(`estimates/estimates/${ estimateId }`),
+      query: { 'include[]': 'lines' },
+      logTag: 'getEstimate',
+    })
 
-    return this.#unwrap(body, "estimate");
+    return this.#unwrap(body, 'estimate')
   }
 
   /**
@@ -1558,12 +1558,12 @@ class FreshBooksService {
     currency,
     poNumber,
     notes,
-    terms,
+    terms
   ) {
-    if (!clientId) throw new Error('"Client" is required.');
+    if (!clientId) throw new Error('"Client" is required.')
 
     if (!Array.isArray(lineItems) || lineItems.length === 0) {
-      throw new Error('"Line Items" is required — add at least one item.');
+      throw new Error('"Line Items" is required — add at least one item.')
     }
 
     const estimate = cleanupObject({
@@ -1574,16 +1574,16 @@ class FreshBooksService {
       notes,
       terms,
       lines: await this.#mapLineItems(lineItems, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("estimates/estimates"),
-      method: "post",
+      url: this.#accountingUrl('estimates/estimates'),
+      method: 'post',
       body: { estimate },
-      logTag: "createEstimate",
-    });
+      logTag: 'createEstimate',
+    })
 
-    return this.#unwrap(body, "estimate");
+    return this.#unwrap(body, 'estimate')
   }
 
   /**
@@ -1608,9 +1608,9 @@ class FreshBooksService {
     currency,
     poNumber,
     notes,
-    terms,
+    terms
   ) {
-    if (!estimateId) throw new Error('"Estimate" is required.');
+    if (!estimateId) throw new Error('"Estimate" is required.')
 
     const estimate = cleanupObject({
       currency_code: currency,
@@ -1618,16 +1618,16 @@ class FreshBooksService {
       notes,
       terms,
       lines: await this.#mapLineItems(lineItems, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`estimates/estimates/${estimateId}`),
-      method: "put",
+      url: this.#accountingUrl(`estimates/estimates/${ estimateId }`),
+      method: 'put',
       body: { estimate: estimate || {} },
-      logTag: "updateEstimate",
-    });
+      logTag: 'updateEstimate',
+    })
 
-    return this.#unwrap(body, "estimate");
+    return this.#unwrap(body, 'estimate')
   }
 
   /**
@@ -1646,12 +1646,12 @@ class FreshBooksService {
    * @sampleResult {"id":"55","sent":true,"status":"sent"}
    */
   async sendEstimate(estimateId, sendMethod, recipients, subject, message) {
-    if (!estimateId) throw new Error('"Estimate" is required.');
+    if (!estimateId) throw new Error('"Estimate" is required.')
 
-    let estimate;
+    let estimate
 
-    if (sendMethod === "Mark as sent only") {
-      estimate = { action_mark_as_sent: true };
+    if (sendMethod === 'Mark as sent only') {
+      estimate = { action_mark_as_sent: true }
     } else {
       estimate = cleanupObject({
         action_email: true,
@@ -1661,21 +1661,21 @@ class FreshBooksService {
             ? [recipients]
             : undefined,
         invoice_customized_email: cleanupObject({ subject, body: message }),
-      });
+      })
     }
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`estimates/estimates/${estimateId}`),
-      method: "put",
+      url: this.#accountingUrl(`estimates/estimates/${ estimateId }`),
+      method: 'put',
       body: { estimate },
-      logTag: "sendEstimate",
-    });
+      logTag: 'sendEstimate',
+    })
 
     return {
       id: estimateId,
       sent: true,
-      status: this.#unwrap(body, "estimate")?.ui_status,
-    };
+      status: this.#unwrap(body, 'estimate')?.ui_status,
+    }
   }
 
   /**
@@ -1690,19 +1690,19 @@ class FreshBooksService {
    * @sampleResult {"invoiceid":988,"invoice_number":"0002","customerid":2280,"amount":{"amount":"800.00","code":"USD"},"v3_status":"draft"}
    */
   async convertEstimateToInvoice(estimateId) {
-    if (!estimateId) throw new Error('"Estimate" is required.');
+    if (!estimateId) throw new Error('"Estimate" is required.')
 
     const estBody = await this.#apiRequest({
-      url: this.#accountingUrl(`estimates/estimates/${estimateId}`),
-      query: { "include[]": "lines" },
-      logTag: "convertEstimate:get",
-    });
+      url: this.#accountingUrl(`estimates/estimates/${ estimateId }`),
+      query: { 'include[]': 'lines' },
+      logTag: 'convertEstimate:get',
+    })
 
-    const estimate = this.#unwrap(estBody, "estimate");
+    const estimate = this.#unwrap(estBody, 'estimate')
 
-    if (!estimate) throw new Error("Estimate not found.");
+    if (!estimate) throw new Error('Estimate not found.')
 
-    const lines = (estimate.lines || []).map((line) =>
+    const lines = (estimate.lines || []).map(line =>
       cleanupObject({
         name: line.name,
         description: line.description,
@@ -1710,8 +1710,8 @@ class FreshBooksService {
         unit_cost: line.unit_cost,
         taxName1: line.taxName1,
         taxAmount1: line.taxAmount1,
-      }),
-    );
+      })
+    )
 
     const invoice = cleanupObject({
       customerid: estimate.customerid,
@@ -1719,16 +1719,16 @@ class FreshBooksService {
       currency_code: estimate.currency_code,
       estimateid: estimateId,
       lines,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("invoices/invoices"),
-      method: "post",
+      url: this.#accountingUrl('invoices/invoices'),
+      method: 'post',
       body: { invoice },
-      logTag: "convertEstimate:create",
-    });
+      logTag: 'convertEstimate:create',
+    })
 
-    return this.#unwrap(body, "invoice");
+    return this.#unwrap(body, 'invoice')
   }
 
   /**
@@ -1744,20 +1744,20 @@ class FreshBooksService {
    * @sampleResult {"id":"55","deleted":true,"archived":false}
    */
   async deleteEstimate(estimateId, archiveInstead) {
-    if (!estimateId) throw new Error('"Estimate" is required.');
+    if (!estimateId) throw new Error('"Estimate" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`estimates/estimates/${estimateId}`),
-      method: "put",
+      url: this.#accountingUrl(`estimates/estimates/${ estimateId }`),
+      method: 'put',
       body: { estimate: { vis_state: archiveInstead ? 2 : 1 } },
-      logTag: "deleteEstimate",
-    });
+      logTag: 'deleteEstimate',
+    })
 
     return {
       id: estimateId,
       deleted: !archiveInstead,
       archived: !!archiveInstead,
-    };
+    }
   }
 
   // -------------------------------- Expenses ------------------------------
@@ -1781,20 +1781,20 @@ class FreshBooksService {
     const query = {
       per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
       page: 1,
-    };
+    }
 
-    if (categoryId) query["search[categoryid]"] = categoryId;
-    if (clientId) query["search[clientid]"] = clientId;
-    if (formatDate(fromDate)) query["search[date_min]"] = formatDate(fromDate);
-    if (formatDate(toDate)) query["search[date_max]"] = formatDate(toDate);
+    if (categoryId) query['search[categoryid]'] = categoryId
+    if (clientId) query['search[clientid]'] = clientId
+    if (formatDate(fromDate)) query['search[date_min]'] = formatDate(fromDate)
+    if (formatDate(toDate)) query['search[date_max]'] = formatDate(toDate)
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("expenses/expenses"),
+      url: this.#accountingUrl('expenses/expenses'),
       query,
-      logTag: "findExpenses",
-    });
+      logTag: 'findExpenses',
+    })
 
-    return this.#unwrapList(body, "expenses").items;
+    return this.#unwrapList(body, 'expenses').items
   }
 
   /**
@@ -1809,14 +1809,14 @@ class FreshBooksService {
    * @sampleResult {"expenseid":1569533,"amount":{"amount":"42.00","code":"USD"},"categoryid":11228587,"vendor":"Staples","date":"2026-05-10","notes":"Printer paper"}
    */
   async getExpense(expenseId) {
-    if (!expenseId) throw new Error('"Expense" is required.');
+    if (!expenseId) throw new Error('"Expense" is required.')
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`expenses/expenses/${expenseId}`),
-      logTag: "getExpense",
-    });
+      url: this.#accountingUrl(`expenses/expenses/${ expenseId }`),
+      logTag: 'getExpense',
+    })
 
-    return this.#unwrap(body, "expense");
+    return this.#unwrap(body, 'expense')
   }
 
   /**
@@ -1845,11 +1845,11 @@ class FreshBooksService {
     vendorName,
     clientId,
     projectId,
-    notes,
+    notes
   ) {
-    if (amount === undefined || amount === null || amount === "")
-      throw new Error('"Amount" is required.');
-    if (!categoryId) throw new Error('"Category" is required.');
+    if (amount === undefined || amount === null || amount === '')
+      throw new Error('"Amount" is required.')
+    if (!categoryId) throw new Error('"Category" is required.')
 
     const expense = cleanupObject({
       amount: toMoney(amount, currency),
@@ -1860,16 +1860,16 @@ class FreshBooksService {
       clientid: clientId,
       projectid: projectId,
       notes,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("expenses/expenses"),
-      method: "post",
+      url: this.#accountingUrl('expenses/expenses'),
+      method: 'post',
       body: { expense },
-      logTag: "createExpense",
-    });
+      logTag: 'createExpense',
+    })
 
-    return this.#unwrap(body, "expense");
+    return this.#unwrap(body, 'expense')
   }
 
   /**
@@ -1896,9 +1896,9 @@ class FreshBooksService {
     categoryId,
     date,
     vendorName,
-    notes,
+    notes
   ) {
-    if (!expenseId) throw new Error('"Expense" is required.');
+    if (!expenseId) throw new Error('"Expense" is required.')
 
     const expense = cleanupObject({
       amount: toMoney(amount, currency),
@@ -1906,16 +1906,16 @@ class FreshBooksService {
       date: formatDate(date),
       vendor: vendorName,
       notes,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`expenses/expenses/${expenseId}`),
-      method: "put",
+      url: this.#accountingUrl(`expenses/expenses/${ expenseId }`),
+      method: 'put',
       body: { expense: expense || {} },
-      logTag: "updateExpense",
-    });
+      logTag: 'updateExpense',
+    })
 
-    return this.#unwrap(body, "expense");
+    return this.#unwrap(body, 'expense')
   }
 
   /**
@@ -1931,20 +1931,20 @@ class FreshBooksService {
    * @sampleResult {"id":"1569533","deleted":true,"archived":false}
    */
   async deleteExpense(expenseId, archiveInstead) {
-    if (!expenseId) throw new Error('"Expense" is required.');
+    if (!expenseId) throw new Error('"Expense" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`expenses/expenses/${expenseId}`),
-      method: "put",
+      url: this.#accountingUrl(`expenses/expenses/${ expenseId }`),
+      method: 'put',
       body: { expense: { vis_state: archiveInstead ? 2 : 1 } },
-      logTag: "deleteExpense",
-    });
+      logTag: 'deleteExpense',
+    })
 
     return {
       id: expenseId,
       deleted: !archiveInstead,
       archived: !!archiveInstead,
-    };
+    }
   }
 
   // -------------------------------- Payments ------------------------------
@@ -1967,19 +1967,19 @@ class FreshBooksService {
     const query = {
       per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
       page: 1,
-    };
+    }
 
-    if (clientId) query["search[clientid]"] = clientId;
-    if (formatDate(fromDate)) query["search[date_min]"] = formatDate(fromDate);
-    if (formatDate(toDate)) query["search[date_max]"] = formatDate(toDate);
+    if (clientId) query['search[clientid]'] = clientId
+    if (formatDate(fromDate)) query['search[date_min]'] = formatDate(fromDate)
+    if (formatDate(toDate)) query['search[date_max]'] = formatDate(toDate)
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("payments/payments"),
+      url: this.#accountingUrl('payments/payments'),
       query,
-      logTag: "findPayments",
-    });
+      logTag: 'findPayments',
+    })
 
-    return this.#unwrapList(body, "payments").items;
+    return this.#unwrapList(body, 'payments').items
   }
 
   /**
@@ -1994,14 +1994,14 @@ class FreshBooksService {
    * @sampleResult {"id":42,"invoiceid":987,"amount":{"amount":"1500.00","code":"USD"},"date":"2026-05-12","type":"Check","note":"Thanks"}
    */
   async getPayment(paymentId) {
-    if (!paymentId) throw new Error('"Payment" is required.');
+    if (!paymentId) throw new Error('"Payment" is required.')
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`payments/payments/${paymentId}`),
-      logTag: "getPayment",
-    });
+      url: this.#accountingUrl(`payments/payments/${ paymentId }`),
+      logTag: 'getPayment',
+    })
 
-    return this.#unwrap(body, "payment");
+    return this.#unwrap(body, 'payment')
   }
 
   /**
@@ -2028,11 +2028,11 @@ class FreshBooksService {
     date,
     type,
     notifyClient,
-    note,
+    note
   ) {
-    if (!invoiceId) throw new Error('"Invoice" is required.');
-    if (amount === undefined || amount === null || amount === "")
-      throw new Error('"Amount" is required.');
+    if (!invoiceId) throw new Error('"Invoice" is required.')
+    if (amount === undefined || amount === null || amount === '')
+      throw new Error('"Amount" is required.')
 
     const payment = cleanupObject({
       invoiceid: invoiceId,
@@ -2042,16 +2042,16 @@ class FreshBooksService {
       send_client_notification:
         notifyClient === undefined ? undefined : !!notifyClient,
       note,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("payments/payments"),
-      method: "post",
+      url: this.#accountingUrl('payments/payments'),
+      method: 'post',
       body: { payment },
-      logTag: "recordPayment",
-    });
+      logTag: 'recordPayment',
+    })
 
-    return this.#unwrap(body, "payment");
+    return this.#unwrap(body, 'payment')
   }
 
   /**
@@ -2071,23 +2071,23 @@ class FreshBooksService {
    * @sampleResult {"id":42,"invoiceid":987,"amount":{"amount":"1000.00","code":"USD"},"date":"2026-05-12","type":"Cash"}
    */
   async updatePayment(paymentId, amount, currency, date, type, note) {
-    if (!paymentId) throw new Error('"Payment" is required.');
+    if (!paymentId) throw new Error('"Payment" is required.')
 
     const payment = cleanupObject({
       amount: toMoney(amount, currency),
       date: formatDate(date),
       type,
       note,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`payments/payments/${paymentId}`),
-      method: "put",
+      url: this.#accountingUrl(`payments/payments/${ paymentId }`),
+      method: 'put',
       body: { payment: payment || {} },
-      logTag: "updatePayment",
-    });
+      logTag: 'updatePayment',
+    })
 
-    return this.#unwrap(body, "payment");
+    return this.#unwrap(body, 'payment')
   }
 
   /**
@@ -2102,16 +2102,16 @@ class FreshBooksService {
    * @sampleResult {"id":"42","deleted":true}
    */
   async deletePayment(paymentId) {
-    if (!paymentId) throw new Error('"Payment" is required.');
+    if (!paymentId) throw new Error('"Payment" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`payments/payments/${paymentId}`),
-      method: "put",
+      url: this.#accountingUrl(`payments/payments/${ paymentId }`),
+      method: 'put',
       body: { payment: { vis_state: 1 } },
-      logTag: "deletePayment",
-    });
+      logTag: 'deletePayment',
+    })
 
-    return { id: paymentId, deleted: true };
+    return { id: paymentId, deleted: true }
   }
 
   // -------------------------------- Items ---------------------------------
@@ -2130,19 +2130,19 @@ class FreshBooksService {
    */
   async findItems(search, maxResults) {
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("items/items"),
+      url: this.#accountingUrl('items/items'),
       query: {
         per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
         page: 1,
       },
-      logTag: "findItems",
-    });
+      logTag: 'findItems',
+    })
 
     return searchFilter(
-      this.#unwrapList(body, "items").items,
-      ["name", "description", "sku"],
-      search,
-    );
+      this.#unwrapList(body, 'items').items,
+      ['name', 'description', 'sku'],
+      search
+    )
   }
 
   /**
@@ -2157,14 +2157,14 @@ class FreshBooksService {
    * @sampleResult {"itemid":55,"name":"Design work","description":"Hourly design","unit_cost":{"amount":"120.00","code":"USD"},"sku":"DSGN"}
    */
   async getItem(itemId) {
-    if (!itemId) throw new Error('"Item" is required.');
+    if (!itemId) throw new Error('"Item" is required.')
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`items/items/${itemId}`),
-      logTag: "getItem",
-    });
+      url: this.#accountingUrl(`items/items/${ itemId }`),
+      logTag: 'getItem',
+    })
 
-    return this.#unwrap(body, "item");
+    return this.#unwrap(body, 'item')
   }
 
   /**
@@ -2183,26 +2183,26 @@ class FreshBooksService {
    * @sampleResult {"itemid":55,"name":"Design work","unit_cost":{"amount":"120.00","code":"USD"},"sku":"DSGN"}
    */
   async createItem(name, unitPrice, currency, sku, description) {
-    if (!name) throw new Error('"Name" is required.');
+    if (!name) throw new Error('"Name" is required.')
 
     const item = cleanupObject({
       name,
       description,
       sku,
       unit_cost:
-        unitPrice === undefined || unitPrice === null || unitPrice === ""
+        unitPrice === undefined || unitPrice === null || unitPrice === ''
           ? undefined
           : toMoney(unitPrice, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("items/items"),
-      method: "post",
+      url: this.#accountingUrl('items/items'),
+      method: 'post',
       body: { item },
-      logTag: "createItem",
-    });
+      logTag: 'createItem',
+    })
 
-    return this.#unwrap(body, "item");
+    return this.#unwrap(body, 'item')
   }
 
   /**
@@ -2222,26 +2222,26 @@ class FreshBooksService {
    * @sampleResult {"itemid":55,"name":"Design work","unit_cost":{"amount":"130.00","code":"USD"}}
    */
   async updateItem(itemId, name, unitPrice, currency, sku, description) {
-    if (!itemId) throw new Error('"Item" is required.');
+    if (!itemId) throw new Error('"Item" is required.')
 
     const item = cleanupObject({
       name,
       description,
       sku,
       unit_cost:
-        unitPrice === undefined || unitPrice === null || unitPrice === ""
+        unitPrice === undefined || unitPrice === null || unitPrice === ''
           ? undefined
           : toMoney(unitPrice, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`items/items/${itemId}`),
-      method: "put",
+      url: this.#accountingUrl(`items/items/${ itemId }`),
+      method: 'put',
       body: { item: item || {} },
-      logTag: "updateItem",
-    });
+      logTag: 'updateItem',
+    })
 
-    return this.#unwrap(body, "item");
+    return this.#unwrap(body, 'item')
   }
 
   /**
@@ -2257,16 +2257,16 @@ class FreshBooksService {
    * @sampleResult {"id":"55","deleted":true,"archived":false}
    */
   async deleteItem(itemId, archiveInstead) {
-    if (!itemId) throw new Error('"Item" is required.');
+    if (!itemId) throw new Error('"Item" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`items/items/${itemId}`),
-      method: "put",
+      url: this.#accountingUrl(`items/items/${ itemId }`),
+      method: 'put',
       body: { item: { vis_state: archiveInstead ? 2 : 1 } },
-      logTag: "deleteItem",
-    });
+      logTag: 'deleteItem',
+    })
 
-    return { id: itemId, deleted: !archiveInstead, archived: !!archiveInstead };
+    return { id: itemId, deleted: !archiveInstead, archived: !!archiveInstead }
   }
 
   // -------------------------------- Taxes ---------------------------------
@@ -2285,19 +2285,19 @@ class FreshBooksService {
    */
   async findTaxes(search, maxResults) {
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("taxes/taxes"),
+      url: this.#accountingUrl('taxes/taxes'),
       query: {
         per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
         page: 1,
       },
-      logTag: "findTaxes",
-    });
+      logTag: 'findTaxes',
+    })
 
     return searchFilter(
-      this.#unwrapList(body, "taxes").items,
-      ["name", "number"],
-      search,
-    );
+      this.#unwrapList(body, 'taxes').items,
+      ['name', 'number'],
+      search
+    )
   }
 
   /**
@@ -2315,26 +2315,26 @@ class FreshBooksService {
    * @sampleResult {"taxid":3,"name":"GST","amount":"5","number":"R123"}
    */
   async createTax(name, percentage, number, compound) {
-    if (!name) throw new Error('"Name" is required.');
+    if (!name) throw new Error('"Name" is required.')
 
     const tax = cleanupObject({
       name,
       amount:
-        percentage === undefined || percentage === null || percentage === ""
+        percentage === undefined || percentage === null || percentage === ''
           ? undefined
           : String(percentage),
       number,
       compound: compound === undefined ? undefined : !!compound,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("taxes/taxes"),
-      method: "post",
+      url: this.#accountingUrl('taxes/taxes'),
+      method: 'post',
       body: { tax },
-      logTag: "createTax",
-    });
+      logTag: 'createTax',
+    })
 
-    return this.#unwrap(body, "tax");
+    return this.#unwrap(body, 'tax')
   }
 
   /**
@@ -2352,25 +2352,25 @@ class FreshBooksService {
    * @sampleResult {"taxid":3,"name":"GST","amount":"7"}
    */
   async updateTax(taxId, name, percentage, number) {
-    if (!taxId) throw new Error('"Tax" is required.');
+    if (!taxId) throw new Error('"Tax" is required.')
 
     const tax = cleanupObject({
       name,
       amount:
-        percentage === undefined || percentage === null || percentage === ""
+        percentage === undefined || percentage === null || percentage === ''
           ? undefined
           : String(percentage),
       number,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`taxes/taxes/${taxId}`),
-      method: "put",
+      url: this.#accountingUrl(`taxes/taxes/${ taxId }`),
+      method: 'put',
       body: { tax: tax || {} },
-      logTag: "updateTax",
-    });
+      logTag: 'updateTax',
+    })
 
-    return this.#unwrap(body, "tax");
+    return this.#unwrap(body, 'tax')
   }
 
   /**
@@ -2385,15 +2385,15 @@ class FreshBooksService {
    * @sampleResult {"id":"3","deleted":true}
    */
   async deleteTax(taxId) {
-    if (!taxId) throw new Error('"Tax" is required.');
+    if (!taxId) throw new Error('"Tax" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`taxes/taxes/${taxId}`),
-      method: "delete",
-      logTag: "deleteTax",
-    });
+      url: this.#accountingUrl(`taxes/taxes/${ taxId }`),
+      method: 'delete',
+      logTag: 'deleteTax',
+    })
 
-    return { id: taxId, deleted: true };
+    return { id: taxId, deleted: true }
   }
 
   // ----------------------------- Other Income ----------------------------
@@ -2411,15 +2411,15 @@ class FreshBooksService {
    */
   async findOtherIncome(maxResults) {
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("other_incomes/other_incomes"),
+      url: this.#accountingUrl('other_incomes/other_incomes'),
       query: {
         per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
         page: 1,
       },
-      logTag: "findOtherIncome",
-    });
+      logTag: 'findOtherIncome',
+    })
 
-    return this.#unwrapList(body, "other_incomes").items;
+    return this.#unwrapList(body, 'other_incomes').items
   }
 
   /**
@@ -2439,8 +2439,8 @@ class FreshBooksService {
    * @sampleResult {"incomeid":12,"amount":{"amount":"250.00","code":"USD"},"category_name":"online_sales","date":"2026-05-10","source":"Shopify"}
    */
   async recordOtherIncome(amount, currency, category, date, source, note) {
-    if (amount === undefined || amount === null || amount === "")
-      throw new Error('"Amount" is required.');
+    if (amount === undefined || amount === null || amount === '')
+      throw new Error('"Amount" is required.')
 
     const otherIncome = cleanupObject({
       amount: toMoney(amount, currency),
@@ -2448,16 +2448,16 @@ class FreshBooksService {
       date: formatDate(date) || formatDate(new Date().toISOString()),
       source,
       note,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("other_incomes/other_incomes"),
-      method: "post",
+      url: this.#accountingUrl('other_incomes/other_incomes'),
+      method: 'post',
       body: { other_income: otherIncome },
-      logTag: "recordOtherIncome",
-    });
+      logTag: 'recordOtherIncome',
+    })
 
-    return this.#unwrap(body, "other_income");
+    return this.#unwrap(body, 'other_income')
   }
 
   /**
@@ -2477,7 +2477,7 @@ class FreshBooksService {
    * @sampleResult {"incomeid":12,"amount":{"amount":"300.00","code":"USD"},"category_name":"online_sales"}
    */
   async updateOtherIncome(incomeId, amount, currency, category, date, note) {
-    if (!incomeId) throw new Error('"Income" is required.');
+    if (!incomeId) throw new Error('"Income" is required.')
 
     const otherIncome = cleanupObject({
       amount: toMoney(amount, currency),
@@ -2485,16 +2485,16 @@ class FreshBooksService {
       // FreshBooks requires a date on every other-income update.
       date: formatDate(date) || formatDate(new Date().toISOString()),
       note,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`other_incomes/other_incomes/${incomeId}`),
-      method: "put",
+      url: this.#accountingUrl(`other_incomes/other_incomes/${ incomeId }`),
+      method: 'put',
       body: { other_income: otherIncome || {} },
-      logTag: "updateOtherIncome",
-    });
+      logTag: 'updateOtherIncome',
+    })
 
-    return this.#unwrap(body, "other_income");
+    return this.#unwrap(body, 'other_income')
   }
 
   /**
@@ -2509,15 +2509,15 @@ class FreshBooksService {
    * @sampleResult {"id":"12","deleted":true}
    */
   async deleteOtherIncome(incomeId) {
-    if (!incomeId) throw new Error('"Income" is required.');
+    if (!incomeId) throw new Error('"Income" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`other_incomes/other_incomes/${incomeId}`),
-      method: "delete",
-      logTag: "deleteOtherIncome",
-    });
+      url: this.#accountingUrl(`other_incomes/other_incomes/${ incomeId }`),
+      method: 'delete',
+      logTag: 'deleteOtherIncome',
+    })
 
-    return { id: incomeId, deleted: true };
+    return { id: incomeId, deleted: true }
   }
 
   // -------------------------------- Tasks ---------------------------------
@@ -2536,19 +2536,19 @@ class FreshBooksService {
    */
   async findTasks(search, maxResults) {
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("projects/tasks"),
+      url: this.#accountingUrl('projects/tasks'),
       query: {
         per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
         page: 1,
       },
-      logTag: "findTasks",
-    });
+      logTag: 'findTasks',
+    })
 
     return searchFilter(
-      this.#unwrapList(body, "tasks").items,
-      ["name", "description"],
-      search,
-    );
+      this.#unwrapList(body, 'tasks').items,
+      ['name', 'description'],
+      search
+    )
   }
 
   /**
@@ -2567,26 +2567,26 @@ class FreshBooksService {
    * @sampleResult {"taskid":8,"name":"Consulting","rate":{"amount":"150.00","code":"USD"},"billable":true}
    */
   async createTask(name, rate, currency, billable, description) {
-    if (!name) throw new Error('"Name" is required.');
+    if (!name) throw new Error('"Name" is required.')
 
     const task = cleanupObject({
       name,
       description,
       rate:
-        rate === undefined || rate === null || rate === ""
+        rate === undefined || rate === null || rate === ''
           ? undefined
           : toMoney(rate, currency),
       billable: billable === undefined ? undefined : !!billable,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("projects/tasks"),
-      method: "post",
+      url: this.#accountingUrl('projects/tasks'),
+      method: 'post',
       body: { task },
-      logTag: "createTask",
-    });
+      logTag: 'createTask',
+    })
 
-    return this.#unwrap(body, "task");
+    return this.#unwrap(body, 'task')
   }
 
   /**
@@ -2605,25 +2605,25 @@ class FreshBooksService {
    * @sampleResult {"taskid":8,"name":"Consulting","rate":{"amount":"160.00","code":"USD"}}
    */
   async updateTask(taskId, name, rate, currency, description) {
-    if (!taskId) throw new Error('"Task" is required.');
+    if (!taskId) throw new Error('"Task" is required.')
 
     const task = cleanupObject({
       name,
       description,
       rate:
-        rate === undefined || rate === null || rate === ""
+        rate === undefined || rate === null || rate === ''
           ? undefined
           : toMoney(rate, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`projects/tasks/${taskId}`),
-      method: "put",
+      url: this.#accountingUrl(`projects/tasks/${ taskId }`),
+      method: 'put',
       body: { task: task || {} },
-      logTag: "updateTask",
-    });
+      logTag: 'updateTask',
+    })
 
-    return this.#unwrap(body, "task");
+    return this.#unwrap(body, 'task')
   }
 
   /**
@@ -2639,16 +2639,16 @@ class FreshBooksService {
    * @sampleResult {"id":"8","deleted":true,"archived":false}
    */
   async deleteTask(taskId, archiveInstead) {
-    if (!taskId) throw new Error('"Task" is required.');
+    if (!taskId) throw new Error('"Task" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`projects/tasks/${taskId}`),
-      method: "put",
+      url: this.#accountingUrl(`projects/tasks/${ taskId }`),
+      method: 'put',
       body: { task: { vis_state: archiveInstead ? 2 : 1 } },
-      logTag: "deleteTask",
-    });
+      logTag: 'deleteTask',
+    })
 
-    return { id: taskId, deleted: !archiveInstead, archived: !!archiveInstead };
+    return { id: taskId, deleted: !archiveInstead, archived: !!archiveInstead }
   }
 
   // ----------------------------- Credit Notes -----------------------------
@@ -2669,17 +2669,17 @@ class FreshBooksService {
     const query = {
       per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
       page: 1,
-    };
+    }
 
-    if (clientId) query["search[clientid]"] = clientId;
+    if (clientId) query['search[clientid]'] = clientId
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("credit_notes/credit_notes"),
+      url: this.#accountingUrl('credit_notes/credit_notes'),
       query,
-      logTag: "findCreditNotes",
-    });
+      logTag: 'findCreditNotes',
+    })
 
-    return this.#unwrapList(body, "credit_notes").items;
+    return this.#unwrapList(body, 'credit_notes').items
   }
 
   /**
@@ -2694,15 +2694,15 @@ class FreshBooksService {
    * @sampleResult {"creditid":7,"clientid":2280,"amount":{"amount":"50.00","code":"USD"},"credit_number":"CN-0001","lines":[{"name":"Refund","unit_cost":{"amount":"50.00","code":"USD"}}]}
    */
   async getCreditNote(creditNoteId) {
-    if (!creditNoteId) throw new Error('"Credit Note" is required.');
+    if (!creditNoteId) throw new Error('"Credit Note" is required.')
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`credit_notes/credit_notes/${creditNoteId}`),
-      query: { "include[]": "lines" },
-      logTag: "getCreditNote",
-    });
+      url: this.#accountingUrl(`credit_notes/credit_notes/${ creditNoteId }`),
+      query: { 'include[]': 'lines' },
+      logTag: 'getCreditNote',
+    })
 
-    return this.#unwrap(body, "credit_note");
+    return this.#unwrap(body, 'credit_note')
   }
 
   /**
@@ -2721,10 +2721,10 @@ class FreshBooksService {
    * @sampleResult {"creditid":7,"clientid":2280,"amount":{"amount":"50.00","code":"USD"},"credit_number":"CN-0001"}
    */
   async createCreditNote(clientId, lineItems, date, currency, notes) {
-    if (!clientId) throw new Error('"Client" is required.');
+    if (!clientId) throw new Error('"Client" is required.')
 
     if (!Array.isArray(lineItems) || lineItems.length === 0) {
-      throw new Error('"Line Items" is required — add at least one item.');
+      throw new Error('"Line Items" is required — add at least one item.')
     }
 
     const creditNote = cleanupObject({
@@ -2733,16 +2733,16 @@ class FreshBooksService {
       currency_code: currency,
       notes,
       lines: await this.#mapLineItems(lineItems, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("credit_notes/credit_notes"),
-      method: "post",
+      url: this.#accountingUrl('credit_notes/credit_notes'),
+      method: 'post',
       body: { credit_note: creditNote },
-      logTag: "createCreditNote",
-    });
+      logTag: 'createCreditNote',
+    })
 
-    return this.#unwrap(body, "credit_note");
+    return this.#unwrap(body, 'credit_note')
   }
 
   /**
@@ -2760,22 +2760,22 @@ class FreshBooksService {
    * @sampleResult {"creditid":7,"amount":{"amount":"60.00","code":"USD"},"credit_number":"CN-0001"}
    */
   async updateCreditNote(creditNoteId, lineItems, currency, notes) {
-    if (!creditNoteId) throw new Error('"Credit Note" is required.');
+    if (!creditNoteId) throw new Error('"Credit Note" is required.')
 
     const creditNote = cleanupObject({
       currency_code: currency,
       notes,
       lines: await this.#mapLineItems(lineItems, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`credit_notes/credit_notes/${creditNoteId}`),
-      method: "put",
+      url: this.#accountingUrl(`credit_notes/credit_notes/${ creditNoteId }`),
+      method: 'put',
       body: { credit_note: creditNote || {} },
-      logTag: "updateCreditNote",
-    });
+      logTag: 'updateCreditNote',
+    })
 
-    return this.#unwrap(body, "credit_note");
+    return this.#unwrap(body, 'credit_note')
   }
 
   /**
@@ -2791,20 +2791,20 @@ class FreshBooksService {
    * @sampleResult {"id":"7","deleted":true,"archived":false}
    */
   async deleteCreditNote(creditNoteId, archiveInstead) {
-    if (!creditNoteId) throw new Error('"Credit Note" is required.');
+    if (!creditNoteId) throw new Error('"Credit Note" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`credit_notes/credit_notes/${creditNoteId}`),
-      method: "put",
+      url: this.#accountingUrl(`credit_notes/credit_notes/${ creditNoteId }`),
+      method: 'put',
       body: { credit_note: { vis_state: archiveInstead ? 2 : 1 } },
-      logTag: "deleteCreditNote",
-    });
+      logTag: 'deleteCreditNote',
+    })
 
     return {
       id: creditNoteId,
       deleted: !archiveInstead,
       archived: !!archiveInstead,
-    };
+    }
   }
 
   // -------------------------- Recurring Invoices --------------------------
@@ -2825,17 +2825,17 @@ class FreshBooksService {
     const query = {
       per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
       page: 1,
-    };
+    }
 
-    if (clientId) query["search[customerid]"] = clientId;
+    if (clientId) query['search[customerid]'] = clientId
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("invoice_profiles/invoice_profiles"),
+      url: this.#accountingUrl('invoice_profiles/invoice_profiles'),
       query,
-      logTag: "findRecurringInvoices",
-    });
+      logTag: 'findRecurringInvoices',
+    })
 
-    return this.#unwrapList(body, "invoice_profiles").items;
+    return this.#unwrapList(body, 'invoice_profiles').items
   }
 
   /**
@@ -2850,17 +2850,17 @@ class FreshBooksService {
    * @sampleResult {"id":4,"customerid":2280,"frequency":"m","amount":{"amount":"99.00","code":"USD"},"lines":[{"name":"Subscription","unit_cost":{"amount":"99.00","code":"USD"}}]}
    */
   async getRecurringInvoice(profileId) {
-    if (!profileId) throw new Error('"Recurring Invoice" is required.');
+    if (!profileId) throw new Error('"Recurring Invoice" is required.')
 
     const body = await this.#apiRequest({
       url: this.#accountingUrl(
-        `invoice_profiles/invoice_profiles/${profileId}`,
+        `invoice_profiles/invoice_profiles/${ profileId }`
       ),
-      query: { "include[]": "lines" },
-      logTag: "getRecurringInvoice",
-    });
+      query: { 'include[]': 'lines' },
+      logTag: 'getRecurringInvoice',
+    })
 
-    return this.#unwrap(body, "invoice_profile");
+    return this.#unwrap(body, 'invoice_profile')
   }
 
   /**
@@ -2887,12 +2887,12 @@ class FreshBooksService {
     startDate,
     currency,
     occurrences,
-    notes,
+    notes
   ) {
-    if (!clientId) throw new Error('"Client" is required.');
+    if (!clientId) throw new Error('"Client" is required.')
 
     if (!Array.isArray(lineItems) || lineItems.length === 0) {
-      throw new Error('"Line Items" is required — add at least one item.');
+      throw new Error('"Line Items" is required — add at least one item.')
     }
 
     const profile = cleanupObject({
@@ -2902,21 +2902,21 @@ class FreshBooksService {
       frequency: RECURRING_FREQUENCY[frequency],
       currency_code: currency,
       numberRecurring:
-        occurrences === undefined || occurrences === null || occurrences === ""
+        occurrences === undefined || occurrences === null || occurrences === ''
           ? undefined
           : Number(occurrences),
       notes,
       lines: await this.#mapLineItems(lineItems, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("invoice_profiles/invoice_profiles"),
-      method: "post",
+      url: this.#accountingUrl('invoice_profiles/invoice_profiles'),
+      method: 'post',
       body: { invoice_profile: profile },
-      logTag: "createRecurringInvoice",
-    });
+      logTag: 'createRecurringInvoice',
+    })
 
-    return this.#unwrap(body, "invoice_profile");
+    return this.#unwrap(body, 'invoice_profile')
   }
 
   /**
@@ -2939,27 +2939,27 @@ class FreshBooksService {
     lineItems,
     frequency,
     currency,
-    notes,
+    notes
   ) {
-    if (!profileId) throw new Error('"Recurring Invoice" is required.');
+    if (!profileId) throw new Error('"Recurring Invoice" is required.')
 
     const profile = cleanupObject({
       frequency: RECURRING_FREQUENCY[frequency],
       currency_code: currency,
       notes,
       lines: await this.#mapLineItems(lineItems, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
       url: this.#accountingUrl(
-        `invoice_profiles/invoice_profiles/${profileId}`,
+        `invoice_profiles/invoice_profiles/${ profileId }`
       ),
-      method: "put",
+      method: 'put',
       body: { invoice_profile: profile || {} },
-      logTag: "updateRecurringInvoice",
-    });
+      logTag: 'updateRecurringInvoice',
+    })
 
-    return this.#unwrap(body, "invoice_profile");
+    return this.#unwrap(body, 'invoice_profile')
   }
 
   /**
@@ -2975,22 +2975,22 @@ class FreshBooksService {
    * @sampleResult {"id":"4","deleted":true,"archived":false}
    */
   async deleteRecurringInvoice(profileId, archiveInstead) {
-    if (!profileId) throw new Error('"Recurring Invoice" is required.');
+    if (!profileId) throw new Error('"Recurring Invoice" is required.')
 
     await this.#apiRequest({
       url: this.#accountingUrl(
-        `invoice_profiles/invoice_profiles/${profileId}`,
+        `invoice_profiles/invoice_profiles/${ profileId }`
       ),
-      method: "put",
+      method: 'put',
       body: { invoice_profile: { vis_state: archiveInstead ? 2 : 1 } },
-      logTag: "deleteRecurringInvoice",
-    });
+      logTag: 'deleteRecurringInvoice',
+    })
 
     return {
       id: profileId,
       deleted: !archiveInstead,
       archived: !!archiveInstead,
-    };
+    }
   }
 
   // -------------------------------- Vendors -------------------------------
@@ -3009,19 +3009,19 @@ class FreshBooksService {
    */
   async findVendors(search, maxResults) {
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("bill_vendors/bill_vendors"),
+      url: this.#accountingUrl('bill_vendors/bill_vendors'),
       query: {
         per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
         page: 1,
       },
-      logTag: "findVendors",
-    });
+      logTag: 'findVendors',
+    })
 
     return searchFilter(
-      this.#unwrapList(body, "bill_vendors").items,
-      ["vendor_name", "primary_contact_email", "account_number"],
-      search,
-    );
+      this.#unwrapList(body, 'bill_vendors').items,
+      ['vendor_name', 'primary_contact_email', 'account_number'],
+      search
+    )
   }
 
   /**
@@ -3052,9 +3052,9 @@ class FreshBooksService {
     currency,
     city,
     country,
-    notes,
+    notes
   ) {
-    if (!vendorName) throw new Error('"Vendor Name" is required.');
+    if (!vendorName) throw new Error('"Vendor Name" is required.')
 
     const vendor = cleanupObject({
       vendor_name: vendorName,
@@ -3063,20 +3063,20 @@ class FreshBooksService {
       primary_contact_email: contactEmail,
       phone,
       currency_code: currency,
-      language: "en", // FreshBooks rejects an empty language on vendor create.
+      language: 'en', // FreshBooks rejects an empty language on vendor create.
       city,
       country,
       note: notes,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("bill_vendors/bill_vendors"),
-      method: "post",
+      url: this.#accountingUrl('bill_vendors/bill_vendors'),
+      method: 'post',
       body: { bill_vendor: vendor },
-      logTag: "createVendor",
-    });
+      logTag: 'createVendor',
+    })
 
-    return this.#unwrap(body, "bill_vendor");
+    return this.#unwrap(body, 'bill_vendor')
   }
 
   /**
@@ -3101,9 +3101,9 @@ class FreshBooksService {
     contactEmail,
     phone,
     currency,
-    notes,
+    notes
   ) {
-    if (!vendorId) throw new Error('"Vendor" is required.');
+    if (!vendorId) throw new Error('"Vendor" is required.')
 
     const vendor = cleanupObject({
       vendor_name: vendorName,
@@ -3111,16 +3111,16 @@ class FreshBooksService {
       phone,
       currency_code: currency,
       note: notes,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`bill_vendors/bill_vendors/${vendorId}`),
-      method: "put",
+      url: this.#accountingUrl(`bill_vendors/bill_vendors/${ vendorId }`),
+      method: 'put',
       body: { bill_vendor: vendor || {} },
-      logTag: "updateVendor",
-    });
+      logTag: 'updateVendor',
+    })
 
-    return this.#unwrap(body, "bill_vendor");
+    return this.#unwrap(body, 'bill_vendor')
   }
 
   /**
@@ -3136,20 +3136,20 @@ class FreshBooksService {
    * @sampleResult {"id":"1562","deleted":true,"archived":false}
    */
   async deleteVendor(vendorId, archiveInstead) {
-    if (!vendorId) throw new Error('"Vendor" is required.');
+    if (!vendorId) throw new Error('"Vendor" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`bill_vendors/bill_vendors/${vendorId}`),
-      method: "put",
+      url: this.#accountingUrl(`bill_vendors/bill_vendors/${ vendorId }`),
+      method: 'put',
       body: { bill_vendor: { vis_state: archiveInstead ? 2 : 1 } },
-      logTag: "deleteVendor",
-    });
+      logTag: 'deleteVendor',
+    })
 
     return {
       id: vendorId,
       deleted: !archiveInstead,
       archived: !!archiveInstead,
-    };
+    }
   }
 
   // --------------------------------- Bills --------------------------------
@@ -3165,10 +3165,10 @@ class FreshBooksService {
    */
 
   async #mapBillLines(billLines, currency) {
-    if (!Array.isArray(billLines) || billLines.length === 0) return undefined;
+    if (!Array.isArray(billLines) || billLines.length === 0) return undefined
 
-    return billLines.map((li) => {
-      const price = li.unitPrice ?? li.unit_cost;
+    return billLines.map(li => {
+      const price = li.unitPrice ?? li.unit_cost
 
       return cleanupObject({
         categoryid: li.category || li.categoryid,
@@ -3179,8 +3179,8 @@ class FreshBooksService {
           : { amount: String(price ?? 0) },
         tax_name1: li.taxName,
         tax_percent1: li.taxPercent,
-      });
-    });
+      })
+    })
   }
 
   /**
@@ -3199,17 +3199,17 @@ class FreshBooksService {
     const query = {
       per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
       page: 1,
-    };
+    }
 
-    if (vendorId) query["search[vendorid]"] = vendorId;
+    if (vendorId) query['search[vendorid]'] = vendorId
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("bills/bills"),
+      url: this.#accountingUrl('bills/bills'),
       query,
-      logTag: "findBills",
-    });
+      logTag: 'findBills',
+    })
 
-    return this.#unwrapList(body, "bills").items;
+    return this.#unwrapList(body, 'bills').items
   }
 
   /**
@@ -3224,14 +3224,14 @@ class FreshBooksService {
    * @sampleResult {"id":33,"vendorid":1562,"amount":{"amount":"600.00","code":"USD"},"status":"unpaid","lines":[{"description":"Supplies","unit_cost":{"amount":"600.00","code":"USD"}}]}
    */
   async getBill(billId) {
-    if (!billId) throw new Error('"Bill" is required.');
+    if (!billId) throw new Error('"Bill" is required.')
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`bills/bills/${billId}`),
-      logTag: "getBill",
-    });
+      url: this.#accountingUrl(`bills/bills/${ billId }`),
+      logTag: 'getBill',
+    })
 
-    return this.#unwrap(body, "bill");
+    return this.#unwrap(body, 'bill')
   }
 
   /**
@@ -3250,32 +3250,32 @@ class FreshBooksService {
    * @sampleResult {"id":33,"vendorid":1562,"amount":{"amount":"600.00","code":"USD"},"status":"unpaid"}
    */
   async createBill(vendorId, billLines, issueDate, dueInDays, currency) {
-    if (!vendorId) throw new Error('"Vendor" is required.');
+    if (!vendorId) throw new Error('"Vendor" is required.')
 
     if (!Array.isArray(billLines) || billLines.length === 0) {
-      throw new Error('"Line Items" is required — add at least one line.');
+      throw new Error('"Line Items" is required — add at least one line.')
     }
 
     const bill = cleanupObject({
       vendorid: vendorId,
       issue_date: formatDate(issueDate) || formatDate(new Date().toISOString()),
       due_offset_days:
-        dueInDays === undefined || dueInDays === null || dueInDays === ""
+        dueInDays === undefined || dueInDays === null || dueInDays === ''
           ? undefined
           : Number(dueInDays),
       currency_code: currency,
-      language: "en", // FreshBooks rejects an empty language on bill create.
+      language: 'en', // FreshBooks rejects an empty language on bill create.
       lines: await this.#mapBillLines(billLines, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("bills/bills"),
-      method: "post",
+      url: this.#accountingUrl('bills/bills'),
+      method: 'post',
       body: { bill },
-      logTag: "createBill",
-    });
+      logTag: 'createBill',
+    })
 
-    return this.#unwrap(body, "bill");
+    return this.#unwrap(body, 'bill')
   }
 
   /**
@@ -3292,21 +3292,21 @@ class FreshBooksService {
    * @sampleResult {"id":33,"vendorid":1562,"amount":{"amount":"650.00","code":"USD"},"status":"unpaid"}
    */
   async updateBill(billId, billLines, currency) {
-    if (!billId) throw new Error('"Bill" is required.');
+    if (!billId) throw new Error('"Bill" is required.')
 
     const bill = cleanupObject({
       currency_code: currency,
       lines: await this.#mapBillLines(billLines, currency),
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`bills/bills/${billId}`),
-      method: "put",
+      url: this.#accountingUrl(`bills/bills/${ billId }`),
+      method: 'put',
       body: { bill: bill || {} },
-      logTag: "updateBill",
-    });
+      logTag: 'updateBill',
+    })
 
-    return this.#unwrap(body, "bill");
+    return this.#unwrap(body, 'bill')
   }
 
   /**
@@ -3322,16 +3322,16 @@ class FreshBooksService {
    * @sampleResult {"id":"33","deleted":true,"archived":false}
    */
   async deleteBill(billId, archiveInstead) {
-    if (!billId) throw new Error('"Bill" is required.');
+    if (!billId) throw new Error('"Bill" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`bills/bills/${billId}`),
-      method: "put",
+      url: this.#accountingUrl(`bills/bills/${ billId }`),
+      method: 'put',
       body: { bill: { vis_state: archiveInstead ? 2 : 1 } },
-      logTag: "deleteBill",
-    });
+      logTag: 'deleteBill',
+    })
 
-    return { id: billId, deleted: !archiveInstead, archived: !!archiveInstead };
+    return { id: billId, deleted: !archiveInstead, archived: !!archiveInstead }
   }
 
   // ----------------------------- Bill Payments ----------------------------
@@ -3349,15 +3349,15 @@ class FreshBooksService {
    */
   async findBillPayments(maxResults) {
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("bill_payments/bill_payments"),
+      url: this.#accountingUrl('bill_payments/bill_payments'),
       query: {
         per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
         page: 1,
       },
-      logTag: "findBillPayments",
-    });
+      logTag: 'findBillPayments',
+    })
 
-    return this.#unwrapList(body, "bill_payments").items;
+    return this.#unwrapList(body, 'bill_payments').items
   }
 
   /**
@@ -3377,9 +3377,9 @@ class FreshBooksService {
    * @sampleResult {"id":9,"billid":33,"amount":{"amount":"600.00","code":"USD"},"payment_type":"Check"}
    */
   async recordBillPayment(billId, amount, currency, date, paymentType, note) {
-    if (!billId) throw new Error('"Bill" is required.');
-    if (amount === undefined || amount === null || amount === "")
-      throw new Error('"Amount" is required.');
+    if (!billId) throw new Error('"Bill" is required.')
+    if (amount === undefined || amount === null || amount === '')
+      throw new Error('"Amount" is required.')
 
     const billPayment = cleanupObject({
       billid: billId,
@@ -3387,16 +3387,16 @@ class FreshBooksService {
       paid_date: formatDate(date) || formatDate(new Date().toISOString()),
       payment_type: paymentType,
       note,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl("bill_payments/bill_payments"),
-      method: "post",
+      url: this.#accountingUrl('bill_payments/bill_payments'),
+      method: 'post',
       body: { bill_payment: billPayment },
-      logTag: "recordBillPayment",
-    });
+      logTag: 'recordBillPayment',
+    })
 
-    return this.#unwrap(body, "bill_payment");
+    return this.#unwrap(body, 'bill_payment')
   }
 
   /**
@@ -3415,22 +3415,22 @@ class FreshBooksService {
    * @sampleResult {"id":9,"billid":33,"amount":{"amount":"300.00","code":"USD"},"payment_type":"Cash"}
    */
   async updateBillPayment(billPaymentId, amount, currency, paymentType, note) {
-    if (!billPaymentId) throw new Error('"Bill Payment" is required.');
+    if (!billPaymentId) throw new Error('"Bill Payment" is required.')
 
     const billPayment = cleanupObject({
       amount: toMoney(amount, currency),
       payment_type: paymentType,
       note,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`bill_payments/bill_payments/${billPaymentId}`),
-      method: "put",
+      url: this.#accountingUrl(`bill_payments/bill_payments/${ billPaymentId }`),
+      method: 'put',
       body: { bill_payment: billPayment || {} },
-      logTag: "updateBillPayment",
-    });
+      logTag: 'updateBillPayment',
+    })
 
-    return this.#unwrap(body, "bill_payment");
+    return this.#unwrap(body, 'bill_payment')
   }
 
   /**
@@ -3445,16 +3445,16 @@ class FreshBooksService {
    * @sampleResult {"id":"9","deleted":true}
    */
   async deleteBillPayment(billPaymentId) {
-    if (!billPaymentId) throw new Error('"Bill Payment" is required.');
+    if (!billPaymentId) throw new Error('"Bill Payment" is required.')
 
     await this.#apiRequest({
-      url: this.#accountingUrl(`bill_payments/bill_payments/${billPaymentId}`),
-      method: "put",
+      url: this.#accountingUrl(`bill_payments/bill_payments/${ billPaymentId }`),
+      method: 'put',
       body: { bill_payment: { vis_state: 1 } },
-      logTag: "deleteBillPayment",
-    });
+      logTag: 'deleteBillPayment',
+    })
 
-    return { id: billPaymentId, deleted: true };
+    return { id: billPaymentId, deleted: true }
   }
 
   // ---------------------------- Reports & Account -------------------------
@@ -3474,21 +3474,21 @@ class FreshBooksService {
    * @sampleResult {"profitloss":{"currency_code":"USD","start_date":"2026-01-01","end_date":"2026-05-31","total_income":{"amount":"12000.00"}}}
    */
   async getFinancialReport(report, fromDate, toDate, currency) {
-    const slug = REPORT_SLUGS[report];
+    const slug = REPORT_SLUGS[report]
 
-    if (!slug) throw new Error("Please choose a valid report.");
+    if (!slug) throw new Error('Please choose a valid report.')
 
     const body = await this.#apiRequest({
-      url: this.#accountingUrl(`reports/accounting/${slug}`),
+      url: this.#accountingUrl(`reports/accounting/${ slug }`),
       query: cleanupObject({
         start_date: formatDate(fromDate),
         end_date: formatDate(toDate),
         currency_code: currency,
       }),
-      logTag: `getFinancialReport:${slug}`,
-    });
+      logTag: `getFinancialReport:${ slug }`,
+    })
 
-    return body?.response?.result || body;
+    return body?.response?.result || body
   }
 
   /**
@@ -3502,14 +3502,14 @@ class FreshBooksService {
    * @sampleResult {"businessName":"My Company","accountId":"ZykWor","businessId":14691043,"email":"owner@example.com"}
    */
   async getAccountInfo() {
-    const identity = await this.#me();
-    const accountId = this.#getAccountId();
+    const identity = await this.#me()
+    const accountId = this.#getAccountId()
 
-    const memberships = identity?.business_memberships || [];
+    const memberships = identity?.business_memberships || []
     const membership =
-      memberships.find((m) => m?.business?.account_id === accountId) ||
-      memberships[0];
-    const business = membership?.business || {};
+      memberships.find(m => m?.business?.account_id === accountId) ||
+      memberships[0]
+    const business = membership?.business || {}
 
     return cleanupObject({
       businessName: business.name,
@@ -3518,10 +3518,10 @@ class FreshBooksService {
       email: identity?.email,
       ownerName: [identity?.first_name, identity?.last_name]
         .filter(Boolean)
-        .join(" "),
+        .join(' '),
       address: business.address,
       role: membership?.role,
-    });
+    })
   }
 
   // ------------------------------- Projects -------------------------------
@@ -3542,15 +3542,15 @@ class FreshBooksService {
    */
   async findProjects(search, maxResults) {
     const body = await this.#apiRequest({
-      url: this.#projectsUrl("projects"),
+      url: this.#projectsUrl('projects'),
       query: {
         per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
         page: 1,
       },
-      logTag: "findProjects",
-    });
+      logTag: 'findProjects',
+    })
 
-    return searchFilter(body?.projects || [], ["title", "description"], search);
+    return searchFilter(body?.projects || [], ['title', 'description'], search)
   }
 
   /**
@@ -3565,14 +3565,14 @@ class FreshBooksService {
    * @sampleResult {"id":153125,"title":"Website Redesign","client_id":2280,"project_type":"fixed_price","fixed_price":"5000","logged_duration":7200}
    */
   async getProject(projectId) {
-    if (!projectId) throw new Error('"Project" is required.');
+    if (!projectId) throw new Error('"Project" is required.')
 
     const body = await this.#apiRequest({
-      url: this.#projectsUrl(`project/${projectId}`),
-      logTag: "getProject",
-    });
+      url: this.#projectsUrl(`project/${ projectId }`),
+      logTag: 'getProject',
+    })
 
-    return body?.project;
+    return body?.project
   }
 
   /**
@@ -3599,36 +3599,36 @@ class FreshBooksService {
     amount,
     budgetHours,
     dueDate,
-    description,
+    description
   ) {
-    if (!title) throw new Error('"Title" is required.');
-    if (!clientId) throw new Error('"Client" is required.');
+    if (!title) throw new Error('"Title" is required.')
+    if (!clientId) throw new Error('"Client" is required.')
 
-    const hourly = billingType === "Hourly Rate";
-    const hasAmount = amount !== undefined && amount !== null && amount !== "";
+    const hourly = billingType === 'Hourly Rate'
+    const hasAmount = amount !== undefined && amount !== null && amount !== ''
 
     const project = cleanupObject({
       title,
       client_id: Number(clientId),
-      project_type: hourly ? "hourly_rate" : "fixed_price",
+      project_type: hourly ? 'hourly_rate' : 'fixed_price',
       fixed_price: !hourly && hasAmount ? String(amount) : undefined,
       rate: hourly && hasAmount ? String(amount) : undefined,
       budget:
-        budgetHours === undefined || budgetHours === null || budgetHours === ""
+        budgetHours === undefined || budgetHours === null || budgetHours === ''
           ? undefined
           : Math.round(Number(budgetHours) * 60),
       due_date: formatDate(dueDate),
       description,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#projectsUrl("project"),
-      method: "post",
+      url: this.#projectsUrl('project'),
+      method: 'post',
       body: { project },
-      logTag: "createProject",
-    });
+      logTag: 'createProject',
+    })
 
-    return body?.project;
+    return body?.project
   }
 
   /**
@@ -3653,11 +3653,11 @@ class FreshBooksService {
     amount,
     dueDate,
     complete,
-    description,
+    description
   ) {
-    if (!projectId) throw new Error('"Project" is required.');
+    if (!projectId) throw new Error('"Project" is required.')
 
-    const hasAmount = amount !== undefined && amount !== null && amount !== "";
+    const hasAmount = amount !== undefined && amount !== null && amount !== ''
 
     const project = cleanupObject({
       title,
@@ -3666,16 +3666,16 @@ class FreshBooksService {
       due_date: formatDate(dueDate),
       complete: complete === undefined ? undefined : !!complete,
       description,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#projectsUrl(`project/${projectId}`),
-      method: "put",
+      url: this.#projectsUrl(`project/${ projectId }`),
+      method: 'put',
       body: { project: project || {} },
-      logTag: "updateProject",
-    });
+      logTag: 'updateProject',
+    })
 
-    return body?.project;
+    return body?.project
   }
 
   /**
@@ -3690,15 +3690,15 @@ class FreshBooksService {
    * @sampleResult {"id":"153125","deleted":true}
    */
   async deleteProject(projectId) {
-    if (!projectId) throw new Error('"Project" is required.');
+    if (!projectId) throw new Error('"Project" is required.')
 
     await this.#apiRequest({
-      url: this.#projectsUrl(`project/${projectId}`),
-      method: "delete",
-      logTag: "deleteProject",
-    });
+      url: this.#projectsUrl(`project/${ projectId }`),
+      method: 'delete',
+      logTag: 'deleteProject',
+    })
 
-    return { id: projectId, deleted: true };
+    return { id: projectId, deleted: true }
   }
 
   // ----------------------------- Time Tracking ----------------------------
@@ -3722,22 +3722,22 @@ class FreshBooksService {
     const query = {
       per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
       page: 1,
-    };
+    }
 
-    if (clientId) query.client_id = clientId;
-    if (projectId) query.project_id = projectId;
+    if (clientId) query.client_id = clientId
+    if (projectId) query.project_id = projectId
     if (formatDate(fromDate))
-      query.started_from = `${formatDate(fromDate)}T00:00:00Z`;
+      query.started_from = `${ formatDate(fromDate) }T00:00:00Z`
     if (formatDate(toDate))
-      query.started_to = `${formatDate(toDate)}T23:59:59Z`;
+      query.started_to = `${ formatDate(toDate) }T23:59:59Z`
 
     const body = await this.#apiRequest({
-      url: this.#timeUrl("time_entries"),
+      url: this.#timeUrl('time_entries'),
       query,
-      logTag: "findTimeEntries",
-    });
+      logTag: 'findTimeEntries',
+    })
 
-    return body?.time_entries || [];
+    return body?.time_entries || []
   }
 
   /**
@@ -3752,14 +3752,14 @@ class FreshBooksService {
    * @sampleResult {"id":5095,"duration":7200,"note":"Design work","client_id":2280,"project_id":153125,"billable":true,"started_at":"2026-05-10T12:00:00Z"}
    */
   async getTimeEntry(timeEntryId) {
-    if (!timeEntryId) throw new Error('"Time Entry" is required.');
+    if (!timeEntryId) throw new Error('"Time Entry" is required.')
 
     const body = await this.#apiRequest({
-      url: this.#timeUrl(`time_entries/${timeEntryId}`),
-      logTag: "getTimeEntry",
-    });
+      url: this.#timeUrl(`time_entries/${ timeEntryId }`),
+      logTag: 'getTimeEntry',
+    })
 
-    return body?.time_entry;
+    return body?.time_entry
   }
 
   /**
@@ -3779,8 +3779,8 @@ class FreshBooksService {
    * @sampleResult {"id":5095,"duration":5400,"note":"Design work","client_id":2280,"project_id":153125,"billable":true}
    */
   async logTime(hours, date, clientId, projectId, billable, note) {
-    if (hours === undefined || hours === null || hours === "")
-      throw new Error('"Hours" is required.');
+    if (hours === undefined || hours === null || hours === '')
+      throw new Error('"Hours" is required.')
 
     const timeEntry = cleanupObject({
       is_logged: true,
@@ -3791,16 +3791,16 @@ class FreshBooksService {
       project_id: projectId ? Number(projectId) : undefined,
       billable: billable === undefined ? undefined : !!billable,
       note,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#timeUrl("time_entries"),
-      method: "post",
+      url: this.#timeUrl('time_entries'),
+      method: 'post',
       body: { time_entry: timeEntry },
-      logTag: "logTime",
-    });
+      logTag: 'logTime',
+    })
 
-    return body?.time_entry;
+    return body?.time_entry
   }
 
   /**
@@ -3818,10 +3818,10 @@ class FreshBooksService {
    * @sampleResult {"id":5095,"duration":3600,"note":"Revised","billable":false}
    */
   async updateTimeEntry(timeEntryId, hours, billable, note) {
-    if (!timeEntryId) throw new Error('"Time Entry" is required.');
+    if (!timeEntryId) throw new Error('"Time Entry" is required.')
 
     // FreshBooks requires started_at + is_logged on every update, so carry the existing ones over.
-    const existing = await this.getTimeEntry(timeEntryId);
+    const existing = await this.getTimeEntry(timeEntryId)
 
     const timeEntry = cleanupObject({
       is_logged: true,
@@ -3829,16 +3829,16 @@ class FreshBooksService {
       duration: hoursToSeconds(hours) ?? existing?.duration,
       billable: billable === undefined ? existing?.billable : !!billable,
       note: note === undefined ? existing?.note : note,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#timeUrl(`time_entries/${timeEntryId}`),
-      method: "put",
+      url: this.#timeUrl(`time_entries/${ timeEntryId }`),
+      method: 'put',
       body: { time_entry: timeEntry },
-      logTag: "updateTimeEntry",
-    });
+      logTag: 'updateTimeEntry',
+    })
 
-    return body?.time_entry;
+    return body?.time_entry
   }
 
   /**
@@ -3853,15 +3853,15 @@ class FreshBooksService {
    * @sampleResult {"id":"5095","deleted":true}
    */
   async deleteTimeEntry(timeEntryId) {
-    if (!timeEntryId) throw new Error('"Time Entry" is required.');
+    if (!timeEntryId) throw new Error('"Time Entry" is required.')
 
     await this.#apiRequest({
-      url: this.#timeUrl(`time_entries/${timeEntryId}`),
-      method: "delete",
-      logTag: "deleteTimeEntry",
-    });
+      url: this.#timeUrl(`time_entries/${ timeEntryId }`),
+      method: 'delete',
+      logTag: 'deleteTimeEntry',
+    })
 
-    return { id: timeEntryId, deleted: true };
+    return { id: timeEntryId, deleted: true }
   }
 
   // ------------------------------- Services -------------------------------
@@ -3881,24 +3881,24 @@ class FreshBooksService {
    * @sampleResult {"items":[{"label":"Consulting","value":"4054453","note":""}],"cursor":null}
    */
   async getServicesDictionary(payload) {
-    const { search } = payload || {};
+    const { search } = payload || {}
 
     const body = await this.#apiRequest({
-      url: this.#commentsUrl("services"),
+      url: this.#commentsUrl('services'),
       query: { per_page: DEFAULT_PER_PAGE, page: 1 },
-      logTag: "getServicesDictionary",
-    });
+      logTag: 'getServicesDictionary',
+    })
 
-    const services = searchFilter(body?.services || [], ["name"], search);
+    const services = searchFilter(body?.services || [], ['name'], search)
 
     return {
       cursor: null,
-      items: services.map((service) => ({
-        label: service.name || `Service ${service.id}`,
+      items: services.map(service => ({
+        label: service.name || `Service ${ service.id }`,
         value: String(service.id),
-        note: service.billable ? "billable" : "",
+        note: service.billable ? 'billable' : '',
       })),
-    };
+    }
   }
 
   /**
@@ -3915,15 +3915,15 @@ class FreshBooksService {
    */
   async findServices(search, maxResults) {
     const body = await this.#apiRequest({
-      url: this.#commentsUrl("services"),
+      url: this.#commentsUrl('services'),
       query: {
         per_page: Math.min(maxResults || DEFAULT_PER_PAGE, DEFAULT_PER_PAGE),
         page: 1,
       },
-      logTag: "findServices",
-    });
+      logTag: 'findServices',
+    })
 
-    return searchFilter(body?.services || [], ["name"], search);
+    return searchFilter(body?.services || [], ['name'], search)
   }
 
   /**
@@ -3939,21 +3939,21 @@ class FreshBooksService {
    * @sampleResult {"id":4054453,"name":"Consulting","billable":true,"vis_state":0}
    */
   async createService(name, billable) {
-    if (!name) throw new Error('"Name" is required.');
+    if (!name) throw new Error('"Name" is required.')
 
     const service = cleanupObject({
       name,
       billable: billable === undefined ? undefined : !!billable,
-    });
+    })
 
     const body = await this.#apiRequest({
-      url: this.#commentsUrl("service"),
-      method: "post",
+      url: this.#commentsUrl('service'),
+      method: 'post',
       body: { service },
-      logTag: "createService",
-    });
+      logTag: 'createService',
+    })
 
-    return body?.service;
+    return body?.service
   }
 
   /**
@@ -3969,18 +3969,18 @@ class FreshBooksService {
    * @sampleResult {"service_id":4054453,"rate":"100.00"}
    */
   async setServiceRate(serviceId, hourlyRate) {
-    if (!serviceId) throw new Error('"Service" is required.');
-    if (hourlyRate === undefined || hourlyRate === null || hourlyRate === "")
-      throw new Error('"Hourly Rate" is required.');
+    if (!serviceId) throw new Error('"Service" is required.')
+    if (hourlyRate === undefined || hourlyRate === null || hourlyRate === '')
+      throw new Error('"Hourly Rate" is required.')
 
     const body = await this.#apiRequest({
-      url: this.#commentsUrl(`service/${serviceId}/rate`),
-      method: "post",
+      url: this.#commentsUrl(`service/${ serviceId }/rate`),
+      method: 'post',
       body: { service_rate: { rate: String(hourlyRate) } },
-      logTag: "setServiceRate",
-    });
+      logTag: 'setServiceRate',
+    })
 
-    return body?.service_rate || body;
+    return body?.service_rate || body
   }
 
   // ============================ 6b. TRIGGER ===============================
@@ -4001,21 +4001,21 @@ class FreshBooksService {
 
   // Reproduces FreshBooks' HMAC: base64( HMAC-SHA256( verifier, python-json.dumps(params) ) ).
   #computeWebhookSignature(verifier, params) {
-    const stringified = {};
+    const stringified = {}
 
-    Object.keys(params).forEach((key) => {
-      stringified[key] = String(params[key]);
-    });
+    Object.keys(params).forEach(key => {
+      stringified[key] = String(params[key])
+    })
 
     // Python's json.dumps default uses ", " and ": " separators.
     const message = JSON.stringify(stringified)
       .replace(/":"/g, '": "')
-      .replace(/","/g, '", "');
+      .replace(/","/g, '", "')
 
     return crypto
-      .createHmac("sha256", verifier)
-      .update(message, "utf8")
-      .digest("base64");
+      .createHmac('sha256', verifier)
+      .update(message, 'utf8')
+      .digest('base64')
   }
 
   /**
@@ -4024,61 +4024,61 @@ class FreshBooksService {
    * @returns {Object}
    */
   async handleTriggerUpsertWebhook(invocation) {
-    const accountId = this.#getAccountId();
+    const accountId = this.#getAccountId()
 
     // OAuth services must carry the connection id so delivered events can be authenticated.
-    const separator = invocation.callbackUrl.includes("?") ? "&" : "?";
+    const separator = invocation.callbackUrl.includes('?') ? '&' : '?'
     const uri = invocation.connectionId
-      ? `${invocation.callbackUrl}${separator}connectionId=${encodeURIComponent(invocation.connectionId)}`
-      : invocation.callbackUrl;
+      ? `${ invocation.callbackUrl }${ separator }connectionId=${ encodeURIComponent(invocation.connectionId) }`
+      : invocation.callbackUrl
 
     const desired = [
       ...new Set(
         (invocation.events || [])
-          .map((e) => TRIGGER_EVENTS[e.triggerData?.event])
-          .filter(Boolean),
+          .map(e => TRIGGER_EVENTS[e.triggerData?.event])
+          .filter(Boolean)
       ),
-    ];
-    const existing = invocation.webhookData?.callbacks || [];
-    const kept = [];
+    ]
+    const existing = invocation.webhookData?.callbacks || []
+    const kept = []
 
     // Remove callbacks that are no longer wanted.
     for (const cb of existing) {
       if (desired.includes(cb.event)) {
-        kept.push(cb);
+        kept.push(cb)
       } else {
         try {
           await this.#apiRequest({
-            url: this.#eventsUrl(`events/callbacks/${cb.callbackid}`),
-            method: "delete",
-            logTag: "trigger:deleteCallback",
-          });
+            url: this.#eventsUrl(`events/callbacks/${ cb.callbackid }`),
+            method: 'delete',
+            logTag: 'trigger:deleteCallback',
+          })
         } catch (error) {
           logger.warn(
-            `trigger upsert - delete ${cb.callbackid}: ${error.message}`,
-          );
+            `trigger upsert - delete ${ cb.callbackid }: ${ error.message }`
+          )
         }
       }
     }
 
     // Create callbacks for newly wanted events.
     for (const event of desired) {
-      if (kept.find((c) => c.event === event)) continue;
+      if (kept.find(c => c.event === event)) continue
 
       try {
         const body = await this.#apiRequest({
-          url: this.#eventsUrl("events/callbacks"),
-          method: "post",
+          url: this.#eventsUrl('events/callbacks'),
+          method: 'post',
           body: { callback: { event, uri } },
-          logTag: "trigger:createCallback",
-        });
+          logTag: 'trigger:createCallback',
+        })
 
-        const callback = body?.response?.result?.callback;
+        const callback = body?.response?.result?.callback
 
         if (callback)
-          kept.push({ event, callbackid: callback.callbackid || callback.id });
+          kept.push({ event, callbackid: callback.callbackid || callback.id })
       } catch (error) {
-        logger.error(`trigger upsert - create ${event}: ${error.message}`);
+        logger.error(`trigger upsert - create ${ event }: ${ error.message }`)
       }
     }
 
@@ -4088,7 +4088,7 @@ class FreshBooksService {
         connectionId: invocation.connectionId,
         callbacks: kept,
       },
-    };
+    }
   }
 
   /**
@@ -4097,7 +4097,7 @@ class FreshBooksService {
    * @returns {Object}
    */
   async handleTriggerResolveEvents(invocation) {
-    const body = invocation.body || {};
+    const body = invocation.body || {}
 
     // Verification handshake: FreshBooks POSTs a verifier; echo it back to activate the callback.
     if (body.verifier) {
@@ -4105,28 +4105,28 @@ class FreshBooksService {
         const accountId =
           body.account_id ||
           invocation.webhookData?.accountId ||
-          this.#getAccountId();
+          this.#getAccountId()
 
         await this.#apiRequest({
-          url: `${API_BASE}/events/account/${accountId}/events/callbacks/${body.object_id}`,
-          method: "put",
+          url: `${ API_BASE }/events/account/${ accountId }/events/callbacks/${ body.object_id }`,
+          method: 'put',
           body: { callback: { verifier: body.verifier } },
-          logTag: "trigger:verify",
-        });
+          logTag: 'trigger:verify',
+        })
       } catch (error) {
-        logger.error(`trigger verify - ${error.message}`);
+        logger.error(`trigger verify - ${ error.message }`)
       }
 
-      return { handshake: true, responseToExternalService: "" };
+      return { handshake: true, responseToExternalService: '' }
     }
 
-    if (!body.name) return null;
+    if (!body.name) return null
 
     // Best-effort signature check when the verifier is available.
-    const verifier = invocation.webhookData?.verifier;
+    const verifier = invocation.webhookData?.verifier
     const signature =
-      invocation.headers?.["x-freshbooks-hmac-sha256"] ||
-      invocation.headers?.["X-FreshBooks-Hmac-SHA256"];
+      invocation.headers?.['x-freshbooks-hmac-sha256'] ||
+      invocation.headers?.['X-FreshBooks-Hmac-SHA256']
 
     if (
       verifier &&
@@ -4134,10 +4134,10 @@ class FreshBooksService {
       this.#computeWebhookSignature(verifier, body) !== signature
     ) {
       logger.warn(
-        "trigger resolve - webhook signature mismatch, ignoring event.",
-      );
+        'trigger resolve - webhook signature mismatch, ignoring event.'
+      )
 
-      return null;
+      return null
     }
 
     return {
@@ -4145,7 +4145,7 @@ class FreshBooksService {
         invocation.connectionId || invocation.queryParams?.connectionId,
       events: [
         {
-          name: "onRecordEvent",
+          name: 'onRecordEvent',
           data: {
             event: body.name,
             objectId: body.object_id,
@@ -4154,7 +4154,7 @@ class FreshBooksService {
           },
         },
       ],
-    };
+    }
   }
 
   /**
@@ -4163,19 +4163,19 @@ class FreshBooksService {
    * @returns {Object}
    */
   async handleTriggerSelectMatched(invocation) {
-    const firedEvent = invocation.eventData?.event;
+    const firedEvent = invocation.eventData?.event
 
     const ids = (invocation.triggers || [])
-      .filter((trigger) => {
-        const picked = trigger.data?.event;
+      .filter(trigger => {
+        const picked = trigger.data?.event
 
-        if (!picked) return true;
+        if (!picked) return true
 
-        return TRIGGER_EVENTS[picked] === firedEvent;
+        return TRIGGER_EVENTS[picked] === firedEvent
       })
-      .map((trigger) => trigger.id);
+      .map(trigger => trigger.id)
 
-    return { ids };
+    return { ids }
   }
 
   /**
@@ -4184,22 +4184,22 @@ class FreshBooksService {
    * @returns {Object}
    */
   async handleTriggerDeleteWebhook(invocation) {
-    const accountId = invocation.webhookData?.accountId;
-    const callbacks = invocation.webhookData?.callbacks || [];
+    const accountId = invocation.webhookData?.accountId
+    const callbacks = invocation.webhookData?.callbacks || []
 
     for (const cb of callbacks) {
       try {
         await this.#apiRequest({
-          url: `${API_BASE}/events/account/${accountId}/events/callbacks/${cb.callbackid}`,
-          method: "delete",
-          logTag: "trigger:deleteWebhook",
-        });
+          url: `${ API_BASE }/events/account/${ accountId }/events/callbacks/${ cb.callbackid }`,
+          method: 'delete',
+          logTag: 'trigger:deleteWebhook',
+        })
       } catch (error) {
-        logger.warn(`trigger delete - ${cb.callbackid}: ${error.message}`);
+        logger.warn(`trigger delete - ${ cb.callbackid }: ${ error.message }`)
       }
     }
 
-    return { webhookData: {} };
+    return { webhookData: {} }
   }
 }
 
@@ -4207,21 +4207,21 @@ class FreshBooksService {
 
 Flowrunner.ServerCode.addService(FreshBooksService, [
   {
-    name: "clientId",
-    displayName: "Client ID",
-    defaultValue: "",
+    name: 'clientId',
+    displayName: 'Client ID',
+    defaultValue: '',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: true,
-    hint: "OAuth Client ID from your FreshBooks app (my.freshbooks.com/#/developer).",
+    hint: 'OAuth Client ID from your FreshBooks app (my.freshbooks.com/#/developer).',
   },
   {
-    name: "clientSecret",
-    displayName: "Client Secret",
-    defaultValue: "",
+    name: 'clientSecret',
+    displayName: 'Client Secret',
+    defaultValue: '',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: true,
-    hint: "OAuth Client Secret from your FreshBooks app.",
+    hint: 'OAuth Client Secret from your FreshBooks app.',
   },
-]);
+])

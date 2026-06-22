@@ -1,4 +1,4 @@
-"use strict";
+'use strict'
 
 /**
  * Deel FlowRunner Service
@@ -25,166 +25,166 @@
 
 // =================== 1. Constants, logger, helpers ===================
 
-const PROD_OAUTH_BASE = "https://app.deel.com";
-const PROD_API_BASE = "https://api.letsdeel.com/rest/v2";
-const SANDBOX_OAUTH_BASE = "https://app.demo.deel.com";
-const SANDBOX_API_BASE = "https://api-sandbox.demo.deel.com/rest/v2";
+const PROD_OAUTH_BASE = 'https://app.deel.com'
+const PROD_API_BASE = 'https://api.letsdeel.com/rest/v2'
+const SANDBOX_OAUTH_BASE = 'https://app.demo.deel.com'
+const SANDBOX_API_BASE = 'https://api-sandbox.demo.deel.com/rest/v2'
 
 // Organization-app scopes. Deel rejects User-type scopes (profile:*, worker:*, auth:*,
 // candidates:*) for Organization apps with "Invalid scopes for User type".
 const DEFAULT_SCOPE_LIST = [
-  "people:read",
-  "people:write",
-  "organizations:read",
-  "organizations:write",
-  "contracts:read",
-  "contracts:write",
-  "milestones:read",
-  "milestones:write",
-  "tasks:read",
-  "tasks:write",
-  "timesheets:read",
-  "timesheets:write",
-  "time-tracking:read",
-  "time-tracking:write",
-  "time-off:read",
-  "time-off:write",
-  "invoice-adjustments:read",
-  "invoice-adjustments:write",
-  "off-cycle-payments:read",
-  "off-cycle-payments:write",
-  "adjustments:read",
-  "adjustments:write",
-  "global-payroll:read",
-  "global-payroll:write",
-  "payslips:read",
-  "benefits:read",
-  "benefits:write",
-  "legal-entity:read",
-  "legal-entity:write",
-  "groups:read",
-  "groups:write",
-  "screenings:read",
-  "screenings:write",
-  "immigration:read",
-  "immigration:write",
-  "ats:read",
-  "ats:write",
-  "forms:read",
-  "knowledge-hub:read",
-  "accounting:read",
-  "it-assets:read",
-  "it-orders:read",
-  "it-policies:read",
-  "equities:write",
-];
+  'people:read',
+  'people:write',
+  'organizations:read',
+  'organizations:write',
+  'contracts:read',
+  'contracts:write',
+  'milestones:read',
+  'milestones:write',
+  'tasks:read',
+  'tasks:write',
+  'timesheets:read',
+  'timesheets:write',
+  'time-tracking:read',
+  'time-tracking:write',
+  'time-off:read',
+  'time-off:write',
+  'invoice-adjustments:read',
+  'invoice-adjustments:write',
+  'off-cycle-payments:read',
+  'off-cycle-payments:write',
+  'adjustments:read',
+  'adjustments:write',
+  'global-payroll:read',
+  'global-payroll:write',
+  'payslips:read',
+  'benefits:read',
+  'benefits:write',
+  'legal-entity:read',
+  'legal-entity:write',
+  'groups:read',
+  'groups:write',
+  'screenings:read',
+  'screenings:write',
+  'immigration:read',
+  'immigration:write',
+  'ats:read',
+  'ats:write',
+  'forms:read',
+  'knowledge-hub:read',
+  'accounting:read',
+  'it-assets:read',
+  'it-orders:read',
+  'it-policies:read',
+  'equities:write',
+]
 
-const DEFAULT_SCOPE_STRING = DEFAULT_SCOPE_LIST.join(" ");
+const DEFAULT_SCOPE_STRING = DEFAULT_SCOPE_LIST.join(' ')
 
 const MethodCallTypes = {
-  SHAPE_EVENT: "SHAPE_EVENT",
-  FILTER_TRIGGER: "FILTER_TRIGGER",
-};
+  SHAPE_EVENT: 'SHAPE_EVENT',
+  FILTER_TRIGGER: 'FILTER_TRIGGER',
+}
 
 // Curated fallback list for the webhook event dropdown when /webhooks/events/types is restricted.
 const COMMON_DEEL_EVENTS = [
-  "contract.created",
-  "contract.updated",
-  "contract.signed",
-  "contract.terminated",
-  "contract.cancelled",
-  "contract.amendment.created",
-  "contract.amendment.signed",
-  "contract.amendment.cancelled",
-  "contract.invoice.created",
-  "contract.invoice.adjustment.created",
-  "contract.invoice.adjustment.approved",
-  "contract.milestone.created",
-  "contract.milestone.approved",
-  "contract.task.created",
-  "contract.task.approved",
-  "contract.timesheet.created",
-  "contract.timesheet.approved",
-  "contract.timesheet.rejected",
-  "contract.payment.created",
-  "contract.payment.failed",
-  "eor.contract.created",
-  "eor.contract.signed",
-  "eor.contract.terminated",
-  "eor.payslips.available",
-  "people.created",
-  "people.updated",
-  "people.terminated",
-  "timeoff.requested",
-  "timeoff.approved",
-  "timeoff.rejected",
-  "timeoff.cancelled",
-  "payroll.report.available",
-  "payroll.cycle.closed",
-  "ats.application.created",
-  "ats.application.updated",
-  "ats.candidate.created",
-  "organization.created",
-  "organization.updated",
-  "screening.completed",
-  "immigration.case.updated",
-];
+  'contract.created',
+  'contract.updated',
+  'contract.signed',
+  'contract.terminated',
+  'contract.cancelled',
+  'contract.amendment.created',
+  'contract.amendment.signed',
+  'contract.amendment.cancelled',
+  'contract.invoice.created',
+  'contract.invoice.adjustment.created',
+  'contract.invoice.adjustment.approved',
+  'contract.milestone.created',
+  'contract.milestone.approved',
+  'contract.task.created',
+  'contract.task.approved',
+  'contract.timesheet.created',
+  'contract.timesheet.approved',
+  'contract.timesheet.rejected',
+  'contract.payment.created',
+  'contract.payment.failed',
+  'eor.contract.created',
+  'eor.contract.signed',
+  'eor.contract.terminated',
+  'eor.payslips.available',
+  'people.created',
+  'people.updated',
+  'people.terminated',
+  'timeoff.requested',
+  'timeoff.approved',
+  'timeoff.rejected',
+  'timeoff.cancelled',
+  'payroll.report.available',
+  'payroll.cycle.closed',
+  'ats.application.created',
+  'ats.application.updated',
+  'ats.candidate.created',
+  'organization.created',
+  'organization.updated',
+  'screening.completed',
+  'immigration.case.updated',
+]
 
 const logger = {
-  info: (...args) => console.log("[Deel Service] info:", ...args),
-  debug: (...args) => console.log("[Deel Service] debug:", ...args),
-  warn: (...args) => console.log("[Deel Service] warn:", ...args),
-  error: (...args) => console.log("[Deel Service] error:", ...args),
-};
+  info: (...args) => console.log('[Deel Service] info:', ...args),
+  debug: (...args) => console.log('[Deel Service] debug:', ...args),
+  warn: (...args) => console.log('[Deel Service] warn:', ...args),
+  error: (...args) => console.log('[Deel Service] error:', ...args),
+}
 
 function cleanupObject(data) {
-  if (!data || typeof data !== "object") return data;
+  if (!data || typeof data !== 'object') return data
 
-  const result = {};
+  const result = {}
 
-  Object.keys(data).forEach((key) => {
-    const value = data[key];
+  Object.keys(data).forEach(key => {
+    const value = data[key]
 
-    if (value !== undefined && value !== null && value !== "") {
-      result[key] = value;
+    if (value !== undefined && value !== null && value !== '') {
+      result[key] = value
     }
-  });
+  })
 
-  return Object.keys(result).length > 0 ? result : undefined;
+  return Object.keys(result).length > 0 ? result : undefined
 }
 
 function searchFilter(items, fields, search) {
-  if (!search) return items;
+  if (!search) return items
 
-  const needle = String(search).toLowerCase();
+  const needle = String(search).toLowerCase()
 
-  return items.filter((item) =>
-    fields.some((field) => {
-      const value = field.split(".").reduce((acc, key) => acc?.[key], item);
+  return items.filter(item =>
+    fields.some(field => {
+      const value = field.split('.').reduce((acc, key) => acc?.[key], item)
 
-      return value && String(value).toLowerCase().includes(needle);
-    }),
-  );
+      return value && String(value).toLowerCase().includes(needle)
+    })
+  )
 }
 
 function toDictionaryItems(list, labelKey, valueKey, noteKey) {
-  return (list || []).map((item) => ({
+  return (list || []).map(item => ({
     label: labelKey
-      ? typeof labelKey === "function"
+      ? typeof labelKey === 'function'
         ? labelKey(item)
         : item[labelKey]
       : String(item),
     value: valueKey
-      ? typeof valueKey === "function"
+      ? typeof valueKey === 'function'
         ? valueKey(item)
         : item[valueKey]
       : item,
     note: noteKey
-      ? typeof noteKey === "function"
+      ? typeof noteKey === 'function'
         ? noteKey(item)
         : item[noteKey]
-      : "",
-  }));
+      : '',
+  }))
 }
 
 // =================== 2. Service class ===================
@@ -197,61 +197,61 @@ function toDictionaryItems(list, labelKey, valueKey, noteKey) {
  */
 class DeelService {
   constructor(config) {
-    this.clientId = config?.clientId;
-    this.clientSecret = config?.clientSecret;
-    this.environment = config?.environment || "Production";
-    this.scopes = DEFAULT_SCOPE_STRING;
+    this.clientId = config?.clientId
+    this.clientSecret = config?.clientSecret
+    this.environment = config?.environment || 'Production'
+    this.scopes = DEFAULT_SCOPE_STRING
   }
 
   // =================== 3. Private API helper ===================
 
   #oauthBase() {
-    return this.environment === "Sandbox"
+    return this.environment === 'Sandbox'
       ? SANDBOX_OAUTH_BASE
-      : PROD_OAUTH_BASE;
+      : PROD_OAUTH_BASE
   }
 
   #apiBase() {
-    return this.environment === "Sandbox" ? SANDBOX_API_BASE : PROD_API_BASE;
+    return this.environment === 'Sandbox' ? SANDBOX_API_BASE : PROD_API_BASE
   }
 
   #accessToken() {
-    const token = this.request?.headers?.["oauth-access-token"];
+    const token = this.request?.headers?.['oauth-access-token']
 
     if (!token) {
       throw new Error(
-        "You are not connected to Deel. Open the connection settings and sign in again.",
-      );
+        'You are not connected to Deel. Open the connection settings and sign in again.'
+      )
     }
 
-    return token;
+    return token
   }
 
   #authHeaders() {
     if (!this.clientId) {
       throw new Error(
-        "Deel Client ID is missing. Open the service settings and paste the Client ID from your Deel OAuth2 app.",
-      );
+        'Deel Client ID is missing. Open the service settings and paste the Client ID from your Deel OAuth2 app.'
+      )
     }
 
     return {
-      Authorization: `Bearer ${this.#accessToken()}`,
-      "x-client-id": this.clientId,
-    };
+      Authorization: `Bearer ${ this.#accessToken() }`,
+      'x-client-id': this.clientId,
+    }
   }
 
   #basicAuthHeader() {
     if (!this.clientId || !this.clientSecret) {
       throw new Error(
-        "Deel Client ID and Client Secret are required. Open the service settings and fill them in.",
-      );
+        'Deel Client ID and Client Secret are required. Open the service settings and fill them in.'
+      )
     }
 
-    const creds = Buffer.from(`${this.clientId}:${this.clientSecret}`).toString(
-      "base64",
-    );
+    const creds = Buffer.from(`${ this.clientId }:${ this.clientSecret }`).toString(
+      'base64'
+    )
 
-    return { Authorization: `Basic ${creds}` };
+    return { Authorization: `Basic ${ creds }` }
   }
 
   async #deelRequest({
@@ -264,108 +264,109 @@ class DeelService {
     rawResponse,
     rawBody,
   }) {
-    method = (method || "get").toLowerCase();
+    method = (method || 'get').toLowerCase()
 
-    const url = `${this.#apiBase()}${path}`;
-    const cleanedQuery = query ? cleanupObject(query) : undefined;
+    const url = `${ this.#apiBase() }${ path }`
+    const cleanedQuery = query ? cleanupObject(query) : undefined
 
     // Deel validates that all POST/PATCH/PUT bodies are wrapped in {data: ...}.
     // We auto-envelope unless the caller already did so or explicitly opts out
     // via rawBody: true. POST without a body still sends `{data: {}}`.
-    const isWriteMethod = ["post", "patch", "put"].includes(method);
-    let envelopedBody = body;
+    const isWriteMethod = ['post', 'patch', 'put'].includes(method)
+    let envelopedBody = body
 
     if (isWriteMethod && !rawBody) {
       if (body === undefined || body === null) {
-        envelopedBody = { data: {} };
+        envelopedBody = { data: {} }
       } else {
         const isAlreadyEnveloped =
-          typeof body === "object" &&
+          typeof body === 'object' &&
           body !== null &&
           Object.keys(body).length === 1 &&
-          "data" in body;
+          'data' in body
 
-        if (!isAlreadyEnveloped) envelopedBody = { data: body };
+        if (!isAlreadyEnveloped) envelopedBody = { data: body }
       }
     }
 
     logger.debug(
-      `${logTag || method} ${method.toUpperCase()} ${url} q=${JSON.stringify(cleanedQuery || {})}`,
-    );
+      `${ logTag || method } ${ method.toUpperCase() } ${ url } q=${ JSON.stringify(cleanedQuery || {}) }`
+    )
 
     // Up to 2 retries on 429 (Deel allows 5 req/sec per org, no headers exposed)
-    const maxRetries = 2;
-    let lastError;
+    const maxRetries = 2
+    let lastError
 
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
       try {
         const req = Flowrunner.Request[method](url)
           .set(this.#authHeaders())
-          .set({ Accept: "application/json" });
+          .set({ Accept: 'application/json' })
 
-        if (cleanedQuery) req.query(cleanedQuery);
-        if (headers) req.set(headers);
+        if (cleanedQuery) req.query(cleanedQuery)
+        if (headers) req.set(headers)
 
         if (envelopedBody !== undefined && envelopedBody !== null) {
-          req.set({ "Content-Type": "application/json" });
+          req.set({ 'Content-Type': 'application/json' })
 
-          return await req.send(envelopedBody);
+          return await req.send(envelopedBody)
         }
 
-        return await req;
+        return await req
       } catch (error) {
-        lastError = error;
+        lastError = error
 
-        const apiBody = error?.body || error?.message;
+        const apiBody = error?.body || error?.message
         const bodyText =
-          typeof apiBody === "string" ? apiBody : JSON.stringify(apiBody || "");
+          typeof apiBody === 'string' ? apiBody : JSON.stringify(apiBody || '')
         const isRateLimit =
           error?.status === 429 ||
-          /too many requests|rate limit/i.test(bodyText);
+          /too many requests|rate limit/i.test(bodyText)
 
         if (isRateLimit && attempt < maxRetries) {
-          const waitMs = 1000 * (attempt + 1);
+          const waitMs = 1000 * (attempt + 1)
 
           logger.warn(
-            `${logTag || method} - 429 rate limit, retrying in ${waitMs}ms (attempt ${attempt + 1}/${maxRetries})`,
-          );
-          await new Promise((resolve) => setTimeout(resolve, waitMs));
-          continue;
+            `${ logTag || method } - 429 rate limit, retrying in ${ waitMs }ms (attempt ${ attempt + 1 }/${ maxRetries })`
+          )
+
+          await new Promise(resolve => setTimeout(resolve, waitMs))
+          continue
         }
 
-        logger.error(`${logTag || method} - api error: ${bodyText}`);
+        logger.error(`${ logTag || method } - api error: ${ bodyText }`)
 
-        if (rawResponse) throw error;
+        if (rawResponse) throw error
 
         throw new Error(
           this.#friendlyError(apiBody) ||
-            `Deel request failed: ${method.toUpperCase()} ${path}`,
-        );
+            `Deel request failed: ${ method.toUpperCase() } ${ path }`
+        )
       }
     }
 
-    throw lastError;
+    throw lastError
   }
 
   #friendlyError(body) {
-    if (!body) return null;
+    if (!body) return null
 
-    if (typeof body === "string") return body;
+    if (typeof body === 'string') return body
 
     if (body?.errors && Array.isArray(body.errors)) {
       return body.errors
-        .map((e) => e.message || e.detail || JSON.stringify(e))
-        .join("; ");
+        .map(e => e.message || e.detail || JSON.stringify(e))
+        .join('; ')
     }
 
-    if (body?.error_description) return body.error_description;
-    if (body?.message) return body.message;
+    if (body?.error_description) return body.error_description
+    if (body?.message) return body.message
     if (body?.error)
-      return typeof body.error === "string"
+      return typeof body.error === 'string'
         ? body.error
-        : JSON.stringify(body.error);
+        : JSON.stringify(body.error)
 
-    return JSON.stringify(body);
+    return JSON.stringify(body)
   }
 
   // =================== 4. OAuth2 system methods ===================
@@ -376,13 +377,13 @@ class DeelService {
    * @returns {String}
    */
   async getOAuth2ConnectionURL() {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams()
 
-    params.append("client_id", this.clientId);
-    params.append("scope", this.scopes);
-    params.append("response_type", "code");
+    params.append('client_id', this.clientId)
+    params.append('scope', this.scopes)
+    params.append('response_type', 'code')
 
-    return `${this.#oauthBase()}/oauth2/authorize?${params.toString()}`;
+    return `${ this.#oauthBase() }/oauth2/authorize?${ params.toString() }`
   }
 
   /**
@@ -402,57 +403,59 @@ class DeelService {
    * @returns {executeCallback_ResultObject}
    */
   async executeCallback(callbackObject) {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams()
 
-    params.append("grant_type", "authorization_code");
-    params.append("code", callbackObject.code);
-    params.append("redirect_uri", callbackObject.redirectURI);
+    params.append('grant_type', 'authorization_code')
+    params.append('code', callbackObject.code)
+    params.append('redirect_uri', callbackObject.redirectURI)
 
-    let tokenResponse;
+    let tokenResponse
 
     try {
       tokenResponse = await Flowrunner.Request.post(
-        `${this.#oauthBase()}/oauth2/tokens`,
+        `${ this.#oauthBase() }/oauth2/tokens`
       )
         .set(this.#basicAuthHeader())
-        .set({ "Content-Type": "application/x-www-form-urlencoded" })
-        .send(params.toString());
+        .set({ 'Content-Type': 'application/x-www-form-urlencoded' })
+        .send(params.toString())
     } catch (error) {
       logger.error(
-        `[executeCallback] token exchange failed: ${error?.message || JSON.stringify(error)}`,
-      );
+        `[executeCallback] token exchange failed: ${ error?.message || JSON.stringify(error) }`
+      )
+
       throw new Error(
         this.#friendlyError(error?.body || error?.message) ||
-          "Deel token exchange failed.",
-      );
+          'Deel token exchange failed.'
+      )
     }
 
-    let identityName = "Deel User";
-    let avatarUrl;
+    let identityName = 'Deel User'
+    let avatarUrl
 
     try {
-      const tempToken = tokenResponse.access_token;
+      const tempToken = tokenResponse.access_token
       const profile = await Flowrunner.Request.get(
-        `${this.#apiBase()}/people/me`,
+        `${ this.#apiBase() }/people/me`
       ).set({
-        Authorization: `Bearer ${tempToken}`,
-        "x-client-id": this.clientId,
-      });
+        Authorization: `Bearer ${ tempToken }`,
+        'x-client-id': this.clientId,
+      })
 
-      const me = profile?.data || profile;
+      const me = profile?.data || profile
       const fullName = [me?.first_name, me?.last_name]
         .filter(Boolean)
-        .join(" ")
-        .trim();
+        .join(' ')
+        .trim()
 
       identityName = fullName
-        ? `${fullName}${me?.email ? ` (${me.email})` : ""}`
-        : me?.email || "Deel User";
-      avatarUrl = me?.profile_picture;
+        ? `${ fullName }${ me?.email ? ` (${ me.email })` : '' }`
+        : me?.email || 'Deel User'
+
+      avatarUrl = me?.profile_picture
     } catch (error) {
       logger.warn(
-        `[executeCallback] profile fetch failed (non-fatal): ${error?.message}`,
-      );
+        `[executeCallback] profile fetch failed (non-fatal): ${ error?.message }`
+      )
     }
 
     return {
@@ -462,7 +465,7 @@ class DeelService {
       connectionIdentityName: identityName,
       connectionIdentityImageURL: avatarUrl,
       overwrite: true,
-    };
+    }
   }
 
   /**
@@ -479,42 +482,43 @@ class DeelService {
    * @returns {refreshToken_ResultObject}
    */
   async refreshToken(refreshToken) {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams()
 
-    params.append("grant_type", "refresh_token");
-    params.append("refresh_token", refreshToken);
+    params.append('grant_type', 'refresh_token')
+    params.append('refresh_token', refreshToken)
 
     try {
       const response = await Flowrunner.Request.post(
-        `${this.#oauthBase()}/oauth2/tokens`,
+        `${ this.#oauthBase() }/oauth2/tokens`
       )
         .set(this.#basicAuthHeader())
-        .set({ "Content-Type": "application/x-www-form-urlencoded" })
-        .send(params.toString());
+        .set({ 'Content-Type': 'application/x-www-form-urlencoded' })
+        .send(params.toString())
 
       return {
         token: response.access_token,
         expirationInSeconds: response.expires_in,
         // Deel rotates refresh tokens — always return the NEW one so the framework persists it
         refreshToken: response.refresh_token || refreshToken,
-      };
+      }
     } catch (error) {
-      const apiBody = error?.body || error?.message;
-      const friendly = this.#friendlyError(apiBody) || error?.message;
+      const apiBody = error?.body || error?.message
+      const friendly = this.#friendlyError(apiBody) || error?.message
 
       if (
-        typeof friendly === "string" &&
-        friendly.toLowerCase().includes("invalid_grant")
+        typeof friendly === 'string' &&
+        friendly.toLowerCase().includes('invalid_grant')
       ) {
         throw new Error(
-          "Deel refresh token expired or already used — please reconnect Deel from the connection settings.",
-        );
+          'Deel refresh token expired or already used — please reconnect Deel from the connection settings.'
+        )
       }
 
       logger.error(
-        `[refreshToken] error: ${typeof apiBody === "object" ? JSON.stringify(apiBody) : apiBody}`,
-      );
-      throw new Error(friendly || "Deel token refresh failed.");
+        `[refreshToken] error: ${ typeof apiBody === 'object' ? JSON.stringify(apiBody) : apiBody }`
+      )
+
+      throw new Error(friendly || 'Deel token refresh failed.')
     }
   }
 
@@ -530,19 +534,19 @@ class DeelService {
    * @sampleResult {"ok":true,"connectedAs":{"name":"Jane Doe","email":"jane@acme.com"},"organization":{"id":"org_abc123","name":"Acme Inc"}}
    */
   async testConnection() {
-    const me = await this.getMyProfile();
-    const org = await this.getOrganization().catch(() => null);
+    const me = await this.getMyProfile()
+    const org = await this.getOrganization().catch(() => null)
 
     return {
       ok: true,
       connectedAs: {
         name:
-          [me?.first_name, me?.last_name].filter(Boolean).join(" ") ||
+          [me?.first_name, me?.last_name].filter(Boolean).join(' ') ||
           me?.email,
         email: me?.email,
       },
       organization: org ? { id: org?.id, name: org?.name } : null,
-    };
+    }
   }
 
   /**
@@ -556,12 +560,12 @@ class DeelService {
    */
   async getMyProfile() {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/people/me",
-      logTag: "getMyProfile",
-    });
+      method: 'get',
+      path: '/people/me',
+      logTag: 'getMyProfile',
+    })
 
-    return response?.data || response;
+    return response?.data || response
   }
 
   /**
@@ -575,12 +579,12 @@ class DeelService {
    */
   async getOrganization() {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/organizations",
-      logTag: "getOrganization",
-    });
+      method: 'get',
+      path: '/organizations',
+      logTag: 'getOrganization',
+    })
 
-    return response?.data || response;
+    return response?.data || response
   }
 
   // =================== 5. Dictionaries ===================
@@ -620,14 +624,14 @@ class DeelService {
    */
   async getCountriesDictionary(payload) {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/lookups/countries",
-      logTag: "getCountriesDictionary",
-    });
-    const list = response?.data || [];
-    const filtered = searchFilter(list, ["name", "code"], payload?.search);
+      method: 'get',
+      path: '/lookups/countries',
+      logTag: 'getCountriesDictionary',
+    })
+    const list = response?.data || []
+    const filtered = searchFilter(list, ['name', 'code'], payload?.search)
 
-    return { items: toDictionaryItems(filtered, "name", "code", "code") };
+    return { items: toDictionaryItems(filtered, 'name', 'code', 'code') }
   }
 
   /**
@@ -645,20 +649,20 @@ class DeelService {
    */
   async getCurrenciesDictionary(payload) {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/lookups/currencies",
-      logTag: "getCurrenciesDictionary",
-    });
-    const list = response?.data || [];
-    const filtered = searchFilter(list, ["name", "code"], payload?.search);
+      method: 'get',
+      path: '/lookups/currencies',
+      logTag: 'getCurrenciesDictionary',
+    })
+    const list = response?.data || []
+    const filtered = searchFilter(list, ['name', 'code'], payload?.search)
 
     return {
-      items: filtered.map((c) => ({
-        label: `${c.name} (${c.code})`,
+      items: filtered.map(c => ({
+        label: `${ c.name } (${ c.code })`,
         value: c.code,
         note: c.code,
       })),
-    };
+    }
   }
 
   /**
@@ -676,14 +680,14 @@ class DeelService {
    */
   async getJobTitlesDictionary(payload) {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/lookups/job-titles",
-      logTag: "getJobTitlesDictionary",
-    });
-    const list = response?.data || [];
-    const filtered = searchFilter(list, ["name"], payload?.search);
+      method: 'get',
+      path: '/lookups/job-titles',
+      logTag: 'getJobTitlesDictionary',
+    })
+    const list = response?.data || []
+    const filtered = searchFilter(list, ['name'], payload?.search)
 
-    return { items: toDictionaryItems(filtered, "name", "id", "name") };
+    return { items: toDictionaryItems(filtered, 'name', 'id', 'name') }
   }
 
   /**
@@ -701,14 +705,14 @@ class DeelService {
    */
   async getSeniorityLevelsDictionary(payload) {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/lookups/seniorities",
-      logTag: "getSeniorityLevelsDictionary",
-    });
-    const list = response?.data || [];
-    const filtered = searchFilter(list, ["name"], payload?.search);
+      method: 'get',
+      path: '/lookups/seniorities',
+      logTag: 'getSeniorityLevelsDictionary',
+    })
+    const list = response?.data || []
+    const filtered = searchFilter(list, ['name'], payload?.search)
 
-    return { items: toDictionaryItems(filtered, "name", "id", "name") };
+    return { items: toDictionaryItems(filtered, 'name', 'id', 'name') }
   }
 
   /**
@@ -726,20 +730,20 @@ class DeelService {
    */
   async getTimeOffTypesDictionary(payload) {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/lookups/time-off-types",
-      logTag: "getTimeOffTypesDictionary",
-    });
-    const list = response?.data || [];
-    const filtered = searchFilter(list, ["name", "type"], payload?.search);
+      method: 'get',
+      path: '/lookups/time-off-types',
+      logTag: 'getTimeOffTypesDictionary',
+    })
+    const list = response?.data || []
+    const filtered = searchFilter(list, ['name', 'type'], payload?.search)
 
     return {
-      items: filtered.map((t) => ({
+      items: filtered.map(t => ({
         label: t.name || t.type,
         value: t.type || t.id,
-        note: t.type || "",
+        note: t.type || '',
       })),
-    };
+    }
   }
 
   /**
@@ -757,20 +761,20 @@ class DeelService {
    */
   async getLegalEntitiesDictionary(payload) {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/legal-entities",
-      logTag: "getLegalEntitiesDictionary",
-    });
-    const list = response?.data || [];
-    const filtered = searchFilter(list, ["name", "country"], payload?.search);
+      method: 'get',
+      path: '/legal-entities',
+      logTag: 'getLegalEntitiesDictionary',
+    })
+    const list = response?.data || []
+    const filtered = searchFilter(list, ['name', 'country'], payload?.search)
 
     return {
-      items: filtered.map((e) => ({
+      items: filtered.map(e => ({
         label: e.name,
         value: e.id,
-        note: e.country || "",
+        note: e.country || '',
       })),
-    };
+    }
   }
 
   /**
@@ -788,37 +792,37 @@ class DeelService {
    * @returns {DictionaryResponse}
    */
   async getContractsDictionary(payload) {
-    const query = { limit: 100 };
+    const query = { limit: 100 }
     const typeMap = {
-      "Contractor (IC)": "ongoing_time_based",
-      "Employee (EOR)": "eor",
-      "Global Payroll": "global_payroll",
-    };
+      'Contractor (IC)': 'ongoing_time_based',
+      'Employee (EOR)': 'eor',
+      'Global Payroll': 'global_payroll',
+    }
 
     if (payload?.criteria?.type && typeMap[payload.criteria.type]) {
-      query["types[]"] = typeMap[payload.criteria.type];
+      query['types[]'] = typeMap[payload.criteria.type]
     }
 
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/contracts",
+      method: 'get',
+      path: '/contracts',
       query,
-      logTag: "getContractsDictionary",
-    });
-    const list = response?.data || [];
+      logTag: 'getContractsDictionary',
+    })
+    const list = response?.data || []
     const filtered = searchFilter(
       list,
-      ["title", "worker.email", "worker.full_name"],
-      payload?.search,
-    );
+      ['title', 'worker.email', 'worker.full_name'],
+      payload?.search
+    )
 
     return {
-      items: filtered.map((c) => ({
+      items: filtered.map(c => ({
         label: c.title || c.id,
         value: c.id,
-        note: c.worker?.full_name || c.worker?.email || c.status || "",
+        note: c.worker?.full_name || c.worker?.email || c.status || '',
       })),
-    };
+    }
   }
 
   /**
@@ -835,28 +839,28 @@ class DeelService {
    * @returns {DictionaryResponse}
    */
   async getPeopleDictionary(payload) {
-    const query = { limit: 100 };
+    const query = { limit: 100 }
 
-    if (payload?.search) query.search = payload.search;
+    if (payload?.search) query.search = payload.search
 
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/people",
+      method: 'get',
+      path: '/people',
       query,
-      logTag: "getPeopleDictionary",
-    });
-    const list = response?.data || [];
+      logTag: 'getPeopleDictionary',
+    })
+    const list = response?.data || []
 
     return {
-      items: list.map((p) => ({
+      items: list.map(p => ({
         label:
-          [p.first_name, p.last_name].filter(Boolean).join(" ") ||
+          [p.first_name, p.last_name].filter(Boolean).join(' ') ||
           p.email ||
           p.id,
         value: p.id,
-        note: p.email || p.country || "",
+        note: p.email || p.country || '',
       })),
-    };
+    }
   }
 
   /**
@@ -874,14 +878,14 @@ class DeelService {
    */
   async getDepartmentsDictionary(payload) {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/departments",
-      logTag: "getDepartmentsDictionary",
-    });
-    const list = response?.data || [];
-    const filtered = searchFilter(list, ["name"], payload?.search);
+      method: 'get',
+      path: '/departments',
+      logTag: 'getDepartmentsDictionary',
+    })
+    const list = response?.data || []
+    const filtered = searchFilter(list, ['name'], payload?.search)
 
-    return { items: toDictionaryItems(filtered, "name", "id", "name") };
+    return { items: toDictionaryItems(filtered, 'name', 'id', 'name') }
   }
 
   /**
@@ -899,14 +903,14 @@ class DeelService {
    */
   async getGroupsDictionary(payload) {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/groups",
-      logTag: "getGroupsDictionary",
-    });
-    const list = response?.data || [];
-    const filtered = searchFilter(list, ["name"], payload?.search);
+      method: 'get',
+      path: '/groups',
+      logTag: 'getGroupsDictionary',
+    })
+    const list = response?.data || []
+    const filtered = searchFilter(list, ['name'], payload?.search)
 
-    return { items: toDictionaryItems(filtered, "name", "id", "name") };
+    return { items: toDictionaryItems(filtered, 'name', 'id', 'name') }
   }
 
   /**
@@ -923,37 +927,38 @@ class DeelService {
    * @returns {DictionaryResponse}
    */
   async getWebhookEventTypesDictionary(payload) {
-    let list;
+    let list
 
     try {
       const response = await this.#deelRequest({
-        method: "get",
-        path: "/webhooks/events/types",
-        logTag: "getWebhookEventTypesDictionary",
-      });
+        method: 'get',
+        path: '/webhooks/events/types',
+        logTag: 'getWebhookEventTypesDictionary',
+      })
 
-      list = response?.data || [];
+      list = response?.data || []
     } catch (error) {
       // Some Deel environments restrict /webhooks/events/types — fall back to the curated common-events list
       logger.warn(
-        `[getWebhookEventTypesDictionary] live list unavailable, falling back to curated events: ${error.message}`,
-      );
-      list = COMMON_DEEL_EVENTS.map((name) => ({ name, description: "" }));
+        `[getWebhookEventTypesDictionary] live list unavailable, falling back to curated events: ${ error.message }`
+      )
+
+      list = COMMON_DEEL_EVENTS.map(name => ({ name, description: '' }))
     }
 
     const filtered = searchFilter(
       list,
-      ["name", "description", "module_label"],
-      payload?.search,
-    );
+      ['name', 'description', 'module_label'],
+      payload?.search
+    )
 
     return {
-      items: filtered.map((e) => ({
+      items: filtered.map(e => ({
         label: e.name,
         value: e.name,
-        note: e.description || e.module_label || "",
+        note: e.description || e.module_label || '',
       })),
-    };
+    }
   }
 
   /**
@@ -971,20 +976,20 @@ class DeelService {
    */
   async getAdjustmentCategoriesDictionary(payload) {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/adjustments/categories",
-      logTag: "getAdjustmentCategoriesDictionary",
-    });
-    const list = response?.data || [];
-    const filtered = searchFilter(list, ["name", "type"], payload?.search);
+      method: 'get',
+      path: '/adjustments/categories',
+      logTag: 'getAdjustmentCategoriesDictionary',
+    })
+    const list = response?.data || []
+    const filtered = searchFilter(list, ['name', 'type'], payload?.search)
 
     return {
-      items: filtered.map((c) => ({
+      items: filtered.map(c => ({
         label: c.name || c.type,
         value: c.type || c.id,
-        note: c.type || "",
+        note: c.type || '',
       })),
-    };
+    }
   }
 
   /**
@@ -1002,27 +1007,27 @@ class DeelService {
    */
   async getContractStatusesDictionary(payload) {
     const list = [
-      "in_progress",
-      "awaiting_deposit_payment",
-      "active",
-      "paused",
-      "terminated",
-      "cancelled",
-      "completed",
-    ].map((s) => ({
-      name: s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+      'in_progress',
+      'awaiting_deposit_payment',
+      'active',
+      'paused',
+      'terminated',
+      'cancelled',
+      'completed',
+    ].map(s => ({
+      name: s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
       value: s,
-    }));
+    }))
 
-    const filtered = searchFilter(list, ["name", "value"], payload?.search);
+    const filtered = searchFilter(list, ['name', 'value'], payload?.search)
 
     return {
-      items: filtered.map((s) => ({
+      items: filtered.map(s => ({
         label: s.name,
         value: s.value,
         note: s.value,
       })),
-    };
+    }
   }
 
   /**
@@ -1040,20 +1045,20 @@ class DeelService {
    */
   async getATSJobsDictionary(payload) {
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/ats/jobs",
-      logTag: "getATSJobsDictionary",
-    });
-    const list = response?.data || [];
-    const filtered = searchFilter(list, ["title", "name"], payload?.search);
+      method: 'get',
+      path: '/ats/jobs',
+      logTag: 'getATSJobsDictionary',
+    })
+    const list = response?.data || []
+    const filtered = searchFilter(list, ['title', 'name'], payload?.search)
 
     return {
-      items: filtered.map((j) => ({
+      items: filtered.map(j => ({
         label: j.title || j.name || j.id,
         value: j.id,
-        note: j.status || j.department || "",
+        note: j.status || j.department || '',
       })),
-    };
+    }
   }
 
   // =================== 6. People & HRIS actions ===================
@@ -1071,20 +1076,20 @@ class DeelService {
    * @sampleResult {"data":[{"id":"per_abc","first_name":"Jane","last_name":"Doe","email":"jane@acme.com","country":"US"}]}
    */
   async listPeople(status, country, search, limit) {
-    const query = { limit: limit || 50 };
+    const query = { limit: limit || 50 }
 
-    if (status) query.hiring_status = status.toLowerCase();
-    if (country) query.country = country;
-    if (search) query.search = search;
+    if (status) query.hiring_status = status.toLowerCase()
+    if (country) query.country = country
+    if (search) query.search = search
 
     const response = await this.#deelRequest({
-      method: "get",
-      path: "/people",
+      method: 'get',
+      path: '/people',
       query,
-      logTag: "listPeople",
-    });
+      logTag: 'listPeople',
+    })
 
-    return response;
+    return response
   }
 
   /**
@@ -1099,19 +1104,19 @@ class DeelService {
    */
   async getPerson(personId, externalId) {
     if (!personId && !externalId)
-      throw new Error("Provide either a Person or an External ID to look up.");
+      throw new Error('Provide either a Person or an External ID to look up.')
 
     const path = externalId
-      ? `/people/external_id/${encodeURIComponent(externalId)}`
-      : `/people/${encodeURIComponent(personId)}`;
+      ? `/people/external_id/${ encodeURIComponent(externalId) }`
+      : `/people/${ encodeURIComponent(personId) }`
 
     const response = await this.#deelRequest({
-      method: "get",
+      method: 'get',
       path,
-      logTag: "getPerson",
-    });
+      logTag: 'getPerson',
+    })
 
-    return response?.data || response;
+    return response?.data || response
   }
 
   /**
@@ -1135,16 +1140,16 @@ class DeelService {
       email,
       phone,
       job_title: jobTitle,
-    });
+    })
 
-    if (!body) throw new Error("Provide at least one field to update.");
+    if (!body) throw new Error('Provide at least one field to update.')
 
     return this.#deelRequest({
-      method: "patch",
-      path: `/people/${encodeURIComponent(personId)}`,
+      method: 'patch',
+      path: `/people/${ encodeURIComponent(personId) }`,
       body,
-      logTag: "updatePerson",
-    });
+      logTag: 'updatePerson',
+    })
   }
 
   /**
@@ -1164,14 +1169,14 @@ class DeelService {
       country,
       city,
       effective_date: effectiveDate,
-    });
+    })
 
     return this.#deelRequest({
-      method: "patch",
-      path: `/people/${encodeURIComponent(personId)}/working-location`,
+      method: 'patch',
+      path: `/people/${ encodeURIComponent(personId) }/working-location`,
       body,
-      logTag: "updateWorkingLocation",
-    });
+      logTag: 'updateWorkingLocation',
+    })
   }
 
   /**
@@ -1192,7 +1197,7 @@ class DeelService {
     lastName,
     email,
     country,
-    jobTitle,
+    jobTitle
   ) {
     const body = cleanupObject({
       first_name: firstName,
@@ -1200,14 +1205,14 @@ class DeelService {
       email,
       country,
       job_title: jobTitle,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: "/people",
+      method: 'post',
+      path: '/people',
       body,
-      logTag: "createPersonWithoutContract",
-    });
+      logTag: 'createPersonWithoutContract',
+    })
   }
 
   /**
@@ -1232,7 +1237,7 @@ class DeelService {
     country,
     jobTitle,
     startDate,
-    legalEntityId,
+    legalEntityId
   ) {
     const body = cleanupObject({
       first_name: firstName,
@@ -1242,14 +1247,14 @@ class DeelService {
       job_title: jobTitle,
       start_date: startDate,
       legal_entity_id: legalEntityId,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: "/hris/direct-employees",
+      method: 'post',
+      path: '/hris/direct-employees',
       body,
-      logTag: "createDirectEmployee",
-    });
+      logTag: 'createDirectEmployee',
+    })
   }
 
   /**
@@ -1262,10 +1267,10 @@ class DeelService {
    */
   async listOrgStructure() {
     return this.#deelRequest({
-      method: "get",
-      path: "/hris/organization_structures",
-      logTag: "listOrgStructure",
-    });
+      method: 'get',
+      path: '/hris/organization_structures',
+      logTag: 'listOrgStructure',
+    })
   }
 
   /**
@@ -1280,17 +1285,17 @@ class DeelService {
    */
   async getOrgStructure(structureId, externalId) {
     if (!structureId && !externalId)
-      throw new Error("Provide either a Structure ID or an External ID.");
+      throw new Error('Provide either a Structure ID or an External ID.')
 
     const path = externalId
-      ? `/hris/organization_structures/external/${encodeURIComponent(externalId)}`
-      : `/hris/organization_structures/${encodeURIComponent(structureId)}`;
+      ? `/hris/organization_structures/external/${ encodeURIComponent(externalId) }`
+      : `/hris/organization_structures/${ encodeURIComponent(structureId) }`
 
     return this.#deelRequest({
-      method: "get",
+      method: 'get',
       path,
-      logTag: "getOrgStructure",
-    });
+      logTag: 'getOrgStructure',
+    })
   }
 
   /**
@@ -1309,14 +1314,14 @@ class DeelService {
       name,
       parent_id: parentId,
       external_id: externalId,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: "/hris/organization_structures",
+      method: 'post',
+      path: '/hris/organization_structures',
       body,
-      logTag: "createOrgStructure",
-    });
+      logTag: 'createOrgStructure',
+    })
   }
 
   /**
@@ -1331,14 +1336,14 @@ class DeelService {
    * @sampleResult {"data":{"id":"team_abc","name":"New Name"}}
    */
   async updateOrgStructure(structureId, name, parentId) {
-    const body = cleanupObject({ name, parent_id: parentId });
+    const body = cleanupObject({ name, parent_id: parentId })
 
     return this.#deelRequest({
-      method: "patch",
-      path: `/hris/organization_structures/${encodeURIComponent(structureId)}`,
+      method: 'patch',
+      path: `/hris/organization_structures/${ encodeURIComponent(structureId) }`,
       body,
-      logTag: "updateOrgStructure",
-    });
+      logTag: 'updateOrgStructure',
+    })
   }
 
   /**
@@ -1352,12 +1357,12 @@ class DeelService {
    */
   async deleteOrgStructure(structureId) {
     await this.#deelRequest({
-      method: "delete",
-      path: `/hris/organization_structures/${encodeURIComponent(structureId)}`,
-      logTag: "deleteOrgStructure",
-    });
+      method: 'delete',
+      path: `/hris/organization_structures/${ encodeURIComponent(structureId) }`,
+      logTag: 'deleteOrgStructure',
+    })
 
-    return { ok: true };
+    return { ok: true }
   }
 
   /**
@@ -1371,29 +1376,29 @@ class DeelService {
    * @sampleResult {"data":[{"key":"slack_handle","value":"@jane"}]}
    */
   async getCustomFields(scope, resourceId) {
-    const lower = (scope || "").toLowerCase();
+    const lower = (scope || '').toLowerCase()
 
-    let path;
+    let path
 
-    if (lower === "person") {
+    if (lower === 'person') {
       path = resourceId
-        ? `/people/${encodeURIComponent(resourceId)}/custom-fields`
-        : "/hris/people/custom-fields";
-    } else if (lower === "contract") {
+        ? `/people/${ encodeURIComponent(resourceId) }/custom-fields`
+        : '/hris/people/custom-fields'
+    } else if (lower === 'contract') {
       path = resourceId
-        ? `/contracts/${encodeURIComponent(resourceId)}/custom_fields`
-        : "/hris/contracts/custom-fields";
-    } else if (lower === "organization") {
-      path = "/hris/organization_structures/custom-fields";
+        ? `/contracts/${ encodeURIComponent(resourceId) }/custom_fields`
+        : '/hris/contracts/custom-fields'
+    } else if (lower === 'organization') {
+      path = '/hris/organization_structures/custom-fields'
     } else {
-      throw new Error("Scope must be Person, Contract, or Organization.");
+      throw new Error('Scope must be Person, Contract, or Organization.')
     }
 
     return this.#deelRequest({
-      method: "get",
+      method: 'get',
       path,
-      logTag: "getCustomFields",
-    });
+      logTag: 'getCustomFields',
+    })
   }
 
   /**
@@ -1409,18 +1414,18 @@ class DeelService {
    * @sampleResult {"data":{"key":"slack_handle","value":"@jane"}}
    */
   async setCustomField(scope, resourceId, key, value) {
-    const lower = (scope || "").toLowerCase();
+    const lower = (scope || '').toLowerCase()
     const path =
-      lower === "person"
-        ? `/people/${encodeURIComponent(resourceId)}/custom-fields/${encodeURIComponent(key)}`
-        : `/contracts/${encodeURIComponent(resourceId)}/custom_fields/${encodeURIComponent(key)}`;
+      lower === 'person'
+        ? `/people/${ encodeURIComponent(resourceId) }/custom-fields/${ encodeURIComponent(key) }`
+        : `/contracts/${ encodeURIComponent(resourceId) }/custom_fields/${ encodeURIComponent(key) }`
 
     return this.#deelRequest({
-      method: "patch",
+      method: 'patch',
       path,
       body: { value },
-      logTag: "setCustomField",
-    });
+      logTag: 'setCustomField',
+    })
   }
 
   /**
@@ -1435,19 +1440,19 @@ class DeelService {
    * @sampleResult {"ok":true}
    */
   async deleteCustomField(scope, resourceId, key) {
-    const lower = (scope || "").toLowerCase();
+    const lower = (scope || '').toLowerCase()
     const path =
-      lower === "person"
-        ? `/people/${encodeURIComponent(resourceId)}/custom-fields/${encodeURIComponent(key)}`
-        : `/contracts/${encodeURIComponent(resourceId)}/custom_fields/${encodeURIComponent(key)}`;
+      lower === 'person'
+        ? `/people/${ encodeURIComponent(resourceId) }/custom-fields/${ encodeURIComponent(key) }`
+        : `/contracts/${ encodeURIComponent(resourceId) }/custom_fields/${ encodeURIComponent(key) }`
 
     await this.#deelRequest({
-      method: "delete",
+      method: 'delete',
       path,
-      logTag: "deleteCustomField",
-    });
+      logTag: 'deleteCustomField',
+    })
 
-    return { ok: true };
+    return { ok: true }
   }
 
   /**
@@ -1461,10 +1466,10 @@ class DeelService {
    */
   async listWorkerRelations(personId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/hris/profiles/${encodeURIComponent(personId)}/worker-relations`,
-      logTag: "listWorkerRelations",
-    });
+      method: 'get',
+      path: `/hris/profiles/${ encodeURIComponent(personId) }/worker-relations`,
+      logTag: 'listWorkerRelations',
+    })
   }
 
   // =================== 7. Contracts (IC) actions ===================
@@ -1485,34 +1490,34 @@ class DeelService {
   async listContracts(status, country, type, externalId, limit) {
     if (externalId) {
       return this.#deelRequest({
-        method: "get",
-        path: `/contracts/external_id/${encodeURIComponent(externalId)}`,
-        logTag: "listContracts",
-      });
+        method: 'get',
+        path: `/contracts/external_id/${ encodeURIComponent(externalId) }`,
+        logTag: 'listContracts',
+      })
     }
 
-    const query = { limit: limit || 50 };
+    const query = { limit: limit || 50 }
 
-    if (status) query.status = status;
+    if (status) query.status = status
 
     if (type) {
       const typeMap = {
-        "Contractor (IC)": "ongoing_time_based",
-        "Employee (EOR)": "eor",
-        "Global Payroll": "global_payroll",
-        "Direct Employee": "shield",
-      };
-      if (typeMap[type]) query["types[]"] = typeMap[type];
+        'Contractor (IC)': 'ongoing_time_based',
+        'Employee (EOR)': 'eor',
+        'Global Payroll': 'global_payroll',
+        'Direct Employee': 'shield',
+      }
+      if (typeMap[type]) query['types[]'] = typeMap[type]
     }
 
-    if (country) query.country_code = country;
+    if (country) query.country_code = country
 
     return this.#deelRequest({
-      method: "get",
-      path: "/contracts",
+      method: 'get',
+      path: '/contracts',
       query,
-      logTag: "listContracts",
-    });
+      logTag: 'listContracts',
+    })
   }
 
   /**
@@ -1526,10 +1531,10 @@ class DeelService {
    */
   async getContract(contractId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/contracts/${encodeURIComponent(contractId)}`,
-      logTag: "getContract",
-    });
+      method: 'get',
+      path: `/contracts/${ encodeURIComponent(contractId) }`,
+      logTag: 'getContract',
+    })
   }
 
   /**
@@ -1558,20 +1563,20 @@ class DeelService {
     startDate,
     workerEmail,
     scope,
-    externalId,
+    externalId
   ) {
     const rateMap = {
-      Hourly: "hourly",
-      Daily: "daily",
-      Weekly: "weekly",
-      Monthly: "monthly",
-      Yearly: "yearly",
-      "Task-based": "pay_as_you_go",
-      "Milestone-based": "milestones",
-    };
+      Hourly: 'hourly',
+      Daily: 'daily',
+      Weekly: 'weekly',
+      Monthly: 'monthly',
+      Yearly: 'yearly',
+      'Task-based': 'pay_as_you_go',
+      'Milestone-based': 'milestones',
+    }
 
     const body = cleanupObject({
-      type: "ongoing_time_based",
+      type: 'ongoing_time_based',
       title,
       country_code: country,
       start_date: startDate,
@@ -1582,16 +1587,16 @@ class DeelService {
       compensation_details: {
         amount: rateAmount,
         currency_code: currency,
-        scale: rateMap[rateType] || "hourly",
+        scale: rateMap[rateType] || 'hourly',
       },
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: "/contracts",
+      method: 'post',
+      path: '/contracts',
       body,
-      logTag: "createContractorContract",
-    });
+      logTag: 'createContractorContract',
+    })
   }
 
   /**
@@ -1605,10 +1610,10 @@ class DeelService {
    */
   async sendContractToWorker(contractId) {
     return this.#deelRequest({
-      method: "post",
-      path: `/contracts/${encodeURIComponent(contractId)}/invitations`,
-      logTag: "sendContractToWorker",
-    });
+      method: 'post',
+      path: `/contracts/${ encodeURIComponent(contractId) }/invitations`,
+      logTag: 'sendContractToWorker',
+    })
   }
 
   /**
@@ -1623,11 +1628,11 @@ class DeelService {
    */
   async signContract(contractId, signature) {
     return this.#deelRequest({
-      method: "post",
-      path: `/contracts/${encodeURIComponent(contractId)}/signatures`,
+      method: 'post',
+      path: `/contracts/${ encodeURIComponent(contractId) }/signatures`,
       body: { client_signature: signature },
-      logTag: "signContract",
-    });
+      logTag: 'signContract',
+    })
   }
 
   /**
@@ -1641,10 +1646,10 @@ class DeelService {
    */
   async previewContractAgreement(contractId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/contracts/${encodeURIComponent(contractId)}/preview`,
-      logTag: "previewContractAgreement",
-    });
+      method: 'get',
+      path: `/contracts/${ encodeURIComponent(contractId) }/preview`,
+      logTag: 'previewContractAgreement',
+    })
   }
 
   /**
@@ -1658,10 +1663,10 @@ class DeelService {
    */
   async getWorkerInviteLink(contractId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/contracts/${encodeURIComponent(contractId)}/invite`,
-      logTag: "getWorkerInviteLink",
-    });
+      method: 'get',
+      path: `/contracts/${ encodeURIComponent(contractId) }/invite`,
+      logTag: 'getWorkerInviteLink',
+    })
   }
 
   /**
@@ -1675,12 +1680,12 @@ class DeelService {
    */
   async removeWorkerInvite(contractId) {
     await this.#deelRequest({
-      method: "delete",
-      path: `/contracts/${encodeURIComponent(contractId)}/invite`,
-      logTag: "removeWorkerInvite",
-    });
+      method: 'delete',
+      path: `/contracts/${ encodeURIComponent(contractId) }/invite`,
+      logTag: 'removeWorkerInvite',
+    })
 
-    return { ok: true };
+    return { ok: true }
   }
 
   /**
@@ -1700,14 +1705,14 @@ class DeelService {
       completion_date: effectiveDate,
       termination_reason_description: reason,
       message: notes,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: `/contracts/${encodeURIComponent(contractId)}/terminations`,
+      method: 'post',
+      path: `/contracts/${ encodeURIComponent(contractId) }/terminations`,
       body,
-      logTag: "terminateContract",
-    });
+      logTag: 'terminateContract',
+    })
   }
 
   /**
@@ -1730,7 +1735,7 @@ class DeelService {
     jobTitle,
     rateAmount,
     currency,
-    reason,
+    reason
   ) {
     const body = cleanupObject({
       effective_date: effectiveDate,
@@ -1740,14 +1745,14 @@ class DeelService {
           ? cleanupObject({ amount: rateAmount, currency_code: currency })
           : undefined,
       reason,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: `/contracts/${encodeURIComponent(contractId)}/amendments`,
+      method: 'post',
+      path: `/contracts/${ encodeURIComponent(contractId) }/amendments`,
       body,
-      logTag: "amendContract",
-    });
+      logTag: 'amendContract',
+    })
   }
 
   /**
@@ -1761,10 +1766,10 @@ class DeelService {
    */
   async listAmendments(contractId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/contracts/${encodeURIComponent(contractId)}/amendments`,
-      logTag: "listAmendments",
-    });
+      method: 'get',
+      path: `/contracts/${ encodeURIComponent(contractId) }/amendments`,
+      logTag: 'listAmendments',
+    })
   }
 
   /**
@@ -1778,10 +1783,10 @@ class DeelService {
    */
   async listMilestones(contractId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/contracts/${encodeURIComponent(contractId)}/milestones`,
-      logTag: "listMilestones",
-    });
+      method: 'get',
+      path: `/contracts/${ encodeURIComponent(contractId) }/milestones`,
+      logTag: 'listMilestones',
+    })
   }
 
   /**
@@ -1804,7 +1809,7 @@ class DeelService {
     amount,
     description,
     currency,
-    dueDate,
+    dueDate
   ) {
     const body = cleanupObject({
       title,
@@ -1812,14 +1817,14 @@ class DeelService {
       description,
       currency_code: currency,
       due_date: dueDate,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: `/contracts/${encodeURIComponent(contractId)}/milestones`,
+      method: 'post',
+      path: `/contracts/${ encodeURIComponent(contractId) }/milestones`,
       body,
-      logTag: "createMilestone",
-    });
+      logTag: 'createMilestone',
+    })
   }
 
   /**
@@ -1834,12 +1839,12 @@ class DeelService {
    */
   async deleteMilestone(contractId, milestoneId) {
     await this.#deelRequest({
-      method: "delete",
-      path: `/contracts/${encodeURIComponent(contractId)}/milestones/${encodeURIComponent(milestoneId)}`,
-      logTag: "deleteMilestone",
-    });
+      method: 'delete',
+      path: `/contracts/${ encodeURIComponent(contractId) }/milestones/${ encodeURIComponent(milestoneId) }`,
+      logTag: 'deleteMilestone',
+    })
 
-    return { ok: true };
+    return { ok: true }
   }
 
   /**
@@ -1853,10 +1858,10 @@ class DeelService {
    */
   async listTasks(contractId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/contracts/${encodeURIComponent(contractId)}/tasks`,
-      logTag: "listTasks",
-    });
+      method: 'get',
+      path: `/contracts/${ encodeURIComponent(contractId) }/tasks`,
+      logTag: 'listTasks',
+    })
   }
 
   /**
@@ -1878,14 +1883,14 @@ class DeelService {
       amount: String(amount),
       description,
       date_submitted: submissionDate,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: `/contracts/${encodeURIComponent(contractId)}/tasks`,
+      method: 'post',
+      path: `/contracts/${ encodeURIComponent(contractId) }/tasks`,
       body,
-      logTag: "createTask",
-    });
+      logTag: 'createTask',
+    })
   }
 
   /**
@@ -1902,16 +1907,16 @@ class DeelService {
    */
   async reviewTask(contractId, taskId, decision, reason) {
     const body = {
-      status: decision === "Approve" ? "approved" : "rejected",
+      status: decision === 'Approve' ? 'approved' : 'rejected',
       reason,
-    };
+    }
 
     return this.#deelRequest({
-      method: "post",
-      path: `/contracts/${encodeURIComponent(contractId)}/tasks/${encodeURIComponent(taskId)}/reviews`,
+      method: 'post',
+      path: `/contracts/${ encodeURIComponent(contractId) }/tasks/${ encodeURIComponent(taskId) }/reviews`,
       body,
-      logTag: "reviewTask",
-    });
+      logTag: 'reviewTask',
+    })
   }
 
   /**
@@ -1926,17 +1931,17 @@ class DeelService {
    * @sampleResult {"data":[{"id":"ts_1","date_submitted":"2026-05-20","quantity":8}]}
    */
   async listTimesheets(contractId, fromDate, toDate) {
-    const query = cleanupObject({ date_from: fromDate, date_to: toDate });
+    const query = cleanupObject({ date_from: fromDate, date_to: toDate })
     const path = contractId
-      ? `/contracts/${encodeURIComponent(contractId)}/timesheets`
-      : "/timesheets";
+      ? `/contracts/${ encodeURIComponent(contractId) }/timesheets`
+      : '/timesheets'
 
     return this.#deelRequest({
-      method: "get",
+      method: 'get',
       path,
       query,
-      logTag: "listTimesheets",
-    });
+      logTag: 'listTimesheets',
+    })
   }
 
   /**
@@ -1952,14 +1957,14 @@ class DeelService {
    * @sampleResult {"data":{"id":"ts_new","quantity":8}}
    */
   async createTimesheetEntry(contractId, quantity, date, description) {
-    const body = cleanupObject({ quantity, date_submitted: date, description });
+    const body = cleanupObject({ quantity, date_submitted: date, description })
 
     return this.#deelRequest({
-      method: "post",
-      path: `/contracts/${encodeURIComponent(contractId)}/timesheets`,
+      method: 'post',
+      path: `/contracts/${ encodeURIComponent(contractId) }/timesheets`,
       body,
-      logTag: "createTimesheetEntry",
-    });
+      logTag: 'createTimesheetEntry',
+    })
   }
 
   /**
@@ -1975,14 +1980,14 @@ class DeelService {
    * @sampleResult {"data":{"id":"ts_abc","quantity":7}}
    */
   async updateTimesheetEntry(timesheetId, quantity, date, description) {
-    const body = cleanupObject({ quantity, date_submitted: date, description });
+    const body = cleanupObject({ quantity, date_submitted: date, description })
 
     return this.#deelRequest({
-      method: "patch",
-      path: `/timesheets/${encodeURIComponent(timesheetId)}`,
+      method: 'patch',
+      path: `/timesheets/${ encodeURIComponent(timesheetId) }`,
       body,
-      logTag: "updateTimesheetEntry",
-    });
+      logTag: 'updateTimesheetEntry',
+    })
   }
 
   /**
@@ -1996,12 +2001,12 @@ class DeelService {
    */
   async deleteTimesheetEntry(timesheetId) {
     await this.#deelRequest({
-      method: "delete",
-      path: `/timesheets/${encodeURIComponent(timesheetId)}`,
-      logTag: "deleteTimesheetEntry",
-    });
+      method: 'delete',
+      path: `/timesheets/${ encodeURIComponent(timesheetId) }`,
+      logTag: 'deleteTimesheetEntry',
+    })
 
-    return { ok: true };
+    return { ok: true }
   }
 
   /**
@@ -2017,16 +2022,16 @@ class DeelService {
    */
   async reviewTimesheet(timesheetId, decision, reason) {
     const body = {
-      status: decision === "Approve" ? "approved" : "rejected",
+      status: decision === 'Approve' ? 'approved' : 'rejected',
       reason,
-    };
+    }
 
     return this.#deelRequest({
-      method: "post",
-      path: `/timesheets/${encodeURIComponent(timesheetId)}/reviews`,
+      method: 'post',
+      path: `/timesheets/${ encodeURIComponent(timesheetId) }/reviews`,
       body,
-      logTag: "reviewTimesheet",
-    });
+      logTag: 'reviewTimesheet',
+    })
   }
 
   /**
@@ -2040,14 +2045,14 @@ class DeelService {
    */
   async listInvoiceAdjustments(contractId) {
     const path = contractId
-      ? `/contracts/${encodeURIComponent(contractId)}/invoice-adjustments`
-      : "/invoice-adjustments";
+      ? `/contracts/${ encodeURIComponent(contractId) }/invoice-adjustments`
+      : '/invoice-adjustments'
 
     return this.#deelRequest({
-      method: "get",
+      method: 'get',
       path,
-      logTag: "listInvoiceAdjustments",
-    });
+      logTag: 'listInvoiceAdjustments',
+    })
   }
 
   /**
@@ -2068,29 +2073,29 @@ class DeelService {
     type,
     amount,
     currency,
-    description,
+    description
   ) {
     const typeMap = {
-      Bonus: "bonus",
-      Commission: "commission",
-      Deduction: "deduction",
-      "Expense Reimbursement": "expense",
-      Other: "other",
-    };
+      Bonus: 'bonus',
+      Commission: 'commission',
+      Deduction: 'deduction',
+      'Expense Reimbursement': 'expense',
+      Other: 'other',
+    }
 
     const body = cleanupObject({
-      type: typeMap[type] || "other",
+      type: typeMap[type] || 'other',
       amount,
       currency_code: currency,
       description,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: `/contracts/${encodeURIComponent(contractId)}/invoice-adjustments`,
+      method: 'post',
+      path: `/contracts/${ encodeURIComponent(contractId) }/invoice-adjustments`,
       body,
-      logTag: "createInvoiceAdjustment",
-    });
+      logTag: 'createInvoiceAdjustment',
+    })
   }
 
   /**
@@ -2104,12 +2109,12 @@ class DeelService {
    */
   async deleteInvoiceAdjustment(adjustmentId) {
     await this.#deelRequest({
-      method: "delete",
-      path: `/invoice-adjustments/${encodeURIComponent(adjustmentId)}`,
-      logTag: "deleteInvoiceAdjustment",
-    });
+      method: 'delete',
+      path: `/invoice-adjustments/${ encodeURIComponent(adjustmentId) }`,
+      logTag: 'deleteInvoiceAdjustment',
+    })
 
-    return { ok: true };
+    return { ok: true }
   }
 
   /**
@@ -2125,16 +2130,16 @@ class DeelService {
    */
   async reviewInvoiceAdjustment(adjustmentId, decision, reason) {
     const body = {
-      status: decision === "Approve" ? "approved" : "rejected",
+      status: decision === 'Approve' ? 'approved' : 'rejected',
       reason,
-    };
+    }
 
     return this.#deelRequest({
-      method: "post",
-      path: `/invoice-adjustments/${encodeURIComponent(adjustmentId)}/reviews`,
+      method: 'post',
+      path: `/invoice-adjustments/${ encodeURIComponent(adjustmentId) }/reviews`,
       body,
-      logTag: "reviewInvoiceAdjustment",
-    });
+      logTag: 'reviewInvoiceAdjustment',
+    })
   }
 
   /**
@@ -2148,10 +2153,10 @@ class DeelService {
    */
   async listOffCyclePayments(contractId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/contracts/${encodeURIComponent(contractId)}/off-cycle-payments`,
-      logTag: "listOffCyclePayments",
-    });
+      method: 'get',
+      path: `/contracts/${ encodeURIComponent(contractId) }/off-cycle-payments`,
+      logTag: 'listOffCyclePayments',
+    })
   }
 
   /**
@@ -2167,14 +2172,14 @@ class DeelService {
    * @sampleResult {"data":{"id":"ocp_new","amount":1000}}
    */
   async createOffCyclePayment(contractId, amount, currency, description) {
-    const body = { amount, currency_code: currency, description };
+    const body = { amount, currency_code: currency, description }
 
     return this.#deelRequest({
-      method: "post",
-      path: `/contracts/${encodeURIComponent(contractId)}/off-cycle-payments`,
+      method: 'post',
+      path: `/contracts/${ encodeURIComponent(contractId) }/off-cycle-payments`,
       body,
-      logTag: "createOffCyclePayment",
-    });
+      logTag: 'createOffCyclePayment',
+    })
   }
 
   // =================== 8. EOR actions ===================
@@ -2193,14 +2198,14 @@ class DeelService {
   async calculateEmployeeCost(country, salary, currency) {
     // Deel requires both `country` (full name) and `country_code`. Look up the name
     // from our country dictionary so callers can just pass a country code.
-    let countryName = country;
+    let countryName = country
 
     try {
-      const { items } = await this.getCountriesDictionary({ search: country });
-      const match = items.find((i) => i.value === country) || items[0];
-      if (match) countryName = match.label;
+      const { items } = await this.getCountriesDictionary({ search: country })
+      const match = items.find(i => i.value === country) || items[0]
+      if (match) countryName = match.label
     } catch (error) {
-      logger.warn(`country name lookup failed (using code): ${error.message}`);
+      logger.warn(`country name lookup failed (using code): ${ error.message }`)
     }
 
     const body = {
@@ -2208,14 +2213,14 @@ class DeelService {
       country_code: country,
       salary,
       currency,
-    };
+    }
 
     return this.#deelRequest({
-      method: "post",
-      path: "/eor/employment_cost",
+      method: 'post',
+      path: '/eor/employment_cost',
       body,
-      logTag: "calculateEmployeeCost",
-    });
+      logTag: 'calculateEmployeeCost',
+    })
   }
 
   /**
@@ -2229,10 +2234,10 @@ class DeelService {
    */
   async getHiringGuide(country) {
     return this.#deelRequest({
-      method: "get",
-      path: `/eor/validations/${encodeURIComponent(country)}`,
-      logTag: "getHiringGuide",
-    });
+      method: 'get',
+      path: `/eor/validations/${ encodeURIComponent(country) }`,
+      logTag: 'getHiringGuide',
+    })
   }
 
   /**
@@ -2253,14 +2258,14 @@ class DeelService {
       team_id: teamId,
       employee_nationality: nationality,
       work_visa: workVisa,
-    });
+    })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/eor/start-date",
+      method: 'get',
+      path: '/eor/start-date',
       query,
-      logTag: "getEORStartDate",
-    });
+      logTag: 'getEORStartDate',
+    })
   }
 
   /**
@@ -2274,10 +2279,10 @@ class DeelService {
    */
   async listEORBenefits(contractId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/eor/${encodeURIComponent(contractId)}/benefits`,
-      logTag: "listEORBenefits",
-    });
+      method: 'get',
+      path: `/eor/${ encodeURIComponent(contractId) }/benefits`,
+      logTag: 'listEORBenefits',
+    })
   }
 
   /**
@@ -2290,14 +2295,14 @@ class DeelService {
    * @sampleResult {"data":[{"id":"jst_1","title":"Software Engineer","scope":"..."}]}
    */
   async listJobScopeTemplates(teamId) {
-    const query = cleanupObject({ team: teamId });
+    const query = cleanupObject({ team: teamId })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/eor/job-scopes",
+      method: 'get',
+      path: '/eor/job-scopes',
       query,
-      logTag: "listJobScopeTemplates",
-    });
+      logTag: 'listJobScopeTemplates',
+    })
   }
 
   /**
@@ -2312,14 +2317,14 @@ class DeelService {
    * @sampleResult {"data":{"valid":true,"suggestions":[]}}
    */
   async validateJobScope(country, jobTitle, scope) {
-    const body = { country, job_title: jobTitle, scope_of_work: scope };
+    const body = { country, job_title: jobTitle, scope_of_work: scope }
 
     return this.#deelRequest({
-      method: "post",
-      path: "/eor/job-scopes/validate",
+      method: 'post',
+      path: '/eor/job-scopes/validate',
       body,
-      logTag: "validateJobScope",
-    });
+      logTag: 'validateJobScope',
+    })
   }
 
   /**
@@ -2348,7 +2353,7 @@ class DeelService {
     annualSalary,
     currency,
     startDate,
-    scope,
+    scope
   ) {
     const body = cleanupObject({
       employee: { first_name: firstName, last_name: lastName, email },
@@ -2358,14 +2363,14 @@ class DeelService {
       salary_currency: currency,
       start_date: startDate,
       scope_of_work: scope,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: "/eor",
+      method: 'post',
+      path: '/eor',
       body,
-      logTag: "createEORContract",
-    });
+      logTag: 'createEORContract',
+    })
   }
 
   /**
@@ -2379,10 +2384,10 @@ class DeelService {
    */
   async acceptEORQuote(contractId) {
     return this.#deelRequest({
-      method: "post",
-      path: `/eor/${encodeURIComponent(contractId)}/accept-quote`,
-      logTag: "acceptEORQuote",
-    });
+      method: 'post',
+      path: `/eor/${ encodeURIComponent(contractId) }/accept-quote`,
+      logTag: 'acceptEORQuote',
+    })
   }
 
   /**
@@ -2397,11 +2402,11 @@ class DeelService {
    */
   async signEORContract(contractId, signature) {
     return this.#deelRequest({
-      method: "post",
-      path: `/eor/${encodeURIComponent(contractId)}/signatures`,
+      method: 'post',
+      path: `/eor/${ encodeURIComponent(contractId) }/signatures`,
       body: { signature },
-      logTag: "signEORContract",
-    });
+      logTag: 'signEORContract',
+    })
   }
 
   /**
@@ -2416,11 +2421,11 @@ class DeelService {
    */
   async cancelEORContract(contractId, reason) {
     return this.#deelRequest({
-      method: "post",
-      path: `/eor/${encodeURIComponent(contractId)}/cancellations`,
+      method: 'post',
+      path: `/eor/${ encodeURIComponent(contractId) }/cancellations`,
       body: { reason },
-      logTag: "cancelEORContract",
-    });
+      logTag: 'cancelEORContract',
+    })
   }
 
   /**
@@ -2435,14 +2440,14 @@ class DeelService {
    * @sampleResult {"data":{"id":"eor_abc","start_date":"2026-08-01"}}
    */
   async delayEOROnboarding(contractId, newStartDate, reason) {
-    const body = cleanupObject({ new_start_date: newStartDate, reason });
+    const body = cleanupObject({ new_start_date: newStartDate, reason })
 
     return this.#deelRequest({
-      method: "post",
-      path: `/eor/${encodeURIComponent(contractId)}/onboarding-delays`,
+      method: 'post',
+      path: `/eor/${ encodeURIComponent(contractId) }/onboarding-delays`,
       body,
-      logTag: "delayEOROnboarding",
-    });
+      logTag: 'delayEOROnboarding',
+    })
   }
 
   /**
@@ -2456,10 +2461,10 @@ class DeelService {
    */
   async fetchEORContractDocument(contractId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/eor/${encodeURIComponent(contractId)}/document`,
-      logTag: "fetchEORContractDocument",
-    });
+      method: 'get',
+      path: `/eor/${ encodeURIComponent(contractId) }/document`,
+      logTag: 'fetchEORContractDocument',
+    })
   }
 
   /**
@@ -2479,14 +2484,14 @@ class DeelService {
       termination_date: terminationDate,
       reason,
       additional_information: notes,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: `/eor/${encodeURIComponent(contractId)}/terminations`,
+      method: 'post',
+      path: `/eor/${ encodeURIComponent(contractId) }/terminations`,
       body,
-      logTag: "requestEORTermination",
-    });
+      logTag: 'requestEORTermination',
+    })
   }
 
   /**
@@ -2500,10 +2505,10 @@ class DeelService {
    */
   async getTerminationDetails(contractId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/eor/${encodeURIComponent(contractId)}/terminations`,
-      logTag: "getTerminationDetails",
-    });
+      method: 'get',
+      path: `/eor/${ encodeURIComponent(contractId) }/terminations`,
+      logTag: 'getTerminationDetails',
+    })
   }
 
   /**
@@ -2518,14 +2523,14 @@ class DeelService {
    * @sampleResult {"data":[{"id":"ps_1","period":"2026-04","net_pay":4200}]}
    */
   async listEORPayslips(contractId, fromDate, toDate) {
-    const query = cleanupObject({ from: fromDate, to: toDate });
+    const query = cleanupObject({ from: fromDate, to: toDate })
 
     return this.#deelRequest({
-      method: "get",
-      path: `/eor/${encodeURIComponent(contractId)}/payslips`,
+      method: 'get',
+      path: `/eor/${ encodeURIComponent(contractId) }/payslips`,
       query,
-      logTag: "listEORPayslips",
-    });
+      logTag: 'listEORPayslips',
+    })
   }
 
   /**
@@ -2539,10 +2544,10 @@ class DeelService {
    */
   async downloadPayslipPDF(payslipId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/payslips/${encodeURIComponent(payslipId)}/download`,
-      logTag: "downloadPayslipPDF",
-    });
+      method: 'get',
+      path: `/payslips/${ encodeURIComponent(payslipId) }/download`,
+      logTag: 'downloadPayslipPDF',
+    })
   }
 
   /**
@@ -2556,10 +2561,10 @@ class DeelService {
    */
   async listEmployeeComplianceDocs(workerId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/people/${encodeURIComponent(workerId)}/compliance-documents`,
-      logTag: "listEmployeeComplianceDocs",
-    });
+      method: 'get',
+      path: `/people/${ encodeURIComponent(workerId) }/compliance-documents`,
+      logTag: 'listEmployeeComplianceDocs',
+    })
   }
 
   // =================== 9. Time Off actions ===================
@@ -2582,14 +2587,14 @@ class DeelService {
       status: status ? status.toLowerCase() : undefined,
       from_date: fromDate,
       to_date: toDate,
-    });
+    })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/time_offs",
+      method: 'get',
+      path: '/time_offs',
       query,
-      logTag: "listTimeOffRequests",
-    });
+      logTag: 'listTimeOffRequests',
+    })
   }
 
   /**
@@ -2612,14 +2617,14 @@ class DeelService {
       start_date: startDate,
       end_date: endDate,
       reason,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: "/time_offs",
+      method: 'post',
+      path: '/time_offs',
       body,
-      logTag: "createTimeOffRequest",
-    });
+      logTag: 'createTimeOffRequest',
+    })
   }
 
   /**
@@ -2639,14 +2644,14 @@ class DeelService {
       start_date: startDate,
       end_date: endDate,
       reason,
-    });
+    })
 
     return this.#deelRequest({
-      method: "patch",
-      path: `/time_offs/${encodeURIComponent(requestId)}`,
+      method: 'patch',
+      path: `/time_offs/${ encodeURIComponent(requestId) }`,
       body,
-      logTag: "updateTimeOffRequest",
-    });
+      logTag: 'updateTimeOffRequest',
+    })
   }
 
   /**
@@ -2661,11 +2666,11 @@ class DeelService {
    */
   async cancelTimeOffRequest(requestId, reason) {
     return this.#deelRequest({
-      method: "post",
-      path: `/time_offs/${encodeURIComponent(requestId)}/cancel`,
+      method: 'post',
+      path: `/time_offs/${ encodeURIComponent(requestId) }/cancel`,
       body: cleanupObject({ reason }),
-      logTag: "cancelTimeOffRequest",
-    });
+      logTag: 'cancelTimeOffRequest',
+    })
   }
 
   /**
@@ -2680,14 +2685,14 @@ class DeelService {
    * @sampleResult {"data":{"id":"to_abc","status":"approved"}}
    */
   async reviewTimeOffRequest(requestId, decision, note) {
-    const action = decision === "Approve" ? "approve" : "reject";
+    const action = decision === 'Approve' ? 'approve' : 'reject'
 
     return this.#deelRequest({
-      method: "post",
-      path: `/time_offs/${encodeURIComponent(requestId)}/${action}`,
+      method: 'post',
+      path: `/time_offs/${ encodeURIComponent(requestId) }/${ action }`,
       body: cleanupObject({ note }),
-      logTag: "reviewTimeOffRequest",
-    });
+      logTag: 'reviewTimeOffRequest',
+    })
   }
 
   /**
@@ -2708,14 +2713,14 @@ class DeelService {
       time_off_type: type,
       start_date: startDate,
       end_date: endDate,
-    };
+    }
 
     return this.#deelRequest({
-      method: "post",
-      path: "/time_offs/validate",
+      method: 'post',
+      path: '/time_offs/validate',
       body,
-      logTag: "validateTimeOffRequest",
-    });
+      logTag: 'validateTimeOffRequest',
+    })
   }
 
   /**
@@ -2729,10 +2734,10 @@ class DeelService {
    */
   async listTimeOffPolicies(personId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/time_offs/profile/${encodeURIComponent(personId)}/policies`,
-      logTag: "listTimeOffPolicies",
-    });
+      method: 'get',
+      path: `/time_offs/profile/${ encodeURIComponent(personId) }/policies`,
+      logTag: 'listTimeOffPolicies',
+    })
   }
 
   /**
@@ -2746,11 +2751,11 @@ class DeelService {
    */
   async getEntitlements(personId) {
     return this.#deelRequest({
-      method: "get",
-      path: "/time_offs/entitlements",
+      method: 'get',
+      path: '/time_offs/entitlements',
       query: { profile_id: personId },
-      logTag: "getEntitlements",
-    });
+      logTag: 'getEntitlements',
+    })
   }
 
   /**
@@ -2764,10 +2769,10 @@ class DeelService {
    */
   async getWorkScheduleAndHolidays(personId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/hris/profiles/${encodeURIComponent(personId)}/work-schedule`,
-      logTag: "getWorkScheduleAndHolidays",
-    });
+      method: 'get',
+      path: `/hris/profiles/${ encodeURIComponent(personId) }/work-schedule`,
+      logTag: 'getWorkScheduleAndHolidays',
+    })
   }
 
   // =================== 10. Adjustments (org-side) ===================
@@ -2784,14 +2789,14 @@ class DeelService {
    * @sampleResult {"data":[{"id":"adj_1","category":"bonus","amount":1000}]}
    */
   async listAdjustments(contractId, fromDate, toDate) {
-    const query = cleanupObject({ from_date: fromDate, to_date: toDate });
+    const query = cleanupObject({ from_date: fromDate, to_date: toDate })
 
     return this.#deelRequest({
-      method: "get",
-      path: `/contracts/${encodeURIComponent(contractId)}/adjustments`,
+      method: 'get',
+      path: `/contracts/${ encodeURIComponent(contractId) }/adjustments`,
       query,
-      logTag: "listAdjustments",
-    });
+      logTag: 'listAdjustments',
+    })
   }
 
   /**
@@ -2805,10 +2810,10 @@ class DeelService {
    */
   async getAdjustment(adjustmentId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/adjustments/${encodeURIComponent(adjustmentId)}`,
-      logTag: "getAdjustment",
-    });
+      method: 'get',
+      path: `/adjustments/${ encodeURIComponent(adjustmentId) }`,
+      logTag: 'getAdjustment',
+    })
   }
 
   /**
@@ -2831,7 +2836,7 @@ class DeelService {
     amount,
     currency,
     description,
-    effectiveDate,
+    effectiveDate
   ) {
     const body = cleanupObject({
       contract_id: contractId,
@@ -2840,14 +2845,14 @@ class DeelService {
       currency_code: currency,
       description,
       effective_date: effectiveDate,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: "/adjustments",
+      method: 'post',
+      path: '/adjustments',
       body,
-      logTag: "createAdjustment",
-    });
+      logTag: 'createAdjustment',
+    })
   }
 
   /**
@@ -2867,14 +2872,14 @@ class DeelService {
       amount,
       description,
       effective_date: effectiveDate,
-    });
+    })
 
     return this.#deelRequest({
-      method: "patch",
-      path: `/adjustments/${encodeURIComponent(adjustmentId)}`,
+      method: 'patch',
+      path: `/adjustments/${ encodeURIComponent(adjustmentId) }`,
       body,
-      logTag: "updateAdjustment",
-    });
+      logTag: 'updateAdjustment',
+    })
   }
 
   /**
@@ -2888,12 +2893,12 @@ class DeelService {
    */
   async deleteAdjustment(adjustmentId) {
     await this.#deelRequest({
-      method: "delete",
-      path: `/adjustments/${encodeURIComponent(adjustmentId)}`,
-      logTag: "deleteAdjustment",
-    });
+      method: 'delete',
+      path: `/adjustments/${ encodeURIComponent(adjustmentId) }`,
+      logTag: 'deleteAdjustment',
+    })
 
-    return { ok: true };
+    return { ok: true }
   }
 
   // =================== 12. Global Payroll (GP) actions ===================
@@ -2908,16 +2913,16 @@ class DeelService {
    * @sampleResult {"data":[{"id":"gp_1","first_name":"Jane","last_name":"Doe","country":"DE"}]}
    */
   async listGPEmployees(legalEntityId) {
-    const query = { "types[]": "global_payroll", limit: 100 };
+    const query = { 'types[]': 'global_payroll', limit: 100 }
 
-    if (legalEntityId) query.legal_entity_id = legalEntityId;
+    if (legalEntityId) query.legal_entity_id = legalEntityId
 
     return this.#deelRequest({
-      method: "get",
-      path: "/contracts",
+      method: 'get',
+      path: '/contracts',
       query,
-      logTag: "listGPEmployees",
-    });
+      logTag: 'listGPEmployees',
+    })
   }
 
   /**
@@ -2939,14 +2944,14 @@ class DeelService {
       last_name: lastName,
       email,
       phone,
-    });
+    })
 
     return this.#deelRequest({
-      method: "patch",
-      path: `/gp/workers/${encodeURIComponent(workerId)}`,
+      method: 'patch',
+      path: `/gp/workers/${ encodeURIComponent(workerId) }`,
       body,
-      logTag: "updateGPEmployeeInfo",
-    });
+      logTag: 'updateGPEmployeeInfo',
+    })
   }
 
   /**
@@ -2967,21 +2972,21 @@ class DeelService {
     annualSalary,
     currency,
     effectiveDate,
-    reason,
+    reason
   ) {
     const body = cleanupObject({
       annual_salary: annualSalary,
       currency_code: currency,
       effective_date: effectiveDate,
       reason,
-    });
+    })
 
     return this.#deelRequest({
-      method: "patch",
-      path: `/gp/workers/${encodeURIComponent(workerId)}/compensation`,
+      method: 'patch',
+      path: `/gp/workers/${ encodeURIComponent(workerId) }/compensation`,
       body,
-      logTag: "updateGPCompensation",
-    });
+      logTag: 'updateGPCompensation',
+    })
   }
 
   /**
@@ -3005,14 +3010,14 @@ class DeelService {
       state,
       postal_code: postalCode,
       country,
-    });
+    })
 
     return this.#deelRequest({
-      method: "patch",
-      path: `/gp/workers/${encodeURIComponent(workerId)}/address`,
+      method: 'patch',
+      path: `/gp/workers/${ encodeURIComponent(workerId) }/address`,
       body,
-      logTag: "updateGPAddress",
-    });
+      logTag: 'updateGPAddress',
+    })
   }
 
   /**
@@ -3027,14 +3032,14 @@ class DeelService {
    * @sampleResult {"data":{"id":"term_new","status":"requested"}}
    */
   async requestGPTermination(contractId, terminationDate, reason) {
-    const body = { termination_date: terminationDate, reason };
+    const body = { termination_date: terminationDate, reason }
 
     return this.#deelRequest({
-      method: "post",
-      path: `/gp/contracts/${encodeURIComponent(contractId)}/terminations`,
+      method: 'post',
+      path: `/gp/contracts/${ encodeURIComponent(contractId) }/terminations`,
       body,
-      logTag: "requestGPTermination",
-    });
+      logTag: 'requestGPTermination',
+    })
   }
 
   /**
@@ -3048,10 +3053,10 @@ class DeelService {
    */
   async listPayrollCycles(legalEntityId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/gp/legal-entities/${encodeURIComponent(legalEntityId)}/cycles`,
-      logTag: "listPayrollCycles",
-    });
+      method: 'get',
+      path: `/gp/legal-entities/${ encodeURIComponent(legalEntityId) }/cycles`,
+      logTag: 'listPayrollCycles',
+    })
   }
 
   /**
@@ -3065,10 +3070,10 @@ class DeelService {
    */
   async getGrossToNetReport(cycleId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/gp/reports/gross-to-net/${encodeURIComponent(cycleId)}`,
-      logTag: "getGrossToNetReport",
-    });
+      method: 'get',
+      path: `/gp/reports/gross-to-net/${ encodeURIComponent(cycleId) }`,
+      logTag: 'getGrossToNetReport',
+    })
   }
 
   /**
@@ -3087,14 +3092,14 @@ class DeelService {
       contract_id: contractId,
       from_date: fromDate,
       to_date: toDate,
-    });
+    })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/time_tracking/shifts",
+      method: 'get',
+      path: '/time_tracking/shifts',
       query,
-      logTag: "listShifts",
-    });
+      logTag: 'listShifts',
+    })
   }
 
   /**
@@ -3109,11 +3114,11 @@ class DeelService {
    */
   async createShifts(contractId, shifts) {
     return this.#deelRequest({
-      method: "post",
-      path: "/time_tracking/shifts",
+      method: 'post',
+      path: '/time_tracking/shifts',
       body: { contract_id: contractId, shifts },
-      logTag: "createShifts",
-    });
+      logTag: 'createShifts',
+    })
   }
 
   /**
@@ -3128,12 +3133,12 @@ class DeelService {
    */
   async deleteShift(shiftId, externalId) {
     const path = externalId
-      ? `/time_tracking/shifts/external_id/${encodeURIComponent(shiftId)}`
-      : `/time_tracking/shifts/${encodeURIComponent(shiftId)}`;
+      ? `/time_tracking/shifts/external_id/${ encodeURIComponent(shiftId) }`
+      : `/time_tracking/shifts/${ encodeURIComponent(shiftId) }`
 
-    await this.#deelRequest({ method: "delete", path, logTag: "deleteShift" });
+    await this.#deelRequest({ method: 'delete', path, logTag: 'deleteShift' })
 
-    return { ok: true };
+    return { ok: true }
   }
 
   /**
@@ -3148,14 +3153,14 @@ class DeelService {
   async listGPPayslips(workerId) {
     if (!workerId)
       throw new Error(
-        "Provide a Worker — Deel returns GP payslips per worker.",
-      );
+        'Provide a Worker — Deel returns GP payslips per worker.'
+      )
 
     return this.#deelRequest({
-      method: "get",
-      path: `/gp/workers/${encodeURIComponent(workerId)}/payslips`,
-      logTag: "listGPPayslips",
-    });
+      method: 'get',
+      path: `/gp/workers/${ encodeURIComponent(workerId) }/payslips`,
+      logTag: 'listGPPayslips',
+    })
   }
 
   // =================== 13. ATS actions ===================
@@ -3173,17 +3178,17 @@ class DeelService {
    */
   async listJobs(status, department, limit) {
     const query = cleanupObject({
-      status: status ? status.toUpperCase().replace(" ", "_") : undefined,
+      status: status ? status.toUpperCase().replace(' ', '_') : undefined,
       department_id: department,
       limit: limit || 50,
-    });
+    })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/ats/jobs",
+      method: 'get',
+      path: '/ats/jobs',
       query,
-      logTag: "listJobs",
-    });
+      logTag: 'listJobs',
+    })
   }
 
   /**
@@ -3197,10 +3202,10 @@ class DeelService {
    */
   async getJob(jobId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/ats/jobs/${encodeURIComponent(jobId)}`,
-      logTag: "getJob",
-    });
+      method: 'get',
+      path: `/ats/jobs/${ encodeURIComponent(jobId) }`,
+      logTag: 'getJob',
+    })
   }
 
   /**
@@ -3223,16 +3228,16 @@ class DeelService {
       description,
       country,
       employment_type: employmentType
-        ? employmentType.toUpperCase().replace("-", "_")
+        ? employmentType.toUpperCase().replace('-', '_')
         : undefined,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: "/ats/jobs",
+      method: 'post',
+      path: '/ats/jobs',
       body,
-      logTag: "createJob",
-    });
+      logTag: 'createJob',
+    })
   }
 
   /**
@@ -3247,14 +3252,14 @@ class DeelService {
    * @sampleResult {"data":[{"id":"cand_1","name":"Jane Doe","email":"jane@candidate.com"}]}
    */
   async listCandidates(jobId, search, limit) {
-    const query = cleanupObject({ job_id: jobId, search, limit: limit || 50 });
+    const query = cleanupObject({ job_id: jobId, search, limit: limit || 50 })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/ats/candidates",
+      method: 'get',
+      path: '/ats/candidates',
       query,
-      logTag: "listCandidates",
-    });
+      logTag: 'listCandidates',
+    })
   }
 
   /**
@@ -3277,14 +3282,14 @@ class DeelService {
       email,
       phone,
       linkedin_url: linkedinUrl,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: "/ats/candidates",
+      method: 'post',
+      path: '/ats/candidates',
       body,
-      logTag: "createCandidate",
-    });
+      logTag: 'createCandidate',
+    })
   }
 
   /**
@@ -3299,11 +3304,11 @@ class DeelService {
    */
   async addCandidateTags(candidateId, tags) {
     return this.#deelRequest({
-      method: "post",
-      path: `/ats/candidates/${encodeURIComponent(candidateId)}/tags`,
+      method: 'post',
+      path: `/ats/candidates/${ encodeURIComponent(candidateId) }/tags`,
       body: { tags },
-      logTag: "addCandidateTags",
-    });
+      logTag: 'addCandidateTags',
+    })
   }
 
   /**
@@ -3317,14 +3322,14 @@ class DeelService {
    * @sampleResult {"data":[{"id":"app_1","candidate_id":"cand_1","job_id":"job_1","stage":"Phone Screen"}]}
    */
   async listApplications(jobId, candidateId) {
-    const query = cleanupObject({ job_id: jobId, candidate_id: candidateId });
+    const query = cleanupObject({ job_id: jobId, candidate_id: candidateId })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/ats/applications",
+      method: 'get',
+      path: '/ats/applications',
       query,
-      logTag: "listApplications",
-    });
+      logTag: 'listApplications',
+    })
   }
 
   /**
@@ -3338,10 +3343,10 @@ class DeelService {
    */
   async getApplication(applicationId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/ats/applications/${encodeURIComponent(applicationId)}`,
-      logTag: "getApplication",
-    });
+      method: 'get',
+      path: `/ats/applications/${ encodeURIComponent(applicationId) }`,
+      logTag: 'getApplication',
+    })
   }
 
   /**
@@ -3360,14 +3365,14 @@ class DeelService {
       job_id: jobId,
       candidate_id: candidateId,
       source,
-    });
+    })
 
     return this.#deelRequest({
-      method: "post",
-      path: "/ats/applications",
+      method: 'post',
+      path: '/ats/applications',
       body,
-      logTag: "createApplication",
-    });
+      logTag: 'createApplication',
+    })
   }
 
   /**
@@ -3382,11 +3387,11 @@ class DeelService {
    */
   async addApplicationNote(applicationId, note) {
     return this.#deelRequest({
-      method: "post",
-      path: `/ats/applications/${encodeURIComponent(applicationId)}/notes`,
+      method: 'post',
+      path: `/ats/applications/${ encodeURIComponent(applicationId) }/notes`,
       body: { note },
-      logTag: "addApplicationNote",
-    });
+      logTag: 'addApplicationNote',
+    })
   }
 
   /**
@@ -3401,11 +3406,11 @@ class DeelService {
    */
   async moveApplicationToStage(applicationId, stageId) {
     return this.#deelRequest({
-      method: "post",
-      path: `/ats/applications/${encodeURIComponent(applicationId)}/interview-plan-stages`,
+      method: 'post',
+      path: `/ats/applications/${ encodeURIComponent(applicationId) }/interview-plan-stages`,
       body: { stage_id: stageId },
-      logTag: "moveApplicationToStage",
-    });
+      logTag: 'moveApplicationToStage',
+    })
   }
 
   /**
@@ -3418,14 +3423,14 @@ class DeelService {
    * @sampleResult {"data":[{"id":"offer_1","candidate":"Jane Doe","status":"sent"}]}
    */
   async listOffers(jobId) {
-    const query = cleanupObject({ job_id: jobId });
+    const query = cleanupObject({ job_id: jobId })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/ats/offers",
+      method: 'get',
+      path: '/ats/offers',
       query,
-      logTag: "listOffers",
-    });
+      logTag: 'listOffers',
+    })
   }
 
   // =================== 14. Niche modules ===================
@@ -3450,15 +3455,15 @@ class DeelService {
     destinationCountry,
     tripStartDate,
     tripEndDate,
-    tripReason,
+    tripReason
   ) {
     const reasonMap = {
-      "Internal business (with client work)":
-        "INTERNAL_BUSINESS_WITH_WORK_FOR_CLIENT",
-      "Internal business (no client work)":
-        "INTERNAL_BUSINESS_WITHOUT_WORK_FOR_CLIENT",
-      "Meetings with or for a client": "MEETINGS_WITH_OR_FOR_A_CLIENT",
-    };
+      'Internal business (with client work)':
+        'INTERNAL_BUSINESS_WITH_WORK_FOR_CLIENT',
+      'Internal business (no client work)':
+        'INTERNAL_BUSINESS_WITHOUT_WORK_FOR_CLIENT',
+      'Meetings with or for a client': 'MEETINGS_WITH_OR_FOR_A_CLIENT',
+    }
     const query = {
       nationality,
       residence_country: residenceCountry,
@@ -3466,14 +3471,14 @@ class DeelService {
       trip_start_date: tripStartDate,
       trip_end_date: tripEndDate,
       trip_reason: reasonMap[tripReason] || tripReason,
-    };
+    }
 
     return this.#deelRequest({
-      method: "get",
-      path: "/immigration/visa-requirement/business",
+      method: 'get',
+      path: '/immigration/visa-requirement/business',
       query,
-      logTag: "checkVisaRequirements",
-    });
+      logTag: 'checkVisaRequirements',
+    })
   }
 
   /**
@@ -3487,10 +3492,10 @@ class DeelService {
    */
   async getVisaTypes(country) {
     return this.#deelRequest({
-      method: "get",
-      path: `/immigration/visa-types/${encodeURIComponent(country)}`,
-      logTag: "getVisaTypes",
-    });
+      method: 'get',
+      path: `/immigration/visa-types/${ encodeURIComponent(country) }`,
+      logTag: 'getVisaTypes',
+    })
   }
 
   /**
@@ -3503,14 +3508,14 @@ class DeelService {
    * @sampleResult {"data":[{"id":"imm_1","worker_id":"per_abc","status":"in_progress","case_type":"work_visa"}]}
    */
   async listImmigrationCases(workerId) {
-    const query = cleanupObject({ worker_id: workerId });
+    const query = cleanupObject({ worker_id: workerId })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/immigration/client/cases",
+      method: 'get',
+      path: '/immigration/client/cases',
       query,
-      logTag: "listImmigrationCases",
-    });
+      logTag: 'listImmigrationCases',
+    })
   }
 
   /**
@@ -3524,10 +3529,10 @@ class DeelService {
    */
   async getImmigrationCase(caseId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/immigration/client/cases/${encodeURIComponent(caseId)}`,
-      logTag: "getImmigrationCase",
-    });
+      method: 'get',
+      path: `/immigration/client/cases/${ encodeURIComponent(caseId) }`,
+      logTag: 'getImmigrationCase',
+    })
   }
 
   /**
@@ -3541,10 +3546,10 @@ class DeelService {
    */
   async getWorkerKYC(workerId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/screenings/kyc/${encodeURIComponent(workerId)}`,
-      logTag: "getWorkerKYC",
-    });
+      method: 'get',
+      path: `/screenings/kyc/${ encodeURIComponent(workerId) }`,
+      logTag: 'getWorkerKYC',
+    })
   }
 
   /**
@@ -3558,11 +3563,11 @@ class DeelService {
    */
   async createVeriffSession(workerId) {
     return this.#deelRequest({
-      method: "post",
-      path: "/veriff/sessions",
+      method: 'post',
+      path: '/veriff/sessions',
       body: { worker_id: workerId },
-      logTag: "createVeriffSession",
-    });
+      logTag: 'createVeriffSession',
+    })
   }
 
   /**
@@ -3575,14 +3580,14 @@ class DeelService {
    * @sampleResult {"data":[{"id":"ord_1","item":"MacBook Pro","status":"delivered"}]}
    */
   async listITOrders(workerId) {
-    const query = cleanupObject({ worker_id: workerId });
+    const query = cleanupObject({ worker_id: workerId })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/it/orders",
+      method: 'get',
+      path: '/it/orders',
       query,
-      logTag: "listITOrders",
-    });
+      logTag: 'listITOrders',
+    })
   }
 
   /**
@@ -3595,14 +3600,14 @@ class DeelService {
    * @sampleResult {"data":[{"id":"ast_1","item":"MacBook Pro","worker_id":"per_abc"}]}
    */
   async listITAssets(workerId) {
-    const query = cleanupObject({ worker_id: workerId });
+    const query = cleanupObject({ worker_id: workerId })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/it/assets",
+      method: 'get',
+      path: '/it/assets',
       query,
-      logTag: "listITAssets",
-    });
+      logTag: 'listITAssets',
+    })
   }
 
   /**
@@ -3615,10 +3620,10 @@ class DeelService {
    */
   async listITHardwarePolicies() {
     return this.#deelRequest({
-      method: "get",
-      path: "/it/policies",
-      logTag: "listITHardwarePolicies",
-    });
+      method: 'get',
+      path: '/it/policies',
+      logTag: 'listITHardwarePolicies',
+    })
   }
 
   /**
@@ -3632,10 +3637,10 @@ class DeelService {
    */
   async getCountryHiringGuide(country) {
     return this.#deelRequest({
-      method: "get",
-      path: `/knowledge-hub/country-guide/${encodeURIComponent(country)}`,
-      logTag: "getCountryHiringGuide",
-    });
+      method: 'get',
+      path: `/knowledge-hub/country-guide/${ encodeURIComponent(country) }`,
+      logTag: 'getCountryHiringGuide',
+    })
   }
 
   /**
@@ -3649,11 +3654,11 @@ class DeelService {
    */
   async createMagicLink(managerEmail) {
     return this.#deelRequest({
-      method: "post",
-      path: "/magic-link",
+      method: 'post',
+      path: '/magic-link',
       body: { email: managerEmail },
-      logTag: "createMagicLink",
-    });
+      logTag: 'createMagicLink',
+    })
   }
 
   // =================== 15. Invoices & misc actions ===================
@@ -3674,14 +3679,14 @@ class DeelService {
       status: status ? status.toLowerCase() : undefined,
       from_date: fromDate,
       to_date: toDate,
-    });
+    })
 
     return this.#deelRequest({
-      method: "get",
-      path: "/invoices",
+      method: 'get',
+      path: '/invoices',
       query,
-      logTag: "listInvoices",
-    });
+      logTag: 'listInvoices',
+    })
   }
 
   /**
@@ -3695,10 +3700,10 @@ class DeelService {
    */
   async getInvoice(invoiceId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/invoices/${encodeURIComponent(invoiceId)}`,
-      logTag: "getInvoice",
-    });
+      method: 'get',
+      path: `/invoices/${ encodeURIComponent(invoiceId) }`,
+      logTag: 'getInvoice',
+    })
   }
 
   /**
@@ -3712,10 +3717,10 @@ class DeelService {
    */
   async downloadInvoicePDF(invoiceId) {
     return this.#deelRequest({
-      method: "get",
-      path: `/invoices/${encodeURIComponent(invoiceId)}/download`,
-      logTag: "downloadInvoicePDF",
-    });
+      method: 'get',
+      path: `/invoices/${ encodeURIComponent(invoiceId) }/download`,
+      logTag: 'downloadInvoicePDF',
+    })
   }
 
   /**
@@ -3728,10 +3733,10 @@ class DeelService {
    */
   async listRefundStatements() {
     return this.#deelRequest({
-      method: "get",
-      path: "/refund-statements",
-      logTag: "listRefundStatements",
-    });
+      method: 'get',
+      path: '/refund-statements',
+      logTag: 'listRefundStatements',
+    })
   }
 
   /**
@@ -3744,10 +3749,10 @@ class DeelService {
    */
   async listManagers() {
     return this.#deelRequest({
-      method: "get",
-      path: "/managers",
-      logTag: "listManagers",
-    });
+      method: 'get',
+      path: '/managers',
+      logTag: 'listManagers',
+    })
   }
 
   // =================== 16. Webhook trigger + system methods ===================
@@ -3759,63 +3764,63 @@ class DeelService {
    */
   async handleTriggerUpsertWebhook(invocation) {
     logger.debug(
-      `handleTriggerUpsertWebhook.invocation: ${JSON.stringify(invocation)}`,
-    );
+      `handleTriggerUpsertWebhook.invocation: ${ JSON.stringify(invocation) }`
+    )
 
-    const callbackUrl = invocation?.callbackUrl;
+    const callbackUrl = invocation?.callbackUrl
     if (!callbackUrl)
-      throw new Error("Webhook callback URL is missing from invocation.");
+      throw new Error('Webhook callback URL is missing from invocation.')
 
     // Subscribe to all events; we filter by user-selected eventType in handleTriggerSelectMatched
     const body = {
       url: callbackUrl,
-      events: ["*"],
+      events: ['*'],
       enabled: true,
-    };
+    }
 
     // If a webhook already exists for this org, update it instead of creating a duplicate
     if (invocation.webhookData?.id) {
       try {
         const updated = await this.#deelRequest({
-          method: "patch",
-          path: `/webhooks/${encodeURIComponent(invocation.webhookData.id)}`,
+          method: 'patch',
+          path: `/webhooks/${ encodeURIComponent(invocation.webhookData.id) }`,
           body,
-          logTag: "handleTriggerUpsertWebhook.patch",
-        });
+          logTag: 'handleTriggerUpsertWebhook.patch',
+        })
 
         return {
           webhookData: updated?.data || updated,
           eventScopeId:
             invocation.webhookData.eventScopeId || invocation.eventScopeId,
-        };
+        }
       } catch (error) {
         logger.warn(
-          `existing webhook patch failed, creating new: ${error.message}`,
-        );
+          `existing webhook patch failed, creating new: ${ error.message }`
+        )
       }
     }
 
     const created = await this.#deelRequest({
-      method: "post",
-      path: "/webhooks",
+      method: 'post',
+      path: '/webhooks',
       body,
-      logTag: "handleTriggerUpsertWebhook.post",
-    });
-    const data = created?.data || created;
+      logTag: 'handleTriggerUpsertWebhook.post',
+    })
+    const data = created?.data || created
 
-    let eventScopeId = invocation.eventScopeId;
+    let eventScopeId = invocation.eventScopeId
 
     if (!eventScopeId) {
       try {
-        const org = await this.getOrganization();
+        const org = await this.getOrganization()
 
-        eventScopeId = org?.id;
+        eventScopeId = org?.id
       } catch (error) {
-        logger.warn(`unable to fetch org for eventScopeId: ${error.message}`);
+        logger.warn(`unable to fetch org for eventScopeId: ${ error.message }`)
       }
     }
 
-    return { webhookData: data, eventScopeId };
+    return { webhookData: data, eventScopeId }
   }
 
   /**
@@ -3825,60 +3830,60 @@ class DeelService {
    */
   async handleTriggerResolveEvents(invocation) {
     logger.debug(
-      `handleTriggerResolveEvents.invocation: ${JSON.stringify(invocation)}`,
-    );
+      `handleTriggerResolveEvents.invocation: ${ JSON.stringify(invocation) }`
+    )
 
-    const body = invocation?.body;
+    const body = invocation?.body
 
     if (!body || !body.data) {
-      logger.warn("Webhook delivery has no body.data — ignoring.");
+      logger.warn('Webhook delivery has no body.data — ignoring.')
 
-      return null;
+      return null
     }
 
-    const headers = invocation?.headers || {};
+    const headers = invocation?.headers || {}
     const signature =
-      headers["x-deel-signature"] || headers["X-Deel-Signature"];
-    const secret = invocation?.webhookData?.secret;
+      headers['x-deel-signature'] || headers['X-Deel-Signature']
+    const secret = invocation?.webhookData?.secret
 
     if (secret && signature) {
       try {
-        const crypto = require("crypto");
-        const rawBody = invocation.rawBody || JSON.stringify(body);
+        const crypto = require('crypto')
+        const rawBody = invocation.rawBody || JSON.stringify(body)
         const expected = crypto
-          .createHmac("sha256", secret)
+          .createHmac('sha256', secret)
           .update(rawBody)
-          .digest("hex");
+          .digest('hex')
 
         const valid =
           signature.length === expected.length &&
           crypto.timingSafeEqual(
-            Buffer.from(signature, "utf8"),
-            Buffer.from(expected, "utf8"),
-          );
+            Buffer.from(signature, 'utf8'),
+            Buffer.from(expected, 'utf8')
+          )
 
         if (!valid) {
-          logger.error("Webhook signature mismatch — refusing to process");
-          throw new Error("Invalid Deel webhook signature");
+          logger.error('Webhook signature mismatch — refusing to process')
+          throw new Error('Invalid Deel webhook signature')
         }
       } catch (error) {
         // crypto failure - log and re-throw to drop delivery (Deel will retry)
-        logger.error(`Webhook signature verification failed: ${error.message}`);
-        throw error;
+        logger.error(`Webhook signature verification failed: ${ error.message }`)
+        throw error
       }
     }
 
-    const meta = body.data.meta || {};
+    const meta = body.data.meta || {}
     const resource = Array.isArray(body.data.resource)
       ? body.data.resource[0]
-      : body.data.resource;
+      : body.data.resource
 
     return {
       eventScopeId:
         meta.organization_id || invocation.webhookData?.eventScopeId,
       events: [
         {
-          name: "onDeelEvent",
+          name: 'onDeelEvent',
           data: {
             eventType: meta.event_type,
             eventId: meta.event_id,
@@ -3888,7 +3893,7 @@ class DeelService {
           },
         },
       ],
-    };
+    }
   }
 
   /**
@@ -3897,24 +3902,24 @@ class DeelService {
    * @returns {Object}
    */
   async handleTriggerSelectMatched(invocation) {
-    logger.debug(`handleTriggerSelectMatched: ${JSON.stringify(invocation)}`);
+    logger.debug(`handleTriggerSelectMatched: ${ JSON.stringify(invocation) }`)
 
-    const incomingType = invocation?.event?.data?.eventType;
-    const triggers = invocation?.triggers || [];
+    const incomingType = invocation?.event?.data?.eventType
+    const triggers = invocation?.triggers || []
 
     const ids = triggers
-      .filter((trigger) => {
+      .filter(trigger => {
         const filterEventType =
-          trigger?.data?.eventType || trigger?.params?.eventType;
+          trigger?.data?.eventType || trigger?.params?.eventType
 
         // If user didn't pick an eventType, match all
-        if (!filterEventType) return true;
+        if (!filterEventType) return true
 
-        return filterEventType === incomingType;
+        return filterEventType === incomingType
       })
-      .map((trigger) => trigger.id);
+      .map(trigger => trigger.id)
 
-    return { ids };
+    return { ids }
   }
 
   /**
@@ -3922,22 +3927,22 @@ class DeelService {
    * @paramDef {"type":"Object","label":"Invocation","name":"invocation"}
    */
   async handleTriggerDeleteWebhook(invocation) {
-    logger.debug(`handleTriggerDeleteWebhook: ${JSON.stringify(invocation)}`);
+    logger.debug(`handleTriggerDeleteWebhook: ${ JSON.stringify(invocation) }`)
 
-    const id = invocation?.webhookData?.id;
-    if (!id) return {};
+    const id = invocation?.webhookData?.id
+    if (!id) return {}
 
     try {
       await this.#deelRequest({
-        method: "delete",
-        path: `/webhooks/${encodeURIComponent(id)}`,
-        logTag: "handleTriggerDeleteWebhook",
-      });
+        method: 'delete',
+        path: `/webhooks/${ encodeURIComponent(id) }`,
+        logTag: 'handleTriggerDeleteWebhook',
+      })
     } catch (error) {
-      logger.warn(`Failed to delete webhook ${id}: ${error.message}`);
+      logger.warn(`Failed to delete webhook ${ id }: ${ error.message }`)
     }
 
-    return {};
+    return {}
   }
 
   /**
@@ -3955,7 +3960,7 @@ class DeelService {
   onDeelEvent() {
     // The realtime trigger framework calls handleTriggerResolveEvents/SelectMatched —
     // this method exists only to register the trigger and provide its JSDoc metadata.
-    return null;
+    return null
   }
 }
 
@@ -3963,31 +3968,31 @@ class DeelService {
 
 Flowrunner.ServerCode.addService(DeelService, [
   {
-    displayName: "Client ID",
-    defaultValue: "",
-    name: "clientId",
+    displayName: 'Client ID',
+    defaultValue: '',
+    name: 'clientId',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: true,
-    hint: "OAuth2 Client ID from your Deel developer app. Find it under More → Developer → Apps in your Deel dashboard.",
+    hint: 'OAuth2 Client ID from your Deel developer app. Find it under More → Developer → Apps in your Deel dashboard.',
   },
   {
-    displayName: "Client Secret",
-    defaultValue: "",
-    name: "clientSecret",
+    displayName: 'Client Secret',
+    defaultValue: '',
+    name: 'clientSecret',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: true,
-    hint: "OAuth2 Client Secret from your Deel developer app. Shown only once at app creation — keep it safe.",
+    hint: 'OAuth2 Client Secret from your Deel developer app. Shown only once at app creation — keep it safe.',
   },
   {
-    displayName: "Environment",
-    defaultValue: "Production",
-    name: "environment",
+    displayName: 'Environment',
+    defaultValue: 'Production',
+    name: 'environment',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.CHOICE,
     required: true,
     shared: false,
-    options: ["Production", "Sandbox"],
+    options: ['Production', 'Sandbox'],
     hint: 'Pick "Sandbox" to point at Deel\'s demo environment for testing. Pick "Production" for live data.',
   },
-]);
+])

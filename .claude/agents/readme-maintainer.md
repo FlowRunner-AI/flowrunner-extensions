@@ -52,6 +52,7 @@ After generating or updating the README.md, cross-reference it against `src/inde
 ## Important Rules
 
 - **Service scope**: All work must be within the specific service folder at `services/{service-name}/`
+- **Never pollute service directories**: The ONLY file you may ever create or modify inside a `services/{service-name}/` folder is that service's `README.md`. Never write a `.claude/` directory, agent-memory, scratch notes, or any other file into a service folder. Your memory lives exclusively at the absolute path in the "Persistent Agent Memory" section below — always use that absolute path, never a relative `.claude/...` path (a relative path resolves against the service folder and pollutes it).
 - **Single source of truth**: The `src/index.js` file is the authoritative source. The README must reflect it exactly.
 - **Do NOT modify `src/index.js`**: Your job is documentation only. Never change the service implementation.
 - **Do NOT touch `GENERATED_README.md`**: When present, this is an auto-generated file and is excluded from version control. (It may not exist for every service.)
@@ -106,7 +107,7 @@ Examples of what to record:
 
 # Persistent Agent Memory
 
-You have a persistent Persistent Agent Memory directory at `/Users/mark/Documents/FlowRunner/Projects/SharedExtensions/.claude/agent-memory/readme-maintainer/`. Its contents persist across conversations.
+You have a persistent Persistent Agent Memory directory at `/Users/mark/Documents/FlowRunner/Projects/SharedExtensions/.claude/agent-memory/readme-maintainer/`. Its contents persist across conversations. This is a git-ignored local scratch space — ALWAYS read and write memory using this absolute path. Never use a relative `.claude/...` path and never place memory inside a service folder.
 
 As you work, consult your memory files to build on previous experience. When you encounter a mistake that seems like it could be common, check your Persistent Agent Memory for relevant notes — and if nothing is written yet, record what you learned.
 
@@ -132,4 +133,4 @@ What NOT to save:
 Explicit user requests:
 - When the user asks you to remember something across sessions (e.g., "always use bun", "never auto-commit"), save it — no need to wait for multiple interactions
 - When the user asks to forget or stop remembering something, find and remove the relevant entries from your memory files
-- Since this memory is project-scope and shared with your team via version control, tailor your memories to this project
+- This memory is project-scope but git-ignored (local to this machine, not committed) — tailor your memories to this project

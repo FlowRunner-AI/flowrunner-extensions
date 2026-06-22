@@ -31,11 +31,11 @@ const DEFAULT_SCOPE_STRING = DEFAULT_SCOPE_LIST.join(' ')
 const DEFAULT_PAGE_SIZE = 50
 
 const WebhookTopics = {
-  onOrderShipped     : 'order.shipped',
+  onOrderShipped: 'order.shipped',
   onShipmentDelivered: 'order.shipment.delivered',
   onShipmentException: 'order.shipment.exception',
-  onShipmentOnHold   : 'order.shipment.on_hold',
-  onReturnCompleted  : 'return.completed',
+  onShipmentOnHold: 'order.shipment.on_hold',
+  onReturnCompleted: 'return.completed',
 }
 
 const TopicToMethod = Object.keys(WebhookTopics).reduce((acc, key) => {
@@ -45,15 +45,15 @@ const TopicToMethod = Object.keys(WebhookTopics).reduce((acc, key) => {
 }, {})
 
 const MethodCallTypes = {
-  SHAPE_EVENT   : 'SHAPE_EVENT',
+  SHAPE_EVENT: 'SHAPE_EVENT',
   FILTER_TRIGGER: 'FILTER_TRIGGER',
 }
 
 const logger = {
-  info : (...args) => console.log('[ShipBob Service] info:', ...args),
+  info: (...args) => console.log('[ShipBob Service] info:', ...args),
   debug: (...args) => console.log('[ShipBob Service] debug:', ...args),
   error: (...args) => console.log('[ShipBob Service] error:', ...args),
-  warn : (...args) => console.log('[ShipBob Service] warn:', ...args),
+  warn: (...args) => console.log('[ShipBob Service] warn:', ...args),
 }
 
 /**
@@ -106,13 +106,13 @@ class ShipBobService {
   async #getChannelId() {
     const response = await this.#apiRequest({
       logTag: 'getChannelId',
-      url   : `${ API_BASE_URL }/channel`,
+      url: `${ API_BASE_URL }/channel`,
     })
 
     const channels = response.items || response || []
 
     const writeChannel = channels.find(ch =>
-      ch.scopes?.some(s => s.includes('write')),
+      ch.scopes?.some(s => s.includes('write'))
     )
 
     return writeChannel?.id || channels[0]?.id
@@ -164,9 +164,9 @@ class ShipBobService {
         .send(params.toString())
 
       return {
-        token              : response.access_token,
+        token: response.access_token,
         expirationInSeconds: response.expires_in,
-        refreshToken       : response.refresh_token || refreshToken,
+        refreshToken: response.refresh_token || refreshToken,
       }
     } catch (error) {
       logger.error(`refreshToken: ${ JSON.stringify(error) }`)
@@ -224,7 +224,7 @@ class ShipBobService {
       const channels = channelsResponse.items || channelsResponse || []
 
       channelInfo = channels.find(ch =>
-        ch.scopes?.some(s => s.includes('write')),
+        ch.scopes?.some(s => s.includes('write'))
       ) || channels[0] || {}
 
       logger.debug(`[executeCallback] channelInfo: ${ JSON.stringify(channelInfo) }`)
@@ -233,14 +233,14 @@ class ShipBobService {
     }
 
     return {
-      token                 : codeExchangeResponse.access_token,
-      expirationInSeconds   : codeExchangeResponse.expires_in,
-      refreshToken          : codeExchangeResponse.refresh_token,
+      token: codeExchangeResponse.access_token,
+      expirationInSeconds: codeExchangeResponse.expires_in,
+      refreshToken: codeExchangeResponse.refresh_token,
       connectionIdentityName: channelInfo.name
         ? `${ channelInfo.application_name || 'ShipBob' } (${ channelInfo.name })`
         : 'ShipBob Account',
-      overwrite             : true,
-      userData              : { channelId: channelInfo.id },
+      overwrite: true,
+      userData: { channelId: channelInfo.id },
     }
   }
 
@@ -287,9 +287,9 @@ class ShipBobService {
   async getProductsDictionary({ search, cursor }) {
     const response = await this.#apiRequest({
       logTag: 'getProductsDictionary',
-      url   : `${ API_BASE_URL }/product`,
-      query : {
-        Search  : search || undefined,
+      url: `${ API_BASE_URL }/product`,
+      query: {
+        Search: search || undefined,
         PageSize: DEFAULT_PAGE_SIZE,
       },
     })
@@ -298,13 +298,13 @@ class ShipBobService {
 
     return {
       cursor: extractCursor(response.next),
-      items : products.map(product => {
+      items: products.map(product => {
         const variant = product.variants?.[0]
         const sku = variant?.sku || 'N/A'
 
         return {
           label: `${ product.name || '[unnamed]' } (SKU: ${ sku })`,
-          note : `ID: ${ product.id }`,
+          note: `ID: ${ product.id }`,
           value: String(product.id),
         }
       }),
@@ -333,10 +333,10 @@ class ShipBobService {
   async getChannelsDictionary({ search, cursor }) {
     const response = await this.#apiRequest({
       logTag: 'getChannelsDictionary',
-      url   : `${ API_BASE_URL }/channel`,
-      query : {
+      url: `${ API_BASE_URL }/channel`,
+      query: {
         RecordsPerPage: DEFAULT_PAGE_SIZE,
-        Cursor        : cursor || undefined,
+        Cursor: cursor || undefined,
       },
     })
 
@@ -348,9 +348,9 @@ class ShipBobService {
 
     return {
       cursor: extractCursor(response.next),
-      items : filtered.map(channel => ({
+      items: filtered.map(channel => ({
         label: channel.name || '[unnamed]',
-        note : `App: ${ channel.application_name || 'N/A' }`,
+        note: `App: ${ channel.application_name || 'N/A' }`,
         value: String(channel.id),
       })),
     }
@@ -378,8 +378,8 @@ class ShipBobService {
   async getLocationsDictionary({ search, cursor }) {
     const response = await this.#apiRequest({
       logTag: 'getLocationsDictionary',
-      url   : `${ API_BASE_URL }/location`,
-      query : {
+      url: `${ API_BASE_URL }/location`,
+      query: {
         ReceivingEnabled: true,
       },
     })
@@ -392,9 +392,9 @@ class ShipBobService {
 
     return {
       cursor: null,
-      items : filtered.map(location => ({
+      items: filtered.map(location => ({
         label: location.name || '[unnamed]',
-        note : `ID: ${ location.id }`,
+        note: `ID: ${ location.id }`,
         value: String(location.id),
       })),
     }
@@ -422,9 +422,9 @@ class ShipBobService {
   async getShippingMethodsDictionary({ search, cursor }) {
     const response = await this.#apiRequest({
       logTag: 'getShippingMethodsDictionary',
-      url   : `${ API_BASE_URL }/shipping-method`,
-      query : {
-        Page : 0,
+      url: `${ API_BASE_URL }/shipping-method`,
+      query: {
+        Page: 0,
         Limit: 250,
       },
     })
@@ -437,9 +437,9 @@ class ShipBobService {
 
     return {
       cursor: null,
-      items : filtered.map(method => ({
+      items: filtered.map(method => ({
         label: method.name || '[unnamed]',
-        note : method.active ? 'Active' : 'Inactive',
+        note: method.active ? 'Active' : 'Inactive',
         value: method.name,
       })),
     }
@@ -467,7 +467,7 @@ class ShipBobService {
   async getFulfillmentCentersDictionary({ search, cursor }) {
     const response = await this.#apiRequest({
       logTag: 'getFulfillmentCentersDictionary',
-      url   : `${ API_BASE_URL }/fulfillment-center`,
+      url: `${ API_BASE_URL }/fulfillment-center`,
     })
 
     const centers = Array.isArray(response) ? response : response.items || []
@@ -478,9 +478,9 @@ class ShipBobService {
 
     return {
       cursor: null,
-      items : filtered.map(center => ({
+      items: filtered.map(center => ({
         label: center.name || '[unnamed]',
-        note : [center.address1, center.city, center.state, center.zip_code].filter(Boolean).join(', ') || `ID: ${ center.id }`,
+        note: [center.address1, center.city, center.state, center.zip_code].filter(Boolean).join(', ') || `ID: ${ center.id }`,
         value: String(center.id),
       })),
     }
@@ -494,10 +494,10 @@ class ShipBobService {
     const response = await this.#apiRequest({
       logTag: 'createWebhook',
       method: 'post',
-      url   : `${ API_BASE_URL }/webhook`,
-      body  : {
+      url: `${ API_BASE_URL }/webhook`,
+      body: {
         topics,
-        url        : `${ invocation.callbackUrl }&connectionId=${ invocation.connectionId }`,
+        url: `${ invocation.callbackUrl }&connectionId=${ invocation.connectionId }`,
         description: `FlowRunner trigger for ${ topics.join(', ') }`,
       },
     })
@@ -508,7 +508,7 @@ class ShipBobService {
   async #deleteWebhook(webhookId) {
     await this.#apiRequest({
       logTag: 'deleteWebhook',
-      url   : `${ API_BASE_URL }/webhook/${ webhookId }`,
+      url: `${ API_BASE_URL }/webhook/${ webhookId }`,
       method: 'delete',
     })
   }
@@ -802,7 +802,7 @@ class ShipBobService {
     orderNumber,
     recipientEmail,
     recipientPhone,
-    giftMessage,
+    giftMessage
   ) {
     if (!referenceId) {
       throw new Error('"Reference ID" is required')
@@ -823,16 +823,16 @@ class ShipBobService {
     const channelId = await this.#getChannelId()
 
     const body = cleanupObject({
-      reference_id   : referenceId,
-      order_number   : orderNumber || undefined,
+      reference_id: referenceId,
+      order_number: orderNumber || undefined,
       shipping_method: shippingMethod,
-      type           : orderType || 'DTC',
+      type: orderType || 'DTC',
       products,
-      recipient      : {
-        name        : recipientName,
-        email       : recipientEmail || undefined,
+      recipient: {
+        name: recipientName,
+        email: recipientEmail || undefined,
         phone_number: recipientPhone || undefined,
-        address     : cleanupObject({
+        address: cleanupObject({
           address1,
           address2,
           city,
@@ -841,13 +841,13 @@ class ShipBobService {
           country,
         }),
       },
-      gift_message   : giftMessage || undefined,
+      gift_message: giftMessage || undefined,
     })
 
     return await this.#apiRequest({
       logTag: 'createOrder',
       method: 'post',
-      url   : `${ API_BASE_URL }/order`,
+      url: `${ API_BASE_URL }/order`,
       body,
       channelId,
     })
@@ -874,7 +874,7 @@ class ShipBobService {
 
     return await this.#apiRequest({
       logTag: 'getOrder',
-      url   : `${ API_BASE_URL }/order/${ orderId }`,
+      url: `${ API_BASE_URL }/order/${ orderId }`,
     })
   }
 
@@ -899,13 +899,13 @@ class ShipBobService {
   async getOrders(startDate, endDate, hasTracking, page, limit) {
     return await this.#apiRequest({
       logTag: 'getOrders',
-      url   : `${ API_BASE_URL }/order`,
-      query : {
-        StartDate  : startDate || undefined,
-        EndDate    : endDate || undefined,
+      url: `${ API_BASE_URL }/order`,
+      query: {
+        StartDate: startDate || undefined,
+        EndDate: endDate || undefined,
         HasTracking: hasTracking !== undefined && hasTracking !== null ? hasTracking : undefined,
-        Page       : page || 1,
-        Limit      : limit || DEFAULT_PAGE_SIZE,
+        Page: page || 1,
+        Limit: limit || DEFAULT_PAGE_SIZE,
       },
     })
   }
@@ -932,7 +932,7 @@ class ShipBobService {
     return await this.#apiRequest({
       logTag: 'cancelOrder',
       method: 'post',
-      url   : `${ API_BASE_URL }/order/${ orderId }:cancel`,
+      url: `${ API_BASE_URL }/order/${ orderId }:cancel`,
     })
   }
 
@@ -988,7 +988,7 @@ class ShipBobService {
     return await this.#apiRequest({
       logTag: 'estimateFulfillmentCost',
       method: 'post',
-      url   : `${ API_BASE_URL }/order:estimate`,
+      url: `${ API_BASE_URL }/order:estimate`,
       body,
       channelId,
     })
@@ -1030,8 +1030,8 @@ class ShipBobService {
     return await this.#apiRequest({
       logTag: 'batchCancelShipments',
       method: 'post',
-      url   : `${ API_BASE_URL }/shipment:batchCancel`,
-      body  : { shipment_ids: shipmentIds },
+      url: `${ API_BASE_URL }/shipment:batchCancel`,
+      body: { shipment_ids: shipmentIds },
       channelId,
     })
   }
@@ -1071,9 +1071,9 @@ class ShipBobService {
     return await this.#apiRequest({
       logTag: 'markTrackingUploaded',
       method: 'post',
-      url   : `${ API_BASE_URL }/shipment:batchUpdateTrackingUpload`,
-      body  : {
-        shipment_ids        : shipmentIds,
+      url: `${ API_BASE_URL }/shipment:batchUpdateTrackingUpload`,
+      body: {
+        shipment_ids: shipmentIds,
         is_tracking_uploaded: isTrackingUploaded === true,
       },
     })
@@ -1116,10 +1116,10 @@ class ShipBobService {
 
     const variant = cleanupObject({
       sku,
-      name     : variantName || name,
-      upc      : upc || undefined,
-      gtin     : gtin || undefined,
-      weight   : weight || undefined,
+      name: variantName || name,
+      upc: upc || undefined,
+      gtin: gtin || undefined,
+      weight: weight || undefined,
       dimension: length || width || height
         ? cleanupObject({ length, width, height })
         : undefined,
@@ -1127,14 +1127,14 @@ class ShipBobService {
 
     const body = {
       name,
-      type_id : 1,
+      type_id: 1,
       variants: [variant],
     }
 
     return await this.#apiRequest({
       logTag: 'createProduct',
       method: 'post',
-      url   : `${ API_BASE_URL }/product`,
+      url: `${ API_BASE_URL }/product`,
       body,
       channelId,
     })
@@ -1184,34 +1184,34 @@ class ShipBobService {
 
     return await this.#apiRequest({
       logTag: 'getProducts',
-      url   : `${ API_BASE_URL }/product`,
-      query : {
-        Search                : search || undefined,
-        Name                  : name || undefined,
-        SKU                   : sku || undefined,
-        SellerSKU             : sellerSku || undefined,
-        Barcode               : barcode || undefined,
-        Barcodes              : barcodes || undefined,
-        ProductId             : productId || undefined,
-        VariantId             : variantId || undefined,
-        InventoryId           : inventoryId || undefined,
-        CategoryIds           : categoryIds || undefined,
-        TaxonomyIds           : taxonomyIds || undefined,
-        ChannelIds            : channelIds || undefined,
-        PlatformIds           : platformIds || undefined,
-        LegacyIds             : legacyIds || undefined,
-        SalesChannel          : salesChannel || undefined,
-        ProductType           : productType || undefined,
-        VariantStatus         : variantStatus || undefined,
-        HasVariants           : boolToString(hasVariants),
-        HasDigitalVariants    : boolToString(hasDigitalVariants),
-        OnHand                : boolToString(onHand),
+      url: `${ API_BASE_URL }/product`,
+      query: {
+        Search: search || undefined,
+        Name: name || undefined,
+        SKU: sku || undefined,
+        SellerSKU: sellerSku || undefined,
+        Barcode: barcode || undefined,
+        Barcodes: barcodes || undefined,
+        ProductId: productId || undefined,
+        VariantId: variantId || undefined,
+        InventoryId: inventoryId || undefined,
+        CategoryIds: categoryIds || undefined,
+        TaxonomyIds: taxonomyIds || undefined,
+        ChannelIds: channelIds || undefined,
+        PlatformIds: platformIds || undefined,
+        LegacyIds: legacyIds || undefined,
+        SalesChannel: salesChannel || undefined,
+        ProductType: productType || undefined,
+        VariantStatus: variantStatus || undefined,
+        HasVariants: boolToString(hasVariants),
+        HasDigitalVariants: boolToString(hasDigitalVariants),
+        OnHand: boolToString(onHand),
         IsInventorySyncEnabled: boolToString(isInventorySyncEnabled),
-        ReviewsPending        : boolToString(reviewsPending),
-        LastUpdatedTimestamp  : lastUpdatedTimestamp || undefined,
-        PageSize              : pageSize || DEFAULT_PAGE_SIZE,
-        SortBy                : sortBy || undefined,
-        SortOrder             : sortOrder || undefined,
+        ReviewsPending: boolToString(reviewsPending),
+        LastUpdatedTimestamp: lastUpdatedTimestamp || undefined,
+        PageSize: pageSize || DEFAULT_PAGE_SIZE,
+        SortBy: sortBy || undefined,
+        SortOrder: sortOrder || undefined,
       },
     })
   }
@@ -1237,8 +1237,8 @@ class ShipBobService {
   async getInventory(search, isActive, pageSize) {
     return await this.#apiRequest({
       logTag: 'getInventory',
-      url   : `${ API_BASE_URL }/inventory`,
-      query : {
+      url: `${ API_BASE_URL }/inventory`,
+      query: {
         SearchBy: search || undefined,
         IsActive: isActive !== undefined && isActive !== null ? isActive : undefined,
         PageSize: pageSize || DEFAULT_PAGE_SIZE,
@@ -1269,7 +1269,7 @@ class ShipBobService {
 
     return await this.#apiRequest({
       logTag: 'getShipment',
-      url   : `${ API_BASE_URL }/shipment/${ shipmentId }`,
+      url: `${ API_BASE_URL }/shipment/${ shipmentId }`,
     })
   }
 
@@ -1317,17 +1317,17 @@ class ShipBobService {
     const channelId = await this.#getChannelId()
 
     const body = cleanupObject({
-      reference_id        : referenceId,
-      fulfillment_center  : { id: parseInt(fulfillmentCenterId) },
+      reference_id: referenceId,
+      fulfillment_center: { id: parseInt(fulfillmentCenterId) },
       inventory,
       original_shipment_id: originalShipmentId || undefined,
-      tracking_number     : trackingNumber || undefined,
+      tracking_number: trackingNumber || undefined,
     })
 
     return await this.#apiRequest({
       logTag: 'createReturn',
       method: 'post',
-      url   : `${ API_BASE_URL }/return`,
+      url: `${ API_BASE_URL }/return`,
       body,
       channelId,
     })
@@ -1388,9 +1388,9 @@ class ShipBobService {
     })
 
     const body = cleanupObject({
-      fulfillment_center   : { id: parseInt(fulfillmentCenterId) },
-      package_type         : packageType || 'Package',
-      box_packaging_type   : boxPackagingType || 'EverythingInOneBox',
+      fulfillment_center: { id: parseInt(fulfillmentCenterId) },
+      package_type: packageType || 'Package',
+      box_packaging_type: boxPackagingType || 'EverythingInOneBox',
       expected_arrival_date: new Date(Number(expectedArrivalDate) || expectedArrivalDate).toISOString(),
       boxes,
       purchase_order_number: purchaseOrderNumber || undefined,
@@ -1401,7 +1401,7 @@ class ShipBobService {
     return await this.#apiRequest({
       logTag: 'createWRO',
       method: 'post',
-      url   : `${ API_BASE_URL }/receiving`,
+      url: `${ API_BASE_URL }/receiving`,
       body,
     })
   }
@@ -1428,14 +1428,14 @@ class ShipBobService {
   async getWROs(statuses, insertStartDate, insertEndDate, externalSync, page, limit) {
     return await this.#apiRequest({
       logTag: 'getWROs',
-      url   : `${ API_BASE_URL }/receiving`,
-      query : {
-        Statuses       : statuses || undefined,
+      url: `${ API_BASE_URL }/receiving`,
+      query: {
+        Statuses: statuses || undefined,
         InsertStartDate: insertStartDate || undefined,
-        InsertEndDate  : insertEndDate || undefined,
-        ExternalSync   : externalSync !== undefined && externalSync !== null ? externalSync : undefined,
-        Page           : page || 1,
-        Limit          : limit || DEFAULT_PAGE_SIZE,
+        InsertEndDate: insertEndDate || undefined,
+        ExternalSync: externalSync !== undefined && externalSync !== null ? externalSync : undefined,
+        Page: page || 1,
+        Limit: limit || DEFAULT_PAGE_SIZE,
       },
     })
   }
@@ -1461,7 +1461,7 @@ class ShipBobService {
 
     return await this.#apiRequest({
       logTag: 'getWRO',
-      url   : `${ API_BASE_URL }/receiving/${ wroId }`,
+      url: `${ API_BASE_URL }/receiving/${ wroId }`,
     })
   }
 
@@ -1480,7 +1480,7 @@ class ShipBobService {
   async getFulfillmentCenters() {
     return await this.#apiRequest({
       logTag: 'getFulfillmentCenters',
-      url   : `${ API_BASE_URL }/fulfillment-center`,
+      url: `${ API_BASE_URL }/fulfillment-center`,
     })
   }
 
@@ -1505,7 +1505,7 @@ class ShipBobService {
 
     return await this.#apiRequest({
       logTag: 'getWROBoxes',
-      url   : `${ API_BASE_URL }/receiving/${ wroId }/boxes`,
+      url: `${ API_BASE_URL }/receiving/${ wroId }/boxes`,
     })
   }
 
@@ -1530,7 +1530,7 @@ class ShipBobService {
 
     return await this.#apiRequest({
       logTag: 'getWROBoxLabels',
-      url   : `${ API_BASE_URL }/receiving/${ wroId }/labels`,
+      url: `${ API_BASE_URL }/receiving/${ wroId }/labels`,
     })
   }
 
@@ -1556,7 +1556,7 @@ class ShipBobService {
     return await this.#apiRequest({
       logTag: 'cancelWRO',
       method: 'post',
-      url   : `${ API_BASE_URL }/receiving/${ wroId }:cancel`,
+      url: `${ API_BASE_URL }/receiving/${ wroId }:cancel`,
     })
   }
 
@@ -1591,8 +1591,8 @@ class ShipBobService {
     return await this.#apiRequest({
       logTag: 'setWROExternalSync',
       method: 'post',
-      url   : `${ API_BASE_URL }/receiving:setExternalSync`,
-      body  : {
+      url: `${ API_BASE_URL }/receiving:setExternalSync`,
+      body: {
         ids,
         is_external_sync: isExternalSync === true || isExternalSync === 'true',
       },
@@ -1602,31 +1602,31 @@ class ShipBobService {
 
 Flowrunner.ServerCode.addService(ShipBobService, [
   {
-    displayName : 'Personal Access Token',
+    displayName: 'Personal Access Token',
     defaultValue: '',
-    name        : 'apiToken',
-    type        : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required    : true,
-    shared      : false,
-    hint        : 'Your Personal Access Token (PAT) from the ShipBob Developer Dashboard (Settings > API Tokens)',
+    name: 'apiToken',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: true,
+    shared: false,
+    hint: 'Your Personal Access Token (PAT) from the ShipBob Developer Dashboard (Settings > API Tokens)',
   },
   {
-    displayName : 'Client ID',
+    displayName: 'Client ID',
     defaultValue: '',
-    name        : 'clientId',
-    type        : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required    : true,
-    shared      : true,
-    hint        : 'Client ID when using with OAuth2 flow.',
+    name: 'clientId',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: true,
+    shared: true,
+    hint: 'Client ID when using with OAuth2 flow.',
   },
   {
-    displayName : 'Client Secret',
+    displayName: 'Client Secret',
     defaultValue: '',
-    name        : 'clientSecret',
-    type        : Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
-    required    : true,
-    shared      : true,
-    hint        : 'Client Secret from the ShipBob Developer Dashboard (Settings > API Tokens). Required if using OAuth2 flow. Not needed if using Personal Access Token (PAT) for authentication.',
+    name: 'clientSecret',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: true,
+    shared: true,
+    hint: 'Client Secret from the ShipBob Developer Dashboard (Settings > API Tokens). Required if using OAuth2 flow. Not needed if using Personal Access Token (PAT) for authentication.',
   },
 ])
 
@@ -1648,7 +1648,7 @@ function searchFilter(list, props, searchString) {
       const value = prop.split('.').reduce((acc, key) => acc?.[key], item)
 
       return value && String(value).toLowerCase().includes(searchString.toLowerCase())
-    }),
+    })
   )
 }
 
