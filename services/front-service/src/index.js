@@ -37,6 +37,17 @@ function splitCsv(value) {
   return value.split(',').map(s => s.trim()).filter(s => s.length > 0)
 }
 
+function normalizeAttachment(att) {
+  return {
+    id: att.id,
+    filename: att.filename,
+    content_type: att.content_type,
+    size: att.size,
+    url: att.url,
+    is_inline: att.metadata?.is_inline ?? false,
+  }
+}
+
 /**
  * @integrationName Front
  * @integrationIcon /logo.png
@@ -498,7 +509,7 @@ class FrontService {
    * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor URL from a prior response's _pagination.next."}
    *
    * @returns {Object}
-   * @sampleResult {"_results":[{"id":"msg_zzz","type":"email","is_inbound":true,"created_at":1718210000,"subject":"Re: Invoice question","body":"<p>Sure, here's the info</p>","text":"Sure, here's the info","author":null,"recipients":[{"handle":"alice@example.com","role":"from"}]}],"_pagination":{"next":null}}
+   * @sampleResult {"_results":[{"id":"msg_zzz","type":"email","is_inbound":true,"created_at":1718210000,"subject":"Re: Invoice question","body":"<p>Sure, here's the info</p>","text":"Sure, here's the info","author":null,"recipients":[{"handle":"alice@example.com","role":"from"}],"attachments":[{"id":"fil_231iuypv","filename":"invoice.pdf","url":"https://api2.frontapp.com/download/fil_231iuypv","content_type":"application/pdf","size":84210,"metadata":{"is_inline":false}}]}],"_pagination":{"next":null}}
    */
   async listConversationMessages(conversationId, limit, cursor) {
     const logTag = '[listConversationMessages]'
@@ -1111,7 +1122,7 @@ class FrontService {
    * @paramDef {"type":"String","label":"Inbox","name":"inboxId","dictionary":"getInboxesDictionary","description":"Optional. Only inbound messages in this inbox trigger the flow."}
    *
    * @returns {Object}
-   * @sampleResult {"id":"msg_zzz","type":"email","is_inbound":true,"created_at":1718210000,"subject":"Re: Invoice question","body":"<p>Sure</p>","conversation_id":"cnv_abc","senderEmail":"alice@example.com","recipients":[{"handle":"alice@example.com","role":"from"}]}
+   * @sampleResult {"id":"msg_zzz","type":"email","is_inbound":true,"created_at":1718210000,"subject":"Re: Invoice question","body":"<p>Sure</p>","conversation_id":"cnv_abc","senderEmail":"alice@example.com","recipients":[{"handle":"alice@example.com","role":"from"}],"attachments":[{"id":"fil_231iuypv","filename":"invoice.pdf","content_type":"application/pdf","size":84210,"url":"https://api2.frontapp.com/download/fil_231iuypv","is_inline":false}]}
    */
   async onNewInboundMessage(invocation) {
     const logTag = '[onNewInboundMessage]'
@@ -1148,7 +1159,13 @@ class FrontService {
         if (msg.is_inbound && msg.created_at > watermark && !seenIds.has(msg.id)) {
           const sender = (msg.recipients || []).find(r => r.role === 'from')
 
-          newMessages.push({ ...msg, conversation_id: conv.id, senderEmail: sender?.handle || null })
+          newMessages.push({
+            ...msg,
+            conversation_id: conv.id,
+            senderEmail: sender?.handle || null,
+            attachments: (msg.attachments || []).map(normalizeAttachment),
+          })
+
           seenIds.add(msg.id)
         }
       }
