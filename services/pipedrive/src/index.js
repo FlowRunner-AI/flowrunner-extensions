@@ -1101,7 +1101,7 @@ class PipedriveService {
    * @paramDef {"type":"Number","label":"Sender","name":"sender_id","description":"Identifier of the message sender.","required":false}
    * @paramDef {"type":"Number","label":"Conversation","name":"conversation_id","description":"Identifier of the conversation.","required":true}
    * @paramDef {"type":"String","label":"Message","name":"message","description":"Message content.","required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"The delivery status of the message.","uiComponent":{"type":"DROPDOWN","options":{"values":["sent","delivered","read","failed"]}},"required":true}
    * @paramDef {"type":"String","label":"Created At","name":"created_at","description":"Timestamp when the item was created.","required":false}
    * @paramDef {"type":"String","label":"Reply By","name":"reply_by","description":"Expected reply deadline.","required":false}
    * @paramDef {"type":"String","label":"Conversation Link","name":"conversation_link","description":"Link to the conversation.","required":false}
@@ -1342,7 +1342,7 @@ class PipedriveService {
    * @paramDef {"type":"Number","label":"User","name":"user_id","dictionary":"getUsersDictionary","description":"The user associated with this record. If omitted, uses the authenticated user.","required":false}
    * @paramDef {"type":"Number","label":"Filter","name":"filter_id","description":"Identifier of the filter to apply.","required":false}
    * @paramDef {"type":"Number","label":"Stage","name":"stage_id","dictionary":"getStagesDictionary","description":"The stage associated with this record.","required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter deals by status.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","won","lost","deleted","all_not_deleted"]}},"defaultValue":"all_not_deleted","required":false}
    * @paramDef {"type":"Number","label":"Offset","name":"start","description":"Pagination start offset.","required":false}
    * @paramDef {"type":"Number","label":"Limit","name":"limit","description":"Number of results to return (max 500).","uiComponent":{"type":"NUMERIC_STEPPER","min":0,"max":500,"step":1},"defaultValue":100,"required":false}
    * @paramDef {"type":"String","label":"Sort By","name":"sort","description":"Field to sort by (e.g., \"id DESC\").","required":false}
@@ -1388,7 +1388,7 @@ class PipedriveService {
    * @paramDef {"type":"Number","label":"Person","name":"person_id","dictionary":"getPersonsDictionary","description":"The person associated with this record.","required":false}
    * @paramDef {"type":"Number","label":"Organization","name":"org_id","dictionary":"getOrganizationsDictionary","description":"The organization associated with this record.","required":false}
    * @paramDef {"type":"Number","label":"Stage","name":"stage_id","dictionary":"getStagesDictionary","description":"The stage associated with this record.","required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the deal.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","won","lost","deleted"]}},"defaultValue":"open","required":false}
    * @paramDef {"type":"String","label":"Expected Close Date","name":"expected_close_date","description":"The expected close date of the deal (YYYY-MM-DD).","uiComponent":{"type":"DATE_PICKER"},"required":false}
    * @paramDef {"type":"Number","label":"Probability","name":"probability","description":"Success probability percentage (0-100).","uiComponent":{"type":"NUMERIC_STEPPER","min":0,"max":100,"step":1},"required":false}
    * @paramDef {"type":"String","label":"Lost Reason","name":"lost_reason","description":"The reason why the deal was lost.","required":false}
@@ -1464,7 +1464,7 @@ class PipedriveService {
    * @paramDef {"type":"Number","label":"Person","name":"person_id","dictionary":"getPersonsDictionary","description":"The person associated with this record.","required":false}
    * @paramDef {"type":"Number","label":"Organization","name":"org_id","dictionary":"getOrganizationsDictionary","description":"The organization associated with this record.","required":false}
    * @paramDef {"type":"Number","label":"Stage","name":"stage_id","dictionary":"getStagesDictionary","description":"The stage associated with this record.","required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter deals by status.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","won","lost","deleted","all_not_deleted"]}},"required":false}
    * @paramDef {"type":"Number","label":"Offset","name":"start","description":"Pagination start offset.","required":false}
    * @paramDef {"type":"Number","label":"Limit","name":"limit","description":"Number of results to return (max 500).","uiComponent":{"type":"NUMERIC_STEPPER","min":0,"max":500,"step":1},"defaultValue":100,"required":false}
    * @paramDef {"type":"String","label":"Sort By","name":"sort","description":"Field to sort by (e.g., \"id DESC\").","required":false}
@@ -1510,7 +1510,7 @@ class PipedriveService {
    * @paramDef {"type":"String","label":"Until","name":"until","description":"Timestamp to filter items modified until.","required":false}
    * @paramDef {"type":"Number","label":"User","name":"user_id","dictionary":"getUsersDictionary","description":"The user associated with this record. If omitted, uses the authenticated user.","required":true}
    * @paramDef {"type":"Number","label":"Stage","name":"stage_id","dictionary":"getStagesDictionary","description":"The stage associated with this record.","required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter deals by status.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","won","lost","deleted","all_not_deleted"]}},"required":false}
    *
    * @returns {Object}
    */
@@ -1548,7 +1548,7 @@ class PipedriveService {
    * @paramDef {"type":"String","label":"Exact Match","name":"exact_match","description":"Whether to perform exact matching in search.","required":false}
    * @paramDef {"type":"Number","label":"Person","name":"person_id","dictionary":"getPersonsDictionary","description":"The person associated with this record.","required":true}
    * @paramDef {"type":"Number","label":"Organization","name":"organization_id","description":"The organization associated with this record.","required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter deals by status.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","won","lost"]}},"required":false}
    * @paramDef {"type":"Number","label":"Offset","name":"start","description":"Pagination start offset.","required":false}
    * @paramDef {"type":"Number","label":"Limit","name":"limit","description":"Number of results to return (max 500).","uiComponent":{"type":"NUMERIC_STEPPER","min":0,"max":500,"step":1},"defaultValue":100,"required":false}
    *
@@ -1584,7 +1584,7 @@ class PipedriveService {
    * @operationName Get Deals Summary
    * @category Deals
    *
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter the summary by deal status.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","won","lost"]}},"required":false}
    * @paramDef {"type":"Number","label":"Filter","name":"filter_id","description":"Identifier of the filter to apply.","required":false}
    * @paramDef {"type":"Number","label":"User","name":"user_id","dictionary":"getUsersDictionary","description":"The user associated with this record. If omitted, uses the authenticated user.","required":true}
    * @paramDef {"type":"Number","label":"Pipeline","name":"pipeline_id","dictionary":"getPipelinesDictionary","description":"The pipeline associated with this record.","required":false}
@@ -1619,7 +1619,7 @@ class PipedriveService {
    * @operationName Get Archived Deals Summary
    * @category Deals
    *
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter the summary by deal status.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","won","lost"]}},"required":false}
    * @paramDef {"type":"Number","label":"Filter","name":"filter_id","description":"Identifier of the filter to apply.","required":false}
    * @paramDef {"type":"Number","label":"User","name":"user_id","dictionary":"getUsersDictionary","description":"The user associated with this record. If omitted, uses the authenticated user.","required":true}
    * @paramDef {"type":"Number","label":"Pipeline","name":"pipeline_id","dictionary":"getPipelinesDictionary","description":"The pipeline associated with this record.","required":false}
@@ -1787,7 +1787,7 @@ class PipedriveService {
    * @paramDef {"type":"Number","label":"Person","name":"person_id","dictionary":"getPersonsDictionary","description":"The person associated with this record.","required":false}
    * @paramDef {"type":"Number","label":"Organization","name":"org_id","dictionary":"getOrganizationsDictionary","description":"The organization associated with this record.","required":false}
    * @paramDef {"type":"Number","label":"Stage","name":"stage_id","dictionary":"getStagesDictionary","description":"The stage associated with this record.","required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the deal.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","won","lost","deleted"]}},"required":false}
    * @paramDef {"type":"String","label":"Expected Close Date","name":"expected_close_date","description":"The expected close date of the deal (YYYY-MM-DD).","uiComponent":{"type":"DATE_PICKER"},"required":false}
    * @paramDef {"type":"Number","label":"Probability","name":"probability","description":"Success probability percentage (0-100).","uiComponent":{"type":"NUMERIC_STEPPER","min":0,"max":100,"step":1},"required":false}
    * @paramDef {"type":"String","label":"Lost Reason","name":"lost_reason","description":"The reason why the deal was lost.","required":false}
@@ -4613,7 +4613,7 @@ class PipedriveService {
    * @paramDef {"type":"Number","label":"Identifier","name":"id","description":"The unique identifier of the record.","required":true}
    * @paramDef {"type":"Number","label":"Offset","name":"start","description":"Pagination start offset.","required":false}
    * @paramDef {"type":"Number","label":"Limit","name":"limit","description":"Number of results to return (max 500).","uiComponent":{"type":"NUMERIC_STEPPER","min":0,"max":500,"step":1},"defaultValue":100,"required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter deals by status.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","won","lost","deleted","all_not_deleted"]}},"required":false}
    * @paramDef {"type":"String","label":"Sort By","name":"sort","description":"Field to sort by (e.g., \"id DESC\").","required":false}
    * @paramDef {"type":"Boolean","label":"Only Primary Association","name":"only_primary_association","description":"Show only primary association.","uiComponent":{"type":"TOGGLE"},"required":false}
    *
@@ -5432,7 +5432,7 @@ class PipedriveService {
    * @paramDef {"type":"Number","label":"Identifier","name":"id","description":"The unique identifier of the record.","required":true}
    * @paramDef {"type":"Number","label":"Offset","name":"start","description":"Pagination start offset.","required":false}
    * @paramDef {"type":"Number","label":"Limit","name":"limit","description":"Number of results to return (max 500).","uiComponent":{"type":"NUMERIC_STEPPER","min":0,"max":500,"step":1},"defaultValue":100,"required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter deals by status.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","won","lost","deleted","all_not_deleted"]}},"required":false}
    * @paramDef {"type":"String","label":"Sort By","name":"sort","description":"Field to sort by (e.g., \"id DESC\").","required":false}
    *
    * @returns {Object}
@@ -6341,7 +6341,7 @@ class PipedriveService {
    * @paramDef {"type":"Number","label":"Identifier","name":"id","description":"The unique identifier of the record.","required":true}
    * @paramDef {"type":"Number","label":"Offset","name":"start","description":"Pagination start offset.","required":false}
    * @paramDef {"type":"Number","label":"Limit","name":"limit","description":"Number of results to return (max 500).","uiComponent":{"type":"NUMERIC_STEPPER","min":0,"max":500,"step":1},"defaultValue":100,"required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter deals by status.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","won","lost","deleted","all_not_deleted"]}},"required":false}
    *
    * @returns {Object}
    */
@@ -6490,7 +6490,7 @@ class PipedriveService {
    * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for retrieving next page of results.","required":false}
    * @paramDef {"type":"Number","label":"Limit","name":"limit","description":"Number of results to return (max 500).","uiComponent":{"type":"NUMERIC_STEPPER","min":0,"max":500,"step":1},"defaultValue":100,"required":false}
    * @paramDef {"type":"Number","label":"Filter","name":"filter_id","description":"Identifier of the filter to apply.","required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter projects by status.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","completed","canceled","deleted"]}},"required":false}
    * @paramDef {"type":"Number","label":"Phase","name":"phase_id","description":"Identifier of the project phase.","required":false}
    * @paramDef {"type":"String","label":"Include Archived","name":"include_archived","description":"Whether to include archived items in results.","required":false}
    *
@@ -6521,7 +6521,7 @@ class PipedriveService {
    * @paramDef {"type":"Number","label":"Board","name":"board_id","description":"Identifier of the project board.","required":false}
    * @paramDef {"type":"Number","label":"Phase","name":"phase_id","description":"Identifier of the project phase.","required":false}
    * @paramDef {"type":"String","label":"Description","name":"description","description":"Description of the record.","uiComponent":{"type":"MULTI_LINE_TEXT"},"required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the project.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","completed","canceled","deleted"]}},"defaultValue":"open","required":false}
    * @paramDef {"type":"Number","label":"Owner","name":"owner_id","description":"The user who owns this record.","required":false}
    * @paramDef {"type":"Number","label":"Start Date and Time","name":"startDateTime","description":"Start date and time for filtering results. Will be automatically formatted for Pipedrive.","uiComponent":{"type":"DATE_TIME_PICKER"},"required":false}
    * @paramDef {"type":"Number","label":"End Date and Time","name":"endDateTime","description":"End date and time for filtering results. Will be automatically formatted for Pipedrive.","uiComponent":{"type":"DATE_TIME_PICKER"},"required":false}
@@ -6579,7 +6579,7 @@ class PipedriveService {
    * @paramDef {"type":"Number","label":"Board","name":"board_id","description":"Identifier of the project board.","required":false}
    * @paramDef {"type":"Number","label":"Phase","name":"phase_id","description":"Identifier of the project phase.","required":false}
    * @paramDef {"type":"String","label":"Description","name":"description","description":"Description of the record.","uiComponent":{"type":"MULTI_LINE_TEXT"},"required":false}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the record.","uiComponent":{"type":"DROPDOWN","options":{"values":[]}},"required":false}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"The status of the project.","uiComponent":{"type":"DROPDOWN","options":{"values":["open","completed","canceled","deleted"]}},"required":false}
    * @paramDef {"type":"Number","label":"Owner","name":"owner_id","description":"The user who owns this record.","required":false}
    * @paramDef {"type":"Number","label":"Start Date and Time","name":"startDateTime","description":"Start date and time for filtering results. Will be automatically formatted for Pipedrive.","uiComponent":{"type":"DATE_TIME_PICKER"},"required":false}
    * @paramDef {"type":"Number","label":"End Date and Time","name":"endDateTime","description":"End date and time for filtering results. Will be automatically formatted for Pipedrive.","uiComponent":{"type":"DATE_TIME_PICKER"},"required":false}

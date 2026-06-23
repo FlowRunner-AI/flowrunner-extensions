@@ -40,6 +40,14 @@ labels and map them to API values in code. For every `@paramDef` containing `"ty
   label === value for all options, emit plain strings and add no mapping; when any differs (incl.
   case-only), add a full mapping. This is a lossless transform — never invent values.
 
+Also fix **empty** DROPDOWNs (`"options":{"values":[]}`) — a fixed-enum param that was scaffolded
+but never filled. These have no runtime lookup; their allowed values live inline in the source
+API's spec/docs. For each empty DROPDOWN, look up the enum for **that exact endpoint** (values can
+differ by operation), populate friendly labels + code mapping, and set a sensible `defaultValue`.
+If the values are account-specific (dynamic), convert it to a `dictionary` instead. If the enum
+genuinely can't be determined, drop the `uiComponent` and leave it a plain String. Never ship an
+empty dropdown.
+
 ### 5. Simplify `package.json`
 Replace contents with the standard flowrunner format:
 ```json
@@ -67,6 +75,7 @@ After migration, verify:
 - [ ] All config items in `addService()` have the `shared` property
 - [ ] `shared` values are correct (true only for OAuth, false otherwise)
 - [ ] No DROPDOWN `@paramDef` uses the `[{label,value}]` array or object-in-`values` form — all use friendly plain-string `options:{values:[...]}` with label→value mapping in code (`grep -nE '"options":\[' src/index.js` returns nothing)
+- [ ] No empty DROPDOWNs — `grep -nE '"values":\[\]' src/index.js` returns nothing; every fixed-enum param is populated from the source API docs for its specific endpoint (or converted to a dictionary / plain String)
 - [ ] `package.json` matches the flowrunner format
 - [ ] `coderunner.js` has been deleted (no longer present in the service folder)
 - [ ] `readme-maintainer` agent was run and `README.md` exists and reflects the migrated service

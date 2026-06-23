@@ -200,6 +200,16 @@ Each `@paramDef` is a single-line JSON object. Conventions verified against the 
     add NO mapping. When any label differs (incl. case-only, e.g. `Open`→`open`), add a full mapping.
   - When ADDING or FIXING methods, apply this even if existing code in the file still uses the old
     array/object-in-`values` form — and flag the legacy dropdowns you see so they can be normalized.
+  - **NEVER leave a DROPDOWN with empty `values` (`"options":{"values":[]}`).** A fixed enum
+    parameter (status, state, type, visibility, sort direction, etc.) almost never has a runtime
+    lookup endpoint — its allowed values live inline in the API spec/docs, so you MUST transcribe
+    them. An empty `values` array is a scaffolding stub, never a finished param. For each empty
+    DROPDOWN: pull the enum from the API docs for **that exact endpoint** (values can differ by
+    operation — e.g. a deal's write status `open/won/lost/deleted` vs. its list filter that also
+    allows `all_not_deleted`), populate friendly labels + code mapping, and set a sensible
+    `defaultValue`. If the values are genuinely dynamic (account-specific), convert it to a
+    `dictionary` instead. If after checking the docs an enum truly cannot be determined, drop the
+    `uiComponent` and leave it a plain String — do NOT ship an empty dropdown.
 - **Array types use `Array<Type>` (NO dot).** Both primitive and custom-typedef element types:
   `"type":"Array<String>"`, `"type":"Array<DataField>"`.
   > This repo uses the no-dot form (verified working in the product, including for custom
@@ -377,6 +387,9 @@ Examine **both** the JSDoc annotations AND the implementation. Fix bugs and inco
 - Ensure numeric params are `"type":"Number"`; DROPDOWN options use friendly plain-string labels in
   `{"values":[...]}` with code mapping the label→API value (convert any legacy
   `[{label,value}]` / object-in-`values` dropdowns).
+- **No empty DROPDOWNs.** Run `grep -nE '"values":\[\]' services/<name>/src/index.js` — it MUST
+  return nothing. For each hit, populate the enum from the API docs for that specific endpoint (per
+  the §4 rule), convert to a `dictionary`, or remove the `uiComponent`.
 - Ensure `@route` verbs are REST-appropriate (don't blanket-rewrite GET→POST).
 - Ensure `@operationName` values are unique; every action has `@description`, `@category`,
   single-line `@sampleResult`.
@@ -398,6 +411,8 @@ Examine **both** the JSDoc annotations AND the implementation. Fix bugs and inco
 - [ ] Numeric params `"type":"Number"`; DROPDOWN options are friendly plain-string labels in
       `{"values":[...]}` mapped to API values in code (no `[{label,value}]` / object-in-`values`);
       `@paramDef` description-last.
+- [ ] No empty DROPDOWNs — `grep -nE '"values":\[\]' src/index.js` returns nothing; every enum is
+      populated from the API docs for its specific endpoint (or converted to a dictionary / plain String).
 - [ ] Array params have a `uiComponent` ONLY when their values are an enum.
 - [ ] Action methods use individual params; dictionaries use canonical `payload` + typedef with
       `search`/`cursor`.
