@@ -850,14 +850,39 @@ class BillComService {
    * @executionTimeoutInSeconds 120
    *
    * @paramDef {"type":"Number","label":"Max Results","name":"maxResults","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of payments to return per page, between 1 and 100. Defaults to 50."}
+   * @paramDef {"type":"String","label":"Vendor ID","name":"vendorId","description":"Filter payments to a single vendor by their BILL.com vendor ID."}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter payments by status (e.g. SCHEDULED, PROCESSED, CANCELED, VOIDED, PAID_OFFLINE)."}
+   * @paramDef {"type":"String","label":"Process Date From","name":"processDateFrom","uiComponent":{"type":"DATE_PICKER"},"description":"Only return payments with a process date on or after this date (YYYY-MM-DD format)."}
+   * @paramDef {"type":"String","label":"Process Date To","name":"processDateTo","uiComponent":{"type":"DATE_PICKER"},"description":"Only return payments with a process date on or before this date (YYYY-MM-DD format)."}
    *
    * @returns {Object}
    * @sampleResult {"results":[{"id":"0bp01ABCDEFGHIJKLMN","vendorId":"00901ABCDEFGHIJKLMN","amount":149.00,"paymentDate":"2026-01-20","status":"PAID"}],"nextPage":null,"prevPage":null}
    */
-  async listBillPayments(maxResults) {
+  async listBillPayments(maxResults, vendorId, status, processDateFrom, processDateTo) {
+    const filters = []
+
+    if (vendorId) {
+      filters.push(`vendorId:eq:${ vendorId }`)
+    }
+
+    if (status) {
+      filters.push(`status:eq:${ status }`)
+    }
+
+    if (processDateFrom) {
+      filters.push(`processDate:gte:${ processDateFrom }`)
+    }
+
+    if (processDateTo) {
+      filters.push(`processDate:lte:${ processDateTo }`)
+    }
+
     return await this.#apiRequest({
       url: `${ this.apiBaseUrl }/payments`,
-      query: { max: maxResults || DEFAULT_PAGE_SIZE },
+      query: {
+        max: maxResults || DEFAULT_PAGE_SIZE,
+        filters: filters.length ? filters.join(',') : undefined,
+      },
       logTag: 'listBillPayments',
     })
   }

@@ -49,3 +49,4 @@ Automates accounts payable and accounts receivable workflows in BILL.com. Manage
 - When a **BILL.com** "On Bill Created" trigger fires, use **Slack** "Send Message" to notify the finance channel with the vendor name and amount for approval
 - When a **BILL.com** "On Payment Failed" trigger fires, use **Gmail** "Send Email" to alert the accounts payable team with the payment details so they can retry or investigate
 - When a **BILL.com** "On Invoice Created" trigger fires, use **Google Sheets** "Append Row" to log the invoice number, customer, and amount into a revenue tracking spreadsheet
+- Use **BILL.com** "List Bill Payments" filtered by vendor, status, and process date range to gather a period's scheduled payments, then use **Google Sheets** "Append Row" to build a cash-flow forecast
