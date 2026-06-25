@@ -1,12 +1,12 @@
 # Deel FlowRunner Extension
 
-Integration with Deel's global HR, payroll, and contracting platform. Manage people and HRIS data, contractor and EOR contracts, time off, adjustments, payouts, global payroll, applicant tracking, immigration, screenings, IT assets, and invoices through a single OAuth2-connected service. Connects to either the Production or Sandbox (demo) environment.
+Integration with Deel's global HR, payroll, and contracting platform. Manage people and HRIS data, contractor (IC) and EOR contracts, time off, adjustments, off-cycle payments, global payroll, applicant tracking (ATS), immigration, screenings, IT assets, and invoices through a single OAuth2-connected service. Connects to either the Production or Sandbox (demo) environment.
 
 ## Ideal Use Cases
 
 - Onboarding and offboarding workers across contractor, EOR, and direct-employee models
 - Syncing people, departments, and org-structure data between Deel and your HRIS or database
-- Automating time-off requests, approvals, and balance checks
+- Automating time-off requests, approvals, validation, and balance checks
 - Adding bonuses, deductions, and reimbursements before payroll cycles close
 - Running global-payroll and EOR workflows (compensation, payslips, gross-to-net reports)
 - Driving recruiting flows through Deel's ATS (jobs, candidates, applications, offers)
@@ -14,20 +14,23 @@ Integration with Deel's global HR, payroll, and contracting platform. Manage peo
 
 ## List of Actions
 
-### Setup & Organization
+### Setup
 - Test Connection
-- Get My Profile
-- Get Organization
-- List Managers
 
-### People & HRIS
+### People
+- Get My Profile
 - List People
 - Get Person
 - Update Person
 - Update Working Location
 - Create Person Without Contract
 - Create Direct Employee
-- List Worker Relations
+
+### Organization
+- Get Organization
+- List Managers
+
+### HRIS
 - List Org Structure
 - Get Org Structure Node
 - Create Org Structure Node
@@ -36,8 +39,9 @@ Integration with Deel's global HR, payroll, and contracting platform. Manage peo
 - Get Custom Fields
 - Set Custom Field
 - Delete Custom Field Value
+- List Worker Relations
 
-### Contracts (IC)
+### Contracts
 - List Contracts
 - Get Contract
 - Create Contractor Contract
@@ -131,19 +135,25 @@ Integration with Deel's global HR, payroll, and contracting platform. Manage peo
 - Move Application to Stage
 - List Offers
 
-### Immigration & Screenings
+### Immigration
 - Check Visa Requirements
 - Get Visa Types
 - List Immigration Cases
 - Get Immigration Case
+
+### Screenings
 - Get Worker KYC
 - Create Veriff Session
 
-### IT, Knowledge Hub & Access
+### IT
 - List IT Orders
 - List IT Assets
 - List IT Hardware Policies
+
+### Knowledge Hub
 - Get Country Hiring Guide
+
+### Access
 - Create Magic Link
 
 ### Invoices
@@ -163,11 +173,11 @@ This service uses **OAuth2**. Connect a Deel account from the connection setting
 ## Configuration
 
 - **Client ID** (required) — OAuth2 Client ID from your Deel developer app (More → Developer → Apps).
-- **Client Secret** (required) — OAuth2 Client Secret from your Deel developer app.
+- **Client Secret** (required) — OAuth2 Client Secret from your Deel developer app, shown only once at app creation.
 - **Environment** (required) — `Production` for live data or `Sandbox` for Deel's demo environment. Defaults to `Production`.
 
 ## Agent Ideas
 
 - When a **Deel** "On Deel Event" trigger fires for `eor.payslips.available`, use **Deel** "Download Payslip PDF" to fetch the document, then **Gmail** "Send Message" to email it to the employee.
-- Use **Personio** to read newly hired employees, then call **Deel** "Create Direct Employee" (or "Create Contractor Contract") to provision each worker in Deel.
-- When a **Deel** "On Deel Event" trigger fires for `contract.signed`, use **Slack** "Send Message To Channel" to notify the People Ops channel and **Google Sheets** "Add Row" to log the new hire in an onboarding tracker.
+- When a **Recruitee** "On Status Change" trigger marks a candidate as hired, call **Deel** "Create Direct Employee" (or "Create EOR Contract") to provision the worker, then **Slack** "Send Message To Channel" to notify the People Ops channel.
+- When a **Deel** "On Deel Event" trigger fires for `contract.signed`, use **Google Sheets** "Add Row" to log the new hire in an onboarding tracker and **Slack** "Send Message To Channel" to announce it.
