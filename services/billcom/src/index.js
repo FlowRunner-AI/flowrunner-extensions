@@ -97,9 +97,7 @@ class BillComService {
       this.sessionId = response.sessionId
       logger.debug('ensureSession - successfully logged in')
     } catch (error) {
-      const errorMessage = error?.body?.response_data?.error_message ||
-        error?.message ||
-        'Unknown authentication error'
+      const { errorMessage } = this.#extractErrorMessage(error)
 
       logger.error(`ensureSession - login failed: ${ errorMessage }`)
       throw new Error(`BILL.com authentication failed: ${ errorMessage }`)
@@ -108,10 +106,18 @@ class BillComService {
 
   #extractErrorMessage(error) {
     const body = error?.body || error
-    const errorCode = body?.response_data?.error_code
-    const errorMessage = body?.response_data?.error_message ||
+
+    // v3 errors are returned as an array of error objects: [{ code, message, ... }].
+    // Some responses may instead wrap them in an { errors: [...] } envelope.
+    const v3Errors = Array.isArray(body) ? body : (Array.isArray(body?.errors) ? body.errors : null)
+
+    const errorCode = v3Errors?.[0]?.code ||
+      body?.response_data?.error_code
+
+    const errorMessage = (v3Errors && v3Errors.map(e => e?.message).filter(Boolean).join('; ')) ||
+      body?.response_data?.error_message ||
       body?.response_message ||
-      error?.message ||
+      (typeof error?.message === 'string' ? error.message : null) ||
       'Unknown BILL.com API error'
 
     return { errorCode, errorMessage }
@@ -353,7 +359,7 @@ class BillComService {
    * @paramDef {"type":"String","label":"Invoice Number","name":"invoiceNumber","required":true,"description":"The vendor's invoice number for this bill."}
    * @paramDef {"type":"String","label":"Invoice Date","name":"invoiceDate","required":true,"uiComponent":{"type":"DATE_PICKER"},"description":"Date of the vendor's invoice."}
    * @paramDef {"type":"String","label":"Due Date","name":"dueDate","required":true,"uiComponent":{"type":"DATE_PICKER"},"description":"Payment due date for this bill."}
-   * @paramDef {"type":"Array<Object>","label":"Line Items","name":"lineItems","required":true,"description":"Array of line items. Each item should have amount (number) and description (string)."}
+   * @paramDef {"type":"Array<BillLineItem>","label":"Line Items","name":"lineItems","required":true,"description":"One or more bill line items. Each item has an amount and a description."}
    *
    * @returns {Object}
    * @sampleResult {"id":"00n01ABCDEFGHIJKLMN","vendorId":"00901ABCDEFGHIJKLMN","invoiceNumber":"INV-2026-001","invoiceDate":"2026-01-15","dueDate":"2026-02-15","amount":149.00,"paymentStatus":"UNPAID","approvalStatus":"UNASSIGNED","archived":false,"billLineItems":[{"amount":149.00,"description":"Office supplies"}],"createdTime":"2026-01-15T10:30:00.000+0000"}
@@ -424,7 +430,7 @@ class BillComService {
    * @paramDef {"type":"String","label":"Bill","name":"billId","required":true,"dictionary":"getBillsDictionary","description":"The bill to update."}
    * @paramDef {"type":"String","label":"Due Date","name":"dueDate","uiComponent":{"type":"DATE_PICKER"},"description":"Updated due date for this bill."}
    * @paramDef {"type":"String","label":"Invoice Number","name":"invoiceNumber","description":"Updated vendor invoice number."}
-   * @paramDef {"type":"Array<Object>","label":"Line Items","name":"lineItems","description":"Updated line items. Each item should have amount (number) and description (string)."}
+   * @paramDef {"type":"Array<BillLineItem>","label":"Line Items","name":"lineItems","description":"Updated bill line items. Each item has an amount and a description."}
    *
    * @returns {Object}
    * @sampleResult {"id":"00n01ABCDEFGHIJKLMN","vendorId":"00901ABCDEFGHIJKLMN","invoiceNumber":"INV-2026-001","dueDate":"2026-03-01","amount":200.00,"paymentStatus":"UNPAID","archived":false,"updatedTime":"2026-01-16T10:30:00.000+0000"}
@@ -458,14 +464,39 @@ class BillComService {
    * @executionTimeoutInSeconds 120
    *
    * @paramDef {"type":"Number","label":"Max Results","name":"maxResults","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of bills to return per page, between 1 and 100. Defaults to 50."}
+   * @paramDef {"type":"String","label":"Vendor","name":"vendorId","dictionary":"getVendorsDictionary","description":"Filter bills to a single vendor."}
+   * @paramDef {"type":"String","label":"Payment Status","name":"paymentStatus","description":"Filter bills by payment status (e.g. PAID, UNPAID, PARTIAL_PAYMENT, SCHEDULED)."}
+   * @paramDef {"type":"String","label":"Due Date From","name":"dueDateFrom","uiComponent":{"type":"DATE_PICKER"},"description":"Only return bills with a due date on or after this date (YYYY-MM-DD format)."}
+   * @paramDef {"type":"String","label":"Due Date To","name":"dueDateTo","uiComponent":{"type":"DATE_PICKER"},"description":"Only return bills with a due date on or before this date (YYYY-MM-DD format)."}
    *
    * @returns {Object}
    * @sampleResult {"results":[{"id":"00n01ABCDEFGHIJKLMN","vendorId":"00901ABCDEFGHIJKLMN","invoiceNumber":"INV-2026-001","amount":149.00,"dueDate":"2026-02-15","paymentStatus":"UNPAID"}],"nextPage":null,"prevPage":null}
    */
-  async listBills(maxResults) {
+  async listBills(maxResults, vendorId, paymentStatus, dueDateFrom, dueDateTo) {
+    const filters = []
+
+    if (vendorId) {
+      filters.push(`vendorId:eq:${ vendorId }`)
+    }
+
+    if (paymentStatus) {
+      filters.push(`paymentStatus:eq:${ paymentStatus }`)
+    }
+
+    if (dueDateFrom) {
+      filters.push(`dueDate:gte:${ dueDateFrom }`)
+    }
+
+    if (dueDateTo) {
+      filters.push(`dueDate:lte:${ dueDateTo }`)
+    }
+
     return await this.#apiRequest({
       url: `${ this.apiBaseUrl }/bills`,
-      query: { max: maxResults || DEFAULT_PAGE_SIZE },
+      query: {
+        max: maxResults || DEFAULT_PAGE_SIZE,
+        filters: filters.length ? filters.join(',') : undefined,
+      },
       logTag: 'listBills',
     })
   }
@@ -612,14 +643,34 @@ class BillComService {
    * @executionTimeoutInSeconds 120
    *
    * @paramDef {"type":"Number","label":"Max Results","name":"maxResults","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of customers to return per page, between 1 and 100. Defaults to 50."}
+   * @paramDef {"type":"String","label":"Name","name":"name","description":"Filter customers whose name starts with this text (case-sensitive prefix match)."}
+   * @paramDef {"type":"String","label":"Account Type","name":"accountType","uiComponent":{"type":"DROPDOWN","options":{"values":["BUSINESS","PERSON"]}},"description":"Filter customers by account type."}
+   * @paramDef {"type":"String","label":"Payment Status","name":"paymentStatus","description":"Filter customers by payment status."}
    *
    * @returns {Object}
    * @sampleResult {"results":[{"id":"0cu01ABCDEFGHIJKLMN","name":"Acme Corporation","email":"billing@acme.com","archived":false}],"nextPage":null,"prevPage":null}
    */
-  async listCustomers(maxResults) {
+  async listCustomers(maxResults, name, accountType, paymentStatus) {
+    const filters = []
+
+    if (name) {
+      filters.push(`name:sw:${ name }`)
+    }
+
+    if (accountType) {
+      filters.push(`accountType:eq:${ accountType }`)
+    }
+
+    if (paymentStatus) {
+      filters.push(`paymentStatus:eq:${ paymentStatus }`)
+    }
+
     return await this.#apiRequest({
       url: `${ this.apiBaseUrl }/customers`,
-      query: { max: maxResults || DEFAULT_PAGE_SIZE },
+      query: {
+        max: maxResults || DEFAULT_PAGE_SIZE,
+        filters: filters.length ? filters.join(',') : undefined,
+      },
       logTag: 'listCustomers',
     })
   }
@@ -639,7 +690,7 @@ class BillComService {
    * @paramDef {"type":"String","label":"Invoice Number","name":"invoiceNumber","required":true,"description":"A unique invoice number for your records."}
    * @paramDef {"type":"String","label":"Invoice Date","name":"invoiceDate","required":true,"uiComponent":{"type":"DATE_PICKER"},"description":"Date of the invoice."}
    * @paramDef {"type":"String","label":"Due Date","name":"dueDate","required":true,"uiComponent":{"type":"DATE_PICKER"},"description":"Payment due date for this invoice."}
-   * @paramDef {"type":"Array<Object>","label":"Line Items","name":"lineItems","required":true,"description":"Array of line items. Each item should have quantity (number), description (string), and price (number per unit)."}
+   * @paramDef {"type":"Array<InvoiceLineItem>","label":"Line Items","name":"lineItems","required":true,"description":"One or more invoice line items. Each item has a quantity, description, and price per unit."}
    *
    * @returns {Object}
    * @sampleResult {"id":"00e01ABCDEFGHIJKLMN","customerId":"0cu01ABCDEFGHIJKLMN","invoiceNumber":"INV-001","invoiceDate":"2026-01-15","dueDate":"2026-02-15","totalAmount":299.98,"dueAmount":299.98,"status":"OPEN","invoiceLineItems":[{"quantity":2,"description":"Consulting hours","price":149.99}],"createdTime":"2026-01-15T10:30:00.000+0000"}
@@ -710,7 +761,7 @@ class BillComService {
    * @paramDef {"type":"String","label":"Invoice","name":"invoiceId","required":true,"dictionary":"getInvoicesDictionary","description":"The invoice to update."}
    * @paramDef {"type":"String","label":"Due Date","name":"dueDate","uiComponent":{"type":"DATE_PICKER"},"description":"Updated due date for this invoice."}
    * @paramDef {"type":"String","label":"Invoice Number","name":"invoiceNumber","description":"Updated invoice number."}
-   * @paramDef {"type":"Array<Object>","label":"Line Items","name":"lineItems","description":"Updated line items. Each item should have quantity, description, and price."}
+   * @paramDef {"type":"Array<InvoiceLineItem>","label":"Line Items","name":"lineItems","description":"Updated invoice line items. Each item has a quantity, description, and price per unit."}
    *
    * @returns {Object}
    * @sampleResult {"id":"00e01ABCDEFGHIJKLMN","customerId":"0cu01ABCDEFGHIJKLMN","invoiceNumber":"INV-001","dueDate":"2026-03-01","totalAmount":399.98,"dueAmount":399.98,"status":"OPEN","updatedTime":"2026-01-16T10:30:00.000+0000"}
@@ -744,14 +795,39 @@ class BillComService {
    * @executionTimeoutInSeconds 120
    *
    * @paramDef {"type":"Number","label":"Max Results","name":"maxResults","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of invoices to return per page, between 1 and 100. Defaults to 50."}
+   * @paramDef {"type":"String","label":"Customer","name":"customerId","dictionary":"getCustomersDictionary","description":"Filter invoices to a single customer."}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter invoices by status (e.g. OPEN, PAID, PARTIAL_PAYMENT)."}
+   * @paramDef {"type":"String","label":"Created From","name":"createdFrom","uiComponent":{"type":"DATE_PICKER"},"description":"Only return invoices created on or after this date (YYYY-MM-DD format)."}
+   * @paramDef {"type":"String","label":"Created To","name":"createdTo","uiComponent":{"type":"DATE_PICKER"},"description":"Only return invoices created on or before this date (YYYY-MM-DD format)."}
    *
    * @returns {Object}
    * @sampleResult {"results":[{"id":"00e01ABCDEFGHIJKLMN","customerId":"0cu01ABCDEFGHIJKLMN","invoiceNumber":"INV-001","dueDate":"2026-02-15","totalAmount":299.98,"dueAmount":299.98,"status":"OPEN"}],"nextPage":null,"prevPage":null}
    */
-  async listInvoices(maxResults) {
+  async listInvoices(maxResults, customerId, status, createdFrom, createdTo) {
+    const filters = []
+
+    if (customerId) {
+      filters.push(`customerId:eq:${ customerId }`)
+    }
+
+    if (status) {
+      filters.push(`status:eq:${ status }`)
+    }
+
+    if (createdFrom) {
+      filters.push(`createdTime:gte:${ createdFrom }`)
+    }
+
+    if (createdTo) {
+      filters.push(`createdTime:lte:${ createdTo }`)
+    }
+
     return await this.#apiRequest({
       url: `${ this.apiBaseUrl }/invoices`,
-      query: { max: maxResults || DEFAULT_PAGE_SIZE },
+      query: {
+        max: maxResults || DEFAULT_PAGE_SIZE,
+        filters: filters.length ? filters.join(',') : undefined,
+      },
       logTag: 'listInvoices',
     })
   }
@@ -910,7 +986,7 @@ class BillComService {
    *
    * @paramDef {"type":"String","label":"Customer","name":"customerId","required":true,"dictionary":"getCustomersDictionary","description":"The customer to charge."}
    * @paramDef {"type":"String","label":"Bank Account ID","name":"bankAccountId","required":true,"description":"The customer's BILL.com bank account ID to charge."}
-   * @paramDef {"type":"Array<Object>","label":"Invoice Payments","name":"invoicePayments","required":true,"description":"Array of invoice payment allocations. Each should have invoiceId (string) and amount (number)."}
+   * @paramDef {"type":"Array<InvoicePaymentItem>","label":"Invoice Payments","name":"invoicePayments","required":true,"description":"One or more invoice payment allocations. Each item specifies which invoice to pay and the amount to apply."}
    * @paramDef {"type":"String","label":"Description","name":"description","uiComponent":{"type":"MULTI_LINE_TEXT"},"description":"Optional description for the payment transaction."}
    *
    * @returns {Object}
@@ -979,14 +1055,39 @@ class BillComService {
    * @executionTimeoutInSeconds 120
    *
    * @paramDef {"type":"Number","label":"Max Results","name":"maxResults","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of payments to return per page, between 1 and 100. Defaults to 50."}
+   * @paramDef {"type":"String","label":"Customer","name":"customerId","dictionary":"getCustomersDictionary","description":"Filter payments to a single customer."}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter payments by status (e.g. PAID, PENDING, FAILED)."}
+   * @paramDef {"type":"String","label":"Payment Date From","name":"paymentDateFrom","uiComponent":{"type":"DATE_PICKER"},"description":"Only return payments with a payment date on or after this date (YYYY-MM-DD format)."}
+   * @paramDef {"type":"String","label":"Payment Date To","name":"paymentDateTo","uiComponent":{"type":"DATE_PICKER"},"description":"Only return payments with a payment date on or before this date (YYYY-MM-DD format)."}
    *
    * @returns {Object}
    * @sampleResult {"results":[{"id":"0rp01ABCDEFGHIJKLMN","customerId":"0cu01ABCDEFGHIJKLMN","amount":299.98,"status":"PAID","paymentDate":"2026-01-20"}],"nextPage":null,"prevPage":null}
    */
-  async listReceivablePayments(maxResults) {
+  async listReceivablePayments(maxResults, customerId, status, paymentDateFrom, paymentDateTo) {
+    const filters = []
+
+    if (customerId) {
+      filters.push(`customerId:eq:${ customerId }`)
+    }
+
+    if (status) {
+      filters.push(`status:eq:${ status }`)
+    }
+
+    if (paymentDateFrom) {
+      filters.push(`paymentDate:gte:${ paymentDateFrom }`)
+    }
+
+    if (paymentDateTo) {
+      filters.push(`paymentDate:lte:${ paymentDateTo }`)
+    }
+
     return await this.#apiRequest({
       url: `${ this.apiBaseUrl }/receivable-payments`,
-      query: { max: maxResults || DEFAULT_PAGE_SIZE },
+      query: {
+        max: maxResults || DEFAULT_PAGE_SIZE,
+        filters: filters.length ? filters.join(',') : undefined,
+      },
       logTag: 'listReceivablePayments',
     })
   }
@@ -1532,8 +1633,27 @@ Flowrunner.ServerCode.addService(BillComService, [
 
 /**
  * @typedef {Object} BillPaymentItem
- * @property {String} billId
- * @property {Number} amount
+ * @paramDef {"type":"String","label":"Bill","name":"billId","required":true,"dictionary":"getBillsDictionary","description":"The bill to apply this payment to."}
+ * @paramDef {"type":"Number","label":"Amount","name":"amount","required":true,"uiComponent":{"type":"NUMERIC"},"description":"The amount to apply to this bill."}
+ */
+
+/**
+ * @typedef {Object} BillLineItem
+ * @paramDef {"type":"Number","label":"Amount","name":"amount","required":true,"uiComponent":{"type":"NUMERIC"},"description":"The amount for this line item."}
+ * @paramDef {"type":"String","label":"Description","name":"description","description":"Description of the line item."}
+ */
+
+/**
+ * @typedef {Object} InvoiceLineItem
+ * @paramDef {"type":"Number","label":"Quantity","name":"quantity","required":true,"uiComponent":{"type":"NUMERIC"},"description":"Number of units."}
+ * @paramDef {"type":"String","label":"Description","name":"description","description":"Description of the product or service."}
+ * @paramDef {"type":"Number","label":"Price","name":"price","required":true,"uiComponent":{"type":"NUMERIC"},"description":"Price per unit."}
+ */
+
+/**
+ * @typedef {Object} InvoicePaymentItem
+ * @paramDef {"type":"String","label":"Invoice","name":"invoiceId","required":true,"dictionary":"getInvoicesDictionary","description":"The invoice to apply this payment to."}
+ * @paramDef {"type":"Number","label":"Amount","name":"amount","required":true,"uiComponent":{"type":"NUMERIC"},"description":"The amount to apply to this invoice."}
  */
 
 /**
