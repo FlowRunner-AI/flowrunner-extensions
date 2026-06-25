@@ -182,6 +182,57 @@ class BillComService {
     }
   }
 
+  // ==================== Type Definitions ====================
+
+  /**
+   * @typedef {Object} BillPaymentItem
+   * @paramDef {"type":"String","label":"Bill","name":"billId","required":true,"dictionary":"getBillsDictionary","description":"The bill to apply this payment to."}
+   * @paramDef {"type":"Number","label":"Amount","name":"amount","required":true,"uiComponent":{"type":"NUMERIC"},"description":"The amount to apply to this bill."}
+   */
+
+  /**
+   * @typedef {Object} BillLineItem
+   * @paramDef {"type":"Number","label":"Amount","name":"amount","required":true,"uiComponent":{"type":"NUMERIC"},"description":"The amount for this line item."}
+   * @paramDef {"type":"String","label":"Description","name":"description","description":"Description of the line item."}
+   */
+
+  /**
+   * @typedef {Object} InvoiceLineItem
+   * @paramDef {"type":"Number","label":"Quantity","name":"quantity","required":true,"uiComponent":{"type":"NUMERIC"},"description":"Number of units."}
+   * @paramDef {"type":"String","label":"Description","name":"description","description":"Description of the product or service."}
+   * @paramDef {"type":"Number","label":"Price","name":"price","required":true,"uiComponent":{"type":"NUMERIC"},"description":"Price per unit."}
+   */
+
+  /**
+   * @typedef {Object} InvoicePaymentItem
+   * @paramDef {"type":"String","label":"Invoice","name":"invoiceId","required":true,"dictionary":"getInvoicesDictionary","description":"The invoice to apply this payment to."}
+   * @paramDef {"type":"Number","label":"Amount","name":"amount","required":true,"uiComponent":{"type":"NUMERIC"},"description":"The amount to apply to this invoice."}
+   */
+
+  /**
+   * @typedef {Object} getVendorsDictionary__payload
+   * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional search string to filter vendors by name."}
+   * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for retrieving the next page of results."}
+   */
+
+  /**
+   * @typedef {Object} getCustomersDictionary__payload
+   * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional search string to filter customers by name."}
+   * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for retrieving the next page of results."}
+   */
+
+  /**
+   * @typedef {Object} getBillsDictionary__payload
+   * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional search string to filter bills by invoice number."}
+   * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for retrieving the next page of results."}
+   */
+
+  /**
+   * @typedef {Object} getInvoicesDictionary__payload
+   * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional search string to filter invoices by invoice number."}
+   * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for retrieving the next page of results."}
+   */
+
   // ==================== Vendors ====================
 
   /**
@@ -1630,52 +1681,3 @@ Flowrunner.ServerCode.addService(BillComService, [
     hint: 'Select Sandbox for development/testing, Production for live data.',
   },
 ])
-
-/**
- * @typedef {Object} BillPaymentItem
- * @paramDef {"type":"String","label":"Bill","name":"billId","required":true,"dictionary":"getBillsDictionary","description":"The bill to apply this payment to."}
- * @paramDef {"type":"Number","label":"Amount","name":"amount","required":true,"uiComponent":{"type":"NUMERIC"},"description":"The amount to apply to this bill."}
- */
-
-/**
- * @typedef {Object} BillLineItem
- * @paramDef {"type":"Number","label":"Amount","name":"amount","required":true,"uiComponent":{"type":"NUMERIC"},"description":"The amount for this line item."}
- * @paramDef {"type":"String","label":"Description","name":"description","description":"Description of the line item."}
- */
-
-/**
- * @typedef {Object} InvoiceLineItem
- * @paramDef {"type":"Number","label":"Quantity","name":"quantity","required":true,"uiComponent":{"type":"NUMERIC"},"description":"Number of units."}
- * @paramDef {"type":"String","label":"Description","name":"description","description":"Description of the product or service."}
- * @paramDef {"type":"Number","label":"Price","name":"price","required":true,"uiComponent":{"type":"NUMERIC"},"description":"Price per unit."}
- */
-
-/**
- * @typedef {Object} InvoicePaymentItem
- * @paramDef {"type":"String","label":"Invoice","name":"invoiceId","required":true,"dictionary":"getInvoicesDictionary","description":"The invoice to apply this payment to."}
- * @paramDef {"type":"Number","label":"Amount","name":"amount","required":true,"uiComponent":{"type":"NUMERIC"},"description":"The amount to apply to this invoice."}
- */
-
-/**
- * @typedef {Object} getVendorsDictionary__payload
- * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional search string to filter vendors by name."}
- * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for retrieving the next page of results."}
- */
-
-/**
- * @typedef {Object} getCustomersDictionary__payload
- * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional search string to filter customers by name."}
- * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for retrieving the next page of results."}
- */
-
-/**
- * @typedef {Object} getBillsDictionary__payload
- * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional search string to filter bills by invoice number."}
- * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for retrieving the next page of results."}
- */
-
-/**
- * @typedef {Object} getInvoicesDictionary__payload
- * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional search string to filter invoices by invoice number."}
- * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for retrieving the next page of results."}
- */
