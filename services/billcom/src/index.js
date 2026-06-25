@@ -260,6 +260,12 @@ class BillComService {
    * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for retrieving the next page of results."}
    */
 
+  /**
+   * @typedef {Object} getFundingAccountsDictionary__payload
+   * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional search string to filter funding accounts by bank name, account holder, or account number."}
+   * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for retrieving the next page of results."}
+   */
+
   // ==================== Vendors ====================
 
   /**
@@ -980,6 +986,69 @@ class BillComService {
   }
 
   /**
+   * @operationName Pay Bill
+   * @category Bill Payments
+   * @description Initiates and sends an accounts payable payment to a vendor through BILL.com, disbursing funds from one of your funding accounts. Unlike Record Bill Payment (which logs a payment made outside BILL), this actually moves money via ACH, check, or card.
+   *
+   * @route POST /pay-bill
+   * @appearanceColor #00B140 #33C466
+   * @executionTimeoutInSeconds 120
+   *
+   * @paramDef {"type":"String","label":"Vendor","name":"vendorId","required":true,"dictionary":"getVendorsDictionary","description":"The vendor being paid."}
+   * @paramDef {"type":"String","label":"Bill","name":"billId","required":true,"dictionary":"getBillsDictionary","description":"The bill to pay."}
+   * @paramDef {"type":"Number","label":"Amount","name":"amount","required":true,"uiComponent":{"type":"NUMERIC"},"description":"The payment amount."}
+   * @paramDef {"type":"String","label":"Funding Account","name":"fundingAccountId","required":true,"dictionary":"getFundingAccountsDictionary","description":"The bank account to disburse funds from. For card or wallet funding, enter the account ID and set the matching Funding Account Type."}
+   * @paramDef {"type":"String","label":"Funding Account Type","name":"fundingAccountType","uiComponent":{"type":"DROPDOWN","options":{"values":["BANK_ACCOUNT","CARD_ACCOUNT","WALLET"]}},"description":"Type of funding account. Defaults to BANK_ACCOUNT (matches the Funding Account picker)."}
+   * @paramDef {"type":"String","label":"Process Date","name":"processDate","uiComponent":{"type":"DATE_PICKER"},"description":"Date the payment should be processed (YYYY-MM-DD format). Defaults to the earliest available date if omitted."}
+   * @paramDef {"type":"String","label":"Description","name":"description","description":"Payment description (max 70 characters). Included in the check memo or bank descriptor for electronic payments."}
+   * @paramDef {"type":"Boolean","label":"Request Pay Faster","name":"requestPayFaster","uiComponent":{"type":"TOGGLE"},"description":"Request expedited processing for this payment, if eligible."}
+   * @paramDef {"type":"String","label":"Check Delivery Type","name":"requestCheckDeliveryType","uiComponent":{"type":"DROPDOWN","options":{"values":["STANDARD","UPS_1DAY","UPS_2DAY","UPS_3DAY","RTP_DELIVERY"]}},"description":"Delivery speed for check disbursements. Defaults to STANDARD. Ignored for non-check disbursements."}
+   *
+   * @returns {Object}
+   * @sampleResult {"id":"stp01ABCDEFGHIJKLMN","vendorId":"00901ABCDEFGHIJKLMN","billId":"00n01ABCDEFGHIJKLMN","amount":228.99,"processDate":"2026-12-31","fundingAccount":{"type":"BANK_ACCOUNT","id":"bac01ABCDEFGHIJKLMN"},"status":"SCHEDULED","disbursementType":"ACH","createdTime":"2026-01-20T10:30:00.000+0000"}
+   */
+  async payBill(vendorId, billId, amount, fundingAccountId, fundingAccountType, processDate, description, requestPayFaster, requestCheckDeliveryType) {
+    if (!vendorId) {
+      throw new Error('"Vendor" is required.')
+    }
+
+    if (!billId) {
+      throw new Error('"Bill" is required.')
+    }
+
+    if (amount === undefined || amount === null || amount === '') {
+      throw new Error('"Amount" is required.')
+    }
+
+    if (!fundingAccountId) {
+      throw new Error('"Funding Account" is required.')
+    }
+
+    const body = cleanupObject({
+      vendorId,
+      billId,
+      amount,
+      description,
+      processDate: formatDate(processDate),
+      fundingAccount: {
+        type: fundingAccountType || 'BANK_ACCOUNT',
+        id: fundingAccountId,
+      },
+      processingOptions: {
+        requestPayFaster: Boolean(requestPayFaster),
+        requestCheckDeliveryType: requestCheckDeliveryType || 'STANDARD',
+      },
+    })
+
+    return await this.#apiRequest({
+      url: `${ this.apiBaseUrl }/payments`,
+      method: 'post',
+      body,
+      logTag: 'payBill',
+    })
+  }
+
+  /**
    * @operationName Get Bill Payment
    * @category Bill Payments
    * @description Retrieves detailed information about a specific bill payment by ID from BILL.com. Returns the full payment record including vendor, amount, status, and linked bills.
@@ -1664,6 +1733,53 @@ class BillComService {
         label: invoice.invoiceNumber ? `Invoice #${ invoice.invoiceNumber }` : `Invoice ${ invoice.id }`,
         value: invoice.id,
         note: `$${ invoice.totalAmount || invoice.dueAmount || 0 } - ${ invoice.status || 'Unknown' }`,
+      })),
+    }
+  }
+
+  /**
+   * @registerAs DICTIONARY
+   * @operationName Get Funding Accounts
+   * @description Provides a searchable list of bank funding accounts for dynamic parameter selection in FlowRunner.
+   * @route POST /get-funding-accounts-dictionary
+   * @paramDef {"type":"getFundingAccountsDictionary__payload","label":"Payload","name":"payload","description":"Contains optional search string and pagination cursor for retrieving and filtering funding accounts."}
+   * @returns {Object}
+   * @sampleResult {"items":[{"label":"Wells Fargo *****2333","value":"bac01ABCDEFGHIJKLMN","note":"CHECKING - VERIFIED"}],"cursor":null}
+   */
+  async getFundingAccountsDictionary(payload) {
+    const { search, cursor } = payload || {}
+
+    const query = { max: DEFAULT_PAGE_SIZE }
+
+    if (cursor) {
+      query.page = cursor
+    }
+
+    const response = await this.#apiRequest({
+      url: `${ this.apiBaseUrl }/funding-accounts/banks`,
+      query,
+      logTag: 'getFundingAccountsDictionary',
+    })
+
+    let accounts = response.results || []
+
+    if (search) {
+      const searchLower = search.toLowerCase()
+
+      accounts = accounts.filter(account =>
+        account.bankName?.toLowerCase().includes(searchLower) ||
+        account.nameOnAccount?.toLowerCase().includes(searchLower) ||
+        account.accountNumber?.toLowerCase().includes(searchLower))
+    }
+
+    return {
+      cursor: response.nextPage || null,
+      items: accounts.map(account => ({
+        label: account.bankName
+          ? `${ account.bankName } ${ account.accountNumber || '' }`.trim()
+          : (account.nameOnAccount || `Account ${ account.id }`),
+        value: account.id,
+        note: [account.type, account.status].filter(Boolean).join(' - ') || `ID: ${ account.id }`,
       })),
     }
   }

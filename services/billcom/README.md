@@ -25,7 +25,7 @@ Automates accounts payable and accounts receivable workflows in BILL.com. Manage
 - Create Invoice, Get Invoice, Update Invoice, List Invoices, Send Invoice
 
 ### Bill Payments
-- Record Bill Payment, Get Bill Payment, List Bill Payments
+- Pay Bill, Record Bill Payment, Get Bill Payment, List Bill Payments
 
 ### Receivable Payments
 - Charge Customer, Get Receivable Payment, List Receivable Payments
@@ -50,3 +50,4 @@ Automates accounts payable and accounts receivable workflows in BILL.com. Manage
 - When a **BILL.com** "On Payment Failed" trigger fires, use **Gmail** "Send Email" to alert the accounts payable team with the payment details so they can retry or investigate
 - When a **BILL.com** "On Invoice Created" trigger fires, use **Google Sheets** "Append Row" to log the invoice number, customer, and amount into a revenue tracking spreadsheet
 - Use **BILL.com** "List Bill Payments" filtered by vendor, status, and process date range to gather a period's scheduled payments, then use **Google Sheets** "Append Row" to build a cash-flow forecast
+- Use **BILL.com** "Pay Bill" to disburse funds to a vendor via ACH or check from a funding account, or "Record Bill Payment" to log a payment you already made outside BILL — Pay Bill moves money, Record Bill Payment only records it
