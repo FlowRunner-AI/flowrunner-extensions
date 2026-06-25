@@ -55,6 +55,33 @@ function cleanupObject(data) {
   return Object.keys(result).length > 0 ? result : undefined
 }
 
+// Normalizes a date value to the YYYY-MM-DD format BILL.com expects in filters.
+// The FlowRunner DATE_PICKER may supply epoch milliseconds (number or numeric
+// string) or a locale string like "11/1/2025"; an already-formatted YYYY-MM-DD
+// string is returned untouched to avoid timezone shifts.
+function formatDate(value) {
+  if (value === undefined || value === null || value === '') {
+    return undefined
+  }
+
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return value
+  }
+
+  const numeric = typeof value === 'number' ? value : (/^\d+$/.test(String(value)) ? Number(value) : null)
+  const date = numeric !== null ? new Date(numeric) : new Date(value)
+
+  if (Number.isNaN(date.getTime())) {
+    return undefined
+  }
+
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+
+  return `${ year }-${ month }-${ day }`
+}
+
 /**
  * @integrationName BILL.com
  * @integrationIcon /icon.svg
@@ -535,11 +562,11 @@ class BillComService {
     }
 
     if (dueDateFrom) {
-      filters.push(`dueDate:gte:${ dueDateFrom }`)
+      filters.push(`dueDate:gte:${ formatDate(dueDateFrom) }`)
     }
 
     if (dueDateTo) {
-      filters.push(`dueDate:lte:${ dueDateTo }`)
+      filters.push(`dueDate:lte:${ formatDate(dueDateTo) }`)
     }
 
     return await this.#apiRequest({
@@ -866,11 +893,11 @@ class BillComService {
     }
 
     if (createdFrom) {
-      filters.push(`createdTime:gte:${ createdFrom }`)
+      filters.push(`createdTime:gte:${ formatDate(createdFrom) }`)
     }
 
     if (createdTo) {
-      filters.push(`createdTime:lte:${ createdTo }`)
+      filters.push(`createdTime:lte:${ formatDate(createdTo) }`)
     }
 
     return await this.#apiRequest({
@@ -988,7 +1015,7 @@ class BillComService {
    *
    * @paramDef {"type":"Number","label":"Max Results","name":"maxResults","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of payments to return per page, between 1 and 100. Defaults to 50."}
    * @paramDef {"type":"String","label":"Vendor ID","name":"vendorId","description":"Filter payments to a single vendor by their BILL.com vendor ID."}
-   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter payments by status (e.g. SCHEDULED, PROCESSED, CANCELED, VOIDED, PAID_OFFLINE)."}
+   * @paramDef {"type":"String","label":"Status","name":"status","description":"Filter payments by status (case-sensitive exact match). Confirmed values include SCHEDULED and CANCELLED; other BILL.com payment status values are also accepted."}
    * @paramDef {"type":"String","label":"Process Date From","name":"processDateFrom","uiComponent":{"type":"DATE_PICKER"},"description":"Only return payments with a process date on or after this date (YYYY-MM-DD format)."}
    * @paramDef {"type":"String","label":"Process Date To","name":"processDateTo","uiComponent":{"type":"DATE_PICKER"},"description":"Only return payments with a process date on or before this date (YYYY-MM-DD format)."}
    *
@@ -1007,11 +1034,11 @@ class BillComService {
     }
 
     if (processDateFrom) {
-      filters.push(`processDate:gte:${ processDateFrom }`)
+      filters.push(`processDate:gte:${ formatDate(processDateFrom) }`)
     }
 
     if (processDateTo) {
-      filters.push(`processDate:lte:${ processDateTo }`)
+      filters.push(`processDate:lte:${ formatDate(processDateTo) }`)
     }
 
     return await this.#apiRequest({
@@ -1126,11 +1153,11 @@ class BillComService {
     }
 
     if (paymentDateFrom) {
-      filters.push(`paymentDate:gte:${ paymentDateFrom }`)
+      filters.push(`paymentDate:gte:${ formatDate(paymentDateFrom) }`)
     }
 
     if (paymentDateTo) {
-      filters.push(`paymentDate:lte:${ paymentDateTo }`)
+      filters.push(`paymentDate:lte:${ formatDate(paymentDateTo) }`)
     }
 
     return await this.#apiRequest({
