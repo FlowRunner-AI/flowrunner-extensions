@@ -18,10 +18,14 @@ Replace ALL occurrences of `Backendless` with `Flowrunner`:
 - `Backendless.ServerCode.ConfigItems.TYPES.*` → `Flowrunner.ServerCode.ConfigItems.TYPES.*`
 - Any other `Backendless.*` references
 
-### 3. Add `shared` property to all config items
-Every config item in the `addService()` call MUST have a `shared` property:
+### 3. Fix config items (`shared` + remove `order`)
+Config items may live in the `addService()` call or in a separate `config-items.js` module — apply this to wherever they are defined.
+
+Add a `shared` property to every config item:
 - `shared: true` — ONLY for OAuth-related config items (clientId, clientSecret) used in services with `@requireOAuth` annotation
 - `shared: false` — for API keys and ALL other non-OAuth config items
+
+Remove the `order` property from every config item. FlowRunner has no `order` property — display order is dictated by each item's position in the array passed to `addService()`, so `order` is redundant legacy from Backendless. Strip it; do not reorder the items.
 
 ### 4. Normalize DROPDOWN `@paramDef` options
 Legacy Backendless services often declare DROPDOWN options as a top-level array of `{label,value}`
@@ -72,8 +76,9 @@ After the code migration is complete and verified, you MUST dispatch the `readme
 ## Validation Checklist
 After migration, verify:
 - [ ] No remaining `Backendless` references in `src/index.js`
-- [ ] All config items in `addService()` have the `shared` property
+- [ ] All config items have the `shared` property (in `addService()` or `config-items.js`)
 - [ ] `shared` values are correct (true only for OAuth, false otherwise)
+- [ ] No config item has an `order` property — `grep -rn "order:" src/` returns nothing
 - [ ] No DROPDOWN `@paramDef` uses the `[{label,value}]` array or object-in-`values` form — all use friendly plain-string `options:{values:[...]}` with label→value mapping in code (`grep -nE '"options":\[' src/index.js` returns nothing)
 - [ ] No empty DROPDOWNs — `grep -nE '"values":\[\]' src/index.js` returns nothing; every fixed-enum param is populated from the source API docs for its specific endpoint (or converted to a dictionary / plain String)
 - [ ] `package.json` matches the flowrunner format

@@ -841,7 +841,7 @@ const { url } = await this.flowrunner.Files.uploadFile(buffer, {
 - **`shared` property is required on every config item**:
   - `shared: true` ONLY for OAuth `clientId` / `clientSecret` in `@requireOAuth` services
   - `shared: false` for everything else (API keys, site URLs, secrets, etc.)
-- **No `order` property** - Do NOT add an `order` property to config items
+- **No `order` property** - Do NOT add an `order` property to config items. Display order is dictated by the position of each item in the array passed to `addService()`, so `order` is redundant — never add it, and remove it from legacy/migrated config items.
 - **Typical properties**: `name`, `displayName`, `type`, `required`, `shared`, `hint`
 - **Helpful hints**: Include clear instructions with URLs when possible (max 250 characters)
 - **Required validation**: Use `required: true` for essential configuration
