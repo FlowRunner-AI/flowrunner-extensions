@@ -9,7 +9,7 @@ const SNS_VERSION = '2010-03-31'
 
 /**
  * @integrationName Amazon SNS
- * @integrationIcon /icon.svg
+ * @integrationIcon /icon.png
  */
 class SNS {
   constructor(config = {}, context = {}) {

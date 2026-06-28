@@ -7,7 +7,7 @@ const { awsConfigItems } = require('./config-items')
 
 /**
  * @integrationName Amazon SES
- * @integrationIcon /icon.svg
+ * @integrationIcon /icon.png
  */
 class SES {
   constructor(config = {}) {

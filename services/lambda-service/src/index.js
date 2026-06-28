@@ -7,7 +7,7 @@ const { awsConfigItems } = require('./config-items')
 
 /**
  * @integrationName AWS Lambda
- * @integrationIcon /icon.svg
+ * @integrationIcon /icon.jpeg
  */
 class Lambda {
   constructor(config = {}) {
