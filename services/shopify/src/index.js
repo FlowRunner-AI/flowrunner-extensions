@@ -82,7 +82,6 @@ function searchFilter(items, fields, search) {
 
 /**
  * @requireOAuth
- * @integrationTriggersScope SINGLE_APP
  * @integrationName Shopify
  * @integrationIcon /icon.png
  **/
@@ -2604,7 +2603,7 @@ class Shopify {
    *
    * @executionTimeoutInSeconds 120
    *
-   * @paramDef {"type":"String","label":"Resource ID","name":"resourceId","required":true,"freeform":true,"description":"The Shopify GID of the resource to tag, e.g. gid://shopify/Order/123 or gid://shopify/Customer/456. Copy it from the id field of a Get Order, Get Product, or Get Customer step. No single picker is offered because tags apply to many resource types."}
+   * @paramDef {"type":"String","label":"Resource ID","name":"resourceId","required":true,"description":"The Shopify GID of the resource to tag, e.g. gid://shopify/Order/123 or gid://shopify/Customer/456. Copy it from the id field of a Get Order, Get Product, or Get Customer step. No single picker is offered because tags apply to many resource types."}
    * @paramDef {"type":"Array<String>","label":"Tags","name":"tags","required":true,"description":"Array of tags to add."}
    *
    * @returns {Object} Returns the result of the tag addition.
@@ -2653,7 +2652,7 @@ class Shopify {
    *
    * @executionTimeoutInSeconds 120
    *
-   * @paramDef {"type":"String","label":"Resource ID","name":"resourceId","required":true,"freeform":true,"description":"The Shopify GID of the resource to untag, e.g. gid://shopify/Order/123 or gid://shopify/Customer/456. Copy it from the id field of a Get Order, Get Product, or Get Customer step. No single picker is offered because tags apply to many resource types."}
+   * @paramDef {"type":"String","label":"Resource ID","name":"resourceId","required":true,"description":"The Shopify GID of the resource to untag, e.g. gid://shopify/Order/123 or gid://shopify/Customer/456. Copy it from the id field of a Get Order, Get Product, or Get Customer step. No single picker is offered because tags apply to many resource types."}
    * @paramDef {"type":"Array<String>","label":"Tags","name":"tags","required":true,"description":"Array of tags to remove."}
    *
    * @returns {Object} Returns the result of the tag removal.
@@ -2819,7 +2818,7 @@ class Shopify {
 
   /**
    * @operationName On New Order
-   * @description Triggers when a new order is created in your Shopify store. Polling interval can be customized (minimum 30 seconds).
+   * @description Triggers when a new order is created in your Shopify store. Polling interval can be customized (minimum 30 seconds). Each cycle inspects the 50 most recent orders, so bursts of more than 50 new orders between polls may be missed.
    * @registerAs POLLING_TRIGGER
    * @category Orders
    *
@@ -2911,7 +2910,7 @@ class Shopify {
 
   /**
    * @operationName On Order Updated
-   * @description Triggers when an existing order is updated in your Shopify store. Polling interval can be customized (minimum 30 seconds).
+   * @description Triggers when an existing order is updated in your Shopify store. Polling interval can be customized (minimum 30 seconds). Each cycle inspects the 50 most recently updated orders, so more than 50 updates between polls may be missed.
    * @registerAs POLLING_TRIGGER
    * @category Orders
    *
@@ -3001,7 +3000,7 @@ class Shopify {
 
   /**
    * @operationName On New Customer
-   * @description Triggers when a new customer is created in your Shopify store. Polling interval can be customized (minimum 30 seconds).
+   * @description Triggers when a new customer is created in your Shopify store. Polling interval can be customized (minimum 30 seconds). Each cycle inspects the 50 most recent customers, so bursts of more than 50 new customers between polls may be missed.
    * @registerAs POLLING_TRIGGER
    * @category Customers
    *
@@ -3072,7 +3071,7 @@ class Shopify {
 
   /**
    * @operationName On Customer Updated
-   * @description Triggers when a customer is updated in your Shopify store. Polling interval can be customized (minimum 30 seconds).
+   * @description Triggers when a customer is updated in your Shopify store. Polling interval can be customized (minimum 30 seconds). Each cycle inspects the 50 most recently updated customers, so more than 50 updates between polls may be missed.
    * @registerAs POLLING_TRIGGER
    * @category Customers
    *
@@ -3159,7 +3158,7 @@ class Shopify {
 
   /**
    * @operationName On New Product
-   * @description Triggers when a new product is created in your Shopify store. Polling interval can be customized (minimum 30 seconds).
+   * @description Triggers when a new product is created in your Shopify store. Polling interval can be customized (minimum 30 seconds). Each cycle inspects the 50 most recent products, so bursts of more than 50 new products between polls may be missed.
    * @registerAs POLLING_TRIGGER
    * @category Products
    *
@@ -3235,7 +3234,7 @@ class Shopify {
 
   /**
    * @operationName On New Dispute
-   * @description Triggers when a new payment dispute is created. Polling interval can be customized (minimum 30 seconds).
+   * @description Triggers when a new payment dispute is created. Polling interval can be customized (minimum 30 seconds). Each cycle inspects the 50 most recent disputes, so bursts of more than 50 new disputes between polls may be missed.
    * @registerAs POLLING_TRIGGER
    * @category Payouts
    *

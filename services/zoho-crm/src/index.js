@@ -207,10 +207,10 @@ class ZohoCRMService {
           return {
             type: 'DROPDOWN',
             options: {
-              values: field.pick_list_values.map(v => ({
-                value: v.actual_value ?? v.display_value,
-                label: v.display_value,
-              })),
+              // Dynamically-loaded schema dropdowns submit the displayed string verbatim (there is
+              // no label→value mapping step for schema-loaded params), so emit plain strings of the
+              // API value. actual_value === display_value for the vast majority of Zoho picklists.
+              values: field.pick_list_values.map(v => v.actual_value ?? v.display_value),
             },
           }
         }

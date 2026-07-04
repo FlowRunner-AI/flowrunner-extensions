@@ -74,12 +74,12 @@ const BILL_STATUS_MAP = {
   Unpaid: 'unpaid',
   'Partially Paid': 'partially_paid',
 }
+// Only the true expense statuses. Billable / non-billable is a separate dimension in Zoho Books
+// (is_billable), not a `status` value, so it was silently ignored as a status filter and is dropped.
 const EXPENSE_STATUS_MAP = {
   Unbilled: 'unbilled',
   Invoiced: 'invoiced',
   Reimbursed: 'reimbursed',
-  'Non-Billable': 'non-billable',
-  Billable: 'billable',
 }
 const PAYMENT_MODE_MAP = {
   Cash: 'cash',
@@ -2703,7 +2703,7 @@ class ZohoBooksService {
    * @executionTimeoutInSeconds 120
    *
    * @paramDef {"type":"String","label":"Organization","name":"organizationId","required":true,"dictionary":"listOrganizations","description":"The Zoho Books organization whose expenses will be listed."}
-   * @paramDef {"type":"String","label":"Status","name":"status","uiComponent":{"type":"DROPDOWN","options":{"values":["Unbilled","Invoiced","Reimbursed","Non-Billable","Billable"]}},"description":"Optional filter restricting expenses to a specific status."}
+   * @paramDef {"type":"String","label":"Status","name":"status","uiComponent":{"type":"DROPDOWN","options":{"values":["Unbilled","Invoiced","Reimbursed"]}},"description":"Optional filter restricting expenses to a specific status. Billable/non-billable is a separate dimension in Zoho Books and is not a status value."}
    * @paramDef {"type":"Number","label":"Page","name":"page","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Page number (1-based). Default: 1."}
    * @paramDef {"type":"Number","label":"Per Page","name":"perPage","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Number of expenses per page. Maximum is 200; default is 50."}
    * @paramDef {"type":"String","label":"Modified Since","name":"lastModifiedTimeStart","uiComponent":{"type":"DATE_TIME_PICKER"},"description":"Optional ISO timestamp; only expenses modified at or after this time are returned. Useful for incremental sync."}
@@ -4072,7 +4072,7 @@ class ZohoBooksService {
   /**
    * @operationName On Invoice Created (Realtime)
    * @category Event Tracking
-   * @description Fires immediately when a new invoice is created in the selected Zoho Books organization, via Zoho Books webhooks.
+   * @description Fires immediately when a new invoice is created in the selected Zoho Books organization, via Zoho Books webhooks. Note: Zoho Books webhooks omit a reliable event type, so create, update, and delete events on the same entity cannot always be told apart — this trigger may occasionally fire for a related change to the same entity type.
    * @registerAs REALTIME_TRIGGER
    * @route POST /on-invoice-created-rt
    * @appearanceColor #E42527 #F26C6F
@@ -4088,7 +4088,7 @@ class ZohoBooksService {
   /**
    * @operationName On Invoice Updated (Realtime)
    * @category Event Tracking
-   * @description Fires immediately when an invoice is updated.
+   * @description Fires immediately when an invoice is updated. Note: Zoho Books webhooks omit a reliable event type, so create, update, and delete events on the same entity cannot always be told apart — this trigger may occasionally fire for a related change to the same entity type.
    * @registerAs REALTIME_TRIGGER
    * @route POST /on-invoice-updated-rt
    * @appearanceColor #E42527 #F26C6F
@@ -4104,7 +4104,7 @@ class ZohoBooksService {
   /**
    * @operationName On Invoice Deleted (Realtime)
    * @category Event Tracking
-   * @description Fires immediately when an invoice is deleted.
+   * @description Fires immediately when an invoice is deleted. Note: Zoho Books webhooks omit a reliable event type, so create, update, and delete events on the same entity cannot always be told apart — this trigger may occasionally fire for a related change to the same entity type.
    * @registerAs REALTIME_TRIGGER
    * @route POST /on-invoice-deleted-rt
    * @appearanceColor #E42527 #F26C6F
@@ -4120,7 +4120,7 @@ class ZohoBooksService {
   /**
    * @operationName On Payment Created (Realtime)
    * @category Event Tracking
-   * @description Fires immediately when a customer payment is recorded.
+   * @description Fires immediately when a customer payment is recorded. Note: Zoho Books webhooks omit a reliable event type, so create, update, and delete events on the same entity cannot always be told apart — this trigger may occasionally fire for a related change to the same entity type.
    * @registerAs REALTIME_TRIGGER
    * @route POST /on-payment-created-rt
    * @appearanceColor #E42527 #F26C6F
@@ -4136,7 +4136,7 @@ class ZohoBooksService {
   /**
    * @operationName On Contact Created (Realtime)
    * @category Event Tracking
-   * @description Fires immediately when a new contact is created.
+   * @description Fires immediately when a new contact is created. Note: Zoho Books webhooks omit a reliable event type, so create, update, and delete events on the same entity cannot always be told apart — this trigger may occasionally fire for a related change to the same entity type.
    * @registerAs REALTIME_TRIGGER
    * @route POST /on-contact-created-rt
    * @appearanceColor #E42527 #F26C6F
@@ -4152,7 +4152,7 @@ class ZohoBooksService {
   /**
    * @operationName On Contact Updated (Realtime)
    * @category Event Tracking
-   * @description Fires immediately when a contact is updated.
+   * @description Fires immediately when a contact is updated. Note: Zoho Books webhooks omit a reliable event type, so create, update, and delete events on the same entity cannot always be told apart — this trigger may occasionally fire for a related change to the same entity type.
    * @registerAs REALTIME_TRIGGER
    * @route POST /on-contact-updated-rt
    * @appearanceColor #E42527 #F26C6F
@@ -4168,7 +4168,7 @@ class ZohoBooksService {
   /**
    * @operationName On Estimate Accepted (Realtime)
    * @category Event Tracking
-   * @description Fires immediately when an estimate is accepted by a customer.
+   * @description Fires immediately when an estimate is accepted by a customer. Note: Zoho Books webhooks omit a reliable event type, so create, update, and delete events on the same entity cannot always be told apart — this trigger may occasionally fire for a related change to the same entity type.
    * @registerAs REALTIME_TRIGGER
    * @route POST /on-estimate-accepted-rt
    * @appearanceColor #E42527 #F26C6F
@@ -4184,7 +4184,7 @@ class ZohoBooksService {
   /**
    * @operationName On Bill Created (Realtime)
    * @category Event Tracking
-   * @description Fires immediately when a new vendor bill is created.
+   * @description Fires immediately when a new vendor bill is created. Note: Zoho Books webhooks omit a reliable event type, so create, update, and delete events on the same entity cannot always be told apart — this trigger may occasionally fire for a related change to the same entity type.
    * @registerAs REALTIME_TRIGGER
    * @route POST /on-bill-created-rt
    * @appearanceColor #E42527 #F26C6F
@@ -4200,7 +4200,7 @@ class ZohoBooksService {
   /**
    * @operationName On Bill Paid (Realtime)
    * @category Event Tracking
-   * @description Fires immediately when a vendor bill is fully paid.
+   * @description Fires immediately when a vendor bill is fully paid. Note: Zoho Books webhooks omit a reliable event type, so create, update, and delete events on the same entity cannot always be told apart — this trigger may occasionally fire for a related change to the same entity type.
    * @registerAs REALTIME_TRIGGER
    * @route POST /on-bill-paid-rt
    * @appearanceColor #E42527 #F26C6F

@@ -896,38 +896,57 @@ class SquarespaceService {
     const state = invocation.state || {}
     const now = new Date().toISOString()
 
-    // First cycle: record existing orders and emit nothing, so history is not replayed.
-    if (!state.since) {
+    // First cycle (or migration from older state without createdFloor): anchor the created-time
+    // high-water mark at the newest existing order and emit nothing, so history is not replayed.
+    if (!state.createdFloor) {
       const seedFrom = new Date(Date.now() - POLL_SEED_LOOKBACK_MS).toISOString()
       const existing = await this.#fetchOrdersInWindow({ from: seedFrom, to: now, fulfillmentStatus, logTag })
+      const floorMs = existing.reduce((max, order) => Math.max(max, Date.parse(order.createdOn)), Date.parse(seedFrom))
 
-      logger.debug(`${ logTag } Seeding with ${ existing.length } existing orders`)
+      logger.debug(`${ logTag } Seeding createdFloor at ${ new Date(floorMs).toISOString() } from ${ existing.length } existing orders`)
 
       return {
         events: [],
-        state: { since: now, seenIds: existing.map(order => order.id).slice(0, POLL_MAX_SEEN_IDS) },
+        state: {
+          since: now,
+          createdFloor: new Date(floorMs).toISOString(),
+          // Only ids sitting exactly on the floor need remembering, to dedup same-createdOn ties.
+          seenIds: existing.filter(order => Date.parse(order.createdOn) === floorMs).map(order => order.id).slice(0, POLL_MAX_SEEN_IDS),
+        },
       }
     }
 
-    // Window the query back by the overlap (records can become queryable after their timestamp).
+    // The query filters on modifiedOn (the only date filter Squarespace offers), windowed back by
+    // the overlap so late-appearing rows are caught. "New" is a createdOn concept, so detection runs
+    // against the createdOn high-water mark below rather than the modified window — keeping the
+    // window, the id set, and the floor all consistent on the createdOn dimension.
     const from = new Date(Date.parse(state.since) - POLL_OVERLAP_MS).toISOString()
-    const createdFloor = Date.parse(from)
     const orders = await this.#fetchOrdersInWindow({ from, to: now, fulfillmentStatus, logTag })
 
     orders.sort((a, b) => Date.parse(a.createdOn) - Date.parse(b.createdOn))
 
+    const floorMs = Date.parse(state.createdFloor)
     const seen = new Set(state.seenIds || [])
-    const newOrders = orders.filter(order =>
-      !seen.has(order.id) && Date.parse(order.createdOn) >= createdFloor
-    )
+    const newOrders = orders.filter(order => {
+      const created = Date.parse(order.createdOn)
+
+      return created > floorMs || (created === floorMs && !seen.has(order.id))
+    })
 
     logger.info(`${ logTag } Found ${ newOrders.length } new orders`)
 
-    const seenIds = [...newOrders.map(order => order.id), ...(state.seenIds || [])].slice(0, POLL_MAX_SEEN_IDS)
+    // Advance the floor to the newest createdOn observed and remember only the ids sitting exactly on
+    // it (enough to dedup same-timestamp ties — everything below the floor is excluded by the
+    // createdOn comparison, so the id set stays small regardless of volume, fixing the old cap-based
+    // re-emit). While the floor is unchanged, keep the prior boundary ids so a re-modified floor
+    // order is not re-emitted; once the floor advances past them they are safe to drop.
+    const nextFloorMs = orders.reduce((max, order) => Math.max(max, Date.parse(order.createdOn)), floorMs)
+    const atFloorIds = orders.filter(order => Date.parse(order.createdOn) === nextFloorMs).map(order => order.id)
+    const seenIds = (nextFloorMs > floorMs ? atFloorIds : [...new Set([...atFloorIds, ...(state.seenIds || [])])]).slice(0, POLL_MAX_SEEN_IDS)
 
     return {
       events: newOrders,
-      state: { since: now, seenIds },
+      state: { since: now, createdFloor: new Date(nextFloorMs).toISOString(), seenIds },
     }
   }
 
@@ -946,36 +965,60 @@ class SquarespaceService {
     const state = invocation.state || {}
     const now = new Date().toISOString()
 
-    // First cycle: record already-fulfilled orders and emit nothing.
-    if (!state.since) {
+    // First cycle (or migration from older state without a seen map): record already-fulfilled
+    // orders and emit nothing.
+    if (!state.since || !state.seen) {
       const seedFrom = new Date(Date.now() - POLL_SEED_LOOKBACK_MS).toISOString()
       const existing = await this.#fetchOrdersInWindow({ from: seedFrom, to: now, fulfillmentStatus: 'FULFILLED', logTag })
+      const seen = {}
+
+      existing.forEach(order => {
+        seen[order.id] = order.modifiedOn
+      })
 
       logger.debug(`${ logTag } Seeding with ${ existing.length } already-fulfilled orders`)
 
-      return {
-        events: [],
-        state: { since: now, seenIds: existing.map(order => order.id).slice(0, POLL_MAX_SEEN_IDS) },
-      }
+      return { events: [], state: { since: now, seen } }
     }
 
-    // Fulfillment updates an order's modifiedOn, so window by modified time with overlap.
+    // Fulfillment updates an order's modifiedOn, so window the query by modified time with overlap.
     const from = new Date(Date.parse(state.since) - POLL_OVERLAP_MS).toISOString()
     const orders = await this.#fetchOrdersInWindow({ from, to: now, fulfillmentStatus: 'FULFILLED', logTag })
 
     orders.sort((a, b) => Date.parse(a.modifiedOn) - Date.parse(b.modifiedOn))
 
-    const seen = new Set(state.seenIds || [])
-    const newlyFulfilled = orders.filter(order => !seen.has(order.id))
+    // An order id is remembered once we report it as fulfilled. Retain those records for a generous
+    // horizon (keyed by id → modifiedOn) rather than an arbitrary id cap: this bounds the state to
+    // real fulfillment activity AND stops an already-fulfilled order from re-firing when it is merely
+    // edited again (its id stays known), which the old id-cap approach could not guarantee. Residual
+    // edge: an order left untouched past the retention horizon and then re-modified while still
+    // fulfilled can fire once more — inherent to polling without unbounded history.
+    const retentionFloorMs = Date.parse(now) - POLL_SEED_LOOKBACK_MS
+    const seen = {}
+
+    Object.entries(state.seen).forEach(([id, modifiedOn]) => {
+      if (Date.parse(modifiedOn) >= retentionFloorMs) {
+        seen[id] = modifiedOn
+      }
+    })
+
+    const newlyFulfilled = orders.filter(order => !(order.id in seen))
+
+    // Record every fulfilled order currently in the window (refreshing its modifiedOn).
+    orders.forEach(order => {
+      seen[order.id] = order.modifiedOn
+    })
 
     logger.info(`${ logTag } Found ${ newlyFulfilled.length } newly fulfilled orders`)
 
-    const seenIds = [...newlyFulfilled.map(order => order.id), ...(state.seenIds || [])].slice(0, POLL_MAX_SEEN_IDS)
+    // Defensive bound for very high-volume stores: keep the most recently modified ids.
+    let entries = Object.entries(seen)
 
-    return {
-      events: newlyFulfilled,
-      state: { since: now, seenIds },
+    if (entries.length > POLL_MAX_SEEN_IDS) {
+      entries = entries.sort((a, b) => Date.parse(b[1]) - Date.parse(a[1])).slice(0, POLL_MAX_SEEN_IDS)
     }
+
+    return { events: newlyFulfilled, state: { since: now, seen: Object.fromEntries(entries) } }
   }
 }
 
