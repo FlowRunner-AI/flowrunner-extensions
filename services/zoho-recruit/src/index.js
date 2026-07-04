@@ -3612,16 +3612,32 @@ class ZohoRecruitService {
       // First run: anchor cursor at the latest existing record so historical rows aren't replayed.
       const url = `${ this.#recruitBase() }/${ moduleName }`
 
-      const response = await this.#apiRequest({
-        logTag: `${ eventName }.seed`,
-        url,
-        query: {
-          page: 1,
-          per_page: 1,
-          sort_by: 'Modified_Time',
-          sort_order: 'desc',
-        },
-      }).catch(() => null)
+      let response
+
+      try {
+        response = await this.#apiRequest({
+          logTag: `${ eventName }.seed`,
+          url,
+          query: {
+            page: 1,
+            per_page: 1,
+            sort_by: 'Modified_Time',
+            sort_order: 'desc',
+          },
+        })
+      } catch (error) {
+        // A 204 means the module is genuinely empty — anchor at now so history isn't replayed.
+        if (error.message && /204/.test(error.message)) {
+          return { events: [], state: { lastModifiedAt: new Date().toISOString() } }
+        }
+
+        // Any other failure (auth blip, 5xx, network) must NOT anchor the cursor: committing a
+        // seed time here would permanently skip records modified during the outage. Leave the
+        // cursor unset so the next cycle retries the seed instead of silently swallowing the error.
+        logger.warn(`${ eventName }.seed - could not anchor cursor, will retry next cycle: ${ error.message }`)
+
+        return { events: [], state: {} }
+      }
 
       const sample = response?.data?.[0]
       const seedTime = sample?.Modified_Time || new Date().toISOString()
