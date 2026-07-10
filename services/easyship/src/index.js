@@ -1348,7 +1348,7 @@ Flowrunner.ServerCode.addService(EasyshipService, [
   {
     name: 'apiToken',
     displayName: 'API Token',
-    type: 'STRING',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: false,
     hint: 'Generate a Sandbox or Production API access token in your Easyship dashboard at https://app.easyship.com/connect/api. Sandbox tokens start with "sand_", production tokens with "prod_".',
