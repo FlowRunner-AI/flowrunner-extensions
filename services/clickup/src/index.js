@@ -176,7 +176,7 @@ class ClickUp {
     try {
       codeExchangeResponse = await Flowrunner.Request.post(`${ API_BASE_URL }/oauth/token`)
         .set({ 'Content-Type': 'application/json' })
-        .query({
+        .send({
           client_id: this.clientId,
           client_secret: this.clientSecret,
           code: callbackObject.code,
