@@ -515,6 +515,7 @@ const logger = {
  * @integrationName Amazon Seller Central
  * @integrationIcon /icon.svg
  * @requireOAuth
+ * @integrationTriggersScope SINGLE_APP
  */
 class AmazonSellerCentral {
   constructor(config) {
