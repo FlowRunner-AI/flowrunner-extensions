@@ -139,6 +139,18 @@ class PostgreSQL {
     if (error.detail) parts.push(`detail: ${ error.detail }`)
     if (error.hint) parts.push(`hint: ${ error.hint }`)
 
+    // ENETUNREACH against an IPv6 address means the host resolved to IPv6 only and this
+    // environment has no IPv6 route - common with Supabase's direct endpoint. Point the
+    // user at an IPv4-compatible endpoint instead of leaving them with a bare ENETUNREACH.
+    if (error.code === 'ENETUNREACH' && String(error.address || '').includes(':')) {
+      parts.push(
+        'hint: the database host resolved to an IPv6-only address and this environment has no IPv6 connectivity. ' +
+        'Use an IPv4-compatible endpoint - for Supabase, copy the "Session pooler" connection string ' +
+        '(postgres.<project-ref>@aws-0-<region>.pooler.supabase.com:5432) from the dashboard\'s Connect dialog ' +
+        'instead of the direct db.<project-ref>.supabase.co address.'
+      )
+    }
+
     const message = parts.join(' | ')
 
     logger.error(`${ logTag } - failed: ${ message }`)
@@ -631,7 +643,7 @@ Flowrunner.ServerCode.addService(PostgreSQL, [
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: false,
     shared: false,
-    hint: 'Full PostgreSQL connection URI, e.g. postgresql://user:password@db.example.com:5432/mydb - most managed providers (Supabase, Neon, RDS, Heroku) supply one. When set, it takes precedence and the Host/Port/Database/User/Password fields below are ignored. Special characters in the password must be URL-encoded; if that is a problem, use the individual fields instead.',
+    hint: 'Full PostgreSQL connection URI, e.g. postgresql://user:password@db.example.com:5432/mydb - most managed providers (Supabase, Neon, RDS, Heroku) supply one. When set, it takes precedence and the Host/Port/Database/User/Password fields below are ignored. Special characters in the password must be URL-encoded; if that is a problem, use the individual fields instead. Supabase: use the "Session pooler" connection string from the Connect dialog - the direct db.<project-ref>.supabase.co endpoint is IPv6-only and usually unreachable.',
   },
   {
     name: 'host',

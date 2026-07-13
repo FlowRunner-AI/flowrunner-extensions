@@ -58,6 +58,8 @@ Connect with either a single connection string (the copy-paste URI Supabase, Neo
 
 \* Required when no Connection String is provided.
 
+> **Supabase:** use the **Session pooler** connection string from the dashboard's Connect dialog (`postgres.<project-ref>@aws-0-<region>.pooler.supabase.com:5432`). The direct `db.<project-ref>.supabase.co` endpoint is IPv6-only and typically unreachable from FlowRunner (`ENETUNREACH`). Enable **Use SSL/TLS**.
+
 ## Safety Notes
 
 - All **values** are bound as query parameters (`$1, $2, ...`) — never interpolated into SQL.
