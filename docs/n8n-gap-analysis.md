@@ -226,12 +226,12 @@ Solid demand; round out category coverage.
 - [x] AWS Certificate Manager (`services/aws-acm`)
 
 ### ERP / accounting / e-commerce
-- [ ] Odoo
-- [ ] ERPNext
-- [ ] Invoice Ninja
-- [ ] Gumroad
-- [ ] Unleashed Software
-- [ ] DHL (shipping)
+- [x] Odoo (`services/odoo`)
+- [x] ERPNext (`services/erpnext`)
+- [x] Invoice Ninja (`services/invoice-ninja`)
+- [x] Gumroad (`services/gumroad`)
+- [x] Unleashed Software (`services/unleashed`)
+- [x] DHL (shipping) (`services/dhl`)
 
 ### Forms & events
 - [x] Formstack (`services/formstack`)
@@ -243,15 +243,15 @@ Solid demand; round out category coverage.
 - [x] Workable (`services/workable`)
 
 ### Content / social / media
-- [ ] Storyblok
-- [ ] Medium
-- [ ] Discourse
-- [ ] Disqus
-- [ ] Spotify
-- [ ] Bannerbear
-- [ ] APITemplate.io
-- [ ] QuickChart
-- [ ] Google Business Profile
+- [x] Storyblok (`services/storyblok`)
+- [x] Medium (`services/medium`)
+- [x] Discourse (`services/discourse`)
+- [x] Disqus (`services/disqus`)
+- [x] Spotify (`services/spotify`)
+- [x] Bannerbear (`services/bannerbear`)
+- [x] APITemplate.io (`services/apitemplate`)
+- [x] QuickChart (`services/quickchart`)
+- [x] Google Business Profile (`services/google-business-profile`)
 
 ### AI utilities & vector stores (rest)
 - [x] Mindee (OCR) (`services/mindee`)
