@@ -287,7 +287,7 @@ Include for parity claims; low individual demand.
 - [x] Google Books (`services/google-books`)
 - [x] Google Cloud Natural Language (`services/google-natural-language`)
 - [x] Google Perspective (`services/perspective`)
-- [ ] Google Workspace Admin
+- [x] Google Workspace Admin (`services/google-workspace-admin`)
 - [x] Gotify (`services/gotify`)
 - [x] Hacker News (`services/hackernews`)
 - [ ] Humantic AI
