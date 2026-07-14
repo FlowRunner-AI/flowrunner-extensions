@@ -190,12 +190,12 @@ Solid demand; round out category coverage.
 - [ ] TimescaleDB
 - [ ] MQTT
 - [ ] AMQP
-- [ ] Baserow
-- [ ] NocoDB
-- [ ] SeaTable
-- [ ] Grist
-- [ ] Quick Base
-- [ ] Stackby
+- [x] Baserow (`services/baserow`)
+- [x] NocoDB (`services/nocodb`)
+- [x] SeaTable (`services/seatable`)
+- [x] Grist (`services/grist`)
+- [x] Quick Base (`services/quickbase`)
+- [x] Stackby (`services/stackby`)
 - [ ] Elasticsearch
 
 ### Dev / IT / security
