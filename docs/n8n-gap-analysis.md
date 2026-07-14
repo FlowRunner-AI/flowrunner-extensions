@@ -27,10 +27,10 @@ Highest usage in n8n / broadest customer demand.
 
 ### Databases & data infrastructure
 - [x] PostgreSQL (`services/postgresql` — driver-based spike, pending in-FlowRunner validation)
-- [ ] MySQL / MariaDB
-- [ ] MongoDB
-- [ ] Microsoft SQL Server
-- [ ] Redis
+- [x] MySQL / MariaDB (`services/mysql`)
+- [x] MongoDB (`services/mongodb`)
+- [x] Microsoft SQL Server (`services/sql-server`)
+- [x] Redis (`services/redis`)
 - [ ] Google BigQuery
 - [ ] Snowflake
 - [ ] Kafka
@@ -83,7 +83,7 @@ Highest usage in n8n / broadest customer demand.
 - [x] Google Vertex AI (`services/google-vertex-ai`)
 - [x] Mistral AI (`services/mistral-ai`)
 - [x] Groq (`services/groq`)
-- [ ] Ollama (self-hosted models)
+- [x] Ollama (self-hosted models) (`services/ollama`)
 - [x] OpenRouter (`services/openrouter`)
 - [x] xAI Grok (`services/xai-grok`)
 - [x] DeepSeek (`services/deepseek`)
