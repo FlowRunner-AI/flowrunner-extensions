@@ -273,7 +273,7 @@ Include for parity claims; low individual demand.
 - [ ] Action Network
 - [ ] Adalo
 - [ ] Beeminder
-- [ ] Bubble
+- [x] Bubble (`services/bubble`)
 - [ ] Cockpit CMS
 - [x] CoinGecko (`services/coingecko`)
 - [ ] Cortex (security)
@@ -285,19 +285,19 @@ Include for parity claims; low individual demand.
 - [ ] FileMaker
 - [ ] Flow (getflow.com)
 - [x] Google Books (`services/google-books`)
-- [ ] Google Cloud Natural Language
-- [ ] Google Perspective
+- [x] Google Cloud Natural Language (`services/google-natural-language`)
+- [x] Google Perspective (`services/perspective`)
 - [ ] Google Workspace Admin
 - [x] Gotify (`services/gotify`)
 - [x] Hacker News (`services/hackernews`)
 - [ ] Humantic AI
-- [ ] KoBoToolbox
+- [x] KoBoToolbox (`services/kobotoolbox`)
 - [ ] LingvaNex
 - [ ] LoneScale
 - [ ] Mailcheck
 - [x] Marketstack (`services/marketstack`)
 - [x] Matrix (`services/matrix`)
-- [ ] MISP
+- [x] MISP (`services/misp`)
 - [ ] Mocean
 - [x] Monica CRM (`services/monica`)
 - [x] NASA (`services/nasa`)
@@ -307,26 +307,26 @@ Include for parity claims; low individual demand.
 - [x] OpenWeatherMap (`services/openweathermap`)
 - [ ] Orbit (service shut down in 2024 — skip)
 - [x] Oura (`services/oura`)
-- [ ] Peekalink
+- [x] Peekalink (`services/peekalink`)
 - [ ] Philips Hue
-- [ ] Pushcut
+- [x] Pushcut (`services/pushcut`)
 - [ ] QuestDB
 - [x] Raindrop (`services/raindrop`)
-- [ ] Rundeck
-- [ ] SecurityScorecard
+- [x] Rundeck (`services/rundeck`)
+- [x] SecurityScorecard (`services/securityscorecard`)
 - [ ] Sendy
-- [ ] SIGNL4
+- [x] SIGNL4 (`services/signl4`)
 - [x] Strava (`services/strava`)
-- [ ] Taiga
-- [ ] TheHive / TheHive 5
+- [x] Taiga (`services/taiga`)
+- [x] TheHive / TheHive 5 (`services/thehive`)
 - [ ] Twake
 - [x] Twist (`services/twist`)
-- [ ] uProc
+- [x] uProc (`services/uproc`)
 - [x] urlscan.io (`services/urlscan`)
 - [ ] Venafi TLS Protect
 - [ ] Vero
-- [ ] Wekan
-- [ ] Yourls
+- [x] Wekan (`services/wekan`)
+- [x] Yourls (`services/yourls`)
 - [x] Zulip (`services/zulip`)
 - [ ] Microsoft Graph Security
 
