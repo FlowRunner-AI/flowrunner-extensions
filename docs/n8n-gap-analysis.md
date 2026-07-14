@@ -270,19 +270,19 @@ Solid demand; round out category coverage.
 
 Include for parity claims; low individual demand.
 
-- [ ] Action Network
-- [ ] Adalo
-- [ ] Beeminder
+- [x] Action Network (`services/action-network`)
+- [x] Adalo (`services/adalo`)
+- [x] Beeminder (`services/beeminder`)
 - [x] Bubble (`services/bubble`)
-- [ ] Cockpit CMS
+- [x] Cockpit CMS (`services/cockpit`)
 - [x] CoinGecko (`services/coingecko`)
-- [ ] Cortex (security)
-- [ ] CrateDB
+- [x] Cortex (security) (`services/cortex`)
+- [x] CrateDB (`services/cratedb`)
 - [ ] Currents
 - [ ] E-goi
 - [ ] Elastic Security
 - [ ] Emelia
-- [ ] FileMaker
+- [x] FileMaker (`services/filemaker`)
 - [ ] Flow (getflow.com)
 - [x] Google Books (`services/google-books`)
 - [x] Google Cloud Natural Language (`services/google-natural-language`)
@@ -292,29 +292,29 @@ Include for parity claims; low individual demand.
 - [x] Hacker News (`services/hackernews`)
 - [ ] Humantic AI
 - [x] KoBoToolbox (`services/kobotoolbox`)
-- [ ] LingvaNex
+- [x] LingvaNex (`services/lingvanex`)
 - [ ] LoneScale
 - [ ] Mailcheck
 - [x] Marketstack (`services/marketstack`)
 - [x] Matrix (`services/matrix`)
 - [x] MISP (`services/misp`)
-- [ ] Mocean
+- [x] Mocean (`services/mocean`)
 - [x] Monica CRM (`services/monica`)
 - [x] NASA (`services/nasa`)
 - [ ] Netscaler (Citrix ADC)
-- [ ] One Simple API
+- [x] One Simple API (`services/one-simple-api`)
 - [ ] OpenThesaurus
 - [x] OpenWeatherMap (`services/openweathermap`)
 - [ ] Orbit (service shut down in 2024 — skip)
 - [x] Oura (`services/oura`)
 - [x] Peekalink (`services/peekalink`)
-- [ ] Philips Hue
+- [x] Philips Hue (`services/philips-hue`)
 - [x] Pushcut (`services/pushcut`)
-- [ ] QuestDB
+- [x] QuestDB (`services/questdb`)
 - [x] Raindrop (`services/raindrop`)
 - [x] Rundeck (`services/rundeck`)
 - [x] SecurityScorecard (`services/securityscorecard`)
-- [ ] Sendy
+- [x] Sendy (`services/sendy`)
 - [x] SIGNL4 (`services/signl4`)
 - [x] Strava (`services/strava`)
 - [x] Taiga (`services/taiga`)
@@ -324,11 +324,11 @@ Include for parity claims; low individual demand.
 - [x] uProc (`services/uproc`)
 - [x] urlscan.io (`services/urlscan`)
 - [ ] Venafi TLS Protect
-- [ ] Vero
+- [x] Vero (`services/vero`)
 - [x] Wekan (`services/wekan`)
 - [x] Yourls (`services/yourls`)
 - [x] Zulip (`services/zulip`)
-- [ ] Microsoft Graph Security
+- [x] Microsoft Graph Security (`services/ms-graph-security`)
 
 ---
 
