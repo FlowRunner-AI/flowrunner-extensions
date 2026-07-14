@@ -190,7 +190,7 @@ class LineService {
   /**
    * @operationName Narrowcast Message
    * @category Messaging
-   * @description Sends a message to a filtered subset of followers using a recipient filter (audience, demographic, or operator conditions) and/or a message-limit target. Provide the raw Recipient filter object and either a simple Message text or a raw Messages array (max 5). Returns a request ID; narrowcast is processed asynchronously and its delivery status can be checked separately in the LINE console. Consumes your monthly message quota.
+   * @description Sends a message to a filtered subset of followers using a recipient filter (audience, demographic, or operator conditions) and/or a message-limit target. Provide the raw Recipient filter object and either a simple Message text or a raw Messages array (max 5). Narrowcast is processed asynchronously (LINE returns HTTP 202 Accepted with an empty body); its per-request delivery status is tracked by LINE and can be checked in the LINE Official Account Manager. Consumes your monthly message quota.
    * @route POST /message/narrowcast
    * @paramDef {"type":"String","label":"Message","name":"text","uiComponent":{"type":"MULTI_LINE_TEXT"},"description":"Plain text message body. Ignored when a Messages array is provided. Provide this OR Messages."}
    * @paramDef {"type":"Array<Object>","label":"Messages","name":"messages","description":"Raw array of LINE message objects for rich content. Max 5. Overrides Message text when non-empty."}
@@ -198,10 +198,13 @@ class LineService {
    * @paramDef {"type":"Object","label":"Demographic Filter","name":"filter","description":"Demographic filter object narrowing recipients by attributes such as age, gender, area, appType, or subscriptionPeriod."}
    * @paramDef {"type":"Number","label":"Max Recipients","name":"max","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of recipients (upper limit) for this narrowcast. Optional."}
    * @returns {Object}
-   * @sampleResult {"requestId":"5b59509c-c57b-11e9-aa8c-2a2ae2dbcce4"}
+   * @sampleResult {"status":"success"}
    */
   async narrowcastMessage(text, messages, recipient, filter, max) {
-    return await this.#apiRequest({
+    // LINE accepts narrowcast asynchronously with a 202 and an empty body (the
+    // request ID is returned only via the X-Line-Request-Id header, which the
+    // request helper does not expose). Normalize the empty body to a status object.
+    const result = await this.#apiRequest({
       logTag: '[narrowcastMessage]',
       url: `${ API_BASE_URL }/message/narrowcast`,
       method: 'post',
@@ -212,6 +215,8 @@ class LineService {
         limit: max !== undefined && max !== null ? { max } : undefined,
       }),
     })
+
+    return result && Object.keys(result).length ? result : { status: 'success' }
   }
 
   /**
@@ -222,7 +227,7 @@ class LineService {
    * @paramDef {"type":"String","label":"Message ID","name":"messageId","required":true,"description":"The `message.id` from an incoming webhook message event whose content (image/video/audio/file) you want to retrieve."}
    * @paramDef {"type":"FilesUploadOptions","label":"File Settings","name":"fileOptions","required":false,"include":["scope"]}
    * @returns {Object}
-   * @sampleResult {"messageId":"461230966842064897","contentType":"image/jpeg","sizeBytes":204813,"url":"https://files.flowrunner.io/flow/line_content_461230966842064897.bin"}
+   * @sampleResult {"messageId":"461230966842064897","sizeBytes":204813,"url":"https://files.flowrunner.io/flow/line_content_461230966842064897"}
    */
   async getMessageContent(messageId, fileOptions) {
     const logTag = '[getMessageContent]'
@@ -337,7 +342,7 @@ class LineService {
   /**
    * @operationName Get Sent Message Count
    * @category Insights
-   * @description Retrieves the number of push messages successfully sent on a specific date. Provide the date in yyyyMMdd format (UTC+9). The status may be `ready` (data available), `unready` (aggregation not finished, try later), or `out_of_service` (date outside the retention period).
+   * @description Retrieves the number of push messages successfully sent on a specific date. Provide the date in yyyyMMdd format (UTC+9). The status may be `ready` (data available in `success`), `unready` (aggregation not finished, try again later), `unavailable_for_privacy` (too few messages to report for privacy reasons), or `out_of_service` (date outside the retention period). Only dates within roughly the last 60 days are available.
    * @route GET /message/delivery/push
    * @paramDef {"type":"String","label":"Date","name":"date","required":true,"uiComponent":{"type":"DATE_PICKER"},"description":"The date to count sent push messages for, in yyyyMMdd format (e.g. 20260713), based on UTC+9. Must be within the last ~60 days."}
    * @returns {Object}
