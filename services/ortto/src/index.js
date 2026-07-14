@@ -24,18 +24,34 @@ const API_VERSION = 'v1'
 const DEFAULT_LIMIT = 50
 
 /**
- * Ortto identifies every person/activity field by a typed field id of the form
- * `type::name` (for example `str::email`, `str::first`, `str::last`,
- * `phn::phone`). This map covers the standard built-in fields so callers can pass
- * plain values (email/first/last/phone) without knowing the field-id convention.
- * Custom fields are addressed by their own ids (discoverable via Get Custom
- * Fields) and can be supplied through the raw `fields` passthrough.
+ * Ortto identifies every person/activity field by a strongly-typed, namespace
+ * -specific field id of the form `type::name` (for example `str::email`,
+ * `str::first`, `str::last`). String fields (`str::`) and booleans (`bol::`)
+ * take plain values, but phone (`phn::`), geo (`geo::`) and date (`dtz::`)
+ * fields take objects — e.g. `phn::phone` is `{ "c": "61", "n": "401234567" }`
+ * or `{ "phone": "61401234567", "parse_with_country_code": true }`, and
+ * `geo::city` is `{ "name": "Melbourne" }`. Custom fields use the `type:cm:name`
+ * form (e.g. `str:cm:job-title`) and are discoverable via Get Custom Fields.
+ *
+ * This map covers the standard built-in string fields so callers can pass plain
+ * values (email/first/last) without knowing the convention. Phone is handled
+ * separately because it requires an object value.
  */
 const STANDARD_FIELD_IDS = {
   email: 'str::email',
   first: 'str::first',
   last: 'str::last',
   phone: 'phn::phone',
+}
+
+/**
+ * Ortto `merge_strategy` values control how existing person records are updated.
+ * The API expects an integer; these friendly labels map to the documented ints.
+ */
+const MERGE_STRATEGIES = {
+  'Overwrite existing (default)': 2,
+  'Append only (keep existing values)': 1,
+  'Ignore (create only, never update)': 3,
 }
 
 function clean(obj) {
@@ -107,8 +123,13 @@ class OrttoService {
       [STANDARD_FIELD_IDS.email]: email,
       [STANDARD_FIELD_IDS.first]: firstName,
       [STANDARD_FIELD_IDS.last]: lastName,
-      [STANDARD_FIELD_IDS.phone]: phone,
     })
+
+    // Ortto phone fields (phn::) require an object, not a plain string. Pass the
+    // full number and let Ortto parse the country code from it.
+    if (phone !== undefined && phone !== null && phone !== '') {
+      fields[STANDARD_FIELD_IDS.phone] = { phone: `${ phone }`, parse_with_country_code: true }
+    }
 
     if (rawFields && typeof rawFields === 'object') {
       Object.assign(fields, rawFields)
@@ -120,18 +141,19 @@ class OrttoService {
   /**
    * @operationName Merge or Create Person
    * @category People
-   * @description Creates a new person (contact) in Ortto or merges data into an existing one, matched by email. Ortto addresses every field by a typed field id of the form `type::name` (e.g. `str::email`, `str::first`, `str::last`, `phn::phone`). Provide the common values via Email/First Name/Last Name/Phone and/or supply a Raw Fields object keyed by field ids for custom fields; raw values override the convenience ones. By default the merge is queued asynchronously and Ortto returns a status/queue acknowledgement rather than the finished person. Use Get Custom Fields to discover custom field ids.
+   * @description Creates a new person (contact) in Ortto or merges data into an existing one, matched by email. Ortto addresses every field by a strongly-typed field id of the form `type::name` (e.g. `str::email`, `str::first`, `str::last`). String and boolean fields take plain values; phone (`phn::`), geo (`geo::`) and date (`dtz::`) fields take objects — supply those via Raw Fields. Provide common values via Email/First Name/Last Name/Phone and/or a Raw Fields object keyed by field ids for custom fields (raw values override the convenience ones). Merge Strategy controls how existing values are updated. By default the merge is queued asynchronously and Ortto returns a per-person status acknowledgement rather than the finished person. Use Get Custom Fields to discover custom field ids.
    * @route POST /person/merge
    * @paramDef {"type":"String","label":"Email","name":"email","required":true,"description":"Person's email address. Used as the match key and mapped to the str::email field."}
    * @paramDef {"type":"String","label":"First Name","name":"firstName","description":"Person's first name (mapped to str::first)."}
    * @paramDef {"type":"String","label":"Last Name","name":"lastName","description":"Person's last name (mapped to str::last)."}
-   * @paramDef {"type":"String","label":"Phone","name":"phone","description":"Person's phone number in E.164 format, e.g. +14155552671 (mapped to phn::phone)."}
-   * @paramDef {"type":"Object","label":"Raw Fields","name":"rawFields","description":"Optional object of additional Ortto fields keyed by field id, e.g. {\"str::company\":\"Acme\",\"bol::subscribed\":true}. Merged on top of the convenience values. Discover custom field ids via Get Custom Fields."}
-   * @paramDef {"type":"Boolean","label":"Run Asynchronously","name":"async","uiComponent":{"type":"TOGGLE"},"description":"When true (default), Ortto queues the merge and returns immediately. Set false to process inline and return the affected person id."}
+   * @paramDef {"type":"String","label":"Phone","name":"phone","description":"Person's phone number including country code, e.g. +14155552671. Sent to the phn::phone object field with automatic country-code parsing."}
+   * @paramDef {"type":"Object","label":"Raw Fields","name":"rawFields","description":"Optional object of additional Ortto fields keyed by field id, e.g. {\"str:cm:company\":\"Acme\",\"bol::gdpr\":true,\"geo::city\":{\"name\":\"Melbourne\"}}. Merged on top of the convenience values. Discover custom field ids via Get Custom Fields."}
+   * @paramDef {"type":"String","label":"Merge Strategy","name":"mergeStrategy","uiComponent":{"type":"DROPDOWN","options":{"values":["Overwrite existing (default)","Append only (keep existing values)","Ignore (create only, never update)"]}},"description":"How to treat existing values on a matched person. Overwrite updates all provided fields; Append only fills empty fields without changing existing ones; Ignore never updates an existing person but still creates a new one if none matches."}
+   * @paramDef {"type":"Boolean","label":"Run Asynchronously","name":"async","uiComponent":{"type":"TOGGLE"},"description":"When true (default), Ortto queues the merge and returns immediately. Set false to process inline before returning."}
    * @returns {Object}
-   * @sampleResult {"people":[{"person_id":"00000000-0000-0000-0000-000000000000","status":"merged"}]}
+   * @sampleResult {"people":[{"person_id":"0063f2c474449cd58a4c5600","status":"merged"}]}
    */
-  async mergeOrCreatePerson(email, firstName, lastName, phone, rawFields, async) {
+  async mergeOrCreatePerson(email, firstName, lastName, phone, rawFields, mergeStrategy, async) {
     const logTag = '[mergeOrCreatePerson]'
 
     const fields = this.#buildPersonFields({ email, firstName, lastName, phone, rawFields })
@@ -140,32 +162,37 @@ class OrttoService {
       logTag,
       path: '/person/merge',
       method: 'post',
-      body: {
+      body: clean({
         async: async !== false,
         merge_by: [STANDARD_FIELD_IDS.email],
+        merge_strategy: this.#resolveChoice(mergeStrategy, MERGE_STRATEGIES) ?? MERGE_STRATEGIES['Overwrite existing (default)'],
         people: [{ fields }],
-      },
+      }),
     })
   }
 
   /**
    * @operationName Get People
    * @category People
-   * @description Retrieves a page of people (contacts) from Ortto. Specify which field ids to return (e.g. `str::email`, `str::first`, `str::last`), an optional Ortto filter object to narrow the results, and pagination via Limit/Offset. Field ids follow Ortto's `type::name` convention; use Get Custom Fields to discover them.
+   * @description Retrieves a page of people (contacts) from Ortto. Specify which field ids to return (e.g. `str::email`, `str::first`, `str::last`), an optional Ortto filter object to narrow the results, sorting, and pagination via Limit/Offset. The response includes a `contacts` array plus `has_more`, `next_offset` and `cursor_id` for paging. Field ids follow Ortto's `type::name` convention; use Get Custom Fields to discover them.
    * @route POST /person/get
    * @paramDef {"type":"Array<String>","label":"Fields","name":"fields","description":"Field ids to return for each person, e.g. [\"str::email\",\"str::first\",\"str::last\"]. Defaults to email, first and last name when omitted."}
-   * @paramDef {"type":"Object","label":"Filter","name":"filter","description":"Optional Ortto filter object to narrow which people are returned. Omit to return all people (paged). See Ortto's filtering docs for the structure."}
-   * @paramDef {"type":"Number","label":"Limit","name":"limit","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum people to return per page (default 50, max 100)."}
-   * @paramDef {"type":"Number","label":"Offset","name":"offset","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Number of people to skip for pagination (default 0)."}
+   * @paramDef {"type":"Object","label":"Filter","name":"filter","description":"Optional Ortto filter object to narrow which people are returned, e.g. {\"$str::is\":{\"field_id\":\"str::email\",\"value\":\"jane@example.com\"}}. Omit to return all people (paged)."}
+   * @paramDef {"type":"String","label":"Sort By Field","name":"sortByFieldId","dictionary":"getFieldsDictionary","description":"Optional field id to sort by, e.g. str::last."}
+   * @paramDef {"type":"String","label":"Sort Order","name":"sortOrder","uiComponent":{"type":"DROPDOWN","options":{"values":["Ascending","Descending"]}},"description":"Sort direction when Sort By Field is set. Defaults to Ascending."}
+   * @paramDef {"type":"Number","label":"Limit","name":"limit","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum people to return per page (default 50, max 500)."}
+   * @paramDef {"type":"Number","label":"Offset","name":"offset","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Number of people to skip for pagination (default 0). Use next_offset from the previous response to page."}
    * @returns {Object}
-   * @sampleResult {"contacts":[{"id":"00000000-0000-0000-0000-000000000000","fields":{"str::email":"jane@example.com","str::first":"Jane","str::last":"Doe"}}],"offset":0,"has_more":false}
+   * @sampleResult {"contacts":[{"id":"0063f2c474449cd58a4c5600","fields":{"str::email":"jane@example.com","str::first":"Jane","str::last":"Doe"}}],"meta":{"total_contacts":1},"offset":0,"next_offset":1,"has_more":false}
    */
-  async getPeople(fields, filter, limit, offset) {
+  async getPeople(fields, filter, sortByFieldId, sortOrder, limit, offset) {
     const logTag = '[getPeople]'
 
     const body = clean({
       fields: Array.isArray(fields) && fields.length ? fields : ['str::email', 'str::first', 'str::last'],
       filter,
+      sort_by_field_id: sortByFieldId,
+      sort_order: this.#resolveChoice(sortOrder, { Ascending: 'asc', Descending: 'desc' }),
       limit: limit || DEFAULT_LIMIT,
       offset: offset || 0,
     })
@@ -198,9 +225,8 @@ class OrttoService {
       body: {
         fields: Array.isArray(fields) && fields.length ? fields : ['str::email', 'str::first', 'str::last'],
         filter: {
-          $str: {
+          '$str::is': {
             field_id: STANDARD_FIELD_IDS.email,
-            op: 'equal',
             value: email,
           },
         },
@@ -217,15 +243,16 @@ class OrttoService {
   /**
    * @operationName Create Custom Activity
    * @category Activities
-   * @description Records one or more custom activity events in Ortto against people. Each activity references a registered custom activity id and carries a `fields` object (keyed by Ortto field ids) and an `attributes` object that identifies the person (typically by str::email). Custom activities power journeys and reporting in Ortto.
+   * @description Records a custom activity event in Ortto against a person. References a registered custom activity id and identifies the target person via the Person Fields object (usually str::email) combined with Merge By. The Attributes object carries the activity's own payload keyed by that activity's field ids (e.g. str:cm:destination, int::v). If the person does not yet exist they are created. Custom activities power journeys and reporting in Ortto; up to 50 events per activity per contact per 24h are accepted.
    * @route POST /activities/create
-   * @paramDef {"type":"String","label":"Activity ID","name":"activityId","required":true,"description":"The registered custom activity id (from Ortto's Activities settings), e.g. act:cm:my-activity."}
-   * @paramDef {"type":"Object","label":"Attributes","name":"attributes","required":true,"description":"Object identifying the person and merge behavior, keyed by field ids, e.g. {\"str::email\":\"jane@example.com\"}."}
-   * @paramDef {"type":"Object","label":"Fields","name":"fields","description":"Optional activity payload keyed by activity field ids, e.g. {\"str::order-id\":\"12345\",\"cur::amount\":49.99}."}
+   * @paramDef {"type":"String","label":"Activity ID","name":"activityId","required":true,"description":"The registered custom activity id (from Ortto's Activities settings), e.g. act:cm:flight-booked."}
+   * @paramDef {"type":"Object","label":"Person Fields","name":"personFields","required":true,"description":"Person field ids that identify (and optionally set data on) the person, e.g. {\"str::email\":\"jane@example.com\"}."}
+   * @paramDef {"type":"Object","label":"Attributes","name":"attributes","description":"Optional activity payload keyed by the activity's field ids, e.g. {\"str:cm:destination\":\"London\",\"int::v\":15300}."}
+   * @paramDef {"type":"Array<String>","label":"Merge By","name":"mergeBy","description":"Person field ids used to match an existing person, e.g. [\"str::email\"]. Defaults to [\"str::email\"]."}
    * @returns {Object}
-   * @sampleResult {"activities":[{"status":"created"}]}
+   * @sampleResult {"activities":[{"person_id":"0063f2c474449cd58a4c5600","status":"ingested","person_status":"created","activity_id":"0063f2c474bc15d72affcdcc"}]}
    */
-  async createCustomActivity(activityId, attributes, fields) {
+  async createCustomActivity(activityId, personFields, attributes, mergeBy) {
     const logTag = '[createCustomActivity]'
 
     return await this.#apiRequest({
@@ -236,10 +263,11 @@ class OrttoService {
         activities: [
           clean({
             activity_id: activityId,
+            fields: personFields || {},
             attributes: attributes || {},
-            fields: fields || {},
           }),
         ],
+        merge_by: Array.isArray(mergeBy) && mergeBy.length ? mergeBy : [STANDARD_FIELD_IDS.email],
       },
     })
   }
