@@ -29,8 +29,8 @@ class SeaTable {
   /**
    * Exchanges the long-lived Base API Token for a short-lived base access token and
    * caches the returned base coordinates (dtable_uuid + dtable_server gateway URL).
-   * All data/row operations authenticate with the base access token against the
-   * dtable-server gateway rather than the main SeaTable server.
+   * All data/row operations authenticate with the base access token (Bearer) against
+   * the API gateway (api-gateway/api/v2) rather than the main SeaTable server.
    *
    * @param {Boolean} [forceRefresh] When true, ignores any cached context and re-exchanges.
    * @returns {Object} { accessToken, dtableUuid, dtableServer }
@@ -54,8 +54,11 @@ class SeaTable {
       throw new Error('SeaTable API error: failed to obtain a base access token. Verify the Base API Token and Server URL.')
     }
 
-    // dtable_server is the gateway base URL for data operations and always ends with a slash.
-    const dtableServer = (response.dtable_server || `${ this.serverUrl }/`).replace(/\/*$/, '/')
+    // dtable_server is the API gateway base URL for data operations (e.g.
+    // https://cloud.seatable.io/api-gateway/) and always ends with a slash. As of
+    // SeaTable 5.3 all base operations route through this gateway; the legacy
+    // dtable-server/dtable-db endpoints are no longer supported.
+    const dtableServer = (response.dtable_server || `${ this.serverUrl }/api-gateway/`).replace(/\/*$/, '/')
 
     this._baseContext = {
       accessToken: response.access_token,
@@ -81,7 +84,7 @@ class SeaTable {
 
   /**
    * Single entry point for all base data operations. Resolves the base context,
-   * issues the request against the dtable-server gateway, and transparently retries
+   * issues the request against the API gateway, and transparently retries
    * once with a freshly exchanged access token if the base token has expired (401).
    *
    * @param {Object} options
@@ -90,12 +93,12 @@ class SeaTable {
   async #dataRequest({ path, method = 'get', body, query, logTag }) {
     const attempt = async forceRefresh => {
       const { accessToken, dtableServer, dtableUuid } = await this.#getBaseContext(forceRefresh)
-      const url = `${ dtableServer }api/v1/dtables/${ dtableUuid }/${ path }`
+      const url = `${ dtableServer }api/v2/dtables/${ dtableUuid }/${ path }`
 
       logger.debug(`${ logTag } - [${ method.toUpperCase() }::${ url }]`)
 
       const request = Flowrunner.Request[method.toLowerCase()](url)
-        .set({ Authorization: `Token ${ accessToken }`, 'Content-Type': 'application/json' })
+        .set({ Authorization: `Bearer ${ accessToken }`, 'Content-Type': 'application/json' })
         .query(query || {})
 
       return body !== undefined ? request.send(body) : request
@@ -251,7 +254,7 @@ class SeaTable {
   // ==================================== ROWS ====================================
 
   /**
-   * @description Retrieves rows from a table in the connected SeaTable base. Supports selecting a specific view, pagination via start offset and limit (max 1000 per request), and optionally converting link column IDs into readable values. Returns the matching rows keyed by column name.
+   * @description Retrieves rows from a table in the connected SeaTable base via the API gateway. Supports selecting a specific view, pagination via start offset and limit (max 1000 per request), and optionally returning column keys instead of readable column names. Returns the matching rows keyed by column name.
    *
    * @route GET /listRows
    * @operationName List Rows
@@ -261,18 +264,18 @@ class SeaTable {
    * @paramDef {"type":"String","label":"View Name","name":"viewName","description":"Optional view to read rows from. When omitted, the table's default view is used."}
    * @paramDef {"type":"Number","label":"Start","name":"start","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Zero-based offset of the first row to return (default 0)."}
    * @paramDef {"type":"Number","label":"Limit","name":"limit","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of rows to return (default 100, max 1000)."}
-   * @paramDef {"type":"Boolean","label":"Convert Link Values","name":"convertLink","uiComponent":{"type":"TOGGLE"},"description":"When enabled, link column values are returned as readable display values instead of internal row IDs."}
+   * @paramDef {"type":"Boolean","label":"Convert Keys","name":"convertKeys","uiComponent":{"type":"TOGGLE"},"description":"When enabled (default), rows are keyed by readable column names. Disable to receive rows keyed by internal column keys instead."}
    *
    * @returns {Object} An object with a rows array; each row is keyed by column name plus a _id field.
    * @sampleResult {"rows":[{"_id":"aBcD1234","Name":"Write report","Done":false}]}
    */
-  async listRows(tableName, viewName, start, limit, convertLink) {
+  async listRows(tableName, viewName, start, limit, convertKeys) {
     const query = { table_name: tableName }
 
     if (viewName) query.view_name = viewName
     if (start !== undefined && start !== null) query.start = start
     query.limit = limit !== undefined && limit !== null ? limit : 100
-    if (convertLink) query.convert_link_id = true
+    query.convert_keys = convertKeys === undefined || convertKeys === null ? true : convertKeys
 
     return this.#dataRequest({
       logTag: 'listRows',
@@ -458,7 +461,7 @@ class SeaTable {
   async queryWithSql(sql) {
     return this.#dataRequest({
       logTag: 'queryWithSql',
-      path: 'sql',
+      path: 'sql/',
       method: 'post',
       body: { sql, convert_keys: true },
     })
@@ -485,9 +488,9 @@ class SeaTable {
 
     return this.#dataRequest({
       logTag: 'listRowLinks',
-      path: 'links/',
+      path: 'query-links/',
       method: 'post',
-      body: { table_id: tableId, link_column: linkColumnKey, rows: rowIds },
+      body: { table_id: tableId, link_column_key: linkColumnKey, rows: rowIds },
     })
   }
 
