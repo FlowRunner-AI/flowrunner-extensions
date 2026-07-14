@@ -116,11 +116,11 @@ Highest usage in n8n / broadest customer demand.
 - [x] Harvest (`services/harvest`)
 
 ### Payments & commerce
-- [ ] PayPal
-- [ ] Chargebee
-- [ ] Paddle
-- [ ] Wise
-- [ ] Magento 2
+- [x] PayPal (`services/paypal`)
+- [x] Chargebee (`services/chargebee`)
+- [x] Paddle (`services/paddle`)
+- [x] Wise (`services/wise`)
+- [x] Magento 2 (`services/magento`)
 
 ### CMS & content
 - [ ] Contentful
