@@ -96,24 +96,24 @@ Highest usage in n8n / broadest customer demand.
 - [x] DeepL (translation) (`services/deepl`)
 
 ### Dev tools & observability
-- [ ] GitLab
-- [ ] Bitbucket
-- [ ] Cloudflare
-- [ ] Netlify
-- [ ] Sentry
-- [ ] PostHog
-- [ ] Jenkins
+- [x] GitLab (`services/gitlab`)
+- [x] Bitbucket (`services/bitbucket`)
+- [x] Cloudflare (`services/cloudflare`)
+- [x] Netlify (`services/netlify`)
+- [x] Sentry (`services/sentry`)
+- [x] PostHog (`services/posthog`)
+- [x] Jenkins (`services/jenkins`)
 
 ### Productivity, PM & scheduling
-- [ ] Linear
-- [ ] Todoist
-- [ ] Coda
-- [ ] Cal.com
-- [ ] SurveyMonkey
-- [ ] Eventbrite
-- [ ] Clockify
-- [ ] Toggl Track
-- [ ] Harvest
+- [x] Linear (`services/linear`)
+- [x] Todoist (`services/todoist`)
+- [x] Coda (`services/coda`)
+- [x] Cal.com (`services/cal-com`)
+- [x] SurveyMonkey (`services/surveymonkey`)
+- [x] Eventbrite (`services/eventbrite`)
+- [x] Clockify (`services/clockify`)
+- [x] Toggl Track (`services/toggl`)
+- [x] Harvest (`services/harvest`)
 
 ### Payments & commerce
 - [ ] PayPal
