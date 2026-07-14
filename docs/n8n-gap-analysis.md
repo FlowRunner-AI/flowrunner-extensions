@@ -31,8 +31,8 @@ Highest usage in n8n / broadest customer demand.
 - [x] MongoDB (`services/mongodb`)
 - [x] Microsoft SQL Server (`services/sql-server`)
 - [x] Redis (`services/redis`)
-- [ ] Google BigQuery
-- [ ] Snowflake
+- [x] Google BigQuery (`services/bigquery`)
+- [x] Snowflake (`services/snowflake`)
 - [ ] Kafka
 - [ ] RabbitMQ
 
@@ -51,10 +51,10 @@ Highest usage in n8n / broadest customer demand.
 - [ ] Help Scout
 
 ### Transactional & marketing email
-- [ ] SendGrid
-- [ ] Mailgun
-- [ ] Postmark
-- [ ] Mailjet
+- [x] SendGrid (`services/sendgrid`)
+- [x] Mailgun (`services/mailgun`)
+- [x] Postmark (`services/postmark`)
+- [x] Mailjet (`services/mailjet`)
 - [ ] ActiveCampaign
 - [ ] MailerLite
 - [ ] Kit (ConvertKit)
