@@ -403,7 +403,7 @@ class Grist {
 
     await this.#apiRequest({
       logTag: 'deleteRecords',
-      url: `${ this.apiBase }/docs/${ docId }/tables/${ tableId }/data/delete`,
+      url: `${ this.apiBase }/docs/${ docId }/tables/${ tableId }/records/delete`,
       method: 'post',
       body: rowIds,
     })
