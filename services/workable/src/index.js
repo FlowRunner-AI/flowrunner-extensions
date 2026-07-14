@@ -53,13 +53,6 @@ const CANDIDATE_STATE_LABELS = {
   Hired: 'hired',
 }
 
-// Comment visibility policy. 'public' is visible to the whole hiring team; 'private' targets
-// specific members (supplied via the member ids array).
-const COMMENT_POLICY_LABELS = {
-  Public: 'public',
-  Private: 'private',
-}
-
 class WorkablePolling {
   // Compute { events, state } for one polling cycle. Workable returns candidates newest-first when
   // ordered by created_at; we emit any candidate whose id we have not seen and advance the
@@ -166,21 +159,23 @@ class Workable {
   /**
    * @operationName List Jobs
    * @category Jobs
-   * @description Lists jobs in the Workable account with optional filtering by state and hiring phase. Returns paginated job objects including title, shortcode, department, location, and state. Use a job's shortcode with Get Job, Get Job Members, Get Job Stages, and Create Candidate.
+   * @description Lists jobs in the Workable account with optional filtering by state and creation date. Returns paginated job objects including title, shortcode, department, location, and state. Use a job's shortcode with Get Job, Get Job Members, Get Job Stages, and Create Candidate.
    * @route GET /jobs
    * @paramDef {"type":"String","label":"State","name":"state","uiComponent":{"type":"DROPDOWN","options":{"values":["Draft","Published","Closed","Archived"]}},"description":"Filter jobs by lifecycle state. Leave empty to return jobs in all states."}
-   * @paramDef {"type":"String","label":"Phase","name":"phase","uiComponent":{"type":"DROPDOWN","options":{"values":["Draft","Published","Other"]}},"description":"Filter by hiring phase: Draft (unpublished), Published (live), or Other (closed/archived)."}
+   * @paramDef {"type":"String","label":"Created After","name":"createdAfter","uiComponent":{"type":"DATE_TIME_PICKER"},"description":"Return only jobs created at or after this timestamp (ISO 8601)."}
+   * @paramDef {"type":"String","label":"Since ID","name":"sinceId","description":"Return jobs with an id greater than or equal to this value (forward pagination cursor from paging.next)."}
    * @paramDef {"type":"Number","label":"Limit","name":"limit","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of jobs to return per page (default 50, max 100)."}
    * @returns {Object}
    * @sampleResult {"jobs":[{"id":"19782","title":"Software Engineer","full_title":"Software Engineer - Engineering","shortcode":"GHI789","code":null,"state":"published","department":"Engineering","url":"https://acme.workable.com/jobs/19782","application_url":"https://acme.workable.com/j/GHI789/candidates/new","location":{"country":"United States","city":"New York"},"created_at":"2026-01-10T09:00:00Z"}],"paging":{"next":"https://acme.workable.com/spi/v3/jobs?since_id=19782"}}
    */
-  async listJobs(state, phase, limit) {
+  async listJobs(state, createdAfter, sinceId, limit) {
     return await this.#apiRequest({
       logTag: '[listJobs]',
       url: `${ this.#baseUrl() }/jobs`,
       query: {
         state: resolveChoice(state, JOB_STATE_LABELS),
-        phase: resolveChoice(phase, { Draft: 'draft', Published: 'published', Other: 'other' }),
+        created_after: createdAfter,
+        since_id: sinceId,
         limit: limit || undefined,
       },
     })
@@ -282,7 +277,7 @@ class Workable {
   /**
    * @operationName Create Candidate
    * @category Candidates
-   * @description Creates a candidate and applies them to a job (by shortcode). Provide the candidate's name plus optional contact details, resume URL, and cover letter. Set Sourced to add the candidate directly to the sourced stage rather than as an inbound applicant.
+   * @description Creates a candidate and adds them to a job (by shortcode). Provide the candidate's name plus optional contact details, resume URL, and cover letter. Sourced defaults to true (the candidate is uploaded to the sourced stage); set Sourced to false to treat them as an inbound applicant, which triggers Workable's applicant thank-you email.
    * @route POST /jobs/{shortcode}/candidates
    * @paramDef {"type":"String","label":"Job Shortcode","name":"shortcode","required":true,"dictionary":"getJobsDictionary","description":"The job to add the candidate to. Search and select a job or type a shortcode directly."}
    * @paramDef {"type":"String","label":"Full Name","name":"name","description":"Candidate full name. Provide either this or First Name + Last Name."}
@@ -292,7 +287,7 @@ class Workable {
    * @paramDef {"type":"String","label":"Phone","name":"phone","description":"Candidate phone number."}
    * @paramDef {"type":"String","label":"Resume URL","name":"resumeUrl","description":"Publicly accessible URL of the candidate's resume. Workable fetches and attaches it."}
    * @paramDef {"type":"String","label":"Cover Letter","name":"coverLetter","uiComponent":{"type":"MULTI_LINE_TEXT"},"description":"Cover letter text for the candidate."}
-   * @paramDef {"type":"Boolean","label":"Sourced","name":"sourced","uiComponent":{"type":"CHECKBOX"},"description":"When true, add the candidate to the sourced stage instead of treating them as an inbound applicant."}
+   * @paramDef {"type":"Boolean","label":"Sourced","name":"sourced","uiComponent":{"type":"CHECKBOX"},"description":"Defaults to true (uploaded to the sourced stage). Set to false to treat the candidate as an inbound applicant, which triggers Workable's applicant thank-you email."}
    * @returns {Object}
    * @sampleResult {"status":"created","candidate":{"id":"3f7a9c2e1b","name":"John Smith","email":"john@example.com","job":{"shortcode":"GHI789","title":"Software Engineer"},"stage":"sourced","created_at":"2026-06-01T12:00:00Z"}}
    */
@@ -356,38 +351,40 @@ class Workable {
   /**
    * @operationName Move Candidate to Stage
    * @category Candidates
-   * @description Moves a candidate to a different stage in their job's hiring pipeline by target stage slug. Retrieve valid slugs with Get Job Stages for the candidate's job.
+   * @description Moves a candidate to a different stage in their job's hiring pipeline by target stage slug. Retrieve valid slugs with Get Job Stages for the candidate's job. A member id (the person performing the move) is required by the Workable API.
    * @route POST /candidates/{id}/move
    * @paramDef {"type":"String","label":"Candidate ID","name":"id","required":true,"description":"The candidate's unique id."}
-   * @paramDef {"type":"String","label":"Target Stage Slug","name":"targetStageSlug","required":true,"description":"Slug of the destination stage (e.g. phone_screen). Get valid slugs from Get Job Stages."}
+   * @paramDef {"type":"String","label":"Member ID","name":"memberId","required":true,"dictionary":"getMembersDictionary","description":"Id of the member performing the move (required). Search and select an account member, or type a member id."}
+   * @paramDef {"type":"String","label":"Target Stage Slug","name":"targetStage","required":true,"description":"Slug of the destination stage (e.g. phone_screen). Get valid slugs from Get Job Stages."}
    * @returns {Object}
    * @sampleResult {"status":"moved","candidate":{"id":"3f7a9c2e1b","stage":"phone_screen"}}
    */
-  async moveCandidateToStage(id, targetStageSlug) {
+  async moveCandidateToStage(id, memberId, targetStage) {
     return await this.#apiRequest({
       logTag: '[moveCandidateToStage]',
       url: `${ this.#baseUrl() }/candidates/${ encodeURIComponent(id) }/move`,
       method: 'post',
-      body: { target_stage_slug: targetStageSlug },
+      body: clean({ member_id: memberId, target_stage: targetStage }),
     })
   }
 
   /**
    * @operationName Disqualify Candidate
    * @category Candidates
-   * @description Disqualifies a candidate, removing them from active consideration, with an optional disqualification reason. The candidate can later be brought back with Revert Candidate.
+   * @description Disqualifies a candidate, removing them from active consideration, with an optional disqualification reason. A member id (the person performing the disqualification) is required by the Workable API. The candidate can later be brought back with Revert Candidate.
    * @route POST /candidates/{id}/disqualify
    * @paramDef {"type":"String","label":"Candidate ID","name":"id","required":true,"description":"The candidate's unique id."}
+   * @paramDef {"type":"String","label":"Member ID","name":"memberId","required":true,"dictionary":"getMembersDictionary","description":"Id of the member performing the disqualification (required). Search and select an account member, or type a member id."}
    * @paramDef {"type":"String","label":"Disqualification Reason","name":"disqualificationReason","description":"Optional reason for disqualification (e.g. 'Not enough experience')."}
    * @returns {Object}
    * @sampleResult {"status":"disqualified","candidate":{"id":"3f7a9c2e1b","disqualified":true,"disqualification_reason":"Not enough experience"}}
    */
-  async disqualifyCandidate(id, disqualificationReason) {
+  async disqualifyCandidate(id, memberId, disqualificationReason) {
     return await this.#apiRequest({
       logTag: '[disqualifyCandidate]',
       url: `${ this.#baseUrl() }/candidates/${ encodeURIComponent(id) }/disqualify`,
       method: 'post',
-      body: clean({ disqualification_reason: disqualificationReason }),
+      body: clean({ member_id: memberId, disqualification_reason: disqualificationReason }),
     })
   }
 
@@ -397,39 +394,65 @@ class Workable {
    * @description Reverts a previously disqualified candidate back to active status in their current stage.
    * @route POST /candidates/{id}/revert
    * @paramDef {"type":"String","label":"Candidate ID","name":"id","required":true,"description":"The candidate's unique id."}
+   * @paramDef {"type":"String","label":"Member ID","name":"memberId","dictionary":"getMembersDictionary","description":"Optional id of the member performing the revert. Search and select an account member, or type a member id."}
    * @returns {Object}
    * @sampleResult {"status":"reverted","candidate":{"id":"3f7a9c2e1b","disqualified":false}}
    */
-  async revertCandidate(id) {
+  async revertCandidate(id, memberId) {
     return await this.#apiRequest({
       logTag: '[revertCandidate]',
       url: `${ this.#baseUrl() }/candidates/${ encodeURIComponent(id) }/revert`,
       method: 'post',
-      body: {},
+      body: clean({ member_id: memberId }),
     })
   }
 
   /**
    * @operationName Copy Candidate to Job
    * @category Candidates
-   * @description Copies or relocates an existing candidate into another job's pipeline. Copy keeps the original; relocate moves the candidate. Optionally target a specific stage in the destination job.
+   * @description Copies an existing candidate into another job's pipeline, keeping the candidate on the original job. Optionally target a specific stage in the destination job. A member id (the person performing the copy) is required by the Workable API. To move the candidate off the original job instead, use Relocate Candidate to Job.
    * @route POST /candidates/{id}/copy
    * @paramDef {"type":"String","label":"Candidate ID","name":"id","required":true,"description":"The candidate's unique id."}
-   * @paramDef {"type":"String","label":"Target Job Shortcode","name":"targetJobShortcode","required":true,"dictionary":"getJobsDictionary","description":"The job to copy or relocate the candidate into. Search and select a job or type a shortcode."}
-   * @paramDef {"type":"String","label":"Target Stage Slug","name":"targetStageSlug","description":"Optional destination stage slug in the target job. Get valid slugs from Get Job Stages."}
-   * @paramDef {"type":"String","label":"Action","name":"action","uiComponent":{"type":"DROPDOWN","options":{"values":["Copy","Relocate"]}},"description":"Copy keeps the candidate on the original job; Relocate moves them off it. Defaults to Copy."}
+   * @paramDef {"type":"String","label":"Member ID","name":"memberId","required":true,"dictionary":"getMembersDictionary","description":"Id of the member performing the copy (required). Search and select an account member, or type a member id."}
+   * @paramDef {"type":"String","label":"Target Job Shortcode","name":"targetJobShortcode","required":true,"dictionary":"getJobsDictionary","description":"The job to copy the candidate into. Search and select a job or type a shortcode."}
+   * @paramDef {"type":"String","label":"Target Stage","name":"targetStage","description":"Optional destination stage slug in the target job. Get valid slugs from Get Job Stages."}
    * @returns {Object}
    * @sampleResult {"status":"copied","candidate":{"id":"3f7a9c2e1b","job":{"shortcode":"JKL012"},"stage":"applied"}}
    */
-  async copyCandidateToJob(id, targetJobShortcode, targetStageSlug, action) {
+  async copyCandidateToJob(id, memberId, targetJobShortcode, targetStage) {
     return await this.#apiRequest({
       logTag: '[copyCandidateToJob]',
       url: `${ this.#baseUrl() }/candidates/${ encodeURIComponent(id) }/copy`,
       method: 'post',
       body: clean({
+        member_id: memberId,
         target_job_shortcode: targetJobShortcode,
-        target_stage_slug: targetStageSlug,
-        action: resolveChoice(action, { Copy: 'copy', Relocate: 'relocate' }),
+        target_stage: targetStage,
+      }),
+    })
+  }
+
+  /**
+   * @operationName Relocate Candidate to Job
+   * @category Candidates
+   * @description Relocates an existing candidate into another job's pipeline, moving them off the original job. Optionally target a specific stage in the destination job. A member id (the person performing the relocation) is required by the Workable API. To keep the candidate on the original job instead, use Copy Candidate to Job.
+   * @route POST /candidates/{id}/relocate
+   * @paramDef {"type":"String","label":"Candidate ID","name":"id","required":true,"description":"The candidate's unique id."}
+   * @paramDef {"type":"String","label":"Member ID","name":"memberId","required":true,"dictionary":"getMembersDictionary","description":"Id of the member performing the relocation (required). Search and select an account member, or type a member id."}
+   * @paramDef {"type":"String","label":"Target Job Shortcode","name":"targetJobShortcode","required":true,"dictionary":"getJobsDictionary","description":"The job to relocate the candidate into. Search and select a job or type a shortcode."}
+   * @paramDef {"type":"String","label":"Target Stage","name":"targetStage","description":"Optional destination stage slug in the target job. Get valid slugs from Get Job Stages."}
+   * @returns {Object}
+   * @sampleResult {"status":"relocated","candidate":{"id":"3f7a9c2e1b","job":{"shortcode":"JKL012"},"stage":"applied"}}
+   */
+  async relocateCandidateToJob(id, memberId, targetJobShortcode, targetStage) {
+    return await this.#apiRequest({
+      logTag: '[relocateCandidateToJob]',
+      url: `${ this.#baseUrl() }/candidates/${ encodeURIComponent(id) }/relocate`,
+      method: 'post',
+      body: clean({
+        member_id: memberId,
+        target_job_shortcode: targetJobShortcode,
+        target_stage: targetStage,
       }),
     })
   }
@@ -439,50 +462,61 @@ class Workable {
   /**
    * @operationName Create Comment
    * @category Comments & Ratings
-   * @description Adds a comment to a candidate's timeline. Public comments are visible to the whole hiring team; private comments are visible only to selected members (supply their member ids).
+   * @description Adds a comment to a candidate's timeline. A member id (the comment's author) is required by the Workable API. By default the comment is visible to all admins and can be restricted to specific roles via the Visible To Roles list; comments are always visible to admins regardless.
    * @route POST /candidates/{id}/comments
    * @paramDef {"type":"String","label":"Candidate ID","name":"id","required":true,"description":"The candidate's unique id."}
+   * @paramDef {"type":"String","label":"Member ID","name":"memberId","required":true,"dictionary":"getMembersDictionary","description":"Id of the member authoring the comment (required). Search and select an account member, or type a member id."}
    * @paramDef {"type":"String","label":"Comment","name":"body","required":true,"uiComponent":{"type":"MULTI_LINE_TEXT"},"description":"The comment text to post to the candidate's timeline."}
-   * @paramDef {"type":"String","label":"Visibility","name":"policy","uiComponent":{"type":"DROPDOWN","options":{"values":["Public","Private"]}},"description":"Public shows the comment to the whole hiring team; Private restricts it to the members listed below. Defaults to Public."}
-   * @paramDef {"type":"Array<String>","label":"Member IDs","name":"memberIds","description":"Member ids that may see the comment when Visibility is Private. Ignored for public comments."}
+   * @paramDef {"type":"Array<String>","label":"Visible To Roles","name":"policy","uiComponent":{"type":"DROPDOWN","options":{"values":["Admin","Recruiting Admin","Hiring Manager","Recruiter","Reviewer","Simple"]}},"description":"Optional list of member roles allowed to see the comment. Leave empty to use Workable's default visibility. Comments are always visible to admins regardless of this setting."}
    * @returns {Object}
-   * @sampleResult {"comment":{"id":"c_88213","body":"Strong technical background","policy":["public"],"created_at":"2026-06-02T10:00:00Z"}}
+   * @sampleResult {"comment":{"id":"c_88213","body":"Strong technical background","created_at":"2026-06-02T10:00:00Z"}}
    */
-  async createComment(id, body, policy, memberIds) {
-    const resolvedPolicy = resolveChoice(policy, COMMENT_POLICY_LABELS)
+  async createComment(id, memberId, body, policy) {
+    const policyMap = {
+      Admin: 'admin',
+      'Recruiting Admin': 'recruiting_admin',
+      'Hiring Manager': 'hiring_manager',
+      Recruiter: 'recruiter',
+      Reviewer: 'reviewer',
+      Simple: 'simple',
+    }
+    const roles = Array.isArray(policy) ? policy.map(role => resolveChoice(role, policyMap)).filter(Boolean) : undefined
+
     const comment = clean({
       body,
-      policy: resolvedPolicy === 'private'
-        ? ['private', ...(Array.isArray(memberIds) ? memberIds : [])]
-        : resolvedPolicy ? [resolvedPolicy] : undefined,
+      policy: roles && roles.length ? roles : undefined,
     })
 
     return await this.#apiRequest({
       logTag: '[createComment]',
       url: `${ this.#baseUrl() }/candidates/${ encodeURIComponent(id) }/comments`,
       method: 'post',
-      body: { comment },
+      body: clean({ member_id: memberId, comment }),
     })
   }
 
   /**
    * @operationName Create Rating
    * @category Comments & Ratings
-   * @description Adds a rating (evaluation) to a candidate with a score and an optional comment. Use this to record hiring-team feedback such as a thumbs-up/down or a numeric score.
+   * @description Adds a rating (evaluation) to a candidate using Workable's scale/grade model with an optional comment. Choose a rating scale (Thumbs, Stars, or Numbers) and a grade whose valid range depends on the scale: Thumbs 0-2 (negative/positive/definite), Stars 0-4 (one to five stars), Numbers 0-9 (1 to 10 out of 10). A member id (the person providing the rating) is required by the Workable API.
    * @route POST /candidates/{id}/ratings
    * @paramDef {"type":"String","label":"Candidate ID","name":"id","required":true,"description":"The candidate's unique id."}
-   * @paramDef {"type":"String","label":"Rating","name":"rating","required":true,"uiComponent":{"type":"DROPDOWN","options":{"values":["Yes","No","Definitely","Maybe","Never"]}},"description":"The rating value to record for the candidate."}
+   * @paramDef {"type":"String","label":"Member ID","name":"memberId","required":true,"dictionary":"getMembersDictionary","description":"Id of the member providing the rating (required). Search and select an account member, or type a member id."}
+   * @paramDef {"type":"String","label":"Scale","name":"scale","required":true,"uiComponent":{"type":"DROPDOWN","options":{"values":["Thumbs","Stars","Numbers"]}},"description":"Rating scale type. Thumbs uses grade 0-2, Stars uses grade 0-4, Numbers uses grade 0-9."}
+   * @paramDef {"type":"Number","label":"Grade","name":"grade","required":true,"uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Numeric grade for the selected scale: Thumbs 0-2 (0 negative, 1 positive, 2 definite), Stars 0-4 (one to five stars), Numbers 0-9 (1 to 10 out of 10)."}
    * @paramDef {"type":"String","label":"Comment","name":"comment","uiComponent":{"type":"MULTI_LINE_TEXT"},"description":"Optional comment explaining the rating."}
    * @returns {Object}
-   * @sampleResult {"rating":{"id":"r_5521","rating":"yes","comment":"Great culture fit","created_at":"2026-06-02T11:00:00Z"}}
+   * @sampleResult {"rating":{"id":"r_5521","scale":"thumbs","grade":2,"comment":"Great culture fit","created_at":"2026-06-02T11:00:00Z"}}
    */
-  async createRating(id, rating, comment) {
+  async createRating(id, memberId, scale, grade, comment) {
     return await this.#apiRequest({
       logTag: '[createRating]',
       url: `${ this.#baseUrl() }/candidates/${ encodeURIComponent(id) }/ratings`,
       method: 'post',
       body: clean({
-        rating: resolveChoice(rating, { Yes: 'yes', No: 'no', Definitely: 'definitely', Maybe: 'maybe', Never: 'never' }),
+        member_id: memberId,
+        scale: resolveChoice(scale, { Thumbs: 'thumbs', Stars: 'stars', Numbers: 'numbers' }),
+        grade: grade === undefined || grade === null ? undefined : Number(grade),
         comment,
       }),
     })
@@ -618,6 +652,50 @@ class Workable {
     }
   }
 
+  /**
+   * @typedef {Object} getMembersDictionary__payload
+   * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional text to filter members by name or email. Filtering is performed on retrieved results."}
+   * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor (a since_id value) for retrieving the next page of members."}
+   */
+
+  /**
+   * @registerAs DICTIONARY
+   * @operationName Get Members Dictionary
+   * @description Provides a searchable list of account members for selecting the member performing an action (move, disqualify, comment, copy, relocate). The option value is the member id expected by those operations.
+   * @route POST /get-members-dictionary
+   * @paramDef {"type":"getMembersDictionary__payload","label":"Payload","name":"payload","description":"Search text and pagination cursor for listing members."}
+   * @returns {Object}
+   * @sampleResult {"items":[{"label":"Jane Doe","value":"5f8d0c1e2a","note":"jane@acme.com - admin"}],"cursor":null}
+   */
+  async getMembersDictionary(payload) {
+    const { search, cursor } = payload || {}
+
+    const response = await this.#apiRequest({
+      logTag: '[getMembersDictionary]',
+      url: `${ this.#baseUrl() }/members`,
+      query: {
+        limit: 100,
+        since_id: cursor || undefined,
+      },
+    })
+
+    const members = response.members || []
+    const term = (search || '').trim().toLowerCase()
+
+    const filtered = term
+      ? members.filter(member => `${ member.name || '' } ${ member.email || '' }`.toLowerCase().includes(term))
+      : members
+
+    return {
+      items: filtered.map(member => ({
+        label: member.name || member.email || member.id,
+        value: member.id,
+        note: [member.email, member.role].filter(Boolean).join(' - ') || undefined,
+      })),
+      cursor: null,
+    }
+  }
+
   // ============================================= TRIGGERS =============================================
 
   /**
@@ -711,6 +789,6 @@ Flowrunner.ServerCode.addService(Workable, [
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
     shared: false,
-    hint: 'Workable → Settings → Integrations → API Access Token / Partner token. Sent as a Bearer token.',
+    hint: 'Workable → Settings → Integrations → Access Token → Generate new token. Copy it immediately (shown only once). Sent as a Bearer token. Account access tokens are scoped to this subdomain; partner tokens are for multi-account partner integrations and require a subdomain per call.',
   },
 ])
