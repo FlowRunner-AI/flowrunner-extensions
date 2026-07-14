@@ -33,8 +33,8 @@ Highest usage in n8n / broadest customer demand.
 - [x] Redis (`services/redis`)
 - [x] Google BigQuery (`services/bigquery`)
 - [x] Snowflake (`services/snowflake`)
-- [ ] Kafka
-- [ ] RabbitMQ
+- [~] Kafka — **excluded**: persistent consumer connections do not fit the request/response runtime (needs a platform decision)
+- [~] RabbitMQ — **excluded**: same persistent-connection constraint as Kafka
 
 ### Team chat, meetings & messaging
 - [x] Discord (`services/discord`)
@@ -126,7 +126,7 @@ Highest usage in n8n / broadest customer demand.
 - [x] Contentful (`services/contentful`)
 - [x] Strapi (`services/strapi`)
 - [x] Ghost (`services/ghost`)
-- [ ] Zendesk (see helpdesk)
+- [x] Zendesk (see helpdesk — `services/zendesk`)
 - [x] Figma (`services/figma`)
 
 ---
