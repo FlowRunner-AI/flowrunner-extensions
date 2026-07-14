@@ -470,7 +470,13 @@ class GeminiAIService {
 
     logger.debug(`uploadFile - downloading file from: ${ fileUrl }`)
 
-    const fileBuffer = await Flowrunner.Request.get(fileUrl).setEncoding(null)
+    let fileBuffer
+
+    try {
+      fileBuffer = await Flowrunner.Request.get(fileUrl).setEncoding(null)
+    } catch (error) {
+      throw new Error(normalizeError(error).message)
+    }
 
     const form = new Flowrunner.Request.FormData()
 
@@ -1738,6 +1744,8 @@ Flowrunner.ServerCode.addService(GeminiAIService, [
 ])
 
 function normalizeError(error) {
+  error.message = decodeBufferValue(error.message)
+
   if (error.body?.error?.message) {
     error.message = error.body.error.message
   } else if (error.body?.message) {
@@ -1747,4 +1755,16 @@ function normalizeError(error) {
   }
 
   return error
+}
+
+function decodeBufferValue(value) {
+  if (Buffer.isBuffer(value)) {
+    return value.toString('utf8')
+  }
+
+  if (value && typeof value === 'object' && value.type === 'Buffer' && Array.isArray(value.data)) {
+    return Buffer.from(value.data).toString('utf8')
+  }
+
+  return value
 }
