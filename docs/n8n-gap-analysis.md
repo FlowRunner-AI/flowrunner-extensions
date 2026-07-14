@@ -275,7 +275,7 @@ Include for parity claims; low individual demand.
 - [ ] Beeminder
 - [ ] Bubble
 - [ ] Cockpit CMS
-- [ ] CoinGecko
+- [x] CoinGecko (`services/coingecko`)
 - [ ] Cortex (security)
 - [ ] CrateDB
 - [ ] Currents
@@ -284,50 +284,50 @@ Include for parity claims; low individual demand.
 - [ ] Emelia
 - [ ] FileMaker
 - [ ] Flow (getflow.com)
-- [ ] Google Books
+- [x] Google Books (`services/google-books`)
 - [ ] Google Cloud Natural Language
 - [ ] Google Perspective
 - [ ] Google Workspace Admin
-- [ ] Gotify
-- [ ] Hacker News
+- [x] Gotify (`services/gotify`)
+- [x] Hacker News (`services/hackernews`)
 - [ ] Humantic AI
 - [ ] KoBoToolbox
 - [ ] LingvaNex
 - [ ] LoneScale
 - [ ] Mailcheck
-- [ ] Marketstack
-- [ ] Matrix
+- [x] Marketstack (`services/marketstack`)
+- [x] Matrix (`services/matrix`)
 - [ ] MISP
 - [ ] Mocean
-- [ ] Monica CRM
-- [ ] NASA
+- [x] Monica CRM (`services/monica`)
+- [x] NASA (`services/nasa`)
 - [ ] Netscaler (Citrix ADC)
 - [ ] One Simple API
 - [ ] OpenThesaurus
-- [ ] OpenWeatherMap
+- [x] OpenWeatherMap (`services/openweathermap`)
 - [ ] Orbit (service shut down in 2024 — skip)
-- [ ] Oura
+- [x] Oura (`services/oura`)
 - [ ] Peekalink
 - [ ] Philips Hue
 - [ ] Pushcut
 - [ ] QuestDB
-- [ ] Raindrop
+- [x] Raindrop (`services/raindrop`)
 - [ ] Rundeck
 - [ ] SecurityScorecard
 - [ ] Sendy
 - [ ] SIGNL4
-- [ ] Strava
+- [x] Strava (`services/strava`)
 - [ ] Taiga
 - [ ] TheHive / TheHive 5
 - [ ] Twake
-- [ ] Twist
+- [x] Twist (`services/twist`)
 - [ ] uProc
-- [ ] urlscan.io
+- [x] urlscan.io (`services/urlscan`)
 - [ ] Venafi TLS Protect
 - [ ] Vero
 - [ ] Wekan
 - [ ] Yourls
-- [ ] Zulip
+- [x] Zulip (`services/zulip`)
 - [ ] Microsoft Graph Security
 
 ---
