@@ -163,18 +163,18 @@ Solid demand; round out category coverage.
 - [x] Bitly (`services/bitly`)
 
 ### Messaging / SMS / push
-- [ ] Vonage
-- [ ] MessageBird (Bird)
-- [ ] Plivo
-- [ ] seven (sms77)
-- [ ] MSG91
-- [ ] Pushover
-- [ ] Pushbullet
-- [ ] Mattermost
-- [ ] Rocket.Chat
-- [ ] Cisco Webex
-- [ ] GoTo Webinar
-- [ ] Line
+- [x] Vonage (`services/vonage`)
+- [x] MessageBird (Bird) (`services/messagebird`)
+- [x] Plivo (`services/plivo`)
+- [x] seven (sms77) (`services/seven`)
+- [x] MSG91 (`services/msg91`)
+- [x] Pushover (`services/pushover`)
+- [x] Pushbullet (`services/pushbullet`)
+- [x] Mattermost (`services/mattermost`)
+- [x] Rocket.Chat (`services/rocketchat`)
+- [x] Cisco Webex (`services/webex`)
+- [x] GoTo Webinar (`services/gotowebinar`)
+- [x] Line (`services/line`)
 
 ### Helpdesk / ITSM
 - [ ] Freshservice
