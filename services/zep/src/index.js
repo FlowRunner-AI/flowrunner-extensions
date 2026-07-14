@@ -294,24 +294,24 @@ class ZepService {
   /**
    * @operationName Add Messages
    * @category Memory
-   * @description Adds one or more conversation messages to a thread. Each message has a role type (user, assistant, or system), the message content, and an optional speaker name. Zep ingests the messages into the user's knowledge graph and uses them to build retrievable memory. This is how you record a conversation turn.
+   * @description Adds one or more conversation messages to a thread. Each message has a role (user, assistant, or system), the message content, and an optional speaker name. Zep ingests the messages into the user's knowledge graph and uses them to build retrievable memory. This is how you record a conversation turn.
    * @route POST /threads/{threadId}/messages
    * @paramDef {"type":"String","label":"Thread ID","name":"threadId","required":true,"description":"The thread ID to add messages to."}
    * @paramDef {"type":"Array<ZepMessage>","label":"Messages","name":"messages","required":true,"description":"Ordered list of conversation messages to add to the thread."}
-   * @paramDef {"type":"Boolean","label":"Return Context","name":"returnContext","uiComponent":{"type":"TOGGLE"},"description":"When enabled, returns the updated thread context block along with the added messages. Defaults to false."}
+   * @paramDef {"type":"Boolean","label":"Return Context","name":"returnContext","uiComponent":{"type":"TOGGLE"},"description":"When enabled, returns a context block relevant to the most recent messages. Defaults to false."}
    * @returns {Object}
-   * @sampleResult {"messages":[{"uuid":"7b7b7b7b-eeee-ffff-0000-111111111111","role":"Jane","role_type":"user","content":"I just moved to Berlin."}],"context":"Jane recently relocated to Berlin."}
+   * @sampleResult {"message_uuids":["7b7b7b7b-eeee-ffff-0000-111111111111"],"context":"Jane recently relocated to Berlin.","task_id":"task-123"}
    */
   async addMessages(threadId, messages, returnContext) {
     const logTag = '[addMessages]'
 
     const normalizedMessages = (messages || []).map(message => clean({
-      role: message.role || message.name,
-      role_type: this.#resolveChoice(message.role_type || message.roleType, {
+      role: this.#resolveChoice(message.role, {
         User: 'user',
         Assistant: 'assistant',
         System: 'system',
       }),
+      name: message.name,
       content: message.content,
     }))
 
@@ -329,15 +329,14 @@ class ZepService {
   /**
    * @operationName Get Thread Context
    * @category Memory
-   * @description Returns Zep's assembled memory context for a thread: a ready-to-inject context block summarizing the most relevant facts and entities about the user, drawn from the whole knowledge graph, plus recent messages. This is the flagship retrieval operation - drop the returned context string into your LLM prompt to give the assistant long-term memory. Choose "summary" mode for a concise narrative or "basic" mode for raw relevant facts and edges.
+   * @description Returns Zep's assembled memory context for a thread: a ready-to-inject context block summarizing the most relevant facts, entities, and messages about the user, drawn from the whole knowledge graph. This is the flagship retrieval operation - drop the returned context string into your LLM prompt to give the assistant long-term memory. Choose "summary" mode for a concise narrative or "basic" mode for raw relevant facts and edges.
    * @route GET /threads/{threadId}/context
    * @paramDef {"type":"String","label":"Thread ID","name":"threadId","required":true,"description":"The thread ID to build context for."}
    * @paramDef {"type":"String","label":"Mode","name":"mode","uiComponent":{"type":"DROPDOWN","options":{"values":["Summary","Basic"]}},"description":"Context assembly mode. Summary returns a concise narrative block; Basic returns relevant facts and edges. Defaults to Summary."}
-   * @paramDef {"type":"Number","label":"Min Rating","name":"minRating","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Optional minimum relevance rating (0.0-1.0) for facts included in the context."}
    * @returns {Object}
-   * @sampleResult {"context":"FACTS:\n- Jane recently relocated to Berlin.\n- Jane is on the pro plan.\n\nENTITIES:\n- Jane (User)","messages":[{"role":"Jane","role_type":"user","content":"I just moved to Berlin."}]}
+   * @sampleResult {"context":"FACTS:\n- Jane recently relocated to Berlin.\n- Jane is on the pro plan.\n\nENTITIES:\n- Jane (User)"}
    */
-  async getThreadContext(threadId, mode, minRating) {
+  async getThreadContext(threadId, mode) {
     const logTag = '[getThreadContext]'
 
     return await this.#apiRequest({
@@ -346,7 +345,6 @@ class ZepService {
       method: 'get',
       query: {
         mode: this.#resolveChoice(mode, { Summary: 'summary', Basic: 'basic' }),
-        minRating,
       },
     })
   }
@@ -360,7 +358,7 @@ class ZepService {
    * @paramDef {"type":"Number","label":"Limit","name":"limit","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of messages to return. Defaults to server limit."}
    * @paramDef {"type":"Number","label":"Cursor","name":"cursor","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Message index to start from for pagination."}
    * @returns {Object}
-   * @sampleResult {"messages":[{"uuid":"7b7b7b7b-eeee-ffff-0000-111111111111","role":"Jane","role_type":"user","content":"I just moved to Berlin.","created_at":"2026-07-14T10:06:00Z"}],"total_count":1,"row_count":1}
+   * @sampleResult {"messages":[{"uuid":"7b7b7b7b-eeee-ffff-0000-111111111111","role":"user","name":"Jane","content":"I just moved to Berlin.","created_at":"2026-07-14T10:06:00Z"}],"total_count":1,"row_count":1}
    */
   async getMessages(threadId, limit, cursor) {
     const logTag = '[getMessages]'
@@ -379,16 +377,16 @@ class ZepService {
   /**
    * @operationName Add Graph Data
    * @category Graph
-   * @description Adds arbitrary data directly to a knowledge graph, bypassing the conversation flow. Provide free-form text, a JSON string, or a message string, targeted at either a user's graph (user ID) or a shared group graph (group ID). Zep extracts entities and facts and merges them into the graph. Use this to ingest documents, business records, or external knowledge into memory.
+   * @description Adds arbitrary data directly to a knowledge graph, bypassing the conversation flow. Provide free-form text, a JSON string, or a message string, targeted at either a user's graph (user ID) or a shared graph (graph ID). Zep extracts entities and facts and merges them into the graph. Use this to ingest documents, business records, or external knowledge into memory.
    * @route POST /graph
    * @paramDef {"type":"String","label":"Data","name":"data","required":true,"description":"The content to ingest. Plain text, a JSON string, or message text depending on the selected type."}
-   * @paramDef {"type":"String","label":"Type","name":"type","required":true,"uiComponent":{"type":"DROPDOWN","options":{"values":["Text","JSON","Message"]}},"description":"How to interpret the data: Text for prose, JSON for a JSON string, Message for a single conversational message."}
-   * @paramDef {"type":"String","label":"User ID","name":"userId","dictionary":"getUsersDictionary","description":"Target user graph. Provide either a User ID or a Group ID, not both."}
-   * @paramDef {"type":"String","label":"Group ID","name":"groupId","description":"Target group graph. Provide either a Group ID or a User ID, not both."}
+   * @paramDef {"type":"String","label":"Type","name":"type","required":true,"uiComponent":{"type":"DROPDOWN","options":{"values":["Text","JSON","Message","Fact Triple"]}},"description":"How to interpret the data: Text for prose, JSON for a JSON string, Message for a single conversational message, or Fact Triple for a subject-predicate-object triple."}
+   * @paramDef {"type":"String","label":"User ID","name":"userId","dictionary":"getUsersDictionary","description":"Target user graph. Provide either a User ID or a Graph ID, not both."}
+   * @paramDef {"type":"String","label":"Graph ID","name":"graphId","description":"Target shared graph. Provide either a Graph ID or a User ID, not both."}
    * @returns {Object}
    * @sampleResult {"uuid":"3d3d3d3d-cccc-dddd-eeee-ffffffffffff","type":"text","content":"Jane prefers window seats when flying.","created_at":"2026-07-14T10:10:00Z","processed":false}
    */
-  async addGraphData(data, type, userId, groupId) {
+  async addGraphData(data, type, userId, graphId) {
     const logTag = '[addGraphData]'
 
     return await this.#apiRequest({
@@ -397,9 +395,14 @@ class ZepService {
       method: 'post',
       body: clean({
         data,
-        type: this.#resolveChoice(type, { Text: 'text', JSON: 'json', Message: 'message' }),
+        type: this.#resolveChoice(type, {
+          'Text': 'text',
+          'JSON': 'json',
+          'Message': 'message',
+          'Fact Triple': 'fact_triple',
+        }),
         user_id: userId,
-        group_id: groupId,
+        graph_id: graphId,
       }),
     })
   }
@@ -407,18 +410,18 @@ class ZepService {
   /**
    * @operationName Search Graph
    * @category Graph
-   * @description Searches a knowledge graph for the most relevant facts (edges) or entities (nodes) given a natural-language query. Scope the search to a user's graph or a group graph, choose whether to return edges or nodes, and cap the number of results. This is the core retrieval primitive for pulling targeted memory into a prompt or tool call.
+   * @description Searches a knowledge graph for the most relevant facts (edges) or entities (nodes) given a natural-language query. Scope the search to a user's graph or a shared graph, choose whether to return edges, nodes, episodes, thread summaries, or observations, and cap the number of results. This is the core retrieval primitive for pulling targeted memory into a prompt or tool call.
    * @route POST /graph/search
    * @paramDef {"type":"String","label":"Query","name":"query","required":true,"description":"Natural-language search query. Zep returns the graph elements most relevant to this text."}
-   * @paramDef {"type":"String","label":"User ID","name":"userId","dictionary":"getUsersDictionary","description":"Search this user's graph. Provide either a User ID or a Group ID."}
-   * @paramDef {"type":"String","label":"Group ID","name":"groupId","description":"Search this group's graph. Provide either a Group ID or a User ID."}
-   * @paramDef {"type":"String","label":"Scope","name":"scope","uiComponent":{"type":"DROPDOWN","options":{"values":["Edges","Nodes","Episodes"]}},"description":"What to return: Edges (facts/relationships), Nodes (entities), or Episodes (raw ingested data). Defaults to Edges."}
+   * @paramDef {"type":"String","label":"User ID","name":"userId","dictionary":"getUsersDictionary","description":"Search this user's graph. Provide either a User ID or a Graph ID."}
+   * @paramDef {"type":"String","label":"Graph ID","name":"graphId","description":"Search this shared graph. Provide either a Graph ID or a User ID."}
+   * @paramDef {"type":"String","label":"Scope","name":"scope","uiComponent":{"type":"DROPDOWN","options":{"values":["Edges","Nodes","Episodes","Thread Summaries","Observations"]}},"description":"What to return: Edges (facts/relationships), Nodes (entities), Episodes (raw ingested data), Thread Summaries, or Observations. Defaults to Edges."}
    * @paramDef {"type":"Number","label":"Limit","name":"limit","uiComponent":{"type":"NUMERIC_STEPPER"},"description":"Maximum number of results to return (max 50). Defaults to 10."}
    * @paramDef {"type":"String","label":"Reranker","name":"reranker","uiComponent":{"type":"DROPDOWN","options":{"values":["RRF","MMR","Cross Encoder","Node Distance","Episode Mentions"]}},"description":"Reranking strategy applied to raw search hits. Defaults to RRF."}
    * @returns {Object}
    * @sampleResult {"edges":[{"uuid":"e1e1e1e1-0000-1111-2222-333333333333","fact":"Jane recently relocated to Berlin.","name":"RELOCATED_TO","source_node_uuid":"n1","target_node_uuid":"n2","created_at":"2026-07-14T10:10:00Z"}],"nodes":[]}
    */
-  async searchGraph(query, userId, groupId, scope, limit, reranker) {
+  async searchGraph(query, userId, graphId, scope, limit, reranker) {
     const logTag = '[searchGraph]'
 
     return await this.#apiRequest({
@@ -428,11 +431,13 @@ class ZepService {
       body: clean({
         query,
         user_id: userId,
-        group_id: groupId,
+        graph_id: graphId,
         scope: this.#resolveChoice(scope, {
-          Edges: 'edges',
-          Nodes: 'nodes',
-          Episodes: 'episodes',
+          'Edges': 'edges',
+          'Nodes': 'nodes',
+          'Episodes': 'episodes',
+          'Thread Summaries': 'thread_summaries',
+          'Observations': 'observations',
         }),
         limit: limit || 10,
         reranker: this.#resolveChoice(reranker, {
@@ -470,25 +475,25 @@ class ZepService {
   }
 
   /**
-   * @operationName Add Group
-   * @category Groups
-   * @description Creates a group, which owns a shared knowledge graph. Group graphs hold knowledge shared across many users (for example company policies or product facts) and can be searched independently of any single user. Provide a unique group ID plus an optional name and description.
-   * @route POST /groups
-   * @paramDef {"type":"String","label":"Group ID","name":"groupId","required":true,"description":"Unique identifier for the group. Must be unique within the project."}
-   * @paramDef {"type":"String","label":"Name","name":"name","description":"Optional human-readable name for the group."}
-   * @paramDef {"type":"String","label":"Description","name":"description","uiComponent":{"type":"MULTI_LINE_TEXT"},"description":"Optional description of what the group graph contains."}
+   * @operationName Create Graph
+   * @category Graphs
+   * @description Creates a graph, a shared knowledge graph not tied to a single user. Shared graphs hold knowledge used across many users (for example company policies or product facts) and can be searched independently of any user's graph. Provide a unique graph ID plus an optional name and description.
+   * @route POST /graph/create
+   * @paramDef {"type":"String","label":"Graph ID","name":"graphId","required":true,"description":"Unique identifier for the graph. Must be unique within the project."}
+   * @paramDef {"type":"String","label":"Name","name":"name","description":"Optional human-readable name for the graph."}
+   * @paramDef {"type":"String","label":"Description","name":"description","uiComponent":{"type":"MULTI_LINE_TEXT"},"description":"Optional description of what the graph contains."}
    * @returns {Object}
-   * @sampleResult {"uuid":"a1a1a1a1-2222-3333-4444-555555555555","group_id":"policies","name":"Company Policies","description":"Shared HR and IT policy knowledge.","created_at":"2026-07-14T10:15:00Z"}
+   * @sampleResult {"uuid":"a1a1a1a1-2222-3333-4444-555555555555","graph_id":"policies","name":"Company Policies","description":"Shared HR and IT policy knowledge.","created_at":"2026-07-14T10:15:00Z"}
    */
-  async addGroup(groupId, name, description) {
-    const logTag = '[addGroup]'
+  async createGraph(graphId, name, description) {
+    const logTag = '[createGraph]'
 
     return await this.#apiRequest({
       logTag,
-      url: `${ API_BASE_URL }/groups`,
+      url: `${ API_BASE_URL }/graph/create`,
       method: 'post',
       body: clean({
-        group_id: groupId,
+        graph_id: graphId,
         name,
         description,
       }),
@@ -496,20 +501,20 @@ class ZepService {
   }
 
   /**
-   * @operationName Get Group
-   * @category Groups
-   * @description Retrieves a group and its metadata by group ID.
-   * @route GET /groups/{groupId}
-   * @paramDef {"type":"String","label":"Group ID","name":"groupId","required":true,"description":"The group ID to retrieve."}
+   * @operationName Get Graph
+   * @category Graphs
+   * @description Retrieves a shared graph and its metadata by graph ID.
+   * @route GET /graph/{graphId}
+   * @paramDef {"type":"String","label":"Graph ID","name":"graphId","required":true,"description":"The graph ID to retrieve."}
    * @returns {Object}
-   * @sampleResult {"uuid":"a1a1a1a1-2222-3333-4444-555555555555","group_id":"policies","name":"Company Policies","description":"Shared HR and IT policy knowledge.","created_at":"2026-07-14T10:15:00Z"}
+   * @sampleResult {"uuid":"a1a1a1a1-2222-3333-4444-555555555555","graph_id":"policies","name":"Company Policies","description":"Shared HR and IT policy knowledge.","created_at":"2026-07-14T10:15:00Z"}
    */
-  async getGroup(groupId) {
-    const logTag = '[getGroup]'
+  async getGraph(graphId) {
+    const logTag = '[getGraph]'
 
     return await this.#apiRequest({
       logTag,
-      url: `${ API_BASE_URL }/groups/${ encodeURIComponent(groupId) }`,
+      url: `${ API_BASE_URL }/graph/${ encodeURIComponent(graphId) }`,
       method: 'get',
     })
   }
@@ -581,9 +586,9 @@ class ZepService {
 
 /**
  * @typedef {Object} ZepMessage
- * @paramDef {"type":"String","label":"Role Type","name":"role_type","required":true,"uiComponent":{"type":"DROPDOWN","options":{"values":["User","Assistant","System"]}},"description":"The type of speaker for this message."}
+ * @paramDef {"type":"String","label":"Role","name":"role","required":true,"uiComponent":{"type":"DROPDOWN","options":{"values":["User","Assistant","System"]}},"description":"The role of the speaker for this message."}
  * @paramDef {"type":"String","label":"Content","name":"content","required":true,"uiComponent":{"type":"MULTI_LINE_TEXT"},"description":"The text content of the message."}
- * @paramDef {"type":"String","label":"Name","name":"role","description":"Optional speaker name (for example the user's first name or the assistant's persona name)."}
+ * @paramDef {"type":"String","label":"Name","name":"name","description":"Optional speaker name (for example the user's first name or the assistant's persona name)."}
  */
 
 Flowrunner.ServerCode.addService(ZepService, [

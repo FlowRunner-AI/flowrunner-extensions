@@ -8,7 +8,7 @@ Zep organizes memory around three concepts:
 
 - **Users** — the top-level owner of memory. Each user has a personal knowledge graph that grows as data is added.
 - **Threads** — the unit that groups conversation messages for a user. Threads are Zep's current model and replace the older "session" concept.
-- **Graph** — Zep continuously extracts entities (nodes) and facts (edges) from messages and ingested data into a knowledge graph, per user or per shared group. Search the graph to retrieve targeted facts.
+- **Graph** — Zep continuously extracts entities (nodes) and facts (edges) from messages and ingested data into a knowledge graph, per user or per shared graph. Search the graph to retrieve targeted facts.
 
 The flagship operation is **Get Thread Context**: it returns a ready-to-inject context block summarizing the most relevant facts about the user, which you drop straight into your LLM prompt to give the assistant long-term memory. Choose "summary" mode for a concise narrative or "basic" mode for raw relevant facts and edges.
 
@@ -16,8 +16,8 @@ The flagship operation is **Get Thread Context**: it returns a ready-to-inject c
 
 - Give a chatbot or AI agent persistent, cross-conversation memory of each user by injecting **Get Thread Context** into every prompt.
 - Record conversation turns from any channel (Slack, Telegram, support inbox) into a per-user thread with **Add Messages**.
-- Ingest documents, business records, or external knowledge into a user or shared group graph with **Add Graph Data**, then retrieve targeted facts with **Search Graph**.
-- Maintain a shared knowledge base (company policies, product facts) in a group graph that many users' agents can search.
+- Ingest documents, business records, or external knowledge into a user or shared graph with **Add Graph Data**, then retrieve targeted facts with **Search Graph**.
+- Maintain a shared knowledge base (company policies, product facts) in a shared graph that many users' agents can search.
 - Inspect what Zep has learned about a user via **Get User Node** and **Get User Graph Episodes**.
 
 ## List of Actions
@@ -46,9 +46,9 @@ The flagship operation is **Get Thread Context**: it returns a ready-to-inject c
 - Search Graph
 - Get User Graph Episodes
 
-### Groups
-- Add Group
-- Get Group
+### Graphs
+- Create Graph
+- Get Graph
 
 ## List of Triggers
 
