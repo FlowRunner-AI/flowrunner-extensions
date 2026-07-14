@@ -136,14 +136,14 @@ Highest usage in n8n / broadest customer demand.
 Solid demand; round out category coverage.
 
 ### CRM & sales
-- [ ] Copper
-- [ ] Keap (Infusionsoft)
-- [ ] Freshworks CRM
-- [ ] Agile CRM
-- [ ] Salesmate
-- [ ] Affinity
-- [ ] Mautic
-- [ ] Drift
+- [x] Copper (`services/copper`)
+- [x] Keap (Infusionsoft) (`services/keap`)
+- [x] Freshworks CRM (`services/freshworks-crm`)
+- [x] Agile CRM (`services/agile-crm`)
+- [x] Salesmate (`services/salesmate`)
+- [x] Affinity (`services/affinity`)
+- [x] Mautic (`services/mautic`)
+- [x] Drift (`services/drift`)
 
 ### Sales intelligence / enrichment
 - [ ] Clearbit
