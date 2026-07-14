@@ -184,7 +184,7 @@ Solid demand; round out category coverage.
 
 ### Databases / low-code data
 - [ ] Oracle Database
-- [ ] Databricks
+- [x] Databricks (`services/databricks`)
 - [ ] Azure Cosmos DB
 - [ ] Azure Storage (Blob/Table)
 - [ ] TimescaleDB
@@ -196,23 +196,23 @@ Solid demand; round out category coverage.
 - [x] Grist (`services/grist`)
 - [x] Quick Base (`services/quickbase`)
 - [x] Stackby (`services/stackby`)
-- [ ] Elasticsearch
+- [x] Elasticsearch (`services/elasticsearch`)
 
 ### Dev / IT / security
-- [ ] CircleCI
-- [ ] Travis CI
-- [ ] Grafana
-- [ ] Metabase
-- [ ] Splunk
-- [ ] UptimeRobot
-- [ ] Okta
-- [ ] Microsoft Entra ID
+- [x] CircleCI (`services/circleci`)
+- [x] Travis CI (`services/travis-ci`)
+- [x] Grafana (`services/grafana`)
+- [x] Metabase (`services/metabase`)
+- [x] Splunk (`services/splunk`)
+- [x] UptimeRobot (`services/uptimerobot`)
+- [x] Okta (`services/okta`)
+- [x] Microsoft Entra ID (`services/entra-id`)
 - [ ] Bitwarden
 - [ ] LDAP
-- [ ] npm registry
+- [x] npm registry (`services/npm`)
 - [ ] Git (raw operations)
-- [ ] Nextcloud
-- [ ] Home Assistant
+- [x] Nextcloud (`services/nextcloud`)
+- [x] Home Assistant (`services/home-assistant`)
 
 ### AWS (missing pieces)
 - [x] AWS Bedrock (`services/aws-bedrock`)
