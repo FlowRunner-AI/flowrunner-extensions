@@ -41,9 +41,9 @@ Highest usage in n8n / broadest customer demand.
 - [x] Microsoft Teams (`services/microsoft-teams`)
 - [x] Zoom (`services/zoom`)
 - [x] Google Chat (`services/google-chat`)
-- [ ] LinkedIn
-- [ ] Facebook Graph API (Pages/posts)
-- [ ] Reddit
+- [x] LinkedIn (`services/linkedin`)
+- [x] Facebook Graph API (Pages/posts) (`services/facebook`)
+- [x] Reddit (`services/reddit`)
 
 ### Helpdesk & support
 - [x] Zendesk (`services/zendesk`)
@@ -123,11 +123,11 @@ Highest usage in n8n / broadest customer demand.
 - [x] Magento 2 (`services/magento`)
 
 ### CMS & content
-- [ ] Contentful
-- [ ] Strapi
-- [ ] Ghost
+- [x] Contentful (`services/contentful`)
+- [x] Strapi (`services/strapi`)
+- [x] Ghost (`services/ghost`)
 - [ ] Zendesk (see helpdesk)
-- [ ] Figma
+- [x] Figma (`services/figma`)
 
 ---
 
