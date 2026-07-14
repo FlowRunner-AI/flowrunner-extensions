@@ -1,6 +1,6 @@
 # Formstack FlowRunner Extension
 
-Manage online forms, submissions, fields, folders, webhooks, and confirmations through the Formstack Forms API v2. Authenticates with a Formstack **Access Token** (an OAuth2 bearer token) sent as `Authorization: Bearer <accessToken>`.
+Manage online forms, submissions, fields, folders, webhooks, and confirmations through the Formstack **V2025 API** (base `https://www.formstack.com/api/v2025`, plural resources, no `.json` suffixes, JSON responses). Authenticates with a Formstack **Personal Access Token** that starts with `fs_pat_`, sent as `Authorization: Bearer <accessToken>`. Create the token in Formstack → Account → API / Personal Access Tokens.
 
 ## Ideal Use Cases
 
@@ -11,14 +11,14 @@ Manage online forms, submissions, fields, folders, webhooks, and confirmations t
 
 ## The form / submission / field-id model
 
-Formstack forms are made of **fields**, each with a numeric **field id**. Submission data is stored and returned keyed by field id, not by label — e.g. `{ "field": "48234502", "value": "jane@example.com" }`.
+Formstack forms are made of **fields**, each with a numeric **field id**. Submission data is stored and returned keyed by field id, not by label — in the V2025 API `data` is an object keyed by field id, e.g. `{ "48234502": { "field": "48234502", "label": "Email", "value": "jane@example.com" } }`.
 
 To interpret submission values you need the field-id-to-label mapping:
 
 - **Get Form** returns the form together with its field definitions (id, label, type).
 - **List Form Fields** returns just the field definitions for a form.
 
-When **creating a submission** you supply an array of `{ field, value }` objects; the service converts them to the `field_{id}=value` pairs the API expects. Get the field ids from Get Form or List Form Fields first.
+When **creating a submission** you supply an array of `{ field, value }` objects; the service converts them to the V2025 payload the API expects — a `fields` array of `{ "id": <field id>, "value": { "value": <value> } }` entries. Get the field ids from Get Form or List Form Fields first.
 
 ## List of Actions
 
@@ -62,8 +62,10 @@ When **creating a submission** you supply an array of `{ field, value }` objects
 
 ## Notes
 
-- Errors from Formstack (`{ "status": "error", "error": "..." }`) are surfaced as `Formstack API error: <message>`.
+- Errors from Formstack are surfaced as `Formstack API error: <message>`.
 - Submission values are keyed by field id — pair with Get Form or List Form Fields to map ids to labels.
+- Delete Webhook requires both the form id and the webhook id in the V2025 API.
+- Daily rate limits apply per token; exceeding them returns HTTP 429 (quotas reset at midnight).
 
 ## Agent Ideas
 
