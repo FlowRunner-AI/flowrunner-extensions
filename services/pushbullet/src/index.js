@@ -29,7 +29,7 @@ function clean(obj) {
 
 /**
  * @integrationName Pushbullet
- * @integrationIcon /icon.png
+ * @integrationIcon /logo.png
  */
 class PushbulletService {
   constructor(config) {
