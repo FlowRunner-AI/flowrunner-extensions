@@ -1,0 +1,183 @@
+# Amazon Seller Central FlowRunner Extension
+
+Connect your Amazon Seller Central account to FlowRunner to automate order fulfillment, inventory, FBA inbound shipments, catalog and listings, pricing, financials, and bulk reports/feeds across Amazon's Selling Partner API (SP-API). Authenticate once with Login with Amazon (OAuth2) and drive your seller operations from your flows, with a marketplace picker, report/feed document helpers, and a polling trigger for new orders.
+
+## Ideal Use Cases
+- Pull new and updated orders, read their items, shipping address, and buyer info, then confirm shipment or update shipment status.
+- Monitor FBA inventory levels and react when stock runs low.
+- Search the Amazon catalog and create, replace, update, or delete your own listings.
+- Compare your pricing against competitive and buy-box offers for a SKU or ASIN.
+- Request, poll, and download bulk Reports (orders, settlements, inventory) and submit bulk Feeds via document upload.
+- Reconcile payouts by listing financial event groups and events, including by order.
+- Provision notification subscriptions and delivery destinations (Amazon SQS / EventBridge) for SP-API events.
+- Mint a Restricted Data Token (RDT) to authorize a call to a PII / restricted path.
+- Request a buyer product review, and send buyer-seller messages (delivery/order/service confirmations, digital access keys, warranty, Amazon Motors, negative-feedback removal).
+- Pull aggregated sales metrics over an interval, and estimate Amazon selling + FBA fees by SKU, ASIN, or in batch.
+- Check whether you can list an ASIN/condition, enumerate your own listings, and discover the product type and attribute schema before creating a listing.
+- Search the legacy-but-live Catalog Items v2020-12-01 surface for integrations pinned to its shape.
+- Run Data Kiosk GraphQL analytics queries asynchronously: submit, poll, cancel, and download the result document.
+- Fulfill off-Amazon orders from FBA stock via Multi-Channel Fulfillment: preview cost, create, update, cancel, authorize returns, track packages, and check feature eligibility.
+- Buy Amazon-negotiated shipping labels for seller-fulfilled (MFN) orders: get eligible services, create the shipment label, then get or cancel it.
+- Buy labels through Amazon's own carrier network (Amazon Shipping v2): get rates, purchase or one-click a shipment, track it, re-fetch documents, cancel, and find nearby access points.
+- Send inventory into Amazon's fulfillment network with Fulfillment Inbound (v2024-03-20): create an inbound plan, then generate and confirm packing, placement and transportation options step by step, comparing the fees and discounts of each option before committing.
+- Set box-level packing information, read back the resulting shipments, boxes and pallets, rename them, change a source address, and attach carrier tracking to non-Amazon-partnered shipments.
+- Book a delivery window for an inbound shipment, or schedule and cancel warehouse drop-off appointments for self-shipped shipments (MX, BR, EG, SA, AE and IN only).
+- Price and apply a change to a confirmed shipment's contents by generating, reviewing, and confirming a content update preview before it expires.
+- Check and set item compliance and prep details for MSKUs ahead of an inbound plan, and generate printable FNSKU item labels.
+- Poll the status of asynchronous inbound operations, since most inbound actions return an operationId rather than a finished result.
+- Trigger a flow whenever a new order arrives.
+
+## List of Actions
+- Get Marketplace Participations
+- Get Orders
+- Get Order
+- Get Order Items
+- Get Order Address
+- Get Order Buyer Info
+- Get Order Items Buyer Info
+- Update Shipment Status
+- Confirm Shipment
+- Get Inventory Summaries
+- Search Catalog Items
+- Get Catalog Item
+- Create or Replace Listing
+- Update Listing
+- Delete Listing
+- Get Listing
+- Get Pricing
+- Get Competitive Pricing
+- Get Item Offers
+- Get Listing Offers
+- Create Report
+- Get Report
+- Get Reports
+- Cancel Report
+- Get Report Document
+- Create Report Schedule
+- Create Feed Document
+- Create Feed
+- Get Feed
+- Get Feeds
+- Cancel Feed
+- Get Feed Document
+- List Financial Event Groups
+- List Financial Events
+- List Financial Events By Order
+- Create Subscription
+- Get Subscription
+- Get Subscription By ID
+- Delete Subscription By ID
+- Create Destination
+- Get Destinations
+- Get Destination
+- Delete Destination
+- Create Restricted Data Token
+- Get Solicitation Actions For Order
+- Request Product Review And Seller Feedback
+- Get Messaging Actions For Order
+- Get Messaging Attributes
+- Confirm Customization Details
+- Confirm Delivery Details
+- Confirm Order Details
+- Confirm Service Details
+- Send Unexpected Problem
+- Send Digital Access Key
+- Send Amazon Motors Attachments
+- Send Warranty Information
+- Request Negative Feedback Removal
+- Get Order Metrics
+- Get My Fees Estimate For SKU
+- Get My Fees Estimate For ASIN
+- Get My Fees Estimates (Batch)
+- Get Listing Restrictions
+- Search My Listings
+- Search Product Types
+- Get Product Type Schema
+- Search Catalog (2020-12-01)
+- Get Catalog Item (2020-12-01)
+- Create Data Kiosk Query
+- Get Data Kiosk Queries
+- Get Data Kiosk Query
+- Cancel Data Kiosk Query
+- Get Data Kiosk Document
+- Get Fulfillment Preview
+- Create Fulfillment Order
+- List Fulfillment Orders
+- Get Fulfillment Order
+- Update Fulfillment Order
+- Cancel Fulfillment Order
+- Create Fulfillment Return
+- Get Package Tracking Details
+- List Return Reason Codes
+- Get Fulfillment Features
+- Get Feature Inventory
+- Get Feature SKU Eligibility
+- List Inbound Plans
+- Create Inbound Plan
+- Get Inbound Plan
+- Update Inbound Plan Name
+- Cancel Inbound Plan
+- List Inbound Plan Items
+- List Inbound Plan Boxes
+- List Inbound Plan Pallets
+- Generate Packing Options
+- List Packing Options
+- Confirm Packing Option
+- List Packing Group Items
+- List Packing Group Boxes
+- Set Packing Information
+- Generate Placement Options
+- List Placement Options
+- Confirm Placement Option
+- Generate Transportation Options
+- List Transportation Options
+- Confirm Transportation Options
+- Get Inbound Shipment
+- Update Inbound Shipment Name
+- List Inbound Shipment Items
+- List Inbound Shipment Boxes
+- List Inbound Shipment Pallets
+- Update Inbound Shipment Source Address
+- Update Inbound Shipment Tracking Details
+- Get Delivery Challan Document
+- Generate Delivery Window Options
+- List Delivery Window Options
+- Confirm Delivery Window Options
+- Generate Shipment Content Update Previews
+- List Shipment Content Update Previews
+- Get Shipment Content Update Preview
+- Confirm Shipment Content Update Preview
+- Generate Self-Ship Appointment Slots
+- Get Self-Ship Appointment Slots
+- Schedule Self-Ship Appointment
+- Cancel Self-Ship Appointment
+- List Item Compliance Details
+- Update Item Compliance Details
+- List Prep Details
+- Set Prep Details
+- Create Marketplace Item Labels
+- Get Inbound Operation Status
+- Get Eligible Shipment Services
+- Create Shipment
+- Get Shipment
+- Cancel Shipment
+- Get Additional Seller Inputs
+- Get Rates
+- Purchase Shipment
+- One-Click Shipment
+- Get Tracking
+- Get Shipment Documents
+- Cancel Amazon Shipment
+- Get Access Points
+
+## List of Triggers
+- On New Order
+
+## Agent Ideas
+
+- When an **Amazon Seller Central** "On New Order" trigger fires, use **Slack** "Send Message To Channel" to alert fulfillment, then call **Amazon Seller Central** "Get Order Items" and "Confirm Shipment" once the package is ready.
+- Run **Amazon Seller Central** "Get Inventory Summaries" on a schedule and write low-stock SKUs into a reorder sheet with **Google Sheets** "Add Row".
+- Use **Amazon Seller Central** "Get Order Metrics" to pull daily sales totals, then post a summary to your team with **Slack** "Send Message To Channel".
+- When a new order arrives, call **Amazon Seller Central** "Request Product Review And Seller Feedback" after delivery to grow your review count automatically.
+- Have an agent restock FBA by calling **Amazon Seller Central** "Create Inbound Plan", polling "Get Inbound Operation Status" between each step, then confirming packing, placement and transportation options and posting the chosen placement fee to **Slack** "Send Message To Channel" for approval.
+- After **Amazon Seller Central** "Confirm Transportation Options", call "List Inbound Shipment Boxes" and log each box id and destination fulfillment center to a tracking sheet with **Google Sheets** "Add Rows".
