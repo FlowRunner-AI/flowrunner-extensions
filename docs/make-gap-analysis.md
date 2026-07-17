@@ -77,11 +77,11 @@ _mixed key/OAuth; google-search-console clones the Google OAuth pattern_
 ### MW3 — Microsoft & Google suite leftovers
 _clone entra-id/teams Graph pattern and google-calendar OAuth pattern_
 
-- [ ] **Microsoft Power BI** (`microsoft-power-bi`, oauth2) — api.powerbi.com; key ops are dataset refresh, push-dataset rows, export; push datasets have schema/row limits
-- [ ] **Microsoft Planner** (`microsoft-planner`, oauth2) — MS Graph /planner endpoints; updates/deletes require If-Match ETag header (common failure point)
-- [ ] **Microsoft OneNote** (`onenote`, oauth2) — Microsoft Graph /me/onenote (notebooks/sections/pages), Notes.ReadWrite scopes; page content is HTML
-- [ ] **Google Meet** (`google-meet`, oauth2) — meet.googleapis.com/v2: create spaces, conferenceRecords artifacts (recordings/transcripts, 30-day retention); scheduling with invitees lives in Calendar API
-- [ ] **Google Maps Platform** (`google-maps`, apikey) — per-product endpoints (Geocoding, Places New, Routes); Places New requires X-Goog-Api-Key + X-Goog-FieldMask headers; needs GCP billing enabled
+- [x] **Microsoft Power BI** (`services/microsoft-power-bi`) (`microsoft-power-bi`, oauth2) — api.powerbi.com; key ops are dataset refresh, push-dataset rows, export; push datasets have schema/row limits
+- [x] **Microsoft Planner** (`services/microsoft-planner`) (`microsoft-planner`, oauth2) — MS Graph /planner endpoints; updates/deletes require If-Match ETag header (common failure point)
+- [x] **Microsoft OneNote** (`services/microsoft-onenote`) (`onenote`, oauth2) — Microsoft Graph /me/onenote (notebooks/sections/pages), Notes.ReadWrite scopes; page content is HTML
+- [x] **Google Meet** (`services/google-meet`) (`google-meet`, oauth2) — meet.googleapis.com/v2: create spaces, conferenceRecords artifacts (recordings/transcripts, 30-day retention); scheduling with invitees lives in Calendar API
+- [x] **Google Maps Platform** (`services/google-maps`) (`google-maps`, apikey) — per-product endpoints (Geocoding, Places New, Routes); Places New requires X-Goog-Api-Key + X-Goog-FieldMask headers; needs GCP billing enabled
 
 ### MW4 — Payments & accounting
 _key/basic auth REST, clone stripe/paypal patterns_
