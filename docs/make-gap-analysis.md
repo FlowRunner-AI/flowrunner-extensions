@@ -69,10 +69,10 @@ _all API-key, zero-dep; clone the existing AI house style_
 ### MW2 — Analytics & observability
 _mixed key/OAuth; google-search-console clones the Google OAuth pattern_
 
-- [ ] **Mixpanel** (`mixpanel`, basic) — ingestion via project token, query/admin APIs via Service Account basic auth; US/EU/IN residency-specific base URLs
-- [ ] **Amplitude** (`amplitude`, apikey) — mixed auth: HTTP V2 event API passes api_key in body; Dashboard/Cohort REST uses basic api_key:secret_key; separate EU residency endpoints
-- [ ] **Datadog** (`datadog`, apikey) — DD-API-KEY + DD-APPLICATION-KEY headers; site-specific domains (datadoghq.com, .eu, us5 etc.) must be configurable
-- [ ] **Google Search Console** (`google-search-console`, oauth2) — searchanalytics.query, sitemaps, URL Inspection API; property(site)-scoped; standard Google OAuth
+- [x] **Mixpanel** (`services/mixpanel`) (`mixpanel`, basic) — ingestion via project token, query/admin APIs via Service Account basic auth; US/EU/IN residency-specific base URLs
+- [x] **Amplitude** (`services/amplitude`) (`amplitude`, apikey) — mixed auth: HTTP V2 event API passes api_key in body; Dashboard/Cohort REST uses basic api_key:secret_key; separate EU residency endpoints
+- [x] **Datadog** (`services/datadog`) (`datadog`, apikey) — DD-API-KEY + DD-APPLICATION-KEY headers; site-specific domains (datadoghq.com, .eu, us5 etc.) must be configurable
+- [x] **Google Search Console** (`services/google-search-console`) (`google-search-console`, oauth2) — searchanalytics.query, sitemaps, URL Inspection API; property(site)-scoped; standard Google OAuth
 
 ### MW3 — Microsoft & Google suite leftovers
 _clone entra-id/teams Graph pattern and google-calendar OAuth pattern_
