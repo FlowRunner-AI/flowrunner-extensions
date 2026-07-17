@@ -58,13 +58,13 @@ not already covered? alive?). ~33 first-pass nominations were demoted to Tier 2 
 ### MW1 — AI & agent utilities
 _all API-key, zero-dep; clone the existing AI house style_
 
-- [ ] **Deepgram** (`deepgram`, apikey) — Authorization: Token <key>; POST /v1/listen accepts {url} JSON or raw binary; Aura TTS at /v1/speak; prerecorded fits HTTP, live WS streaming out of scope
-- [ ] **Qwen** (`qwen-ai`, apikey) — dashscope-intl.aliyuncs.com/compatible-mode/v1, OpenAI-compatible chat completions; key from Alibaba Cloud Model Studio
-- [ ] **Firecrawl** (`firecrawl`, apikey) — api.firecrawl.dev REST; /scrape synchronous, /crawl async job with status polling; Bearer key
-- [ ] **Tavily** (`tavily`, apikey) — simple REST POST /search at api.tavily.com returning agent-ready JSON; extract/crawl endpoints too
-- [ ] **Runway** (`runway-ml-api`, apikey) — api.dev.runwayml.com, Bearer key plus required X-Runway-Version date header; async task create-then-poll pattern
-- [ ] **HeyGen** (`heygen`, apikey) — api.heygen.com v2; async video generation jobs, poll status or webhook callback; X-Api-Key header
-- [ ] **Vapi** (`vapi`, apikey) — api.vapi.ai REST with Bearer key; calls/assistants/phone-numbers CRUD plus server-URL webhooks for call events
+- [x] **Deepgram** (`services/deepgram`) (`deepgram`, apikey) — Authorization: Token <key>; POST /v1/listen accepts {url} JSON or raw binary; Aura TTS at /v1/speak; prerecorded fits HTTP, live WS streaming out of scope
+- [x] **Qwen** (`services/qwen-ai`) (`qwen-ai`, apikey) — dashscope-intl.aliyuncs.com/compatible-mode/v1, OpenAI-compatible chat completions; key from Alibaba Cloud Model Studio
+- [x] **Firecrawl** (`services/firecrawl`) (`firecrawl`, apikey) — api.firecrawl.dev REST; /scrape synchronous, /crawl async job with status polling; Bearer key
+- [x] **Tavily** (`services/tavily`) (`tavily`, apikey) — simple REST POST /search at api.tavily.com returning agent-ready JSON; extract/crawl endpoints too
+- [x] **Runway** (`services/runway`) (`runway-ml-api`, apikey) — api.dev.runwayml.com, Bearer key plus required X-Runway-Version date header; async task create-then-poll pattern
+- [x] **HeyGen** (`services/heygen`) (`heygen`, apikey) — api.heygen.com v2; async video generation jobs, poll status or webhook callback; X-Api-Key header
+- [x] **Vapi** (`services/vapi`) (`vapi`, apikey) — api.vapi.ai REST with Bearer key; calls/assistants/phone-numbers CRUD plus server-URL webhooks for call events
 
 ### MW2 — Analytics & observability
 _mixed key/OAuth; google-search-console clones the Google OAuth pattern_
