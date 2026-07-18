@@ -112,11 +112,11 @@ _confluence clones the jira-issues Atlassian pattern_
 ### MW7 — CRM, support & comms
 _zoho-desk clones the zoho-crm OAuth family_
 
-- [ ] **Bitrix24** (`bitrix24`, oauth2) — per-portal REST {portal}.bitrix24.xx/rest; simplest auth is inbound-webhook token URL; OAuth for multi-portal apps; batch endpoint for bulk calls
-- [ ] **Salesloft** (`salesloft`, oauth2) — api.salesloft.com/v2 JSON REST, OAuth2 auth-code (PATs also available); consistent paginated list endpoints
-- [ ] **Zoho Desk** (`zoho-desk`, oauth2) — desk.zoho.com/api/v1 with Zoho accounts OAuth; region-specific DC endpoints and orgId header, same pattern as shipped Zoho services
-- [ ] **OneSignal** (`onesignal`, apikey) — api.onesignal.com, per-app REST API key (Authorization: Key/Bearer); app_id in every call
-- [ ] **RingCentral** (`ringcentral`, oauth2) **[GATED]** — platform.ringcentral.com REST, OAuth2 auth-code; build in sandbox, then 'Apply for Production' review (min successful-call thresholds per endpoint)
+- [x] **Bitrix24** (`services/bitrix24`) (`bitrix24`, oauth2) — per-portal REST {portal}.bitrix24.xx/rest; simplest auth is inbound-webhook token URL; OAuth for multi-portal apps; batch endpoint for bulk calls
+- [x] **Salesloft** (`services/salesloft`) (`salesloft`, oauth2) — api.salesloft.com/v2 JSON REST, OAuth2 auth-code (PATs also available); consistent paginated list endpoints
+- [x] **Zoho Desk** (`services/zoho-desk`) (`zoho-desk`, oauth2) — desk.zoho.com/api/v1 with Zoho accounts OAuth; region-specific DC endpoints and orgId header, same pattern as shipped Zoho services
+- [x] **OneSignal** (`services/onesignal`) (`onesignal`, apikey) — api.onesignal.com, per-app REST API key (Authorization: Key/Bearer); app_id in every call
+- [x] **RingCentral** (`services/ringcentral`) (`ringcentral`, oauth2) **[GATED]** — platform.ringcentral.com REST, OAuth2 auth-code; build in sandbox, then 'Apply for Production' review (min successful-call thresholds per endpoint)
 
 ### MW8 — Docs, e-sign & media
 _async job patterns (canva/cloudconvert); cloudinary signed uploads_
