@@ -94,11 +94,11 @@ _key/basic auth REST, clone stripe/paypal patterns_
 ### MW5 — Email & marketing
 _mostly API-key; constant-contact OAuth with rotating refresh tokens_
 
-- [ ] **Klaviyo** (`klaviyo`, apikey) — a.klaviyo.com JSON:API-style REST; requires date-based revision header on every call; Klaviyo-API-Key auth
-- [ ] **Resend** (`resend`, apikey) — api.resend.com, Bearer key; simple JSON REST for emails, domains, audiences, broadcasts
-- [ ] **Constant Contact** (`constant-contact`, oauth2) — v3 REST; OAuth2 auth-code with rotating refresh tokens; legacy v2 API retired
-- [ ] **ManyChat** (`manychat`, apikey) — api.manychat.com REST, subscriber-centric (find/set fields, tags, send flows); channel 24h-window rules limit outbound sends
-- [ ] **Trustpilot** (`trustpilot`, oauth2) **[GATED]** — api.trustpilot.com; public read endpoints need only apikey header, private endpoints use OAuth2; customer must have API module
+- [x] **Klaviyo** (`services/klaviyo`) (`klaviyo`, apikey) — a.klaviyo.com JSON:API-style REST; requires date-based revision header on every call; Klaviyo-API-Key auth
+- [x] **Resend** (`services/resend`) (`resend`, apikey) — api.resend.com, Bearer key; simple JSON REST for emails, domains, audiences, broadcasts
+- [x] **Constant Contact** (`services/constant-contact`) (`constant-contact`, oauth2) — v3 REST; OAuth2 auth-code with rotating refresh tokens; legacy v2 API retired
+- [x] **ManyChat** (`services/manychat`) (`manychat`, apikey) — api.manychat.com REST, subscriber-centric (find/set fields, tags, send flows); channel 24h-window rules limit outbound sends
+- [x] **Trustpilot** (`services/trustpilot`) (`trustpilot`, oauth2) **[GATED]** — api.trustpilot.com; public read endpoints need only apikey header, private endpoints use OAuth2; customer must have API module
 
 ### MW6 — PM & productivity
 _confluence clones the jira-issues Atlassian pattern_
