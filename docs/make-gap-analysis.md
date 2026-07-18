@@ -103,11 +103,11 @@ _mostly API-key; constant-contact OAuth with rotating refresh tokens_
 ### MW6 — PM & productivity
 _confluence clones the jira-issues Atlassian pattern_
 
-- [ ] **Confluence** (`confluence`, oauth2) — Cloud REST v2 via api.atlassian.com/ex/confluence/{cloudId}; OAuth 3LO or email+API-token basic; ADF/storage-format bodies are the main quirk
-- [ ] **Basecamp** (`basecamp3`, oauth2) — bc3-api JSON; OAuth2 via launchpad.37signals.com; mandatory descriptive User-Agent header; 50 req/10s rate limit
-- [ ] **Smartsheet** (`smartsheet`, oauth2) — api.smartsheet.com/2.0, Bearer PAT or OAuth2; sheet/row/column object model with bulk row operations
-- [ ] **Tally** (`tally`, apikey) — api.tally.so with Bearer API key from settings; forms + submissions + webhooks; 100 req/min
-- [ ] **Wix** (`wix`, apikey) — www.wixapis.com REST; self-serve account-level API keys (wix-account-id/wix-site-id headers); OAuth only needed for marketplace apps
+- [x] **Confluence** (`services/confluence`) (`confluence`, oauth2) — Cloud REST v2 via api.atlassian.com/ex/confluence/{cloudId}; OAuth 3LO or email+API-token basic; ADF/storage-format bodies are the main quirk
+- [x] **Basecamp** (`services/basecamp3`) (`basecamp3`, oauth2) — bc3-api JSON; OAuth2 via launchpad.37signals.com; mandatory descriptive User-Agent header; 50 req/10s rate limit
+- [x] **Smartsheet** (`services/smartsheet`) (`smartsheet`, oauth2) — api.smartsheet.com/2.0, Bearer PAT or OAuth2; sheet/row/column object model with bulk row operations
+- [x] **Tally** (`services/tally`) (`tally`, apikey) — api.tally.so with Bearer API key from settings; forms + submissions + webhooks; 100 req/min
+- [x] **Wix** (`services/wix`) (`wix`, apikey) — www.wixapis.com REST; self-serve account-level API keys (wix-account-id/wix-site-id headers); OAuth only needed for marketplace apps
 
 ### MW7 — CRM, support & comms
 _zoho-desk clones the zoho-crm OAuth family_
