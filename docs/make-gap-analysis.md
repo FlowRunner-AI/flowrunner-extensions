@@ -121,11 +121,11 @@ _zoho-desk clones the zoho-crm OAuth family_
 ### MW8 — Docs, e-sign & media
 _async job patterns (canva/cloudconvert); cloudinary signed uploads_
 
-- [ ] **Adobe Acrobat Sign** (`adobe-sign`, oauth2) — REST v6 with region-sharded base URI (discover via /baseUris); OAuth app created in-account, Integration Key option for server-to-server
-- [ ] **PandaDoc** (`pandadoc`, oauth2) **[GATED]** — api.pandadoc.com REST, OAuth2 or API-Key; free sandbox key for dev, production requires plan activation via support/sales
-- [ ] **Canva** (`canva`, oauth2) **[GATED]** — Connect REST; OAuth2 with PKCE mandatory; async job pattern for design export; preview-tier APIs barred from public integrations
-- [ ] **Cloudinary** (`cloudinary`, basic) — Upload API (params signed with api_secret) + Admin API (basic api_key:api_secret); cloud_name embedded in URL path
-- [ ] **CloudConvert** (`cloudconvert`, apikey) — REST v2 job/task graph (import→convert→export tasks); Bearer key; sandbox env; FR service will need @usesFileStorage
+- [x] **Adobe Acrobat Sign** (`services/adobe-sign`) (`adobe-sign`, oauth2) — REST v6 with region-sharded base URI (discover via /baseUris); OAuth app created in-account, Integration Key option for server-to-server
+- [x] **PandaDoc** (`services/pandadoc`) (`pandadoc`, oauth2) **[GATED]** — api.pandadoc.com REST, OAuth2 or API-Key; free sandbox key for dev, production requires plan activation via support/sales
+- [x] **Canva** (`services/canva`) (`canva`, oauth2) **[GATED]** — Connect REST; OAuth2 with PKCE mandatory; async job pattern for design export; preview-tier APIs barred from public integrations
+- [x] **Cloudinary** (`services/cloudinary`) (`cloudinary`, basic) — Upload API (params signed with api_secret) + Admin API (basic api_key:api_secret); cloud_name embedded in URL path
+- [x] **CloudConvert** (`services/cloudconvert`) (`cloudconvert`, apikey) — REST v2 job/task graph (import→convert→export tasks); Bearer key; sandbox env; FR service will need @usesFileStorage
 
 ### MW9 — E-commerce & marketplaces
 _two gated (Etsy app approval, Amazon SP-API registration) — start registrations early_
