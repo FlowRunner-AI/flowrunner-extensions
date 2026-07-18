@@ -86,10 +86,10 @@ _clone entra-id/teams Graph pattern and google-calendar OAuth pattern_
 ### MW4 — Payments & accounting
 _key/basic auth REST, clone stripe/paypal patterns_
 
-- [ ] **Square** (`square`, oauth2) — connect.squareup.com REST, date-versioned via Square-Version header; self-serve sandbox; personal access token or OAuth
-- [ ] **Mollie** (`mollie`, apikey) — api.mollie.com/v2, Bearer live_/test_ keys; OAuth2 available for multi-account apps
-- [ ] **Razorpay** (`razorpay`, basic) — api.razorpay.com/v1, key_id:key_secret Basic auth; amounts in paise (minor units)
-- [ ] **Sage Accounting** (`sage-accounting`, oauth2) — api.accounting.sage.com/v3.1, OAuth2 via oauth.accounting.sage.com; access tokens expire in ~5 min so robust refresh handling is essential
+- [x] **Square** (`services/square`) (`square`, oauth2) — connect.squareup.com REST, date-versioned via Square-Version header; self-serve sandbox; personal access token or OAuth
+- [x] **Mollie** (`services/mollie`) (`mollie`, apikey) — api.mollie.com/v2, Bearer live_/test_ keys; OAuth2 available for multi-account apps
+- [x] **Razorpay** (`services/razorpay`) (`razorpay`, basic) — api.razorpay.com/v1, key_id:key_secret Basic auth; amounts in paise (minor units)
+- [x] **Sage Accounting** (`services/sage-accounting`) (`sage-accounting`, oauth2) — api.accounting.sage.com/v3.1, OAuth2 via oauth.accounting.sage.com; access tokens expire in ~5 min so robust refresh handling is essential
 
 ### MW5 — Email & marketing
 _mostly API-key; constant-contact OAuth with rotating refresh tokens_
