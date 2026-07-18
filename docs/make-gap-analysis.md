@@ -130,10 +130,10 @@ _async job patterns (canva/cloudconvert); cloudinary signed uploads_
 ### MW9 — E-commerce & marketplaces
 _two gated (Etsy app approval, Amazon SP-API registration) — start registrations early_
 
-- [ ] **Etsy** (`etsy`, oauth2) **[GATED]** — Open API v3: OAuth2 PKCE plus x-api-key header; Personal App approval then manual Commercial Access review for multi-seller apps
-- [ ] **PrestaShop** (`prestashop`, apikey) — self-hosted Webservice API, WS key sent as Basic-auth username; XML by default, JSON via output_format=JSON param
-- [ ] **Printful** (`printful`, token) — api.printful.com (v2 rolling out), private Bearer token from dashboard; OAuth only needed for public apps
-- [ ] **Amazon Seller Central (SP-API)** (`amazon-seller-central`, oauth2) **[GATED]** — LWA OAuth2 only (AWS SigV4 requirement dropped in 2023); regional endpoints; Restricted Data Tokens for PII
+- [x] **Etsy** (`services/etsy`) (`etsy`, oauth2) **[GATED]** — Open API v3: OAuth2 PKCE plus x-api-key header; Personal App approval then manual Commercial Access review for multi-seller apps
+- [x] **PrestaShop** (`services/prestashop`) (`prestashop`, apikey) — self-hosted Webservice API, WS key sent as Basic-auth username; XML by default, JSON via output_format=JSON param
+- [x] **Printful** (`services/printful`) (`printful`, token) — api.printful.com (v2 rolling out), private Bearer token from dashboard; OAuth only needed for public apps
+- [x] **Amazon Seller Central (SP-API)** (`services/amazon-seller-central`) (`amazon-seller-central`, oauth2) **[GATED]** — LWA OAuth2 only (AWS SigV4 requirement dropped in 2023); regional endpoints; Restricted Data Tokens for PII
 
 ### MW10 — Social & video (self-serve)
 _bluesky app-password XRPC; twitch/vimeo standard OAuth_
