@@ -138,9 +138,9 @@ _two gated (Etsy app approval, Amazon SP-API registration) — start registratio
 ### MW10 — Social & video (self-serve)
 _bluesky app-password XRPC; twitch/vimeo standard OAuth_
 
-- [ ] **Bluesky** (`bluesky`, token) — AT Protocol XRPC; app-password createSession JWT is the pragmatic path; official OAuth is nonstandard (DPoP + client metadata doc); ~5k points/hr rate limit
-- [ ] **Twitch** (`twitch`, oauth2) — api.twitch.tv/helix REST with Client-ID header; app vs user access tokens; EventSub webhooks for triggers
-- [ ] **Vimeo** (`vimeo`, oauth2) **[GATED]** — api.vimeo.com REST, self-serve app creation; upload capability requires requesting approval from Vimeo (routine but manual)
+- [x] **Bluesky** (`services/bluesky`) (`bluesky`, token) — AT Protocol XRPC; app-password createSession JWT is the pragmatic path; official OAuth is nonstandard (DPoP + client metadata doc); ~5k points/hr rate limit
+- [x] **Twitch** (`services/twitch`) (`twitch`, oauth2) — api.twitch.tv/helix REST with Client-ID header; app vs user access tokens; EventSub webhooks for triggers
+- [x] **Vimeo** (`services/vimeo`) (`vimeo`, oauth2) **[GATED]** — api.vimeo.com REST, self-serve app creation; upload capability requires requesting approval from Vimeo (routine but manual)
 
 ### MW11 — Social & ads (all gated)
 _Meta/TikTok/Pinterest developer-app approvals required — begin registrations while MW1 ships_
