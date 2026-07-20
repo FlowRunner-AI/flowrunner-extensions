@@ -145,11 +145,11 @@ _bluesky app-password XRPC; twitch/vimeo standard OAuth_
 ### MW11 — Social & ads (all gated)
 _Meta/TikTok/Pinterest developer-app approvals required — begin registrations while MW1 ships_
 
-- [ ] **Facebook/Meta Ads** (`facebook-ads-cm`, oauth2) **[GATED]** — Meta Marketing API on Graph (/act_{id} campaign/adset/ad CRUD); Standard/Advanced access requires Meta App Review
-- [ ] **Instagram for Business** (`instagram-business`, oauth2) **[GATED]** — Graph API two-step container create then publish flow; instagram_content_publish needs Advanced Access review; newer Instagram-Login API variant exists
-- [ ] **Facebook Messenger** (`facebook-messenger`, oauth2) **[GATED]** — Send API with Page access token; pages_messaging needs App Review advanced access; 24-hour messaging window rules
-- [ ] **TikTok** (`tiktok`, oauth2) **[GATED]** — open.tiktokapis.com v2 (Login Kit + Content Posting + Display APIs); production visibility requires app audit; Marketing API is a separate approval
-- [ ] **Pinterest** (`pinterest`, oauth2) **[GATED]** — api.pinterest.com/v5 REST; trial tier is rate-limited/own-account, Standard tier via business-day review process
+- [x] **Facebook/Meta Ads** (`services/meta-ads`) (`facebook-ads-cm`, oauth2) **[GATED]** — Meta Marketing API on Graph (/act_{id} campaign/adset/ad CRUD); Standard/Advanced access requires Meta App Review
+- [x] **Instagram for Business** (`services/instagram-business`) (`instagram-business`, oauth2) **[GATED]** — Graph API two-step container create then publish flow; instagram_content_publish needs Advanced Access review; newer Instagram-Login API variant exists
+- [x] **Facebook Messenger** (`services/facebook-messenger`) (`facebook-messenger`, oauth2) **[GATED]** — Send API with Page access token; pages_messaging needs App Review advanced access; 24-hour messaging window rules
+- [x] **TikTok** (`services/tiktok`) (`tiktok`, oauth2) **[GATED]** — open.tiktokapis.com v2 (Login Kit + Content Posting + Display APIs); production visibility requires app audit; Marketing API is a separate approval
+- [x] **Pinterest** (`services/pinterest`) (`pinterest`, oauth2) **[GATED]** — api.pinterest.com/v5 REST; trial tier is rate-limited/own-account, Standard tier via business-day review process
 
 ### MW12 — HR, dev & infra (+ SFTP spike)
 _sftp = ssh2 driver spike (same connect-per-call pattern as the DB family); ADP is partner-gated, build last_
