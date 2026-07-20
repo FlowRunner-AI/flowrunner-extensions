@@ -426,10 +426,9 @@ describe('ERPNext Service', () => {
   describe('getValue', () => {
     const VALUE_URL = `${ SITE_URL }/api/method/frappe.client.get_value`
 
-    // NOTE: getValue runs the fieldname through parseJsonParam(), which calls
-    // JSON.parse(). A plain field name like "customer_group" is NOT valid JSON,
-    // so the documented single-field usage throws. See the bug report in the
-    // final summary. The tests below pin the ACTUAL current behavior.
+    // getValue only JSON-parses the fieldname when it looks like JSON (an array,
+    // object, or JSON string). A plain field name like "customer_group" is sent
+    // through unchanged, which is the documented single-field usage.
 
     it('reads a single field passed as a JSON-quoted string', async () => {
       mock.onGet(VALUE_URL).reply({ message: { customer_group: 'Commercial' } })
@@ -472,12 +471,22 @@ describe('ERPNext Service', () => {
       })
     })
 
-    it('BUG: a plain (non-JSON) fieldname throws instead of being sent as-is', async () => {
-      mock.onGet(VALUE_URL).reply({ message: {} })
+    it('sends a plain (non-JSON) fieldname through as-is without throwing', async () => {
+      mock.onGet(VALUE_URL).reply({ message: { customer_group: 'Commercial' } })
 
-      await expect(service.getValue('Customer', 'customer_group')).rejects.toThrow(
-        /invalid JSON for fieldname/
-      )
+      const result = await service.getValue('Customer', 'customer_group', [
+        ['customer_name', '=', 'Acme Inc'],
+      ])
+
+      expect(mock.history).toHaveLength(1)
+      expect(mock.history[0].method).toBe('get')
+      expect(mock.history[0].url).toBe(VALUE_URL)
+      expect(mock.history[0].query).toEqual({
+        doctype: 'Customer',
+        fieldname: 'customer_group',
+        filters: JSON.stringify([['customer_name', '=', 'Acme Inc']]),
+      })
+      expect(result).toEqual({ message: { customer_group: 'Commercial' } })
     })
 
     it('throws a wrapped error on API failure (using a JSON-quoted fieldname)', async () => {

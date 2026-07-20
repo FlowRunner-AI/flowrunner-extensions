@@ -93,6 +93,18 @@ describe('Elasticsearch Service (e2e)', () => {
       expect(Array.isArray(result)).toBe(true)
       expect(result.some(row => row.index === testIndex)).toBe(true)
     })
+
+    it('reports the scratch index exists via HEAD', async () => {
+      const result = await service.indexExists(testIndex)
+
+      expect(result).toEqual({ exists: true })
+    })
+
+    it('reports a missing index does not exist without throwing', async () => {
+      const result = await service.indexExists(`${ testIndex }-does-not-exist`)
+
+      expect(result).toEqual({ exists: false })
+    })
   })
 
   // ── Documents ──

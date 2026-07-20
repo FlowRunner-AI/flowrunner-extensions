@@ -520,14 +520,40 @@ describe('Elasticsearch Service', () => {
   })
 
   describe('indexExists', () => {
-    // NOTE: indexExists issues a HEAD request. The service sandbox (both the mock
-    // and the real request layer) only implements get/post/put/patch/delete, so
-    // HEAD is unsupported here. In the sandbox the call therefore rejects; against
-    // a real Flowrunner runtime (which supports HEAD) it resolves to {exists:...}.
-    it('rejects in the sandbox because HEAD is not implemented by the request layer', async () => {
-      await expect(service.indexExists('products')).rejects.toThrow()
-      // No HTTP call is recorded because the request builder throws before .then().
-      expect(mock.history).toHaveLength(0)
+    it('returns {exists:true} on a successful HEAD /{index}', async () => {
+      mock.onHead(`${ BASE }/products`).reply({})
+
+      const result = await service.indexExists('products')
+
+      expect(result).toEqual({ exists: true })
+      expect(mock.history).toHaveLength(1)
+      expect(mock.history[0].method).toBe('head')
+      expect(mock.history[0].url).toBe(`${ BASE }/products`)
+      expect(mock.history[0].headers).toMatchObject({ 'Authorization': `ApiKey ${ API_KEY }` })
+    })
+
+    it('returns {exists:false} on a 404 without throwing', async () => {
+      mock.onHead(`${ BASE }/missing`).replyWithError({
+        status: 404,
+        message: 'Not Found',
+        body: { status: 404 },
+      })
+
+      const result = await service.indexExists('missing')
+
+      expect(result).toEqual({ exists: false })
+      expect(mock.history[0].method).toBe('head')
+      expect(mock.history[0].url).toBe(`${ BASE }/missing`)
+    })
+
+    it('re-throws on a non-404 error', async () => {
+      mock.onHead(`${ BASE }/products`).replyWithError({
+        status: 500,
+        message: 'Server Error',
+        body: { status: 500 },
+      })
+
+      await expect(service.indexExists('products')).rejects.toThrow('Elasticsearch API error [500]')
     })
   })
 
