@@ -3,11 +3,17 @@
   "version": "1.0.0",
   "description": "FlowRunner extension services",
   "scripts": {
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "test": "jest --selectProjects unit",
+    "test:coverage": "npm run test -- --coverage",
+    "test:e2e": "jest --selectProjects e2e --coverage",
+    "test:e2e:dev": "npm run test:e2e -- --testPathPatterns services/telegram"
   },
   "devDependencies": {
     "eslint": "^8.57.1",
-    "eslint-config-backendless": "^1.1.1"
+    "eslint-config-backendless": "^1.1.1",
+    "jest": "^30.4.2",
+    "superagent": "^10.3.0"
   },
   "license": "MIT",
   "dependencies": {
