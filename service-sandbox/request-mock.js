@@ -72,6 +72,14 @@ function createRequestMock() {
         return chain
       },
 
+      unwrapBody(flag) {
+        // Records the flag and stays chainable. The configured reply is what the
+        // awaited chain resolves to, so a test exercising an unwrapBody(false) path
+        // sets its mock reply to the response-shaped object the service expects.
+        callRecord.unwrapBody = flag
+        return chain
+      },
+
       then(resolve, reject) {
         history.push(callRecord)
 
