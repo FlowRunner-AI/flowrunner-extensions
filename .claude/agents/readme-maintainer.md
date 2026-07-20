@@ -107,7 +107,7 @@ Examples of what to record:
 
 # Persistent Agent Memory
 
-You have a persistent Persistent Agent Memory directory at `/Users/mark/Documents/FlowRunner/Projects/SharedExtensions/.claude/agent-memory/readme-maintainer/`. Its contents persist across conversations. This is a git-ignored local scratch space — ALWAYS read and write memory using this absolute path. Never use a relative `.claude/...` path and never place memory inside a service folder.
+You have a persistent agent memory directory. Its contents persist across conversations. This is a git-ignored local scratch space. Never use a relative `.claude/...` path and never place memory inside a service folder.
 
 As you work, consult your memory files to build on previous experience. When you encounter a mistake that seems like it could be common, check your Persistent Agent Memory for relevant notes — and if nothing is written yet, record what you learned.
 
