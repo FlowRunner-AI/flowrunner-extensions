@@ -5,13 +5,8 @@ color: red
 ---
 
 You are an expert FlowRunner extension engineer. You create, review, fix, and improve FlowRunner
-services in this repository. Services are **FlowRunner-native** — they no longer depend on
-Backendless. You build a service directly here, then it is deployed and tested in FlowRunner.
-
-> **History (so you don't repeat the old workflow):** services used to be built in a separate
-> Backendless repo, then converted with the `/migrate-service` command. That is gone. You write
-> services in the target format from the start. `/migrate-service` still exists only for legacy
-> Backendless code that occasionally arrives; it is NOT part of building new services.
+services in this repository. Services are **FlowRunner-native**. You build a service directly here,
+then it is deployed and tested in FlowRunner.
 
 ---
 
@@ -375,7 +370,7 @@ Consult the in-repo docs for depth: `docs/flowrunner-extension-basic.md`,
 `docs/flowrunner-extension-params.md`, `docs/flowrunner-extension-oauth2.md`,
 `docs/flowrunner-extension-code-structure.md`, `docs/flowrunner-triggers.md`, and
 `docs/ai/flowrunner-service-rules.md`, `docs/ai/flowrunner-service-patterns.md`,
-`docs/ai/ai-agent-instructions.md`, `docs/ai/readme-generation-rules.md`. Where any doc conflicts
+`docs/ai/readme-generation-rules.md`. Where any doc conflicts
 with the rules above, **the rules above win** (they are verified against current code).
 
 ---

@@ -7,7 +7,7 @@
 ### Basic Service Tags
 
 - `@integrationName` - Service display name in marketplace
-- `@integrationIcon` - Base64 encoded icon or path to icon file
+- `@integrationIcon` - Path to icon file in `public/` (e.g. `/icon.png`, `/icon.svg`). Must be a real file — never inline as base64/data: URI.
 - `@requireOAuth` - (Optional) Enables OAuth2 authentication
 
 ## Service Config Items
@@ -276,97 +276,49 @@ Samples:
 
 ## Optional System Methods (Dictionaries) for Dynamic Argument Options
 
-In order to provide a dynamic list of option for an input need to:
+In order to provide a dynamic list of options for an input:
 
-1. specify in the `@paramDef` the `dictionary` property, the value represents a method name which will be used to populate the list of available options
-2. add a method with type `DICTIONARY`, the method must follow input/output interfaces
+1. Specify in the `@paramDef` the `dictionary` property — the value is the name of a DICTIONARY method
+2. Add a method with type `DICTIONARY` using the canonical payload + typedef pattern
 
-The following JSDoc data types need to add only once in the service
-
-```javascript
-  /**
-   * @typedef {Object} DictionaryPayload
-   * @property {String} [search]
-   * @property {String} [cursor]
-   * @property {Object} [criteria]
-   */
-
-  /**
-   * @typedef {Object} DictionaryItem
-   * @property {String} label
-   * @property {any} value
-   * @property {String} note
-   */
-
-  /**
-   * @typedef {Object} DictionaryResponse
-   * @property {Array<DictionaryItem>} items
-   * @property {String} cursor
-   * @property {Object} criteria
-   */
-
-   /**
-   * @registerAs DICTIONARY
-   *
-   * @param {DictionaryPayload} payload
-   * @returns {DictionaryResponse}
-   */
-  async getDictionaryOptions({ search, cursor }) {
-     return {
-      cursor: '...',
-      items: [{ label: '...', note: 'HINT: ...', value: '...'}],
-    }
-  }
-```
-
-### Input properties:
+### Input properties (inside `payload`):
 
 - `search` {String} - optional, a string to filter items
-- `criteria` {Object} - optional, a hash map of a filled form inputs values
-- `cursor` {String} - optional, `cursor` from the previous request to provide paged listing
+- `criteria` {Object} - optional, a hash map of filled form input values (for dependent dictionaries)
+- `cursor` {String} - optional, `cursor` from the previous request for paged listing
 
 ### Output properties:
 
-- `cursor` {String} - optional, if an API supports paged listing and number of responded items are limited on the server use the parameter
-- `items` {Array<Object>} - required, a list of options, each item can contain the following properties:
-  - `label` {String} - required, to display in the UI
-  - `note` {String} - required, additional message to display more details about item, for instance it could `ID: ${id}`
-  - `value` {any} - required, value which will be passed in the input
+- `cursor` {String} - optional, for paged listing when items are limited
+- `items` {Array<Object>} - required, list of options:
+  - `label` {String} - required, display text in the UI
+  - `note` {String} - required, additional details (e.g. `ID: ${id}`)
+  - `value` {any} - required, value passed to the input
 
-Complete Example:
+### Simple Dictionary Example:
 
 ```javascript
   /**
-   * @typedef {Object} DictionaryPayload
-   * @property {String} [search]
-   * @property {String} [cursor]
-   * @property {Object} [criteria]
-   */
-
-  /**
-   * @typedef {Object} DictionaryItem
-   * @property {String} label
-   * @property {any} value
-   * @property {String} note
-   */
-
-  /**
-   * @typedef {Object} DictionaryResponse
-   * @property {Array<DictionaryItem>} items
-   * @property {String} cursor
-   * @property {Object} criteria
+   * @typedef {Object} getChannelsDictionary__payload
+   * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional search string to filter channels."}
+   * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for next page."}
    */
 
   /**
    * @registerAs DICTIONARY
-   *
-   * @param {DictionaryPayload} payload
-   * @returns {DictionaryResponse}
+   * @operationName Get Channels Dictionary
+   * @description Provides a searchable list of channels for dynamic parameter selection.
+   * @route POST /get-channels-dictionary
+   * @paramDef {"type":"getChannelsDictionary__payload","label":"Payload","name":"payload","description":"Contains search and pagination parameters."}
+   * @returns {Object}
+   * @sampleResult {"items":[{"label":"general","value":"C123","note":"ID: C123"}],"cursor":null}
    */
-  async getChannelsDictionary({ search, cursor }) {
+  async getChannelsDictionary(payload) {
+    const { search, cursor } = payload || {}
+
     const { channels, nextCursor } = search
-      ? loadChannels(channelId, `channelName='%${search}%'`, {nextCursor: cursor}) // with filtering
-      : loadChannels(channelId, null, {nextCursor: cursor}) // without filtering
+      ? loadChannels(`channelName='%${search}%'`, { nextCursor: cursor })
+      : loadChannels(null, { nextCursor: cursor })
 
     return {
       cursor: nextCursor,
@@ -377,19 +329,39 @@ Complete Example:
       })),
     }
   }
+```
+
+### Dependent Dictionary Example:
+
+```javascript
+  /**
+   * @typedef {Object} getChannelMembersDictionary__payloadCriteria
+   * @paramDef {"type":"String","label":"Channel ID","name":"channelId","required":true,"description":"The channel to list members from."}
+   */
+
+  /**
+   * @typedef {Object} getChannelMembersDictionary__payload
+   * @paramDef {"type":"String","label":"Search","name":"search","description":"Optional search string to filter members."}
+   * @paramDef {"type":"String","label":"Cursor","name":"cursor","description":"Pagination cursor for next page."}
+   * @paramDef {"type":"getChannelMembersDictionary__payloadCriteria","label":"Criteria","name":"criteria","required":true,"description":"Required parameters to identify the channel."}
+   */
 
   /**
    * @registerAs DICTIONARY
-   *
-   * @param {DictionaryPayload} payload
-   * @returns {DictionaryResponse}
+   * @operationName Get Channel Members Dictionary
+   * @description Provides a searchable list of members for the specified channel.
+   * @route POST /get-channel-members-dictionary
+   * @paramDef {"type":"getChannelMembersDictionary__payload","label":"Payload","name":"payload","description":"Contains search, cursor, and criteria for filtering channel members."}
+   * @returns {Object}
+   * @sampleResult {"items":[{"label":"johndoe","value":"U456","note":"ID: U456"}],"cursor":null}
    */
-  async getChannelMembersDictionary({ search, cursor, criteria }) {
-    const channelId = criteria.channelId
+  async getChannelMembersDictionary(payload) {
+    const { search, cursor, criteria } = payload || {}
+    const channelId = criteria?.channelId
 
     const { members, nextCursor } = search
-      ? loadChannelMembers(channelId, `username='%${search}%'`, {nextCursor: cursor}) // with filtering
-      : loadChannelMembers(channelId, null, {nextCursor: cursor}) // without filtering
+      ? loadChannelMembers(channelId, `username='%${search}%'`, { nextCursor: cursor })
+      : loadChannelMembers(channelId, null, { nextCursor: cursor })
 
     return {
       cursor: nextCursor,
@@ -400,19 +372,22 @@ Complete Example:
       })),
     }
   }
+```
 
+### Action Using Dictionaries:
+
+```javascript
   /**
    * @operationName Kick Member From Channel
+   * @description Removes a member from the specified channel.
    *
-   * @paramDef {"type":"String","label":"Channel","name":"channelId","required":true,"dictionary":"getChannelsDictionary"}
-   * @paramDef {"type":"String","label":"Member","name":"memberId","required":true,"dictionary":"getChannelMembersDictionary","dependsOn":["channelId"] }
+   * @paramDef {"type":"String","label":"Channel","name":"channelId","required":true,"dictionary":"getChannelsDictionary","description":"The channel to remove the member from."}
+   * @paramDef {"type":"String","label":"Member","name":"memberId","required":true,"dictionary":"getChannelMembersDictionary","dependsOn":["channelId"],"description":"The member to remove."}
+   *
+   * @returns {Object}
+   * @sampleResult {"ok":true}
    */
   async kickMemberFromChannel(channelId, memberId) {
-
-    return runAPIToKickMemberFromChannel({
-      channelId,
-      memberId,
-    })
+    return runAPIToKickMemberFromChannel({ channelId, memberId })
   }
-
 ```

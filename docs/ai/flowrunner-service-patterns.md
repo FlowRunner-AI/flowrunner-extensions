@@ -72,7 +72,7 @@ async methodName(paramName, optionFlag) {
  * @registerAs DICTIONARY
  * @operationName Get Options Dictionary
  * @description Provides dynamic options for parameter selection
- * @route GET /get-options-dictionary
+ * @route POST /get-options-dictionary
  * @paramDef {"type":"getOptionsDictionary__payload","label":"Payload","name":"payload","description":"Contains optional search string and pagination cursor for retrieving and filtering options."}
  * @returns {Object}
  * @sampleResult {"items":[{"label":"Option 1","value":"opt1","note":"ID: opt1"}],"cursor":null}
@@ -109,7 +109,7 @@ async getOptionsDictionary(payload) {
  * @registerAs DICTIONARY
  * @operationName Get Dependent Options Dictionary
  * @description Provides dynamic options based on parent selection
- * @route GET /get-dependent-options-dictionary
+ * @route POST /get-dependent-options-dictionary
  * @paramDef {"type":"getDependentOptionsDictionary__payload","label":"Payload","name":"payload","description":"Contains search, cursor, and criteria for filtering dependent options."}
  * @returns {Object}
  * @sampleResult {"items":[{"label":"Sub-option 1","value":"sub1","note":"Parent: parent1"}],"cursor":null}
@@ -307,7 +307,7 @@ async generateContent(prompt, includeMeta) {
 
 /**
  * @registerAs SAMPLE_RESULT_LOADER
- * @route GET /generateContent_SampleResultLoader
+ * @route POST /generateContent_SampleResultLoader
  * @param {Object} payload
  */
 async generateContent_SampleResultLoader({ criteria }) {

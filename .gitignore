@@ -2,6 +2,12 @@ node_modules
 CLAUDE.local.md
 .claude/settings.local.json
 
+# Service sandbox — real API credentials (never committed)
+service-sandbox/e2e-config.json
+
+# Test coverage reports
+coverage/
+
 # Agent scratch memory — local, git-ignored space (never committed)
 .claude/agent-memory/
 # Agents must never create a .claude/ dir inside a service folder

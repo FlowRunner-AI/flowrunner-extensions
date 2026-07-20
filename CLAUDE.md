@@ -6,7 +6,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is the FlowRunner Extensions repository, containing services that integrate third-party APIs with FlowRunner. Services are **FlowRunner-native** and independent of Backendless: they use the `Flowrunner.*` runtime (`Flowrunner.Request`, `Flowrunner.ServerCode`, `Flowrunner.Files`), are built directly in this repo, and are deployed and tested in FlowRunner.
 
-> Historical note: these services were once built in a separate Backendless repo and converted with the `/migrate-service` command. That command remains only for legacy Backendless code that occasionally needs porting; new services are written in FlowRunner-native format from the start (see the `flowrunner-service-engineer` agent).
 
 ## Common Development Commands
 
@@ -73,7 +72,7 @@ Services can define config items during registration with properties:
 - `hint` - Help text
 - `options` - For `CHOICE` type (array of strings)
 
-There is no `order` property. The display order of config items is dictated by their position in the array passed to `addService()`, so an explicit `order` is unnecessary — never add one, and strip it from any legacy/migrated config items.
+There is no `order` property. The display order of config items is dictated by their position in the array passed to `addService()`, so an explicit `order` is unnecessary — never add one, and strip it from any legacy config items.
 
 ### Key Development Areas
 
@@ -173,11 +172,6 @@ This section provides comprehensive guidance for Claude Code sessions on FlowRun
   - OAuth2, trigger, and dictionary method implementations
   - Error handling and API request patterns
 
-- **`/docs/ai/ai-agent-instructions.md`** - Comprehensive AI agent guide for:
-  - Service analysis and review processes
-  - Critical issue detection and fixing
-  - Quality enhancement procedures
-  - Production-ready standards compliance
 
 ### Detailed Documentation (Reference Only)
 
@@ -203,10 +197,9 @@ Before changing any code, either dispatch the `flowrunner-service-engineer` agen
 `.claude/agents/flowrunner-service-engineer.md` in full AND the docs below. Fixing from memory is how
 documented patterns (e.g. the §8 Files API / `@usesFileStorage` rule) get dropped and services break.
 
-1. Read `/docs/ai/ai-agent-instructions.md` for complete process
-2. Apply rules from `/docs/ai/flowrunner-service-rules.md`
-3. Use patterns from `/docs/ai/flowrunner-service-patterns.md`
-4. Reference detailed docs only when needed for specific implementations
+1. Apply rules from `/docs/ai/flowrunner-service-rules.md`
+2. Use patterns from `/docs/ai/flowrunner-service-patterns.md`
+3. Reference detailed docs only when needed for specific implementations
 
 #### Common Development Patterns
 
