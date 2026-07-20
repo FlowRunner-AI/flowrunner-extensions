@@ -15,7 +15,7 @@ const superagent = require('superagent')
 function createRealRequest() {
   const Request = {}
 
-  for (const method of ['get', 'post', 'put', 'patch', 'delete']) {
+  for (const method of ['get', 'post', 'put', 'patch', 'delete', 'head']) {
     Request[method] = (url) => {
       const req = superagent[method](url)
       let encoding = undefined
