@@ -1,0 +1,208 @@
+{
+  "slug": "sharepoint",
+  "name": "SharePoint",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Connect Microsoft SharePoint through the Microsoft Graph API to manage sites, lists, list items, and document libraries. Browse and search sites, read and write list items, upload, move, copy, and share files, and react to new or updated items and files. Connects via OAuth2.",
+  "actionCount": 32,
+  "triggerCount": 4,
+  "operationCategories": [
+    "User Information",
+    "Sites",
+    "Lists",
+    "List Items",
+    "Drives",
+    "Search"
+  ],
+  "actions": [
+    {
+      "name": "Get User Profile",
+      "category": "User Information",
+      "description": "Retrieves the profile of the signed-in user including display name, email, and basic information."
+    },
+    {
+      "name": "Get Root Site",
+      "category": "Sites",
+      "description": "Retrieves the root SharePoint site for the tenant."
+    },
+    {
+      "name": "Get Site By ID",
+      "category": "Sites",
+      "description": "Retrieves details of a SharePoint site by its ID."
+    },
+    {
+      "name": "Search Sites",
+      "category": "Sites",
+      "description": "Searches SharePoint sites accessible to the signed-in user."
+    },
+    {
+      "name": "Get Followed Sites",
+      "category": "Sites",
+      "description": "Retrieves the SharePoint sites that the signed-in user is following."
+    },
+    {
+      "name": "Get Site By Path",
+      "category": "Sites",
+      "description": "Retrieves a SharePoint site by hostname and server-relative path."
+    },
+    {
+      "name": "Get Lists",
+      "category": "Lists",
+      "description": "Retrieves all lists from a SharePoint site."
+    },
+    {
+      "name": "Get List",
+      "category": "Lists",
+      "description": "Retrieves details for a single SharePoint list."
+    },
+    {
+      "name": "Create List",
+      "category": "Lists",
+      "description": "Creates a new list in a SharePoint site."
+    },
+    {
+      "name": "Delete List",
+      "category": "Lists",
+      "description": "Deletes a SharePoint list."
+    },
+    {
+      "name": "Get List Columns",
+      "category": "Lists",
+      "description": "Retrieves the column definitions of a SharePoint list - each column's internal name, display name, type, and whether it is required or read-only. Use it to discover the column names to pass to Create List Item and Update List Item."
+    },
+    {
+      "name": "Get List Items",
+      "category": "List Items",
+      "description": "Retrieves items from a SharePoint list with their field values."
+    },
+    {
+      "name": "Get List Item",
+      "category": "List Items",
+      "description": "Retrieves a single item from a SharePoint list with all field values."
+    },
+    {
+      "name": "Create List Item",
+      "category": "List Items",
+      "description": "Creates a new item in a SharePoint list with the provided field values."
+    },
+    {
+      "name": "Update List Item",
+      "category": "List Items",
+      "description": "Updates the field values of an existing list item."
+    },
+    {
+      "name": "Delete List Item",
+      "category": "List Items",
+      "description": "Deletes a list item from a SharePoint list."
+    },
+    {
+      "name": "Get Drives",
+      "category": "Drives",
+      "description": "Retrieves all document libraries (drives) for a SharePoint site."
+    },
+    {
+      "name": "List Folder Children",
+      "category": "Drives",
+      "description": "Retrieves the immediate children (files and folders) of a folder in a drive. Leave folder blank for the drive root."
+    },
+    {
+      "name": "Get Drive Item",
+      "category": "Drives",
+      "description": "Retrieves metadata for a file or folder by its ID."
+    },
+    {
+      "name": "Get Drive Item By Path",
+      "category": "Drives",
+      "description": "Retrieves a drive item by its path within the drive root."
+    },
+    {
+      "name": "Create Folder",
+      "category": "Drives",
+      "description": "Creates a new folder inside a drive folder. Leave parent folder blank to create at the drive root."
+    },
+    {
+      "name": "Upload File",
+      "category": "Drives",
+      "description": "Uploads a file to a SharePoint document library by URL or text content. For files larger than 4 MB, prefer downloading first into FlowRunner Files. Files up to 4 MB are uploaded directly via Graph small-file upload."
+    },
+    {
+      "name": "Download File",
+      "category": "Drives",
+      "description": "Returns a short-lived download URL for a file. Use the URL to fetch file content directly. The URL is pre-authenticated and expires within minutes."
+    },
+    {
+      "name": "Delete Drive Item",
+      "category": "Drives",
+      "description": "Deletes a file or folder from a document library."
+    },
+    {
+      "name": "Move Drive Item",
+      "category": "Drives",
+      "description": "Moves a file or folder to a new parent folder within the same drive, optionally renaming it. Cross-drive moves are not supported by Microsoft Graph; use Copy Drive Item then Delete Drive Item to move between drives."
+    },
+    {
+      "name": "Copy Drive Item",
+      "category": "Drives",
+      "description": "Asynchronously copies a file or folder to a new location. The copy runs in the background and the request returns immediately. To verify completion, list the destination folder a few seconds later."
+    },
+    {
+      "name": "Create Sharing Link",
+      "category": "Drives",
+      "description": "Creates a shareable link to a file or folder. Choose link type (view, edit, embed) and scope (anonymous, organization)."
+    },
+    {
+      "name": "Rename Drive Item",
+      "category": "Drives",
+      "description": "Renames a file or folder in place, keeping it in its current folder. To move an item to a different folder, use Move Drive Item instead."
+    },
+    {
+      "name": "List Drive Item Versions",
+      "category": "Drives",
+      "description": "Lists the version history of a file, newest first. Each version carries its ID, size, who last changed it, and when. Requires version history to be enabled on the library."
+    },
+    {
+      "name": "Create Upload Session",
+      "category": "Drives",
+      "description": "Starts a resumable upload session for a large file (over 4 MB) and returns a pre-authenticated upload URL. Pass that URL to Upload Large File to stream the bytes. For files up to 4 MB use Upload File instead."
+    },
+    {
+      "name": "Upload Large File",
+      "category": "Drives",
+      "description": "Uploads a larger file (over 4 MB) to SharePoint by sending it to an upload session in sequential chunks. First call Create Upload Session to get an upload URL, then pass that URL and the source file here. The whole file is loaded into memory before it is sent, so the practical size limit is the memory available to this function - keep files under a few hundred megabytes. For files up to 4 MB use Upload File instead."
+    },
+    {
+      "name": "Search SharePoint",
+      "category": "Search",
+      "description": "Searches across SharePoint content using Microsoft Graph search API. Supports searching sites, lists, list items, drives, and drive items."
+    }
+  ],
+  "triggers": [
+    "On New List Item",
+    "On Updated List Item",
+    "On New File",
+    "On File Updated"
+  ],
+  "idealUseCases": [
+    "Sync SharePoint list items with external systems like CRMs, databases, and spreadsheets.",
+    "Automate document workflows: upload, organize, share, move, and copy files across libraries.",
+    "Trigger flows when list items or files are created or updated.",
+    "Search across sites, lists, and drives to surface content on demand.",
+    "Provision new lists and folders as part of onboarding or project setup."
+  ],
+  "agentIdeas": [
+    "When a **SharePoint** \"On New File\" trigger fires in a document library, use **Parseur** \"Upload Document\" to parse the file and extract its structured data.",
+    "Use **Google Sheets** \"Get Rows\" to read records, then call **SharePoint** \"Create List Item\" to sync each row into a SharePoint list.",
+    "When a **SharePoint** \"On New List Item\" trigger fires, use **Outlook** \"Send Message\" to email the item details to a stakeholder."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/sharepoint/public/icon.png",
+  "sourcePaths": {
+    "service": "services/sharepoint",
+    "readme": "services/sharepoint/README.md",
+    "index": "services/sharepoint/src/index.js"
+  }
+}

@@ -1,0 +1,311 @@
+{
+  "slug": "shippo",
+  "name": "Shippo",
+  "marketingCategory": "ERP & Operations",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Multi-carrier shipping integration for creating labels, comparing live rates across USPS, FedEx, UPS and DHL, tracking packages, handling international customs, scheduling pickups, and managing refunds and orders.",
+  "actionCount": 51,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Addresses",
+    "Parcels",
+    "Shipments",
+    "Rates",
+    "Transactions",
+    "Batches",
+    "Tracking",
+    "Refunds",
+    "Manifests",
+    "Customs",
+    "Carrier Accounts",
+    "Orders",
+    "Pickups",
+    "Service Groups",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "Create Address",
+      "category": "Addresses",
+      "description": "Creates a new address record in your Shippo account. When validation is enabled Shippo immediately validates the address and returns the validation_results object alongside the saved address."
+    },
+    {
+      "name": "List Addresses",
+      "category": "Addresses",
+      "description": "Lists previously created addresses with pagination. Use to retrieve saved senders and recipients."
+    },
+    {
+      "name": "Get Address",
+      "category": "Addresses",
+      "description": "Retrieves a single address by its Shippo object identifier."
+    },
+    {
+      "name": "Validate Address",
+      "category": "Addresses",
+      "description": "Validates an existing address against carrier databases and returns validation_results indicating whether the address is deliverable."
+    },
+    {
+      "name": "Create Parcel",
+      "category": "Parcels",
+      "description": "Creates a parcel describing the dimensions and weight of a package. Provide either explicit dimensions or a Shippo predefined package template token."
+    },
+    {
+      "name": "List Parcels",
+      "category": "Parcels",
+      "description": "Lists previously created parcels with pagination."
+    },
+    {
+      "name": "Get Parcel",
+      "category": "Parcels",
+      "description": "Retrieves a single parcel by its Shippo object identifier."
+    },
+    {
+      "name": "Create Shipment",
+      "category": "Shipments",
+      "description": "Creates a shipment from existing addresses and parcels (or inline address/parcel objects) and triggers Shippo to fetch live rates from your connected carriers. Pass async=true to defer rate fetching for large shipments."
+    },
+    {
+      "name": "List Shipments",
+      "category": "Shipments",
+      "description": "Lists previously created shipments with pagination."
+    },
+    {
+      "name": "Get Shipment",
+      "category": "Shipments",
+      "description": "Retrieves a single shipment by its Shippo object identifier including all rates calculated for it."
+    },
+    {
+      "name": "Get Shipment Rates",
+      "category": "Shipments",
+      "description": "Returns the rates for a shipment, optionally converted to a different currency."
+    },
+    {
+      "name": "Get Rate",
+      "category": "Rates",
+      "description": "Retrieves a single rate by its Shippo object identifier. Use to inspect the rate metadata before purchasing a label."
+    },
+    {
+      "name": "Create Transaction (Buy Label)",
+      "category": "Transactions",
+      "description": "Purchases a shipping label from a previously calculated rate. Returns a transaction containing the label_url, tracking_number and tracking_url_provider when status is SUCCESS."
+    },
+    {
+      "name": "List Transactions",
+      "category": "Transactions",
+      "description": "Lists transactions (purchased labels) with optional filters."
+    },
+    {
+      "name": "Get Transaction",
+      "category": "Transactions",
+      "description": "Retrieves a single transaction (purchased label) by its Shippo object identifier."
+    },
+    {
+      "name": "Create Batch",
+      "category": "Batches",
+      "description": "Creates a batch to buy shipping labels for many shipments at once. Shippo validates the batch asynchronously, so the response starts in status VALIDATING - poll Get Batch until it reaches VALID, then call Purchase Batch."
+    },
+    {
+      "name": "Get Batch",
+      "category": "Batches",
+      "description": "Retrieves a batch by its Shippo object_id. The object_results counts show validation and purchase progress and batch_shipments lists each shipment's status. Use it to poll an async batch until status is VALID (ready to purchase) or PURCHASED (labels ready in label_url)."
+    },
+    {
+      "name": "Purchase Batch",
+      "category": "Batches",
+      "description": "Purchases every valid shipment in a batch, generating all the shipping labels in one call. The batch moves to status PURCHASING and then PURCHASED - poll Get Batch until label_url holds the combined label documents."
+    },
+    {
+      "name": "Add Shipments to Batch",
+      "category": "Batches",
+      "description": "Adds one or more shipments to an existing batch. Send the same shipment entries you would pass to Create Batch; Shippo validates them asynchronously and updates the batch's object_results counts."
+    },
+    {
+      "name": "Remove Shipments from Batch",
+      "category": "Batches",
+      "description": "Removes shipments from a batch by their batch-shipment object_ids. Each id is the object_id of an entry in the batch's batch_shipments list (from Get Batch), not the underlying shipment object_id. Returns the updated batch."
+    },
+    {
+      "name": "Create Tracker",
+      "category": "Tracking",
+      "description": "Registers a tracker so Shippo begins polling the carrier and emitting tracking webhooks for the supplied carrier and tracking number."
+    },
+    {
+      "name": "Get Tracking Status",
+      "category": "Tracking",
+      "description": "Retrieves the latest tracking status and history for a carrier + tracking number combination."
+    },
+    {
+      "name": "Create Refund",
+      "category": "Refunds",
+      "description": "Requests a refund for a purchased label transaction. Async refunds return immediately with status QUEUED."
+    },
+    {
+      "name": "List Refunds",
+      "category": "Refunds",
+      "description": "Lists previously requested refunds with pagination."
+    },
+    {
+      "name": "Get Refund",
+      "category": "Refunds",
+      "description": "Retrieves a single refund by its Shippo object identifier."
+    },
+    {
+      "name": "Create Manifest",
+      "category": "Manifests",
+      "description": "Creates a carrier end-of-day manifest covering one or more transactions. Required by some carriers (notably USPS) to scan and pick up the day's shipments."
+    },
+    {
+      "name": "List Manifests",
+      "category": "Manifests",
+      "description": "Lists previously created manifests with pagination."
+    },
+    {
+      "name": "Get Manifest",
+      "category": "Manifests",
+      "description": "Retrieves a single manifest by its Shippo object identifier."
+    },
+    {
+      "name": "Create Customs Item",
+      "category": "Customs",
+      "description": "Creates a customs item describing a single line of an international customs declaration."
+    },
+    {
+      "name": "List Customs Items",
+      "category": "Customs",
+      "description": "Lists previously created customs items with pagination."
+    },
+    {
+      "name": "Get Customs Item",
+      "category": "Customs",
+      "description": "Retrieves a single customs item by its Shippo object identifier."
+    },
+    {
+      "name": "Create Customs Declaration",
+      "category": "Customs",
+      "description": "Creates a customs declaration grouping previously created customs items into a complete document attachable to international shipments."
+    },
+    {
+      "name": "List Customs Declarations",
+      "category": "Customs",
+      "description": "Lists previously created customs declarations with pagination."
+    },
+    {
+      "name": "Get Customs Declaration",
+      "category": "Customs",
+      "description": "Retrieves a single customs declaration by its Shippo object identifier."
+    },
+    {
+      "name": "List Carrier Accounts",
+      "category": "Carrier Accounts",
+      "description": "Lists carrier accounts connected to the authenticated Shippo account. In test mode this typically returns Shippo's default test accounts (USPS, FedEx, DHL Express)."
+    },
+    {
+      "name": "Get Carrier Account",
+      "category": "Carrier Accounts",
+      "description": "Retrieves a single carrier account by its Shippo object identifier."
+    },
+    {
+      "name": "Create Carrier Account",
+      "category": "Carrier Accounts",
+      "description": "Connects one of your own carrier accounts (USPS, FedEx, UPS, DHL and others) to Shippo so its negotiated rates and labels become available. Carrier login credentials go in the carrier-specific parameters object."
+    },
+    {
+      "name": "Update Carrier Account",
+      "category": "Carrier Accounts",
+      "description": "Updates a connected carrier account - toggle it active or inactive, or refresh its carrier-specific credentials. The carrier and account_id together identify the account and cannot be changed."
+    },
+    {
+      "name": "List Orders",
+      "category": "Orders",
+      "description": "Lists Shippo orders with optional filters."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves a single Shippo order by its object identifier."
+    },
+    {
+      "name": "Create Order",
+      "category": "Orders",
+      "description": "Creates a Shippo order from external e-commerce data so it can later be fulfilled and shipped."
+    },
+    {
+      "name": "Create Pickup",
+      "category": "Pickups",
+      "description": "Schedules a carrier pickup for one or more transactions. Provide ISO 8601 timestamps for the requested pickup window and the carrier-specific location object."
+    },
+    {
+      "name": "Get Pickup",
+      "category": "Pickups",
+      "description": "Retrieves a single pickup by its Shippo object identifier."
+    },
+    {
+      "name": "List Service Groups",
+      "category": "Service Groups",
+      "description": "Lists service groups configured on your Shippo account. Service groups bundle service levels for use on rate-at-checkout integrations."
+    },
+    {
+      "name": "Create Service Group",
+      "category": "Service Groups",
+      "description": "Creates a new service group bundling carrier service levels for live-rate, flat-rate or free-shipping checkout flows."
+    },
+    {
+      "name": "Delete Service Group",
+      "category": "Service Groups",
+      "description": "Deletes a service group by its Shippo object identifier. Returns the deleted service group identifier on success."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Lists webhook subscriptions registered on the authenticated Shippo account."
+    },
+    {
+      "name": "Get Webhook",
+      "category": "Webhooks",
+      "description": "Retrieves a single webhook subscription by its Shippo object identifier."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Registers a webhook so Shippo POSTs a notification to your URL whenever the chosen event happens (a tracking update, a label transaction, or a batch change). Pair it with your own endpoint or the On Tracking Status Updated trigger."
+    },
+    {
+      "name": "Update Webhook",
+      "category": "Webhooks",
+      "description": "Updates a registered webhook - change the destination URL, the event it listens for, or toggle it active. Shippo requires both URL and event on every update."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Deletes a registered webhook so Shippo stops sending it events."
+    }
+  ],
+  "triggers": [
+    "On Tracking Status Updated"
+  ],
+  "idealUseCases": [
+    "Generating shipping labels and tracking numbers from order data",
+    "Comparing live multi-carrier rates to pick cheapest or fastest service",
+    "Tracking shipments end-to-end with real-time status updates",
+    "Automating international shipments with customs declarations",
+    "Scheduling carrier pickups and producing end-of-day manifests",
+    "Issuing refunds for unused or void labels",
+    "Synchronizing e-commerce orders into a fulfillment workflow"
+  ],
+  "agentIdeas": [
+    "When Shippo \"On Tracking Status Updated\" reports DELIVERED, use Gmail \"Send Message\" to notify the customer with the delivery time and tracking link.",
+    "When a Shopify \"On New Order\" trigger fires, chain Shippo \"Create Shipment\" then \"Create Transaction (Buy Label)\" to produce a label per order.",
+    "When Shippo \"On Tracking Status Updated\" reports FAILURE or RETURNED, use Slack \"Send Message To Channel\" to alert the fulfillment channel."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/shippo/public/icon.png",
+  "sourcePaths": {
+    "service": "services/shippo",
+    "readme": "services/shippo/README.md",
+    "index": "services/shippo/src/index.js"
+  }
+}

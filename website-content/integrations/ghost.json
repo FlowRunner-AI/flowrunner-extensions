@@ -1,0 +1,186 @@
+{
+  "slug": "ghost",
+  "name": "Ghost",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrate [Ghost](https://ghost.org) publishing with FlowRunner. Create and manage posts, pages, tags, members, tiers, and images through the **Ghost Admin API**, and read published content through the **Ghost Content API**.",
+  "actionCount": 28,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Posts",
+    "Pages",
+    "Published Content",
+    "Tags",
+    "Members",
+    "Tiers & Newsletters",
+    "Images"
+  ],
+  "actions": [
+    {
+      "name": "Create Post",
+      "category": "Posts",
+      "description": "Creates a new post on the Ghost site via the Admin API. Provide HTML content (recommended) or Lexical JSON. Set the status to Draft, Published, or Scheduled — when scheduling, also supply a future Published At timestamp. Tags and authors are matched by name/email and created if they do not exist. Returns the created post including its id, slug, and url."
+    },
+    {
+      "name": "Get Post",
+      "category": "Posts",
+      "description": "Retrieves a single post by its id via the Admin API, including drafts and scheduled posts. Optionally include related tags and authors. Returns the full post record."
+    },
+    {
+      "name": "Get Post by Slug",
+      "category": "Posts",
+      "description": "Retrieves a single post by its slug via the Admin API, including drafts and scheduled posts. Optionally include related tags and authors."
+    },
+    {
+      "name": "List Posts",
+      "category": "Posts",
+      "description": "Lists posts via the Admin API with optional NQL filtering, ordering, and pagination. Includes drafts, scheduled, and published posts. Use the Filter field for NQL expressions such as \"status:published+tag:news\". Returns posts plus pagination metadata."
+    },
+    {
+      "name": "Update Post",
+      "category": "Posts",
+      "description": "Updates an existing post via the Admin API. Ghost requires the post's current updated_at for collision detection; if you leave it blank, this action fetches the latest value first. Only the fields you provide are changed. To send new HTML body content, provide HTML Content. Returns the updated post."
+    },
+    {
+      "name": "Publish Post",
+      "category": "Posts",
+      "description": "Publishes an existing draft or scheduled post immediately by setting its status to published via the Admin API. Handles the required updated_at collision check automatically. Returns the published post including its live url."
+    },
+    {
+      "name": "Delete Post",
+      "category": "Posts",
+      "description": "Permanently deletes a post by its id via the Admin API. This cannot be undone. Returns a confirmation object."
+    },
+    {
+      "name": "Create Page",
+      "category": "Pages",
+      "description": "Creates a new static page on the Ghost site via the Admin API. Provide HTML content (recommended) or Lexical JSON, and set the status to Draft, Published, or Scheduled. Pages behave like posts but are excluded from the main feed. Returns the created page."
+    },
+    {
+      "name": "Get Page",
+      "category": "Pages",
+      "description": "Retrieves a single static page by its id via the Admin API, including drafts. Returns the full page record."
+    },
+    {
+      "name": "List Pages",
+      "category": "Pages",
+      "description": "Lists static pages via the Admin API with optional NQL filtering and pagination. Includes drafts, scheduled, and published pages. Returns pages plus pagination metadata."
+    },
+    {
+      "name": "Update Page",
+      "category": "Pages",
+      "description": "Updates an existing static page via the Admin API. Ghost requires the page's current updated_at for collision detection; if left blank it is fetched automatically. Only provided fields are changed. Returns the updated page."
+    },
+    {
+      "name": "Delete Page",
+      "category": "Pages",
+      "description": "Permanently deletes a static page by its id via the Admin API. This cannot be undone. Returns a confirmation object."
+    },
+    {
+      "name": "Get Published Posts",
+      "category": "Published Content",
+      "description": "Lists published posts via the read-only Content API. Requires the Content API Key. Supports NQL filtering, ordering, pagination, and including tags/authors. Only public, published content is returned. Returns posts plus pagination metadata."
+    },
+    {
+      "name": "Get Published Post",
+      "category": "Published Content",
+      "description": "Retrieves a single published post by its id via the read-only Content API. Requires the Content API Key. Optionally include tags and authors. Only returns the post if it is publicly published."
+    },
+    {
+      "name": "Get Published Post by Slug",
+      "category": "Published Content",
+      "description": "Retrieves a single published post by its slug via the read-only Content API. Requires the Content API Key. Optionally include tags and authors."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists tags via the Admin API with optional NQL filtering and pagination. Returns internal and public tags plus pagination metadata."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new tag via the Admin API. Only the name is required; slug and description are optional. Returns the created tag."
+    },
+    {
+      "name": "Get Tag",
+      "category": "Tags",
+      "description": "Retrieves a single tag by its id via the Admin API. Returns the full tag record."
+    },
+    {
+      "name": "Update Tag",
+      "category": "Tags",
+      "description": "Updates an existing tag by its id via the Admin API. Only provided fields are changed. Returns the updated tag."
+    },
+    {
+      "name": "Delete Tag",
+      "category": "Tags",
+      "description": "Permanently deletes a tag by its id via the Admin API. Posts keep their content but lose this tag. Returns a confirmation object."
+    },
+    {
+      "name": "List Members",
+      "category": "Members",
+      "description": "Lists members (subscribers) via the Admin API with optional NQL filtering and pagination. Returns members plus pagination metadata."
+    },
+    {
+      "name": "Create Member",
+      "category": "Members",
+      "description": "Creates a new member (subscriber) via the Admin API. Only the email is required. Labels are matched by name and created if they do not exist. Returns the created member."
+    },
+    {
+      "name": "Get Member",
+      "category": "Members",
+      "description": "Retrieves a single member by its id via the Admin API. Returns the full member record including subscription and label data."
+    },
+    {
+      "name": "Update Member",
+      "category": "Members",
+      "description": "Updates an existing member by its id via the Admin API. Only provided fields are changed. Providing Labels replaces the member's existing labels. Returns the updated member."
+    },
+    {
+      "name": "Delete Member",
+      "category": "Members",
+      "description": "Permanently deletes a member by its id via the Admin API. This cannot be undone. Returns a confirmation object."
+    },
+    {
+      "name": "List Tiers",
+      "category": "Tiers & Newsletters",
+      "description": "Lists membership tiers via the Admin API. Includes free and paid tiers with their pricing and benefits. Returns tiers plus pagination metadata."
+    },
+    {
+      "name": "List Newsletters",
+      "category": "Tiers & Newsletters",
+      "description": "Lists newsletters via the Admin API. Returns each newsletter's name, status, and delivery settings plus pagination metadata."
+    },
+    {
+      "name": "Upload Image",
+      "category": "Images",
+      "description": "Uploads an image to the Ghost site's storage via the Admin API and returns its hosted URL, which can be used as a post or page feature image. Provide a publicly accessible image URL (for example a FlowRunner file URL); the image is downloaded and re-uploaded to Ghost. Supports JPEG, PNG, GIF, WEBP, and SVG."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Auto-publish AI-generated articles to a Ghost blog as drafts, scheduled, or live posts.",
+    "Sync release notes, changelogs, or knowledge-base entries into Ghost pages.",
+    "Manage newsletter members and tiers from a CRM or spreadsheet.",
+    "Mirror media assets into Ghost storage by uploading images from external URLs.",
+    "Read published content to feed downstream automations, digests, or AI agents.",
+    "Bulk-curate tags and apply NQL filters to organize a large content library."
+  ],
+  "agentIdeas": [
+    "Use **Anthropic Claude** \"Ask Claude\" to draft an article, then call **Ghost** \"Create Post\" to publish it as a draft for human review before going live.",
+    "When a new **Ghost** post is published via \"Publish Post\", use **Slack** \"Send Message To Channel\" to announce it to the team with the post's URL.",
+    "Use **Google Sheets** \"Get Rows\" to read a newsletter signup list, then call **Ghost** \"Create Member\" for each row to onboard subscribers into the correct tier.",
+    "Use **Notion** \"Create Page\" to archive a copy of each **Ghost** post fetched via \"Get Published Posts\" into a documentation workspace."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/ghost/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/ghost",
+    "readme": "services/ghost/README.md",
+    "index": "services/ghost/src/index.js"
+  }
+}

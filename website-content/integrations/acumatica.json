@@ -1,0 +1,140 @@
+{
+  "slug": "acumatica",
+  "name": "Acumatica",
+  "marketingCategory": "ERP & Operations",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Integrates with Acumatica ERP for vendor management, accounts payable bill processing, reference data lookups, and AP reporting. Authenticates via cookie-based sessions using Instance URL, Username, and Password. Supports full bill lifecycle operations including creation, hold release, file attachment, and deletion.",
+  "actionCount": 19,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Vendors",
+    "Bills",
+    "Reference Data",
+    "Shipments",
+    "Reports"
+  ],
+  "actions": [
+    {
+      "name": "Validate Vendor",
+      "category": "Vendors",
+      "description": "Retrieves a vendor record from Acumatica by Vendor ID to validate the vendor exists and is active. Returns the full vendor record including name, status, and payment terms."
+    },
+    {
+      "name": "List Vendors",
+      "category": "Vendors",
+      "description": "Retrieves a list of vendors from Acumatica. Use the optional OData filter to narrow results by status, class, or other fields. Useful for verifying seed data or browsing available vendors."
+    },
+    {
+      "name": "Get Vendor",
+      "category": "Vendors",
+      "description": "Retrieves full details of a single vendor by Vendor ID, including name, class, payment terms, currency, and contact information. Use this to pull vendor data for display or downstream processing."
+    },
+    {
+      "name": "Create Vendor",
+      "category": "Vendors",
+      "description": "Creates a new vendor record in Acumatica. At minimum, provide a Vendor ID and Vendor Name. Optionally set vendor class, default payment terms, and currency. Useful for auto-creating new distributors or suppliers from FlowRunner workflows."
+    },
+    {
+      "name": "Check Duplicate Bill",
+      "category": "Bills",
+      "description": "Checks if a bill with the specified vendor ID and vendor reference number already exists in Acumatica. Returns matching bills to prevent duplicate bill entry. An empty array indicates no duplicates were found."
+    },
+    {
+      "name": "Create Bill",
+      "category": "Bills",
+      "description": "Creates a new Accounts Payable bill in Acumatica. The bill is created in Hold status by default. Provide vendor, reference number, dates, and optionally line item details as a JSON array."
+    },
+    {
+      "name": "Release Bill from Hold",
+      "category": "Bills",
+      "description": "Releases a bill from Hold status in Acumatica, changing its status to Balanced and making it available for payment processing. The bill must currently be in Hold status."
+    },
+    {
+      "name": "Get Bill",
+      "category": "Bills",
+      "description": "Retrieves bills from Acumatica by vendor reference number to verify a bill was created successfully or to look up bill details. Returns all bills matching the specified vendor reference, including their detail lines."
+    },
+    {
+      "name": "Search Bills by Description",
+      "category": "Bills",
+      "description": "Searches for bills in Acumatica whose description contains the specified keyword. Useful for finding related bills or detecting potential duplicate payments based on description text."
+    },
+    {
+      "name": "List Bills",
+      "category": "Bills",
+      "description": "Retrieves a list of bills from Acumatica. Use the optional OData filter to narrow results by status, vendor, date range, or other fields. Useful for confirming creates worked or browsing all AP bills."
+    },
+    {
+      "name": "Get Bill by Reference Number",
+      "category": "Bills",
+      "description": "Retrieves a bill from Acumatica by its system-generated reference number. Cleaner than searching by VendorRef when you already know the Acumatica ReferenceNbr."
+    },
+    {
+      "name": "Delete Bill",
+      "category": "Bills",
+      "description": "Deletes a bill from Acumatica by its reference number. The bill must be in On Hold status to be deleted. Useful for resetting between demo runs or cleaning up erroneously created bills without using the Acumatica UI."
+    },
+    {
+      "name": "Attach File to Bill",
+      "category": "Bills",
+      "description": "Downloads a file from the provided URL and attaches it to an existing bill in Acumatica. Use this to attach the original billback PDF, supporting documentation, or invoice images to the Acumatica record."
+    },
+    {
+      "name": "List Bill Files",
+      "category": "Bills",
+      "description": "Lists the files attached to a bill in Acumatica by its reference number. Returns the attachment metadata (filename and download link) for each file on the record. Useful for verifying that supporting documents were attached or for retrieving previously uploaded invoices."
+    },
+    {
+      "name": "Download Bill File",
+      "category": "Bills",
+      "description": "Downloads a file attached to a bill and saves it to FlowRunner file storage, returning a native FlowRunner URL to the stored file. Provide the file URL (or relative href) returned by \"List Bill Files\". The file is fetched using an authenticated Acumatica session, so attachments that are not publicly accessible can still be retrieved, then uploaded to FlowRunner storage for use elsewhere in your flow."
+    },
+    {
+      "name": "List GL Accounts",
+      "category": "Reference Data",
+      "description": "Retrieves a list of General Ledger accounts from Acumatica. Use this to verify account codes (e.g., expense account '5100') before creating bills, or to browse the chart of accounts."
+    },
+    {
+      "name": "List Credit Terms",
+      "category": "Reference Data",
+      "description": "Retrieves a list of payment terms defined in Acumatica. Use this to verify that a terms code (e.g., 'NET30') exists before creating bills or vendors, or to browse all available payment terms."
+    },
+    {
+      "name": "Get Shipment Volumes by Customer and Period",
+      "category": "Shipments",
+      "description": "Queries completed shipments for a specific customer within a date range and returns aggregated volumes per SKU. Sums ShippedQty across all matching shipments for each InventoryID. Useful for validating distributor-claimed volumes against actual shipment records."
+    },
+    {
+      "name": "Get AP Account Balance",
+      "category": "Reports",
+      "description": "Retrieves the AP Aging Summary report (AP632000) from Acumatica showing outstanding balances by vendor. Optionally filter by a specific vendor to see their aging buckets and total outstanding amount."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automating accounts payable bill creation from parsed invoices",
+    "Validating and creating vendor records in onboarding workflows",
+    "Detecting duplicate bills by vendor reference before entry",
+    "Releasing approved bills from hold for payment processing",
+    "Attaching source documents to Acumatica bill records",
+    "Searching and auditing bills by description or reference number",
+    "Looking up GL accounts and payment terms for validation",
+    "Generating AP aging reports filtered by vendor"
+  ],
+  "agentIdeas": [
+    "When Parseur's \"On Document Processed\" trigger fires with parsed invoice data, use Acumatica's \"Validate Vendor\" to confirm the vendor exists, then call \"Check Duplicate Bill\" and \"Create Bill\" to enter the invoice into accounts payable, and finally use \"Attach File to Bill\" to link the original PDF to the Acumatica record",
+    "After using Acumatica's \"Create Bill\" and \"Release Bill from Hold\" to process a new invoice, use Gmail's \"Send Message\" to notify the finance team with the bill reference number, amount, and vendor details",
+    "Use Acumatica's \"Get AP Account Balance\" to pull vendor aging data, then call Google Sheets' \"Add Row\" for each vendor to build an AP aging summary spreadsheet for monthly financial review"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/acumatica/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/acumatica",
+    "readme": "services/acumatica/README.md",
+    "index": "services/acumatica/src/index.js"
+  }
+}

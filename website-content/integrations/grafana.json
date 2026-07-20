@@ -1,0 +1,157 @@
+{
+  "slug": "grafana",
+  "name": "Grafana",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Grafana](https://grafana.com/) with FlowRunner to manage dashboards, folders, and data sources, record annotations, query metrics, and inspect alert rules, contact points, and organization users through the Grafana HTTP API. Authenticates with a server URL plus a service-account Bearer token, and works with both Grafana Cloud and self-hosted instances.",
+  "actionCount": 23,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Dashboards",
+    "Folders",
+    "Data Sources",
+    "Annotations",
+    "Alerting",
+    "Organization & Users"
+  ],
+  "actions": [
+    {
+      "name": "Search Dashboards",
+      "category": "Dashboards",
+      "description": "Searches dashboards and folders in the current organization. Filter by a free-text query, one or more tags, and a type (dashboards or folders). Returns lightweight items with uid, title, folder, tags and url that can be used with Get Dashboard by UID."
+    },
+    {
+      "name": "Get Dashboard by UID",
+      "category": "Dashboards",
+      "description": "Retrieves the full dashboard definition and metadata for a given dashboard UID. Returns the complete dashboard JSON model along with metadata such as the containing folder, version, and permissions."
+    },
+    {
+      "name": "Create or Update Dashboard",
+      "category": "Dashboards",
+      "description": "Creates a new dashboard or updates an existing one. Provide the dashboard model as a JSON object (omit its id to create a new dashboard; include the existing uid to update). Optionally place it in a folder by folderUid, enable overwrite to replace an existing dashboard with the same uid/title, and attach a change message for the version history."
+    },
+    {
+      "name": "Delete Dashboard",
+      "category": "Dashboards",
+      "description": "Permanently deletes the dashboard identified by its UID. This action cannot be undone."
+    },
+    {
+      "name": "Get Home Dashboard",
+      "category": "Dashboards",
+      "description": "Returns the home dashboard for the current organization or user. If a custom home dashboard is configured its full JSON model is returned; otherwise the default built-in home dashboard is returned."
+    },
+    {
+      "name": "List Folders",
+      "category": "Folders",
+      "description": "Lists all folders the authenticated identity has access to in the current organization. Returns each folder's uid, title and url."
+    },
+    {
+      "name": "Get Folder",
+      "category": "Folders",
+      "description": "Retrieves a single folder by its UID, including its title, url, version and permission flags."
+    },
+    {
+      "name": "Create Folder",
+      "category": "Folders",
+      "description": "Creates a new folder in the current organization. A title is required; you may supply a custom uid, otherwise Grafana generates one automatically."
+    },
+    {
+      "name": "Delete Folder",
+      "category": "Folders",
+      "description": "Permanently deletes a folder by its UID along with all dashboards it contains. This action cannot be undone."
+    },
+    {
+      "name": "List Data Sources",
+      "category": "Data Sources",
+      "description": "Lists all data sources configured in the current organization. Returns each data source's id, uid, name, type, url and whether it is the default."
+    },
+    {
+      "name": "Get Data Source",
+      "category": "Data Sources",
+      "description": "Retrieves a single data source by its UID, including connection settings and jsonData. Secret fields are never returned."
+    },
+    {
+      "name": "Create Data Source",
+      "category": "Data Sources",
+      "description": "Creates a new data source in the current organization. Provide a unique name, the plugin type (e.g. prometheus, loki, mysql), and the backend url. Use the access mode to control whether Grafana proxies requests (server) or the browser connects directly. jsonData and secureJsonData accept plugin-specific settings and secrets."
+    },
+    {
+      "name": "Query Data Source",
+      "category": "Data Sources",
+      "description": "Runs one or more queries against data sources and returns the resulting data frames. Each query object must reference its data source and include the plugin-specific model (e.g. a Prometheus expr). Supports a shared time range via from/to (relative like now-6h or epoch milliseconds)."
+    },
+    {
+      "name": "Create Annotation",
+      "category": "Annotations",
+      "description": "Creates an annotation. Supply the time as epoch milliseconds; include timeEnd to create a region annotation. Optionally attach it to a specific dashboard (dashboardUID) and panel (panelId) and add tags for filtering. Global annotations (no dashboard) show across all dashboards matching their tags."
+    },
+    {
+      "name": "List Annotations",
+      "category": "Annotations",
+      "description": "Finds annotations matching the given filters. Filter by time range (from/to as epoch milliseconds), tags, a specific dashboard, and limit the number of results. Returns matching annotation objects."
+    },
+    {
+      "name": "Delete Annotation",
+      "category": "Annotations",
+      "description": "Permanently deletes an annotation by its numeric id."
+    },
+    {
+      "name": "List Alert Rules",
+      "category": "Alerting",
+      "description": "Lists all Grafana-managed alert rules in the organization via the provisioning API. Returns each rule's uid, title, folderUID, ruleGroup, condition, evaluation state settings and labels."
+    },
+    {
+      "name": "Get Alert Rule",
+      "category": "Alerting",
+      "description": "Retrieves a single Grafana-managed alert rule by its UID, including its full query data model, condition, evaluation settings, annotations and labels."
+    },
+    {
+      "name": "List Contact Points",
+      "category": "Alerting",
+      "description": "Lists all notification contact points configured for alerting via the provisioning API. Returns each contact point's uid, name, type (e.g. email, slack) and non-secret settings."
+    },
+    {
+      "name": "Get Organization",
+      "category": "Organization & Users",
+      "description": "Returns details of the current organization associated with the API token, including its id and name."
+    },
+    {
+      "name": "List Organization Users",
+      "category": "Organization & Users",
+      "description": "Lists all users that belong to the current organization, including their login, email and role."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Organization & Users",
+      "description": "Returns the profile of the currently authenticated user or service account, including id, login, email and admin flags."
+    },
+    {
+      "name": "Health Check",
+      "category": "Organization & Users",
+      "description": "Checks connectivity to the configured Grafana instance and returns its health status, including database state, version and commit. Use this to verify the server URL and API token are valid."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Programmatically create, update, and delete dashboards and folders as part of provisioning or CI/CD workflows.",
+    "Record annotations on dashboards to mark deploys, incidents, or other events on time-series graphs.",
+    "Query data sources directly to feed metrics into automations or alert conditions.",
+    "Audit alert rules, contact points, and organization users, or run a health check for uptime monitoring."
+  ],
+  "agentIdeas": [
+    "When a **PagerDuty** \"On New Triggered Incident\" trigger fires, use **Grafana** \"Create Annotation\" to mark the incident start time on the relevant dashboard for correlation with the metric spike.",
+    "After a deploy, use **Grafana** \"Create Annotation\" to record the release on a dashboard, then post the annotation with **Slack** \"Send Message To Channel\" so the team can jump straight to the graph.",
+    "When a **Grafana** \"Health Check\" reports the instance is unhealthy, use **PagerDuty** \"Create Incident\" to page the on-call engineer."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/grafana/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/grafana",
+    "readme": "services/grafana/README.md",
+    "index": "services/grafana/src/index.js"
+  }
+}

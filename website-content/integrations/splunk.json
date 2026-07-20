@@ -1,0 +1,106 @@
+{
+  "slug": "splunk",
+  "name": "Splunk",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrates FlowRunner with Splunk's REST management API and HTTP Event Collector (HEC) to run SPL searches, manage saved searches, ingest events, and inspect indexes and server health.",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Search",
+    "Saved Searches",
+    "HTTP Event Collector",
+    "Indexes",
+    "Server"
+  ],
+  "actions": [
+    {
+      "name": "Create Search Job",
+      "category": "Search",
+      "description": "Starts an asynchronous Splunk search job and returns its search ID (sid). The search string must be a valid SPL query and, unless it begins with a generating command (such as tstats, metadata, inputlookup, or a leading pipe), it must start with \"search \" — for example \"search index=main error\". This is the first step of the standard search flow: create the job here, poll Get Search Job Status until isDone is true, then call Get Search Results with the sid. For quick, small searches consider Run Oneshot Search instead, which returns results in a single call."
+    },
+    {
+      "name": "Get Search Job Status",
+      "category": "Search",
+      "description": "Retrieves the current status of a search job by its search ID (sid). Poll this after Create Search Job and inspect the job's dispatchState and isDone properties: when isDone is 1 the results are ready to fetch with Get Search Results. Also returns useful metadata such as eventCount, resultCount, scanCount and doneProgress."
+    },
+    {
+      "name": "Get Search Results",
+      "category": "Search",
+      "description": "Returns the results of a completed search job by its search ID (sid). Only call this once Get Search Job Status reports isDone; results for a still-running job may be empty or partial. Use count and offset to page through large result sets (count 0 returns all available results). Results come back as an array of row objects under the \"results\" key."
+    },
+    {
+      "name": "Run Oneshot Search",
+      "category": "Search",
+      "description": "Runs a search synchronously and returns the results directly in a single call, without managing a job lifecycle. This is the simplest way to run a bounded search — internally it dispatches the job with exec_mode=oneshot. Best for small, fast, time-bounded searches; for long-running or very large searches use Create Search Job with the poll-and-fetch flow instead. The SPL must start with \"search \" unless it begins with a generating command."
+    },
+    {
+      "name": "Cancel Search Job",
+      "category": "Search",
+      "description": "Cancels a running search job and deletes it, freeing the resources it holds. Use this to stop a long-running job you no longer need or to clean up finished jobs. Applying a control action of \"cancel\" both stops and removes the job identified by its search ID (sid)."
+    },
+    {
+      "name": "List Saved Searches",
+      "category": "Saved Searches",
+      "description": "Lists saved searches (including scheduled searches and alerts) available to the authenticated user. Returns each saved search's name and its configuration, including the underlying SPL, cron schedule and alert settings. Use count and offset to page through large collections."
+    },
+    {
+      "name": "Get Saved Search",
+      "category": "Saved Searches",
+      "description": "Retrieves the full configuration of a single saved search by name, including its SPL query, time range, schedule and alert/action settings. Use the exact saved search name as it appears in Splunk."
+    },
+    {
+      "name": "Run Saved Search",
+      "category": "Saved Searches",
+      "description": "Dispatches (runs) a saved search by name and returns the search ID (sid) of the job it creates. The saved search executes with its stored SPL and time range; poll Get Search Job Status with the returned sid and then fetch results with Get Search Results, just like a manually created job. Optionally override the time range for this run only."
+    },
+    {
+      "name": "Send Event",
+      "category": "HTTP Event Collector",
+      "description": "Sends a single structured event to Splunk through the HTTP Event Collector (HEC). Requires the HEC URL and HEC Token config items to be set. The event payload can be a JSON object or a plain string; you may also set sourcetype, index, host and an explicit event time (epoch seconds). The target index and sourcetype must be permitted by the HEC token's configuration in Splunk."
+    },
+    {
+      "name": "Send Raw Event",
+      "category": "HTTP Event Collector",
+      "description": "Sends raw, unstructured data to Splunk through the HTTP Event Collector (HEC) raw endpoint. The entire request body is ingested verbatim as one or more events (Splunk applies line-breaking and timestamp extraction per the sourcetype). Requires the HEC URL and HEC Token config items. Use sourcetype, index and host query parameters to control how the raw data is indexed."
+    },
+    {
+      "name": "List Indexes",
+      "category": "Indexes",
+      "description": "Lists the data indexes configured on the Splunk instance, including internal indexes. Returns each index's name and configuration, such as its current event count, sizes, retention (frozenTimePeriodInSecs) and disabled state. Use count and offset to page through the collection."
+    },
+    {
+      "name": "Get Index",
+      "category": "Indexes",
+      "description": "Retrieves the configuration and statistics of a single index by name, including its total event count, disk usage, retention policy and enabled/disabled state. Use the exact index name (e.g. \"main\", \"_internal\")."
+    },
+    {
+      "name": "Get Server Info",
+      "category": "Server",
+      "description": "Returns general information about the Splunk server, including its version, build, GUID, server name, roles, OS details and license state. Useful as a lightweight connection and authentication check for the management (REST) endpoint and Bearer token."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Run an SPL search on a schedule and route the results into alerts, tickets, or dashboards",
+    "Ingest application, workflow, or webhook events into Splunk for centralized logging and monitoring",
+    "Trigger a saved search or alert from an automation and act on its results",
+    "Monitor index sizes, event counts, and server health as part of an operational workflow"
+  ],
+  "agentIdeas": [
+    "After **Splunk** \"Run Oneshot Search\" surfaces errors matching an SPL query, use **Slack** \"Send Message To Channel\" to post the offending events to an on-call channel.",
+    "When a **Splunk** saved-search alert run via \"Run Saved Search\" returns results, use **PagerDuty** \"Create Incident\" to open an incident for the responding team.",
+    "After **Splunk** \"Get Search Results\" returns a metrics summary, use **Grafana** \"Create Annotation\" to mark the corresponding event on a dashboard timeline."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/splunk/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/splunk",
+    "readme": "services/splunk/README.md",
+    "index": "services/splunk/src/index.js"
+  }
+}

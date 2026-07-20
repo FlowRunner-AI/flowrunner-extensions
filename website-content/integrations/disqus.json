@@ -1,0 +1,130 @@
+{
+  "slug": "disqus",
+  "name": "Disqus",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate with the [Disqus API 3.0](https://disqus.com/api/docs/) to read and manage forums, threads, posts (comments), and users on the Disqus commenting platform: list and moderate comments, create threads and posts, open/close discussions, and look up user activity. Authenticates with your Disqus application Public Key (API Key) plus an OAuth Access Token; write and moderation actions require a valid access token.",
+  "actionCount": 18,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Forums",
+    "Threads",
+    "Posts",
+    "Users"
+  ],
+  "actions": [
+    {
+      "name": "Get Forum Details",
+      "category": "Forums",
+      "description": "Retrieves details of a Disqus forum (site) by its short name. Returns the forum's name, description, creation date, settings, subscriber and post counts, and moderator configuration. The forum short name is the unique identifier shown in your Disqus admin URL."
+    },
+    {
+      "name": "List Forum Categories",
+      "category": "Forums",
+      "description": "Lists the categories defined within a Disqus forum. Categories are optional groupings used to organize threads. Returns each category's ID, title, and default flag."
+    },
+    {
+      "name": "List Forum Threads",
+      "category": "Forums",
+      "description": "Lists threads (discussions) belonging to a Disqus forum, most recent first. Supports pagination via limit and cursor. Each thread includes its ID, title, link, post count, and creation date."
+    },
+    {
+      "name": "List Forum Posts",
+      "category": "Forums",
+      "description": "Lists posts (comments) across all threads in a Disqus forum, most recent first. Supports pagination and filtering by moderation state. Useful for moderation dashboards and exporting a forum's comment activity."
+    },
+    {
+      "name": "Get Thread Details",
+      "category": "Threads",
+      "description": "Retrieves details of a Disqus thread. Look up a thread either by its numeric thread ID, or by forum plus link (the page URL the thread is attached to). Returns the thread title, link, post count, and moderation status."
+    },
+    {
+      "name": "List Thread Posts",
+      "category": "Threads",
+      "description": "Lists the posts (comments) belonging to a single Disqus thread, ordered as displayed. Supports pagination and moderation-state filtering. Use this to read a discussion's comments for a specific page."
+    },
+    {
+      "name": "Create Thread",
+      "category": "Threads",
+      "description": "Creates a new thread (discussion) within a forum. A thread is where comments are attached and typically corresponds to a page on your site. Requires the forum short name and a title; optionally attach a URL, identifier, slug, category, or opening message. Requires a valid access token."
+    },
+    {
+      "name": "Close Thread",
+      "category": "Threads",
+      "description": "Closes a thread so that no new comments can be posted to it. Existing comments remain visible. Requires a valid access token with moderation permission on the forum."
+    },
+    {
+      "name": "Open Thread",
+      "category": "Threads",
+      "description": "Reopens a previously closed thread so that comments can be posted to it again. Requires a valid access token with moderation permission on the forum."
+    },
+    {
+      "name": "Get Post",
+      "category": "Posts",
+      "description": "Retrieves the details of a single post (comment) by its ID, including the message HTML, author, parent post, thread, timestamps, and moderation flags."
+    },
+    {
+      "name": "List Posts",
+      "category": "Posts",
+      "description": "Lists posts (comments) in a forum, filtered by moderation state, most recent first. Supports pagination. This is the primary endpoint for pulling a queue of comments to moderate or export."
+    },
+    {
+      "name": "Create Post",
+      "category": "Posts",
+      "description": "Creates a new post (comment) on a thread. Provide the thread ID and the message text; optionally set a parent post ID to make it a reply. When posting on behalf of an anonymous author, supply author name and email. Requires a valid access token."
+    },
+    {
+      "name": "Approve Post",
+      "category": "Posts",
+      "description": "Approves a post (comment), making it publicly visible and moving it out of the moderation queue. Requires a valid access token with moderation permission on the forum."
+    },
+    {
+      "name": "Remove Post",
+      "category": "Posts",
+      "description": "Removes (deletes) a post (comment) so it is no longer displayed. This is a moderation delete, not a permanent purge. Requires a valid access token with moderation permission on the forum."
+    },
+    {
+      "name": "Mark Post As Spam",
+      "category": "Posts",
+      "description": "Flags a post (comment) as spam, hiding it and training Disqus's spam filter. Requires a valid access token with moderation permission on the forum."
+    },
+    {
+      "name": "Highlight Post",
+      "category": "Posts",
+      "description": "Highlights a post (comment), promoting it as a featured comment in the thread. Requires a valid access token with moderation permission on the forum."
+    },
+    {
+      "name": "Get User Details",
+      "category": "Users",
+      "description": "Retrieves the public profile details of a Disqus user by their numeric user ID, including username, display name, avatar, join date, and aggregate reputation and post/like counts."
+    },
+    {
+      "name": "List User Posts",
+      "category": "Users",
+      "description": "Lists posts (comments) authored by a specific Disqus user, most recent first, across all forums visible to your credentials. Supports pagination. Useful for auditing a user's activity."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Build a moderation dashboard that pulls a queue of pending comments and approves, removes, or marks them as spam",
+    "Automatically create a Disqus thread for each new page or article published on your site",
+    "Export a forum's comment activity or a specific user's post history for auditing and analytics",
+    "Cross-post comments or notify your team when new discussions or replies arrive"
+  ],
+  "agentIdeas": [
+    "Use **Disqus** \"List Posts\" to pull the moderation queue, then send each pending comment to **Slack** \"Send Message To Channel\" so moderators can review and act from chat",
+    "When a new article row appears via **Google Sheets** \"Get Rows\", call **Disqus** \"Create Thread\" to open a matching discussion for that page",
+    "After **Disqus** \"Mark Post As Spam\" flags an abusive comment, use **Gmail** \"Send Message\" to alert the site owner with the offending post details"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/disqus/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/disqus",
+    "readme": "services/disqus/README.md",
+    "index": "services/disqus/src/index.js"
+  }
+}

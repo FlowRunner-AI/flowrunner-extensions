@@ -1,0 +1,183 @@
+{
+  "slug": "toggl",
+  "name": "Toggl Track",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrates [Toggl Track](https://track.toggl.com) time tracking with FlowRunner. Manage time entries, timers, projects, clients, tags, tasks, and workspace/user data through the Toggl Track API v9.",
+  "actionCount": 28,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Time Entries",
+    "Projects",
+    "Clients",
+    "Tags",
+    "Tasks",
+    "Workspace & User"
+  ],
+  "actions": [
+    {
+      "name": "Create Time Entry",
+      "category": "Time Entries",
+      "description": "Creates a time entry in the given workspace. Provide a start time in ISO 8601 format and a duration in seconds for a completed entry. To create a running (unfinished) entry, set duration to -1 and start to the current time (see the Start Timer operation for a dedicated helper). Optionally associate a project, task, tags, and billable status."
+    },
+    {
+      "name": "Start Timer",
+      "category": "Time Entries",
+      "description": "Starts a new running time entry in the given workspace. This is a convenience wrapper around Create Time Entry that applies Toggl's running-entry convention automatically: it sets start to the current time and duration to -1, which marks the entry as unfinished. Use Stop Timer or Get Current Running Entry to manage it afterward."
+    },
+    {
+      "name": "Stop Timer",
+      "category": "Time Entries",
+      "description": "Stops a running time entry. Toggl sets the stop time to the current moment and computes the final duration from the entry's start time. The entry must currently be running (duration -1) and belong to the given workspace."
+    },
+    {
+      "name": "Get Current Running Entry",
+      "category": "Time Entries",
+      "description": "Returns the time entry that is currently running for the authenticated user across all workspaces, or null when nothing is running. A running entry has a duration of -1 and no stop time."
+    },
+    {
+      "name": "Get Time Entry",
+      "category": "Time Entries",
+      "description": "Retrieves a single time entry by its numeric ID for the authenticated user. Includes description, timing, duration, project/task association, tags, and billable status."
+    },
+    {
+      "name": "List Time Entries",
+      "category": "Time Entries",
+      "description": "Lists the authenticated user's time entries, most recent first. Optionally filter by an inclusive start date and exclusive end date (ISO 8601 date or datetime). When no range is given, Toggl returns entries from roughly the last nine days. Dates more than three months apart are rejected by the API."
+    },
+    {
+      "name": "Update Time Entry",
+      "category": "Time Entries",
+      "description": "Updates fields on an existing time entry. Only the fields you provide are changed. You can adjust the description, start/stop times, duration, project/task association, tags, and billable status."
+    },
+    {
+      "name": "Delete Time Entry",
+      "category": "Time Entries",
+      "description": "Permanently deletes a time entry from the given workspace. This action cannot be undone."
+    },
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Lists projects in a workspace. Optionally filter by active status to return only active, only archived, or all projects."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves a single project by its numeric ID within a workspace, including its client, color, billable, privacy, and active status."
+    },
+    {
+      "name": "Create Project",
+      "category": "Projects",
+      "description": "Creates a project in a workspace. Only the name is required. Optionally set a client, hex color, billable and privacy flags, and whether the project starts active."
+    },
+    {
+      "name": "Update Project",
+      "category": "Projects",
+      "description": "Updates an existing project. Only the fields you provide are changed. You can rename it, reassign the client, change the color, or toggle billable, privacy, and active status (set active to false to archive)."
+    },
+    {
+      "name": "Delete Project",
+      "category": "Projects",
+      "description": "Permanently deletes a project from a workspace. Time entries previously associated with the project lose that association. This action cannot be undone."
+    },
+    {
+      "name": "List Clients",
+      "category": "Clients",
+      "description": "Lists all clients in a workspace, including their name and archived status."
+    },
+    {
+      "name": "Create Client",
+      "category": "Clients",
+      "description": "Creates a client in a workspace. Only the client name is required."
+    },
+    {
+      "name": "Update Client",
+      "category": "Clients",
+      "description": "Renames an existing client in a workspace."
+    },
+    {
+      "name": "Delete Client",
+      "category": "Clients",
+      "description": "Permanently deletes a client from a workspace. Projects previously assigned to the client lose that association. This action cannot be undone."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists all tags in a workspace. Tag IDs returned here can be attached to time entries."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a tag in a workspace. Only the tag name is required."
+    },
+    {
+      "name": "Update Tag",
+      "category": "Tags",
+      "description": "Renames an existing tag in a workspace."
+    },
+    {
+      "name": "Delete Tag",
+      "category": "Tags",
+      "description": "Permanently deletes a tag from a workspace. The tag is removed from any time entries it was attached to. This action cannot be undone."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Lists tasks belonging to a project in a workspace. Tasks are a paid-plan feature and represent sub-units of work within a project."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a task within a project. Only the task name is required. Optionally set an estimate in seconds and whether the task starts active. Tasks require a paid workspace plan."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates a task within a project. Only the fields you provide are changed. You can rename it, change its estimate, or toggle active status. Tasks require a paid workspace plan."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task from a project. This action cannot be undone. Tasks require a paid workspace plan."
+    },
+    {
+      "name": "Get Me",
+      "category": "Workspace & User",
+      "description": "Returns the authenticated user's profile, including default workspace ID, email, full name, timezone, and preferences. Enable Include Related Data to also embed the user's workspaces, projects, clients, and tags in a single response."
+    },
+    {
+      "name": "List Workspace Users",
+      "category": "Workspace & User",
+      "description": "Lists the users who are members of a workspace, including their name, email, and admin status."
+    },
+    {
+      "name": "Get Workspace",
+      "category": "Workspace & User",
+      "description": "Retrieves a single workspace by its numeric ID, including its name, organization, plan, and default settings."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically start and stop timers when work begins or ends in another tool",
+    "Log completed time entries from external systems into the right project and client",
+    "Keep Toggl projects, clients, and tags in sync with your CRM or task manager",
+    "Pull time entries on a schedule for reporting, invoicing, or timesheet exports",
+    "Create tasks and projects programmatically when new work is scoped"
+  ],
+  "agentIdeas": [
+    "When a **ClickUp** \"On Task Created\" trigger fires, use **Toggl Track** \"Start Timer\" to begin tracking work against the matching project as soon as the task is assigned",
+    "Use **Toggl Track** \"List Time Entries\" to pull a period's tracked hours, then call **QuickBooks Online** \"Create Invoice\" to bill each client for their logged time",
+    "On a schedule, use **Toggl Track** \"List Time Entries\" to export tracked work and **Google Sheets** \"Add Row\" to append each entry into a timesheet spreadsheet"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/toggl/public/icon.png",
+  "sourcePaths": {
+    "service": "services/toggl",
+    "readme": "services/toggl/README.md",
+    "index": "services/toggl/src/index.js"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "slug": "perspective",
+  "name": "Perspective",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Score text for toxicity and related attributes using Google's Perspective Comment Analyzer API, and submit suggested scores as feedback to improve the models. Authentication uses a Google Cloud API key with the Comment Analyzer API enabled.",
+  "actionCount": 2,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Analysis",
+    "Feedback"
+  ],
+  "actions": [
+    {
+      "name": "Analyze Comment",
+      "category": "Analysis",
+      "description": "Analyzes a piece of text for a set of attributes such as toxicity, insults, threats, and profanity using Google's Perspective Comment Analyzer API. Returns per-attribute scores, each with a summaryScore (a probability from 0 to 1 that the attribute applies) and, when span annotations are enabled, per-sentence spanScores. Select one or more attributes to score; TOXICITY, SEVERE_TOXICITY, IDENTITY_ATTACK, INSULT, PROFANITY, and THREAT are production attributes with broader language support, while SEXUALLY_EXPLICIT and FLIRTATION are experimental and English-only. Not every attribute supports every language; requesting an unsupported combination returns a LANGUAGE_NOT_SUPPORTED_BY_ATTRIBUTE error, and text over the API limit returns COMMENT_TOO_LONG. By default doNotStore is true so submitted text is not retained by Google for research."
+    },
+    {
+      "name": "Suggest Comment Score",
+      "category": "Feedback",
+      "description": "Submits a suggested score for a comment to provide feedback to the Perspective models (the SuggestCommentScore method). Use this to tell Perspective what score you believe an attribute should have for a given piece of text — for example, flagging a comment the model mis-scored. Provide the comment text, the attribute to give feedback on, and the suggested summary score (a probability from 0 to 1). This does not return attribute scores; it acknowledges receipt of the feedback and helps improve the models over time."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically flag or hide toxic, insulting, or threatening user-generated comments before they are published.",
+    "Prioritize community-moderation queues by ranking submissions by their toxicity or identity-attack scores.",
+    "Gate chat, ticket, or forum replies that exceed a toxicity threshold and route them for human review.",
+    "Send corrective feedback to Perspective when a comment is mis-scored, improving future model accuracy."
+  ],
+  "agentIdeas": [
+    "When a **Slack** \"On Channel Message\" trigger fires, call **Perspective** \"Analyze Comment\" and, if the toxicity score is high, use **Slack** \"Update Message In Channel\" or \"Send Direct Message\" to warn the poster.",
+    "When a **Zendesk** \"On Ticket Event\" trigger fires, run **Perspective** \"Analyze Comment\" on the ticket text and use **Zendesk** \"Add Comment To Ticket\" to add an internal note when abusive language is detected.",
+    "Before a **Discourse** \"Create Post / Reply\" call publishes user content, screen it with **Perspective** \"Analyze Comment\" and route high-scoring posts to a moderation queue instead of posting."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/perspective/public/icon.png",
+  "sourcePaths": {
+    "service": "services/perspective",
+    "readme": "services/perspective/README.md",
+    "index": "services/perspective/src/index.js"
+  }
+}

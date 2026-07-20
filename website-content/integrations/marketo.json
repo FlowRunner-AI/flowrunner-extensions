@@ -1,0 +1,635 @@
+{
+  "slug": "marketo",
+  "name": "Marketo",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connect your flows to Adobe Marketo Engage: sync and look up leads, manage static-list membership, run and schedule smart campaigns, read the lead activity stream, work with custom object and CRM records, manage marketing assets (programs, emails, forms, landing pages, smart lists, snippets, folders, and My-Tokens), and run bulk import/export jobs. Authenticates with your Marketo REST credentials (Client ID, Client Secret, and instance Base URL, e.g. `https://123-ABC-456.mktorest.com`); the bearer token is fetched and refreshed automatically. Some action groups require subscription add-ons: the Asset API actions need a Marketing-Activities/Asset entitlement, and the CRM-object actions require CRM-sync (Named Accounts additionally needs the ABM add-on).",
+  "actionCount": 116,
+  "triggerCount": 4,
+  "operationCategories": [
+    "Leads",
+    "Lists",
+    "Campaigns",
+    "Activities",
+    "Custom Objects",
+    "Assets",
+    "CRM Objects",
+    "Bulk"
+  ],
+  "actions": [
+    {
+      "name": "Sync Leads",
+      "category": "Leads",
+      "description": "Creates or updates lead (person) records in bulk. Each record is a free-form object of Marketo field API names (e.g. email, firstName, company). Use this to push contacts into Marketo; choose Create or Update to upsert on the lookup field. Up to 300 records per call."
+    },
+    {
+      "name": "Get Lead by ID",
+      "category": "Leads",
+      "description": "Retrieves a single lead (person) by its Marketo ID. Use it after Get Leads or Sync Leads to fetch the full record. Optionally restrict the returned fields."
+    },
+    {
+      "name": "Get Leads",
+      "category": "Leads",
+      "description": "Searches leads by a filter field and a list of values (e.g. all leads matching a set of emails or IDs). Use this to find leads before acting on them. For date-window lookups (\"leads changed since T\"), use the On New Lead trigger, Get Lead Field Changes, or Bulk Lead Export - timestamp ranges are not a valid Get Leads filter. Returns up to 300 per page with a Next Page Token for paging."
+    },
+    {
+      "name": "Delete Leads",
+      "category": "Leads",
+      "description": "Permanently deletes leads by their Marketo IDs (up to 300). Skipped rows return a per-row reason. Use Get Leads to find the IDs first."
+    },
+    {
+      "name": "Describe Lead Fields",
+      "category": "Leads",
+      "description": "Returns the full schema of lead fields in this instance - each field's API name, display name, and data type. Use it to discover the exact field names to put in Sync Leads or the Fields parameter of Get Lead."
+    },
+    {
+      "name": "Get Lists",
+      "category": "Lists",
+      "description": "Returns static lists in the instance, optionally filtered by name or program. Use this to find a list before adding or removing members. Returns up to 300 per page."
+    },
+    {
+      "name": "Get List by ID",
+      "category": "Lists",
+      "description": "Retrieves a single static list by ID, including its name, description, and parent program. The List field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "Get Leads by List",
+      "category": "Lists",
+      "description": "Returns the lead members of a static list. Use it to read who is on a list before removing or processing them. Returns up to 300 per page with a Next Page Token for paging."
+    },
+    {
+      "name": "Add Leads to List",
+      "category": "Lists",
+      "description": "Adds existing leads to a static list (up to 300). Lead IDs are sent as repeated id query parameters per the Marketo membership API. Skipped rows return a per-row reason."
+    },
+    {
+      "name": "Remove Leads from List",
+      "category": "Lists",
+      "description": "Removes leads from a static list (up to 300). Lead IDs are sent as repeated id query parameters. Skipped rows return a per-row reason."
+    },
+    {
+      "name": "Member of List",
+      "category": "Lists",
+      "description": "Checks whether each given lead is a member of a static list (up to 300). Returns memberof / notmemberof / skipped per lead. Use it to branch a flow on list membership."
+    },
+    {
+      "name": "Get Campaigns",
+      "category": "Campaigns",
+      "description": "Returns smart campaigns in the instance, optionally filtered by name, program, or whether they are triggerable via the API. Use it to find a campaign before requesting or scheduling it."
+    },
+    {
+      "name": "Get Campaign by ID",
+      "category": "Campaigns",
+      "description": "Retrieves a single smart campaign by ID, including its type (trigger or batch) and parent program. The Campaign field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "Request Campaign",
+      "category": "Campaigns",
+      "description": "Runs the given leads through a trigger smart campaign immediately. The campaign must have an active \"Campaign is Requested: Source = Web Service API\" trigger step. Up to 100 leads per call; My-Token overrides must already exist under the program's My Tokens tab."
+    },
+    {
+      "name": "Schedule Campaign",
+      "category": "Campaigns",
+      "description": "Schedules a batch smart campaign to run at a future time (default: 5 minutes from now; must be at least 5 minutes out). Optionally clones the parent program and applies My-Token overrides. The target must be a batch (not trigger) campaign."
+    },
+    {
+      "name": "Get Activity Types",
+      "category": "Activities",
+      "description": "Returns the activity types available in this instance, each with its ID, name, and attributes. Use it to discover the activity type IDs needed for Get Lead Activities."
+    },
+    {
+      "name": "Get Paging Token",
+      "category": "Activities",
+      "description": "Returns a paging token that anchors an activity stream at a given start time. Pass the token to Get Lead Activities to begin reading activities from that point."
+    },
+    {
+      "name": "Get Lead Activities",
+      "category": "Activities",
+      "description": "Returns lead activities of the chosen type(s) from a paging token (get the first token from Get Paging Token). Use it to read the activity log stream - form fills, clicks, etc. Optionally scope to specific leads or a list."
+    },
+    {
+      "name": "List Custom Object Types",
+      "category": "Custom Objects",
+      "description": "Returns the custom object types defined in this instance, each with its API name, dedupe fields, and ID field. Use it to discover the API name needed for Query/Sync/Describe Custom Object. Requires a subscription that includes Custom Objects."
+    },
+    {
+      "name": "Describe Custom Object",
+      "category": "Custom Objects",
+      "description": "Returns the schema of a custom object type - its fields, ID field, and dedupe fields. Use it to discover the exact field names to put in Sync/Query Custom Object. The Custom Object field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "Query Custom Objects",
+      "category": "Custom Objects",
+      "description": "Searches records of a custom object type by a filter field and values. Use Describe Custom Object to learn the filterable field names. Returns up to 300 per page with a Next Page Token for paging."
+    },
+    {
+      "name": "Sync Custom Objects",
+      "category": "Custom Objects",
+      "description": "Creates or updates custom object records in bulk (up to 300). Each record is a free-form object of the object type's field API names (discover them via Describe Custom Object). Choose Create or Update to upsert on the dedupe fields."
+    },
+    {
+      "name": "Delete Custom Objects",
+      "category": "Custom Objects",
+      "description": "Deletes custom object records in bulk (up to 300). Each record identifies a row by its dedupe field(s) or marketoGUID per the Delete By setting. Skipped rows return a per-row reason."
+    },
+    {
+      "name": "Browse Programs",
+      "category": "Assets",
+      "description": "Returns programs from the instance with offset paging. Use it to find a program before reading, cloning, or approving it."
+    },
+    {
+      "name": "Get Program by ID",
+      "category": "Assets",
+      "description": "Retrieves a single program by ID. The Program field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "Create Program",
+      "category": "Assets",
+      "description": "Creates a new program in the chosen folder. The name must be unique within the folder."
+    },
+    {
+      "name": "Update Program",
+      "category": "Assets",
+      "description": "Updates a program's name and/or description."
+    },
+    {
+      "name": "Clone Program",
+      "category": "Assets",
+      "description": "Clones a program into a destination folder under a new globally-unique name. Programs with Push/In-App/Reports/Social assets cannot be cloned."
+    },
+    {
+      "name": "Delete Program",
+      "category": "Assets",
+      "description": "Permanently deletes a program."
+    },
+    {
+      "name": "Approve Email Program",
+      "category": "Assets",
+      "description": "Approve an Email program for send. Requires start/end dates plus a valid approved email and smart list (set in Marketo)."
+    },
+    {
+      "name": "Unapprove Email Program",
+      "category": "Assets",
+      "description": "Unapprove a previously-approved Email program."
+    },
+    {
+      "name": "Browse Folders",
+      "category": "Assets",
+      "description": "Returns folders under a root folder, traversing to a chosen depth. Use it to navigate the asset tree."
+    },
+    {
+      "name": "Get Folder by ID",
+      "category": "Assets",
+      "description": "Retrieves a single folder by ID."
+    },
+    {
+      "name": "Create Folder",
+      "category": "Assets",
+      "description": "Creates a new folder under a parent folder."
+    },
+    {
+      "name": "Update Folder",
+      "category": "Assets",
+      "description": "Updates a folder's name, description, or archive state."
+    },
+    {
+      "name": "Delete Folder",
+      "category": "Assets",
+      "description": "Deletes an (empty) folder. Programs and system folders cannot be deleted."
+    },
+    {
+      "name": "Get Tokens by Folder",
+      "category": "Assets",
+      "description": "Lists the My-Tokens defined on a folder or program."
+    },
+    {
+      "name": "Create Token",
+      "category": "Assets",
+      "description": "Adds a My-Token to a folder or program."
+    },
+    {
+      "name": "Delete Token",
+      "category": "Assets",
+      "description": "Deletes a My-Token from a folder or program."
+    },
+    {
+      "name": "Browse Emails",
+      "category": "Assets",
+      "description": "Returns email assets with offset paging, optionally filtered by status or folder."
+    },
+    {
+      "name": "Get Email by ID",
+      "category": "Assets",
+      "description": "Retrieves a single email asset by ID."
+    },
+    {
+      "name": "Get Email Content",
+      "category": "Assets",
+      "description": "Retrieves the content sections of an email asset."
+    },
+    {
+      "name": "Create Email",
+      "category": "Assets",
+      "description": "Creates a new email asset from an email template in the chosen folder."
+    },
+    {
+      "name": "Update Email",
+      "category": "Assets",
+      "description": "Updates an email asset's name and/or description."
+    },
+    {
+      "name": "Clone Email",
+      "category": "Assets",
+      "description": "Clones an email asset into a destination folder under a new name."
+    },
+    {
+      "name": "Delete Email",
+      "category": "Assets",
+      "description": "Permanently deletes an email asset."
+    },
+    {
+      "name": "Approve Email",
+      "category": "Assets",
+      "description": "Approve the email draft for send. Requires from-name, from-email, reply-to, and subject to be set."
+    },
+    {
+      "name": "Unapprove Email",
+      "category": "Assets",
+      "description": "Unapprove a previously-approved email asset."
+    },
+    {
+      "name": "Send Sample Email",
+      "category": "Assets",
+      "description": "Sends a sample of an email asset to a recipient, optionally rendered as a specific lead."
+    },
+    {
+      "name": "Browse Forms",
+      "category": "Assets",
+      "description": "Returns form assets with offset paging, optionally filtered by status."
+    },
+    {
+      "name": "Get Form by ID",
+      "category": "Assets",
+      "description": "Retrieves a single form asset by ID."
+    },
+    {
+      "name": "Get Form Fields",
+      "category": "Assets",
+      "description": "Lists the fields on a form asset."
+    },
+    {
+      "name": "Create Form",
+      "category": "Assets",
+      "description": "Creates a new form asset in the chosen folder."
+    },
+    {
+      "name": "Update Form",
+      "category": "Assets",
+      "description": "Updates a form asset's metadata."
+    },
+    {
+      "name": "Clone Form",
+      "category": "Assets",
+      "description": "Clones a form asset into a destination folder under a new name."
+    },
+    {
+      "name": "Approve Form",
+      "category": "Assets",
+      "description": "Approves a form asset."
+    },
+    {
+      "name": "Unapprove Form",
+      "category": "Assets",
+      "description": "Unapproves a form asset."
+    },
+    {
+      "name": "Delete Form",
+      "category": "Assets",
+      "description": "Deletes a form asset. The form must be unapproved first."
+    },
+    {
+      "name": "Browse Landing Pages",
+      "category": "Assets",
+      "description": "Returns landing page assets with offset paging, optionally filtered by status or folder."
+    },
+    {
+      "name": "Get Landing Page by ID",
+      "category": "Assets",
+      "description": "Retrieves a single landing page asset by ID."
+    },
+    {
+      "name": "Get Landing Page Content",
+      "category": "Assets",
+      "description": "Retrieves the content sections of a landing page asset."
+    },
+    {
+      "name": "Create Landing Page",
+      "category": "Assets",
+      "description": "Creates a new landing page asset from an LP template in the chosen folder."
+    },
+    {
+      "name": "Update Landing Page",
+      "category": "Assets",
+      "description": "Updates a landing page asset's metadata."
+    },
+    {
+      "name": "Clone Landing Page",
+      "category": "Assets",
+      "description": "Clones a landing page asset into a destination folder under a new name."
+    },
+    {
+      "name": "Approve Landing Page",
+      "category": "Assets",
+      "description": "Approves a landing page asset."
+    },
+    {
+      "name": "Unapprove Landing Page",
+      "category": "Assets",
+      "description": "Unapproves a landing page asset."
+    },
+    {
+      "name": "Delete Landing Page",
+      "category": "Assets",
+      "description": "Deletes a landing page asset. The page must be unapproved and unreferenced."
+    },
+    {
+      "name": "Browse Smart Lists",
+      "category": "Assets",
+      "description": "Returns user-created smart list assets in a folder (built-in/system smart lists are not supported by this API)."
+    },
+    {
+      "name": "Get Smart List by ID",
+      "category": "Assets",
+      "description": "Retrieves a single smart list asset by ID, optionally including its rule definitions."
+    },
+    {
+      "name": "Clone Smart List",
+      "category": "Assets",
+      "description": "Clones a smart list asset into a destination folder under a new name."
+    },
+    {
+      "name": "Delete Smart List",
+      "category": "Assets",
+      "description": "Deletes a user-created smart list asset."
+    },
+    {
+      "name": "Get Snippet by ID",
+      "category": "Assets",
+      "description": "Retrieves a single snippet asset by ID (no browse-list endpoint; supply the id)."
+    },
+    {
+      "name": "Get Snippet Content",
+      "category": "Assets",
+      "description": "Retrieves the content of a snippet asset."
+    },
+    {
+      "name": "Create Snippet",
+      "category": "Assets",
+      "description": "Creates a new snippet asset in the chosen folder."
+    },
+    {
+      "name": "Update Snippet",
+      "category": "Assets",
+      "description": "Updates a snippet asset's metadata."
+    },
+    {
+      "name": "Update Snippet Content",
+      "category": "Assets",
+      "description": "Sets the HTML content of a snippet asset."
+    },
+    {
+      "name": "Approve Snippet Draft",
+      "category": "Assets",
+      "description": "Approves the draft of a snippet asset."
+    },
+    {
+      "name": "Delete Snippet",
+      "category": "Assets",
+      "description": "Deletes a snippet asset."
+    },
+    {
+      "name": "Describe Opportunity",
+      "category": "CRM Objects",
+      "description": "Returns the Opportunity object schema - its fields, idField, and dedupe fields. Requires a CRM-sync-enabled subscription."
+    },
+    {
+      "name": "Query Opportunities",
+      "category": "CRM Objects",
+      "description": "Searches Opportunity records by a searchable field and values. Returns up to 300 per page with a Next Page Token."
+    },
+    {
+      "name": "Sync Opportunities",
+      "category": "CRM Objects",
+      "description": "Creates or updates Opportunity records in bulk (up to 300). externalOpportunityId is required for create; name must not be null."
+    },
+    {
+      "name": "Delete Opportunities",
+      "category": "CRM Objects",
+      "description": "Deletes Opportunity records in bulk (up to 300) by dedupe field(s) or marketoGUID."
+    },
+    {
+      "name": "Describe Opportunity Role",
+      "category": "CRM Objects",
+      "description": "Returns the Opportunity Role object schema. Requires a CRM-sync-enabled subscription."
+    },
+    {
+      "name": "Query Opportunity Roles",
+      "category": "CRM Objects",
+      "description": "Searches Opportunity Role records by a searchable field and values."
+    },
+    {
+      "name": "Sync Opportunity Roles",
+      "category": "CRM Objects",
+      "description": "Creates or updates Opportunity Role records (up to 300). Dedupes on the composite { externalOpportunityId, leadId, role }."
+    },
+    {
+      "name": "Delete Opportunity Roles",
+      "category": "CRM Objects",
+      "description": "Deletes Opportunity Role records (up to 300) by dedupe field(s) or marketoGUID."
+    },
+    {
+      "name": "Describe Company",
+      "category": "CRM Objects",
+      "description": "Returns the Company object schema. Requires a CRM-sync-enabled subscription."
+    },
+    {
+      "name": "Query Companies",
+      "category": "CRM Objects",
+      "description": "Searches Company records by a searchable field and values."
+    },
+    {
+      "name": "Sync Companies",
+      "category": "CRM Objects",
+      "description": "Creates or updates Company records in bulk (up to 300). Dedupes on externalCompanyId."
+    },
+    {
+      "name": "Delete Companies",
+      "category": "CRM Objects",
+      "description": "Deletes Company records in bulk (up to 300) by dedupe field(s) or marketoGUID."
+    },
+    {
+      "name": "Describe Sales Person",
+      "category": "CRM Objects",
+      "description": "Returns the Sales Person object schema. Requires a CRM-sync-enabled subscription."
+    },
+    {
+      "name": "Query Sales Persons",
+      "category": "CRM Objects",
+      "description": "Searches Sales Person records by a searchable field and values."
+    },
+    {
+      "name": "Sync Sales Persons",
+      "category": "CRM Objects",
+      "description": "Creates or updates Sales Person records in bulk (up to 300). Dedupes on externalSalesPersonId."
+    },
+    {
+      "name": "Delete Sales Persons",
+      "category": "CRM Objects",
+      "description": "Deletes Sales Person records in bulk (up to 300) by dedupe field(s) or marketoGUID."
+    },
+    {
+      "name": "Describe Named Account",
+      "category": "CRM Objects",
+      "description": "Returns the Named Account object schema. Requires the Marketo ABM / Account-Based add-on."
+    },
+    {
+      "name": "Query Named Accounts",
+      "category": "CRM Objects",
+      "description": "Searches Named Account records by a searchable field and values. Requires the ABM add-on."
+    },
+    {
+      "name": "Sync Named Accounts",
+      "category": "CRM Objects",
+      "description": "Creates or updates Named Account records in bulk (up to 300). Dedupes on name. Requires the ABM add-on."
+    },
+    {
+      "name": "Delete Named Accounts",
+      "category": "CRM Objects",
+      "description": "Deletes Named Account records in bulk (up to 300) by name or marketoGUID. Requires the ABM add-on."
+    },
+    {
+      "name": "Merge Leads",
+      "category": "Leads",
+      "description": "Merges up to 25 losing leads into a winning lead, then permanently destroys the losing records. IRREVERSIBLE."
+    },
+    {
+      "name": "Push Lead",
+      "category": "Leads",
+      "description": "Pushes lead records into a program, logging a \"Push Lead to Marketo\" activity. Up to 300 records."
+    },
+    {
+      "name": "Submit Form",
+      "category": "Leads",
+      "description": "Submits data to a Marketo form on behalf of a lead, triggering the form's fill-out flows just like a real submission."
+    },
+    {
+      "name": "Associate Lead",
+      "category": "Leads",
+      "description": "Associates an anonymous web session (via its Munchkin cookie) with a known Marketo lead."
+    },
+    {
+      "name": "Import Leads",
+      "category": "Bulk",
+      "description": "Imports a lead file (CSV/TSV) into Marketo asynchronously. The first row must be a header of Marketo field API names; the file must be under 10MB. Returns a batch id to poll for status."
+    },
+    {
+      "name": "Get Import Lead Status",
+      "category": "Bulk",
+      "description": "Returns the status of a lead-import batch (Queued / Importing / Complete / Failed) with row counts."
+    },
+    {
+      "name": "Get Import Lead Failures",
+      "category": "Bulk",
+      "description": "Returns the failed rows of a lead-import batch as raw CSV (with a reason column)."
+    },
+    {
+      "name": "Get Import Lead Warnings",
+      "category": "Bulk",
+      "description": "Returns the warning rows of a lead-import batch as raw CSV (with a reason column)."
+    },
+    {
+      "name": "Create Lead Export",
+      "category": "Bulk",
+      "description": "Creates a bulk lead export job (does not start it - use Enqueue Lead Export). Define the columns and an optional date window or static list. Limits: 500MB/day, 2 concurrent + 10 queued."
+    },
+    {
+      "name": "Enqueue Lead Export",
+      "category": "Bulk",
+      "description": "Starts (enqueues) a created lead export job so Marketo begins processing it."
+    },
+    {
+      "name": "Get Lead Export Status",
+      "category": "Bulk",
+      "description": "Returns the status of a lead export job (Created / Queued / Processing / Completed / Failed / Canceled)."
+    },
+    {
+      "name": "Get Lead Export File",
+      "category": "Bulk",
+      "description": "Returns the exported lead file as raw delimited text. Only valid once the job status is Completed."
+    },
+    {
+      "name": "Cancel Lead Export",
+      "category": "Bulk",
+      "description": "Cancels a queued or processing lead export job."
+    },
+    {
+      "name": "Create Activity Export",
+      "category": "Bulk",
+      "description": "Creates a bulk activity export job (does not start it - use Enqueue Activity Export). Requires a createdAt date window (31-day max)."
+    },
+    {
+      "name": "Enqueue Activity Export",
+      "category": "Bulk",
+      "description": "Starts (enqueues) a created activity export job."
+    },
+    {
+      "name": "Get Activity Export Status",
+      "category": "Bulk",
+      "description": "Returns the status of an activity export job."
+    },
+    {
+      "name": "Get Activity Export File",
+      "category": "Bulk",
+      "description": "Returns the exported activity file as raw delimited text. Only valid once the job status is Completed."
+    },
+    {
+      "name": "Cancel Activity Export",
+      "category": "Bulk",
+      "description": "Cancels a queued or processing activity export job."
+    }
+  ],
+  "triggers": [
+    "On New Lead",
+    "On New Activity",
+    "On Lead Field Change",
+    "On Deleted Lead"
+  ],
+  "idealUseCases": [
+    "Push new contacts from forms, CRMs, or spreadsheets into Marketo as leads (create or update)",
+    "Add or remove leads from static lists to drive nurture and segmentation",
+    "Trigger or schedule a smart campaign for a set of leads, with optional My-Token overrides",
+    "Read lead activities (form fills, clicks, opens) into a flow for routing or reporting",
+    "Create, query, or delete custom object and CRM records (opportunities, companies, sales persons, named accounts)",
+    "Author and manage marketing assets: clone programs, emails, forms, and landing pages, manage folders, My-Tokens, smart lists, and snippets, and approve/unapprove for go-live",
+    "Merge duplicate leads, push leads into a program, submit a form on a lead's behalf, or associate an anonymous web session with a known lead",
+    "Bulk-import a lead file and poll its status, or bulk-export leads/activities and pull the resulting file",
+    "Fire a flow automatically when a lead is created, an activity occurs, a watched field changes, or a lead is deleted"
+  ],
+  "agentIdeas": [
+    "When a Marketo **\"On New Lead\"** trigger fires, use Slack **\"Send Message To Channel\"** to alert your sales team and add the lead to a follow-up list with Google Sheets **\"Add Row\"**.",
+    "Use Google Sheets **\"Get Rows\"** to read a list of event registrants, then call Marketo **\"Sync Leads\"** and **\"Add Leads to List\"** to load them into a nurture program.",
+    "When a Marketo **\"On Lead Field Change\"** trigger fires on a lead-score field, call Marketo **\"Request Campaign\"** to run a smart campaign, then post to Slack **\"Send Message To Channel\"** for the account owner.",
+    "On a new Salesforce or HubSpot deal, use Marketo **\"Sync Opportunities\"** and **\"Sync Companies\"** to keep CRM-object records aligned for account-based scoring."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/marketo/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/marketo",
+    "readme": "services/marketo/README.md",
+    "index": "services/marketo/src/index.js"
+  }
+}

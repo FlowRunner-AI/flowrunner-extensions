@@ -1,0 +1,73 @@
+{
+  "slug": "google-natural-language",
+  "name": "Google Cloud Natural Language",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Extracts meaning and structure from unstructured text using Google's [Cloud Natural Language API](https://cloud.google.com/natural-language/docs/reference/rest): analyze entities, gauge sentiment, parse syntax, classify content, and moderate for safety on plain text or HTML. Authenticates with a Google Cloud API key appended as the `key` query parameter; enable the Cloud Natural Language API in your Google Cloud project.",
+  "actionCount": 7,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Text Analysis"
+  ],
+  "actions": [
+    {
+      "name": "Analyze Entities",
+      "category": "Text Analysis",
+      "description": "Identifies known entities (people, organizations, locations, events, works of art, consumer goods, numbers, dates, and more) in the supplied text and returns their type, salience, mentions with character offsets, and any associated metadata (such as Wikipedia URLs and Knowledge Graph MIDs). Uses the v2 endpoint."
+    },
+    {
+      "name": "Analyze Sentiment",
+      "category": "Text Analysis",
+      "description": "Determines the overall emotional attitude of the supplied text, returning a document-level sentiment score (-1.0 negative to +1.0 positive) and magnitude (overall emotional strength), plus a per-sentence sentiment breakdown. Uses the v2 endpoint."
+    },
+    {
+      "name": "Analyze Entity Sentiment",
+      "category": "Text Analysis",
+      "description": "Combines entity extraction with sentiment analysis, returning each detected entity along with the aggregate sentiment expressed toward it across the document and the sentiment of each individual mention. Useful for understanding how the author feels about specific people, products, or organizations. Uses the v1 endpoint."
+    },
+    {
+      "name": "Analyze Syntax",
+      "category": "Text Analysis",
+      "description": "Performs syntactic analysis of the supplied text, breaking it into sentences and tokens and returning each token's part of speech, lemma (base form), and dependency-tree relationship to other tokens. Useful for grammatical parsing and linguistic feature extraction. Uses the v1 endpoint."
+    },
+    {
+      "name": "Classify Text",
+      "category": "Text Analysis",
+      "description": "Classifies the supplied text into one or more content categories (such as \"/Computers & Electronics\" or \"/Finance/Investing\"), each with a confidence score. Requires at least 20 tokens (roughly 20 words) of text to produce a classification. Uses the v2 endpoint."
+    },
+    {
+      "name": "Moderate Text",
+      "category": "Text Analysis",
+      "description": "Scans the supplied text for potentially harmful or sensitive content and returns a list of safety moderation categories (such as Toxic, Violent, Sexual, Insult, or Profanity), each with a confidence score between 0 and 1. Uses the v2 endpoint."
+    },
+    {
+      "name": "Annotate Text",
+      "category": "Text Analysis",
+      "description": "Runs multiple analyses on the supplied text in a single request. Enable any combination of entity extraction, document sentiment, text classification, and content moderation via the feature toggles; the response contains only the sections for the enabled features. Note that classification requires at least 20 tokens. Uses the v2 endpoint."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Score the sentiment of customer reviews, support tickets, or survey responses to flag unhappy users",
+    "Extract people, organizations, and locations from documents or news articles for enrichment and tagging",
+    "Auto-categorize incoming content into topics for routing or filing",
+    "Moderate user-generated text for toxic, violent, sexual, or profane content before publishing",
+    "Parse grammar, parts of speech, and dependency relations for linguistic feature extraction"
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires, run the body through **Google Cloud Natural Language** \"Analyze Sentiment\" and, if the score is negative, use **Slack** \"Send Message To Channel\" to alert the support team.",
+    "Read survey responses with **Google Sheets** \"Get Rows\", run each through **Google Cloud Natural Language** \"Classify Text\" and \"Analyze Entities\", then write the categories and detected entities back with **Google Sheets** \"Add Row\".",
+    "Pull ticket text from **Zendesk**, run **Google Cloud Natural Language** \"Moderate Text\" to catch abusive language and \"Analyze Entity Sentiment\" to gauge feeling toward specific products, then prioritize the queue accordingly."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/google-natural-language/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/google-natural-language",
+    "readme": "services/google-natural-language/README.md",
+    "index": "services/google-natural-language/src/index.js"
+  }
+}

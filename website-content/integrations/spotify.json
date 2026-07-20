@@ -1,0 +1,178 @@
+{
+  "slug": "spotify",
+  "name": "Spotify",
+  "marketingCategory": "Utilities & Personal",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect to a Spotify account via OAuth2 to search the Spotify catalog, read track/album/artist details, manage playlists and the \"Liked Songs\" library, and control playback on the user's devices. Track, album, and artist parameters accept a Spotify id, URI, or `open.spotify.com` URL interchangeably.",
+  "actionCount": 27,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Search",
+    "Catalog",
+    "Playlists",
+    "Library",
+    "Player",
+    "User"
+  ],
+  "actions": [
+    {
+      "name": "Search",
+      "category": "Search",
+      "description": "Searches the Spotify catalog for tracks, albums, artists, playlists, shows, episodes, or audiobooks matching a query. Select one or more item types to search across. Supports an optional market (country code) and a result limit per type. Returns Spotify's search response keyed by type (e.g. \"tracks\", \"albums\"), each with its own paging object."
+    },
+    {
+      "name": "Get Track",
+      "category": "Catalog",
+      "description": "Retrieves catalog information for a single track by its Spotify id, URI, or URL. Returns full track details including name, artists, album, duration, popularity, preview URL, and external ids."
+    },
+    {
+      "name": "Get Album",
+      "category": "Catalog",
+      "description": "Retrieves catalog information for a single album by its Spotify id, URI, or URL. Returns album details including name, artists, release date, total tracks, images, genres, label, and the first page of its tracks."
+    },
+    {
+      "name": "Get Album Tracks",
+      "category": "Catalog",
+      "description": "Retrieves the tracks of an album, paginated. Returns simplified track objects (without full album/popularity detail) plus a paging object with total and next offset."
+    },
+    {
+      "name": "Get Artist",
+      "category": "Catalog",
+      "description": "Retrieves catalog information for a single artist by their Spotify id, URI, or URL. Returns artist details including name, genres, popularity, follower count, and images."
+    },
+    {
+      "name": "Get Artist Top Tracks",
+      "category": "Catalog",
+      "description": "Retrieves an artist's top tracks for a given market. A market is required by Spotify for this endpoint. Returns up to 10 full track objects ordered by popularity."
+    },
+    {
+      "name": "Get Artist Albums",
+      "category": "Catalog",
+      "description": "Retrieves the albums released by an artist, paginated. Optionally filter by album group (Album, Single, Appears On, Compilation). Returns simplified album objects plus a paging object."
+    },
+    {
+      "name": "Get Current User Playlists",
+      "category": "Playlists",
+      "description": "Retrieves the playlists owned or followed by the current user, paginated. Returns simplified playlist objects plus a paging object with total and next offset."
+    },
+    {
+      "name": "Get Playlist",
+      "category": "Playlists",
+      "description": "Retrieves a playlist by its Spotify id, URI, or URL, including its name, owner, description, images, follower count, and the first page of tracks. Optionally restrict to a market or select specific fields."
+    },
+    {
+      "name": "Get Playlist Items",
+      "category": "Playlists",
+      "description": "Retrieves the items (tracks and episodes) of a playlist, paginated. Returns playlist track objects (each wrapping the track plus added_at and added_by) and a paging object. Optionally filter fields or restrict to a market."
+    },
+    {
+      "name": "Create Playlist",
+      "category": "Playlists",
+      "description": "Creates a new playlist for a user (defaults to the current user when no user id is provided). The current user becomes the owner. Requires the 'playlist-modify-public' scope for public playlists and 'playlist-modify-private' for private ones. Returns the newly created playlist object including its id and URI."
+    },
+    {
+      "name": "Add Items to Playlist",
+      "category": "Playlists",
+      "description": "Adds one or more tracks to a playlist. Accepts track ids, URIs, or URLs, which are normalized to 'spotify:track:...' URIs. Optionally inserts them at a specific position (otherwise appended to the end). Requires the appropriate 'playlist-modify' scope. Returns the playlist's new snapshot id."
+    },
+    {
+      "name": "Remove Items from Playlist",
+      "category": "Playlists",
+      "description": "Removes all occurrences of one or more tracks from a playlist. Accepts track ids, URIs, or URLs, which are normalized to 'spotify:track:...' URIs. Requires the appropriate 'playlist-modify' scope. Returns the playlist's new snapshot id."
+    },
+    {
+      "name": "Update Playlist Details",
+      "category": "Playlists",
+      "description": "Updates the details (name, public/private, collaborative flag, and description) of an existing playlist owned by the current user. Only provided fields are changed. Requires the appropriate 'playlist-modify' scope. Returns a success status (Spotify returns no content)."
+    },
+    {
+      "name": "Get Saved Tracks",
+      "category": "Library",
+      "description": "Retrieves the tracks saved in the current user's \"Liked Songs\" library, paginated. Requires the 'user-library-read' scope. Returns saved track objects (each wrapping the track plus added_at) and a paging object."
+    },
+    {
+      "name": "Save Tracks",
+      "category": "Library",
+      "description": "Saves one or more tracks to the current user's \"Liked Songs\" library. Accepts track ids, URIs, or URLs. Requires the 'user-library-modify' scope. Returns a success status (Spotify returns no content)."
+    },
+    {
+      "name": "Remove Saved Tracks",
+      "category": "Library",
+      "description": "Removes one or more tracks from the current user's \"Liked Songs\" library. Accepts track ids, URIs, or URLs. Requires the 'user-library-modify' scope. Returns a success status (Spotify returns no content)."
+    },
+    {
+      "name": "Get Playback State",
+      "category": "Player",
+      "description": "Retrieves the current playback state of the connected user, including the active device, currently playing track or episode, shuffle/repeat state, and progress. Requires Spotify Premium and the 'user-read-playback-state' scope. Returns an empty success status when nothing is playing."
+    },
+    {
+      "name": "Get Currently Playing",
+      "category": "Player",
+      "description": "Retrieves the track or episode currently playing for the connected user. Requires the 'user-read-currently-playing' scope. Returns an empty success status when nothing is playing."
+    },
+    {
+      "name": "Start or Resume Playback",
+      "category": "Player",
+      "description": "Starts or resumes playback on the user's active or a specified device. Provide either a context URI (album, artist, or playlist) or a list of track URIs. Requires Spotify Premium and the 'user-modify-playback-state' scope. Returns a success status (Spotify returns no content)."
+    },
+    {
+      "name": "Pause Playback",
+      "category": "Player",
+      "description": "Pauses playback on the user's active or a specified device. Requires Spotify Premium and the 'user-modify-playback-state' scope. Returns a success status (Spotify returns no content)."
+    },
+    {
+      "name": "Skip to Next",
+      "category": "Player",
+      "description": "Skips to the next track in the user's playback queue. Requires Spotify Premium and the 'user-modify-playback-state' scope. Returns a success status (Spotify returns no content)."
+    },
+    {
+      "name": "Skip to Previous",
+      "category": "Player",
+      "description": "Skips to the previous track in the user's playback queue. Requires Spotify Premium and the 'user-modify-playback-state' scope. Returns a success status (Spotify returns no content)."
+    },
+    {
+      "name": "Set Volume",
+      "category": "Player",
+      "description": "Sets the playback volume for the user's active or a specified device. Requires Spotify Premium and the 'user-modify-playback-state' scope. Returns a success status (Spotify returns no content)."
+    },
+    {
+      "name": "Transfer Playback",
+      "category": "Player",
+      "description": "Transfers playback to a different device, optionally starting playback immediately. Requires Spotify Premium and the 'user-modify-playback-state' scope. Returns a success status (Spotify returns no content)."
+    },
+    {
+      "name": "Get Current User Profile",
+      "category": "User",
+      "description": "Retrieves the profile of the connected Spotify user, including display name, email (if the 'user-read-email' scope was granted), country, product tier (e.g. 'premium'), follower count, and profile images. Useful as a connection check."
+    },
+    {
+      "name": "Get User Top Items",
+      "category": "User",
+      "description": "Retrieves the current user's top artists or top tracks over a chosen time range. Requires the 'user-top-read' scope. Returns a paging object of full artist or track objects ordered by affinity."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically build or update playlists from tracks discovered by search or from external lists",
+    "Sync a user's saved tracks or top artists/tracks into a spreadsheet, CRM, or reporting tool",
+    "Look up catalog metadata (tracks, albums, artists, top tracks) to enrich other workflows",
+    "Remotely control playback (play, pause, skip, set volume, transfer device) from an automation",
+    "Notify a channel or log activity when tracks are added to a playlist or the library"
+  ],
+  "agentIdeas": [
+    "Use **Spotify** \"Search\" to find tracks matching a theme, then call **Spotify** \"Add Items to Playlist\" to build a curated playlist and **Slack** \"Send Message To Channel\" to share it with a team channel.",
+    "Use **Spotify** \"Get User Top Items\" to pull a user's top tracks or artists, then **Google Sheets** \"Add Row\" to log them into a listening-trends spreadsheet.",
+    "When a workflow curates new music, use **Spotify** \"Get Saved Tracks\" to read the latest liked songs and **Discord** \"Send Message\" to post them to a community server."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/spotify/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/spotify",
+    "readme": "services/spotify/README.md",
+    "index": "services/spotify/src/index.js"
+  }
+}

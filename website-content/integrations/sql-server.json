@@ -1,0 +1,85 @@
+{
+  "slug": "sql-server",
+  "name": "Microsoft SQL Server",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Microsoft SQL Server](https://www.microsoft.com/sql-server) (including Azure SQL Database). Connects directly to a SQL Server instance over TCP using the [`mssql`](https://www.npmjs.com/package/mssql) driver and exposes both raw T-SQL execution and convenient no-SQL row operations. It uses a **connect-per-call** model: every operation opens a short-lived connection, runs its query, and always closes the connection when the call finishes — no connections or pools are cached between invocations.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "SQL",
+    "Rows",
+    "Schema"
+  ],
+  "actions": [
+    {
+      "name": "Execute Query",
+      "category": "SQL",
+      "description": "Executes an arbitrary T-SQL statement (SELECT, INSERT, UPDATE, DELETE, DDL, CTEs, stored procedure calls via EXEC, etc.) and returns the resulting rows and the affected row counts. Use @p1, @p2, ... placeholders in the SQL together with the Parameters array to safely bind values — never interpolate user input into the SQL string. Statements are limited to 120 seconds of execution time."
+    },
+    {
+      "name": "Select Rows",
+      "category": "Rows",
+      "description": "Selects rows from a table without writing SQL. Supports choosing specific columns, equality-based filtering (null values match IS NULL, array values match any element via IN), ordering, and limit/offset pagination (TOP when only a limit is given, OFFSET ... FETCH when an offset is given). For joins, aggregations, or complex conditions use Execute Query instead."
+    },
+    {
+      "name": "Insert Row",
+      "category": "Rows",
+      "description": "Inserts a single row into a table from a JSON object of column/value pairs and returns the full inserted row (including database-generated values such as IDENTITY values and defaults) via OUTPUT INSERTED.*. Note: OUTPUT cannot be used on tables with enabled triggers — use Execute Query with OUTPUT ... INTO for those."
+    },
+    {
+      "name": "Insert Rows",
+      "category": "Rows",
+      "description": "Bulk-inserts multiple rows into a table in a single statement. The column set is the union of keys across all row objects; rows missing a key insert NULL for that column. Returns the inserted rows (via OUTPUT INSERTED.*) and the inserted count. SQL Server limits a single statement to 1000 row value expressions and about 2100 bound parameters — split larger batches across multiple calls."
+    },
+    {
+      "name": "Update Rows",
+      "category": "Rows",
+      "description": "Updates all rows matching the equality conditions in the Where object, setting the columns provided in the Data object. Returns the updated rows (via OUTPUT INSERTED.*) and the updated count. A non-empty Where object is required to prevent accidental full-table updates; use Execute Query for unconditional updates."
+    },
+    {
+      "name": "Delete Rows",
+      "category": "Rows",
+      "description": "Deletes all rows matching the equality conditions in the Where object and returns the number of deleted rows. A non-empty Where object is required to prevent accidental full-table deletion; use Execute Query (e.g. TRUNCATE TABLE or DELETE without WHERE) for that."
+    },
+    {
+      "name": "Upsert Row",
+      "category": "Rows",
+      "description": "Inserts a row, or updates the existing row when a row with the same key column values already exists (MERGE ... WHEN MATCHED THEN UPDATE WHEN NOT MATCHED THEN INSERT). All non-key columns from Data are updated on match; Data must include values for every key column. The key columns should be covered by a primary key or unique index to guarantee a single match. Returns the resulting row via OUTPUT INSERTED.*."
+    },
+    {
+      "name": "Get Table Schema",
+      "category": "Schema",
+      "description": "Returns the column definitions of a table from INFORMATION_SCHEMA.COLUMNS: column name, data type, nullability, default expression, maximum character length, and ordinal position. Useful for discovering a table's structure before reading or writing."
+    },
+    {
+      "name": "List Tables",
+      "category": "Schema",
+      "description": "Lists all base tables in the database from INFORMATION_SCHEMA.TABLES (views are excluded), including each table's schema and name. Useful for discovering what data is available in the database."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Run parameterized T-SQL queries against an application or analytics database from within a workflow.",
+    "Read, insert, update, delete, or upsert rows without writing SQL.",
+    "Sync records between SQL Server and other apps (spreadsheets, CRMs, messaging tools).",
+    "Discover a database's structure by listing tables and inspecting table schemas.",
+    "Bulk-load arrays of records fetched from an API or another service into a table."
+  ],
+  "agentIdeas": [
+    "Use Microsoft SQL Server \"Execute Query\" to pull the latest sales figures, then use **Google Sheets** \"Add Rows\" to append them to a reporting spreadsheet for stakeholders.",
+    "Use **Google Sheets** \"Get Rows\" to read a batch of records and Microsoft SQL Server \"Insert Rows\" (or \"Upsert Row\") to sync them into a database table.",
+    "After a Microsoft SQL Server \"Select Rows\" query surfaces records needing attention (e.g. overdue accounts), use **Gmail** \"Send Message\" or **Slack** \"Send Message To Channel\" to notify the responsible team."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/sql-server/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/sql-server",
+    "readme": "services/sql-server/README.md",
+    "index": "services/sql-server/src/index.js"
+  }
+}

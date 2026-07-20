@@ -1,0 +1,87 @@
+{
+  "slug": "vonage",
+  "name": "Vonage",
+  "marketingCategory": "SMS, Voice & Push",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Vonage (formerly Nexmo) integration for SMS, multichannel messaging, two-factor authentication, phone number intelligence, and account management, using API key and secret authentication.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messaging",
+    "Verify",
+    "Number Insight",
+    "Account",
+    "Numbers"
+  ],
+  "actions": [
+    {
+      "name": "Send SMS",
+      "category": "Messaging",
+      "description": "Sends an SMS text message through the Vonage SMS API. Credentials are passed in the request body. Set the message type to Unicode when sending non-GSM characters (e.g. emoji or non-Latin scripts). The response contains a messages array; each entry has a status of \"0\" on success, or a non-zero status plus an error-text on failure."
+    },
+    {
+      "name": "Send Message (Multichannel)",
+      "category": "Messaging",
+      "description": "Sends a message over the Vonage Messages API, which supports multiple channels from a single endpoint. Choose the channel (SMS, WhatsApp, MMS, Messenger, or Viber) and provide a text body. The recipient and sender formats depend on the channel: phone numbers in E.164 format for SMS/WhatsApp/MMS/Viber, and a page-scoped ID for Messenger. Returns a message UUID for tracking. This action sends text content; for rich media use the channel's native tooling."
+    },
+    {
+      "name": "Start Verification",
+      "category": "Verify",
+      "description": "Starts a two-factor authentication (2FA) request using Vonage Verify v2. Vonage generates a one-time code and delivers it to the recipient over the selected channel (SMS, Voice, Email, or WhatsApp). Returns a request ID that must be supplied to Check Verification to validate the code the user enters. Configure the brand name shown to the recipient and, optionally, the code length and channel timeout."
+    },
+    {
+      "name": "Check Verification",
+      "category": "Verify",
+      "description": "Checks a code entered by the user against a Verify v2 request. Provide the request ID returned by Start Verification and the code the recipient received. On success the response status is \"completed\". An incorrect code returns an error; the verification also fails if the code has expired or too many incorrect attempts have been made."
+    },
+    {
+      "name": "Cancel Verification",
+      "category": "Verify",
+      "description": "Cancels an in-progress Verify v2 request so that no further codes are sent. Provide the request ID returned by Start Verification. Cancellation is only possible within a short window after the request starts and before the next workflow event occurs."
+    },
+    {
+      "name": "Number Insight (Basic)",
+      "category": "Number Insight",
+      "description": "Performs a basic Number Insight lookup for a phone number. Returns the number formatted internationally and nationally along with the country name, country code, and country prefix. Basic lookups are synchronous and validate number format and country; use Standard lookup for carrier and portability data."
+    },
+    {
+      "name": "Number Insight (Standard)",
+      "category": "Number Insight",
+      "description": "Performs a standard Number Insight lookup for a phone number. In addition to the basic formatting and country data, it returns the current and original carrier, the line type (mobile, landline, or virtual), portability status, and roaming information where available. Standard lookups incur a charge."
+    },
+    {
+      "name": "Get Balance",
+      "category": "Account",
+      "description": "Retrieves the current balance of your Vonage account. Returns the remaining credit value in euros and whether auto-reload (auto top-up) is enabled on the account."
+    },
+    {
+      "name": "List Owned Numbers",
+      "category": "Numbers",
+      "description": "Lists the virtual phone numbers owned by your Vonage account. Returns each number with its country, type, capabilities (SMS, voice, and MMS features), and any configured webhook or voice call settings. Supports pagination and filtering by a partial number pattern."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "SMS notifications, alerts, and reminders",
+    "Two-factor authentication (2FA) and one-time passcodes",
+    "Multichannel messaging over WhatsApp, MMS, Messenger, and Viber",
+    "Validating and enriching phone numbers with Number Insight",
+    "Monitoring account balance and listing owned virtual numbers"
+  ],
+  "agentIdeas": [
+    "When a **HubSpot** \"Create Contact\" completes, use **Vonage** \"Send SMS\" to text the new lead a welcome message and follow-up link.",
+    "Use **Vonage** \"Start Verification\" then \"Check Verification\" to gate a workflow, and on success call **Google Sheets** \"Add Row\" to log the verified phone number and timestamp.",
+    "Use **Vonage** \"Number Insight (Standard)\" to validate and enrich a submitted phone number, then post the carrier and line-type results to a channel with **Slack** \"Send Message To Channel\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/vonage/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/vonage",
+    "readme": "services/vonage/README.md",
+    "index": "services/vonage/src/index.js"
+  }
+}

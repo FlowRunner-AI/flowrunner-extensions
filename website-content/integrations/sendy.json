@@ -1,0 +1,74 @@
+{
+  "slug": "sendy",
+  "name": "Sendy",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate a self-hosted [Sendy](https://sendy.co) installation with FlowRunner. Manage list subscribers, check subscription status and counts, retrieve brands, and create or send email campaigns. Sendy is self-hosted, so there is no OAuth — authentication uses your installation URL plus an API key.",
+  "actionCount": 7,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Subscribers",
+    "Campaigns",
+    "Brands"
+  ],
+  "actions": [
+    {
+      "name": "Subscribe",
+      "category": "Subscribers",
+      "description": "Adds a subscriber to a Sendy list. Requires the list ID and email; name, country, IP address, referrer, and GDPR consent are optional, and any additional custom field values can be provided as a JSON object matching your list's custom fields. Returns the plain-text string \"true\" on success. Common plain-text errors include \"Already subscribed.\", \"Invalid email address.\", \"Bounced email address.\", \"Email is suppressed.\", and \"Invalid list ID.\"."
+    },
+    {
+      "name": "Unsubscribe",
+      "category": "Subscribers",
+      "description": "Unsubscribes an email address from a Sendy list. The subscriber remains in the list but is marked as unsubscribed. Returns the plain-text string \"true\" on success. Common plain-text errors include \"Invalid email address.\" and \"Email does not exist.\"."
+    },
+    {
+      "name": "Delete Subscriber",
+      "category": "Subscribers",
+      "description": "Permanently deletes a subscriber from a Sendy list. Unlike unsubscribing, this removes the subscriber record entirely. Returns the plain-text string \"true\" on success. Common plain-text errors include \"List does not exist\" and \"Subscriber does not exist\"."
+    },
+    {
+      "name": "Get Subscription Status",
+      "category": "Subscribers",
+      "description": "Returns the subscription status of an email address on a Sendy list as a plain-text string. Possible statuses are \"Subscribed\", \"Unsubscribed\", \"Unconfirmed\", \"Bounced\", \"Soft bounced\", and \"Complained\". Common plain-text errors include \"Email does not exist in list\"."
+    },
+    {
+      "name": "Get Active Subscriber Count",
+      "category": "Subscribers",
+      "description": "Returns the number of active (subscribed) subscribers on a Sendy list as a plain-text integer string. Common plain-text errors include \"List ID not passed\" and \"List does not exist\"."
+    },
+    {
+      "name": "Create Campaign",
+      "category": "Campaigns",
+      "description": "Creates a campaign in Sendy as a draft, or optionally sends it immediately when Send Campaign is set to 1 and list IDs are provided. Requires from name, from email, reply-to, subject, and HTML content. Returns a plain-text confirmation such as \"Campaign created\" or \"Campaign created and now sending\". Common plain-text errors include \"List or segment ID(s) not passed\", \"One or more list IDs are invalid\", and \"Unable to create campaign\"."
+    },
+    {
+      "name": "Get Brands",
+      "category": "Brands",
+      "description": "Retrieves the list of brands configured in your Sendy installation. On success Sendy returns a JSON string of brands with their IDs and names, which is returned here as raw text. Returns the plain-text error \"No brands found\" when no brands exist, or \"Invalid API key\" for an invalid key."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new leads or customers from a form, CRM, or spreadsheet into a Sendy mailing list",
+    "Automatically unsubscribe or delete contacts in Sendy when they opt out elsewhere",
+    "Look up a contact's subscription status or a list's active subscriber count before taking further action",
+    "Programmatically draft and send email campaigns to one or more lists from an automated workflow"
+  ],
+  "agentIdeas": [
+    "When a **Typeform** submission is received, use **Sendy** \"Subscribe\" to add the respondent's email and name to a mailing list, then \"Get Subscription Status\" to confirm the opt-in.",
+    "Use **Google Sheets** \"Get Rows\" to pull a list of contacts, then call **Sendy** \"Subscribe\" for each row to bulk-import them into a Sendy list.",
+    "After **HubSpot** \"Create Contact\" adds a new lead, use **Sendy** \"Subscribe\" to enroll them in a nurture list and later \"Get Active Subscriber Count\" to track list growth."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/sendy/public/icon.png",
+  "sourcePaths": {
+    "service": "services/sendy",
+    "readme": "services/sendy/README.md",
+    "index": "services/sendy/src/index.js"
+  }
+}

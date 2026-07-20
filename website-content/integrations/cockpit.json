@@ -1,0 +1,90 @@
+{
+  "slug": "cockpit",
+  "name": "Cockpit",
+  "marketingCategory": "CMS & Content",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Cockpit CMS](https://getcockpit.com) — a headless, API-first content platform, using the **Cockpit v2 Content API**. This service reads and writes structured content across content items (collections), singletons, and assets, authenticating with an API key sent as the `api-key` header. It supports MongoDB-style filtering, sorting, field projection, pagination, linked-content population, and localization.",
+  "actionCount": 10,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Content Items",
+    "Singletons",
+    "Assets"
+  ],
+  "actions": [
+    {
+      "name": "Get Content Items",
+      "category": "Content Items",
+      "description": "Lists entries from a Cockpit content model (collection). Returns an array of items. Supports MongoDB-style filtering, sorting, field projection, pagination, linked-content population, and localization. The model is the collection name defined in Cockpit (e.g. \"posts\", \"pages\")."
+    },
+    {
+      "name": "Get Content Item",
+      "category": "Content Items",
+      "description": "Retrieves a single entry from a content model. Provide an item ID to fetch by ID, or a MongoDB-style filter to fetch the first matching item. Supports field projection, population, and localization."
+    },
+    {
+      "name": "Get Singleton",
+      "category": "Singletons",
+      "description": "Retrieves the content of a Cockpit singleton by name. A singleton is a single, non-repeating content entry (e.g. site settings, homepage). Returns the singleton's field values."
+    },
+    {
+      "name": "Save Content Item",
+      "category": "Content Items",
+      "description": "Creates or updates an entry in a content model. Omit the Item ID to create a new item; provide the Item ID to update the existing item with that ID. The Data object holds the model's field values. Returns the saved item including its _id."
+    },
+    {
+      "name": "Update Content Item",
+      "category": "Content Items",
+      "description": "Updates an existing entry in a content model by ID. The Data object holds the field values to set. This is a convenience over Save Content Item for updates; the item ID is required."
+    },
+    {
+      "name": "Delete Content Item",
+      "category": "Content Items",
+      "description": "Deletes an entry from a content model by ID. This is permanent and cannot be undone."
+    },
+    {
+      "name": "Get Content Tree",
+      "category": "Content Items",
+      "description": "Retrieves entries of a tree-structured content model as a nested tree, where child items are attached to their parents. Supports field projection, population, and localization."
+    },
+    {
+      "name": "Count Content Items",
+      "category": "Content Items",
+      "description": "Returns the number of items in a content model that match an optional MongoDB-style filter. Fetches matching items and counts them, so use a filter to narrow large collections."
+    },
+    {
+      "name": "List Assets",
+      "category": "Assets",
+      "description": "Lists assets (uploaded files) from the Cockpit asset manager. Supports MongoDB-style filtering, sorting, and pagination. Returns asset metadata including id, path, title, mime type, and size."
+    },
+    {
+      "name": "Get Asset",
+      "category": "Assets",
+      "description": "Retrieves metadata for a single asset by ID, including its path, title, mime type, size, and dimensions."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync content entries from Cockpit into other systems, or push data from external sources into Cockpit collections",
+    "Publish, update, or delete content items programmatically as part of an editorial or data pipeline",
+    "Read singletons (e.g. site settings, homepage) to drive downstream automations",
+    "Query and count items with filters to build reports or trigger conditional workflows",
+    "Browse and inspect uploaded assets and their metadata"
+  ],
+  "agentIdeas": [
+    "Use **Cockpit** \"Get Content Items\" to pull entries matching a filter, feed each into **OpenAI** \"Create Chat Completion\" to generate summaries, and write them back with **Cockpit** \"Update Content Item\".",
+    "When **Slack** \"On Channel Message\" fires with a content request, use **Cockpit** \"Save Content Item\" to create a new entry in the target model and reply via **Slack** \"Send Message To Channel\".",
+    "Use **Google Drive** \"Download File\" to retrieve a document, extract its data, and create a corresponding entry with **Cockpit** \"Save Content Item\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/cockpit/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/cockpit",
+    "readme": "services/cockpit/README.md",
+    "index": "services/cockpit/src/index.js"
+  }
+}

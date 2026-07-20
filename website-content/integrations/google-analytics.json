@@ -1,0 +1,65 @@
+{
+  "slug": "google-analytics",
+  "name": "Google Analytics",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Google Analytics 4 (GA4)](https://analytics.google.com) — run standard and realtime reports, discover available dimensions and metrics, and list accounts and properties through the [Google Analytics Data API](https://developers.google.com/analytics/devguides/reporting/data/v1) and [Admin API](https://developers.google.com/analytics/devguides/config/admin/v1) using the connected user's Google account (OAuth 2.0, read-only).",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Reports",
+    "Admin"
+  ],
+  "actions": [
+    {
+      "name": "Run Report",
+      "category": "Reports",
+      "description": "Runs a GA4 report and returns the results as plain row objects keyed by dimension and metric API names, with metric values converted to numbers (e.g. {\"country\":\"United States\",\"activeUsers\":1234}). Also returns overall totals for the requested metrics and the total matching row count. Dates accept absolute values in YYYY-MM-DD format or relative values: \"today\", \"yesterday\", and \"NdaysAgo\" (e.g. \"7daysAgo\", \"30daysAgo\"). Defaults to the last 7 days. Returns up to 250,000 rows per request (default 10,000); use Limit and Offset to paginate."
+    },
+    {
+      "name": "Run Realtime Report",
+      "category": "Reports",
+      "description": "Runs a GA4 realtime report showing activity on the property over the last 30 minutes and returns the results as plain row objects keyed by dimension and metric API names, with metric values converted to numbers. Also returns overall totals for the requested metrics. Realtime reports support a limited set of dimensions (e.g. 'country', 'city', 'deviceCategory', 'platform', 'unifiedScreenName', 'eventName', 'audienceName') and metrics (e.g. 'activeUsers', 'screenPageViews', 'eventCount', 'keyEvents')."
+    },
+    {
+      "name": "Get Metadata",
+      "category": "Reports",
+      "description": "Retrieves the reporting metadata for a GA4 property: every dimension and metric available in reports, including custom dimensions and custom metrics defined on the property. Each entry includes the API name (used in Run Report), a human-readable UI name, a description, and a category. Useful for discovering valid dimension/metric names before running reports."
+    },
+    {
+      "name": "List Accounts",
+      "category": "Admin",
+      "description": "Lists all Google Analytics accounts accessible to the connected user, including each account's resource name, display name, region, and timestamps. Supports pagination and optionally includes soft-deleted (trashed) accounts."
+    },
+    {
+      "name": "List Properties",
+      "category": "Admin",
+      "description": "Lists the GA4 properties under a Google Analytics account, including each property's resource name, display name, time zone, currency, and service level. Supports pagination and optionally includes soft-deleted (trashed) properties. Only GA4 properties are returned — Universal Analytics properties are not accessible through this API."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Pull traffic, engagement, or revenue numbers into scheduled digests (daily active users,",
+    "Feed GA4 report rows into spreadsheets, databases, or BI tools from a workflow.",
+    "Monitor realtime activity (active users in the last 30 minutes by page or country) and alert",
+    "Let AI agents answer analytics questions by discovering available dimensions/metrics via",
+    "Enumerate the accounts and GA4 properties a user has access to."
+  ],
+  "agentIdeas": [
+    "On a daily schedule, use **Google Analytics** \"Run Report\" for yesterday's sessions and",
+    "Use **Google Analytics** \"Run Realtime Report\" every few minutes and send a **Slack** message",
+    "When a marketing campaign launches, use **Google Analytics** \"Run Report\" filtered by",
+    "Let an AI agent call **Google Analytics** \"Get Metadata\" to discover available fields, then"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/google-analytics/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/google-analytics",
+    "readme": "services/google-analytics/README.md",
+    "index": "services/google-analytics/src/index.js"
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "slug": "posthog",
+  "name": "PostHog",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrates [PostHog](https://posthog.com) product analytics with FlowRunner. Capture events, manage persons and feature flags, run HogQL queries, and create annotations.",
+  "actionCount": 20,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Ingestion",
+    "Persons",
+    "Events",
+    "Insights",
+    "Feature Flags",
+    "Cohorts",
+    "Annotations"
+  ],
+  "actions": [
+    {
+      "name": "Capture Event",
+      "category": "Ingestion",
+      "description": "Sends a custom analytics event to PostHog for a user. Requires the Project API Key (phc_...) to be configured. Provide an event name, a distinct ID identifying the user, optional custom properties, and an optional ISO 8601 timestamp (defaults to now). Returns a status indicator confirming the event was queued for ingestion."
+    },
+    {
+      "name": "Identify User",
+      "category": "Ingestion",
+      "description": "Associates a set of person properties with a user by sending a $identify event. Requires the Project API Key (phc_...). The provided properties are stored on the person profile via $set so future events for this distinct ID inherit them. Returns a status indicator confirming ingestion."
+    },
+    {
+      "name": "Create Alias",
+      "category": "Ingestion",
+      "description": "Merges two identities by sending a $create_alias event, linking an alias distinct ID to a primary distinct ID so their events are attributed to the same person. Requires the Project API Key (phc_...). Useful for connecting an anonymous ID to a known user after sign-up. Returns a status indicator confirming ingestion."
+    },
+    {
+      "name": "List Persons",
+      "category": "Persons",
+      "description": "Lists persons (identified users) in the project. Supports free-text search across distinct IDs and person properties and filtering by email. Returns a paginated list with each person's UUID, distinct IDs, properties, and creation date."
+    },
+    {
+      "name": "Get Person",
+      "category": "Persons",
+      "description": "Retrieves a single person by their UUID, returning distinct IDs, all person properties, and creation date."
+    },
+    {
+      "name": "Update Person Properties",
+      "category": "Persons",
+      "description": "Updates the properties stored on a person profile. The supplied properties object is merged into the person's existing properties (existing keys are overwritten, others are preserved). Returns the updated person record."
+    },
+    {
+      "name": "Delete Person",
+      "category": "Persons",
+      "description": "Permanently deletes a person and their profile from the project by UUID. This does not delete the underlying events unless configured server-side. Returns a confirmation object."
+    },
+    {
+      "name": "List Events",
+      "category": "Events",
+      "description": "Queries ingested events for the project. Supports filtering by event name and by a time window (after/before ISO 8601 timestamps), and limiting the number of results. Returns matching events with their properties, distinct IDs, and timestamps."
+    },
+    {
+      "name": "Get Event",
+      "category": "Events",
+      "description": "Retrieves a single ingested event by its ID, returning the full event including its properties, distinct ID, and timestamp."
+    },
+    {
+      "name": "Run Query",
+      "category": "Insights",
+      "description": "Runs an analytics query against the project using PostHog's query API. Most commonly used for HogQL — pass a query object such as {\"kind\":\"HogQLQuery\",\"query\":\"SELECT event, count() FROM events GROUP BY event\"}. HogQL is PostHog's SQL dialect over the events, persons, and related tables. Returns the query results (rows) along with the column definitions."
+    },
+    {
+      "name": "List Insights",
+      "category": "Insights",
+      "description": "Lists saved insights (charts and reports) in the project. Returns each insight's ID, short ID, name, description, and filters. Supports limiting the number of results."
+    },
+    {
+      "name": "List Feature Flags",
+      "category": "Feature Flags",
+      "description": "Lists feature flags in the project, returning each flag's ID, key, name, active state, and targeting filters. Supports limiting the number of results."
+    },
+    {
+      "name": "Create Feature Flag",
+      "category": "Feature Flags",
+      "description": "Creates a new feature flag in the project. Provide a unique key (used in code to evaluate the flag), a display name, whether it starts active, and an optional filters object defining release/targeting conditions (e.g. rollout percentage and property groups). Returns the created feature flag."
+    },
+    {
+      "name": "Get Feature Flag",
+      "category": "Feature Flags",
+      "description": "Retrieves a single feature flag by its numeric ID, returning its key, name, active state, and targeting filters."
+    },
+    {
+      "name": "Update Feature Flag",
+      "category": "Feature Flags",
+      "description": "Updates a feature flag by ID. Commonly used to toggle a flag on or off via the active field, or to rename it or replace its targeting filters. Only the provided fields are changed. Returns the updated feature flag."
+    },
+    {
+      "name": "Delete Feature Flag",
+      "category": "Feature Flags",
+      "description": "Soft-deletes a feature flag by setting it as deleted. The flag stops evaluating and is removed from the active list. Returns a confirmation object."
+    },
+    {
+      "name": "List Cohorts",
+      "category": "Cohorts",
+      "description": "Lists cohorts (saved groups of persons matching defined criteria) in the project. Returns each cohort's ID, name, description, member count, and filter definition. Supports limiting the number of results."
+    },
+    {
+      "name": "Get Cohort",
+      "category": "Cohorts",
+      "description": "Retrieves a single cohort by its numeric ID, returning its name, description, member count, and filter/group definition."
+    },
+    {
+      "name": "Create Annotation",
+      "category": "Annotations",
+      "description": "Creates an annotation in the project. Annotations mark notable moments (releases, incidents, campaigns) on PostHog charts at a given date. Provide the annotation content and an ISO 8601 date marker for when it should appear. Returns the created annotation."
+    },
+    {
+      "name": "List Annotations",
+      "category": "Annotations",
+      "description": "Lists annotations in the project, returning each annotation's ID, content, date marker, scope, and creation date. Supports limiting the number of results."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Stream custom product events from any workflow into PostHog for analytics.",
+    "Sync and enrich person profiles, then segment users with cohorts and feature flags.",
+    "Run HogQL queries on demand to power reports, alerts, or downstream automations.",
+    "Programmatically manage feature flags to gate rollouts from a workflow.",
+    "Annotate charts automatically when releases or incidents occur."
+  ],
+  "agentIdeas": [
+    "Use **Segment** \"Track Event\" to log a conversion, then call **PostHog** \"Capture Event\" to mirror the same event for product analysis, and **PostHog** \"Create Annotation\" to mark the release on charts.",
+    "When **PostHog** \"Run Query\" surfaces an anomaly in a HogQL result, use **Slack** \"Send Message To Channel\" to alert the team and **Google Sheets** \"Add Row\" to log the metric snapshot.",
+    "Enrich a user with **PostHog** \"Update Person Properties\", check their eligibility via **PostHog** \"Get Feature Flag\", then send a targeted onboarding email with **Gmail** \"Send Message\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/posthog/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/posthog",
+    "readme": "services/posthog/README.md",
+    "index": "services/posthog/src/index.js"
+  }
+}

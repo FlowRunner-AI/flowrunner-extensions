@@ -1,0 +1,261 @@
+{
+  "slug": "easypost",
+  "name": "EasyPost",
+  "marketingCategory": "ERP & Operations",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Shipping API integration for automating label purchasing, package tracking, and batch shipment processing across multiple carriers (USPS, UPS, FedEx, DHL). Supports addresses, parcels, pickups, insurance, international customs declarations, refunds, and webhook management.",
+  "actionCount": 42,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Addresses",
+    "Parcels",
+    "Customs",
+    "Shipments",
+    "Tracking",
+    "Batches",
+    "Pickups",
+    "Insurance",
+    "Refunds",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "Create Address",
+      "category": "Addresses",
+      "description": "Creates a new address in EasyPost. Optionally verifies the address during creation to ensure deliverability."
+    },
+    {
+      "name": "Get Address",
+      "category": "Addresses",
+      "description": "Retrieves the details of a specific saved address by its ID."
+    },
+    {
+      "name": "Verify Address",
+      "category": "Addresses",
+      "description": "Verifies an existing address for deliverability and accuracy. Returns verification results including any suggested corrections."
+    },
+    {
+      "name": "List Addresses",
+      "category": "Addresses",
+      "description": "Retrieves a paginated list of all saved addresses associated with the EasyPost account."
+    },
+    {
+      "name": "Create Parcel",
+      "category": "Parcels",
+      "description": "Creates a reusable parcel object defining package dimensions and weight for shipment creation."
+    },
+    {
+      "name": "Get Parcel",
+      "category": "Parcels",
+      "description": "Retrieves the details of a specific parcel by its ID, including dimensions and weight."
+    },
+    {
+      "name": "Create Customs Info",
+      "category": "Customs",
+      "description": "Creates a customs declaration (with its line items) required for international shipments. Attach the returned ID when creating a shipment that crosses a border."
+    },
+    {
+      "name": "Get Customs Info",
+      "category": "Customs",
+      "description": "Retrieves an existing customs declaration by its ID, including its line items."
+    },
+    {
+      "name": "Create Customs Item",
+      "category": "Customs",
+      "description": "Creates a standalone customs line item describing one product for international shipping. Items are immutable once created. To include items in a customs declaration, add them directly in Create Customs Info instead - this standalone object is retrievable by ID only."
+    },
+    {
+      "name": "Get Customs Item",
+      "category": "Customs",
+      "description": "Retrieves an existing customs line item by its ID."
+    },
+    {
+      "name": "Create Shipment",
+      "category": "Shipments",
+      "description": "Creates a new shipment with inline from/to addresses and parcel details. Returns the shipment with available carrier rates for purchasing."
+    },
+    {
+      "name": "Create Shipment from Saved",
+      "category": "Shipments",
+      "description": "Creates a new shipment using previously saved address and parcel IDs. Returns the shipment with available carrier rates."
+    },
+    {
+      "name": "Create and Buy Shipment",
+      "category": "Shipments",
+      "description": "Creates a shipment and purchases the label in a single step by naming the carrier service directly (e.g. NextDayAir, Priority) - no separate rate-selection step. Returns the shipment with tracking code and label already attached. Use the two-step Create Shipment + Buy Shipment when you want to compare rates first."
+    },
+    {
+      "name": "Get Shipment",
+      "category": "Shipments",
+      "description": "Retrieves the full details of a specific shipment, including addresses, parcel, rates, and tracking information."
+    },
+    {
+      "name": "List Shipments",
+      "category": "Shipments",
+      "description": "Retrieves a paginated list of all shipments associated with the EasyPost account."
+    },
+    {
+      "name": "Buy Shipment",
+      "category": "Shipments",
+      "description": "Purchases a shipping label for a shipment at the selected rate. This is the primary method for buying postage."
+    },
+    {
+      "name": "Convert Label Format",
+      "category": "Shipments",
+      "description": "Converts a purchased shipment label to a different file format (e.g. from PNG to PDF)."
+    },
+    {
+      "name": "Refund Shipment",
+      "category": "Shipments",
+      "description": "Requests a postage refund for a purchased shipment by its ID. USPS labels are refundable within 30 days if unscanned; UPS and FedEx within 90 days. The refund starts as \"submitted\" and the carrier confirms it asynchronously. Distinct from Create Refund, which refunds by carrier and tracking codes instead of a shipment ID."
+    },
+    {
+      "name": "Create Tracker",
+      "category": "Tracking",
+      "description": "Creates a new tracking object for monitoring a package shipment across carriers. Tracking updates are generated automatically."
+    },
+    {
+      "name": "Get Tracker",
+      "category": "Tracking",
+      "description": "Retrieves the full tracking details for a specific tracker, including all tracking events and estimated delivery date."
+    },
+    {
+      "name": "List Trackers",
+      "category": "Tracking",
+      "description": "Retrieves a paginated list of all trackers with optional filtering by tracking code or carrier."
+    },
+    {
+      "name": "Delete Tracker",
+      "category": "Tracking",
+      "description": "Permanently deletes a tracker and its associated tracking data."
+    },
+    {
+      "name": "Create Batch",
+      "category": "Batches",
+      "description": "Creates a new batch for processing multiple shipments together. Optionally adds shipments to the batch during creation."
+    },
+    {
+      "name": "Get Batch",
+      "category": "Batches",
+      "description": "Retrieves the full details of a specific batch, including its state and shipment information."
+    },
+    {
+      "name": "List Batches",
+      "category": "Batches",
+      "description": "Retrieves a paginated list of all batches associated with the EasyPost account."
+    },
+    {
+      "name": "Add Shipments to Batch",
+      "category": "Batches",
+      "description": "Adds one or more shipments to an existing batch for bulk processing."
+    },
+    {
+      "name": "Remove Shipments from Batch",
+      "category": "Batches",
+      "description": "Removes one or more shipments from an existing batch."
+    },
+    {
+      "name": "Buy Batch",
+      "category": "Batches",
+      "description": "Purchases labels for all shipments in a batch. Each shipment must have a selected rate before buying."
+    },
+    {
+      "name": "Generate Batch Label",
+      "category": "Batches",
+      "description": "Generates a consolidated label document for all shipments in a purchased batch in the specified format."
+    },
+    {
+      "name": "Create Pickup",
+      "category": "Pickups",
+      "description": "Schedules a carrier pickup for a shipment at the specified address and time window."
+    },
+    {
+      "name": "Get Pickup",
+      "category": "Pickups",
+      "description": "Retrieves the full details of a specific pickup including status, rates, and scheduling information."
+    },
+    {
+      "name": "Buy Pickup",
+      "category": "Pickups",
+      "description": "Purchases a pickup at the specified carrier and service level. The pickup must have been created first."
+    },
+    {
+      "name": "Cancel Pickup",
+      "category": "Pickups",
+      "description": "Cancels a previously scheduled carrier pickup. Once canceled, the carrier will not attempt collection."
+    },
+    {
+      "name": "Create Insurance",
+      "category": "Insurance",
+      "description": "Creates a standalone insurance policy for a shipment with a specified coverage amount."
+    },
+    {
+      "name": "Get Insurance",
+      "category": "Insurance",
+      "description": "Retrieves the full details of a specific insurance policy, including status and coverage information."
+    },
+    {
+      "name": "Refund Insurance",
+      "category": "Insurance",
+      "description": "Requests a refund for an existing insurance policy. The insurance must be in a refundable state."
+    },
+    {
+      "name": "Create Refund",
+      "category": "Refunds",
+      "description": "Requests a postage refund for one or more shipments by providing the carrier and tracking codes."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Retrieves all webhook endpoints configured on the EasyPost account, including whether each is active or disabled."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Registers a URL to receive EasyPost event notifications (tracking updates, batch state changes, etc.). This manages the account's webhook endpoints; it does not create a FlowRunner trigger."
+    },
+    {
+      "name": "Get Webhook",
+      "category": "Webhooks",
+      "description": "Retrieves the details of a specific webhook endpoint, including whether it has been disabled."
+    },
+    {
+      "name": "Update Webhook",
+      "category": "Webhooks",
+      "description": "Updates a webhook endpoint's signing secret or custom delivery headers. The URL itself cannot be changed - delete and recreate the webhook to point elsewhere. Updating a disabled webhook re-enables it."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Permanently removes a webhook endpoint. EasyPost stops sending event notifications to its URL immediately."
+    }
+  ],
+  "triggers": [
+    "On Tracking Updated"
+  ],
+  "idealUseCases": [
+    "Automating label creation and purchase for e-commerce orders, including one-step buy",
+    "Tracking packages and notifying customers on status changes",
+    "Verifying addresses before fulfillment",
+    "Preparing customs declarations for international shipments",
+    "Processing bulk shipments in batches with consolidated labels",
+    "Scheduling pickups, insurance, and postage refunds",
+    "Registering webhook endpoints for account events"
+  ],
+  "agentIdeas": [
+    "When an **EasyPost** \"On Tracking Updated\" trigger fires \"delivered\", use **Gmail** \"Send Message\" to notify the customer.",
+    "Use **Google Sheets** \"On New Row\" to detect new orders, then call **EasyPost** \"Create Shipment\" and \"Buy Shipment\" to generate and purchase labels.",
+    "For international orders, call **EasyPost** \"Create Customs Info\" first, then pass its ID into \"Create and Buy Shipment\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/easypost/public/icon.png",
+  "sourcePaths": {
+    "service": "services/easypost",
+    "readme": "services/easypost/README.md",
+    "index": "services/easypost/src/index.js"
+  }
+}

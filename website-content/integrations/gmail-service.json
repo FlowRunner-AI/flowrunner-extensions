@@ -1,0 +1,119 @@
+{
+  "slug": "gmail-service",
+  "name": "Gmail",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Full Gmail integration via OAuth2 for sending, drafting, labeling, and monitoring emails. Includes real-time and polling triggers for new emails, threads, labels, and attachments — and supports saving email attachments directly to FlowRunner file storage.",
+  "actionCount": 14,
+  "triggerCount": 5,
+  "operationCategories": [
+    "Message Management",
+    "Email Sending",
+    "Label Management",
+    "Message Status",
+    "Attachment Management",
+    "Draft Management"
+  ],
+  "actions": [
+    {
+      "name": "Get Messages List",
+      "category": "Message Management",
+      "description": "Retrieves Gmail messages for AI agents to analyze email content, extract leads, monitor communications, or automate email-based workflows."
+    },
+    {
+      "name": "Get Message",
+      "category": "Message Management",
+      "description": "Retrieves a specified email message by its ID."
+    },
+    {
+      "name": "Send Message",
+      "category": "Email Sending",
+      "description": "Sends emails through Gmail for AI agents to automate customer communication."
+    },
+    {
+      "name": "Add Label To Message",
+      "category": "Label Management",
+      "description": "Adds labels to a message."
+    },
+    {
+      "name": "Mark Message as Read",
+      "category": "Message Status",
+      "description": "Marks a message as \"Read\"."
+    },
+    {
+      "name": "Mark Message as Unread",
+      "category": "Message Status",
+      "description": "Marks a message as \"Unread\"."
+    },
+    {
+      "name": "Remove Label From Message",
+      "category": "Label Management",
+      "description": "Removes labels from a message."
+    },
+    {
+      "name": "Delete Messages",
+      "category": "Message Management",
+      "description": "Deletes a list of messages from the user's mailbox."
+    },
+    {
+      "name": "Get Attachment",
+      "category": "Attachment Management",
+      "description": "Retrieves a specified attachment from a message using its message ID and attachment ID."
+    },
+    {
+      "name": "Save Attachment",
+      "category": "Attachment Management",
+      "description": "Saves a Gmail attachment to Flowrunner Files and returns the file URL."
+    },
+    {
+      "name": "Delete Draft",
+      "category": "Draft Management",
+      "description": "Deletes a draft email from the user's Gmail account by its draft ID."
+    },
+    {
+      "name": "Send Draft",
+      "category": "Draft Management",
+      "description": "Sends a draft email by its draft ID and returns the details of the sent message."
+    },
+    {
+      "name": "Create Draft",
+      "category": "Draft Management",
+      "description": "Creates a new draft message in the user's Gmail account."
+    },
+    {
+      "name": "Get Drafts List",
+      "category": "Draft Management",
+      "description": "Retrieves up to 10 draft messages from the user's Gmail account based on specified parameters."
+    }
+  ],
+  "triggers": [
+    "On New Email",
+    "On New Attachment",
+    "On New Label",
+    "On Email Starred",
+    "On New Thread"
+  ],
+  "idealUseCases": [
+    "Automating email responses and draft creation based on incoming messages",
+    "Monitoring a Gmail inbox for new emails matching specific criteria and triggering downstream flows",
+    "Saving email attachments to file storage and passing the URL to document processing services",
+    "Managing labels programmatically to organize and route incoming mail",
+    "Sending transactional or notification emails from within a flow"
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Attachment\" trigger fires, use \"Save Attachment\" to store the file and pass the URL to **TurboDocx** \"Generate Document\" for automated document processing",
+    "Use **Gmail** \"On New Email\" to detect incoming support requests, extract key details, and create a **Jira Issues** ticket automatically with the email body as description",
+    "When a **Gmail** \"On New Thread\" trigger fires, use \"Get Message\" to read the content and **Brevo** \"Create Contact\" to capture the sender's details in the CRM"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/gmail-service/public/icon.png",
+  "sourcePaths": {
+    "service": "services/gmail-service",
+    "readme": "services/gmail-service/README.md",
+    "index": "services/gmail-service/src/index.js"
+  }
+}

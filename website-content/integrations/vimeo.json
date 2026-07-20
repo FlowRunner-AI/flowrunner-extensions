@@ -1,0 +1,177 @@
+{
+  "slug": "vimeo",
+  "name": "Vimeo",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage a connected Vimeo account through the Vimeo API (v3.4) via OAuth2: list, search, update, and delete videos, upload videos from a public URL (pull approach) with transcode-status polling, and work with thumbnails, folders (projects), showcases (albums), channels, comments, likes, text tracks, and users. Every parameter that expects a video, showcase, channel, or user accepts a numeric id, an API URI (e.g. `/videos/123456789`), or a `vimeo.com` URL.",
+  "actionCount": 26,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Videos",
+    "Upload",
+    "Thumbnails",
+    "Folders",
+    "Showcases",
+    "Channels",
+    "Comments",
+    "Likes",
+    "Text Tracks",
+    "Users"
+  ],
+  "actions": [
+    {
+      "name": "List My Videos",
+      "category": "Videos",
+      "description": "Retrieves the videos in the connected user's Vimeo library, paginated (up to 100 per page). Supports free-text search across titles and descriptions, sorting by date, name, plays, likes, or modified time in either direction, and an optional filter to only return playable (fully transcoded, non-restricted) videos. Returns a flat list object with the video items, the total count, and the next page number when more results exist."
+    },
+    {
+      "name": "Get Video",
+      "category": "Videos",
+      "description": "Retrieves a single video by its id, URI, or vimeo.com URL. Returns the full video object including name, description, link, duration, dimensions, privacy settings, pictures (thumbnails), stats, upload/transcode status, and metadata connections."
+    },
+    {
+      "name": "Update Video",
+      "category": "Videos",
+      "description": "Updates the metadata and privacy settings of a video owned by the connected user. Only provided fields are changed. Supports renaming, editing the description, changing who can view the video (including password protection and unlisted links), controlling embedding, downloads and showcase additions, and setting a Creative Commons license, language locale, or content ratings. When 'Privacy View' is set to 'Password', a 'Password' value must also be provided. Requires the 'edit' scope. Returns the updated video object."
+    },
+    {
+      "name": "Delete Video",
+      "category": "Videos",
+      "description": "Permanently deletes a video owned by the connected user. This cannot be undone. Requires the 'delete' scope. Returns a success status (Vimeo returns no content)."
+    },
+    {
+      "name": "Search Public Videos",
+      "category": "Videos",
+      "description": "Searches all public videos on Vimeo by keyword, paginated (up to 100 per page). Results can be ordered by relevance, upload date, or play count. This searches Vimeo's public catalog, not the connected user's library — use 'List My Videos' for that. Returns a flat list object with the matching video items, the total count, and the next page number when more results exist."
+    },
+    {
+      "name": "Upload Video from URL",
+      "category": "Upload",
+      "description": "Uploads a video to the connected user's Vimeo account from a publicly accessible file URL using Vimeo's \"pull\" approach: Vimeo downloads the file from the URL asynchronously, so this action returns immediately with the new video object (including its id and upload status) while the download and transcoding continue in the background. Use 'Get Upload Status' to poll for completion — the video is playable once transcode status is 'complete'. IMPORTANT: uploading requires the 'upload' capability, which Vimeo grants to apps on request (a routine review at developer.vimeo.com); until granted, this action fails with a 403 error. Uploads also count against the account's storage quota."
+    },
+    {
+      "name": "Get Upload Status",
+      "category": "Upload",
+      "description": "Retrieves the upload and transcode status of a video, useful for polling after 'Upload Video from URL'. The upload status becomes 'complete' once Vimeo has received the file, and the transcode status becomes 'complete' once the video is processed and playable ('in_progress' while processing, 'error' on failure)."
+    },
+    {
+      "name": "List Video Thumbnails",
+      "category": "Thumbnails",
+      "description": "Retrieves the thumbnail images (pictures) of a video, paginated. Each thumbnail includes its available sizes with direct image links and whether it is the active thumbnail shown on Vimeo. Returns a flat list object with the thumbnail items, the total count, and the next page number when more results exist."
+    },
+    {
+      "name": "Set Thumbnail from Frame",
+      "category": "Thumbnails",
+      "description": "Creates a new thumbnail for a video from a frame at the specified time offset and (by default) makes it the active thumbnail. The video must be fully transcoded before frames can be captured, and the time offset must be within the video's duration. Note: uploading a custom image as a thumbnail is a separate multi-step upload flow that this action does not cover. Returns the created thumbnail object."
+    },
+    {
+      "name": "List Folders",
+      "category": "Folders",
+      "description": "Retrieves the folders (projects) in the connected user's Vimeo library, paginated. Folders organize videos in the library without affecting their privacy. Returns a flat list object with the folder items (including their URIs, from which the numeric folder id can be taken), the total count, and the next page number when more results exist."
+    },
+    {
+      "name": "Create Folder",
+      "category": "Folders",
+      "description": "Creates a new folder (project) in the connected user's Vimeo library for organizing videos. Requires the 'create' scope. Returns the created folder object including its URI, from which the numeric folder id can be taken."
+    },
+    {
+      "name": "Add Video to Folder",
+      "category": "Folders",
+      "description": "Adds a video from the connected user's library to one of their folders (projects). A video can belong to only one folder at a time — adding it to a new folder moves it there. Requires the 'interact' scope. Returns a success status (Vimeo returns no content)."
+    },
+    {
+      "name": "List Showcases",
+      "category": "Showcases",
+      "description": "Retrieves the connected user's showcases (albums), paginated, with an optional name search. Showcases are curated, shareable collections of videos. Returns a flat list object with the showcase items (including their URIs, from which the numeric showcase id can be taken), the total count, and the next page number when more results exist."
+    },
+    {
+      "name": "Create Showcase",
+      "category": "Showcases",
+      "description": "Creates a new showcase (album) for the connected user. Showcases are curated, shareable collections of videos with their own privacy settings. When 'Privacy' is set to 'Password', a 'Password' value must also be provided. Requires the 'create' scope. Returns the created showcase object including its URI and shareable link."
+    },
+    {
+      "name": "Add Video to Showcase",
+      "category": "Showcases",
+      "description": "Adds a video from the connected user's library to one of their showcases (albums). Unlike folders, a video can belong to any number of showcases. Requires the 'interact' scope. Returns a success status (Vimeo returns no content)."
+    },
+    {
+      "name": "Get Showcase",
+      "category": "Showcases",
+      "description": "Retrieves a single showcase (album) belonging to the connected user, including its name, description, privacy settings, shareable link, and video count."
+    },
+    {
+      "name": "List My Channels",
+      "category": "Channels",
+      "description": "Retrieves the channels the connected user subscribes to or moderates, paginated. Channels are public, topic-based collections of videos curated by Vimeo members. Returns a flat list object with the channel items, the total count, and the next page number when more results exist."
+    },
+    {
+      "name": "Get Channel",
+      "category": "Channels",
+      "description": "Retrieves a single public channel by its numeric id, short name (e.g. 'staffpicks'), or vimeo.com channel URL. Returns channel details including name, description, link, header images, and video/follower counts."
+    },
+    {
+      "name": "List Video Comments",
+      "category": "Comments",
+      "description": "Retrieves the comments on a video, paginated, newest first. Each comment includes its text, creation time, author details, and reply count. Returns a flat list object with the comment items, the total count, and the next page number when more results exist."
+    },
+    {
+      "name": "Add Comment to Video",
+      "category": "Comments",
+      "description": "Posts a comment on a video as the connected user. Comments must be enabled on the video, and the user must be allowed to comment on it. Requires the 'interact' scope. Returns the created comment object."
+    },
+    {
+      "name": "Like Video",
+      "category": "Likes",
+      "description": "Likes a video as the connected user. The video's owner must allow likes, and a video cannot be liked by its own owner. Requires the 'interact' scope. Returns a success status (Vimeo returns no content)."
+    },
+    {
+      "name": "Unlike Video",
+      "category": "Likes",
+      "description": "Removes the connected user's like from a video. Requires the 'interact' scope. Returns a success status (Vimeo returns no content)."
+    },
+    {
+      "name": "List Liked Videos",
+      "category": "Likes",
+      "description": "Retrieves the videos the connected user has liked, paginated. Returns a flat list object with the liked video items, the total count, and the next page number when more results exist."
+    },
+    {
+      "name": "List Text Tracks",
+      "category": "Text Tracks",
+      "description": "Retrieves the text tracks (captions and subtitles) of a video. Each track includes its type, language, name, active state, and a direct download link to the track file. Returns a flat list object with the track items and the total count."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users",
+      "description": "Retrieves the profile of the connected Vimeo user, including name, profile link, bio, location, account tier (e.g. 'basic', 'plus', 'pro'), upload quota, and profile pictures. Useful as a connection check."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves the public profile of any Vimeo user by their numeric id, API URI ('/users/123'), or vimeo.com profile URL. Returns the user's name, link, bio, location, account tier, and profile pictures."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Publish AI-generated or externally hosted videos into Vimeo from a file URL, then poll until transcoding completes and the video is playable.",
+    "Maintain a video library programmatically: rename, re-describe, change privacy, organize into folders, and curate into shareable showcases.",
+    "Refresh a video's thumbnail by capturing a frame at a chosen time offset.",
+    "Discover public Vimeo content by keyword and pull metadata into content pipelines or reports.",
+    "Automate engagement: like videos, post comments, and monitor comment threads."
+  ],
+  "agentIdeas": [
+    "Use **YouTube** \"Upload Video\" alongside **Vimeo** \"Upload Video from URL\" to cross-post the same source video to both platforms, then poll **Vimeo** \"Get Upload Status\" until transcoding completes before sharing the link.",
+    "After **Google Drive** \"Download File\" produces a shareable file URL for a rendered video, call **Vimeo** \"Upload Video from URL\" to publish it, then **Vimeo** \"Add Video to Showcase\" to curate it into a client-facing collection.",
+    "Run **Vimeo** \"List Video Comments\" to gather new feedback on a video, then use **Gmail** \"Send Message\" to email a digest of the latest comments to the content team."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/vimeo/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/vimeo",
+    "readme": "services/vimeo/README.md",
+    "index": "services/vimeo/src/index.js"
+  }
+}

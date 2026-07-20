@@ -1,0 +1,188 @@
+{
+  "slug": "twitch",
+  "name": "Twitch",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect a Twitch account via OAuth2 to work with the Twitch Helix API: read and update your channel and profile, monitor streams, capture clips and stream markers, manage videos, send chat messages, run polls, and pull subscription, follower, and Bits data. Broadcaster/user parameters default to the connected account when omitted.",
+  "actionCount": 28,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Users",
+    "Channels",
+    "Streams",
+    "Categories",
+    "Clips",
+    "Videos",
+    "Chat",
+    "Schedule",
+    "Polls",
+    "Subscriptions",
+    "Bits"
+  ],
+  "actions": [
+    {
+      "name": "Get Current User",
+      "category": "Users",
+      "description": "Retrieves the profile of the connected Twitch user, including id, login, display name, description, broadcaster type (affiliate/partner), profile image, email (granted via the 'user:read:email' scope), and account creation date. Useful as a connection check and for resolving the connected user's id."
+    },
+    {
+      "name": "Get Users",
+      "category": "Users",
+      "description": "Retrieves Twitch user profiles by login name and/or user id. Up to 100 users can be requested per call (logins and ids combined). When no logins or ids are provided, the connected user's profile is returned. The email field is only included for the connected user."
+    },
+    {
+      "name": "Update User Description",
+      "category": "Users",
+      "description": "Updates the description (bio) shown on the connected user's Twitch channel page. Requires the 'user:edit' scope. Returns the updated user profile."
+    },
+    {
+      "name": "Get Channel Information",
+      "category": "Channels",
+      "description": "Retrieves channel information for a broadcaster, including the stream title, category (game), broadcast language, tags, content classification labels, and branded content flag. Defaults to the connected user's channel when no broadcaster id is provided."
+    },
+    {
+      "name": "Modify Channel Information",
+      "category": "Channels",
+      "description": "Updates the connected user's channel settings: stream title, category (game), broadcast language, tags, content classification labels, and branded content flag. Only provided fields are changed; at least one is required. Tags are limited to 10, each up to 25 characters, no spaces. When Content Classification Labels are provided, the listed labels are enabled and all other settable labels are disabled (full replacement). Requires the 'channel:manage:broadcast' scope."
+    },
+    {
+      "name": "Search Channels",
+      "category": "Channels",
+      "description": "Searches Twitch channels whose name or description matches a query. Optionally restrict results to channels that are currently live. Returns channel summaries including live status, category, title, and tags, with cursor-based pagination."
+    },
+    {
+      "name": "Get Channel Followers",
+      "category": "Channels",
+      "description": "Retrieves the followers of a broadcaster's channel along with the total follower count. Defaults to the connected user's channel. Requires the 'moderator:read:followers' scope: the follower list is only returned for the connected user's own channel or channels where they are a moderator; for other channels only the total is returned. Optionally check whether a specific user follows the channel."
+    },
+    {
+      "name": "Get Followed Channels",
+      "category": "Channels",
+      "description": "Retrieves the channels that the connected user follows, along with the total count, ordered by most recently followed. Requires the 'user:read:follows' scope. Optionally check whether the connected user follows a specific broadcaster."
+    },
+    {
+      "name": "Get Streams",
+      "category": "Streams",
+      "description": "Retrieves currently active streams, ordered by viewer count (highest first). Filter by broadcaster login names, category (game), stream type, and/or broadcast language. Without filters, the most-watched streams across Twitch are returned. Returns stream details including viewer count, title, category, start time, and thumbnail template."
+    },
+    {
+      "name": "Get Followed Streams",
+      "category": "Streams",
+      "description": "Retrieves the live streams of channels that the connected user follows, ordered by viewer count (highest first). Requires the 'user:read:follows' scope. Returns the same stream details as Get Streams."
+    },
+    {
+      "name": "Create Stream Marker",
+      "category": "Streams",
+      "description": "Creates a marker at the current position in the connected user's live stream, so the moment can easily be located later in the recorded video (highlight editing). The stream must be live and have VODs (past broadcasts) enabled — markers cannot be added while offline or during a premiere/rerun. Requires the 'channel:manage:broadcast' scope. Returns the marker id and its position in seconds."
+    },
+    {
+      "name": "Get Stream Key",
+      "category": "Streams",
+      "description": "Retrieves the connected user's stream key, used to configure broadcasting software (e.g. OBS). Requires the 'channel:read:stream_key' scope. Treat the returned key as a secret — anyone with it can stream to the channel."
+    },
+    {
+      "name": "Search Categories",
+      "category": "Categories",
+      "description": "Searches Twitch categories (games) whose name partially or fully matches a query. Returns the category id, name, and box art URL for each match, with cursor-based pagination."
+    },
+    {
+      "name": "Get Top Games",
+      "category": "Categories",
+      "description": "Retrieves the games and categories currently most watched on Twitch, ordered by viewership (highest first). Returns the category id, name, box art URL template, and IGDB id, with cursor-based pagination."
+    },
+    {
+      "name": "Get Games",
+      "category": "Categories",
+      "description": "Retrieves Twitch categories (games) by exact name and/or category id. Up to 100 categories can be requested per call (names and ids combined). Names must match exactly ('fortnite' does not match 'Fortnite: Battle Royale') — use Search Categories for partial matching. At least one name or id is required."
+    },
+    {
+      "name": "Create Clip",
+      "category": "Clips",
+      "description": "Captures a clip from a broadcaster's live stream (defaults to the connected user's channel). The broadcaster must be LIVE — clips cannot be created from offline channels. Clip creation is asynchronous: the returned clip id may take up to ~15 seconds to become retrievable via Get Clips, and the edit URL is valid for 24 hours. Requires the 'clips:edit' scope."
+    },
+    {
+      "name": "Get Clips",
+      "category": "Clips",
+      "description": "Retrieves clips by broadcaster, category (game), or specific clip ids — provide exactly one of the three. Defaults to the connected user's channel when none is provided. Optionally restrict to a date window (clips are returned by view count within it) or to featured clips only. Returns clip details including URL, creator, view count, duration, and VOD offset."
+    },
+    {
+      "name": "Get Videos",
+      "category": "Videos",
+      "description": "Retrieves videos (past broadcasts, highlights, and uploads) by user, category (game), or specific video ids — provide exactly one of the three. Defaults to the connected user's videos when none is provided. Filter by video type and, for category lookups, by period and language; sort by time, trending, or views. Returns video details including URL, view count, duration, and type."
+    },
+    {
+      "name": "Delete Videos",
+      "category": "Videos",
+      "description": "Permanently deletes one or more of the connected user's videos (maximum 5 per request). This cannot be undone. Requires the 'channel:manage:videos' scope. Returns the ids of the videos that were deleted."
+    },
+    {
+      "name": "Send Chat Message",
+      "category": "Chat",
+      "description": "Sends a chat message to a broadcaster's chat room as the connected user. Defaults to the connected user's own channel. Messages are limited to 500 characters and may use Twitch emote names verbatim. Optionally send as a threaded reply to another message. Requires the 'user:write:chat' scope. The response indicates whether the message passed the channel's moderation and was actually sent (check 'is_sent' and 'drop_reason')."
+    },
+    {
+      "name": "Get Chat Settings",
+      "category": "Chat",
+      "description": "Retrieves the chat settings of a broadcaster's chat room, including emote-only mode, follower-only mode (and its duration), slow mode (and its wait time), subscriber-only mode, and unique-chat mode. Defaults to the connected user's channel."
+    },
+    {
+      "name": "Get Chatters",
+      "category": "Chat",
+      "description": "Retrieves the list of users currently connected to a broadcaster's chat room, along with the total count. Defaults to the connected user's channel. Requires the 'moderator:read:chatters' scope, and the connected user must be the broadcaster or a moderator of the channel."
+    },
+    {
+      "name": "Get Channel Stream Schedule",
+      "category": "Schedule",
+      "description": "Retrieves a broadcaster's stream schedule — the planned broadcast segments with start/end times, titles, categories, and recurrence, plus any vacation period. Defaults to the connected user's channel. When the broadcaster has not created a schedule, an empty segments list is returned instead of an error."
+    },
+    {
+      "name": "Create Poll",
+      "category": "Polls",
+      "description": "Starts a poll in the connected user's channel that viewers vote on in chat. Provide a title (up to 60 characters), 2-5 choice titles (up to 25 characters each), and a duration between 15 and 1800 seconds. Optionally allow viewers to cast additional votes with Channel Points. Requires the 'channel:manage:polls' scope. Returns the created poll including its id and choice ids."
+    },
+    {
+      "name": "Get Polls",
+      "category": "Polls",
+      "description": "Retrieves the polls of the connected user's channel, most recent first (polls are available for 90 days). Optionally look up specific polls by id. Returns each poll's title, choices with vote counts, status, and timing. Requires the 'channel:manage:polls' scope."
+    },
+    {
+      "name": "End Poll",
+      "category": "Polls",
+      "description": "Ends an active poll in the connected user's channel. Choose 'Terminated' to end the poll and show the results to viewers, or 'Archived' to end it and hide the results. Requires the 'channel:manage:polls' scope. Returns the poll in its final state."
+    },
+    {
+      "name": "Get Broadcaster Subscriptions",
+      "category": "Subscriptions",
+      "description": "Retrieves the users subscribed to the connected user's channel, along with the total subscriber count and total subscriber points (tier 1 = 1 point, tier 2 = 2, tier 3 = 6). Includes subscription tier and gift information for each subscriber. Requires the 'channel:read:subscriptions' scope and a Twitch Affiliate or Partner account. Optionally check specific users by id."
+    },
+    {
+      "name": "Get Bits Leaderboard",
+      "category": "Bits",
+      "description": "Retrieves the Bits leaderboard for the connected user's channel — the viewers who cheered the most Bits, ranked by amount. Restrict the leaderboard to a day, week, month, or year anchored at a start date, or use all-time totals. Optionally look up a specific user's rank. Requires the 'bits:read' scope."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically update your stream title and category (game) before going live, and post an announcement to chat.",
+    "Capture a clip or drop a stream marker at key moments while you are broadcasting so highlights are easy to find later.",
+    "Track channel growth by pulling followers, subscribers, and the Bits leaderboard on a schedule.",
+    "Run and resolve chat polls as part of interactive stream segments.",
+    "Discover trending games and live streams to inform content decisions."
+  ],
+  "agentIdeas": [
+    "Before a broadcast, call **Twitch** \"Modify Channel Information\" to set the title and game, then post a go-live announcement with **Discord** \"Send Message\" and **X / Twitter** \"Create Post\".",
+    "When a memorable moment happens on a live stream, use **Twitch** \"Create Clip\", then share the resulting clip link via **Discord** \"Send Message\" to your community server.",
+    "Pull channel growth with **Twitch** \"Get Channel Followers\" and \"Get Broadcaster Subscriptions\", then log the totals into **Google Sheets** \"Add Row\" for weekly reporting."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/twitch/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/twitch",
+    "readme": "services/twitch/README.md",
+    "index": "services/twitch/src/index.js"
+  }
+}

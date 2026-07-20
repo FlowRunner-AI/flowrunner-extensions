@@ -1,0 +1,80 @@
+{
+  "slug": "ldap",
+  "name": "LDAP",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for **LDAP** directory servers (OpenLDAP, Active Directory, 389 Directory Server, ApacheDS, and any RFC 4511-compliant server). It speaks LDAP directly over TCP using the pure-JavaScript [`ldapts`](https://www.npmjs.com/package/ldapts) client — no native modules to compile. Every operation follows the classic LDAP lifecycle **bind → operation → unbind**, and uses a **connect-per-call** model: each action opens a fresh client, binds with the service credentials, runs its operation, and always unbinds when the call finishes — no clients are pooled or cached between invocations.",
+  "actionCount": 8,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Directory",
+    "Entries",
+    "Authentication"
+  ],
+  "actions": [
+    {
+      "name": "Search",
+      "category": "Directory",
+      "description": "Searches the LDAP directory and returns matching entries. Provide a Base DN (the point in the tree to search from — defaults to the configured Base DN), a Scope, and an LDAP filter. Scope: \"Base\" searches only the Base DN entry itself, \"One Level\" searches its immediate children, \"Subtree\" searches the Base DN and all descendants (the default). The Filter uses standard RFC 4515 syntax, e.g. (objectClass=person), (uid=jdoe), or a compound filter (&(objectClass=person)(mail=*@example.com)); it defaults to (objectClass=*) which matches everything under the base. Each returned entry includes its dn plus the requested attributes; single-valued attributes come back as strings and multi-valued attributes as arrays. Binary attributes (e.g. objectGUID, jpegPhoto, thumbnailPhoto) come back as Buffers. Use the Attributes list to limit which attributes are returned; leave it empty for all. For result sets larger than the server limit (commonly 1000 in Active Directory) enable Paged."
+    },
+    {
+      "name": "Get Entry",
+      "category": "Directory",
+      "description": "Fetches a single directory entry by its exact DN. Performs a base-scoped search on the given DN with filter (objectClass=*). Returns the entry (its dn plus attributes) or null when no entry exists at that DN. Single-valued attributes come back as strings, multi-valued attributes as arrays, and binary attributes (e.g. objectGUID, jpegPhoto) as Buffers. Use the Attributes list to limit which attributes are returned."
+    },
+    {
+      "name": "Add Entry",
+      "category": "Entries",
+      "description": "Creates a new directory entry at the given DN with the supplied attributes. Provide Attributes as a JSON object of attribute/value pairs, e.g. {\"objectClass\":[\"inetOrgPerson\",\"person\"],\"cn\":\"John Doe\",\"sn\":\"Doe\",\"mail\":\"jdoe@example.com\"}. Values may be a single string or an array of strings for multi-valued attributes. The objectClass attribute is required by most directories and determines which other attributes are allowed. Fails with \"Already Exists\" (code 68) if an entry already exists at the DN."
+    },
+    {
+      "name": "Modify Entry",
+      "category": "Entries",
+      "description": "Modifies the attributes of an existing entry. Provide Operations as an array of change objects, each with an operation (\"add\", \"replace\", or \"delete\"), the attribute name, and its values. \"add\" appends values to an attribute, \"replace\" overwrites the attribute's values entirely, and \"delete\" removes the given values (or, with an empty values array, the whole attribute). Example: [{\"operation\":\"replace\",\"attribute\":\"mail\",\"values\":[\"new@example.com\"]},{\"operation\":\"add\",\"attribute\":\"memberOf\",\"values\":[\"cn=admins,dc=example,dc=com\"]}]. Note: Active Directory password changes (unicodePwd) require special UTF-16 encoding over ldaps:// and are not handled here."
+    },
+    {
+      "name": "Rename Entry",
+      "category": "Entries",
+      "description": "Renames or moves an entry by changing its DN (an LDAP ModifyDN operation). Provide the current DN and the new DN. Changing only the leftmost (RDN) component renames the entry in place (e.g. cn=Old,ou=people,dc=example,dc=com → cn=New,ou=people,dc=example,dc=com); changing the parent portion moves it to a different container (subtree move support depends on the server)."
+    },
+    {
+      "name": "Delete Entry",
+      "category": "Entries",
+      "description": "Deletes the entry at the given DN. LDAP deletes are non-recursive: an entry with child entries cannot be removed until its children are deleted first (the server returns \"Not Allowed On Non-Leaf\"). Fails with \"No Such Object\" (code 32) when no entry exists at the DN."
+    },
+    {
+      "name": "Compare",
+      "category": "Directory",
+      "description": "Checks whether an entry's attribute contains a specific value, using the LDAP Compare operation. Returns a boolean matched result without transferring the attribute's value. Useful for permission/membership checks (e.g. does this entry's objectClass include \"person\", or does memberOf contain a given group DN) that respect server-side matching rules."
+    },
+    {
+      "name": "Authenticate User",
+      "category": "Authentication",
+      "description": "Validates a user's credentials by attempting an LDAP bind AS THAT USER — a fresh connection is opened and bound with the supplied User DN and password, separate from the service's own bind credentials. Returns {\"authenticated\":true} when the bind succeeds and {\"authenticated\":false} with the LDAP reason when the credentials are rejected (Invalid Credentials, code 49). This is the standard way to check a login: typically first Search for the user by username to obtain their DN, then call this with that DN and the password they entered. Non-authentication errors (server unreachable, no such user object) are raised as errors rather than returned as false."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Validate user logins against a corporate directory (**Authenticate User**).",
+    "Look up people, groups, or devices by username, email, or any attribute (**Search**, **Get Entry**).",
+    "Provision and de-provision accounts — create, rename/move, and delete entries.",
+    "Update directory attributes (email, group membership, phone numbers) from a workflow.",
+    "Check group membership or attribute values server-side without transferring data (**Compare**)."
+  ],
+  "agentIdeas": [
+    "Use **Search** to find a user by username and obtain their DN, then **Authenticate User** with that DN and the entered password to build a directory-backed login check.",
+    "On a new-hire event, use **Add Entry** to provision an account, then **Slack** \"Send Message To Channel\" to notify IT that the account is ready.",
+    "Use **Search** with a group filter to list members, then **Compare** to verify a specific user's membership before granting access in a downstream step."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/ldap/public/icon.png",
+  "sourcePaths": {
+    "service": "services/ldap",
+    "readme": "services/ldap/README.md",
+    "index": "services/ldap/src/index.js"
+  }
+}

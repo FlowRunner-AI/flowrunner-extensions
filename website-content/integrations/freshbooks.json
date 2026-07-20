@@ -1,0 +1,475 @@
+{
+  "slug": "freshbooks",
+  "name": "FreshBooks",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Cloud accounting integration for invoicing, payments, expenses, and project-based time tracking. Manage clients, invoices, estimates, expenses, payments, items, taxes, bills, vendors, projects, and time entries through a single connection, and pull financial reports — all secured with OAuth2.",
+  "actionCount": 83,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Clients",
+    "Invoices",
+    "Estimates",
+    "Expenses",
+    "Payments",
+    "Items",
+    "Taxes",
+    "Other Income",
+    "Tasks",
+    "Credit Notes",
+    "Recurring Invoices",
+    "Vendors",
+    "Bills",
+    "Bill Payments",
+    "Reports",
+    "Account",
+    "Projects",
+    "Time Tracking",
+    "Services"
+  ],
+  "actions": [
+    {
+      "name": "Find Clients",
+      "category": "Clients",
+      "description": "Lists your clients, with optional filters. Use this to look up customers or pull a list to work through."
+    },
+    {
+      "name": "Get Client",
+      "category": "Clients",
+      "description": "Retrieves the full details of one client."
+    },
+    {
+      "name": "Create Client",
+      "category": "Clients",
+      "description": "Adds a new client — the person or business you invoice. Use this when onboarding a new customer."
+    },
+    {
+      "name": "Update Client",
+      "category": "Clients",
+      "description": "Changes details on an existing client. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Client",
+      "category": "Clients",
+      "description": "Removes a client. By default it is deleted; turn on archiving to keep a hidden copy instead."
+    },
+    {
+      "name": "Find Invoices",
+      "category": "Invoices",
+      "description": "Lists invoices, with optional filters by client, status, and date. Use this to find invoices to act on or report."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves one invoice in full, including its line items."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates a new invoice for a client with one or more line items. The invoice starts as a draft — use Send Invoice to deliver it."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Changes an existing invoice. Only the fields you fill in are updated. Providing line items replaces all existing ones."
+    },
+    {
+      "name": "Send Invoice",
+      "category": "Invoices",
+      "description": "Sends an invoice to your client by email, or simply marks it as sent. Use this after creating a draft."
+    },
+    {
+      "name": "Delete Invoice",
+      "category": "Invoices",
+      "description": "Removes an invoice. By default it is deleted; turn on archiving to keep a hidden copy instead."
+    },
+    {
+      "name": "Find Estimates",
+      "category": "Estimates",
+      "description": "Lists estimates (quotes), with optional filters by client and date."
+    },
+    {
+      "name": "Get Estimate",
+      "category": "Estimates",
+      "description": "Retrieves one estimate in full, including its line items."
+    },
+    {
+      "name": "Create Estimate",
+      "category": "Estimates",
+      "description": "Creates a new estimate (quote) for a client. Send it for approval, then convert it to an invoice once accepted."
+    },
+    {
+      "name": "Update Estimate",
+      "category": "Estimates",
+      "description": "Changes an existing estimate. Only the fields you fill in are updated. Providing line items replaces all existing ones."
+    },
+    {
+      "name": "Send Estimate",
+      "category": "Estimates",
+      "description": "Sends an estimate to your client by email, or simply marks it as sent."
+    },
+    {
+      "name": "Convert Estimate to Invoice",
+      "category": "Estimates",
+      "description": "Turns an accepted estimate into a new invoice, copying its client and line items."
+    },
+    {
+      "name": "Delete Estimate",
+      "category": "Estimates",
+      "description": "Removes an estimate. By default it is deleted; turn on archiving to keep a hidden copy instead."
+    },
+    {
+      "name": "Find Expenses",
+      "category": "Expenses",
+      "description": "Lists expenses, with optional filters by category, client, and date."
+    },
+    {
+      "name": "Get Expense",
+      "category": "Expenses",
+      "description": "Retrieves one expense in full."
+    },
+    {
+      "name": "Create Expense",
+      "category": "Expenses",
+      "description": "Records a business expense (money you spent). Use this to track costs and optionally bill them back to a client."
+    },
+    {
+      "name": "Update Expense",
+      "category": "Expenses",
+      "description": "Changes an existing expense. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Expense",
+      "category": "Expenses",
+      "description": "Removes an expense. By default it is deleted; turn on archiving to keep a hidden copy instead."
+    },
+    {
+      "name": "Find Payments",
+      "category": "Payments",
+      "description": "Lists payments received, with optional filters by client and date."
+    },
+    {
+      "name": "Get Payment",
+      "category": "Payments",
+      "description": "Retrieves one payment in full."
+    },
+    {
+      "name": "Record Payment",
+      "category": "Payments",
+      "description": "Records a payment received against an invoice. Use this to mark an invoice paid (in full or partially)."
+    },
+    {
+      "name": "Update Payment",
+      "category": "Payments",
+      "description": "Changes an existing payment. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Payment",
+      "category": "Payments",
+      "description": "Removes a payment record. This reopens the related invoice's balance."
+    },
+    {
+      "name": "Find Items",
+      "category": "Items",
+      "description": "Lists your saved products and services (reusable line items)."
+    },
+    {
+      "name": "Get Item",
+      "category": "Items",
+      "description": "Retrieves one saved product or service."
+    },
+    {
+      "name": "Create Item",
+      "category": "Items",
+      "description": "Saves a reusable product or service you can drop onto invoices and estimates."
+    },
+    {
+      "name": "Update Item",
+      "category": "Items",
+      "description": "Changes a saved product or service. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Item",
+      "category": "Items",
+      "description": "Removes a saved product or service. By default it is deleted; turn on archiving to keep a hidden copy instead."
+    },
+    {
+      "name": "Find Taxes",
+      "category": "Taxes",
+      "description": "Lists your saved tax rates."
+    },
+    {
+      "name": "Create Tax",
+      "category": "Taxes",
+      "description": "Creates a reusable tax rate you can apply to invoices, estimates, and expenses."
+    },
+    {
+      "name": "Update Tax",
+      "category": "Taxes",
+      "description": "Changes a saved tax rate. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Tax",
+      "category": "Taxes",
+      "description": "Permanently removes a saved tax rate."
+    },
+    {
+      "name": "Find Other Income",
+      "category": "Other Income",
+      "description": "Lists income recorded outside of invoices (e.g. online sales, rentals)."
+    },
+    {
+      "name": "Record Other Income",
+      "category": "Other Income",
+      "description": "Records income received outside of an invoice, such as online or in-person sales."
+    },
+    {
+      "name": "Update Other Income",
+      "category": "Other Income",
+      "description": "Changes a recorded other-income entry. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Other Income",
+      "category": "Other Income",
+      "description": "Permanently removes a recorded other-income entry."
+    },
+    {
+      "name": "Find Tasks",
+      "category": "Tasks",
+      "description": "Lists your saved billable tasks (reusable services with a rate)."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a reusable billable task with a default hourly rate."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Changes a saved task. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Removes a saved task. By default it is deleted; turn on archiving to keep a hidden copy instead."
+    },
+    {
+      "name": "Find Credit Notes",
+      "category": "Credit Notes",
+      "description": "Lists credit notes (credits issued to clients), optionally filtered by client."
+    },
+    {
+      "name": "Get Credit Note",
+      "category": "Credit Notes",
+      "description": "Retrieves one credit note in full."
+    },
+    {
+      "name": "Create Credit Note",
+      "category": "Credit Notes",
+      "description": "Issues a credit note to a client (a credit they can apply to future invoices)."
+    },
+    {
+      "name": "Update Credit Note",
+      "category": "Credit Notes",
+      "description": "Changes a credit note. Only the fields you fill in are updated. Providing line items replaces all existing ones."
+    },
+    {
+      "name": "Delete Credit Note",
+      "category": "Credit Notes",
+      "description": "Removes a credit note. By default it is deleted; turn on archiving to keep a hidden copy instead."
+    },
+    {
+      "name": "Find Recurring Invoices",
+      "category": "Recurring Invoices",
+      "description": "Lists recurring invoice profiles (invoices that send automatically on a schedule)."
+    },
+    {
+      "name": "Get Recurring Invoice",
+      "category": "Recurring Invoices",
+      "description": "Retrieves one recurring invoice profile in full."
+    },
+    {
+      "name": "Create Recurring Invoice",
+      "category": "Recurring Invoices",
+      "description": "Sets up an invoice that is created and sent automatically on a repeating schedule."
+    },
+    {
+      "name": "Update Recurring Invoice",
+      "category": "Recurring Invoices",
+      "description": "Changes a recurring invoice profile. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Recurring Invoice",
+      "category": "Recurring Invoices",
+      "description": "Stops and removes a recurring invoice profile. By default it is deleted; turn on archiving to keep a hidden copy instead."
+    },
+    {
+      "name": "Find Vendors",
+      "category": "Vendors",
+      "description": "Lists your vendors (suppliers you buy from and record bills for)."
+    },
+    {
+      "name": "Create Vendor",
+      "category": "Vendors",
+      "description": "Adds a vendor (supplier) you can record bills against."
+    },
+    {
+      "name": "Update Vendor",
+      "category": "Vendors",
+      "description": "Changes a vendor's details. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Vendor",
+      "category": "Vendors",
+      "description": "Removes a vendor. By default it is deleted; turn on archiving to keep a hidden copy instead."
+    },
+    {
+      "name": "Find Bills",
+      "category": "Bills",
+      "description": "Lists bills you owe to vendors, optionally filtered by vendor."
+    },
+    {
+      "name": "Get Bill",
+      "category": "Bills",
+      "description": "Retrieves one bill in full, including its line items."
+    },
+    {
+      "name": "Create Bill",
+      "category": "Bills",
+      "description": "Records a bill you owe to a vendor (accounts payable)."
+    },
+    {
+      "name": "Update Bill",
+      "category": "Bills",
+      "description": "Changes a bill. Only the fields you fill in are updated. Providing line items replaces all existing ones."
+    },
+    {
+      "name": "Delete Bill",
+      "category": "Bills",
+      "description": "Removes a bill. By default it is deleted; turn on archiving to keep a hidden copy instead."
+    },
+    {
+      "name": "Find Bill Payments",
+      "category": "Bill Payments",
+      "description": "Lists payments you've made against vendor bills."
+    },
+    {
+      "name": "Record Bill Payment",
+      "category": "Bill Payments",
+      "description": "Records a payment you made against a vendor bill."
+    },
+    {
+      "name": "Update Bill Payment",
+      "category": "Bill Payments",
+      "description": "Changes a recorded bill payment. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Bill Payment",
+      "category": "Bill Payments",
+      "description": "Removes a recorded bill payment. This reopens the bill's balance."
+    },
+    {
+      "name": "Get Financial Report",
+      "category": "Reports",
+      "description": "Pulls a financial report for a date range — profit & loss, tax summary, aging, and more."
+    },
+    {
+      "name": "Get Account Info",
+      "category": "Account",
+      "description": "Returns details about the connected FreshBooks business — name, identifiers, and address."
+    },
+    {
+      "name": "Find Projects",
+      "category": "Projects",
+      "description": "Lists your projects, optionally filtered by a search term."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves one project in full."
+    },
+    {
+      "name": "Create Project",
+      "category": "Projects",
+      "description": "Creates a project for a client, billed either as a flat price or by the hour."
+    },
+    {
+      "name": "Update Project",
+      "category": "Projects",
+      "description": "Changes an existing project. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Project",
+      "category": "Projects",
+      "description": "Permanently removes a project."
+    },
+    {
+      "name": "Find Time Entries",
+      "category": "Time Tracking",
+      "description": "Lists logged time, optionally filtered by client, project, and date range."
+    },
+    {
+      "name": "Get Time Entry",
+      "category": "Time Tracking",
+      "description": "Retrieves one time entry in full."
+    },
+    {
+      "name": "Log Time",
+      "category": "Time Tracking",
+      "description": "Logs time worked, optionally against a client and project, ready to bill."
+    },
+    {
+      "name": "Update Time Entry",
+      "category": "Time Tracking",
+      "description": "Changes a logged time entry. Only the fields you fill in are updated."
+    },
+    {
+      "name": "Delete Time Entry",
+      "category": "Time Tracking",
+      "description": "Permanently removes a logged time entry."
+    },
+    {
+      "name": "Find Services",
+      "category": "Services",
+      "description": "Lists your services — the categories of work used on projects and time entries."
+    },
+    {
+      "name": "Create Service",
+      "category": "Services",
+      "description": "Creates a service (a type of work) you can attach to projects and time entries."
+    },
+    {
+      "name": "Set Service Rate",
+      "category": "Services",
+      "description": "Sets the hourly rate for a service."
+    }
+  ],
+  "triggers": [
+    "Record Created or Changed"
+  ],
+  "idealUseCases": [
+    "Automating invoice creation, delivery, and payment recording for client billing",
+    "Onboarding new clients and keeping contact and billing details in sync from external sources",
+    "Tracking expenses, bills, and vendor payments for bookkeeping",
+    "Converting accepted estimates into invoices and sending them automatically",
+    "Logging billable time against projects and managing project rates",
+    "Generating financial reports (Profit & Loss, Tax Summary, Aging) for dashboards and review",
+    "Triggering downstream workflows when invoices, payments, or clients are created or updated"
+  ],
+  "agentIdeas": [
+    "When a **FreshBooks** \"Record Created or Changed\" trigger fires for a new payment, use **Gmail** \"Send Message\" to email the client a thank-you and receipt with the amount and invoice number",
+    "Use **Stripe** \"List Charges\" to pull recent card payments, then call **FreshBooks** \"Record Payment\" against the matching invoice so accounting stays reconciled with the payment processor",
+    "When a **FreshBooks** \"Record Created or Changed\" trigger fires for a new invoice, use **Google Sheets** \"Add Row\" to log the invoice number, client, amount, and status into a billing tracking spreadsheet"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/freshbooks/public/icon.png",
+  "sourcePaths": {
+    "service": "services/freshbooks",
+    "readme": "services/freshbooks/README.md",
+    "index": "services/freshbooks/src/index.js"
+  }
+}

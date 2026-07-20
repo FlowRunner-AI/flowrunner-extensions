@@ -1,0 +1,143 @@
+{
+  "slug": "getresponse",
+  "name": "GetResponse",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner service for the [GetResponse](https://www.getresponse.com/) email marketing platform, built on the [GetResponse API v3](https://apidocs.getresponse.com/v3). Manage contacts, campaigns (lists), newsletters, autoresponders, tags, and custom fields. Authenticates with a GetResponse API key.",
+  "actionCount": 20,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Contacts",
+    "Campaigns",
+    "Newsletters",
+    "Autoresponders",
+    "Tags",
+    "Custom Fields",
+    "From Fields"
+  ],
+  "actions": [
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Adds a new contact to a GetResponse campaign (list). The contact is added subject to the campaign's opt-in settings (a single opt-in campaign adds them immediately, a double opt-in campaign sends a confirmation email). Supports custom field values, tags, and an autoresponder day-of-cycle. Adding an email that already exists in the campaign returns a conflict error."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by its GetResponse contact ID, including name, email, campaign, tags, custom field values, and engagement metadata."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves a paginated list of contacts, optionally filtered by email or campaign. Supports sorting and page size control. Returns up to 1000 contacts per page."
+    },
+    {
+      "name": "Search Contacts",
+      "category": "Contacts",
+      "description": "Searches contacts by an exact email address across all campaigns, returning every matching contact record. Useful for locating a contact when you only know their email."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact identified by its contact ID. Only the provided fields are changed; omitted fields are left untouched. Supports updating name, autoresponder day-of-cycle, custom field values, and tags."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently removes a contact from GetResponse by contact ID. This action cannot be undone."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Retrieves all campaigns (contact lists) in the GetResponse account, including their IDs, names, and configuration. In GetResponse a \"campaign\" is a subscriber list."
+    },
+    {
+      "name": "Get Campaign",
+      "category": "Campaigns",
+      "description": "Retrieves a single campaign (contact list) by its ID, including opt-in type, confirmation settings, and profile details."
+    },
+    {
+      "name": "Create Campaign",
+      "category": "Campaigns",
+      "description": "Creates a new campaign (contact list). The name must be unique, lowercase, and may only contain letters, numbers, hyphens, underscores, and periods. Optionally sets the confirmation subscription language."
+    },
+    {
+      "name": "Create Newsletter",
+      "category": "Newsletters",
+      "description": "Creates and schedules a newsletter (one-off email broadcast) to a campaign. Requires a subject, a verified from-field, HTML and/or plain-text content, and the target campaign. By default the newsletter is sent immediately; set Send On to schedule it for a future time."
+    },
+    {
+      "name": "List Newsletters",
+      "category": "Newsletters",
+      "description": "Retrieves a paginated list of newsletters (email broadcasts) in the account, including their subjects, statuses, and target campaigns."
+    },
+    {
+      "name": "Get Newsletter",
+      "category": "Newsletters",
+      "description": "Retrieves a single newsletter by its ID, including subject, status, content, statistics, and send settings."
+    },
+    {
+      "name": "List Autoresponders",
+      "category": "Autoresponders",
+      "description": "Retrieves a paginated list of autoresponders (automated cycle emails) in the account, including their names, statuses, trigger settings, and target campaigns."
+    },
+    {
+      "name": "Get Autoresponder",
+      "category": "Autoresponders",
+      "description": "Retrieves a single autoresponder by its ID, including its name, status, trigger settings, content, and statistics."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Retrieves all tags defined in the GetResponse account, including their IDs, names, and colors. Tags are used to segment and organize contacts."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new tag that can be applied to contacts. The name may contain only letters, numbers, underscores, and hyphens. An optional color helps visually distinguish the tag in the GetResponse UI."
+    },
+    {
+      "name": "Delete Tag",
+      "category": "Tags",
+      "description": "Permanently deletes a tag by its ID. The tag is removed from all contacts it was applied to. This action cannot be undone."
+    },
+    {
+      "name": "List Custom Fields",
+      "category": "Custom Fields",
+      "description": "Retrieves all custom fields defined in the GetResponse account, including their IDs, names, types, and predefined values. Custom fields store additional structured data on contacts."
+    },
+    {
+      "name": "Create Custom Field",
+      "category": "Custom Fields",
+      "description": "Creates a new custom field for storing structured data on contacts. Choose a field type (for example text, number, date, or a multiple-choice list). For choice-based types, supply the allowed values."
+    },
+    {
+      "name": "List From Fields",
+      "category": "From Fields",
+      "description": "Retrieves all from-fields (verified sender addresses) in the GetResponse account, including their IDs, names, email addresses, and verification status. From-fields are used as the sender of newsletters."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Add or update subscribers in a GetResponse campaign when new leads arrive from forms, stores, or CRMs",
+    "Look up and search contacts to enrich records or check subscription status",
+    "Automate list hygiene by creating tags and custom fields and applying them to contacts",
+    "Create and send newsletter broadcasts and inspect autoresponder cycles as part of a broader marketing workflow"
+  ],
+  "agentIdeas": [
+    "When a **Shopify** \"On New Order\" trigger fires, use GetResponse \"Create Contact\" to add the buyer to a campaign, then \"Create Tag\" and apply it to segment purchasers for follow-up newsletters.",
+    "Use **Typeform** \"Get Form Responses\" to pull new survey signups, then call GetResponse \"Search Contacts\" and \"Update Contact\" to sync answers into custom fields.",
+    "Migrate or mirror audiences by fetching subscribers from **Mailchimp Marketing** and calling GetResponse \"Create Contact\" to add each one into a target campaign."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/getresponse/public/icon.png",
+  "sourcePaths": {
+    "service": "services/getresponse",
+    "readme": "services/getresponse/README.md",
+    "index": "services/getresponse/src/index.js"
+  }
+}

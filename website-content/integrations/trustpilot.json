@@ -1,0 +1,123 @@
+{
+  "slug": "trustpilot",
+  "name": "Trustpilot",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Look up Trustpilot company profiles, ratings, and TrustScores, read public and private reviews, post and delete company replies, and send review invitations. Public data (business units, public reviews, categories, consumer profiles) is served from the app's API key, while private data and write actions (private reviews, replies, invitations) use the connected business user's OAuth token.",
+  "actionCount": 16,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Business Units",
+    "Public Reviews",
+    "Categories",
+    "Consumers",
+    "Private Reviews",
+    "Invitations"
+  ],
+  "actions": [
+    {
+      "name": "Find Business Unit",
+      "category": "Business Units",
+      "description": "Finds a Trustpilot business unit (company profile) by its website domain name, e.g. 'example.com'. Public endpoint authenticated with the API key — no account connection needed. Returns the full public profile including the business unit id, display name, country, status, star rating, TrustScore, and review count breakdown. Use this to resolve a domain to a business unit id for other actions."
+    },
+    {
+      "name": "Get Business Unit",
+      "category": "Business Units",
+      "description": "Retrieves a Trustpilot business unit (company profile) by its id. Public endpoint authenticated with the API key — no account connection needed. Returns the public profile including display name, website, country, status, star rating (1-5), TrustScore, and the review count broken down by star rating."
+    },
+    {
+      "name": "Get Business Unit Web Links",
+      "category": "Business Units",
+      "description": "Retrieves the public Trustpilot web links of a business unit for a given locale: the company's review profile page URL and the evaluate (write-a-review) URLs. Public endpoint authenticated with the API key — no account connection needed. Useful for linking customers directly to a company's Trustpilot page."
+    },
+    {
+      "name": "Search Business Units",
+      "category": "Business Units",
+      "description": "Searches Trustpilot business units (companies) by name or website domain, paginated. Public endpoint authenticated with the API key — no account connection needed. Matches against identifying and referring names. Returns basic company records (id, display name, identifying domain) — use Get Business Unit for ratings and review counts."
+    },
+    {
+      "name": "List Public Reviews",
+      "category": "Public Reviews",
+      "description": "Retrieves the published public reviews of a business unit, paginated. Public endpoint authenticated with the API key — no account connection needed. Filter by star ratings (multi-select), review language, and whether the company has responded; order by creation date or rating. Returns review objects with stars, title, text, language, creation date, consumer display name, and any company reply. Public reviews do NOT include consumer emails or order references — use List Private Reviews for that."
+    },
+    {
+      "name": "Get Public Review",
+      "category": "Public Reviews",
+      "description": "Retrieves a single published service review by its review id. Public endpoint authenticated with the API key — no account connection needed. Returns the public review data: stars, title, text, language, creation date, consumer display name, the reviewed business unit, and any company reply. Does NOT include the consumer's email or order reference — use Get Private Review for that."
+    },
+    {
+      "name": "List Categories",
+      "category": "Categories",
+      "description": "Lists Trustpilot's business categories, optionally filtered by country, locale, or a parent category (to list child categories). Public endpoint authenticated with the API key — no account connection needed. Returns category records with id and localized name, usable with Get Business Units in Category."
+    },
+    {
+      "name": "Get Business Units in Category",
+      "category": "Categories",
+      "description": "Lists the business units (companies) registered within a Trustpilot category, paginated. Public endpoint authenticated with the API key — no account connection needed. Useful for competitor discovery and market research within a business sector."
+    },
+    {
+      "name": "Get Consumer Profile",
+      "category": "Consumers",
+      "description": "Retrieves the public profile of a Trustpilot consumer (reviewer) by their consumer id, as found in review objects. Public endpoint authenticated with the API key — no account connection needed. Returns the consumer's display name, country, and number of reviews written. Does NOT expose private consumer data such as email addresses."
+    },
+    {
+      "name": "List Private Reviews",
+      "category": "Private Reviews",
+      "description": "Retrieves the reviews of a business unit including PRIVATE data: the consumer's email address and the order/reference id from the invitation. Requires a connected Trustpilot business user with access to the business unit (OAuth). Filter by star ratings, language, company response, reported state, reference id, and creation date range; order by creation date or rating. Use this instead of List Public Reviews when you need to match reviews to customers or orders."
+    },
+    {
+      "name": "Get Private Review",
+      "category": "Private Reviews",
+      "description": "Retrieves a single review by its id including PRIVATE data: the consumer's email address, the order/reference id, and internal state fields. Requires a connected Trustpilot business user with access to the review's business unit (OAuth)."
+    },
+    {
+      "name": "Reply to Review",
+      "category": "Private Reviews",
+      "description": "Posts a public company reply to a review on behalf of the connected Trustpilot business user (OAuth). The reply is shown publicly beneath the review on the company's Trustpilot profile. Posting a reply to a review that already has one replaces the existing reply."
+    },
+    {
+      "name": "Delete Review Reply",
+      "category": "Private Reviews",
+      "description": "Deletes the company's reply to a review on behalf of the connected Trustpilot business user (OAuth). The reply is removed from the public review on the company's Trustpilot profile."
+    },
+    {
+      "name": "Send Email Invitation",
+      "category": "Invitations",
+      "description": "Sends a service review invitation email to a customer through Trustpilot on behalf of the connected business user (OAuth). Trustpilot delivers the email using the selected invitation template and links the resulting review to your reference number (e.g. an order id). The sender email must be verified in your Trustpilot account. For product review invitations or other advanced fields, supply the raw body via Advanced Options — its top-level fields override the convenience parameters."
+    },
+    {
+      "name": "List Invitation Templates",
+      "category": "Invitations",
+      "description": "Lists the review invitation templates available to a business unit, including Trustpilot's standard templates and any custom templates. Requires a connected Trustpilot business user with access to the business unit (OAuth). Template ids are used when sending email invitations."
+    },
+    {
+      "name": "Generate Review Invitation Link",
+      "category": "Invitations",
+      "description": "Generates a unique service review invitation link for a specific customer, to distribute through your own channels (SMS, chat, custom emails, etc.). Requires a connected Trustpilot business user with access to the business unit (OAuth). The review submitted through the link is connected to the customer name, email, and reference id you provide. Each link is single-use per customer and should not be reused for different customers."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Resolve a website domain to a Trustpilot business unit id, then pull its star rating, TrustScore, and per-star review counts for monitoring or reporting.",
+    "Sync new reviews into a spreadsheet, database, or CRM, using private reviews to match each review to the customer's email and order reference.",
+    "Auto-reply to reviews (or clear a reply) on behalf of the business as part of a moderation or support workflow.",
+    "Drive review collection by sending templated email invitations tied to an order id, or generating single-use invitation links to distribute over SMS, chat, or your own emails.",
+    "Research a market sector by listing categories and the companies registered within them."
+  ],
+  "agentIdeas": [
+    "Use **Trustpilot** \"List Private Reviews\" to fetch new low-star reviews with the consumer's email, then call **Zendesk** \"Create Ticket\" to open a support case and **Trustpilot** \"Reply to Review\" to acknowledge the reviewer publicly.",
+    "When a new Trustpilot review comes in, use **Trustpilot** \"List Public Reviews\" to retrieve it and **Slack** \"Send Message To Channel\" to alert your team with the stars, title, and text for a quick response.",
+    "Use **Trustpilot** \"List Private Reviews\" to pull reviews with their order reference and consumer email, then **Google Sheets** \"Add Row\" to log each review's rating, date, and customer into a reporting spreadsheet."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/trustpilot/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/trustpilot",
+    "readme": "services/trustpilot/README.md",
+    "index": "services/trustpilot/src/index.js"
+  }
+}

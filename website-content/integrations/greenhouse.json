@@ -1,0 +1,210 @@
+{
+  "slug": "greenhouse",
+  "name": "Greenhouse",
+  "marketingCategory": "HR & Recruiting",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrates with the Greenhouse Recruiting Harvest API to manage candidates, applications, jobs, and the full hiring pipeline. Manage candidates (including notes and file attachments), move/advance/reject/hire applications, read scorecards, interviews, and offers, and pull reference data for sources, rejection reasons, departments, offices, and custom fields.",
+  "actionCount": 33,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Candidates",
+    "Applications",
+    "Scorecards & Interviews",
+    "Offers",
+    "Jobs",
+    "Job Posts",
+    "Users",
+    "Reference"
+  ],
+  "actions": [
+    {
+      "name": "List Candidates",
+      "category": "Candidates",
+      "description": "Retrieves a paginated list of candidates (and prospects). Supports filtering by created/updated timestamps, job, email, and specific candidate ids. Results are ordered by id; use the returned nextPage with the Page parameter to page through the full set (up to 500 per page)."
+    },
+    {
+      "name": "Get Candidate",
+      "category": "Candidates",
+      "description": "Retrieves a single candidate by id, including their contact details, tags, custom fields, attachments, and a summary of their applications."
+    },
+    {
+      "name": "Create Candidate",
+      "category": "Candidates",
+      "description": "Creates a new candidate. Provide either the quick fields (First/Last Name, Email, Phone, Company, Title, Job) or the advanced array parameters for full control. Supplying a Job ID (or an Applications array) creates the candidate together with an application to that job. This is a write operation and requires an On-Behalf-Of Greenhouse user."
+    },
+    {
+      "name": "Update Candidate",
+      "category": "Candidates",
+      "description": "Updates a candidate's fields. This is a partial update — only the fields you supply are changed, and Greenhouse merges array fields (such as email addresses and phone numbers) rather than replacing the whole candidate. This is a write operation and requires an On-Behalf-Of Greenhouse user."
+    },
+    {
+      "name": "Delete Candidate",
+      "category": "Candidates",
+      "description": "Permanently deletes a candidate and all of their applications. This cannot be undone. This is a write operation and requires an On-Behalf-Of Greenhouse user."
+    },
+    {
+      "name": "Add Note to Candidate",
+      "category": "Candidates",
+      "description": "Adds a note to a candidate's activity feed with the chosen visibility. This is a write operation and requires an On-Behalf-Of Greenhouse user; the note's author defaults to that user unless a User ID is supplied."
+    },
+    {
+      "name": "Add Attachment to Candidate",
+      "category": "Candidates",
+      "description": "Uploads a file attachment (resume, cover letter, offer letter, etc.) to a candidate. Select a file from FlowRunner file storage; its bytes are base64-encoded and sent to Greenhouse. This is a write operation and requires an On-Behalf-Of Greenhouse user."
+    },
+    {
+      "name": "List Candidate Applications",
+      "category": "Candidates",
+      "description": "Retrieves all applications belonging to a specific candidate, including each application's status, current stage, job, and source."
+    },
+    {
+      "name": "List Applications",
+      "category": "Applications",
+      "description": "Retrieves a paginated list of applications across the organization. Filter by job, status, and creation time. Each application includes its candidate, job, current stage, status, and source."
+    },
+    {
+      "name": "Get Application",
+      "category": "Applications",
+      "description": "Retrieves a single application by id, including the candidate, job, current stage, status, source, and answers to job-post questions."
+    },
+    {
+      "name": "Move Application Stage",
+      "category": "Applications",
+      "description": "Moves an application from one interview stage to another. Provide the current (from) stage and the target (to) stage ids for the application's job. This is a write operation and requires an On-Behalf-Of Greenhouse user."
+    },
+    {
+      "name": "Advance Application",
+      "category": "Applications",
+      "description": "Advances an application to the next interview stage in its job's pipeline. This is a write operation and requires an On-Behalf-Of Greenhouse user."
+    },
+    {
+      "name": "Reject Application",
+      "category": "Applications",
+      "description": "Rejects an application with the given rejection reason and optional notes. Optionally sends a rejection email. This is a write operation and requires an On-Behalf-Of Greenhouse user."
+    },
+    {
+      "name": "Hire Application",
+      "category": "Applications",
+      "description": "Marks an application as hired, optionally filling a specific job opening and setting a start date. This is a write operation and requires an On-Behalf-Of Greenhouse user."
+    },
+    {
+      "name": "Update Application",
+      "category": "Applications",
+      "description": "Updates an application's source and/or referrer. This is a write operation and requires an On-Behalf-Of Greenhouse user."
+    },
+    {
+      "name": "List Application Scorecards",
+      "category": "Scorecards & Interviews",
+      "description": "Retrieves all completed scorecards for an application, including interviewer feedback, ratings, and attribute scores."
+    },
+    {
+      "name": "List Scheduled Interviews for Application",
+      "category": "Scorecards & Interviews",
+      "description": "Retrieves all scheduled interviews for an application, including start/end times, interviewers, location, and video conferencing details."
+    },
+    {
+      "name": "List Application Offers",
+      "category": "Offers",
+      "description": "Retrieves all offers associated with an application, including status, salary/compensation details, and start date."
+    },
+    {
+      "name": "Get Current Offer for Application",
+      "category": "Offers",
+      "description": "Retrieves the current (most recent active) offer for an application, including its status, compensation, and start date."
+    },
+    {
+      "name": "List Jobs",
+      "category": "Jobs",
+      "description": "Retrieves a paginated list of jobs. Filter by status, requisition id, and creation time. Each job includes its name, status, departments, offices, and hiring team."
+    },
+    {
+      "name": "Get Job",
+      "category": "Jobs",
+      "description": "Retrieves a single job by id, including its name, status, openings, departments, offices, hiring team, and custom fields."
+    },
+    {
+      "name": "Get Job Stages",
+      "category": "Jobs",
+      "description": "Retrieves the interview stages configured for a job, in pipeline order. Use these stage ids with Move Application Stage."
+    },
+    {
+      "name": "List Job Openings",
+      "category": "Jobs",
+      "description": "Retrieves the openings for a job, optionally filtered by status. Each opening represents a distinct headcount slot that a hire can fill."
+    },
+    {
+      "name": "Create Job Opening",
+      "category": "Jobs",
+      "description": "Adds one or more openings to a job. Each opening may specify an opening_id (your external reference) and an employment status. This is a write operation and requires an On-Behalf-Of Greenhouse user."
+    },
+    {
+      "name": "List Job Posts",
+      "category": "Job Posts",
+      "description": "Retrieves a paginated list of job posts (public and internal postings). Filter to only active and/or live posts. Each post includes its title, content, location, and the job it belongs to."
+    },
+    {
+      "name": "Get Job Posts for Job",
+      "category": "Job Posts",
+      "description": "Retrieves all job posts associated with a specific job, including the internal and external postings and their content."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Retrieves a paginated list of Greenhouse users. Filter by email to find a specific user. Use a user's id for the On-Behalf-Of User ID config item and write-action override."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single Greenhouse user by id, including their name, email addresses, role, and enabled/disabled status."
+    },
+    {
+      "name": "List Sources",
+      "category": "Reference",
+      "description": "Retrieves all candidate sources configured in the organization (e.g. LinkedIn, Referral, Job Board). Use a source id with Create Candidate applications or Update Application."
+    },
+    {
+      "name": "List Rejection Reasons",
+      "category": "Reference",
+      "description": "Retrieves all rejection reasons configured in the organization. Use a rejection reason id with Reject Application."
+    },
+    {
+      "name": "List Departments",
+      "category": "Reference",
+      "description": "Retrieves all departments configured in the organization, including their hierarchy (parent/child departments)."
+    },
+    {
+      "name": "List Offices",
+      "category": "Reference",
+      "description": "Retrieves all offices (locations) configured in the organization, including their hierarchy."
+    },
+    {
+      "name": "List Custom Fields",
+      "category": "Reference",
+      "description": "Retrieves the custom fields defined for a given field type (candidate, application, job, offer, etc.), including each field's name, type, and any select options."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Syncing candidates and prospects from sourcing tools into Greenhouse and attaching resumes to their profiles",
+    "Automating pipeline progression by moving, advancing, rejecting, or hiring applications from a workflow",
+    "Logging notes and activity to a candidate's feed when an external event occurs",
+    "Reporting on jobs, openings, scorecards, interviews, and offers to a spreadsheet or dashboard",
+    "Notifying recruiters or hiring managers when an application reaches a specific stage or an offer is created"
+  ],
+  "agentIdeas": [
+    "After a candidate reaches the final stage, use **Greenhouse** \"Get Current Offer for Application\" and **Gmail** \"Send Message\" to email the hiring manager the offer's compensation and start date for sign-off.",
+    "When a **Greenhouse** \"List Scheduled Interviews for Application\" call returns upcoming interviews, use **Google Calendar** \"Create Event\" to place each interview on the interviewer's calendar with the correct times.",
+    "When an application is moved with **Greenhouse** \"Advance Application\", post to **Slack** \"Send Message To Channel\" so the recruiting channel sees the candidate's new stage."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/greenhouse/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/greenhouse",
+    "readme": "services/greenhouse/README.md",
+    "index": "services/greenhouse/src/index.js"
+  }
+}

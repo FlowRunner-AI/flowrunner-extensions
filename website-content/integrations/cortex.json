@@ -1,0 +1,100 @@
+{
+  "slug": "cortex",
+  "name": "Cortex",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Cortex](https://github.com/TheHive-Project/Cortex), the observable analysis and active-response engine from the TheHive Project. Cortex runs **analyzers** to enrich observables (IPs, domains, URLs, hashes, emails, files) against threat-intelligence sources and **responders** to take active actions (notify, block, ticket). This service drives the Cortex REST API so FlowRunner flows can start analyzer and responder jobs and collect their reports. Authentication uses a Cortex API key sent as a Bearer token.",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Analyzers",
+    "Run Analysis",
+    "Responders"
+  ],
+  "actions": [
+    {
+      "name": "List Analyzers",
+      "category": "Analyzers",
+      "description": "Lists all analyzers enabled in your Cortex organization. Analyzers are workers that investigate a single observable (IP, domain, hash, URL, email, file, etc.) against a threat-intelligence or enrichment source and produce a report. Each entry includes the analyzer id (used to run it), name, version, description and the observable dataTypes it accepts. Use this to discover which analyzers are available before running an analysis."
+    },
+    {
+      "name": "Get Analyzer",
+      "category": "Analyzers",
+      "description": "Retrieves the full configuration of a single enabled analyzer by its id. Returns the analyzer definition, version, description, accepted observable dataTypes and its runtime configuration. Use List Analyzers or the Get Analyzers Dictionary to obtain a valid analyzer id."
+    },
+    {
+      "name": "Get Analyzers by Type",
+      "category": "Analyzers",
+      "description": "Lists the enabled analyzers that can process a specific observable dataType (for example every analyzer able to enrich an IP address or a file hash). Choose the observable type and Cortex returns only the matching analyzers with their ids and descriptions. Useful for building automated enrichment where the observable type is known but the analyzer is chosen dynamically."
+    },
+    {
+      "name": "Run Analyzer",
+      "category": "Run Analysis",
+      "description": "Runs an analyzer against a value-based observable (IP, domain, FQDN, URL, hash, email address or arbitrary string) and returns the created job immediately. The job runs asynchronously — poll it with Get Job, fetch results with Get Job Report, or block until completion with Wait for Job Report. TLP and PAP accept friendly labels that map to Cortex numeric codes (WHITE=0, GREEN=1, AMBER=2, RED=3). Analyzer-specific settings can be supplied via Parameters. Note: file observables require multipart upload and are not supported here; use value-based observables."
+    },
+    {
+      "name": "Get Job",
+      "category": "Run Analysis",
+      "description": "Retrieves the current state of an analysis job by its id, including its status (Waiting, InProgress, Success or Failure) and metadata such as the analyzer used, observable, timestamps and organization. This returns job status only — use Get Job Report to obtain the analysis results."
+    },
+    {
+      "name": "Get Job Report",
+      "category": "Run Analysis",
+      "description": "Retrieves the full report for an analysis job. If the job has finished, the response includes the job metadata plus a report object containing the analyzer's structured \"full\" output, a \"summary\" with taxonomies (level, namespace, predicate, value) and any generated artifacts (observables extracted from the analysis). If the job is still running, the report reflects its in-progress status. Use Wait for Job Report if you want to block until the report is ready."
+    },
+    {
+      "name": "Wait for Job Report",
+      "category": "Run Analysis",
+      "description": "Blocks until an analysis job completes (or the timeout elapses) and returns its report in a single call. This is the convenient way to run a synchronous enrichment flow: run an analyzer, then wait for its report. The wait timeout is capped at one minute per request; if the analyzer is still running when the timeout is reached, the job's current (in-progress) state is returned, so long-running analyzers may need a follow-up Get Job Report call."
+    },
+    {
+      "name": "List Jobs",
+      "category": "Run Analysis",
+      "description": "Lists analysis and responder jobs run in your Cortex organization, most recent first. Each entry includes the job id, status, analyzer/responder used, observable and timestamps. Use this to review recent analysis history or to locate a job id."
+    },
+    {
+      "name": "Delete Job",
+      "category": "Run Analysis",
+      "description": "Deletes an analysis job and its report from Cortex by id. This permanently removes the job record; the operation cannot be undone. Returns no content on success."
+    },
+    {
+      "name": "List Responders",
+      "category": "Responders",
+      "description": "Lists all responders enabled in your Cortex organization. Responders are workers that take an active action in response to an observable or entity (for example blocking an IP, sending a notification, or creating a ticket) rather than just enriching it. Each entry includes the responder id, name, version, description and accepted dataTypes. Use this to discover responders before running one."
+    },
+    {
+      "name": "Run Responder",
+      "category": "Responders",
+      "description": "Runs a responder against a value-based observable and returns the created responder job immediately. The job runs asynchronously — track it with Get Responder Job. TLP accepts a friendly label that maps to a Cortex numeric code (WHITE=0, GREEN=1, AMBER=2, RED=3). Use this to trigger an active response such as sending a notification or blocking an indicator."
+    },
+    {
+      "name": "Get Responder Job",
+      "category": "Responders",
+      "description": "Retrieves the current state of a responder job by its id, including its status (Waiting, InProgress, Success or Failure) and the action's output. Use this to confirm whether a responder action completed successfully."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically enrich a suspicious IP, domain, hash, or URL with one or more Cortex analyzers and act on the verdict.",
+    "Run a synchronous enrichment (start an analyzer, then block until its report is ready) inside a single automation step.",
+    "Discover which analyzers can process a given observable type and pick one dynamically.",
+    "Trigger active responders (block an indicator, send a notification, open a ticket) in response to an event.",
+    "Review recent analysis history and pull structured reports, taxonomies, and extracted artifacts for downstream flows."
+  ],
+  "agentIdeas": [
+    "When investigating a suspicious observable, use **Cortex** \"Run Analyzer\" then \"Wait for Job Report\" to enrich it, and record the verdict on the incident with **TheHive** \"Create Observable\" or \"Update Case\".",
+    "After a **TheHive** \"Create Alert\" and \"List Alerts\" surface a new alert, use **Cortex** \"Get Analyzers by Type\" and \"Run Analyzer\" to auto-enrich its observables before **TheHive** \"Promote Alert to Case\".",
+    "When a **Cortex** analyzer report flags a malicious indicator, use **Cortex** \"Run Responder\" to block it and **TheHive** \"Create Alert\" to open a tracked alert for the SOC team."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/cortex/public/icon.png",
+  "sourcePaths": {
+    "service": "services/cortex",
+    "readme": "services/cortex/README.md",
+    "index": "services/cortex/src/index.js"
+  }
+}

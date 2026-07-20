@@ -1,0 +1,126 @@
+{
+  "slug": "salesmate",
+  "name": "Salesmate",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner extension for the [Salesmate](https://www.salesmate.io/) CRM. Manage contacts, companies, deals, and activities, with dictionaries for users, pipelines, and pipeline stages. Salesmate is workspace-scoped: the API is called on your own subdomain (`{linkname}.salesmate.io`) using an access token.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Contacts",
+    "Companies",
+    "Deals",
+    "Activities"
+  ],
+  "actions": [
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact in Salesmate. Provide at least a name or email. Owner and other users are referenced by numeric user id (use Get Users to look them up). Returns the created contact record including its generated id."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by its numeric id, including standard and custom fields. Returns an error if no contact matches the id."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists and searches contacts using Salesmate's paged query endpoint. Pass an optional free-text query, choose which fields to return, sort, and page through results. Returns the matching contacts and total row count."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact identified by its numeric id. Only the fields you provide are changed. Returns the updated contact record."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact by its numeric id. This action cannot be undone."
+    },
+    {
+      "name": "Create Company",
+      "category": "Companies",
+      "description": "Creates a new company in Salesmate. Provide at least a name. Owner is referenced by numeric user id. Returns the created company record including its generated id."
+    },
+    {
+      "name": "Get Company",
+      "category": "Companies",
+      "description": "Retrieves a single company by its numeric id, including standard and custom fields. Returns an error if no company matches the id."
+    },
+    {
+      "name": "List Companies",
+      "category": "Companies",
+      "description": "Lists and searches companies using Salesmate's paged query endpoint. Pass an optional free-text query, choose which fields to return, sort, and page through results. Returns the matching companies and total row count."
+    },
+    {
+      "name": "Update Company",
+      "category": "Companies",
+      "description": "Updates an existing company identified by its numeric id. Only the fields you provide are changed. Returns the updated company record."
+    },
+    {
+      "name": "Delete Company",
+      "category": "Companies",
+      "description": "Permanently deletes a company by its numeric id. This action cannot be undone."
+    },
+    {
+      "name": "Create Deal",
+      "category": "Deals",
+      "description": "Creates a new deal in Salesmate. Provide a title and typically a pipeline and stage (use Get Pipelines and Get Stages to look them up). Primary contact/company and owner are referenced by numeric id. Returns the created deal including its generated id."
+    },
+    {
+      "name": "Get Deal",
+      "category": "Deals",
+      "description": "Retrieves a single deal by its numeric id, including standard and custom fields. Returns an error if no deal matches the id."
+    },
+    {
+      "name": "List Deals",
+      "category": "Deals",
+      "description": "Lists and searches deals using Salesmate's paged query endpoint. Pass an optional free-text query, choose which fields to return, sort, and page through results. Returns the matching deals and total row count."
+    },
+    {
+      "name": "Update Deal",
+      "category": "Deals",
+      "description": "Updates an existing deal identified by its numeric id. Only the fields you provide are changed. Use the write status to mark a deal open, won, or lost. Returns the updated deal record."
+    },
+    {
+      "name": "Delete Deal",
+      "category": "Deals",
+      "description": "Permanently deletes a deal by its numeric id. This action cannot be undone."
+    },
+    {
+      "name": "Create Activity",
+      "category": "Activities",
+      "description": "Creates a new activity (task, call, meeting, or email) in Salesmate. Provide a title and type; optionally a due date and owner. Returns the created activity including its generated id."
+    },
+    {
+      "name": "List Activities",
+      "category": "Activities",
+      "description": "Lists and searches activities using Salesmate's paged query endpoint. Pass an optional free-text query, choose which fields to return, sort, and page through results. Returns the matching activities and total row count."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync leads captured elsewhere into Salesmate as contacts, companies, and deals.",
+    "Keep CRM records current by updating contacts, companies, or deals from downstream systems.",
+    "Advance deals through pipeline stages and mark them won or lost as workflows progress.",
+    "Log follow-up tasks, calls, meetings, and emails as Salesmate activities.",
+    "Search and page through CRM records to feed reporting or enrichment steps."
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires from a prospect, use **Salesmate** \"Create Contact\" to add them to the CRM and \"Create Deal\" to open a new opportunity.",
+    "After **Salesmate** \"Update Deal\" marks a deal won, use **Slack** \"Send Message To Channel\" to notify the sales team with the deal title and value.",
+    "Use **Google Sheets** \"Get Rows\" to read a list of imported leads, then call **Salesmate** \"Create Company\" and \"Create Contact\" for each row to sync them into the CRM."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/salesmate/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/salesmate",
+    "readme": "services/salesmate/README.md",
+    "index": "services/salesmate/src/index.js"
+  }
+}

@@ -1,0 +1,291 @@
+{
+  "slug": "amplitude",
+  "name": "Amplitude",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrates [Amplitude](https://amplitude.com) product analytics with FlowRunner: ingest events and identify users, run dashboard analytics (segmentation, funnels, retention, revenue LTV), manage behavioral cohorts with asynchronous member downloads, maintain tracking-plan taxonomy, look up user profiles and activity, manage chart annotations, schedule GDPR/CCPA privacy deletions and export raw event data to file storage. Supports US and EU data-residency regions.",
+  "actionCount": 49,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Event Ingestion",
+    "Analytics",
+    "Users",
+    "Chart Annotations",
+    "Cohorts",
+    "Taxonomy",
+    "Privacy",
+    "Export"
+  ],
+  "actions": [
+    {
+      "name": "Track Event",
+      "category": "Event Ingestion",
+      "description": "Sends a single event to Amplitude through the HTTP V2 API. Requires a User ID or Device ID (minimum 5 characters by default). Supports event and user properties, group memberships, revenue fields and an insert ID for 7-day deduplication. Authenticated with the project API key in the request body."
+    },
+    {
+      "name": "Track Multiple Events",
+      "category": "Event Ingestion",
+      "description": "Sends up to 2000 events in one request through the HTTP V2 API. Each event needs an event_type plus a user_id or device_id, and may include properties, groups, revenue fields and an insert_id for deduplication. Keep the payload under 1 MB. Authenticated with the project API key in the request body."
+    },
+    {
+      "name": "Batch Upload Events",
+      "category": "Event Ingestion",
+      "description": "Uploads events through the Batch Event Upload API, designed for high-volume and historical backfills. Accepts up to 2000 events and 20 MB per request with higher per-device throughput than the HTTP V2 endpoint. Events use the same shape as Track Multiple Events. Authenticated with the project API key in the request body."
+    },
+    {
+      "name": "Identify User",
+      "category": "Event Ingestion",
+      "description": "Updates a user's properties in Amplitude without sending an event, using the Identify API. Supports set, set-once, numeric add, list append/prepend and unset operations, plus top-level identification fields such as platform, country or language. Requires a User ID or Device ID. Authenticated with the project API key in the form body."
+    },
+    {
+      "name": "Group Identify",
+      "category": "Event Ingestion",
+      "description": "Sets or updates properties of a group (e.g. a company or account) through the Group Identify API. Supports set, set-once, numeric add, list append/prepend and unset operations on group properties. Changes apply to future events only. Authenticated with the project API key in the form body."
+    },
+    {
+      "name": "List Events",
+      "category": "Analytics",
+      "description": "Retrieves all event types visible in your Amplitude project with totals and unique user counts for the current week, including whether each event is marked non-active or deleted. Useful for discovering event names to use in segmentation, funnel and retention queries."
+    },
+    {
+      "name": "Get Event Segmentation",
+      "category": "Analytics",
+      "description": "Runs an Event Segmentation query and returns metrics for one or two events over a date range, segmented and grouped by properties. Supports uniques, totals, active percentage, averages, histograms, property sums/averages and custom formulas, with real-time to monthly intervals."
+    },
+    {
+      "name": "Get Funnel Analysis",
+      "category": "Analytics",
+      "description": "Runs a Funnel Analysis query for an ordered, unordered or sequential series of events over a date range. Returns step-by-step and cumulative conversion rates, raw counts, and average/median transition times, optionally segmented and grouped by a property."
+    },
+    {
+      "name": "Get Retention Analysis",
+      "category": "Analytics",
+      "description": "Runs a Retention Analysis query measuring how many users return and perform an event after a starting event. Supports n-day, rolling and bracket retention modes with daily, weekly or monthly intervals, optional segmentation and grouping."
+    },
+    {
+      "name": "Get Realtime Active Users",
+      "category": "Analytics",
+      "description": "Retrieves realtime active user counts with 5-minute granularity for today and yesterday, allowing side-by-side comparison of current activity against the previous day."
+    },
+    {
+      "name": "Get Average Session Length",
+      "category": "Analytics",
+      "description": "Retrieves the average session length in seconds for each day in the specified date range."
+    },
+    {
+      "name": "Get Average Sessions Per User",
+      "category": "Analytics",
+      "description": "Retrieves the average number of sessions per user for each day in the specified date range."
+    },
+    {
+      "name": "Get Session Length Distribution",
+      "category": "Analytics",
+      "description": "Retrieves the distribution of session lengths within the specified date range, bucketed into configurable histogram bins."
+    },
+    {
+      "name": "Get Revenue LTV",
+      "category": "Analytics",
+      "description": "Runs a Revenue Lifetime Value query returning ARPU, ARPPU, total revenue or paying user counts for users grouped by their start date, optionally segmented and grouped by a property."
+    },
+    {
+      "name": "Get User Activity",
+      "category": "Users",
+      "description": "Retrieves a user's summary (devices, location, usage totals) and paginated event stream for a specific Amplitude ID. Use Search Users first to resolve a User ID or Device ID to an Amplitude ID."
+    },
+    {
+      "name": "Search Users",
+      "category": "Users",
+      "description": "Searches for users by Amplitude ID, User ID, Device ID or User ID prefix. Returns matching users with their Amplitude IDs, which are required by Get User Activity and the deletion operations."
+    },
+    {
+      "name": "Get User Profile",
+      "category": "Users",
+      "description": "Retrieves a user's profile from the User Profile API, including Amplitude user properties, cohort membership IDs and recommendations. Requires a User ID or Device ID. Note: this API is served from profile-api.amplitude.com and is not available for EU-region projects."
+    },
+    {
+      "name": "List Chart Annotations",
+      "category": "Chart Annotations",
+      "description": "Retrieves all chart annotations in the project, including their labels, timestamps, categories and optional chart associations."
+    },
+    {
+      "name": "Get Chart Annotation",
+      "category": "Chart Annotations",
+      "description": "Retrieves a single chart annotation by its ID."
+    },
+    {
+      "name": "Create Chart Annotation",
+      "category": "Chart Annotations",
+      "description": "Creates a chart annotation marking a moment in time (e.g. a release or campaign launch) on Amplitude charts. Annotations can apply globally or to a specific chart and may span a time range."
+    },
+    {
+      "name": "Update Chart Annotation",
+      "category": "Chart Annotations",
+      "description": "Updates an existing chart annotation's label, timestamps, category, chart association or details."
+    },
+    {
+      "name": "Delete Chart Annotation",
+      "category": "Chart Annotations",
+      "description": "Permanently deletes a chart annotation by its ID."
+    },
+    {
+      "name": "List Cohorts",
+      "category": "Cohorts",
+      "description": "Retrieves all behavioral cohorts in the project with their IDs, names, sizes, owners and definitions. Optionally includes sync metadata for cohorts synced to destinations."
+    },
+    {
+      "name": "Request Cohort Download",
+      "category": "Cohorts",
+      "description": "Starts an asynchronous export of a cohort's members. Returns a request ID to poll with Get Cohort Download Status; once the job completes, fetch the member list with Download Cohort. Download requests count against a monthly quota (500 on Growth/Enterprise plans)."
+    },
+    {
+      "name": "Get Cohort Download Status",
+      "category": "Cohorts",
+      "description": "Checks the status of an asynchronous cohort download job started with Request Cohort Download. Returns JOB INPROGRESS while running and JOB COMPLETED when the file is ready to download."
+    },
+    {
+      "name": "Download Cohort",
+      "category": "Cohorts",
+      "description": "Downloads the member list of a completed cohort export job. Call this after Get Cohort Download Status reports JOB COMPLETED. Large cohorts are served via a redirect and can contain up to 2 million users; prefer small cohorts when returning members directly into a flow."
+    },
+    {
+      "name": "Get Cohort Download Usage",
+      "category": "Cohorts",
+      "description": "Retrieves the current month's cohort download usage and limit. The quota (500 requests per month on Growth/Enterprise plans) resets on the first of each month UTC."
+    },
+    {
+      "name": "Upload Cohort",
+      "category": "Cohorts",
+      "description": "Creates a new static cohort (or replaces an existing one) from a list of user IDs or Amplitude IDs. Returns the number of matched users and a sample of invalid IDs. Maximum cohort size is 2 million users."
+    },
+    {
+      "name": "Update Cohort Membership",
+      "category": "Cohorts",
+      "description": "Incrementally adds or removes members of an existing cohort without re-uploading the full member list."
+    },
+    {
+      "name": "List Event Categories",
+      "category": "Taxonomy",
+      "description": "Retrieves all event categories defined in the project's tracking plan taxonomy."
+    },
+    {
+      "name": "Create Event Category",
+      "category": "Taxonomy",
+      "description": "Creates a new event category in the project's tracking plan taxonomy. Requires the Amplitude Govern (Taxonomy) add-on."
+    },
+    {
+      "name": "Update Event Category",
+      "category": "Taxonomy",
+      "description": "Renames an existing event category in the project's tracking plan taxonomy. Find category IDs with List Event Categories."
+    },
+    {
+      "name": "Delete Event Category",
+      "category": "Taxonomy",
+      "description": "Deletes an event category from the project's tracking plan taxonomy. Find category IDs with List Event Categories."
+    },
+    {
+      "name": "List Event Types",
+      "category": "Taxonomy",
+      "description": "Retrieves all event types in the project's tracking plan taxonomy with their category, description, visibility flags, tags and owner. Optionally includes deleted event types."
+    },
+    {
+      "name": "Create Event Type",
+      "category": "Taxonomy",
+      "description": "Creates a new event type in the project's tracking plan taxonomy with an optional category, description, tags and owner. Requires the Amplitude Govern (Taxonomy) add-on."
+    },
+    {
+      "name": "Update Event Type",
+      "category": "Taxonomy",
+      "description": "Updates an event type in the project's tracking plan taxonomy: rename it, change its category, description, display name, tags or owner."
+    },
+    {
+      "name": "Delete Event Type",
+      "category": "Taxonomy",
+      "description": "Deletes an event type from the project's tracking plan taxonomy. The event type stops appearing in the taxonomy but historical event data is not removed."
+    },
+    {
+      "name": "List Event Properties",
+      "category": "Taxonomy",
+      "description": "Retrieves event properties defined in the project's tracking plan taxonomy, optionally filtered to a single event type."
+    },
+    {
+      "name": "Create Event Property",
+      "category": "Taxonomy",
+      "description": "Creates an event property definition in the project's tracking plan taxonomy, including its data type, validation rules and whether it is required. Requires the Amplitude Govern (Taxonomy) add-on."
+    },
+    {
+      "name": "Update Event Property",
+      "category": "Taxonomy",
+      "description": "Updates an event property definition in the project's tracking plan taxonomy: rename it or change its description, data type, validation rules or required flag."
+    },
+    {
+      "name": "Delete Event Property",
+      "category": "Taxonomy",
+      "description": "Deletes an event property definition from the project's tracking plan taxonomy. Historical event data is not removed."
+    },
+    {
+      "name": "List User Properties",
+      "category": "Taxonomy",
+      "description": "Retrieves user properties defined in the project's tracking plan taxonomy, optionally including deleted ones."
+    },
+    {
+      "name": "Create User Property",
+      "category": "Taxonomy",
+      "description": "Creates a custom user property definition in the project's tracking plan taxonomy, including its data type and validation rules. Requires the Amplitude Govern (Taxonomy) add-on."
+    },
+    {
+      "name": "Update User Property",
+      "category": "Taxonomy",
+      "description": "Updates a custom user property definition in the project's tracking plan taxonomy: rename it or change its description, data type or validation rules. Prefix custom user properties with gp: when referencing them."
+    },
+    {
+      "name": "Delete User Property",
+      "category": "Taxonomy",
+      "description": "Deletes a custom user property definition from the project's tracking plan taxonomy. Historical data is not removed."
+    },
+    {
+      "name": "Create User Deletion Job",
+      "category": "Privacy",
+      "description": "Schedules a privacy deletion job that permanently removes all data for the specified users (GDPR/CCPA right to be forgotten). Jobs run within 30 days of the request; users can be removed from a job until 3 days before it executes. Accepts up to 100 users per request identified by User IDs and/or Amplitude IDs. Use with caution: executed deletions are irreversible."
+    },
+    {
+      "name": "List User Deletion Jobs",
+      "category": "Privacy",
+      "description": "Retrieves privacy deletion jobs scheduled to run in the specified date range, including each job's status and affected users. Check jobs regularly if you need to track deletion progress."
+    },
+    {
+      "name": "Remove User From Deletion Job",
+      "category": "Privacy",
+      "description": "Removes a user from a scheduled privacy deletion job, cancelling their deletion. Only possible until 3 days before the job's scheduled execution day."
+    },
+    {
+      "name": "Export Raw Events",
+      "category": "Export",
+      "description": "Exports the project's raw event data for the given hour range via the Export API and stores the resulting ZIP archive (containing gzipped JSON files, one event per line) in FlowRunner file storage. Returns the stored file's URL and size; the archive is not unpacked. Export size is limited to 4 GB per request - split larger ranges into multiple calls."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send server-side events and update user/group properties from automated workflows",
+    "Query product metrics (segmentation, funnels, retention, revenue LTV, active users) for reporting",
+    "Sync static cohorts from external lists and export cohort members asynchronously",
+    "Keep the tracking-plan taxonomy (event categories, types, properties, user properties) in sync",
+    "Look up user profiles/activity and mark releases or campaigns with chart annotations",
+    "Fulfil right-to-be-forgotten requests via scheduled deletion jobs and back up raw events to file storage"
+  ],
+  "agentIdeas": [
+    "Use **Segment** \"Track Event\" to capture activity across sources, then call Amplitude \"Track Event\" (or \"Batch Upload Events\") to backfill matching events into Amplitude for cross-tool analysis",
+    "Run Amplitude \"Get Funnel Analysis\" or \"Get Retention Analysis\" on a schedule and pipe the metrics into **Google Sheets** \"Add Row\" to maintain a running analytics dashboard",
+    "When a churn-risk cohort is identified, use Amplitude \"Upload Cohort\" to define it, then post the cohort size and definition to a channel with **Slack** \"Send Message To Channel\" to alert the growth team"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/amplitude/public/icon.png",
+  "sourcePaths": {
+    "service": "services/amplitude",
+    "readme": "services/amplitude/README.md",
+    "index": "services/amplitude/src/index.js"
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "slug": "one-simple-api",
+  "name": "One Simple API",
+  "marketingCategory": "Utilities & Personal",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [One Simple API](https://onesimpleapi.com) — a utility toolkit that bundles common web utilities (screenshots, PDFs, QR codes, currency conversion, email validation, domain/SSL expiry, URL tools, and metadata lookups) behind a single API. Authentication is a single API token sent as the `token` query parameter, added automatically on every request.",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Website",
+    "Utility",
+    "Information"
+  ],
+  "actions": [
+    {
+      "name": "Take Screenshot",
+      "category": "Website",
+      "description": "Captures a screenshot of a public web page and returns it. Control the viewport width and height, choose whether to capture the entire scrollable page (full page) or just the visible viewport, and select the output format (JSON returns a hosted image URL, Inline returns the raw image). Useful for archiving, previews, and monitoring visual changes."
+    },
+    {
+      "name": "Generate PDF From URL",
+      "category": "Website",
+      "description": "Renders a public web page and returns it as a PDF document. Choose the output format (JSON returns a hosted PDF URL, Inline returns the raw PDF). Useful for generating printable snapshots, invoices, or reports from live pages."
+    },
+    {
+      "name": "Generate QR Code",
+      "category": "Utility",
+      "description": "Generates a QR code image encoding the provided value (a URL, text, phone number, etc.). Control the image size in pixels and choose the output format (JSON returns a hosted image URL, Inline returns the raw image)."
+    },
+    {
+      "name": "Convert Currency",
+      "category": "Information",
+      "description": "Converts a numeric amount from one currency to another using live exchange rates. Returns the converted amount and the exchange rate applied. Use Get Currency List to discover valid currency codes."
+    },
+    {
+      "name": "Get Currency List",
+      "category": "Information",
+      "description": "Returns the list of currencies supported by the exchange rate service, including their ISO 4217 codes and names. Use these codes with Convert Currency."
+    },
+    {
+      "name": "Validate Email",
+      "category": "Utility",
+      "description": "Validates an email address, checking its syntax, domain, and mailbox deliverability signals. Returns validity indicators such as whether the address is well formed, the domain has valid MX records, and whether it is a disposable or free provider."
+    },
+    {
+      "name": "Check Domain Expiry",
+      "category": "Website",
+      "description": "Checks a website's domain registration expiry and SSL certificate expiry dates from its URL. Returns the domain expiry date, the SSL certificate expiry date, and related registration details. Useful for monitoring renewals and avoiding downtime."
+    },
+    {
+      "name": "Expand URL",
+      "category": "Utility",
+      "description": "Expands a shortened URL (e.g. bit.ly, t.co) to its final destination by following redirects. Returns the resolved long URL."
+    },
+    {
+      "name": "Shorten URL",
+      "category": "Utility",
+      "description": "Shortens a long URL into a compact short link. Returns the generated short URL. Note: this endpoint may not be available on all One Simple API plans."
+    },
+    {
+      "name": "Get Image Info",
+      "category": "Information",
+      "description": "Retrieves metadata about an image from its URL, such as dimensions (width and height), format/MIME type, and file size. Useful for validating and inspecting remote images before processing them."
+    },
+    {
+      "name": "Get Video Info",
+      "category": "Information",
+      "description": "Retrieves metadata about a video from its URL, such as title, duration, dimensions, and thumbnails. Note: this endpoint may not be available on all One Simple API plans."
+    },
+    {
+      "name": "Check Website Status",
+      "category": "Website",
+      "description": "Checks whether a website is currently up or down and reports the HTTP response time. Returns the status (up/down), HTTP status code, and response time in milliseconds. Useful for uptime monitoring."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Capture screenshots or PDF snapshots of live web pages for archiving, previews, or reports.",
+    "Generate QR codes on the fly from URLs, text, or phone numbers.",
+    "Convert amounts between currencies at live exchange rates inside a workflow.",
+    "Validate email addresses (syntax, MX, disposable/free) before adding them to a list.",
+    "Monitor domain registration and SSL certificate expiry to avoid downtime.",
+    "Expand or shorten URLs and inspect image/video metadata before further processing."
+  ],
+  "agentIdeas": [
+    "Use **One Simple API** \"Take Screenshot\" to capture a hosted image of a landing page, then use **Slack** \"Send Message To Channel\" to post the screenshot URL to a monitoring channel.",
+    "When **Airtable** \"Get Records\" returns rows with a website URL, call **One Simple API** \"Check Domain Expiry\" for each and write renewal dates back so a team can track expiring domains and SSL certificates.",
+    "Use **One Simple API** \"Validate Email\" to screen an address before **Gmail** \"Send Message\" delivers to it, skipping known-invalid or disposable recipients."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/one-simple-api/public/icon.png",
+  "sourcePaths": {
+    "service": "services/one-simple-api",
+    "readme": "services/one-simple-api/README.md",
+    "index": "services/one-simple-api/src/index.js"
+  }
+}

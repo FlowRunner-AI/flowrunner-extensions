@@ -1,0 +1,152 @@
+{
+  "slug": "aws-cognito",
+  "name": "AWS Cognito",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Zero-dependency integration with Amazon Cognito User Pools using native AWS Signature V4 signing (Node crypto). Administer users, groups, user pools, and app clients from your flows. This service uses the Cognito **Identity Provider** (User Pools) admin API, so all operations authenticate with IAM credentials — direct API Key or an assumed IAM Role — rather than with an end-user session.",
+  "actionCount": 22,
+  "triggerCount": 0,
+  "operationCategories": [
+    "User Management",
+    "Group Management",
+    "User Pools",
+    "App Clients"
+  ],
+  "actions": [
+    {
+      "name": "Admin Create User",
+      "category": "User Management",
+      "description": "Creates a new user in the specified user pool as an administrator. Supply user attributes as a plain JSON object (e.g. {\"email\":\"a@b.com\",\"phone_number\":\"+15555550100\"}) which is converted to Cognito's attribute format. Optionally set a temporary password, suppress or resend the invitation message, and choose delivery mediums. Cognito sends an invitation with a temporary password unless suppressed."
+    },
+    {
+      "name": "Admin Get User",
+      "category": "User Management",
+      "description": "Retrieves a single user from a user pool by username, as an administrator. Returns the user's attributes as a plain JSON object along with status, enabled flag, and MFA settings."
+    },
+    {
+      "name": "List Users",
+      "category": "User Management",
+      "description": "Lists and searches users in a user pool. Optionally filter by an attribute (e.g. email = \"a@b.com\" or \"name ^= \\\"Ad\\\"\"), limit the page size, restrict which attributes are returned, and paginate with a pagination token. Returns users with attributes as plain JSON."
+    },
+    {
+      "name": "Admin Update User Attributes",
+      "category": "User Management",
+      "description": "Updates one or more attributes of a user as an administrator. Supply the attributes to set as a plain JSON object (e.g. {\"email\":\"new@b.com\",\"email_verified\":\"true\"}). Attributes not included are left unchanged."
+    },
+    {
+      "name": "Admin Delete User",
+      "category": "User Management",
+      "description": "Permanently deletes a user from a user pool as an administrator. This action cannot be undone."
+    },
+    {
+      "name": "Admin Enable User",
+      "category": "User Management",
+      "description": "Enables a previously disabled user as an administrator, allowing them to sign in again."
+    },
+    {
+      "name": "Admin Disable User",
+      "category": "User Management",
+      "description": "Disables a user as an administrator, preventing them from signing in until re-enabled. Existing tokens remain valid until they expire."
+    },
+    {
+      "name": "Admin Reset User Password",
+      "category": "User Management",
+      "description": "Resets a user's password as an administrator and sets their status to RESET_REQUIRED. Cognito sends the user a message with a code to set a new password on their next sign-in."
+    },
+    {
+      "name": "Admin Set User Password",
+      "category": "User Management",
+      "description": "Sets a user's password directly as an administrator. When Permanent is true the password is final and the user's status becomes CONFIRMED; when false it is temporary and the user must change it on next sign-in (status FORCE_CHANGE_PASSWORD)."
+    },
+    {
+      "name": "Admin Confirm Sign Up",
+      "category": "User Management",
+      "description": "Confirms a user's sign-up as an administrator, without requiring the confirmation code. Moves a user from UNCONFIRMED to CONFIRMED status so they can sign in."
+    },
+    {
+      "name": "Create Group",
+      "category": "Group Management",
+      "description": "Creates a new group in a user pool. Groups can carry a description, a precedence (lower numbers take priority when a user belongs to multiple groups), and an optional IAM role ARN for identity-pool role mapping."
+    },
+    {
+      "name": "List Groups",
+      "category": "Group Management",
+      "description": "Lists the groups in a user pool. Supports page-size limiting and pagination via a next token."
+    },
+    {
+      "name": "Get Group",
+      "category": "Group Management",
+      "description": "Retrieves the details of a single group in a user pool by name, including its description, precedence, and role ARN."
+    },
+    {
+      "name": "Delete Group",
+      "category": "Group Management",
+      "description": "Deletes a group from a user pool. Users are not deleted, but they lose membership of the group."
+    },
+    {
+      "name": "Admin Add User To Group",
+      "category": "Group Management",
+      "description": "Adds a user to a group as an administrator. If the user is already a member the call succeeds without change."
+    },
+    {
+      "name": "Admin Remove User From Group",
+      "category": "Group Management",
+      "description": "Removes a user from a group as an administrator."
+    },
+    {
+      "name": "Admin List Groups For User",
+      "category": "Group Management",
+      "description": "Lists the groups that a user belongs to, as an administrator. Supports page-size limiting and pagination via a next token."
+    },
+    {
+      "name": "List User Pools",
+      "category": "User Pools",
+      "description": "Lists the user pools associated with the AWS account in the configured region. Supports page-size limiting and pagination via a next token."
+    },
+    {
+      "name": "Describe User Pool",
+      "category": "User Pools",
+      "description": "Returns the full configuration of a user pool, including its policies, schema, MFA configuration, email/SMS settings, and estimated number of users."
+    },
+    {
+      "name": "Create User Pool",
+      "category": "User Pools",
+      "description": "Creates a new Cognito user pool. Supply the pool name and, optionally, a password policy and any additional pool settings as a plain JSON object (e.g. AutoVerifiedAttributes, MfaConfiguration, Schema). Additional settings are merged into the request, letting you configure advanced options."
+    },
+    {
+      "name": "List User Pool Clients",
+      "category": "App Clients",
+      "description": "Lists the app clients configured for a user pool. Supports page-size limiting and pagination via a next token."
+    },
+    {
+      "name": "Describe User Pool Client",
+      "category": "App Clients",
+      "description": "Returns the full configuration of a single app client in a user pool, including its allowed OAuth flows, callback URLs, token validity, and authentication flows."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Provisioning and de-provisioning users in a user pool (create, confirm, enable/disable, delete)",
+    "Managing passwords administratively (set a permanent or temporary password, trigger a reset)",
+    "Reading and updating user attributes as part of an automated onboarding or sync flow",
+    "Searching and paginating through a user pool's members with attribute filters",
+    "Managing groups and group membership for role-based access",
+    "Discovering user pools and app clients and inspecting their configuration"
+  ],
+  "agentIdeas": [
+    "When a new customer signs up, use **Stripe** \"Create Customer\" to set up billing and **AWS Cognito** \"Admin Create User\" to provision the account, then use **Gmail** \"Send Message\" to send a personalized welcome.",
+    "Use **AWS Cognito** \"List Users\" with a filter to find inactive or unconfirmed accounts, then use **AWS Cognito** \"Admin Disable User\" and **Slack** \"Send Message To Channel\" to report the cleanup.",
+    "On an offboarding trigger, use **AWS Cognito** \"Admin List Groups For User\" to record a user's roles, then \"Admin Remove User From Group\" and \"Admin Delete User\" to fully de-provision them."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/aws-cognito/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/aws-cognito",
+    "readme": "services/aws-cognito/README.md",
+    "index": "services/aws-cognito/src/index.js"
+  }
+}

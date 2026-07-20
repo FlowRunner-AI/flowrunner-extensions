@@ -1,0 +1,61 @@
+{
+  "slug": "mailer-send",
+  "name": "MailerSend",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Professional email delivery platform with comprehensive tracking, template support, and real-time webhook notifications for email automation workflows.",
+  "actionCount": 3,
+  "triggerCount": 10,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Send Email",
+      "category": null,
+      "description": "Sends an email to the specified recipient."
+    },
+    {
+      "name": "Send Email with CC/BCC",
+      "category": null,
+      "description": "Sends an email with support for multiple recipients, CC, and BCC addresses."
+    },
+    {
+      "name": "Send Email with Template",
+      "category": null,
+      "description": "Sends an email based on a pre-defined template, with optional personalization and tracking options."
+    }
+  ],
+  "triggers": [
+    "On Email Sent",
+    "On Email Delivered",
+    "On Email Soft Bounced",
+    "On Email Not Delivered",
+    "On Email Opened",
+    "On Email Opened First",
+    "On Link Clicked",
+    "On Link Clicked First",
+    "On Recipient Unsubscribed",
+    "On Spam Complaint"
+  ],
+  "idealUseCases": [
+    "Transactional email delivery with advanced tracking capabilities",
+    "Marketing email campaigns with template personalization",
+    "E-commerce order confirmations and shipping notifications",
+    "User onboarding and engagement email sequences",
+    "Real-time email event monitoring and analytics",
+    "Automated email responses based on recipient behavior",
+    "Multi-recipient communication with CC and BCC support",
+    "Email deliverability optimization and spam prevention"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/mailer-send/public/icon.png",
+  "sourcePaths": {
+    "service": "services/mailer-send",
+    "readme": "services/mailer-send/README.md",
+    "index": "services/mailer-send/src/index.js"
+  }
+}

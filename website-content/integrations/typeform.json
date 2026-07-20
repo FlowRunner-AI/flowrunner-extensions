@@ -1,0 +1,225 @@
+{
+  "slug": "typeform",
+  "name": "Typeform",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Comprehensive form building and data collection platform with advanced customization, translation capabilities, and detailed analytics integration.",
+  "actionCount": 36,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Account Management",
+    "Workspace Management",
+    "Form Management",
+    "Form Customization",
+    "Form Translation",
+    "Media Management",
+    "Theme Management",
+    "Response Management",
+    "Analytics"
+  ],
+  "actions": [
+    {
+      "name": "Get Current Account Info",
+      "category": "Account Management",
+      "description": "Retrieves the authenticated user's profile information from the Typeform API."
+    },
+    {
+      "name": "Get List Workspaces",
+      "category": "Workspace Management",
+      "description": "Retrieves a list of workspaces for a specific account from Typeform. This method allows filtering of workspaces by search string and supports pagination."
+    },
+    {
+      "name": "Create Empty Form",
+      "category": "Form Management",
+      "description": "Creates an empty form with default settings and properties."
+    },
+    {
+      "name": "Copy Existing Form",
+      "category": "Form Management",
+      "description": "Duplicates an existing form."
+    },
+    {
+      "name": "Update Question Options",
+      "category": "Form Management",
+      "description": "Updates the options for a dropdown, multiple choice, or ranking question in a Typeform."
+    },
+    {
+      "name": "Create Workspace",
+      "category": "Workspace Management",
+      "description": "Creates a new workspace in Typeform under the user's account with organization role - owner."
+    },
+    {
+      "name": "Delete Workspace",
+      "category": "Workspace Management",
+      "description": "Deletes a workspace in Typeform by its unique ID."
+    },
+    {
+      "name": "Get Workspace",
+      "category": "Workspace Management",
+      "description": "Retrieves details of a workspace in Typeform by its unique ID."
+    },
+    {
+      "name": "Update Workspace",
+      "category": "Workspace Management",
+      "description": "Updates a workspace by applying specified operations to its elements, such as renaming or modifying members."
+    },
+    {
+      "name": "Get List Forms",
+      "category": "Form Management",
+      "description": "Retrieves a list of JSON descriptions for all forms in the Typeform account. Supports filtering, sorting, and pagination."
+    },
+    {
+      "name": "Delete Form",
+      "category": "Form Management",
+      "description": "Deletes a specific form in Typeform along with all its responses."
+    },
+    {
+      "name": "Get Form",
+      "category": "Form Management",
+      "description": "Retrieves a form by its unique form ID, including any associated themes and images."
+    },
+    {
+      "name": "Update Form Patch",
+      "category": "Form Management",
+      "description": "Updates specific attributes of an existing form in Typeform. Supports partial updates using JSON Patch format."
+    },
+    {
+      "name": "Update Form Completely",
+      "category": "Form Management",
+      "description": "Updates an existing form in Typeform. This method overwrites the entire form, so all existing fields must be included in the request body. If fields are omitted, they will be deleted from the form. Make sure to include all necessary fields, including the field IDs."
+    },
+    {
+      "name": "Get Custom Form Messages",
+      "category": "Form Customization",
+      "description": "Retrieves the customizable messages for a form specified by Form ID, using the form's specified language. Messages can be formatted with bold (*bold*) and italic (_italic_) text. HTML tags are forbidden."
+    },
+    {
+      "name": "Update Custom Messages",
+      "category": "Form Customization",
+      "description": "Updates customizable messages for a form specified by Form ID. Messages can be formatted with bold (*bold*) and italic (_italic_) text. HTML tags are forbidden. All customizable fields you can find here: https://www.typeform.com/developers/create/reference/update-custom-messages/"
+    },
+    {
+      "name": "Get Form Translations Payload",
+      "category": "Form Translation",
+      "description": "Retrieves the form content in the main language, useful for using it as a base for translations in different languages."
+    },
+    {
+      "name": "Get Translation Statuses",
+      "category": "Form Translation",
+      "description": "Retrieves the translation statuses for each language for a specified form."
+    },
+    {
+      "name": "Delete Form Translation",
+      "category": "Form Translation",
+      "description": "Deletes the translation content for a specified form and language."
+    },
+    {
+      "name": "Get Form Translation",
+      "category": "Form Translation",
+      "description": "Retrieves the translation content for a specified form and language."
+    },
+    {
+      "name": "Update Form Translation",
+      "category": "Form Translation",
+      "description": "Updates the translation content for a specified form and language."
+    },
+    {
+      "name": "Auto-Translate Form",
+      "category": "Form Translation",
+      "description": "Requests an automatic translation for a specified form and language."
+    },
+    {
+      "name": "Get Images Collection",
+      "category": "Media Management",
+      "description": "Retrieves a list of JSON descriptions for all images in your Typeform account."
+    },
+    {
+      "name": "Create Image",
+      "category": "Media Management",
+      "description": "Adds an image to your Typeform account."
+    },
+    {
+      "name": "Delete Image",
+      "category": "Media Management",
+      "description": "Deletes an image from your Typeform account."
+    },
+    {
+      "name": "Get Image",
+      "category": "Media Management",
+      "description": "Retrieves the JSON description or the binary of the original image for the specified image_id."
+    },
+    {
+      "name": "Get Background by Size",
+      "category": "Media Management",
+      "description": "Retrieves a specific background image by its unique ID and desired size from Typeform's image library."
+    },
+    {
+      "name": "Get Choice Image By Size",
+      "category": "Media Management",
+      "description": "Retrieves a choice image by its unique ID and specified size from Typeform's image library."
+    },
+    {
+      "name": "Get Image By Size",
+      "category": "Media Management",
+      "description": "Get the JSON description or the binary of the requested image format."
+    },
+    {
+      "name": "Get List Themes",
+      "category": "Theme Management",
+      "description": "Retrieves a list of JSON descriptions for all themes in the Typeform account, both public and private. Themes are listed in reverse-chronological order based on the date added."
+    },
+    {
+      "name": "Delete Theme",
+      "category": "Theme Management",
+      "description": "Deletes a theme from the Typeform account."
+    },
+    {
+      "name": "Get Theme",
+      "category": "Theme Management",
+      "description": "Retrieves a theme from the Typeform account."
+    },
+    {
+      "name": "Create Theme",
+      "category": "Theme Management",
+      "description": "Creates a new theme in the Typeform account."
+    },
+    {
+      "name": "Delete Responses",
+      "category": "Response Management",
+      "description": "Deletes responses for a specified form in Typeform."
+    },
+    {
+      "name": "Get Form Responses",
+      "category": "Response Management",
+      "description": "Retrieves responses for a specified Typeform."
+    },
+    {
+      "name": "Get Form Insights",
+      "category": "Analytics",
+      "description": "Retrieves form-level and individual question-level insights for a specified form."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Dynamic form creation and customization workflows",
+    "Multi-language form translation and localization",
+    "Automated survey and feedback collection",
+    "Form response analysis and data processing",
+    "Custom theme and branding implementation",
+    "Workspace management and team collaboration",
+    "Lead generation and customer data collection",
+    "Advanced form analytics and insights reporting"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/typeform/public/icon.png",
+  "sourcePaths": {
+    "service": "services/typeform",
+    "readme": "services/typeform/README.md",
+    "index": "services/typeform/src/index.js"
+  }
+}

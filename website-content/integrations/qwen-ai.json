@@ -1,0 +1,100 @@
+{
+  "slug": "qwen-ai",
+  "name": "Qwen",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for Qwen — Alibaba Cloud Model Studio (DashScope). Provides text generation with the Qwen model family (qwen-max, qwen-plus, qwen-flash, qwen3 series), vision analysis with Qwen-VL, text embeddings, Wan text-to-image and text-to-video generation, and Qwen speech synthesis (TTS) and recognition (ASR). Authenticates with a region-specific Model Studio API key.",
+  "actionCount": 11,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Chat",
+    "Vision",
+    "Embeddings",
+    "Image Generation",
+    "Video Generation",
+    "Async Tasks",
+    "Audio",
+    "Models"
+  ],
+  "actions": [
+    {
+      "name": "Chat Completion",
+      "category": "Chat",
+      "description": "Generates a text response for a single prompt using a Qwen model (qwen-max, qwen-plus, qwen-flash, qwen-turbo, qwen3-max and others) via the OpenAI-compatible chat completions API. Supports an optional system prompt, thinking mode with a thinking token budget for hybrid reasoning models, JSON mode for structured output, sampling controls and stop sequences. Returns the generated text, the model's reasoning content when thinking mode is active, the finish reason and token usage. Note: some Qwen3 hybrid models accept thinking mode only with streaming output — if the API rejects the request, leave Thinking Mode on Default or Disabled."
+    },
+    {
+      "name": "Chat Completion (Advanced)",
+      "category": "Chat",
+      "description": "Sends a fully custom chat completion request to the Model Studio OpenAI-compatible API with a complete messages array (multi-turn conversations with system, user, assistant and tool roles, including multimodal content parts for Qwen-VL), tool/function calling passthrough, a structured response format object, thinking mode and thinking budget controls, and sampling parameters. Returns the raw API response including choices, reasoning_content, tool calls and token usage — ideal for agent loops and function-calling workflows."
+    },
+    {
+      "name": "Analyze Image",
+      "category": "Vision",
+      "description": "Analyzes one or more images with a Qwen vision-language model (qwen-vl-max, qwen-vl-plus, qwen3-vl-plus, qwen3-vl-flash) and answers a text prompt about them — describe scenes, extract text (OCR), compare images, identify objects or reason over charts and documents. Images are passed as public URLs or base64 data URLs (data:image/png;base64,...). Returns the model's answer, finish reason and token usage."
+    },
+    {
+      "name": "Create Embeddings",
+      "category": "Embeddings",
+      "description": "Generates vector embeddings for up to 10 texts (max 8,192 tokens each) using the text-embedding-v4 (Qwen3-Embedding) or text-embedding-v3 model via the OpenAI-compatible embeddings API. Supports configurable output dimensions — text-embedding-v4 allows 64, 128, 256, 512, 768, 1024 (default), 1536 or 2048; text-embedding-v3 allows 512, 768 or 1024 (default). Returns the embedding vectors in OpenAI format together with token usage."
+    },
+    {
+      "name": "Generate Image",
+      "category": "Image Generation",
+      "description": "Generates images from a text prompt using a Wan text-to-image model (wan2.2-t2i-flash, wan2.2-t2i-plus, wanx2.1-t2i-turbo, wanx2.1-t2i-plus) and waits for completion — it submits an asynchronous DashScope task and polls until the images are ready (typically well under a minute). Because DashScope result URLs expire after 24 hours, the generated images are automatically saved to FlowRunner file storage and permanent file URLs are returned alongside the original result URLs. Supports negative prompts, custom sizes from 512 to 1440 pixels per side, 1-4 images per request, prompt extension and seed control."
+    },
+    {
+      "name": "Create Image Task",
+      "category": "Image Generation",
+      "description": "Submits an asynchronous text-to-image generation task to DashScope using a Wan model and returns immediately with a task ID — use the Get Task Status action to poll for the result. Prefer this over Generate Image when you want non-blocking flows or custom polling logic. Task IDs remain queryable for 24 hours; result image URLs also expire after 24 hours, so download them promptly."
+    },
+    {
+      "name": "Create Video Task",
+      "category": "Video Generation",
+      "description": "Submits an asynchronous text-to-video generation task to DashScope using a Wan model (wan2.5-t2v-preview, wan2.2-t2v-plus, wan2.1-t2v-turbo, wan2.1-t2v-plus) and returns immediately with a task ID. Video generation typically takes 1-5 minutes — poll with the Get Task Status action until the status is SUCCEEDED, then read the video_url from the output. Supports negative prompts, resolution selection, clip duration, prompt extension and seed control. Result video URLs and task IDs expire after 24 hours, so download the video promptly."
+    },
+    {
+      "name": "Get Task Status",
+      "category": "Async Tasks",
+      "description": "Retrieves the current status and result of an asynchronous DashScope task created by Create Image Task or Create Video Task. The task_status field is one of PENDING, RUNNING, SUCCEEDED, FAILED, CANCELED or UNKNOWN. On success, image tasks return output.results with image URLs and video tasks return output.video_url. Task IDs and result URLs are valid for 24 hours."
+    },
+    {
+      "name": "Synthesize Speech",
+      "category": "Audio",
+      "description": "Converts text to natural speech using Qwen text-to-speech models. qwen3-tts-flash (default) supports 10+ languages, a large multilingual voice roster and Chinese regional dialects with up to 600 characters of input; the legacy qwen-tts model supports up to 512 tokens with a core voice set. Because DashScope audio URLs expire after 24 hours, the generated audio is automatically saved to FlowRunner file storage and a permanent file URL is returned alongside the original URL."
+    },
+    {
+      "name": "Transcribe Audio",
+      "category": "Audio",
+      "description": "Transcribes speech to text using the qwen3-asr-flash multimodal recognition model via the OpenAI-compatible API. Accepts a public audio URL or a base64 data URL (data:audio/mpeg;base64,...) for common formats such as MP3, WAV, M4A and OPUS, and automatically detects the spoken language while also reporting detected emotion. Supports optional biasing context (domain terms, names), an explicit language hint for higher accuracy, and inverse text normalization for Chinese and English (formatting numbers, dates and amounts)."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists all models available to your Model Studio API key through the OpenAI-compatible models endpoint, including chat, vision, embedding and audio models with their IDs and owning organization. Useful for discovering exact model IDs to use in other actions."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generate, summarize, translate or classify text and drive agent/function-calling loops with Qwen chat models",
+    "Analyze images — describe scenes, run OCR, compare pictures or reason over charts and documents — with Qwen-VL",
+    "Produce vector embeddings for semantic search and RAG over your own content",
+    "Create marketing images and short videos from text prompts with Wan models",
+    "Convert text to natural multilingual speech and transcribe audio to text within automated flows"
+  ],
+  "agentIdeas": [
+    "Use **Qwen** \"Analyze Image\" to OCR or describe an uploaded photo, then use **Google Sheets** \"Add Row\" to log the extracted text alongside its source into a tracking spreadsheet",
+    "Chain **Qwen** \"Chat Completion\" to draft a script, then \"Create Video Task\" plus \"Get Task Status\" to render it, and finally **Dropbox** \"Upload File from URL\" to archive the finished video",
+    "Use **Qwen** \"Synthesize Speech\" to turn generated copy into a multilingual voiceover, then **Google Drive** \"Upload File\" to store the audio and share it with your team"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/qwen-ai/public/icon.png",
+  "sourcePaths": {
+    "service": "services/qwen-ai",
+    "readme": "services/qwen-ai/README.md",
+    "index": "services/qwen-ai/src/index.js"
+  }
+}

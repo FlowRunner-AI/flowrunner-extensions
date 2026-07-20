@@ -1,0 +1,103 @@
+{
+  "slug": "microsoft-onedrive",
+  "name": "Microsoft OneDrive",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [Microsoft OneDrive](https://www.microsoft.com/en-us/microsoft-365/onedrive/online-cloud-storage) built on the [Microsoft Graph API](https://learn.microsoft.com/en-us/graph/api/resources/onedrive) (v1.0). It lets flows browse, search, download, and upload files in the connected user's OneDrive, manage folders, move/rename/copy/delete items, create sharing links, and inspect the drive's storage quota — all on behalf of the connected user (delegated permissions).",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Items",
+    "Files",
+    "Folders",
+    "Sharing",
+    "Drive"
+  ],
+  "actions": [
+    {
+      "name": "List Items In Folder",
+      "category": "Items",
+      "description": "Lists the files and folders inside a OneDrive folder (or the drive root when no folder is selected). Each item includes its ID, name, type (file or folder), size, web URL, and last-modified timestamp. Results are paginated; pass the returned nextLink to fetch the next page."
+    },
+    {
+      "name": "Search Items",
+      "category": "Items",
+      "description": "Searches the whole OneDrive for files and folders matching a text query. Matches item names and, for files, indexed content. Results are paginated; pass the returned nextLink to fetch the next page."
+    },
+    {
+      "name": "Get Item",
+      "category": "Items",
+      "description": "Retrieves the metadata of a single file or folder, either by its item ID or by its path under the drive root (e.g. Reports/Q1/summary.pdf). Returns the full Microsoft Graph driveItem including size, timestamps, web URL, and file or folder facets."
+    },
+    {
+      "name": "Download File",
+      "category": "Files",
+      "description": "Downloads a file from OneDrive and saves it to FlowRunner file storage, returning a URL to the stored copy. The stored file keeps the original OneDrive file name. The whole file is loaded into memory during transfer, so keep files within the memory available to this function."
+    },
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a file to OneDrive from a FlowRunner file URL or any external URL. Files up to 4 MB are sent in a single request; larger files are automatically transferred through a resumable upload session in 5 MB chunks. The destination can be a folder picked from the drive, a folder path under the drive root, or the root itself. The whole file is loaded into memory before it is sent, so keep files within the memory available to this function."
+    },
+    {
+      "name": "Create Folder",
+      "category": "Folders",
+      "description": "Creates a new folder in OneDrive, either inside a selected parent folder or at the drive root. Returns the created folder's metadata including its ID."
+    },
+    {
+      "name": "Move Item",
+      "category": "Items",
+      "description": "Moves a file or folder into a different folder within the drive, optionally renaming it in the same step. Returns the updated item metadata."
+    },
+    {
+      "name": "Rename Item",
+      "category": "Items",
+      "description": "Renames a file or folder in place, keeping it in its current folder. To move an item to a different folder, use Move Item instead."
+    },
+    {
+      "name": "Copy Item",
+      "category": "Items",
+      "description": "Starts an asynchronous copy of a file or folder to another folder, optionally under a new name. Microsoft Graph performs the copy in the background and this action returns immediately with an accepted status - the copy is usually done within seconds. To verify completion, list or search the destination folder afterwards."
+    },
+    {
+      "name": "Delete Item",
+      "category": "Items",
+      "description": "Deletes a file or folder from OneDrive. The item is moved to the OneDrive recycle bin, from which it can be restored by the user."
+    },
+    {
+      "name": "Create Sharing Link",
+      "category": "Sharing",
+      "description": "Creates a shareable link to a file or folder and returns its web URL. Choose whether the link grants view or edit access and whether it works for anyone (anonymous) or only for people in your organization. Anonymous links may be disabled by your organization's sharing policy; organization scope is not available on personal OneDrive accounts."
+    },
+    {
+      "name": "Get Drive Info",
+      "category": "Drive",
+      "description": "Retrieves information about the connected user's OneDrive, including its ID, type, owner, and storage quota (total, used, and remaining bytes). Useful for verifying the connection and monitoring storage usage."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Archive generated reports, invoices, or exports from any workflow into OneDrive",
+    "Pull documents out of OneDrive into FlowRunner file storage for AI processing, parsing, or delivery",
+    "Organize incoming files automatically — create dated folders, move and rename items",
+    "Produce shareable view or edit links for files and send them by email or chat",
+    "Mirror files between OneDrive and other storage services (Dropbox, Google Drive, S3)",
+    "Watch storage usage via the drive quota and alert before it runs out"
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires with an attachment, use **Microsoft OneDrive** \"Upload File\"",
+    "Use **Microsoft OneDrive** \"Search Items\" and \"Download File\" to pull a contract into FlowRunner storage,",
+    "After generating a report file in a flow, call **Microsoft OneDrive** \"Upload File\" and then"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/microsoft-onedrive/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/microsoft-onedrive",
+    "readme": "services/microsoft-onedrive/README.md",
+    "index": "services/microsoft-onedrive/src/index.js"
+  }
+}

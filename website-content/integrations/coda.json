@@ -1,0 +1,154 @@
+{
+  "slug": "coda",
+  "name": "Coda",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Coda](https://coda.io) docs, tables, rows, columns, formulas, controls, buttons, and pages with FlowRunner. Read and write structured data in your Coda docs directly from your flows. Authentication uses a Coda API token, sent as a Bearer token on every request (base URL `https://coda.io/apis/v1`).",
+  "actionCount": 22,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Docs",
+    "Tables",
+    "Rows",
+    "Columns",
+    "Formulas & Controls",
+    "Buttons",
+    "Pages"
+  ],
+  "actions": [
+    {
+      "name": "List Docs",
+      "category": "Docs",
+      "description": "Lists Coda docs available to the authenticated account. Supports free-text search and filtering to docs the account owns. Results are paginated; pass the returned nextPageToken to retrieve the next page."
+    },
+    {
+      "name": "Get Doc",
+      "category": "Docs",
+      "description": "Retrieves metadata for a single doc, including its name, owner, folder, workspace, and browser link."
+    },
+    {
+      "name": "Create Doc",
+      "category": "Docs",
+      "description": "Creates a new Coda doc. Optionally copy an existing doc by providing its source doc ID, and optionally place the new doc in a specific folder."
+    },
+    {
+      "name": "Delete Doc",
+      "category": "Docs",
+      "description": "Permanently deletes a doc. This action cannot be undone."
+    },
+    {
+      "name": "List Tables",
+      "category": "Tables",
+      "description": "Lists the tables and views in a doc. By default only base tables are returned; use the table type filter to include views."
+    },
+    {
+      "name": "Get Table",
+      "category": "Tables",
+      "description": "Retrieves metadata for a single table or view, including its display column, row count, and parent page."
+    },
+    {
+      "name": "List Rows",
+      "category": "Rows",
+      "description": "Lists rows in a table, returning each row's cell values as a clean object. By default values are keyed by column name for readability; disable \"Use Column Names\" to key them by stable column ID instead. Supports a column:value filter query using Coda's query syntax (e.g. `c-abc:\"Done\"` or `\"Status\":\"Done\"`), a visible-only filter, and pagination."
+    },
+    {
+      "name": "Get Row",
+      "category": "Rows",
+      "description": "Retrieves a single row and returns its cell values as a clean object. By default values are keyed by column name; disable \"Use Column Names\" to key them by stable column ID."
+    },
+    {
+      "name": "Insert or Upsert Rows",
+      "category": "Rows",
+      "description": "Inserts one or more rows into a table. Each row is a simple {column: value} map (keys may be column IDs or names) that is converted into Coda's cell format automatically. Provide Key Columns to upsert: rows whose key-column values match existing rows are updated instead of inserted. This is an asynchronous mutation — Coda returns a requestId immediately and the change may take a moment to appear; the added row IDs are returned but are not yet queryable until the mutation completes."
+    },
+    {
+      "name": "Update Row",
+      "category": "Rows",
+      "description": "Updates a single row's cell values. Provide a {column: value} map (keys may be column IDs or names); only the supplied columns are changed. This is an asynchronous mutation — Coda returns a requestId immediately and the change may take a moment to appear."
+    },
+    {
+      "name": "Delete Row",
+      "category": "Rows",
+      "description": "Deletes a single row from a table. This is an asynchronous mutation — Coda returns a requestId immediately and the change may take a moment to apply."
+    },
+    {
+      "name": "Delete Multiple Rows",
+      "category": "Rows",
+      "description": "Deletes multiple rows from a table in a single request by their row IDs. This is an asynchronous mutation — Coda returns a requestId immediately and the changes may take a moment to apply."
+    },
+    {
+      "name": "List Columns",
+      "category": "Columns",
+      "description": "Lists the columns in a table, including each column's name, type, formula flag, and display flag."
+    },
+    {
+      "name": "Get Column",
+      "category": "Columns",
+      "description": "Retrieves metadata for a single column, including its type/format and whether it is calculated (formula) or the display column."
+    },
+    {
+      "name": "List Formulas",
+      "category": "Formulas & Controls",
+      "description": "Lists the named formulas defined at the doc level. Named formulas expose computed values that can be read via Get Formula."
+    },
+    {
+      "name": "Get Formula",
+      "category": "Formulas & Controls",
+      "description": "Retrieves a named formula and its current computed value."
+    },
+    {
+      "name": "List Controls",
+      "category": "Formulas & Controls",
+      "description": "Lists the controls (buttons, sliders, selects, and other interactive elements) defined in a doc. Read a control's current value via Get Control."
+    },
+    {
+      "name": "Get Control",
+      "category": "Formulas & Controls",
+      "description": "Retrieves a single control, including its type and current value."
+    },
+    {
+      "name": "Push Button",
+      "category": "Buttons",
+      "description": "Presses a button in a button column for a specific row, running its configured action (e.g. run an automation, open a link, or push data). This is an asynchronous mutation — Coda returns a requestId immediately and the button's effect may take a moment to apply."
+    },
+    {
+      "name": "List Pages",
+      "category": "Pages",
+      "description": "Lists the pages (sections) in a doc, including their names, subtitles, and hierarchy."
+    },
+    {
+      "name": "Get Page",
+      "category": "Pages",
+      "description": "Retrieves metadata for a single page (section), including its name, subtitle, icon, and browser link."
+    },
+    {
+      "name": "Create Page",
+      "category": "Pages",
+      "description": "Creates a new page (section) in a doc. Optionally set a subtitle and seed the page with rich text or HTML content. This is an asynchronous mutation — Coda returns the new page ID and a requestId immediately, and the page may take a moment to fully render."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync structured data between a Coda table and other systems (spreadsheets, CRMs, databases).",
+    "Insert or upsert rows into a Coda table as records arrive from webhooks, forms, or other services.",
+    "Read Coda rows, named formulas, or control values to drive downstream logic in a flow.",
+    "Automate Coda docs by pressing buttons that run configured automations or push data.",
+    "Generate new docs and pages, seeding them with rich text or HTML content."
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to pull records from a spreadsheet, then call **Coda** \"Insert or Upsert Rows\" (with key columns) to sync each record into a Coda table without creating duplicates.",
+    "Read a status field with **Coda** \"Get Row\", and when it changes, use **Slack** \"Send Message To Channel\" to notify the team with a link to the doc.",
+    "Use **Coda** \"List Rows\" to fetch tracked items, then call **Notion** \"Create Database Item\" for each row to mirror the Coda table into a Notion database."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/coda/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/coda",
+    "readme": "services/coda/README.md",
+    "index": "services/coda/src/index.js"
+  }
+}

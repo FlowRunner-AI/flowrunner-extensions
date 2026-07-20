@@ -1,0 +1,162 @@
+{
+  "slug": "databricks",
+  "name": "Databricks",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner service for the [Databricks REST API](https://docs.databricks.com/api/workspace/introduction). Run SQL on a warehouse, orchestrate jobs, manage clusters, browse Unity Catalog, and inspect DBFS/Workspace paths from your flows. Authenticates with your workspace URL and a personal access token sent as a Bearer token.",
+  "actionCount": 24,
+  "triggerCount": 0,
+  "operationCategories": [
+    "SQL",
+    "Jobs",
+    "Clusters",
+    "Unity Catalog",
+    "Files",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Execute SQL Statement",
+      "category": "SQL",
+      "description": "Runs a SQL statement on a SQL warehouse using the Statement Execution API. Set Wait Timeout to a value from 5 to 50 seconds to run synchronously and receive results inline in the response when the statement finishes quickly; if the statement is still running when the timeout elapses, the response returns a statement_id with a PENDING/RUNNING status that you poll with Get Statement Result. Use a Wait Timeout of 0 for fully asynchronous execution. Supply named parameters (referenced as \":name\" in the statement) via the Parameters array to safely bind values. Inline results are limited to 25 MiB; use the EXTERNAL_LINKS disposition for larger result sets."
+    },
+    {
+      "name": "Get Statement Result",
+      "category": "SQL",
+      "description": "Retrieves the current status and, when available, the result data for a previously submitted SQL statement. Use this to poll asynchronous executions until status.state is SUCCEEDED (or a terminal FAILED/CANCELED/CLOSED state). Returns the manifest (column schema) and the inline result chunk when the disposition was INLINE."
+    },
+    {
+      "name": "Cancel Statement",
+      "category": "SQL",
+      "description": "Requests cancellation of a running SQL statement. Cancellation is best-effort; a statement that has already completed cannot be canceled."
+    },
+    {
+      "name": "List SQL Warehouses",
+      "category": "SQL",
+      "description": "Lists all SQL warehouses in the workspace, including their ID, name, state (RUNNING, STOPPED, STARTING, etc.), and cluster size. Useful for discovering the warehouse ID needed to execute SQL statements."
+    },
+    {
+      "name": "Get SQL Warehouse",
+      "category": "SQL",
+      "description": "Retrieves detailed information about a single SQL warehouse, including its state, size, auto-stop settings, and JDBC/ODBC connection details."
+    },
+    {
+      "name": "Start SQL Warehouse",
+      "category": "SQL",
+      "description": "Starts a stopped SQL warehouse so it can serve queries. The call returns immediately; the warehouse transitions through STARTING to RUNNING asynchronously (poll Get SQL Warehouse to confirm)."
+    },
+    {
+      "name": "Stop SQL Warehouse",
+      "category": "SQL",
+      "description": "Stops a running SQL warehouse to save cost. The call returns immediately; the warehouse transitions to STOPPED asynchronously."
+    },
+    {
+      "name": "List Jobs",
+      "category": "Jobs",
+      "description": "Lists jobs in the workspace with pagination. Optionally filter by job name and control whether each job's task definitions are expanded. Returns a next_page_token when more results are available."
+    },
+    {
+      "name": "Get Job",
+      "category": "Jobs",
+      "description": "Retrieves the full configuration of a single job, including its tasks, schedule, cluster settings, and parameters."
+    },
+    {
+      "name": "Run Job Now",
+      "category": "Jobs",
+      "description": "Triggers an immediate run of an existing job and returns the new run_id. Optionally override parameters: provide Notebook Params (a map of key/value strings passed to notebook tasks) and/or Job Parameters (a map of job-level parameter values). Use Get Run to track the triggered run to completion."
+    },
+    {
+      "name": "List Job Runs",
+      "category": "Jobs",
+      "description": "Lists runs for a specific job (or all jobs if no Job ID is given), with pagination. Optionally restrict to active or completed runs."
+    },
+    {
+      "name": "Get Run",
+      "category": "Jobs",
+      "description": "Retrieves the metadata and current state of a single job run, including its lifecycle state, result state, tasks, and timing information."
+    },
+    {
+      "name": "Get Run Output",
+      "category": "Jobs",
+      "description": "Retrieves the output and result of a single task run, such as a notebook's exit value, SQL query output, or run error metadata. Applies to an individual task run rather than a multi-task parent run."
+    },
+    {
+      "name": "Cancel Run",
+      "category": "Jobs",
+      "description": "Requests cancellation of an active job run. The run transitions to a TERMINATED lifecycle state with a CANCELED result state asynchronously; runs that have already completed are unaffected."
+    },
+    {
+      "name": "List Clusters",
+      "category": "Clusters",
+      "description": "Lists all-purpose and job clusters in the workspace, including each cluster's ID, name, state (RUNNING, TERMINATED, PENDING, etc.), node type, and Spark version."
+    },
+    {
+      "name": "Get Cluster",
+      "category": "Clusters",
+      "description": "Retrieves detailed information about a single cluster, including its state, configuration, autoscaling settings, and Spark version."
+    },
+    {
+      "name": "Start Cluster",
+      "category": "Clusters",
+      "description": "Starts a terminated cluster with its existing configuration. The call returns immediately; the cluster transitions through PENDING to RUNNING asynchronously (poll Get Cluster to confirm)."
+    },
+    {
+      "name": "Terminate Cluster",
+      "category": "Clusters",
+      "description": "Terminates a running cluster. The cluster is not permanently deleted and can be restarted later with Start Cluster. The call returns immediately; termination completes asynchronously."
+    },
+    {
+      "name": "List Catalogs",
+      "category": "Unity Catalog",
+      "description": "Lists all Unity Catalog catalogs the caller can access in the metastore, including each catalog's name, owner, and comment."
+    },
+    {
+      "name": "List Schemas",
+      "category": "Unity Catalog",
+      "description": "Lists the schemas (databases) within a Unity Catalog catalog. Requires the catalog name."
+    },
+    {
+      "name": "List Tables",
+      "category": "Unity Catalog",
+      "description": "Lists the tables within a Unity Catalog schema. Requires both the catalog name and the schema name."
+    },
+    {
+      "name": "List DBFS Path",
+      "category": "Files",
+      "description": "Lists the contents of a directory in the Databricks File System (DBFS), returning each entry's path, whether it is a directory, and file size."
+    },
+    {
+      "name": "List Workspace Path",
+      "category": "Files",
+      "description": "Lists the contents of a workspace directory, returning each object's path, type (NOTEBOOK, DIRECTORY, FILE, LIBRARY, REPO), and language for notebooks."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Account",
+      "description": "Returns the SCIM profile of the user or service principal associated with the API token, including user name, display name, and email. Useful as a connection and credential validity check."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Run parameterized SQL queries against a SQL warehouse and use the results inline in a flow, or poll long-running statements to completion.",
+    "Trigger existing Databricks jobs on demand with parameter overrides and track each run to a terminal state.",
+    "Start, stop, and inspect SQL warehouses and clusters to control compute cost around scheduled workloads.",
+    "Discover data assets by browsing Unity Catalog catalogs, schemas, and tables, plus DBFS and workspace paths."
+  ],
+  "agentIdeas": [
+    "Use Databricks **Execute SQL Statement** (with a wait timeout) to pull a metrics summary from a SQL warehouse, then post the results to a channel with **Slack** \"Send Message To Channel\".",
+    "Run Databricks **Run Job Now** and poll **Get Run** until the job reaches a terminal state, then log the run outcome to a spreadsheet with **Google Sheets** \"Add Row\".",
+    "Query aggregated results with Databricks **Execute SQL Statement**, then load them into an analytics table using **BigQuery** \"Run Query\" for downstream reporting."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/databricks/public/icon.png",
+  "sourcePaths": {
+    "service": "services/databricks",
+    "readme": "services/databricks/README.md",
+    "index": "services/databricks/src/index.js"
+  }
+}

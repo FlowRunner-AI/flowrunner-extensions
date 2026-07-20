@@ -1,0 +1,84 @@
+{
+  "slug": "phantombuster",
+  "name": "Phantombuster",
+  "marketingCategory": "Sales Intelligence & Enrichment",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Launch and manage [Phantombuster](https://phantombuster.com) automation agents (phantoms) and retrieve their scraped results using the Phantombuster API v2. Start a phantom, poll its run to completion, and pull back the structured data it collected.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Agents",
+    "Containers",
+    "Organization"
+  ],
+  "actions": [
+    {
+      "name": "List Agents",
+      "category": "Agents",
+      "description": "Lists all agents (phantoms) in your Phantombuster organization. Each agent is a configured automation that scrapes or automates a task. Returns each agent's id, name, script id, launch settings, and last-run metadata. Use an agent id with Launch Agent to start a run."
+    },
+    {
+      "name": "Get Agent",
+      "category": "Agents",
+      "description": "Fetches a single agent (phantom) by its id, including its configuration, launch arguments, script id, and last-run status. Use this to inspect an agent before launching it."
+    },
+    {
+      "name": "Launch Agent",
+      "category": "Agents",
+      "description": "Launches an agent (phantom) to run in a new container. Optionally pass an argument object to override the agent's saved input configuration for this run, a bonus argument merged on top, and saveArgument to persist the argument as the agent's default. Returns the containerId of the started run. The agent runs asynchronously - poll Get Agent Output or Get Container until it finishes, then use Get Container Result Object to retrieve the scraped data."
+    },
+    {
+      "name": "Get Agent Output",
+      "category": "Agents",
+      "description": "Returns the current or latest run output for an agent: console/progress output, run status, progress percentage, and the resultObject (structured JSON result) when available. Use this to poll an in-progress launch until its status is finished, then read the resultObject. The output mode controls how much is returned."
+    },
+    {
+      "name": "Abort Agent",
+      "category": "Agents",
+      "description": "Aborts the currently running container(s) of an agent, stopping the automation immediately. Use this to cancel a run that is stuck or no longer needed. Returns the number of containers that were stopped."
+    },
+    {
+      "name": "Get Container",
+      "category": "Containers",
+      "description": "Fetches a single container by its id. A container represents one run (execution) of an agent. Returns the run's status (running, finished, etc.), launch metadata, and timing. Use this to poll a specific run started by Launch Agent until it finishes."
+    },
+    {
+      "name": "Get Container Result Object",
+      "category": "Containers",
+      "description": "Returns the structured JSON result object produced by a container run - this is the scraped/automated data (e.g. the list of profiles, posts, or leads the phantom collected). This is the key operation for retrieving results after a run finishes. Call it with the containerId from Launch Agent once Get Container or Get Agent Output reports status finished."
+    },
+    {
+      "name": "List Agent Containers",
+      "category": "Containers",
+      "description": "Lists all containers (runs) for a given agent, most recent first, including each run's id, status, and timing. Use this to find past runs of an agent and retrieve their results with Get Container Result Object."
+    },
+    {
+      "name": "Get Organization Resources",
+      "category": "Organization",
+      "description": "Returns your Phantombuster organization's resource usage and limits, including execution time, storage, and email quotas. Useful as a connection check to confirm the API key is valid and to monitor remaining quota before launching agents."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Launch a scraping/automation phantom (e.g. a LinkedIn or Instagram scraper) with a custom input configuration, then collect the results.",
+    "Poll a running agent or container until it finishes and read the structured result object.",
+    "List your agents and their past runs, and abort a run that is stuck or no longer needed.",
+    "Check organization resource usage and quotas before launching agents."
+  ],
+  "agentIdeas": [
+    "Use **Phantombuster** \"Launch Agent\" to run a lead-scraping phantom, then after polling, **Phantombuster** \"Get Container Result Object\" and **Google Sheets** \"Add Row\" to log each scraped lead.",
+    "Combine **Phantombuster** \"Get Agent Output\" polling with **Airtable** \"Create Record\" to store scraped profiles as they finish.",
+    "Use **Phantombuster** \"Get Organization Resources\" on a schedule and **Gmail** \"Send Message\" to alert when execution-time quota runs low."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/phantombuster/public/icon.png",
+  "sourcePaths": {
+    "service": "services/phantombuster",
+    "readme": "services/phantombuster/README.md",
+    "index": "services/phantombuster/src/index.js"
+  }
+}

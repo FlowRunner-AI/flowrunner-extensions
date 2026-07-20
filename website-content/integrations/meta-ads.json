@@ -1,0 +1,186 @@
+{
+  "slug": "meta-ads",
+  "name": "Meta Ads",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Manage the full Meta (Facebook) advertising stack through the Marketing API over the Graph API — ad accounts, campaigns, ad sets, ads, creatives, ad-image uploads, custom audiences (with automatic email/phone SHA-256 hashing), Pages, and the flagship Insights performance reporting.",
+  "actionCount": 28,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Ad Accounts",
+    "Campaigns",
+    "Ad Sets",
+    "Ads",
+    "Creatives",
+    "Ad Images",
+    "Insights",
+    "Custom Audiences",
+    "Pages"
+  ],
+  "actions": [
+    {
+      "name": "List Ad Accounts",
+      "category": "Ad Accounts",
+      "description": "Lists all ad accounts the authenticated user can access via GET /me/adaccounts. Returns id, account_id, name, account_status, currency, timezone_name, amount_spent, and balance for each account. Note that amount_spent and balance are in the account's minor currency units (e.g. cents for USD). Supports pagination via Limit and After Cursor."
+    },
+    {
+      "name": "Get Ad Account",
+      "category": "Ad Accounts",
+      "description": "Retrieves a single ad account by id via GET /act_{accountId}. The Ad Account ID may be supplied with or without the \"act_\" prefix; it is normalized automatically. Returns id, account_id, name, account_status, currency, timezone_name, amount_spent, balance, spend_cap, and business. Monetary fields (amount_spent, balance, spend_cap) are in the account's minor currency units (cents for USD)."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Lists campaigns within an ad account via GET /act_{accountId}/campaigns. Returns id, name, objective, status, effective_status, daily_budget, lifetime_budget, created_time, start_time, and stop_time. Budgets are in the account's minor currency units (cents for USD). Optionally filter by one or more effective statuses (e.g. ACTIVE, PAUSED). Supports pagination via Limit and After Cursor."
+    },
+    {
+      "name": "Get Campaign",
+      "category": "Campaigns",
+      "description": "Retrieves a single campaign by id via GET /{campaignId}. Returns id, name, objective, status, effective_status, daily_budget, lifetime_budget, buying_type, special_ad_categories, created_time, start_time, and stop_time. Budgets are in the account's minor currency units (cents for USD)."
+    },
+    {
+      "name": "Create Campaign",
+      "category": "Campaigns",
+      "description": "Creates a new campaign in an ad account via POST /act_{accountId}/campaigns. Choose an Objective (Outcome-based) and an initial Status (defaults to Paused so nothing spends until you activate it). Special Ad Categories is required by Meta — select None when the campaign does not fall under a regulated category. Daily Budget and Lifetime Budget are optional here (you may instead set budgets at the ad set level) and are expressed in the account's minor currency units (cents for USD). Returns the new campaign id."
+    },
+    {
+      "name": "Update Campaign",
+      "category": "Campaigns",
+      "description": "Updates an existing campaign via POST /{campaignId}. Any field left empty is unchanged. Use this to rename a campaign, pause or activate it, or adjust its budget. Budgets are in the account's minor currency units (cents for USD). Returns {\"success\":true} on success."
+    },
+    {
+      "name": "Delete Campaign",
+      "category": "Campaigns",
+      "description": "Permanently deletes a campaign via DELETE /{campaignId}. All ad sets and ads under the campaign are also deleted. This cannot be undone. Returns {\"success\":true} on success."
+    },
+    {
+      "name": "List Ad Sets",
+      "category": "Ad Sets",
+      "description": "Lists ad sets via GET /act_{accountId}/adsets, or scoped to a single campaign via GET /{campaignId}/adsets when a Campaign ID is provided. Returns id, name, campaign_id, status, effective_status, daily_budget, optimization_goal, billing_event, targeting, start_time, and end_time. Budgets are in the account's minor currency units (cents for USD). Supports pagination via Limit and After Cursor."
+    },
+    {
+      "name": "Get Ad Set",
+      "category": "Ad Sets",
+      "description": "Retrieves a single ad set by id via GET /{adSetId}. Returns id, name, campaign_id, status, effective_status, daily_budget, lifetime_budget, optimization_goal, billing_event, bid_strategy, bid_amount, targeting, promoted_object, start_time, and end_time. Budgets and bid amounts are in the account's minor currency units (cents for USD)."
+    },
+    {
+      "name": "Create Ad Set",
+      "category": "Ad Sets",
+      "description": "Creates a new ad set under a campaign via POST /act_{accountId}/adsets. Set exactly one of Daily Budget or Lifetime Budget (in the account's minor currency units — cents for USD), unless the parent campaign uses campaign budget optimization. Provide a Targeting object describing the audience (see the hint for an example). Bid Amount is required when Bid Strategy is Cost Cap or Bid Cap and is also in minor currency units. Use Promoted Object for conversion/lead optimization goals. Status defaults to Paused. Returns the new ad set id."
+    },
+    {
+      "name": "Update Ad Set",
+      "category": "Ad Sets",
+      "description": "Updates an existing ad set via POST /{adSetId}. Any field left empty is unchanged. Use this to rename, pause/activate, adjust budgets or bids, change the optimization goal, or replace the targeting spec. Budgets and bid amounts are in the account's minor currency units (cents for USD). Returns {\"success\":true} on success."
+    },
+    {
+      "name": "Delete Ad Set",
+      "category": "Ad Sets",
+      "description": "Permanently deletes an ad set via DELETE /{adSetId}. All ads under the ad set are also deleted. This cannot be undone. Returns {\"success\":true} on success."
+    },
+    {
+      "name": "List Ads",
+      "category": "Ads",
+      "description": "Lists ads via GET /act_{accountId}/ads, or scoped to a single ad set via GET /{adSetId}/ads when an Ad Set ID is provided. Returns id, name, adset_id, campaign_id, status, effective_status, and creative for each ad. Supports pagination via Limit and After Cursor."
+    },
+    {
+      "name": "Get Ad",
+      "category": "Ads",
+      "description": "Retrieves a single ad by id via GET /{adId}. Returns id, name, adset_id, campaign_id, status, effective_status, creative, and created_time."
+    },
+    {
+      "name": "Create Ad",
+      "category": "Ads",
+      "description": "Creates a new ad under an ad set via POST /act_{accountId}/ads. Links an existing ad creative (by creative id) to the ad set. Status defaults to Paused so the ad does not deliver until you activate it. Returns the new ad id."
+    },
+    {
+      "name": "Update Ad",
+      "category": "Ads",
+      "description": "Updates an existing ad via POST /{adId}. Use this to rename the ad or change its delivery status (pause/activate/archive). Any field left empty is unchanged. Returns {\"success\":true} on success."
+    },
+    {
+      "name": "Delete Ad",
+      "category": "Ads",
+      "description": "Permanently deletes an ad via DELETE /{adId}. This cannot be undone. Returns {\"success\":true} on success."
+    },
+    {
+      "name": "List Ad Creatives",
+      "category": "Creatives",
+      "description": "Lists ad creatives in an ad account via GET /act_{accountId}/adcreatives. Returns id, name, title, body, object_story_spec, and thumbnail_url for each creative. Supports pagination via Limit and After Cursor."
+    },
+    {
+      "name": "Get Ad Creative",
+      "category": "Creatives",
+      "description": "Retrieves a single ad creative by id via GET /{creativeId}. Returns id, name, title, body, object_story_spec, image_hash, image_url, and thumbnail_url."
+    },
+    {
+      "name": "Create Link Ad Creative",
+      "category": "Creatives",
+      "description": "Creates a link ad creative via POST /act_{accountId}/adcreatives. This convenience action builds the object_story_spec for a single-image link ad from friendly parameters: Page ID, destination Link, primary text (Message), Headline, Description, an optional Call To Action, and an image (either an Image Hash from Upload Ad Image or a public Picture URL). For full control you may instead pass a raw Object Story Spec, which overrides all convenience fields. Returns the new creative id."
+    },
+    {
+      "name": "Upload Ad Image",
+      "category": "Ad Images",
+      "description": "Uploads an image to an ad account's image library via POST /act_{accountId}/adimages, reading the bytes from a Flowrunner file. The response maps the uploaded image name to its hash; this action returns the hash directly (plus the raw response), which you then pass to Create Link Ad Creative as the Image Hash. Returns {\"hash\":\"...\",\"name\":\"...\",\"images\":{...}}."
+    },
+    {
+      "name": "Get Insights",
+      "category": "Insights",
+      "description": "Retrieves performance insights for any ads object via GET /{objectId}/insights. The Object ID can be an ad account (act_...), campaign, ad set, or ad id; use Level to aggregate results (Account, Campaign, Ad Set, or Ad). Choose the metrics to return via Fields (e.g. Impressions, Clicks, Spend, CTR, Reach). Bound the range with a Date Preset, or with explicit Since/Until dates (both required, sent as a time_range). Optionally split results with Breakdowns (e.g. Age, Gender, Country, Platform) and set Time Increment to 1 for a daily time series. Spend and cost metrics are returned in the account's currency (major units, e.g. dollars). Supports pagination via Limit and After Cursor."
+    },
+    {
+      "name": "List Custom Audiences",
+      "category": "Custom Audiences",
+      "description": "Lists custom audiences in an ad account via GET /act_{accountId}/customaudiences. Returns id, name, subtype, approximate_count_lower_bound, and delivery_status for each audience. Supports pagination via Limit and After Cursor."
+    },
+    {
+      "name": "Create Custom Audience",
+      "category": "Custom Audiences",
+      "description": "Creates a new customer-file custom audience (subtype CUSTOM) in an ad account via POST /act_{accountId}/customaudiences. After creating, use Add Users to Audience to populate it with hashed contact data. Customer File Source declares where the data originated, which is required for compliance. Returns the new audience id."
+    },
+    {
+      "name": "Add Users to Audience",
+      "category": "Custom Audiences",
+      "description": "Adds users to a custom audience via POST /{audienceId}/users. Supply plain email addresses or phone numbers — this action normalizes (trims, lowercases emails; strips non-digits from phones) and SHA256-hashes each value before sending, as Meta requires. Choose Schema to indicate whether you are uploading emails or phone numbers. Returns the number of records received and matched."
+    },
+    {
+      "name": "Remove Users from Audience",
+      "category": "Custom Audiences",
+      "description": "Removes users from a custom audience via DELETE /{audienceId}/users. Supply plain email addresses or phone numbers — this action normalizes and SHA256-hashes each value before sending, matching how they were added. Choose Schema to indicate the identifier type. Returns the number of records processed."
+    },
+    {
+      "name": "Delete Custom Audience",
+      "category": "Custom Audiences",
+      "description": "Permanently deletes a custom audience via DELETE /{audienceId}. Any ad sets targeting it will no longer use it. This cannot be undone. Returns {\"success\":true} on success."
+    },
+    {
+      "name": "List My Pages",
+      "category": "Pages",
+      "description": "Lists the Facebook Pages the authenticated user manages via GET /me/accounts. Returns id and name for each Page. Use a Page id when creating link ad creatives (as the Page the ad is published from). Supports pagination via Limit and After Cursor."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Programmatically create and manage campaigns, ad sets, and ads, keeping everything paused until you activate delivery.",
+    "Pull campaign, ad set, or ad performance metrics (impressions, clicks, spend, CTR, reach) on a schedule for dashboards and reports.",
+    "Build and refresh customer-file custom audiences from CRM or email-list data — the service hashes contacts for you.",
+    "Upload creative images from FlowRunner file storage and assemble single-image link ad creatives from friendly fields."
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to read a CRM export, then call **Meta Ads** \"Add Users to Audience\" to sync those contacts into a custom audience for retargeting.",
+    "On a schedule, call **Meta Ads** \"Get Insights\" for each active campaign and use **Google Sheets** \"Add Rows\" to append the daily impressions, spend, and CTR into a performance-tracking spreadsheet.",
+    "After **Meta Ads** \"Get Insights\" reports spend or cost-per-result crossing a threshold, use **Slack** \"Send Message To Channel\" to alert the marketing team so they can pause the ad set.",
+    "Pull an email list with **Klaviyo** \"Get List Profiles\", then feed the addresses into **Meta Ads** \"Add Users to Audience\" to build a lookalike-seed custom audience from your subscribers."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/meta-ads/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/meta-ads",
+    "readme": "services/meta-ads/README.md",
+    "index": "services/meta-ads/src/index.js"
+  }
+}

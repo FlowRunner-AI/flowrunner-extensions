@@ -1,0 +1,107 @@
+{
+  "slug": "outlook",
+  "name": "Outlook",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Microsoft Outlook integration for comprehensive email, calendar, and contact management with OAuth2 authentication for secure access to Microsoft 365 accounts.",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "User Information",
+    "Email Management",
+    "Calendar Management",
+    "Contact Management"
+  ],
+  "actions": [
+    {
+      "name": "Get User Profile",
+      "category": "User Information",
+      "description": "Retrieves the profile details of the signed-in user including display name, email, and other basic information."
+    },
+    {
+      "name": "Get Messages List",
+      "category": "Email Management",
+      "description": "Retrieves a list of email messages from the user's mailbox with optional filtering by sender, subject, date range, and read status."
+    },
+    {
+      "name": "Send Message",
+      "category": "Email Management",
+      "description": "Sends an email to the specified recipient with the provided content and optional parameters like subject, CC, and BCC."
+    },
+    {
+      "name": "Reply to Message",
+      "category": "Email Management",
+      "description": "Sends a reply to an existing email with the specified content and optional parameters."
+    },
+    {
+      "name": "Create Draft Email",
+      "category": "Email Management",
+      "description": "Creates a draft email with the specified content and optional parameters that can be sent later."
+    },
+    {
+      "name": "Send Draft Email",
+      "category": "Email Management",
+      "description": "Sends an email from an existing draft specified by the draft ID."
+    },
+    {
+      "name": "Create Event",
+      "category": "Calendar Management",
+      "description": "Creates a calendar event with the specified details such as subject, start and end time, time zone, location, description, and attendees."
+    },
+    {
+      "name": "Delete Event",
+      "category": "Calendar Management",
+      "description": "Deletes a calendar event specified by the unique event ID."
+    },
+    {
+      "name": "Update Calendar Event",
+      "category": "Calendar Management",
+      "description": "Updates an existing calendar event with the provided details including subject, body, time, and attendees."
+    },
+    {
+      "name": "Add Attendees to Calendar Event",
+      "category": "Calendar Management",
+      "description": "Adds attendees to an existing calendar event without overwriting existing attendees."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contact Management",
+      "description": "Creates a new contact in the user's contact list with basic information including name, email, phone, and company details."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contact Management",
+      "description": "Updates an existing contact in the user's contact list with basic information including name, email, phone, and company details."
+    },
+    {
+      "name": "Mark Email As Unread",
+      "category": "Email Management",
+      "description": "Marks an email as unread in the user's inbox to indicate it needs attention."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automated email sending and management workflows",
+    "Calendar event scheduling and synchronization",
+    "Contact list management and organization",
+    "Email draft creation and batch sending",
+    "Meeting invitation automation",
+    "Email folder organization and cleanup",
+    "Contact synchronization across systems",
+    "Calendar availability checking",
+    "Email notification systems",
+    "Customer communication automation"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/outlook/public/icon.png",
+  "sourcePaths": {
+    "service": "services/outlook",
+    "readme": "services/outlook/README.md",
+    "index": "services/outlook/src/index.js"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "slug": "zoom",
+  "name": "Zoom",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Zoom](https://zoom.us) — create and manage meetings, register attendees, fetch invitation text, work with cloud recordings, and list past-meeting participants through the [Zoom REST API v2](https://developers.zoom.us/docs/api/) using OAuth2.",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Meetings",
+    "Registrants",
+    "Recordings",
+    "Past Meetings",
+    "Users"
+  ],
+  "actions": [
+    {
+      "name": "Create Meeting",
+      "category": "Meetings",
+      "description": "Creates a Zoom meeting for the connected user and returns its ID, join URL, and start URL. Supports instant, scheduled, and recurring (no fixed time) meetings, with optional waiting room, join-before-host, mute-on-entry, and automatic recording settings."
+    },
+    {
+      "name": "Get Meeting",
+      "category": "Meetings",
+      "description": "Retrieves the full details of one meeting by its ID, including topic, schedule, join URL, and settings. Works for upcoming and live meetings hosted by the connected user."
+    },
+    {
+      "name": "List Meetings",
+      "category": "Meetings",
+      "description": "Lists the connected user's meetings, filtered to scheduled, currently live, or upcoming meetings, with token-based pagination. Note: instant meetings and details like the agenda are not included in list results - use Get Meeting for full details."
+    },
+    {
+      "name": "Update Meeting",
+      "category": "Meetings",
+      "description": "Updates an existing meeting's topic, schedule, agenda, password, or settings. Only the fields you provide are changed; everything else keeps its current value."
+    },
+    {
+      "name": "Delete Meeting",
+      "category": "Meetings",
+      "description": "Deletes a meeting by its ID, removing it from the host's schedule. Registrants are not notified by this action. This cannot be undone."
+    },
+    {
+      "name": "Get Meeting Invitation",
+      "category": "Meetings",
+      "description": "Retrieves the meeting's invitation text - the ready-to-send blurb with the join link, meeting ID, and passcode that Zoom generates for the host. Use this to email or message an invite from a flow."
+    },
+    {
+      "name": "Add Meeting Registrant",
+      "category": "Registrants",
+      "description": "Registers a person for a meeting and returns their personal join URL. The meeting must have registration enabled (set up in the Zoom web portal when scheduling); otherwise Zoom rejects the request."
+    },
+    {
+      "name": "List Meeting Registrants",
+      "category": "Registrants",
+      "description": "Lists the people registered for a meeting, including their name, email, status, and personal join URL, with token-based pagination. The meeting must have registration enabled."
+    },
+    {
+      "name": "List Cloud Recordings",
+      "category": "Recordings",
+      "description": "Lists the connected user's cloud recordings within a date range (up to one month per request; defaults to the last 30 days), including per-file download URLs. Cloud recording requires a paid Zoom plan."
+    },
+    {
+      "name": "Get Meeting Recordings",
+      "category": "Recordings",
+      "description": "Retrieves all cloud recording files of one meeting - video, audio, transcript, and chat files - each with its download URL. Cloud recording requires a paid Zoom plan; download URLs may require an access token appended for protected recordings."
+    },
+    {
+      "name": "Delete Meeting Recordings",
+      "category": "Recordings",
+      "description": "Deletes all cloud recording files of a meeting, either moving them to the Zoom trash (recoverable for 30 days) or deleting them permanently. Cloud recording requires a paid Zoom plan."
+    },
+    {
+      "name": "List Past Meeting Participants",
+      "category": "Past Meetings",
+      "description": "Lists everyone who attended a past meeting, with their name, email, and join/leave times. Requires a paid Zoom plan (Pro or higher); free accounts receive an error from Zoom."
+    },
+    {
+      "name": "Get My User",
+      "category": "Users",
+      "description": "Retrieves the connected Zoom user's profile - name, email, account type, timezone, and personal meeting ID. Use this to identify the connected account or read its defaults."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Auto-create scheduled or recurring Zoom meetings from form submissions, CRM deals, or calendar events, then share the join URL with attendees.",
+    "Register attendees for a meeting and email each person their personal join link.",
+    "Retrieve cloud recording download links after a meeting ends and archive them to storage or a spreadsheet.",
+    "Pull past-meeting participant reports (join/leave times) for attendance tracking and follow-up.",
+    "Fetch ready-to-send invitation text and post it to chat or email."
+  ],
+  "agentIdeas": [
+    "Use **Google Calendar** \"On Event Starting Soon\" to detect an upcoming appointment, then call **Zoom** \"Create Meeting\" and share the join URL back onto the calendar event.",
+    "When **Fireflies.ai** \"On New Transcript\" fires, call **Zoom** \"List Past Meeting Participants\" to reconcile attendance, then **Google Sheets** \"Add Row\" to log who attended each meeting.",
+    "After a meeting, use **Zoom** \"Get Meeting Recordings\" to fetch the download links, then **Gmail** \"Send Message\" to email the recording to attendees."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/zoom/public/icon.png",
+  "sourcePaths": {
+    "service": "services/zoom",
+    "readme": "services/zoom/README.md",
+    "index": "services/zoom/src/index.js"
+  }
+}

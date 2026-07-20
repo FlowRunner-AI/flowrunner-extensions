@@ -1,0 +1,107 @@
+{
+  "slug": "aws-rekognition",
+  "name": "AWS Rekognition",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Zero-dependency integration with Amazon Rekognition using native AWS Signature V4 signing (Node crypto). Analyze images for objects, text, faces, unsafe content, celebrities, and protective equipment, and build searchable face collections. Requests use the AWS JSON 1.1 protocol (POST to `rekognition.{region}.amazonaws.com` with an `X-Amz-Target` header). Supports two authentication methods: direct API Key credentials or IAM Role via STS AssumeRole for cross-account access.",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Image Analysis",
+    "Face Analysis",
+    "Collections"
+  ],
+  "actions": [
+    {
+      "name": "Detect Labels",
+      "category": "Image Analysis",
+      "description": "Detects real-world objects, scenes, concepts, and activities in an image, each with a confidence score, and returns bounding boxes for detected instances. Supply the image as an S3 object or an image/file URL (URLs are limited to 5 MB). Optionally cap the number of labels and set a minimum confidence."
+    },
+    {
+      "name": "Detect Text",
+      "category": "Image Analysis",
+      "description": "Detects text in an image and returns each detected line and word with its confidence and bounding geometry. Useful for reading signs, labels, documents, and screenshots. Supply the image as an S3 object or an image/file URL (URLs are limited to 5 MB)."
+    },
+    {
+      "name": "Detect Faces",
+      "category": "Face Analysis",
+      "description": "Detects faces in an image and returns per-face details such as bounding box, quality, pose, and (when All Attributes is enabled) age range, emotions, facial landmarks, gender, and attributes like smile, eyeglasses, and beard. Supply the image as an S3 object or an image/file URL (URLs are limited to 5 MB)."
+    },
+    {
+      "name": "Detect Moderation Labels",
+      "category": "Image Analysis",
+      "description": "Detects unsafe or inappropriate content in an image (such as explicit or suggestive nudity, violence, drugs, hate symbols, and more), returning hierarchical moderation categories with confidence scores. Supply the image as an S3 object or an image/file URL (URLs are limited to 5 MB)."
+    },
+    {
+      "name": "Recognize Celebrities",
+      "category": "Face Analysis",
+      "description": "Recognizes well-known people in an image and returns matched celebrities with their name, ID, match confidence, and known URLs, plus a count of unrecognized faces. Supply the image as an S3 object or an image/file URL (URLs are limited to 5 MB)."
+    },
+    {
+      "name": "Compare Faces",
+      "category": "Face Analysis",
+      "description": "Compares the largest face in a source image against faces in a target image and returns matches above a similarity threshold, along with unmatched faces. Provide each image as either an S3 object or an image/file URL (URLs are limited to 5 MB)."
+    },
+    {
+      "name": "Detect Protective Equipment",
+      "category": "Image Analysis",
+      "description": "Detects personal protective equipment (PPE) worn by people in an image, reporting per-person body parts and whether each is covered by a face cover, hand cover, or head cover, plus an overall summary of persons with and without required equipment. Supply the image as an S3 object or an image/file URL (URLs are limited to 5 MB)."
+    },
+    {
+      "name": "Create Collection",
+      "category": "Collections",
+      "description": "Creates a face collection, a server-side container used to store searchable face vectors indexed from images. Returns the collection ARN, the face model version, and a status code. Collection IDs must be unique within a region and account."
+    },
+    {
+      "name": "List Collections",
+      "category": "Collections",
+      "description": "Lists the face collection IDs in the configured region and account, along with the face model version used by each. Supports pagination via cursor for accounts with many collections."
+    },
+    {
+      "name": "Delete Collection",
+      "category": "Collections",
+      "description": "Permanently deletes a face collection and all of the faces indexed within it. This action cannot be undone. Returns the operation status code."
+    },
+    {
+      "name": "Index Faces",
+      "category": "Collections",
+      "description": "Detects faces in an image and adds them to the specified collection as searchable face vectors, optionally tagging them with an external image ID. Returns the indexed face records and any faces that could not be indexed. Supply the image as an S3 object or an image/file URL (URLs are limited to 5 MB)."
+    },
+    {
+      "name": "Search Faces by Image",
+      "category": "Collections",
+      "description": "Searches a collection for faces matching the largest face detected in the supplied image, returning matches above a similarity threshold. Use this to identify a person by comparing against previously indexed faces. Supply the image as an S3 object or an image/file URL (URLs are limited to 5 MB)."
+    },
+    {
+      "name": "List Faces",
+      "category": "Collections",
+      "description": "Lists the faces indexed in a collection, returning each face's ID, bounding box, external image ID, and confidence. Supports pagination via cursor for collections with many faces."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Auto-tagging and categorizing uploaded images by detecting objects, scenes, and activities",
+    "Extracting text from photos, signs, screenshots, and scanned documents (OCR)",
+    "Moderating user-generated images by flagging explicit, violent, or otherwise unsafe content",
+    "Verifying identity by comparing a submitted photo against a reference image or a face collection",
+    "Building and searching a face collection to recognize returning people across images",
+    "Enforcing workplace safety by detecting whether people are wearing required PPE (face, hand, head covers)",
+    "Recognizing celebrities or public figures in media assets"
+  ],
+  "agentIdeas": [
+    "When a new image lands in a bucket, use **S3 Storage** \"Get Object Metadata\" to confirm it, then call **AWS Rekognition** \"Detect Moderation Labels\" and, on a flag, use **Slack** \"Send Message To Channel\" to alert moderators with the object key and category.",
+    "Use **AWS Rekognition** \"Detect Labels\" and \"Detect Text\" on an image (via an **S3 Storage** \"Get Presigned URL\" reference), then call **DynamoDB** \"Put Item\" to persist the extracted tags and text as a searchable record.",
+    "When a user submits an ID photo via URL, use **AWS Rekognition** \"Search Faces by Image\" against an indexed collection, then use **DynamoDB** \"Query\" to look up the matched person's profile and **Slack** \"Send Message To Channel\" to report the verification result."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/aws-rekognition/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/aws-rekognition",
+    "readme": "services/aws-rekognition/README.md",
+    "index": "services/aws-rekognition/src/index.js"
+  }
+}

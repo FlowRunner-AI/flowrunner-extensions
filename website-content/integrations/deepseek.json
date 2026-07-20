@@ -1,0 +1,71 @@
+{
+  "slug": "deepseek",
+  "name": "DeepSeek",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for the [DeepSeek API](https://api-docs.deepseek.com) — fast, low-cost large language models with built-in extended reasoning (\"thinking mode\"), tool/function calling, JSON and structured output, prefix and fill-in-the-middle completions, and automatic context caching.",
+  "actionCount": 6,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Chat",
+    "Completions",
+    "Models",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Chat Completion",
+      "category": "Chat",
+      "description": "Generates a text response for a single prompt using a DeepSeek model (deepseek-v4-flash or deepseek-v4-pro, both with a 1M-token context window and up to 384K output tokens). Supports an optional system prompt, thinking mode for extended reasoning (enabled by default on deepseek-v4-flash), reasoning effort control, and JSON mode for structured output. Context caching is automatic — cache hit/miss token counts are returned in usage. Returns the generated text, the model's reasoning content when thinking mode is active, finish reason and token usage."
+    },
+    {
+      "name": "Chat Completion (Advanced)",
+      "category": "Chat",
+      "description": "Sends a fully custom chat completion request to DeepSeek with a complete messages array (multi-turn conversations with system, user, assistant and tool roles), tool/function calling passthrough (up to 128 functions), structured output via a response format object, thinking mode and reasoning effort controls, log probabilities, and sampling parameters. Returns the raw DeepSeek API response including choices, reasoning_content, tool calls, and usage with automatic context-cache hit/miss token counts. Note: DeepSeek has deprecated frequency_penalty and presence_penalty — they are no longer supported."
+    },
+    {
+      "name": "Chat Prefix Completion",
+      "category": "Chat",
+      "description": "Completes a response that must start with the exact text you provide, using DeepSeek's beta chat prefix completion feature. Useful for forcing output structure — e.g. start a code block with '```python\\n' and stop at '```' to get pure code, or begin a JSON object with '{'. The prefix is sent as the final assistant message with the prefix flag, and the model continues from it. Returns the continuation (without the prefix), plus the full text with the prefix prepended."
+    },
+    {
+      "name": "FIM Completion",
+      "category": "Completions",
+      "description": "Generates a fill-in-the-middle (FIM) completion using DeepSeek's beta completions endpoint — ideal for code completion where the text before (prompt) and after (suffix) the insertion point are known. FIM runs in non-thinking mode and is currently supported only by the deepseek-v4-pro model. Returns the generated middle text, finish reason and token usage."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists all models currently available through the DeepSeek API (e.g. deepseek-v4-flash and deepseek-v4-pro) with their IDs and owning organization. Note: legacy model names 'deepseek-chat' and 'deepseek-reasoner' are deprecated as of 2026-07-24."
+    },
+    {
+      "name": "Get Balance",
+      "category": "Account",
+      "description": "Retrieves the DeepSeek account's current balance, including whether the balance is sufficient for API calls and a per-currency (USD/CNY) breakdown of total, granted and topped-up balances."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generate, summarize, classify, or rewrite text with a low-cost model that has a 1M-token context window.",
+    "Run multi-turn conversations with tool/function calling and structured JSON output.",
+    "Force constrained output (pure code blocks, JSON) using prefix completion.",
+    "Fill-in-the-middle code completion when the text before and after the insertion point are known.",
+    "Monitor account balance before running large batches of API calls."
+  ],
+  "agentIdeas": [
+    "When Gmail's \"On New Email\" trigger fires, use DeepSeek's \"Chat Completion\" to summarize or classify the message, then Slack's \"Send Message To Channel\" to post the summary to the team.",
+    "Use Dropbox's \"On New File\" trigger and \"Get Temporary Link\" to fetch source code, run DeepSeek's \"FIM Completion\" or \"Chat Completion\" to generate or complete it, then Notion's \"Create Page\" to store the result.",
+    "Read data with Google Sheets' \"Get Rows\", run DeepSeek's \"Chat Completion (Advanced)\" with structured JSON output to extract or enrich fields, then write results back with Google Sheets' \"Add Row\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/deepseek/public/icon.png",
+  "sourcePaths": {
+    "service": "services/deepseek",
+    "readme": "services/deepseek/README.md",
+    "index": "services/deepseek/src/index.js"
+  }
+}

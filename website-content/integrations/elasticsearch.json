@@ -1,0 +1,133 @@
+{
+  "slug": "elasticsearch",
+  "name": "Elasticsearch",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Elasticsearch](https://www.elastic.co/elasticsearch) with FlowRunner. Index, search, update, and manage documents and indices against any self-managed Elasticsearch cluster or an Elastic Cloud deployment via the Elasticsearch REST API. Supports full Query DSL bodies, bulk NDJSON operations, and API key or HTTP Basic authentication against your own `serverUrl`.",
+  "actionCount": 18,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Documents",
+    "Search",
+    "Query By",
+    "Indices",
+    "Cluster"
+  ],
+  "actions": [
+    {
+      "name": "Index Document",
+      "category": "Documents",
+      "description": "Indexes (creates or replaces) a JSON document in an index. If a Document ID is provided, the document is created or fully replaced at that ID using PUT /{index}/_doc/{id}; if omitted, Elasticsearch auto-generates an ID via POST /{index}/_doc. The index is created automatically if it does not exist. Use the Refresh option to control search visibility."
+    },
+    {
+      "name": "Get Document",
+      "category": "Documents",
+      "description": "Retrieves a single document by its ID from an index using GET /{index}/_doc/{id}. Returns the document source along with its version and metadata. If the document does not exist, an Elasticsearch error is surfaced."
+    },
+    {
+      "name": "Update Document",
+      "category": "Documents",
+      "description": "Partially updates a document by ID using POST /{index}/_update/{id}. Provide either a partial document (merged into the existing document) or a script for scripted updates. Optionally set Upsert to index the document if it does not yet exist."
+    },
+    {
+      "name": "Delete Document",
+      "category": "Documents",
+      "description": "Deletes a single document by its ID from an index using DELETE /{index}/_doc/{id}. Returns the delete result and version metadata."
+    },
+    {
+      "name": "Bulk",
+      "category": "Documents",
+      "description": "Performs multiple index, create, update, and delete operations in a single request using the _bulk API. Provide an array of operation objects; each is converted into the required NDJSON action/source line pairs and sent with Content-Type application/x-ndjson. Each operation must include an \"action\" of index, create, update, or delete plus \"_index\"/\"_id\" metadata; index, create, and update operations also require a \"source\" (or \"doc\"/\"script\" for update). If a default Index is provided, operations may omit their own _index."
+    },
+    {
+      "name": "Search",
+      "category": "Search",
+      "description": "Runs a search against one or more indices using the Query DSL via POST /{index}/_search. Supply a query object plus optional paging (size, from), sort, aggregations, and _source filtering. Returns matching hits, total counts, and any aggregation results."
+    },
+    {
+      "name": "Count",
+      "category": "Search",
+      "description": "Counts documents matching a query in one or more indices using POST /{index}/_count. Provide a Query DSL object, or omit it to count all documents. Returns the total count and per-shard information."
+    },
+    {
+      "name": "Delete By Query",
+      "category": "Query By",
+      "description": "Deletes all documents matching a query in an index using POST /{index}/_delete_by_query. Provide a Query DSL object; you may cap the number of deletions with Max Docs. Returns the number of deleted documents and batch statistics."
+    },
+    {
+      "name": "Update By Query",
+      "category": "Query By",
+      "description": "Updates all documents matching a query in an index using POST /{index}/_update_by_query, applying an optional script to each match. Without a script it simply reindexes matches (useful to pick up mapping changes). Provide a Query DSL object to select documents. Returns the number of updated documents and batch statistics."
+    },
+    {
+      "name": "Create Index",
+      "category": "Indices",
+      "description": "Creates a new index using PUT /{index}, optionally with index settings (shards, replicas, analysis) and field mappings. Fails if the index already exists."
+    },
+    {
+      "name": "Delete Index",
+      "category": "Indices",
+      "description": "Deletes an index and all of its documents using DELETE /{index}. This is irreversible. A comma-separated list or wildcard may be supplied to delete multiple indices."
+    },
+    {
+      "name": "Index Exists",
+      "category": "Indices",
+      "description": "Checks whether an index exists using a HEAD /{index} request. Returns {\"exists\":true} for a 200 response and {\"exists\":false} for a 404, so it never throws for a missing index."
+    },
+    {
+      "name": "Get Mapping",
+      "category": "Indices",
+      "description": "Retrieves the field mappings for an index using GET /{index}/_mapping. Returns the mapping definition (field names and types) for the index."
+    },
+    {
+      "name": "Get Index",
+      "category": "Indices",
+      "description": "Retrieves full information about an index using GET /{index}, including its aliases, mappings, and settings."
+    },
+    {
+      "name": "Refresh Index",
+      "category": "Indices",
+      "description": "Refreshes one or more indices using POST /{index}/_refresh, making recent changes available for search. Useful after bulk indexing when you need documents to become immediately searchable."
+    },
+    {
+      "name": "List Indices",
+      "category": "Indices",
+      "description": "Lists all indices in the cluster using GET /_cat/indices?format=json. Returns an array of index summaries including health, status, document count, and store size."
+    },
+    {
+      "name": "Cluster Health",
+      "category": "Cluster",
+      "description": "Returns the health of the cluster using GET /_cluster/health, including overall status (green/yellow/red), node counts, and shard allocation. A convenient way to verify connectivity and credentials."
+    },
+    {
+      "name": "Info",
+      "category": "Cluster",
+      "description": "Returns basic cluster information from the root endpoint GET /, including the cluster name, node name, and Elasticsearch version. Useful as a lightweight connection and authentication check."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Index application data, logs, or content into Elasticsearch and make it full-text searchable.",
+    "Run Query DSL searches, counts, and aggregations across one or more indices.",
+    "Bulk-load or synchronize large datasets in a single NDJSON request.",
+    "Bulk-update or bulk-delete documents matching a query without fetching them first.",
+    "Manage index lifecycle: create with mappings/settings, inspect, refresh, and delete indices.",
+    "Verify connectivity, credentials, and cluster health as a lightweight readiness check."
+  ],
+  "agentIdeas": [
+    "Use **PostgreSQL** \"Execute Query\" to pull recent records, then call **Elasticsearch** \"Bulk\" to index them all in a single NDJSON request so they become full-text searchable.",
+    "When an incident is flagged, run **Elasticsearch** \"Search\" with a Query DSL body to find matching log documents, then use **Slack** \"Send Message To Channel\" to alert the on-call team with the top hits.",
+    "Run **Elasticsearch** \"Count\" to check how many documents match an alert query, and if the total crosses a threshold use **Gmail** \"Send Message\" to email a summary to stakeholders."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/elasticsearch/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/elasticsearch",
+    "readme": "services/elasticsearch/README.md",
+    "index": "services/elasticsearch/src/index.js"
+  }
+}

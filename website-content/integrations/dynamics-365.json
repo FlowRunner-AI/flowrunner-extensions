@@ -1,0 +1,75 @@
+{
+  "slug": "dynamics-365",
+  "name": "Microsoft Dynamics 365",
+  "marketingCategory": "ERP & Operations",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for Microsoft Dynamics 365 (Dataverse). Works with any Dataverse-backed Dynamics 365 environment (Sales, Customer Service, etc.) through the Dataverse Web API (`/api/data/v9.2`), authenticated with OAuth2 as the signed-in user. Read, create, update, and delete records in any table, and run FetchXML queries for aggregations and complex joins.",
+  "actionCount": 7,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Connection",
+    "Records",
+    "Queries"
+  ],
+  "actions": [
+    {
+      "name": "Who Am I",
+      "category": "Connection",
+      "description": "Verifies the connection to the Dynamics 365 environment and returns the IDs of the signed-in user, their business unit, and the organization. Useful as a connection health check and for obtaining the current user ID for lookups."
+    },
+    {
+      "name": "List Records",
+      "category": "Records",
+      "description": "Retrieves records from a Dataverse table with optional OData column selection, filtering, sorting, and page size. Returns the records in \"value\" and, when more records are available, an \"@odata.nextLink\" URL that can be passed back via the Next Page Link parameter to fetch the following page."
+    },
+    {
+      "name": "Get Record",
+      "category": "Records",
+      "description": "Retrieves a single record from a Dataverse table by its GUID, with optional column selection and expansion of related records via navigation properties."
+    },
+    {
+      "name": "Create Record",
+      "category": "Records",
+      "description": "Creates a new record in a Dataverse table and returns the created record including its generated GUID. Column names in the data object are logical names (e.g. name, emailaddress1). Set lookup columns with the @odata.bind convention, e.g. {\"primarycontactid@odata.bind\": \"/contacts(00000000-0000-0000-0000-000000000001)\"}."
+    },
+    {
+      "name": "Update Record",
+      "category": "Records",
+      "description": "Updates an existing record in a Dataverse table and returns the updated record. Include only the columns being changed. By default the request sends If-Match: * so it fails if the record does not exist; enable Upsert to create the record with the given GUID when it is missing. Use the @odata.bind convention for lookup columns, e.g. {\"primarycontactid@odata.bind\": \"/contacts(guid)\"}."
+    },
+    {
+      "name": "Delete Record",
+      "category": "Records",
+      "description": "Permanently deletes a record from a Dataverse table by its GUID. Fails with a 404 error if the record does not exist."
+    },
+    {
+      "name": "Execute FetchXML Query",
+      "category": "Queries",
+      "description": "Executes a FetchXML query against a Dataverse table and returns the matching records. FetchXML supports aggregation, grouping, linked entities (joins), and complex filtering beyond OData. The fetch element's entity name must be the singular logical name (e.g. account) while the Entity Set parameter uses the plural entity set name (e.g. accounts). Very large queries may exceed URL length limits since the query is sent URL-encoded."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new leads, contacts, or accounts from web forms and other CRMs into Dynamics 365.",
+    "Automate opportunity and case updates as deals or support tickets progress.",
+    "Enrich existing records and set lookup relationships (via `@odata.bind`) from external data.",
+    "Pull filtered record sets or run FetchXML aggregations for reporting and downstream workflows.",
+    "Validate a connection and resolve the signed-in user with a lightweight Who Am I check."
+  ],
+  "agentIdeas": [
+    "After **Outlook** \"Get Messages List\" surfaces an inbound sales inquiry, use **Microsoft Dynamics 365** \"Create Record\" to add a lead (entity set `leads`), then \"Update Record\" to link the originating contact via `@odata.bind`.",
+    "Use **Microsoft Dynamics 365** \"List Records\" or \"Execute FetchXML Query\" to pull open opportunities, then **Microsoft Excel** \"Add Table Rows\" to build a pipeline report workbook.",
+    "When a deal closes, use **Microsoft Dynamics 365** \"Update Record\" to set the opportunity status and follow with **Microsoft Teams** \"Send Channel Message\" to notify the sales channel."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/dynamics-365/public/icon.png",
+  "sourcePaths": {
+    "service": "services/dynamics-365",
+    "readme": "services/dynamics-365/README.md",
+    "index": "services/dynamics-365/src/index.js"
+  }
+}

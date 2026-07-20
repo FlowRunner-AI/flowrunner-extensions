@@ -1,0 +1,235 @@
+{
+  "slug": "mistral-ai",
+  "name": "Mistral AI",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for the [Mistral AI](https://mistral.ai) platform (La Plateforme). Covers the current Mistral API surface: chat completions, vision, Document AI (OCR), embeddings, code fill-in-the-middle, moderation, Voxtral audio (transcription and text-to-speech), files, batch jobs, agents, server-side conversations, document libraries, and model discovery. Authenticates with a Mistral API key.",
+  "actionCount": 37,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Chat",
+    "Document AI",
+    "Embeddings",
+    "Code",
+    "Moderation",
+    "Audio",
+    "Files",
+    "Batch",
+    "Agents",
+    "Conversations",
+    "Libraries",
+    "Models"
+  ],
+  "actions": [
+    {
+      "name": "Ask AI",
+      "category": "Chat",
+      "description": "Sends a single prompt to a Mistral chat model and returns the generated answer text. Supports an optional system prompt, sampling controls (temperature, top-p), token limits, deterministic seeding, guardrail injection, JSON output mode, and stop sequences. Use \"Create Chat Completion\" for full multi-message conversations."
+    },
+    {
+      "name": "Create Chat Completion",
+      "category": "Chat",
+      "description": "Runs a full multi-message chat completion against any Mistral chat model and returns the raw API response, including choices and token usage. Supports system/user/assistant message history, sampling controls, repetition penalties, deterministic seeding, guardrail injection, stop sequences, and structured output (JSON mode or a custom JSON Schema)."
+    },
+    {
+      "name": "Analyze Image",
+      "category": "Chat",
+      "description": "Analyzes one or more images with a multimodal Mistral model (e.g. mistral-medium-latest, mistral-small-latest, pixtral) and answers a prompt about them. Accepts publicly accessible image URLs or base64 data URLs and returns the model's textual analysis."
+    },
+    {
+      "name": "OCR Document",
+      "category": "Document AI",
+      "description": "Extracts text and structure from a PDF or image using Mistral Document AI (OCR). Returns per-page markdown, optional embedded images as base64, and optional paragraph-level content blocks with bounding boxes. Accepts a document URL, an image URL, or the ID of a file previously uploaded with the 'ocr' purpose."
+    },
+    {
+      "name": "Create Embeddings",
+      "category": "Embeddings",
+      "description": "Generates vector embeddings for one or more input texts using a Mistral embedding model ('mistral-embed' for natural language, 'codestral-embed' for code). Returns one embedding vector per input in the same order. Output dimension and data type can be customized for codestral-embed."
+    },
+    {
+      "name": "FIM Completion",
+      "category": "Code",
+      "description": "Performs a fill-in-the-middle code completion with a Codestral model: given a code prompt (prefix) and an optional suffix, generates the code that belongs between them. Ideal for code insertion, function body generation, and autocomplete-style tasks."
+    },
+    {
+      "name": "Moderate Text",
+      "category": "Moderation",
+      "description": "Classifies one or more raw texts for harmful content with Mistral's moderation model. Each result contains boolean flags and confidence scores across nine safety categories: sexual, hate_and_discrimination, violence_and_threats, dangerous_and_criminal_content, selfharm, health, financial, law, and pii."
+    },
+    {
+      "name": "Moderate Conversation",
+      "category": "Moderation",
+      "description": "Classifies a chat conversation for harmful content with Mistral's conversational moderation endpoint, which assesses the last message in the context of the full conversation. Returns boolean flags and confidence scores across nine safety categories, including jailbreak-style risks that only appear in conversational context."
+    },
+    {
+      "name": "Transcribe Audio",
+      "category": "Audio",
+      "description": "Transcribes an audio file into text using Mistral's Voxtral speech-to-text models. Accepts a public audio URL (including FlowRunner file URLs) or a previously uploaded Mistral file ID. Supports speaker diarization, custom vocabulary biasing (up to 100 terms), segment/word-level timestamps, and recordings up to 3 hours."
+    },
+    {
+      "name": "Text to Speech",
+      "category": "Audio",
+      "description": "Converts text into natural-sounding speech using Mistral's Voxtral TTS model, with support for preset and custom (cloned) voices. Saves the generated audio to FlowRunner file storage and returns its URL."
+    },
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a file from FlowRunner file storage (or any accessible URL) to Mistral for later use in OCR, batch processing, fine-tuning, or audio transcription. Individual files can be up to 512 MB. Returns the created Mistral file object including its ID."
+    },
+    {
+      "name": "List Files",
+      "category": "Files",
+      "description": "Lists files uploaded to your Mistral AI account with pagination, optional name search, and purpose filtering. Returns file metadata including IDs, sizes, purposes, and creation timestamps."
+    },
+    {
+      "name": "Get File",
+      "category": "Files",
+      "description": "Retrieves metadata about a single file uploaded to Mistral, including its name, size, purpose, source, and creation timestamp."
+    },
+    {
+      "name": "Delete File",
+      "category": "Files",
+      "description": "Permanently deletes a file from your Mistral AI account. Returns a confirmation object indicating whether the deletion succeeded."
+    },
+    {
+      "name": "Get File Signed URL",
+      "category": "Files",
+      "description": "Generates a temporary signed download URL for a file stored on Mistral (e.g. batch job results). The URL expires after the specified number of hours, between 1 and 168 (default 24)."
+    },
+    {
+      "name": "Download File",
+      "category": "Files",
+      "description": "Downloads a file's content from Mistral (e.g. batch job output) and saves it to FlowRunner file storage. Returns the stored file's URL together with its original name."
+    },
+    {
+      "name": "Create Batch Job",
+      "category": "Batch",
+      "description": "Creates an asynchronous batch job that processes a .jsonl file of API requests (uploaded with the 'batch' purpose) at a 50% discount compared to synchronous calls. Supports the chat completions, embeddings, FIM, moderation, and OCR endpoints. Jobs run within the specified timeout window (default 24 hours)."
+    },
+    {
+      "name": "List Batch Jobs",
+      "category": "Batch",
+      "description": "Lists batch jobs in your Mistral AI organization with pagination and optional status filtering. Returns each job's ID, endpoint, model, request counters, and current status."
+    },
+    {
+      "name": "Get Batch Job",
+      "category": "Batch",
+      "description": "Retrieves the current state of a batch job, including its status, request counters (total, completed, succeeded, failed), timestamps, and the output/error file IDs once finished."
+    },
+    {
+      "name": "Cancel Batch Job",
+      "category": "Batch",
+      "description": "Requests cancellation of a queued or running batch job. Requests already completed before cancellation remain available in the job's output file."
+    },
+    {
+      "name": "Create Agent",
+      "category": "Agents",
+      "description": "Creates a reusable Mistral agent that bundles a model, system instructions, built-in tools (web search, code interpreter, image generation, document libraries), and completion settings into a single versioned configuration addressable by agent ID in conversations."
+    },
+    {
+      "name": "Update Agent",
+      "category": "Agents",
+      "description": "Updates an existing Mistral agent's name, model, instructions, or description. Each update creates a new agent version; only the provided fields are changed."
+    },
+    {
+      "name": "List Agents",
+      "category": "Agents",
+      "description": "Lists agents created in your Mistral AI workspace with pagination. Returns each agent's ID, name, model, tools, and version information."
+    },
+    {
+      "name": "Get Agent",
+      "category": "Agents",
+      "description": "Retrieves the full configuration of a single Mistral agent, including its model, instructions, tools, completion settings, and version history metadata."
+    },
+    {
+      "name": "Delete Agent",
+      "category": "Agents",
+      "description": "Permanently deletes an agent from your Mistral AI workspace. Existing conversations that referenced the agent are not deleted."
+    },
+    {
+      "name": "Start Conversation",
+      "category": "Conversations",
+      "description": "Starts a new server-side conversation with either a base model or an existing agent. The conversation history is stored by Mistral (unless storing is disabled) so follow-up messages can be appended later by conversation ID. Returns the conversation ID, the assistant's reply text, and all output entries (including any tool executions)."
+    },
+    {
+      "name": "Append to Conversation",
+      "category": "Conversations",
+      "description": "Appends a new user message to an existing stored conversation and runs the completion (including any agent tool executions). Returns the assistant's reply text and all new output entries."
+    },
+    {
+      "name": "Get Conversation",
+      "category": "Conversations",
+      "description": "Retrieves metadata about a stored conversation, including its name, description, associated model or agent, and timestamps."
+    },
+    {
+      "name": "List Conversations",
+      "category": "Conversations",
+      "description": "Lists stored conversations in your Mistral AI workspace with pagination, newest first. Returns each conversation's ID, name, model or agent, and timestamps."
+    },
+    {
+      "name": "Get Conversation History",
+      "category": "Conversations",
+      "description": "Retrieves all entries of a stored conversation in order, including user messages, assistant messages, tool executions, and agent handoffs."
+    },
+    {
+      "name": "Get Conversation Messages",
+      "category": "Conversations",
+      "description": "Retrieves only the user and assistant messages of a stored conversation in order, omitting tool executions and other non-message entries."
+    },
+    {
+      "name": "Create Library",
+      "category": "Libraries",
+      "description": "Creates a document library that agents can search through the built-in document library tool (retrieval-augmented generation). Documents uploaded to the library are automatically processed and indexed."
+    },
+    {
+      "name": "List Libraries",
+      "category": "Libraries",
+      "description": "Lists all document libraries you created or that were shared with you, including document counts, total sizes, and ownership information."
+    },
+    {
+      "name": "Upload Library Document",
+      "category": "Libraries",
+      "description": "Uploads a document from FlowRunner file storage into a Mistral document library, where it is automatically processed and indexed for agent retrieval. Returns the created document's metadata."
+    },
+    {
+      "name": "List Library Documents",
+      "category": "Libraries",
+      "description": "Lists documents stored in a Mistral document library with pagination and optional name search. Returns each document's ID, name, size, and processing status."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists all Mistral AI models available to your account, including chat, code, embedding, OCR, moderation, and audio models, with their capabilities and context window sizes."
+    },
+    {
+      "name": "Get Model",
+      "category": "Models",
+      "description": "Retrieves detailed information about a single Mistral AI model, including its capabilities (chat, vision, function calling, fine-tuning), context window size, and aliases."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generate, summarize, classify, or rewrite text with Mistral chat and code models inside a flow.",
+    "Extract structured text from PDFs and images with Document AI (OCR).",
+    "Transcribe audio and synthesize speech with the Voxtral models.",
+    "Build retrieval-augmented agents backed by indexed document libraries.",
+    "Run large jobs cheaply as asynchronous, discounted batch jobs.",
+    "Moderate user-generated text or conversations for harmful content."
+  ],
+  "agentIdeas": [
+    "When a **Google Drive** \"On New File\" trigger fires for a scanned document, use **Mistral AI** \"OCR Document\" to extract per-page markdown, then **Mistral AI** \"Ask AI\" to summarize it and **Slack** \"Send Message To Channel\" to post the summary.",
+    "Use **Mistral AI** \"Transcribe Audio\" to convert a meeting recording to text, then **Mistral AI** \"Create Chat Completion\" to produce action items and **Notion** \"Create Page\" to save the notes.",
+    "Use **Mistral AI** \"Create Embeddings\" to vectorize incoming support tickets and **Google Sheets** \"Add Row\" to log each ticket alongside its embedding for downstream clustering."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/mistral-ai/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/mistral-ai",
+    "readme": "services/mistral-ai/README.md",
+    "index": "services/mistral-ai/src/index.js"
+  }
+}

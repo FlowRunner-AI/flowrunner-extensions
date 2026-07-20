@@ -1,0 +1,139 @@
+{
+  "slug": "discourse",
+  "name": "Discourse",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to a [Discourse](https://www.discourse.org/) forum to create and manage topics and posts, search content, manage users and private messages, and browse categories and tags. Authentication uses `Api-Key` and `Api-Username` headers against your forum's REST API.",
+  "actionCount": 19,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Topics & Posts",
+    "Categories",
+    "Search",
+    "Users",
+    "Private Messages",
+    "Tags"
+  ],
+  "actions": [
+    {
+      "name": "Create Topic",
+      "category": "Topics & Posts",
+      "description": "Creates a new topic (thread) by submitting its first post. Provide a title, the body in raw Markdown, and optionally a category ID to file it under. Returns the created post, which includes the new topic_id and topic_slug. Use the returned topic_id with Create Post/Reply to add replies."
+    },
+    {
+      "name": "Create Post / Reply",
+      "category": "Topics & Posts",
+      "description": "Adds a reply to an existing topic. Provide the topic_id and the reply body in raw Markdown. Optionally set reply_to_post_number to reply to a specific post within the topic (threaded reply) rather than the topic as a whole. Returns the created post including its post_number."
+    },
+    {
+      "name": "Get Topic",
+      "category": "Topics & Posts",
+      "description": "Retrieves a topic by its numeric ID, including topic metadata and the current page of posts under post_stream. Use the post IDs and post_numbers here with Get Post, Update Post, or Create Post/Reply."
+    },
+    {
+      "name": "Get Post",
+      "category": "Topics & Posts",
+      "description": "Retrieves a single post by its numeric ID, including the raw Markdown, cooked HTML, author, and the topic it belongs to."
+    },
+    {
+      "name": "Update Post",
+      "category": "Topics & Posts",
+      "description": "Edits the body of an existing post. Provide the new raw Markdown and an optional edit reason that is recorded in the post's revision history. Returns the updated post."
+    },
+    {
+      "name": "Delete Post",
+      "category": "Topics & Posts",
+      "description": "Deletes a single post by its numeric ID. Deleting the first post of a topic (post_number 1) deletes the whole topic. Returns an empty body on success."
+    },
+    {
+      "name": "Delete Topic",
+      "category": "Topics & Posts",
+      "description": "Deletes a topic by its numeric ID, removing the topic and all of its posts. Returns an empty body on success."
+    },
+    {
+      "name": "List Latest Topics",
+      "category": "Topics & Posts",
+      "description": "Lists the most recent topics on the forum, ordered by latest activity. Optionally page through results. Returns a topic_list with topics and the users referenced by them."
+    },
+    {
+      "name": "List Top Topics",
+      "category": "Topics & Posts",
+      "description": "Lists the top topics on the forum, ranked by engagement over a chosen time period (all, yearly, quarterly, monthly, weekly, daily). Returns a topic_list with the top topics."
+    },
+    {
+      "name": "List Categories",
+      "category": "Categories",
+      "description": "Lists the forum's categories, including their numeric IDs, names, slugs, colors, and topic counts. Use a category's numeric ID with Create Topic and its slug + ID with Get Category Topics."
+    },
+    {
+      "name": "Get Category Topics",
+      "category": "Categories",
+      "description": "Lists the topics within a specific category. Requires both the category slug and its numeric ID (Discourse addresses categories as /c/{slug}/{id}). Returns a topic_list scoped to that category."
+    },
+    {
+      "name": "Search",
+      "category": "Search",
+      "description": "Full-text search across topics, posts, and users. The query supports Discourse search filters such as @username (by author), #category-slug (in a category), tag:name, status:open, status:closed, status:solved, in:title, order:latest, and quoted \"exact phrases\". Returns matching posts, topics, and users."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a user's public profile by username, including id, name, avatar, trust level, and stats. The returned user.id is required for admin actions like Suspend User."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Registers a new user account. Provide name, email, username, and password. Set active to skip email activation and approved to bypass admin approval (both require admin API privileges). Returns success status and the new user_id."
+    },
+    {
+      "name": "Get User by External ID",
+      "category": "Users",
+      "description": "Looks up a user by their external identifier (the external_id set via SSO / DiscourseConnect). Returns the same profile shape as Get User. Useful for mapping your own system's user IDs to Discourse accounts."
+    },
+    {
+      "name": "List User Actions",
+      "category": "Users",
+      "description": "Lists a user's recent activity stream (posts, replies, likes given/received, and more) filtered by action type. Returns user_actions with each item's action_type, topic, and excerpt."
+    },
+    {
+      "name": "Suspend User",
+      "category": "Users",
+      "description": "Suspends a user account until a given date, blocking them from logging in. Requires the numeric user id (from Get User) and admin API privileges. Provide the suspend-until timestamp and a reason shown to the user. Returns the suspension details."
+    },
+    {
+      "name": "Send Private Message",
+      "category": "Private Messages",
+      "description": "Sends a private message to one or more users. Provide a title, the body in raw Markdown, and the recipient usernames. Internally this creates a private_message topic. Returns the created message post including its topic_id."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists all tags configured on the forum along with their topic counts. Returns tags and, where applicable, extra tag groups."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically open a support topic when a ticket arrives elsewhere, then post replies as the conversation progresses.",
+    "Cross-post announcements or content from a CMS, spreadsheet, or chat tool into a specific forum category.",
+    "Search the forum to find existing discussions and deduplicate before creating a new topic.",
+    "Provision, look up, and moderate community members (create, suspend, map by external SSO ID).",
+    "Send onboarding or notification private messages to one or more users."
+  ],
+  "agentIdeas": [
+    "Use **Discourse** \"Search\" to check whether a question already has a thread, and if not call **Discourse** \"Create Topic\", then post the answer with **Discourse** \"Create Post / Reply\".",
+    "When a new row appears in **Google Sheets** (\"Get Rows\"), call **Discourse** \"Create Topic\" to publish it as a forum announcement in the target category.",
+    "After **Discourse** \"Create Topic\" succeeds, use **Slack** \"Send Message To Channel\" to notify the community team with the new topic link.",
+    "When onboarding a member, use **Discourse** \"Create User\" then **Discourse** \"Send Private Message\" to deliver a welcome, and log the account with **Notion** \"Create Page\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/discourse/public/icon.png",
+  "sourcePaths": {
+    "service": "services/discourse",
+    "readme": "services/discourse/README.md",
+    "index": "services/discourse/src/index.js"
+  }
+}

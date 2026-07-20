@@ -1,0 +1,61 @@
+{
+  "slug": "adalo",
+  "name": "Adalo",
+  "marketingCategory": "Cloud & Infrastructure",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Read and write records in your Adalo app's collections directly from a flow via the [Adalo Collections API](https://help.adalo.com/integrations/the-adalo-api). Authenticates with a Bearer API key scoped to a specific Adalo App ID.",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Records"
+  ],
+  "actions": [
+    {
+      "name": "List Records",
+      "category": "Records",
+      "description": "Lists records in an Adalo collection with pagination. Returns an object with a \"records\" array of the collection's records; each record includes its \"id\" plus every field of the collection. Use \"offset\" and \"limit\" to page through large collections. Note: Adalo enforces a rate limit of roughly 5 requests per second (HTTP 429 when exceeded)."
+    },
+    {
+      "name": "Get Record",
+      "category": "Records",
+      "description": "Retrieves a single record from an Adalo collection by its record ID. Returns the record object with its \"id\" and all collection fields. Note: Adalo enforces a rate limit of roughly 5 requests per second (HTTP 429 when exceeded)."
+    },
+    {
+      "name": "Create Record",
+      "category": "Records",
+      "description": "Creates a new record in an Adalo collection. Pass a \"fields\" object whose keys are the collection's field names (or their numeric property IDs) and whose values are the data to store. Returns the newly created record including its generated \"id\". Note: Adalo enforces a rate limit of roughly 5 requests per second (HTTP 429 when exceeded)."
+    },
+    {
+      "name": "Update Record",
+      "category": "Records",
+      "description": "Updates an existing record in an Adalo collection. Pass a \"fields\" object containing only the field(s) you want to change; omitted fields are left unchanged (partial update). Returns the updated record. Note: Adalo enforces a rate limit of roughly 5 requests per second (HTTP 429 when exceeded)."
+    },
+    {
+      "name": "Delete Record",
+      "category": "Records",
+      "description": "Deletes a record from an Adalo collection by its record ID. On success Adalo returns an empty response (HTTP 200/204); this operation returns a confirmation object. Note: Adalo enforces a rate limit of roughly 5 requests per second (HTTP 429 when exceeded)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync records from external systems (CRMs, spreadsheets, form submissions) into an Adalo collection so your no-code app stays up to date.",
+    "Read collection records to power notifications, reports, or downstream integrations.",
+    "Create, update, or remove Adalo records as part of a larger multi-step automation."
+  ],
+  "agentIdeas": [
+    "Use **Airtable** \"Get Records\" to pull rows from a source base, then call **Adalo** \"Create Record\" for each to seed or sync an Adalo collection.",
+    "Fetch a spreadsheet's data with **Google Sheets** \"Get Rows\" and use **Adalo** \"Update Record\" to keep matching Adalo records aligned with the sheet.",
+    "When a **Baserow** row changes, use **Adalo** \"List Records\" to find the matching record and **Adalo** \"Update Record\" to propagate the change into your Adalo app."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/adalo/public/icon.png",
+  "sourcePaths": {
+    "service": "services/adalo",
+    "readme": "services/adalo/README.md",
+    "index": "services/adalo/src/index.js"
+  }
+}

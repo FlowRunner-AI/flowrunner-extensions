@@ -1,0 +1,80 @@
+{
+  "slug": "calendly",
+  "name": "Calendly",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate scheduling workflows and meeting management with Calendly's powerful booking system. Create one-off meetings, manage cancellations, and trigger workflows based on booking events.",
+  "actionCount": 7,
+  "triggerCount": 5,
+  "operationCategories": [
+    "Event Management",
+    "Meeting Automation",
+    "Availability Management"
+  ],
+  "actions": [
+    {
+      "name": "Cancel Scheduled Event",
+      "category": "Event Management",
+      "description": "Cancels a scheduled meeting, enabling AI agents to automatically handle cancellations, send apology emails, reschedule follow-ups, or trigger alternate workflows. Perfect for managing booking conflicts, emergency cancellations, or automated schedule adjustments based on business rules."
+    },
+    {
+      "name": "Find Host by Name/Email",
+      "category": null,
+      "description": "Find the first host by name or email"
+    },
+    {
+      "name": "Find Event Type by Name",
+      "category": null,
+      "description": "Find the first event type by name"
+    },
+    {
+      "name": "Create One-Off Meeting",
+      "category": "Meeting Automation",
+      "description": "Creates a custom one-off meeting link, enabling AI agents to generate personalized booking pages for specific prospects, custom meeting types, or special events. Perfect for creating targeted demo links, personalized consultation bookings, or unique meeting experiences for VIP clients."
+    },
+    {
+      "name": "Get User Availability Schedule",
+      "category": "Availability Management",
+      "description": "Retrieves a specific user availability schedule by ID, enabling AI agents to understand working hours, date overrides, and scheduling rules. Perfect for intelligent scheduling, availability analysis, and calendar optimization workflows."
+    },
+    {
+      "name": "List User Availability Schedules",
+      "category": "Availability Management",
+      "description": "Lists all user availability schedules for a specific user or the current user, enabling AI agents to analyze multiple schedules, identify patterns, and optimize calendar configurations. Perfect for schedule management, availability reporting, and intelligent calendar coordination."
+    },
+    {
+      "name": "Create Single-Use Scheduling Link",
+      "category": "Meeting Automation",
+      "description": "Creates a one-time scheduling link for existing event types, enabling AI agents to generate secure, personalized booking URLs for individual prospects. Perfect for targeted outreach, personalized follow-ups, or creating exclusive booking opportunities that expire after one use."
+    }
+  ],
+  "triggers": [
+    "On Invitee Created",
+    "On Invitee Canceled",
+    "On Mark Invitee as No-Show",
+    "On Unmark Invitee as No-Show",
+    "On New Routing Form Submitted"
+  ],
+  "idealUseCases": [
+    "Automating follow-up workflows when prospects book meetings",
+    "Creating personalized booking pages for VIP clients and targeted outreach",
+    "Managing cancellations and no-shows with automated retention campaigns",
+    "Triggering CRM updates when meetings are scheduled or cancelled",
+    "Generating exclusive single-use booking links for special events",
+    "Automating confirmation emails and meeting preparation workflows",
+    "Integrating routing form submissions with lead qualification processes",
+    "Streamlining demo scheduling with automated calendar management"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.svg",
+  "iconFile": "services/calendly/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/calendly",
+    "readme": "services/calendly/README.md",
+    "index": "services/calendly/src/index.js"
+  }
+}

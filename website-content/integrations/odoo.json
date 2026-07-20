@@ -1,0 +1,86 @@
+{
+  "slug": "odoo",
+  "name": "Odoo",
+  "marketingCategory": "ERP & Operations",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Interact with any [Odoo](https://www.odoo.com/) instance over its External API. This service is a generic ORM client: every operation works against **any Odoo model** (e.g. `res.partner`, `sale.order`, `product.product`, `crm.lead`) by passing the model's technical name. It talks to Odoo over zero-dependency JSON-RPC and authenticates with your Odoo API key used in place of a password.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Records",
+    "Metadata",
+    "Advanced"
+  ],
+  "actions": [
+    {
+      "name": "Search Read",
+      "category": "Records",
+      "description": "Searches records of any Odoo model and returns their field values in a single call — the primary way to query data. Provide the model technical name (e.g. res.partner, sale.order, product.product) and an optional domain filter. The domain is an array of condition triples like [[\"is_company\",\"=\",true],[\"name\",\"ilike\",\"Acme\"]]; multiple triples are combined with implicit AND. Prefix logical operators \"&\", \"|\", \"!\" as separate array elements for explicit AND/OR/NOT. Use fields to limit returned columns (omit for all), plus limit, offset, and order for pagination and sorting."
+    },
+    {
+      "name": "Search",
+      "category": "Records",
+      "description": "Searches records of an Odoo model and returns only the matching record IDs (no field data). Use this when you just need IDs to feed into Read, Update, or Delete. The domain is an array of condition triples like [[\"is_company\",\"=\",true]]. Supports limit, offset, and order for pagination and sorting."
+    },
+    {
+      "name": "Search Count",
+      "category": "Records",
+      "description": "Returns the number of records of an Odoo model that match a domain filter, without retrieving them. Efficient for totals and pagination counts. The domain is an array of condition triples like [[\"is_company\",\"=\",true]]; an empty domain counts all records."
+    },
+    {
+      "name": "Read",
+      "category": "Records",
+      "description": "Retrieves field values for specific records of an Odoo model by their IDs. Provide the model name and a list of record IDs (typically obtained from Search). Use fields to limit which columns are returned; omit to return all fields."
+    },
+    {
+      "name": "Create",
+      "category": "Records",
+      "description": "Creates a new record in an Odoo model and returns its new database ID. Provide the model name and a values object mapping field names to values, e.g. {\"name\":\"Acme Inc\",\"is_company\":true,\"email\":\"info@acme.com\"}. For relational fields, pass IDs (many2one) or Odoo command tuples (one2many/many2many)."
+    },
+    {
+      "name": "Update",
+      "category": "Records",
+      "description": "Updates one or more existing records in an Odoo model. Provide the model name, a list of record IDs to update, and a values object with the fields to change, e.g. {\"name\":\"New Name\",\"active\":false}. All listed records receive the same changes. Returns true on success."
+    },
+    {
+      "name": "Delete",
+      "category": "Records",
+      "description": "Permanently deletes one or more records from an Odoo model. Provide the model name and a list of record IDs to remove. This is irreversible. Returns true on success."
+    },
+    {
+      "name": "Fields Get",
+      "category": "Metadata",
+      "description": "Introspects a model and returns metadata for its fields — useful for discovering which fields exist before building a domain or values object. Provide the model name; by default returns each field's label (string), type, and required flag. Optionally pass a custom attributes list to return additional field metadata."
+    },
+    {
+      "name": "Call Method",
+      "category": "Advanced",
+      "description": "Escape hatch for calling any model method not covered by the dedicated operations (e.g. name_get, copy, action_confirm, message_post, or custom methods). Provide the model name, the method name, a positional args array, and an optional kwargs object. The raw result of the method is returned. Use this for workflow actions and less common ORM calls."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync CRM contacts, leads, or partners from external tools into Odoo",
+    "Create or update sales orders, invoices, and products from automated workflows",
+    "Query Odoo data with domain filters to feed reports, notifications, or downstream systems",
+    "Count or paginate large record sets efficiently without fetching every row",
+    "Discover a model's available fields before building create/update payloads",
+    "Trigger Odoo workflow actions (confirm order, post message, custom methods) via arbitrary calls"
+  ],
+  "agentIdeas": [
+    "When a **HubSpot** \"Create Contact\" fires, call **Odoo** \"Create\" on `res.partner` to mirror the contact into Odoo, then **Odoo** \"Search Read\" to confirm it landed",
+    "Use **Odoo** \"Search Read\" on `sale.order` to pull recent orders, then **Google Sheets** \"Add Row\" to log each order into a reporting spreadsheet",
+    "After **Odoo** \"Update\" (or \"Call Method\" with `action_confirm`) marks an order confirmed, use **Slack** \"Send Message To Channel\" to notify the fulfillment team with the record ID"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/odoo/public/icon.png",
+  "sourcePaths": {
+    "service": "services/odoo",
+    "readme": "services/odoo/README.md",
+    "index": "services/odoo/src/index.js"
+  }
+}

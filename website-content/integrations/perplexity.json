@@ -1,0 +1,98 @@
+{
+  "slug": "perplexity",
+  "name": "Perplexity",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for the [Perplexity API](https://docs.perplexity.ai) — web-grounded AI answers (Sonar), the standalone Search API, the Agent API with built-in research tools, and Perplexity's embedding models. Authenticates with a single API key (Bearer).",
+  "actionCount": 11,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Sonar",
+    "Search",
+    "Async Sonar",
+    "Agent",
+    "Models",
+    "Embeddings"
+  ],
+  "actions": [
+    {
+      "name": "Ask",
+      "category": "Sonar",
+      "description": "Asks Perplexity a question and returns a web-grounded answer using a Sonar model. Perplexity searches the live web (or academic papers / SEC filings), synthesizes an answer and returns the text together with its citations, the underlying search results, and optional related follow-up questions. 'Sonar Deep Research' performs exhaustive multi-step research and can take several minutes — prefer Create Async Chat Completion for it."
+    },
+    {
+      "name": "Chat Completion (Advanced)",
+      "category": "Sonar",
+      "description": "Sends a fully custom chat completion request to Perplexity's Sonar API with a complete messages array and every available control: search mode (web/academic/SEC), domain, language, recency and publish/update date filters, image results and image filters, related questions, web search options (context size, search type, user location), structured JSON output via a JSON Schema, and reasoning effort for reasoning models. Returns the raw API response including choices, citations, search results, images and usage."
+    },
+    {
+      "name": "Search the Web",
+      "category": "Search",
+      "description": "Searches the web with Perplexity's standalone Search API and returns ranked results (title, URL, snippet, publication date and last-updated date) without any LLM answer generation. Supports multiple queries in one call, domain, country, recency and publish/update date filters, and control over how much page content is extracted per result."
+    },
+    {
+      "name": "Create Async Chat Completion",
+      "category": "Async Sonar",
+      "description": "Submits a Sonar chat completion for asynchronous processing and returns immediately with a request ID and status. Ideal for long-running 'Sonar Deep Research' jobs that exceed synchronous timeouts. Poll the request with Get Async Chat Completion until its status is COMPLETED, then read the result from its 'response' property. Async results are retained for 7 days."
+    },
+    {
+      "name": "Get Async Chat Completion",
+      "category": "Async Sonar",
+      "description": "Retrieves the status and result of an asynchronous Sonar chat completion by its request ID. Status is one of CREATED, IN_PROGRESS, COMPLETED or FAILED; once COMPLETED, the full chat completion (answer, citations, search results, usage) is available in the 'response' property."
+    },
+    {
+      "name": "List Async Chat Completions",
+      "category": "Async Sonar",
+      "description": "Lists the asynchronous Sonar chat completion requests submitted with your API key, with their IDs, statuses, models and timestamps. Supports pagination via the limit and next token parameters."
+    },
+    {
+      "name": "Create Agent Response",
+      "category": "Agent",
+      "description": "Generates a response with Perplexity's Agent API, which orchestrates frontier models (Perplexity Sonar, OpenAI GPT, Anthropic Claude, Google Gemini, xAI Grok) with built-in tools: web search, finance search, people search, URL fetching and a code sandbox. Supports multi-turn conversations via a previous response ID, effort presets, reasoning control, multi-step research loops, structured JSON output, and background (asynchronous) execution polled with Get Agent Response."
+    },
+    {
+      "name": "Get Agent Response",
+      "category": "Agent",
+      "description": "Retrieves a previously created (stored or background) Agent API response by its ID. Returns a snapshot with its status (queued, in_progress, completed, failed, incomplete or cancelled), the output items (messages, search results, tool calls) and token usage. Use this to poll background agent requests until completion."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists the models available for the Perplexity Agent API, including Perplexity's own Sonar models and frontier models from OpenAI, Anthropic, Google and xAI, with their IDs in 'provider/model-name' format and owners. Note: the Sonar chat completion endpoints use the fixed model set 'sonar', 'sonar-pro', 'sonar-reasoning-pro' and 'sonar-deep-research'."
+    },
+    {
+      "name": "Create Embeddings",
+      "category": "Embeddings",
+      "description": "Generates vector embeddings for up to 512 texts with Perplexity's embedding models. Each text supports up to 32K tokens (120K tokens combined per request). Embeddings are returned base64-encoded (int8 or binary quantization) with configurable output dimensions, together with token usage and cost."
+    },
+    {
+      "name": "Create Contextualized Embeddings",
+      "category": "Embeddings",
+      "description": "Generates contextualized embeddings for chunked documents with Perplexity's contextual embedding models: each chunk's vector is computed with awareness of its surrounding document, improving retrieval quality for RAG pipelines. Supports up to 512 documents and 16,000 chunks per request (32K tokens per document, 120K tokens combined). Vectors are returned base64-encoded with configurable dimensions."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Answer questions with up-to-date, cited information pulled from the live web, academic papers, or SEC filings",
+    "Run standalone web searches (ranked results, no LLM answer) to feed downstream automations or RAG pipelines",
+    "Kick off long-running \"Sonar Deep Research\" jobs asynchronously and poll for the completed report",
+    "Orchestrate frontier models (Sonar, OpenAI, Anthropic, Google, xAI) with built-in tools (web/finance/people search, URL fetch, code sandbox) via the Agent API",
+    "Generate vector embeddings — including document-aware contextual embeddings — for semantic search and retrieval"
+  ],
+  "agentIdeas": [
+    "Use Perplexity \"Ask\" (or \"Create Async Chat Completion\" for Sonar Deep Research) to produce a cited market or competitor brief, then **Notion** \"Create Page\" to publish it as a research doc",
+    "On a schedule, use Perplexity \"Search the Web\" with recency filters to gather the latest articles on a topic and **Google Sheets** \"Add Row\" to log each result with its title, URL, and date",
+    "Use **Google Sheets** \"Get Rows\" to pull a list of companies, call Perplexity \"Create Agent Response\" with finance/people search to enrich each one, then **Slack** \"Send Message To Channel\" to post the summary to the team"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/perplexity/public/icon.png",
+  "sourcePaths": {
+    "service": "services/perplexity",
+    "readme": "services/perplexity/README.md",
+    "index": "services/perplexity/src/index.js"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "slug": "dynamodb-service",
+  "name": "DynamoDB",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Zero-dependency integration with Amazon DynamoDB using native AWS Signature V4 signing (Node crypto). Read, write, query, and scan tables with items exposed as plain JSON — values are automatically marshalled to and from DynamoDB's typed attribute-value format. Supports two authentication methods: direct API Key credentials or IAM Role via STS AssumeRole for cross-account access.",
+  "actionCount": 10,
+  "triggerCount": 0,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Put Item",
+      "category": null,
+      "description": "Creates a new item or replaces an existing item with the same primary key in a DynamoDB table. The item is supplied as plain JSON and is automatically converted to DynamoDB's attribute format."
+    },
+    {
+      "name": "Get Item",
+      "category": null,
+      "description": "Retrieves a single item from a DynamoDB table by its primary key. The key is supplied as plain JSON and the returned item is plain JSON."
+    },
+    {
+      "name": "Update Item",
+      "category": null,
+      "description": "Updates attributes of an existing item, or creates it if it does not exist. Provide a simple \"updates\" object to set attributes, or supply a raw updateExpression for advanced operations (ADD, REMOVE, conditional math)."
+    },
+    {
+      "name": "Delete Item",
+      "category": null,
+      "description": "Deletes a single item from a DynamoDB table by its primary key. Optionally returns the deleted item."
+    },
+    {
+      "name": "Query",
+      "category": null,
+      "description": "Queries a table or secondary index using a key condition expression, returning matching items as plain JSON. Supports filtering, pagination via cursor, and sort-order control."
+    },
+    {
+      "name": "Scan",
+      "category": null,
+      "description": "Scans an entire table or index, optionally applying a filter, and returns matching items as plain JSON. Use Query instead when you can filter by partition key. Supports pagination via cursor."
+    },
+    {
+      "name": "Batch Get Items",
+      "category": null,
+      "description": "Retrieves up to many items from a single table by primary key, automatically splitting into batches of 100 and retrying any unprocessed keys. Returns items as plain JSON."
+    },
+    {
+      "name": "Batch Write Items",
+      "category": null,
+      "description": "Puts and/or deletes many items in a single table, automatically splitting into batches of 25 and retrying unprocessed items. Items and keys are plain JSON."
+    },
+    {
+      "name": "Execute Statement (PartiQL)",
+      "category": null,
+      "description": "Runs a PartiQL (SQL-compatible) statement against DynamoDB and returns results as plain JSON. Use ? placeholders with the parameters array. Supports pagination via cursor."
+    },
+    {
+      "name": "Describe Table",
+      "category": null,
+      "description": "Returns metadata about a DynamoDB table: its key schema, attribute definitions, secondary indexes, item count, size, and status. Useful for discovering a table's primary key before reading or writing."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Persisting workflow data, events, or records into a DynamoDB table from automated flows",
+    "Looking up single items or batches of items by primary key for downstream processing",
+    "Querying tables or secondary indexes with key conditions and filters, paginating through large result sets",
+    "Scanning a table to export, audit, or migrate its contents",
+    "Running ad-hoc PartiQL (SQL-compatible) statements against DynamoDB",
+    "Bulk loading or removing many items in a single step with automatic batching and retry of unprocessed items",
+    "Discovering a table's primary key and schema before reading or writing"
+  ],
+  "agentIdeas": [
+    "Use **AWS SQS** \"Receive Messages\" to pull queued events, then use **AWS DynamoDB** \"Batch Write Items\" to persist each event into a table in a single batched, automatically retried write.",
+    "Use **AWS DynamoDB** \"Query\" to fetch records matching a key condition, then use **AWS SNS** \"Publish Message\" to broadcast a notification or **Google Sheets** \"Add Rows\" to append each item to a reporting spreadsheet.",
+    "After an **AWS Lambda** \"Invoke Function\" call returns a result, use **AWS DynamoDB** \"Put Item\" to store the function's output, then use **Gmail** \"Send Message\" to notify a stakeholder."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/dynamodb-service/public/icon.png",
+  "sourcePaths": {
+    "service": "services/dynamodb-service",
+    "readme": "services/dynamodb-service/README.md",
+    "index": "services/dynamodb-service/src/index.js"
+  }
+}

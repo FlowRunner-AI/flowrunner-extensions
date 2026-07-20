@@ -1,0 +1,121 @@
+{
+  "slug": "huggingface",
+  "name": "Hugging Face",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers) and the Hugging Face Hub API. It gives flows access to thousands of open models — chat/LLM completion routed across partner providers (Groq, Together, Cerebras, Fireworks and more), task-specific inference (image generation, speech recognition, embeddings, summarization, translation, classification, fill-mask, question answering), and Hub model/dataset discovery. Authenticates with a single Hugging Face access token.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Chat",
+    "Images",
+    "Audio",
+    "Embeddings",
+    "Text Transformation",
+    "Text Analysis",
+    "Hub",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Chat Completion",
+      "category": "Chat",
+      "description": "Generates a text response for a single prompt through the Hugging Face Inference Providers router (OpenAI-compatible), which routes the request to partner providers such as Groq, Together, Cerebras, Fireworks and more. Accepts any Hub chat model ID (e.g. 'meta-llama/Llama-3.3-70B-Instruct'), an optional system prompt, JSON mode, and a provider selection policy ('fastest', 'cheapest', 'preferred' or a specific provider slug). Returns the generated text, finish reason and token usage."
+    },
+    {
+      "name": "Chat Completion (Advanced)",
+      "category": "Chat",
+      "description": "Sends a fully custom chat completion request through the Hugging Face Inference Providers router (OpenAI-compatible) with a complete messages array (multi-turn conversations, multimodal image_url content parts for vision models), tool/function calling passthrough, structured outputs via a response format object, penalties and sampling parameters. Returns the raw router response including choices, tool calls and usage."
+    },
+    {
+      "name": "Generate Image",
+      "category": "Images",
+      "description": "Generates an image from a text prompt using a text-to-image diffusion model (FLUX, Stable Diffusion and more) served by the Hugging Face HF Inference provider. Supports negative prompts, image dimensions, guidance scale, inference steps and a seed for reproducibility. Saves the generated image to FlowRunner file storage and returns its URL. Note: models that are cold may take extra time to load on the first request."
+    },
+    {
+      "name": "Transcribe Audio",
+      "category": "Audio",
+      "description": "Transcribes an audio file into text using an automatic-speech-recognition model (e.g. OpenAI Whisper) served by the Hugging Face HF Inference provider. Downloads the audio from the provided URL (FlowRunner file URL or any public URL; flac, mp3, wav, m4a, ogg and other common formats) and sends it base64-encoded. Optionally returns per-chunk timestamps. Note: cold models may take extra time to load on the first request."
+    },
+    {
+      "name": "Create Embeddings",
+      "category": "Embeddings",
+      "description": "Converts one or more texts into embedding vectors using a feature-extraction model served by the Hugging Face HF Inference provider — useful for semantic search, RAG, clustering and similarity. Returns the embedding vectors together with their count and dimensionality."
+    },
+    {
+      "name": "Summarize Text",
+      "category": "Text Transformation",
+      "description": "Produces a shorter version of a document while preserving its important information, using a summarization model (e.g. facebook/bart-large-cnn) served by the Hugging Face HF Inference provider. Returns the generated summary text."
+    },
+    {
+      "name": "Translate Text",
+      "category": "Text Transformation",
+      "description": "Translates text from one language to another using a translation model served by the Hugging Face HF Inference provider. Single-pair models (e.g. Helsinki-NLP/opus-mt-en-de) need no language codes; multilingual models (e.g. facebook/nllb-200-distilled-600M) require source and target language codes in the model's own format (e.g. FLORES-200 codes like 'eng_Latn', 'fra_Latn' for NLLB). Returns the translated text."
+    },
+    {
+      "name": "Classify Text",
+      "category": "Text Analysis",
+      "description": "Assigns labels with confidence scores to a text using a text-classification model served by the Hugging Face HF Inference provider — for sentiment analysis, language detection, toxicity screening and similar tasks with model-defined label sets. Returns all predicted labels with scores plus the top label."
+    },
+    {
+      "name": "Classify Text (Zero-Shot)",
+      "category": "Text Analysis",
+      "description": "Classifies a text against an arbitrary set of candidate labels you provide — no training required — using a zero-shot-classification model (e.g. facebook/bart-large-mnli) served by the Hugging Face HF Inference provider. Supports multi-label mode and a custom hypothesis template. Returns each candidate label with its score plus the top label."
+    },
+    {
+      "name": "Fill Mask",
+      "category": "Text Analysis",
+      "description": "Predicts the most likely words for a masked token in a sentence using a fill-mask model served by the Hugging Face HF Inference provider. Use the model's mask token in the input — '[MASK]' for BERT-style models, '<mask>' for RoBERTa-style models. Returns the top predictions with their scores and completed sequences."
+    },
+    {
+      "name": "Answer Question",
+      "category": "Text Analysis",
+      "description": "Extracts the answer to a question from a provided context text using an extractive question-answering model (e.g. deepset/roberta-base-squad2) served by the Hugging Face HF Inference provider. Returns the best answer with its confidence score and character positions, plus alternative answers when Top K is set."
+    },
+    {
+      "name": "Search Models",
+      "category": "Hub",
+      "description": "Searches the Hugging Face Hub for models by name, author, task (pipeline tag) and serving provider. Supports sorting by trending score, downloads, likes or recency, and limiting the number of results. Returns model IDs with metadata such as pipeline tag, downloads, likes and tags."
+    },
+    {
+      "name": "Get Model Info",
+      "category": "Hub",
+      "description": "Retrieves the details of a Hugging Face Hub model by its ID, including pipeline tag, tags, downloads, likes, library, gated status and available siblings (files). Useful for validating a model before using it in inference operations."
+    },
+    {
+      "name": "Search Datasets",
+      "category": "Hub",
+      "description": "Searches the Hugging Face Hub for datasets by name and author, with sorting by trending score, downloads, likes or recency and a result limit. Returns dataset IDs with metadata such as downloads, likes and tags."
+    },
+    {
+      "name": "Get Account Info",
+      "category": "Account",
+      "description": "Retrieves the profile associated with the configured Hugging Face access token via the whoami-v2 endpoint — user or organization name, full name, email, plan and token permission details. Useful for validating that the token is correct and has the expected permissions."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generate chat/LLM responses or structured JSON output through the OpenAI-compatible router across many providers.",
+    "Create images from text prompts and store them in FlowRunner file storage.",
+    "Transcribe uploaded or public audio files into text with speech-recognition models.",
+    "Produce embeddings for semantic search, clustering, or retrieval workflows.",
+    "Summarize, translate, classify, fill masks, or answer questions over text as part of an automation.",
+    "Search the Hugging Face Hub for models and datasets and fetch model metadata."
+  ],
+  "agentIdeas": [
+    "When a **Dropbox** \"On New File\" trigger fires for an uploaded recording, call **Dropbox** \"Get Temporary Link\" and pass the URL to **Hugging Face** \"Transcribe Audio\", then use **Notion** \"Create Page\" to save the transcript.",
+    "Use **Hugging Face** \"Summarize Text\" and \"Classify Text\" to condense and tag incoming content, then post the result with **Slack** \"Send Message To Channel\" for team review.",
+    "After **Hugging Face** \"Generate Image\" creates an asset from a text prompt, log the prompt and output details with **Google Sheets** \"Add Row\" to track generated media."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/huggingface/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/huggingface",
+    "readme": "services/huggingface/README.md",
+    "index": "services/huggingface/src/index.js"
+  }
+}

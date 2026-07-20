@@ -1,0 +1,145 @@
+{
+  "slug": "hubspot",
+  "name": "HubSpot",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Complete HubSpot CRM integration for managing contacts, companies, deals, and sales pipelines. Build automated workflows for lead management, customer relationships, and business development processes.",
+  "actionCount": 21,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Contact Management",
+    "Company Management",
+    "Deal Management",
+    "Association Management"
+  ],
+  "actions": [
+    {
+      "name": "Get All Contacts",
+      "category": "Contact Management",
+      "description": "Retrieves all contacts from your HubSpot account with comprehensive filtering and pagination options. Supports property selection, form submission history, and list membership details. Maximum of 100 contacts per request with pagination support for large datasets."
+    },
+    {
+      "name": "Get Contact By ID",
+      "category": "Contact Management",
+      "description": "Retrieves detailed information about a single contact using their unique HubSpot ID (vid). Returns comprehensive contact data including properties with version history, form submissions, list memberships, and associated company information when available."
+    },
+    {
+      "name": "Get Contact By Email",
+      "category": "Contact Management",
+      "description": "Retrieves detailed contact information by email address. This method searches for and returns a single contact record matching the provided email, including all property data, form submissions, and associated company details."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contact Management",
+      "description": "Creates a new contact record in your HubSpot account with the specified properties. The contact will be assigned a unique visitor ID (vid) for future reference. At least one property must be provided to create the contact successfully."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contact Management",
+      "description": "Updates an existing contact in HubSpot with new property values. Only the properties specified in the request will be updated, leaving all other contact data unchanged. Property updates include optional timestamps for historical tracking."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contact Management",
+      "description": "Permanently removes a contact from your HubSpot account. Note that if a contact with the same email address interacts with your portal again through forms or other channels, they will be automatically recreated in the system."
+    },
+    {
+      "name": "Search Contacts",
+      "category": "Contact Management",
+      "description": "Searches for contacts across multiple fields including email address, name, phone number, and company. Supports partial matching and returns paginated results with customizable property selection and sorting options."
+    },
+    {
+      "name": "Get Contacts At Company",
+      "category": "Contact Management",
+      "description": "Retrieves all contacts associated with a specific company in HubSpot. Returns contacts that have their 'associatedcompanyid' property set to the specified company ID, with pagination support for large result sets."
+    },
+    {
+      "name": "Get All Companies",
+      "category": "Company Management",
+      "description": "Retrieves all companies from your HubSpot account with pagination support. Returns comprehensive company data including properties, domains, and state changes with customizable property selection and offset-based pagination."
+    },
+    {
+      "name": "Get Company By ID",
+      "category": "Company Management",
+      "description": "Retrieves detailed information about a specific company using its HubSpot company ID. Returns comprehensive company data including all properties, additional domains, and company state changes."
+    },
+    {
+      "name": "Create Company",
+      "category": "Company Management",
+      "description": "Creates a new company record in your HubSpot account with the specified properties. Company records help organize and track business relationships, with properties for company details like name, domain, industry, and size."
+    },
+    {
+      "name": "Update Company",
+      "category": "Company Management",
+      "description": "Updates an existing company record in HubSpot with new property values. Only the properties specified in the request will be updated, leaving all other company data unchanged."
+    },
+    {
+      "name": "Delete Company",
+      "category": "Company Management",
+      "description": "Permanently removes a company record from your HubSpot account. This action cannot be undone, and all associated data and relationships will be lost."
+    },
+    {
+      "name": "Get All Deals",
+      "category": "Deal Management",
+      "description": "Retrieves all deals from your HubSpot account with comprehensive filtering and pagination options. Returns deal records with properties, associations, and state changes, supporting custom property selection and offset-based pagination."
+    },
+    {
+      "name": "Get Deal By ID",
+      "category": "Deal Management",
+      "description": "Retrieves detailed information about a specific deal using its HubSpot deal ID. Returns comprehensive deal data including all properties, associations with contacts and companies, and property version history when requested."
+    },
+    {
+      "name": "Create Deal",
+      "category": "Deal Management",
+      "description": "Creates a new deal record in your HubSpot account with the specified properties. Deals represent sales opportunities and can be associated with contacts and companies to track the sales pipeline effectively."
+    },
+    {
+      "name": "Update Deal",
+      "category": "Deal Management",
+      "description": "Updates an existing deal record in HubSpot with new property values. Only the properties specified in the request will be updated, leaving all other deal data and associations unchanged."
+    },
+    {
+      "name": "Delete Deal",
+      "category": "Deal Management",
+      "description": "Permanently removes a deal record from your HubSpot account. This action cannot be undone, and all associated data and pipeline history will be lost."
+    },
+    {
+      "name": "Get Associations",
+      "category": "Association Management",
+      "description": "Retrieves all associations for a specific CRM object, showing relationships between contacts, companies, deals, and other record types. Returns detailed association information including definition IDs and categories for relationship mapping."
+    },
+    {
+      "name": "Associate Objects",
+      "category": "Association Management",
+      "description": "Creates associations between two CRM objects such as contacts, companies, deals, or tickets. Establishes relationships that help organize and connect related records in your HubSpot CRM."
+    },
+    {
+      "name": "Delete Association",
+      "category": "Association Management",
+      "description": "Removes existing associations between two CRM objects. This permanently deletes the relationship link between records such as contacts, companies, deals, or tickets without affecting the individual records themselves."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automating lead generation and contact management workflows",
+    "Managing sales pipelines with automated deal tracking and updates",
+    "Building customer relationship management systems with contact data synchronization",
+    "Creating automated company profile management and association workflows",
+    "Integrating HubSpot data with marketing automation and lead nurturing campaigns",
+    "Building sales reporting and analytics systems with real-time data access",
+    "Managing customer support workflows with contact and company data integration",
+    "Automating data entry and CRM maintenance tasks with intelligent data processing"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.svg",
+  "iconFile": "services/hubspot/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/hubspot",
+    "readme": "services/hubspot/README.md",
+    "index": "services/hubspot/src/index.js"
+  }
+}

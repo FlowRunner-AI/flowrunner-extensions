@@ -1,0 +1,304 @@
+{
+  "slug": "runway",
+  "name": "Runway",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Runway generates images, video, and audio with state-of-the-art AI models (Gen-4.5, Veo 3/3.1, Aleph 2, Seedance 2, Act-Two, Magnific upscalers, ElevenLabs audio) plus talking avatars, custom voices, knowledge documents, marketing recipes, and published workflows. Authenticated with a Runway API key. Every generation runs as an asynchronous Runway task; actions wait for completion by default and can persist the ephemeral output URLs into FlowRunner file storage for durable links.",
+  "actionCount": 51,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Image Generation",
+    "Video Generation",
+    "Audio Generation",
+    "Avatars",
+    "Voices",
+    "Knowledge Documents",
+    "Recipes",
+    "Tasks",
+    "Files",
+    "Workflows",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Generate Image",
+      "category": "Image Generation",
+      "description": "Generates one or more images from a text prompt using Runway's text_to_image API. Supports Gen-4 Image, Gen-4 Image Turbo, GPT Image 2, Gemini Image 3 Pro, Gemini Image 3.1 Flash, Gemini 2.5 Flash Image, Seedream 5 Pro, and Seedream 5 Lite. Reference images can guide subject and style; Gen-4 Image Turbo requires at least one reference image. By default the action waits for the task to finish and returns the completed task with output image URLs. Output URLs are ephemeral and expire within 24-48 hours; enable Save Output to File Storage for durable URLs."
+    },
+    {
+      "name": "Upscale Image",
+      "category": "Image Generation",
+      "description": "Upscales an image up to 16x its original size using the Magnific Precision Upscaler v2 model, with optional sharpening, grain, and detail enhancement controls. Accepts an HTTPS URL, data URI, or runway:// URI as input. By default the action waits for the task to finish; output URLs are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Image to Video",
+      "category": "Video Generation",
+      "description": "Animates a still image into a video using Runway's image_to_video API. Supports Gen-4.5, Gen-4 Turbo, Veo 3.1, Veo 3.1 Fast, Veo 3, Seedance 2 (plus Fast and Mini), Gemini Omni Flash, and HappyHorse 1.0. Duration limits vary by model: Gen-4.5 and Gen-4 Turbo 2-10s, Veo 3.1 4/6/8s, Veo 3 fixed 8s, Seedance 2 4-15s, Gemini Omni Flash 3-10s, HappyHorse 3-15s. By default the action waits for the task and returns output video URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Text to Video",
+      "category": "Video Generation",
+      "description": "Generates a video from a text prompt alone using Runway's text_to_video API. Supports Gen-4.5, Veo 3.1, Veo 3.1 Fast, Veo 3, Seedance 2 (plus Fast and Mini), Gemini Omni Flash, and HappyHorse 1.0. Seedance 2 models additionally accept reference images, videos, and audio to guide generation. Duration limits vary by model: Gen-4.5 2-10s, Veo 3.1 4/6/8s, Veo 3 fixed 8s, Seedance 2 4-15s, Gemini Omni Flash 3-10s, HappyHorse 3-15s. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Video to Video",
+      "category": "Video Generation",
+      "description": "Transforms an existing video with a text prompt using Runway's video_to_video API. Aleph 2 performs instruction-based video editing (restyle, add or remove elements, change environments) with optional image keyframes and aspect ratio conversion; Seedance 2 models restyle or regenerate a source video with optional reference media; Gemini Omni Flash edits a video guided by reference images. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Upscale Video",
+      "category": "Video Generation",
+      "description": "Upscales a video up to 4K resolution using the Magnific Video Upscaler Creative model, with optional creativity, sharpening, and grain controls plus FPS boosting. Accepts an HTTPS URL, data URI, or runway:// URI as input. By default the action waits for the task to finish; output URLs are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Character Performance",
+      "category": "Video Generation",
+      "description": "Animates a character with the movements, expressions, and speech of a real performance video using Runway's Act-Two (character_performance) API. The character can be an image or a video; the reference is a video of a person acting out the performance. Supports body control and adjustable expression intensity. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Generate Sound Effect",
+      "category": "Audio Generation",
+      "description": "Generates a sound effect from a text description using Runway's sound_effect API. Seed Audio supports reference audio and pitch, speed, loudness, sample rate, and output format controls; Eleven Text to Sound v2 supports a target duration (0.5-30 seconds) and seamless looping. By default the action waits for the task and returns output audio URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Text to Speech",
+      "category": "Audio Generation",
+      "description": "Converts text into natural-sounding speech using Runway's text_to_speech API. Eleven Multilingual v2 uses one of 49 preset voices; Seed Audio can clone a voice from a reference audio URI and offers pitch, speed, loudness, sample rate, and format controls. By default the action waits for the task and returns output audio URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Speech to Speech",
+      "category": "Audio Generation",
+      "description": "Replaces the voice in an audio or video recording with a preset voice while preserving the original delivery, timing, and intonation, using the Eleven Multilingual STS v2 model. Optionally removes background noise first. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Dub Audio",
+      "category": "Audio Generation",
+      "description": "Dubs an audio recording into another language using the Eleven Voice Dubbing model, cloning the original speakers' voices by default. Supports 29 target languages, optional background-audio removal, and a speaker-count hint for better diarization. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Isolate Voice",
+      "category": "Audio Generation",
+      "description": "Extracts clean speech from an audio recording, removing background noise, music, and ambience, using the Eleven Voice Isolation model. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Generate Avatar Video",
+      "category": "Avatars",
+      "description": "Generates a talking avatar video using Runway's avatar_videos API (GWM-1 Avatars model). The avatar is either one of nine Runway presets or a custom avatar created with Create Avatar; the speech comes either from an audio file or from text spoken by a preset or custom voice. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "List Avatars",
+      "category": "Avatars",
+      "description": "Lists the custom avatars in your Runway organization, including each avatar's processing status, voice, personality, and reference images. Results are paginated with a cursor."
+    },
+    {
+      "name": "Create Avatar",
+      "category": "Avatars",
+      "description": "Creates a custom avatar from a reference image, with a personality, a voice (Runway live preset or custom voice), and optional knowledge documents. Avatar creation is asynchronous: the response has status PROCESSING until Runway finishes preparing it; check progress with Get Avatar."
+    },
+    {
+      "name": "Get Avatar",
+      "category": "Avatars",
+      "description": "Retrieves a custom avatar by id, including its processing status (PROCESSING, READY, or FAILED), voice, personality, and image URIs."
+    },
+    {
+      "name": "Update Avatar",
+      "category": "Avatars",
+      "description": "Updates a custom avatar's name, reference image, personality, start script, voice, knowledge documents, or image processing mode. Only the provided fields are changed."
+    },
+    {
+      "name": "Delete Avatar",
+      "category": "Avatars",
+      "description": "Permanently deletes a custom avatar from your Runway organization."
+    },
+    {
+      "name": "List Avatar Conversations",
+      "category": "Avatars",
+      "description": "Lists recorded conversations from realtime avatar sessions, optionally filtered by avatar and date range. Each entry includes the conversation status and metadata; fetch the full transcript with Get Avatar Conversation."
+    },
+    {
+      "name": "Get Avatar Conversation",
+      "category": "Avatars",
+      "description": "Retrieves a single avatar conversation by id, including the full transcript (user and assistant turns with timestamps and tool calls), the recording URL, and the tools that were available during the session."
+    },
+    {
+      "name": "Delete Avatar Conversation",
+      "category": "Avatars",
+      "description": "Permanently deletes a recorded avatar conversation, including its transcript and recording."
+    },
+    {
+      "name": "Get Avatar Usage",
+      "category": "Avatars",
+      "description": "Returns realtime avatar session usage for a date range: total session count, total seconds, average duration, and a per-day breakdown."
+    },
+    {
+      "name": "List Voices",
+      "category": "Voices",
+      "description": "Lists the custom voices in your Runway organization, including each voice's processing status (PROCESSING, READY, or FAILED) and preview URL when available. Results are paginated with a cursor."
+    },
+    {
+      "name": "Create Voice",
+      "category": "Voices",
+      "description": "Creates a custom voice either by cloning it from an audio sample or by designing it from a text description. Voice creation is asynchronous: check the status with Get Voice until it becomes READY, then use the voice for avatars and avatar videos."
+    },
+    {
+      "name": "Get Voice",
+      "category": "Voices",
+      "description": "Retrieves a custom voice by id, including its processing status (PROCESSING, READY, or FAILED), preview URL when ready, and failure reason when failed."
+    },
+    {
+      "name": "Update Voice",
+      "category": "Voices",
+      "description": "Updates a custom voice's name or description. Only the provided fields are changed."
+    },
+    {
+      "name": "Delete Voice",
+      "category": "Voices",
+      "description": "Permanently deletes a custom voice from your Runway organization."
+    },
+    {
+      "name": "Preview Voice",
+      "category": "Voices",
+      "description": "Generates a short audio preview of a voice designed from a text description, without creating a persistent voice. Returns the preview audio URL and its duration. Useful for iterating on a Voice Prompt before calling Create Voice."
+    },
+    {
+      "name": "List Documents",
+      "category": "Knowledge Documents",
+      "description": "Lists the knowledge documents in your Runway organization that avatars can use to answer questions, including which avatars use each document. Results are paginated with a cursor."
+    },
+    {
+      "name": "Create Document",
+      "category": "Knowledge Documents",
+      "description": "Creates a text knowledge document that custom avatars can draw on when answering questions. Attach it to an avatar via the Document IDs parameter of Create Avatar or Update Avatar."
+    },
+    {
+      "name": "Get Document",
+      "category": "Knowledge Documents",
+      "description": "Retrieves a knowledge document by id, including its content and the avatars that use it."
+    },
+    {
+      "name": "Update Document",
+      "category": "Knowledge Documents",
+      "description": "Updates a knowledge document's name or content. Only the provided fields are changed. Avatars using the document pick up the new content automatically."
+    },
+    {
+      "name": "Delete Document",
+      "category": "Knowledge Documents",
+      "description": "Permanently deletes a knowledge document. Avatars that referenced it stop using it."
+    },
+    {
+      "name": "Localize Ad Image",
+      "category": "Recipes",
+      "description": "Translates and re-renders the text in an ad image into another language while preserving the layout and design, using Runway's ad_localization recipe. Supports 22 target languages. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Create Marketing Stock Image",
+      "category": "Recipes",
+      "description": "Generates polished marketing-ready stock images from a prompt, optionally guided by a reference image, using Runway's marketing_stock_image recipe. Produces up to 4 variations per run. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Create Product Ad Video",
+      "category": "Recipes",
+      "description": "Generates a product advertisement video from product photos using Runway's product_ad recipe, optionally guided by style images, product information, and a creative concept. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Create Product Campaign Images",
+      "category": "Recipes",
+      "description": "Generates campaign-style marketing images featuring a product, based on a product photo and a creative prompt, using Runway's product_campaign_image recipe. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Swap Product in Video",
+      "category": "Recipes",
+      "description": "Replaces a product shown in a reference video with a different product using Runway's product_swap recipe. Provide the original product image plus one or more images of the new product (front, side, or back views help accuracy). By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Create Multi-Shot Video",
+      "category": "Recipes",
+      "description": "Generates a multi-shot video using Runway's multi_shot_video recipe. In Auto mode a single prompt is split into shots automatically; in Custom mode you define each shot's prompt and duration. Supports an optional first-frame image, aspect ratio, total duration (5, 10, or 15 seconds), and audio. By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Create Product UGC Video",
+      "category": "Recipes",
+      "description": "Generates a user-generated-content style video where a character presents a product, using Runway's product_ugc recipe. Provide a character image and a product image, plus optional product information and creative direction. Output is vertical (720:1280 or 1080:1920). By default the action waits for the task and returns output URLs, which are ephemeral (24-48 hours) unless saved to file storage."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves the current state of a generation task: PENDING, THROTTLED, RUNNING (with progress), SUCCEEDED (with output URLs), FAILED (with failure details), or CANCELLED. Output URLs are ephemeral and expire within 24-48 hours."
+    },
+    {
+      "name": "Wait for Task",
+      "category": "Tasks",
+      "description": "Polls a generation task until it reaches a terminal state (SUCCEEDED, FAILED, or CANCELLED) and returns the final task. Optionally copies the outputs of a succeeded task into FlowRunner file storage for durable URLs. Fails with the task's error details if the task fails."
+    },
+    {
+      "name": "Cancel Task",
+      "category": "Tasks",
+      "description": "Cancels a pending or running generation task, or deletes a finished one. Cancelled tasks cannot be resumed."
+    },
+    {
+      "name": "Save Task Output to Files",
+      "category": "Tasks",
+      "description": "Downloads the outputs of a succeeded generation task and stores them in FlowRunner file storage, returning durable URLs. Use this to persist results before Runway's ephemeral output URLs expire (24-48 hours after completion). Fails if the task has not succeeded yet."
+    },
+    {
+      "name": "Upload File to Runway",
+      "category": "Files",
+      "description": "Uploads a file to Runway's ephemeral upload storage and returns a runway:// URI that can be used anywhere a media URI is accepted (prompt images, videos, audio, references). Uploaded files must be 512 bytes to 200 MB, the filename extension must match the actual file type, and the returned URI is valid for 24 hours."
+    },
+    {
+      "name": "List Workflows",
+      "category": "Workflows",
+      "description": "Lists the published workflows in your Runway organization, grouped by workflow with their published versions (newest first). Use a version id with Run Workflow."
+    },
+    {
+      "name": "Get Workflow",
+      "category": "Workflows",
+      "description": "Retrieves a published workflow version by id, including its name, description, version number, and node graph."
+    },
+    {
+      "name": "Run Workflow",
+      "category": "Workflows",
+      "description": "Runs a published Runway workflow version, optionally overriding node outputs (for example to inject input images or text into specific nodes). By default the action waits for the invocation to finish and returns its final state with outputs; disable Wait for Completion to get the invocation id immediately and poll with Get Workflow Invocation."
+    },
+    {
+      "name": "Get Workflow Invocation",
+      "category": "Workflows",
+      "description": "Retrieves the current state of a workflow invocation: PENDING, THROTTLED, RUNNING (with progress and partial outputs), SUCCEEDED (with outputs), FAILED (with failure details and node errors), or CANCELLED."
+    },
+    {
+      "name": "Get Organization Info",
+      "category": "Account",
+      "description": "Returns your Runway organization's current credit balance, tier limits (including maximum monthly credit spend and per-model limits), and current usage. Useful for checking remaining credits before starting expensive generations."
+    },
+    {
+      "name": "Get Credit Usage",
+      "category": "Account",
+      "description": "Returns day-by-day credit usage for your Runway organization, broken down by model, over a date range of up to 90 days. Defaults to the last 30 days when no dates are provided."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Turn text prompts or reference images into finished images, videos, sound effects, speech, or dubbed audio on demand",
+    "Produce marketing assets at scale: localized ad images, product ad/UGC/campaign videos, multi-shot brand videos, product swaps",
+    "Build talking-avatar videos from a script or audio, using preset or cloned custom voices",
+    "Manage a library of custom avatars, voices, and knowledge documents for reuse across generations",
+    "Run published Runway workflows with per-node overrides as part of a larger automation",
+    "Monitor credit balance and usage before kicking off expensive generations"
+  ],
+  "agentIdeas": [
+    "After **Runway** \"Generate Avatar Video\" (or any generation action) completes, use **Google Drive** \"Upload File\" to archive the output before Runway's 24-48 hour URLs expire, then **Slack** \"Send Message To Channel\" to share the durable link with the team.",
+    "Use **Airtable** \"Get Records\" to pull a batch of product photos and creative briefs, then call **Runway** \"Create Product UGC Video\" for each row and **Airtable** \"Create Record\" to log the resulting video URLs back into the campaign table.",
+    "Read prompts from a spreadsheet with **Google Sheets** \"Get Rows\", generate assets via **Runway** \"Generate Image\", and post each finished image to **Slack** \"Send Message To Channel\" for review."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/runway/public/icon.png",
+  "sourcePaths": {
+    "service": "services/runway",
+    "readme": "services/runway/README.md",
+    "index": "services/runway/src/index.js"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "slug": "erpnext",
+  "name": "ERPNext",
+  "marketingCategory": "ERP & Operations",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [ERPNext](https://erpnext.com/) (and any Frappe-based site) with FlowRunner through the Frappe REST and RPC APIs. Perform generic CRUD, querying, and remote-method access across every DocType — Customer, Sales Order, Item, Sales Invoice, Contact, Lead, and any custom DocType in your instance. Authenticates with an API Key / API Secret token pair.",
+  "actionCount": 10,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Documents",
+    "Query",
+    "Advanced"
+  ],
+  "actions": [
+    {
+      "name": "List Documents",
+      "category": "Documents",
+      "description": "Retrieves a list of documents of a given DocType (e.g. Customer, Sales Order, Item, Sales Invoice, Contact, Lead). Supports Frappe filters, field selection, sorting, and pagination. Filters use the Frappe triple format [[\"field\",\"operator\",\"value\"]] with operators like =, !=, >, <, >=, <=, like, in, not in, between. Returns the matching records under the data array."
+    },
+    {
+      "name": "Get Document",
+      "category": "Documents",
+      "description": "Retrieves a single document by its DocType and name (primary key). Returns the full document, including child tables, under the data object."
+    },
+    {
+      "name": "Create Document",
+      "category": "Documents",
+      "description": "Creates a new document of the given DocType. Provide the field values as an object matching the DocType schema (including any child table rows). Returns the created document under the data object."
+    },
+    {
+      "name": "Update Document",
+      "category": "Documents",
+      "description": "Updates an existing document by DocType and name. Send only the fields you want to change as a partial object; unspecified fields are left untouched. Returns the updated document under the data object."
+    },
+    {
+      "name": "Delete Document",
+      "category": "Documents",
+      "description": "Deletes a document by DocType and name. This is permanent. Returns a confirmation message on success."
+    },
+    {
+      "name": "Count Documents",
+      "category": "Query",
+      "description": "Counts documents of a given DocType, optionally constrained by Frappe filters. Uses frappe.client.get_count. Returns the count under the message field."
+    },
+    {
+      "name": "Get Value",
+      "category": "Query",
+      "description": "Fetches one or more field values from the first document matching a DocType and filters, using frappe.client.get_value. Provide a single fieldname or a JSON array of field names. Returns the value(s) under the message object."
+    },
+    {
+      "name": "Submit Document",
+      "category": "Documents",
+      "description": "Submits a submittable document (sets docstatus to 1) via frappe.client.submit. Provide the full document JSON, which must include doctype and name. Use this for documents like Sales Order, Sales Invoice, and Purchase Order that require submission. Returns the submitted document under the message object."
+    },
+    {
+      "name": "Cancel Document",
+      "category": "Documents",
+      "description": "Cancels a previously submitted document (sets docstatus to 2) via frappe.client.cancel. Provide the DocType and document name. Returns the cancelled document under the message object."
+    },
+    {
+      "name": "Run Method",
+      "category": "Advanced",
+      "description": "Calls a whitelisted server-side method by its dotted path via /api/method (e.g. frappe.client.get_list or a custom whitelisted method). Pass parameters as an object; they are sent as the POST body. Returns whatever the method returns under the message field. Use with care — only whitelisted methods are callable and the call may change server state."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync customers, items, or leads between ERPNext and other systems by listing, creating, and updating documents of the matching DocType.",
+    "Automate order-to-cash flows by creating Sales Orders or Sales Invoices and submitting them once they are ready.",
+    "Reverse mistakes or reflect upstream cancellations by cancelling previously submitted documents.",
+    "Look up or count records on demand using Frappe filters to drive branching or reporting logic.",
+    "Trigger custom ERPNext business logic by invoking whitelisted server-side methods."
+  ],
+  "agentIdeas": [
+    "Use **Shopify** \"Get List of Orders\" to pull new e-commerce orders, then call **ERPNext** \"Create Document\" against the Sales Order DocType to record each one in ERPNext.",
+    "After **ERPNext** \"Submit Document\" finalizes a Sales Invoice, use **QuickBooks Online** \"Create Invoice\" to mirror the invoice into accounting.",
+    "When **ERPNext** \"List Documents\" surfaces new Leads, use **Slack** \"Send Message To Channel\" to alert the sales team with the lead details."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/erpnext/public/icon.png",
+  "sourcePaths": {
+    "service": "services/erpnext",
+    "readme": "services/erpnext/README.md",
+    "index": "services/erpnext/src/index.js"
+  }
+}

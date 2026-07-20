@@ -1,0 +1,329 @@
+{
+  "slug": "quickbooks-online",
+  "name": "QuickBooks Online",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automates accounting workflows in QuickBooks Online including customers, vendors, employees, invoices, bills, estimates, items, accounts, payments, tax agencies, and financial reports. Connects via OAuth2.",
+  "actionCount": 56,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Customers",
+    "Invoices",
+    "Items",
+    "Payments",
+    "Vendors",
+    "Accounts",
+    "Bills",
+    "Estimates",
+    "Employees",
+    "Company",
+    "Tax",
+    "Reports"
+  ],
+  "actions": [
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a new customer in QuickBooks Online. Customers represent the people or companies you sell products and services to. The display name must be unique across all customers, vendors, and employees."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer by ID from QuickBooks Online. Returns the full customer record including contact information, balance, and metadata."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates an existing customer in QuickBooks Online using a sparse update. Only the fields you provide will be changed; all other fields remain unchanged."
+    },
+    {
+      "name": "Deactivate Customer",
+      "category": "Customers",
+      "description": "Deactivates a customer in QuickBooks Online by setting their Active status to false. QuickBooks does not support permanent deletion of customers; deactivation hides them from active lists while preserving historical data."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Queries customers in QuickBooks Online with optional search filtering. Search matches against the DisplayName field. Results are paginated and sorted by DisplayName."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates a new invoice in QuickBooks Online for a specified customer. Line items define the products or services being invoiced. Each line item should include an ItemRef (from the Items dictionary), UnitPrice, and Qty."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves a single invoice by ID from QuickBooks Online. Returns the full invoice record including line items, customer reference, amounts, and status."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Updates an existing invoice in QuickBooks Online using a sparse update. Only the fields you provide will be changed. You can update the customer, line items, dates, and notes."
+    },
+    {
+      "name": "Delete Invoice",
+      "category": "Invoices",
+      "description": "Permanently deletes an invoice from QuickBooks Online. This action cannot be undone. The invoice must not have any payments applied to it."
+    },
+    {
+      "name": "Void Invoice",
+      "category": "Invoices",
+      "description": "Voids an invoice in QuickBooks Online. Voiding sets the invoice balance to zero while preserving the record for audit purposes. This is preferred over deletion when you need to maintain a paper trail."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Queries invoices in QuickBooks Online with optional filtering. Search matches against the DocNumber field. Results are paginated and sorted by transaction date in descending order."
+    },
+    {
+      "name": "Send Invoice",
+      "category": "Invoices",
+      "description": "Sends an invoice to the customer via email. Uses the customer's email address on file or a specified email address. QuickBooks Online generates and sends a professionally formatted email with the invoice details."
+    },
+    {
+      "name": "Get Invoice PDF",
+      "category": "Invoices",
+      "description": "Downloads a PDF representation of an invoice from QuickBooks Online. Returns the invoice as a binary PDF file that can be saved or forwarded."
+    },
+    {
+      "name": "Create Item",
+      "category": "Items",
+      "description": "Creates a new item (product or service) in QuickBooks Online. Items represent what your company buys, sells, or resells. You must specify a type (Inventory, NonInventory, or Service) and link it to an income account."
+    },
+    {
+      "name": "Get Item",
+      "category": "Items",
+      "description": "Retrieves a single item by ID from QuickBooks Online. Returns the full item record including pricing, type, account references, and metadata."
+    },
+    {
+      "name": "Update Item",
+      "category": "Items",
+      "description": "Updates an existing item in QuickBooks Online using a sparse update. Only the fields you provide will be changed; all other fields remain unchanged."
+    },
+    {
+      "name": "List Items",
+      "category": "Items",
+      "description": "Queries items in QuickBooks Online with optional filtering by name and type. Results are paginated and sorted by name. Use this to browse your product and service catalog."
+    },
+    {
+      "name": "Create Payment",
+      "category": "Payments",
+      "description": "Creates a new payment in QuickBooks Online to record a payment received from a customer. You can optionally link the payment to a specific invoice. If no invoice is specified, the payment is recorded as an unapplied payment."
+    },
+    {
+      "name": "Get Payment",
+      "category": "Payments",
+      "description": "Retrieves a single payment by ID from QuickBooks Online. Returns the full payment record including customer reference, amount, linked transactions, and metadata."
+    },
+    {
+      "name": "Delete Payment",
+      "category": "Payments",
+      "description": "Permanently deletes a payment from QuickBooks Online. This action cannot be undone and will reverse any invoice applications associated with this payment."
+    },
+    {
+      "name": "Void Payment",
+      "category": "Payments",
+      "description": "Voids a payment in QuickBooks Online. Voiding sets the payment amount to zero while preserving the record for audit purposes. This reverses any invoice applications while maintaining a transaction history."
+    },
+    {
+      "name": "List Payments",
+      "category": "Payments",
+      "description": "Queries payments in QuickBooks Online with optional filtering. Results are paginated and sorted by transaction date in descending order. Use this to review payment history."
+    },
+    {
+      "name": "Create Vendor",
+      "category": "Vendors",
+      "description": "Creates a new vendor in QuickBooks Online. Vendors represent the people or companies you purchase products and services from. The display name must be unique across customers, vendors, and employees."
+    },
+    {
+      "name": "Get Vendor",
+      "category": "Vendors",
+      "description": "Retrieves a single vendor by ID from QuickBooks Online. Returns the full vendor record including contact information, balance, and metadata."
+    },
+    {
+      "name": "Update Vendor",
+      "category": "Vendors",
+      "description": "Updates an existing vendor in QuickBooks Online using a sparse update. Only the fields you provide will be changed; all other fields remain unchanged."
+    },
+    {
+      "name": "Deactivate Vendor",
+      "category": "Vendors",
+      "description": "Deactivates a vendor in QuickBooks Online by setting their Active status to false. QuickBooks does not support permanent deletion of vendors; deactivation hides them from active lists while preserving historical data."
+    },
+    {
+      "name": "List Vendors",
+      "category": "Vendors",
+      "description": "Queries vendors in QuickBooks Online with optional search filtering. Search matches against the DisplayName field. Results are paginated and sorted by DisplayName."
+    },
+    {
+      "name": "Create Account",
+      "category": "Accounts",
+      "description": "Creates a new account in the QuickBooks Online chart of accounts. Accounts are used to categorize financial transactions. You must specify a name and account type (e.g., Income, Expense, Bank, etc.)."
+    },
+    {
+      "name": "Get Account",
+      "category": "Accounts",
+      "description": "Retrieves a single account by ID from the QuickBooks Online chart of accounts. Returns the full account record including type, balance, and metadata."
+    },
+    {
+      "name": "Update Account",
+      "category": "Accounts",
+      "description": "Updates an existing account in the QuickBooks Online chart of accounts. Note that AccountType cannot be changed after creation. Uses a full update, so all writable fields should be provided."
+    },
+    {
+      "name": "List Accounts",
+      "category": "Accounts",
+      "description": "Queries the chart of accounts in QuickBooks Online with optional filtering by name and account type. Results are paginated and sorted by name."
+    },
+    {
+      "name": "Create Bill",
+      "category": "Bills",
+      "description": "Creates a new bill in QuickBooks Online to record an amount owed to a vendor. Line items define the expenses or items being billed. Each line item should specify a DetailType and the corresponding detail object."
+    },
+    {
+      "name": "Get Bill",
+      "category": "Bills",
+      "description": "Retrieves a single bill by ID from QuickBooks Online. Returns the full bill record including vendor reference, line items, amounts, and status."
+    },
+    {
+      "name": "Update Bill",
+      "category": "Bills",
+      "description": "Updates an existing bill in QuickBooks Online using a sparse update. Only the fields you provide will be changed."
+    },
+    {
+      "name": "Delete Bill",
+      "category": "Bills",
+      "description": "Permanently deletes a bill from QuickBooks Online. This action cannot be undone. The bill must not have any payments applied to it."
+    },
+    {
+      "name": "List Bills",
+      "category": "Bills",
+      "description": "Queries bills in QuickBooks Online with optional filtering. You can filter by vendor. Results are paginated and sorted by transaction date in descending order."
+    },
+    {
+      "name": "Create Estimate",
+      "category": "Estimates",
+      "description": "Creates a new estimate (quote) in QuickBooks Online for a specified customer. Estimates are non-posting transactions used to propose prices for goods or services before an invoice is created."
+    },
+    {
+      "name": "Get Estimate",
+      "category": "Estimates",
+      "description": "Retrieves a single estimate by ID from QuickBooks Online. Returns the full estimate record including line items, customer reference, amounts, and status."
+    },
+    {
+      "name": "Update Estimate",
+      "category": "Estimates",
+      "description": "Updates an existing estimate in QuickBooks Online using a sparse update. Only the fields you provide will be changed."
+    },
+    {
+      "name": "Delete Estimate",
+      "category": "Estimates",
+      "description": "Permanently deletes an estimate from QuickBooks Online. This action cannot be undone."
+    },
+    {
+      "name": "List Estimates",
+      "category": "Estimates",
+      "description": "Queries estimates in QuickBooks Online with optional filtering. Search matches against the DocNumber field. Results are paginated and sorted by transaction date in descending order."
+    },
+    {
+      "name": "Send Estimate",
+      "category": "Estimates",
+      "description": "Sends an estimate to the customer via email. Uses the customer's email address on file or a specified email address. QuickBooks Online generates and sends a professionally formatted email with the estimate details."
+    },
+    {
+      "name": "Get Estimate PDF",
+      "category": "Estimates",
+      "description": "Downloads a PDF representation of an estimate from QuickBooks Online. Returns the estimate as a binary PDF file that can be saved or forwarded."
+    },
+    {
+      "name": "Create Employee",
+      "category": "Employees",
+      "description": "Creates a new employee record in QuickBooks Online. The display name must be unique across all customers, vendors, and employees."
+    },
+    {
+      "name": "Get Employee",
+      "category": "Employees",
+      "description": "Retrieves a single employee record by ID from QuickBooks Online. Returns the full employee details including contact information, hire date, and status."
+    },
+    {
+      "name": "Update Employee",
+      "category": "Employees",
+      "description": "Updates an existing employee record in QuickBooks Online using a sparse update. Only the fields you provide will be changed."
+    },
+    {
+      "name": "Deactivate Employee",
+      "category": "Employees",
+      "description": "Deactivates an employee in QuickBooks Online by setting their Active status to false. QuickBooks Online does not support permanent deletion of employees."
+    },
+    {
+      "name": "List Employees",
+      "category": "Employees",
+      "description": "Queries employees in QuickBooks Online with optional search filtering. Search matches against the DisplayName field. Results are paginated and sorted by DisplayName."
+    },
+    {
+      "name": "Get Company Info",
+      "category": "Company",
+      "description": "Retrieves the company information for the connected QuickBooks Online account. Returns company name, address, contact details, and other organization settings."
+    },
+    {
+      "name": "Update Company Info",
+      "category": "Company",
+      "description": "Updates the company information in QuickBooks Online using a sparse update. CompanyName and company address are required by QuickBooks even for sparse updates."
+    },
+    {
+      "name": "Get Preferences",
+      "category": "Company",
+      "description": "Retrieves the company preferences and settings from QuickBooks Online. Returns accounting, sales, vendor, tax, email, reporting, time tracking, and currency preferences."
+    },
+    {
+      "name": "Create Tax Agency",
+      "category": "Tax",
+      "description": "Creates a new tax agency in QuickBooks Online. Tax agencies are government entities that collect taxes. Once created, tax agencies cannot be updated or deleted via the API."
+    },
+    {
+      "name": "Get Tax Agency",
+      "category": "Tax",
+      "description": "Retrieves a single tax agency by ID from QuickBooks Online. Returns the tax agency name and tax tracking settings."
+    },
+    {
+      "name": "List Tax Agencies",
+      "category": "Tax",
+      "description": "Queries tax agencies in QuickBooks Online with optional search filtering. Search matches against the DisplayName field. Results are paginated and sorted by DisplayName."
+    },
+    {
+      "name": "Get Profit and Loss Report",
+      "category": "Reports",
+      "description": "Generates a Profit and Loss (Income Statement) summary report from QuickBooks Online. Shows income, cost of goods sold, expenses, and net income for the specified period. Use either a date macro (preset range) or custom start/end dates."
+    },
+    {
+      "name": "Get Profit and Loss Detail Report",
+      "category": "Reports",
+      "description": "Generates a detailed Profit and Loss report from QuickBooks Online with transaction-level detail. Shows individual transactions that make up income and expense totals. Use either a date macro (preset range) or custom start/end dates."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automating invoice and estimate creation when orders or milestones are reached",
+    "Syncing customer, vendor, and employee records between systems",
+    "Recording payments and reconciling invoices from external sources",
+    "Generating profit and loss reports on a schedule",
+    "Managing vendor bills, tax agencies, and accounts payable"
+  ],
+  "agentIdeas": [
+    "When **Stripe** \"Create Charge\" processes a payment, use **QuickBooks Online** \"Create Payment\" and \"Create Invoice\" to record it",
+    "Use **Google Sheets** \"Add Row\" to log **QuickBooks Online** \"Get Profit and Loss Report\" results into an automated financial archive",
+    "After **QuickBooks Online** \"Create Employee\" adds a new hire, use **Slack** \"Send Message To Channel\" to notify HR"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/quickbooks-online/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/quickbooks-online",
+    "readme": "services/quickbooks-online/README.md",
+    "index": "services/quickbooks-online/src/index.js"
+  }
+}

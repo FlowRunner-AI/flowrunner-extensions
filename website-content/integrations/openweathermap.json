@@ -1,0 +1,91 @@
+{
+  "slug": "openweathermap",
+  "name": "OpenWeatherMap",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Access current weather, multi-day forecasts, air quality data, and geocoding from the [OpenWeatherMap](https://openweathermap.org/api) API, plus the One Call 3.0 API. Authentication uses your API key, sent as the `appid` query parameter on every request. Note: newly created keys take approximately 1–2 hours to activate. Locations can be specified flexibly by city name (`\"London\"` or `\"London,GB\"`), latitude/longitude, ZIP/postal code (`\"90210,US\"`), or numeric city ID.",
+  "actionCount": 10,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Weather",
+    "Air Quality",
+    "Geocoding",
+    "One Call 3.0"
+  ],
+  "actions": [
+    {
+      "name": "Get Current Weather",
+      "category": "Weather",
+      "description": "Retrieves current weather conditions for a location, including temperature, feels-like, humidity, pressure, wind, cloud cover, and a weather description. Specify the location by exactly one of: city name (optionally \"City,State,Country\"), latitude and longitude, ZIP code (optionally \"zip,country\"), or numeric city ID. Optionally choose a unit system and a response language."
+    },
+    {
+      "name": "Get 5 Day / 3 Hour Forecast",
+      "category": "Weather",
+      "description": "Retrieves a 5-day weather forecast in 3-hour steps (up to 40 timestamps) for a location. Specify the location by exactly one of: city name, latitude and longitude, ZIP code, or numeric city ID. Use Count to limit the number of returned timestamps."
+    },
+    {
+      "name": "Get Air Pollution",
+      "category": "Air Quality",
+      "description": "Retrieves current air quality data for a set of coordinates, including the Air Quality Index (AQI, 1=Good to 5=Very Poor) and pollutant concentrations in μg/m³ (CO, NO, NO2, O3, SO2, PM2.5, PM10, NH3)."
+    },
+    {
+      "name": "Get Air Pollution Forecast",
+      "category": "Air Quality",
+      "description": "Retrieves an air quality forecast for a set of coordinates, covering the next 4 days with hourly granularity. Each entry includes the Air Quality Index (AQI, 1=Good to 5=Very Poor) and pollutant concentrations in μg/m³."
+    },
+    {
+      "name": "Get Air Pollution History",
+      "category": "Air Quality",
+      "description": "Retrieves historical air quality data for a set of coordinates over a time range. Provide the start and end as Unix timestamps (UTC seconds). Each entry includes the Air Quality Index (AQI, 1=Good to 5=Very Poor) and pollutant concentrations in μg/m³."
+    },
+    {
+      "name": "Direct Geocoding",
+      "category": "Geocoding",
+      "description": "Converts a place name into geographic coordinates. Accepts a city name, optionally with state and country codes (\"City,State,Country\" — state codes apply to the US only). Returns up to 5 matching locations with their latitude, longitude, country, state, and localized names."
+    },
+    {
+      "name": "Reverse Geocoding",
+      "category": "Geocoding",
+      "description": "Converts geographic coordinates into place names. Returns up to 5 nearby locations with their name, country, state, and localized names."
+    },
+    {
+      "name": "Zip Geocoding",
+      "category": "Geocoding",
+      "description": "Converts a ZIP/postal code into geographic coordinates and a place name. Provide the code optionally with a country code (\"zip,country\"); defaults to US when no country is given."
+    },
+    {
+      "name": "One Call Current & Forecast",
+      "category": "One Call 3.0",
+      "description": "Retrieves current, minutely (1 hour), hourly (48 hours), and daily (8 days) weather plus government weather alerts for a set of coordinates in a single call. Use Exclude to omit sections you do not need. NOTE: One Call API 3.0 requires the separate \"One Call by Call\" subscription on your OpenWeatherMap account — it is not covered by the free plan."
+    },
+    {
+      "name": "One Call Timemachine",
+      "category": "One Call 3.0",
+      "description": "Retrieves historical or near-future weather for a single moment (from January 1, 1979 up to 4 days ahead) at a set of coordinates. Provide the moment as a Unix timestamp (UTC seconds). NOTE: One Call API 3.0 requires the separate \"One Call by Call\" subscription on your OpenWeatherMap account — it is not covered by the free plan."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Enrich records or messages with live temperature, wind, humidity, and conditions for a location.",
+    "Trigger automations from a 5-day forecast (e.g. rain expected, temperature thresholds).",
+    "Monitor air quality (AQI and pollutant levels) for health or environmental alerts.",
+    "Convert place names, ZIP codes, or coordinates into standardized location data.",
+    "Retrieve historical or near-future weather for a precise moment via One Call 3.0."
+  ],
+  "agentIdeas": [
+    "Use **OpenWeatherMap** \"Direct Geocoding\" to resolve a city name to coordinates, then \"Get Air Pollution\" to check the AQI and post an alert via **Slack** \"Send Message To Channel\" when air quality is poor.",
+    "On a schedule, call **OpenWeatherMap** \"Get 5 Day / 3 Hour Forecast\" and log each reading with **Google Sheets** \"Add Row\" for trend analysis.",
+    "Pair **NASA** \"Get EPIC Natural\" imagery with **OpenWeatherMap** \"Get Current Weather\" for a location to assemble a daily earth-and-weather digest delivered via **Slack** \"Send Message To Channel\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/openweathermap/public/icon.png",
+  "sourcePaths": {
+    "service": "services/openweathermap",
+    "readme": "services/openweathermap/README.md",
+    "index": "services/openweathermap/src/index.js"
+  }
+}

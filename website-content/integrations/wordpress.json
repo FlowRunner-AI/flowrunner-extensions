@@ -1,0 +1,315 @@
+{
+  "slug": "wordpress",
+  "name": "WordPress",
+  "marketingCategory": "CMS & Content",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "A complete integration with the self-hosted WordPress REST API (v2). Authenticates with HTTP Basic auth backed by an Application Password and exposes the full content-management surface — posts, pages, categories, tags, users, media, comments, search, settings, and taxonomies — as FlowRunner actions, dictionaries, and a polling trigger.",
+  "actionCount": 52,
+  "triggerCount": 2,
+  "operationCategories": [
+    "Posts",
+    "Pages",
+    "Categories",
+    "Tags",
+    "Users",
+    "Media",
+    "Comments",
+    "Search",
+    "Settings",
+    "Taxonomies",
+    "Custom Fields",
+    "Custom Post Types",
+    "Custom Taxonomies"
+  ],
+  "actions": [
+    {
+      "name": "List Posts",
+      "category": "Posts",
+      "description": "Retrieves a paginated list of posts from the WordPress site with rich filtering by status, author, categories, tags, search query, and date ranges. Use this to power dashboards, sync content into other systems, or feed AI workflows with the latest published posts."
+    },
+    {
+      "name": "Get Post",
+      "category": "Posts",
+      "description": "Fetches a single post by its numeric ID, returning full title, content, excerpt, taxonomy assignments, featured media, and metadata. Useful for displaying full post details or feeding content into downstream automations."
+    },
+    {
+      "name": "Create Post",
+      "category": "Posts",
+      "description": "Creates a new blog post with the provided title, HTML content, status, and optional taxonomy or scheduling fields. Set status to 'draft' to keep it private or 'publish' to publish immediately. Categories and tags accept arrays of term IDs."
+    },
+    {
+      "name": "Update Post",
+      "category": "Posts",
+      "description": "Updates fields of an existing post. Only the provided fields are changed; omitted fields are left untouched. Useful for changing status (e.g. publishing a draft), editing content, swapping featured media, or re-assigning categories."
+    },
+    {
+      "name": "Delete Post",
+      "category": "Posts",
+      "description": "Deletes a post. By default the post is moved to trash; pass force=true to permanently delete and bypass trash. Permanent deletion cannot be undone."
+    },
+    {
+      "name": "List Pages",
+      "category": "Pages",
+      "description": "Retrieves a paginated list of pages with filtering by status, parent, author, search query, and ordering. Pages are top-level content used for static content like About, Contact, or landing pages."
+    },
+    {
+      "name": "Get Page",
+      "category": "Pages",
+      "description": "Fetches a single page by its numeric ID, returning full title, content, parent, menu order, and metadata."
+    },
+    {
+      "name": "Create Page",
+      "category": "Pages",
+      "description": "Creates a new page with the provided title and content. Pages can be nested under another page using the parent field, ordered with menuOrder, and rendered with a specific theme template via the template field."
+    },
+    {
+      "name": "Update Page",
+      "category": "Pages",
+      "description": "Updates fields of an existing page. Only the provided fields are changed; omitted fields are left untouched. Useful for editing static content, re-parenting, or changing publication status."
+    },
+    {
+      "name": "Delete Page",
+      "category": "Pages",
+      "description": "Deletes a page. By default the page is moved to trash; pass force=true to permanently delete and bypass trash. Permanent deletion cannot be undone."
+    },
+    {
+      "name": "List Categories",
+      "category": "Categories",
+      "description": "Retrieves a paginated list of post categories. Supports search, ordering, and filtering by parent for hierarchical category trees."
+    },
+    {
+      "name": "Get Category",
+      "category": "Categories",
+      "description": "Fetches a single category by its numeric ID, including name, slug, description, and post count."
+    },
+    {
+      "name": "Create Category",
+      "category": "Categories",
+      "description": "Creates a new post category. Use the parent field to nest the category under another for hierarchical trees."
+    },
+    {
+      "name": "Update Category",
+      "category": "Categories",
+      "description": "Updates fields of an existing category. Only provided fields are changed."
+    },
+    {
+      "name": "Delete Category",
+      "category": "Categories",
+      "description": "Permanently deletes a category. WordPress requires force=true for category deletion since categories do not support trashing. Posts assigned only to this category will be reassigned to the default category."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Retrieves a paginated list of post tags with optional search, ordering, and the ability to exclude unused tags."
+    },
+    {
+      "name": "Get Tag",
+      "category": "Tags",
+      "description": "Fetches a single post tag by its numeric ID."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new post tag."
+    },
+    {
+      "name": "Update Tag",
+      "category": "Tags",
+      "description": "Updates fields of an existing tag. Only provided fields are changed."
+    },
+    {
+      "name": "Delete Tag",
+      "category": "Tags",
+      "description": "Permanently deletes a tag. WordPress requires force=true for tag deletion since tags do not support trashing."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Retrieves a paginated list of users with filtering by role, slug, search query, or whether they have published posts. Use this to populate author selectors or sync site members."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Fetches a single user by numeric ID, returning name, slug, roles, capabilities, and avatar URLs."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users",
+      "description": "Returns the user account associated with the configured Application Password credentials. Useful for verifying connectivity, identifying the acting user, or obtaining the connected user's roles and capabilities."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a new WordPress user account with the supplied credentials and optional profile fields. Requires the connected user to have permission to create users."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates fields on an existing user account. Only provided fields are changed; omitted fields are left untouched."
+    },
+    {
+      "name": "Delete User",
+      "category": "Users",
+      "description": "Permanently deletes a user account. WordPress requires force=true for user deletion (no trash). The reassign parameter is required to transfer the deleted user's posts to another existing user."
+    },
+    {
+      "name": "List Media",
+      "category": "Media",
+      "description": "Retrieves a paginated list of media library items with filtering by mime type, media type (image, video, audio, application, text), search query, and parent post."
+    },
+    {
+      "name": "Get Media",
+      "category": "Media",
+      "description": "Fetches a single media library item by numeric ID, including source URL, mime type, alt text, caption, and rendered metadata."
+    },
+    {
+      "name": "Upload Media From URL",
+      "category": "Media",
+      "description": "Downloads a file from the supplied URL and uploads it to the WordPress media library. Optional title, alt text, and caption fields are saved alongside the asset. Returns the created attachment object including the public source URL."
+    },
+    {
+      "name": "Update Media",
+      "category": "Media",
+      "description": "Updates metadata fields of an existing media item such as title, alt text, caption, description, or post attachment."
+    },
+    {
+      "name": "Delete Media",
+      "category": "Media",
+      "description": "Permanently deletes a media library item. WordPress requires force=true for media deletion (no trash). The underlying file is removed from disk."
+    },
+    {
+      "name": "List Comments",
+      "category": "Comments",
+      "description": "Retrieves a paginated list of comments with filtering by post, author, parent, status, and search query."
+    },
+    {
+      "name": "Get Comment",
+      "category": "Comments",
+      "description": "Fetches a single comment by numeric ID, including author details, content, and moderation status."
+    },
+    {
+      "name": "Create Comment",
+      "category": "Comments",
+      "description": "Creates a new comment on a post. Provide either an authenticated author user ID or guest author details (name and email). Use parent to nest the comment as a reply."
+    },
+    {
+      "name": "Update Comment",
+      "category": "Comments",
+      "description": "Updates fields of an existing comment such as content, moderation status, or author metadata."
+    },
+    {
+      "name": "Delete Comment",
+      "category": "Comments",
+      "description": "Deletes a comment. By default the comment is moved to trash; pass force=true to permanently delete and bypass trash."
+    },
+    {
+      "name": "Search Site",
+      "category": "Search",
+      "description": "Performs a sitewide search across configured content types (posts, pages, terms) and returns lightweight result objects with id, title, url, type and subtype. Use this to power site-search experiences or AI grounding over WordPress content."
+    },
+    {
+      "name": "Get Settings",
+      "category": "Settings",
+      "description": "Returns site-wide WordPress settings such as title, description, URL, timezone, language, default category, and posts-per-page values. Requires manage_options capability on the connected user."
+    },
+    {
+      "name": "Update Settings",
+      "category": "Settings",
+      "description": "Updates site-wide WordPress settings. Only provided fields are changed. Requires manage_options capability on the connected user."
+    },
+    {
+      "name": "List Taxonomies",
+      "category": "Taxonomies",
+      "description": "Returns all registered taxonomies on the site (e.g. category, post_tag, plus any custom taxonomies). Useful for discovering available term endpoints when working with custom post types."
+    },
+    {
+      "name": "List Post Types",
+      "category": "Taxonomies",
+      "description": "Returns all registered post types on the site (e.g. post, page, attachment, plus any custom post types). Useful for discovering custom post type slugs and their REST base endpoints."
+    },
+    {
+      "name": "Get Post Meta",
+      "category": "Custom Fields",
+      "description": "Reads the custom fields (meta) stored on a single post or page and returns them as a key/value map. Only meta keys registered on the site with show_in_rest are exposed by the WordPress REST API; keys registered without it never appear here, so an empty result usually means no keys are REST-visible."
+    },
+    {
+      "name": "Update Post Meta",
+      "category": "Custom Fields",
+      "description": "Sets one or more custom fields (meta) on a post or page. Pass a map of meta key to value; the given keys are overwritten and all other meta is left untouched. A key is only saved if it was registered on the site with show_in_rest - WordPress silently ignores unregistered keys, so a returned value that is missing your key means the key is not REST-registered. Returns the post's meta after the update."
+    },
+    {
+      "name": "List Custom Posts",
+      "category": "Custom Post Types",
+      "description": "Lists items of any registered post type by its REST base (e.g. a 'portfolio' or 'product' custom post type), with filtering by status, search, ordering, and pagination. Use List Post Types to discover the available REST bases."
+    },
+    {
+      "name": "Get Custom Post",
+      "category": "Custom Post Types",
+      "description": "Fetches a single item of any registered post type by its REST base and numeric ID, including its content, status, and meta fields. Use List Post Types to discover the available REST bases."
+    },
+    {
+      "name": "Create Custom Post",
+      "category": "Custom Post Types",
+      "description": "Creates an item of any registered post type by its REST base (e.g. a 'portfolio' or 'product' custom post type). Provide the title, content, status, and any custom fields via meta. Use List Post Types to discover the available REST bases."
+    },
+    {
+      "name": "Update Custom Post",
+      "category": "Custom Post Types",
+      "description": "Updates an item of any registered post type by its REST base and numeric ID. Only the provided fields are changed; omitted fields are left untouched. Use List Post Types to discover the available REST bases."
+    },
+    {
+      "name": "Delete Custom Post",
+      "category": "Custom Post Types",
+      "description": "Deletes an item of any registered post type by its REST base and numeric ID. By default the item is moved to trash; pass force=true to permanently delete and bypass trash. Some post types do not support trash and require force=true."
+    },
+    {
+      "name": "List Taxonomy Terms",
+      "category": "Custom Taxonomies",
+      "description": "Lists terms of any registered taxonomy by its REST base (e.g. a 'genre' or 'brand' custom taxonomy), with search, ordering, and filtering by parent for hierarchical taxonomies. Use List Taxonomies to discover the available REST bases."
+    },
+    {
+      "name": "Create Taxonomy Term",
+      "category": "Custom Taxonomies",
+      "description": "Creates a term in any registered taxonomy by its REST base (e.g. a 'genre' or 'brand' custom taxonomy). The parent field only applies to hierarchical taxonomies. Use List Taxonomies to discover the available REST bases."
+    },
+    {
+      "name": "Update Taxonomy Term",
+      "category": "Custom Taxonomies",
+      "description": "Updates a term in any registered taxonomy by its REST base and numeric term ID. Only the provided fields are changed. Use List Taxonomies to discover the available REST bases."
+    },
+    {
+      "name": "Delete Taxonomy Term",
+      "category": "Custom Taxonomies",
+      "description": "Permanently deletes a term from any registered taxonomy by its REST base and numeric term ID. WordPress requires force=true for term deletion since terms do not support trashing, so this always deletes permanently. Content assigned only to this term loses the assignment."
+    }
+  ],
+  "triggers": [
+    "On New Published Post",
+    "On New Comment"
+  ],
+  "idealUseCases": [
+    "Auto-publish AI-generated articles to a WordPress blog as drafts for human review.",
+    "Sync product launches, release notes, or knowledge-base entries into WordPress pages.",
+    "Trigger downstream workflows (Slack, email, CRM) the moment a new post is published.",
+    "Bulk-curate categories and tags from spreadsheets or AI classifiers.",
+    "Mirror media assets into the WordPress library from external storage by URL.",
+    "Moderate, edit, or delete comments programmatically.",
+    "Read site-wide settings as part of agent context, or report on the connected user."
+  ],
+  "agentIdeas": [
+    "When a **Google Sheets** \"On New Row\" trigger fires with a content brief, use **WordPress** \"Upload Media From URL\" to add the cover image and \"Create Post\" with status `draft` to stage the article for review.",
+    "When **WordPress** \"On New Published Post\" fires, use **Slack** \"Send Message To Channel\" to notify the marketing channel and **X-Twitter** \"Create Post\" to announce the article.",
+    "When a **Gmail** \"On New Email\" trigger detects a new contributor submission, use **WordPress** \"Create User\" to onboard them with the `author` role and \"Create Post\" to seed their first draft."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/wordpress/public/icon.png",
+  "sourcePaths": {
+    "service": "services/wordpress",
+    "readme": "services/wordpress/README.md",
+    "index": "services/wordpress/src/index.js"
+  }
+}

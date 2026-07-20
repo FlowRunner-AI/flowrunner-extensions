@@ -1,0 +1,178 @@
+{
+  "slug": "bitbucket",
+  "name": "Bitbucket",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Bitbucket Cloud](https://bitbucket.org) via the Bitbucket Cloud REST API 2.0. Manage repositories, issues, pull requests, source files, branches, and pipelines within a workspace. Authenticates with HTTP Basic using your Atlassian account email plus an API token (App Passwords are deprecated).",
+  "actionCount": 27,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Repositories",
+    "Issues",
+    "Pull Requests",
+    "Source",
+    "Branches",
+    "Pipelines"
+  ],
+  "actions": [
+    {
+      "name": "List Repositories",
+      "category": "Repositories",
+      "description": "Lists repositories in the configured workspace. Supports filtering by the caller's permission role, a BBQL query string, and sorting. Aggregates results across paginated responses."
+    },
+    {
+      "name": "Get Repository",
+      "category": "Repositories",
+      "description": "Retrieves detailed information about a single repository in the configured workspace, including its main branch, size, language, and links."
+    },
+    {
+      "name": "Create Issue",
+      "category": "Issues",
+      "description": "Creates an issue in a repository's issue tracker. The issue tracker must be enabled for the repository. Kind and priority are optional and default to Bug and Major respectively."
+    },
+    {
+      "name": "Get Issue",
+      "category": "Issues",
+      "description": "Retrieves a single issue from a repository's issue tracker by its numeric ID."
+    },
+    {
+      "name": "List Issues",
+      "category": "Issues",
+      "description": "Lists issues in a repository's issue tracker. Supports an optional Bitbucket query language filter (e.g. state = \"new\"). Aggregates results across paginated responses."
+    },
+    {
+      "name": "Update Issue",
+      "category": "Issues",
+      "description": "Updates an existing issue. Only the fields you provide are changed. State transitions the issue (e.g. New, Resolved, Closed)."
+    },
+    {
+      "name": "Add Issue Comment",
+      "category": "Issues",
+      "description": "Adds a comment to an existing issue in a repository's issue tracker."
+    },
+    {
+      "name": "Create Pull Request",
+      "category": "Pull Requests",
+      "description": "Creates a pull request from a source branch into a destination branch. Optionally closes the source branch on merge and adds reviewers by account ID (comma-separated)."
+    },
+    {
+      "name": "Get Pull Request",
+      "category": "Pull Requests",
+      "description": "Retrieves a single pull request by its numeric ID, including source and destination branches, author, state, and links."
+    },
+    {
+      "name": "List Pull Requests",
+      "category": "Pull Requests",
+      "description": "Lists pull requests in a repository, optionally filtered by state. Aggregates results across paginated responses."
+    },
+    {
+      "name": "Update Pull Request",
+      "category": "Pull Requests",
+      "description": "Updates an existing pull request. Only the fields you provide are changed."
+    },
+    {
+      "name": "Approve Pull Request",
+      "category": "Pull Requests",
+      "description": "Approves a pull request on behalf of the authenticated user."
+    },
+    {
+      "name": "Unapprove Pull Request",
+      "category": "Pull Requests",
+      "description": "Removes the authenticated user's approval from a pull request."
+    },
+    {
+      "name": "Merge Pull Request",
+      "category": "Pull Requests",
+      "description": "Merges a pull request into its destination branch using the selected merge strategy. Optionally sets a commit message and closes the source branch."
+    },
+    {
+      "name": "Decline Pull Request",
+      "category": "Pull Requests",
+      "description": "Declines (rejects) an open pull request without merging it."
+    },
+    {
+      "name": "Add Pull Request Comment",
+      "category": "Pull Requests",
+      "description": "Adds a comment to a pull request. Comments are rendered as Markdown."
+    },
+    {
+      "name": "Get File",
+      "category": "Source",
+      "description": "Retrieves the raw contents of a file at a given commit or branch. The commit reference can be a branch name (e.g. main), a tag, or a full commit hash."
+    },
+    {
+      "name": "List Directory",
+      "category": "Source",
+      "description": "Lists the contents of a directory in a repository at a given commit or branch. Returns files and subdirectories. Aggregates results across paginated responses."
+    },
+    {
+      "name": "Create or Update File",
+      "category": "Source",
+      "description": "Creates or updates a file in a repository and commits the change to a branch. If the file exists it is overwritten; otherwise it is created. The commit is pushed to the specified branch."
+    },
+    {
+      "name": "List Commits",
+      "category": "Source",
+      "description": "Lists commits in a repository, optionally starting from a specific branch, tag, or commit. Aggregates results across paginated responses."
+    },
+    {
+      "name": "List Branches",
+      "category": "Branches",
+      "description": "Lists branches in a repository. Aggregates results across paginated responses."
+    },
+    {
+      "name": "Create Branch",
+      "category": "Branches",
+      "description": "Creates a new branch pointing at a target commit hash. The target must be an existing commit in the repository."
+    },
+    {
+      "name": "Delete Branch",
+      "category": "Branches",
+      "description": "Deletes a branch from a repository. This action is permanent."
+    },
+    {
+      "name": "List Pipelines",
+      "category": "Pipelines",
+      "description": "Lists pipeline runs for a repository. Pipelines must be enabled for the repository. Aggregates results across paginated responses."
+    },
+    {
+      "name": "Trigger Pipeline",
+      "category": "Pipelines",
+      "description": "Triggers a new pipeline run for a branch. Pipelines must be enabled and a bitbucket-pipelines.yml must be present on the branch."
+    },
+    {
+      "name": "Get Pipeline",
+      "category": "Pipelines",
+      "description": "Retrieves a single pipeline run by its UUID, including its state and result."
+    },
+    {
+      "name": "Stop Pipeline",
+      "category": "Pipelines",
+      "description": "Stops a running pipeline by its UUID. Stopping is asynchronous; the pipeline moves to a stopped state shortly after."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically open, comment on, and update issues in response to events from other systems.",
+    "Create, review, approve, merge, or decline pull requests as part of a release workflow.",
+    "Commit generated or synced files to a branch and track the resulting commits.",
+    "Trigger, monitor, and stop CI/CD pipelines and report their status downstream.",
+    "Manage branches and browse source files and directories programmatically."
+  ],
+  "agentIdeas": [
+    "When a **GitHub** \"On Pull Request Opened\" trigger fires, use **Bitbucket** \"Create Pull Request\" to mirror the change into a Bitbucket repository, then **Slack** \"Send Message To Channel\" to notify reviewers with the PR link.",
+    "Use **Jira** \"Search Issues\" to find issues marked ready for release, then call **Bitbucket** \"Merge Pull Request\" for each linked PR and **Bitbucket** \"Trigger Pipeline\" to deploy the merged branch.",
+    "After **Bitbucket** \"List Pipelines\" reports a failed run, use **Jira** \"Create Issue\" to file a bug and **Slack** \"Send Message To Channel\" to alert the on-call engineer with the pipeline details."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/bitbucket/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/bitbucket",
+    "readme": "services/bitbucket/README.md",
+    "index": "services/bitbucket/src/index.js"
+  }
+}

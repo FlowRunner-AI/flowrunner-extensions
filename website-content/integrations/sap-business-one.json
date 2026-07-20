@@ -1,0 +1,572 @@
+{
+  "slug": "sap-business-one",
+  "name": "SAP Business One",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Automate your SAP Business One ERP through the OData Service Layer. Manage business partners, items, warehouses, and price lists; run the full sales and purchasing document lifecycle (quotations, orders, deliveries, invoices, credit memos, returns); apply incoming and outgoing payments; post inventory movements and journal entries; and log CRM activities. Authentication uses a Service Layer session login (Base URL, Company DB, Username, Password) with the connection cookie reused and refreshed automatically. Includes a generic OData query passthrough and polling triggers for new records.",
+  "actionCount": 104,
+  "triggerCount": 2,
+  "operationCategories": [
+    "Business Partners",
+    "Items & Inventory",
+    "Sales",
+    "Purchasing",
+    "Payments",
+    "Financials",
+    "CRM",
+    "Query"
+  ],
+  "actions": [
+    {
+      "name": "Create Business Partner",
+      "category": "Business Partners",
+      "description": "Create a customer, vendor/supplier, or lead in SAP Business One. Use this to add a new trading partner before raising a sales or purchasing document for them."
+    },
+    {
+      "name": "Get Business Partner",
+      "category": "Business Partners",
+      "description": "Retrieve one business partner by its code, including contact and address details."
+    },
+    {
+      "name": "List Business Partners",
+      "category": "Business Partners",
+      "description": "List or search business partners, optionally filtered by type (Customer/Vendor/Lead). Returns all matching rows by following pagination automatically."
+    },
+    {
+      "name": "Update Business Partner",
+      "category": "Business Partners",
+      "description": "Update fields on an existing business partner. Only the fields you supply change (PATCH semantics)."
+    },
+    {
+      "name": "Delete Business Partner",
+      "category": "Business Partners",
+      "description": "Delete a business partner. Fails if the partner has posted transactions (SAP returns -5006)."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Business Partners",
+      "description": "Add a contact person to a business partner. Contacts are managed as the partner's ContactEmployees collection, so this patches the partner with a new contact."
+    },
+    {
+      "name": "Get Contacts",
+      "category": "Business Partners",
+      "description": "Retrieve the contact persons (ContactEmployees) of a business partner."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Business Partners",
+      "description": "List business partners together with their contact persons. Follows pagination to return all rows."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Business Partners",
+      "description": "Update a contact person on a business partner by its internal code (PATCH of the ContactEmployees collection)."
+    },
+    {
+      "name": "Create Item",
+      "category": "Items & Inventory",
+      "description": "Create an inventory/sales/purchase item (product) master record. Use before adding the item to documents."
+    },
+    {
+      "name": "Get Item",
+      "category": "Items & Inventory",
+      "description": "Retrieve one item including price and per-warehouse stock (ItemWarehouseInfoCollection)."
+    },
+    {
+      "name": "List Items",
+      "category": "Items & Inventory",
+      "description": "List or search items. Follows pagination to return all matches."
+    },
+    {
+      "name": "Update Item",
+      "category": "Items & Inventory",
+      "description": "Update fields on an existing item (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Delete Item",
+      "category": "Items & Inventory",
+      "description": "Delete an item. Fails (-5006) if the item is used in transactions."
+    },
+    {
+      "name": "Create Warehouse",
+      "category": "Items & Inventory",
+      "description": "Create a warehouse (stock location)."
+    },
+    {
+      "name": "Get Warehouse",
+      "category": "Items & Inventory",
+      "description": "Retrieve one warehouse by its code."
+    },
+    {
+      "name": "List Warehouses",
+      "category": "Items & Inventory",
+      "description": "List or search warehouses. Follows pagination to return all rows."
+    },
+    {
+      "name": "Update Warehouse",
+      "category": "Items & Inventory",
+      "description": "Update a warehouse's name (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Get Price List",
+      "category": "Items & Inventory",
+      "description": "Retrieve one price list by its number, including its item prices."
+    },
+    {
+      "name": "List Price Lists",
+      "category": "Items & Inventory",
+      "description": "List all price lists. Follows pagination to return all rows."
+    },
+    {
+      "name": "Update Price List",
+      "category": "Items & Inventory",
+      "description": "Update a price list's name or factor (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Create Quotation",
+      "category": "Sales",
+      "description": "Create a sales quotation for a customer with line items. Use to send a price proposal before the customer commits to an order."
+    },
+    {
+      "name": "Get Quotation",
+      "category": "Sales",
+      "description": "Retrieve a sales quotation by its internal DocEntry."
+    },
+    {
+      "name": "List Quotations",
+      "category": "Sales",
+      "description": "List or search sales quotations by customer and/or status. Follows pagination for all rows."
+    },
+    {
+      "name": "Update Quotation",
+      "category": "Sales",
+      "description": "Update a sales quotation's header fields (PATCH)."
+    },
+    {
+      "name": "Close Quotation",
+      "category": "Sales",
+      "description": "Close a sales quotation (bound Close action) so it no longer appears as open."
+    },
+    {
+      "name": "Create Order",
+      "category": "Sales",
+      "description": "Create a sales order for a customer with one or more line items. Use after the quotation stage to commit the sale; it feeds delivery and invoicing."
+    },
+    {
+      "name": "Get Order",
+      "category": "Sales",
+      "description": "Retrieve a sales order by its internal DocEntry."
+    },
+    {
+      "name": "List Orders",
+      "category": "Sales",
+      "description": "List or search sales orders. Filter by customer and/or status; follows pagination for all rows."
+    },
+    {
+      "name": "Update Order",
+      "category": "Sales",
+      "description": "Update a sales order's header fields (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Close Order",
+      "category": "Sales",
+      "description": "Close a sales order (bound Close action) so it no longer appears as open."
+    },
+    {
+      "name": "Cancel Order",
+      "category": "Sales",
+      "description": "Cancel a sales order (bound Cancel action). Use to void an order that should not be fulfilled."
+    },
+    {
+      "name": "Create Delivery Note",
+      "category": "Sales",
+      "description": "Create a delivery note (goods shipped to a customer) with line items. Use to record fulfillment of a sales order."
+    },
+    {
+      "name": "Get Delivery Note",
+      "category": "Sales",
+      "description": "Retrieve a delivery note by its internal DocEntry."
+    },
+    {
+      "name": "List Delivery Notes",
+      "category": "Sales",
+      "description": "List or search delivery notes by customer and/or status. Follows pagination for all rows."
+    },
+    {
+      "name": "Update Delivery Note",
+      "category": "Sales",
+      "description": "Update a delivery note's header fields (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Close Delivery Note",
+      "category": "Sales",
+      "description": "Close a delivery note (bound Close action)."
+    },
+    {
+      "name": "Create A/R Invoice",
+      "category": "Sales",
+      "description": "Create a customer (A/R) invoice with line items. Use to bill a customer for goods or services."
+    },
+    {
+      "name": "Get A/R Invoice",
+      "category": "Sales",
+      "description": "Retrieve a customer (A/R) invoice by its internal DocEntry."
+    },
+    {
+      "name": "List A/R Invoices",
+      "category": "Sales",
+      "description": "List or search customer (A/R) invoices by customer and/or status. Follows pagination for all rows."
+    },
+    {
+      "name": "Update A/R Invoice",
+      "category": "Sales",
+      "description": "Update a customer (A/R) invoice's header fields (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Cancel A/R Invoice",
+      "category": "Sales",
+      "description": "Cancel a customer (A/R) invoice (bound Cancel action). Creates a cancellation document."
+    },
+    {
+      "name": "Create A/R Credit Memo",
+      "category": "Sales",
+      "description": "Create a customer (A/R) credit memo with line items. Use to credit a customer for returned goods or a billing correction."
+    },
+    {
+      "name": "Get A/R Credit Memo",
+      "category": "Sales",
+      "description": "Retrieve a customer (A/R) credit memo by its internal DocEntry."
+    },
+    {
+      "name": "List A/R Credit Memos",
+      "category": "Sales",
+      "description": "List or search customer (A/R) credit memos by customer and/or status. Follows pagination for all rows."
+    },
+    {
+      "name": "Update A/R Credit Memo",
+      "category": "Sales",
+      "description": "Update a customer (A/R) credit memo's header fields (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Cancel A/R Credit Memo",
+      "category": "Sales",
+      "description": "Cancel a customer (A/R) credit memo (bound Cancel action)."
+    },
+    {
+      "name": "Create Return",
+      "category": "Sales",
+      "description": "Create a sales return (customer sends goods back) with line items."
+    },
+    {
+      "name": "Get Return",
+      "category": "Sales",
+      "description": "Retrieve a sales return by its internal DocEntry."
+    },
+    {
+      "name": "List Returns",
+      "category": "Sales",
+      "description": "List or search sales returns by customer and/or status. Follows pagination for all rows."
+    },
+    {
+      "name": "Update Return",
+      "category": "Sales",
+      "description": "Update a sales return's header fields (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Create Purchase Quotation",
+      "category": "Purchasing",
+      "description": "Create a purchase quotation request to a vendor with line items. Use to solicit a vendor price before raising a purchase order."
+    },
+    {
+      "name": "Get Purchase Quotation",
+      "category": "Purchasing",
+      "description": "Retrieve a purchase quotation by its internal DocEntry."
+    },
+    {
+      "name": "List Purchase Quotations",
+      "category": "Purchasing",
+      "description": "List or search purchase quotations by vendor and/or status. Follows pagination for all rows."
+    },
+    {
+      "name": "Update Purchase Quotation",
+      "category": "Purchasing",
+      "description": "Update a purchase quotation's header fields (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Close Purchase Quotation",
+      "category": "Purchasing",
+      "description": "Close a purchase quotation (bound Close action)."
+    },
+    {
+      "name": "Create Purchase Order",
+      "category": "Purchasing",
+      "description": "Create a purchase order to a vendor with line items. Use to procure stock or services."
+    },
+    {
+      "name": "Get Purchase Order",
+      "category": "Purchasing",
+      "description": "Retrieve a purchase order by its internal DocEntry."
+    },
+    {
+      "name": "List Purchase Orders",
+      "category": "Purchasing",
+      "description": "List or search purchase orders by vendor and/or status. Follows pagination for all rows."
+    },
+    {
+      "name": "Update Purchase Order",
+      "category": "Purchasing",
+      "description": "Update a purchase order's header fields (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Close Purchase Order",
+      "category": "Purchasing",
+      "description": "Close a purchase order (bound Close action)."
+    },
+    {
+      "name": "Cancel Purchase Order",
+      "category": "Purchasing",
+      "description": "Cancel a purchase order (bound Cancel action). Use to void a PO that should not be fulfilled."
+    },
+    {
+      "name": "Create Goods Receipt PO",
+      "category": "Purchasing",
+      "description": "Create a goods receipt PO (record receipt of purchased goods) with line items. Use to receive stock against a purchase order."
+    },
+    {
+      "name": "Get Goods Receipt PO",
+      "category": "Purchasing",
+      "description": "Retrieve a goods receipt PO by its internal DocEntry."
+    },
+    {
+      "name": "List Goods Receipt POs",
+      "category": "Purchasing",
+      "description": "List or search goods receipt POs by vendor and/or status. Follows pagination for all rows."
+    },
+    {
+      "name": "Update Goods Receipt PO",
+      "category": "Purchasing",
+      "description": "Update a goods receipt PO's header fields (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Create A/P Invoice",
+      "category": "Purchasing",
+      "description": "Create a vendor (A/P) invoice with line items. Use to record a bill from a vendor."
+    },
+    {
+      "name": "Get A/P Invoice",
+      "category": "Purchasing",
+      "description": "Retrieve a vendor (A/P) invoice by its internal DocEntry."
+    },
+    {
+      "name": "List A/P Invoices",
+      "category": "Purchasing",
+      "description": "List or search vendor (A/P) invoices by vendor and/or status. Follows pagination for all rows."
+    },
+    {
+      "name": "Update A/P Invoice",
+      "category": "Purchasing",
+      "description": "Update a vendor (A/P) invoice's header fields (PATCH; only supplied fields change). Note: A/P invoices cannot be cancelled via Service Layer."
+    },
+    {
+      "name": "Create A/P Credit Memo",
+      "category": "Purchasing",
+      "description": "Create a vendor (A/P) credit memo with line items. Use to record a credit from a vendor for returned goods or a billing correction."
+    },
+    {
+      "name": "Get A/P Credit Memo",
+      "category": "Purchasing",
+      "description": "Retrieve a vendor (A/P) credit memo by its internal DocEntry."
+    },
+    {
+      "name": "List A/P Credit Memos",
+      "category": "Purchasing",
+      "description": "List or search vendor (A/P) credit memos by vendor and/or status. Follows pagination for all rows."
+    },
+    {
+      "name": "Update A/P Credit Memo",
+      "category": "Purchasing",
+      "description": "Update a vendor (A/P) credit memo's header fields (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Create Incoming Payment",
+      "category": "Payments",
+      "description": "Record a customer payment against one or more A/R invoices. Use to apply received cash, transfer, or check to open invoices."
+    },
+    {
+      "name": "Get Incoming Payment",
+      "category": "Payments",
+      "description": "Retrieve an incoming (customer) payment by its internal DocEntry."
+    },
+    {
+      "name": "List Incoming Payments",
+      "category": "Payments",
+      "description": "List or search incoming (customer) payments by customer. Follows pagination for all rows."
+    },
+    {
+      "name": "Cancel Incoming Payment",
+      "category": "Payments",
+      "description": "Cancel an incoming (customer) payment (bound Cancel action). Posted payments cannot be edited or deleted, only cancelled."
+    },
+    {
+      "name": "Create Outgoing Payment",
+      "category": "Payments",
+      "description": "Record a payment to a vendor against one or more A/P invoices. Use to apply cash, transfer, or check to open vendor bills."
+    },
+    {
+      "name": "Get Outgoing Payment",
+      "category": "Payments",
+      "description": "Retrieve an outgoing (vendor) payment by its internal DocEntry."
+    },
+    {
+      "name": "List Outgoing Payments",
+      "category": "Payments",
+      "description": "List or search outgoing (vendor) payments by vendor. Follows pagination for all rows."
+    },
+    {
+      "name": "Cancel Outgoing Payment",
+      "category": "Payments",
+      "description": "Cancel an outgoing (vendor) payment (bound Cancel action). Posted payments cannot be edited or deleted, only cancelled."
+    },
+    {
+      "name": "Create Stock Transfer",
+      "category": "Items & Inventory",
+      "description": "Move stock between warehouses with line items. Use to rebalance inventory across locations."
+    },
+    {
+      "name": "Get Stock Transfer",
+      "category": "Items & Inventory",
+      "description": "Retrieve a stock transfer by its internal DocEntry."
+    },
+    {
+      "name": "List Stock Transfers",
+      "category": "Items & Inventory",
+      "description": "List stock transfers. Follows pagination to return all rows."
+    },
+    {
+      "name": "Update Stock Transfer",
+      "category": "Items & Inventory",
+      "description": "Update a stock transfer's header fields (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Create Goods Issue",
+      "category": "Items & Inventory",
+      "description": "Post a goods issue (remove stock from inventory, e.g. for scrap or internal use) with line items. Posted documents cannot be edited or deleted."
+    },
+    {
+      "name": "Get Goods Issue",
+      "category": "Items & Inventory",
+      "description": "Retrieve a goods issue by its internal DocEntry."
+    },
+    {
+      "name": "List Goods Issues",
+      "category": "Items & Inventory",
+      "description": "List goods issues. Follows pagination to return all rows."
+    },
+    {
+      "name": "Create Goods Receipt",
+      "category": "Items & Inventory",
+      "description": "Post a goods receipt (add stock to inventory, e.g. for production or found stock) with line items. Posted documents cannot be edited or deleted."
+    },
+    {
+      "name": "Get Goods Receipt",
+      "category": "Items & Inventory",
+      "description": "Retrieve a goods receipt by its internal DocEntry."
+    },
+    {
+      "name": "List Goods Receipts",
+      "category": "Items & Inventory",
+      "description": "List goods receipts. Follows pagination to return all rows."
+    },
+    {
+      "name": "Create Journal Entry",
+      "category": "Financials",
+      "description": "Post a manual G/L journal entry with balanced debit/credit lines. Use for adjustments and accruals."
+    },
+    {
+      "name": "Get Journal Entry",
+      "category": "Financials",
+      "description": "Retrieve a journal entry by its number (JdtNum)."
+    },
+    {
+      "name": "List Journal Entries",
+      "category": "Financials",
+      "description": "List journal entries. Follows pagination to return all rows."
+    },
+    {
+      "name": "Update Journal Entry",
+      "category": "Financials",
+      "description": "Update a journal entry's memo or reference (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Get Account",
+      "category": "Financials",
+      "description": "Retrieve a single G/L account from the chart of accounts by its code."
+    },
+    {
+      "name": "List Accounts",
+      "category": "Financials",
+      "description": "List or search G/L accounts (chart of accounts). Follows pagination to return all rows."
+    },
+    {
+      "name": "Create Activity",
+      "category": "CRM",
+      "description": "Create a CRM activity (call, meeting, task, note) linked to a business partner. Use to log customer interactions and follow-ups."
+    },
+    {
+      "name": "Get Activity",
+      "category": "CRM",
+      "description": "Retrieve a CRM activity by its ActivityCode."
+    },
+    {
+      "name": "List Activities",
+      "category": "CRM",
+      "description": "List or search CRM activities by business partner. Follows pagination to return all rows."
+    },
+    {
+      "name": "Update Activity",
+      "category": "CRM",
+      "description": "Update a CRM activity's notes (PATCH; only supplied fields change)."
+    },
+    {
+      "name": "Delete Activity",
+      "category": "CRM",
+      "description": "Delete a CRM activity by its ActivityCode."
+    },
+    {
+      "name": "Query Entities",
+      "category": "Query",
+      "description": "Run an advanced OData query against any Service Layer entity set with filter/select/sort. Returns ALL matching rows (follows pagination automatically). Use when no dedicated action fits."
+    }
+  ],
+  "triggers": [
+    "On New Sales Order",
+    "On New Business Partner"
+  ],
+  "idealUseCases": [
+    "Syncing customers, vendors, and leads between SAP Business One and your CRM or storefront",
+    "Raising sales quotations, orders, deliveries, and A/R invoices from web forms or other apps",
+    "Driving the purchasing cycle: purchase quotations, orders, goods receipt POs, and A/P invoices",
+    "Applying customer and vendor payments against open invoices and reconciling balances",
+    "Keeping item, warehouse, and price-list master data in sync with other systems",
+    "Posting journal entries and inventory movements (stock transfers, goods issue/receipt)",
+    "Logging CRM activities (calls, meetings, tasks, notes) against business partners",
+    "Running ad-hoc OData queries against any Service Layer entity when no dedicated action fits",
+    "Kicking off workflows the moment a new sales order or business partner is created"
+  ],
+  "agentIdeas": [
+    "When the SAP Business One **\"On New Sales Order\"** trigger fires, use Gmail **\"Send Message\"** to notify the fulfilment team and add the order to Google Sheets **\"Add Row\"** for reporting.",
+    "Use Google Sheets **\"Get Rows\"** to read a list of new customers, then call SAP Business One **\"Create Business Partner\"** and **\"Create Quotation\"** to seed them into the ERP.",
+    "When the SAP Business One **\"On New Business Partner\"** trigger fires, call HubSpot **\"Create Contact\"** to mirror the account into your CRM and post Slack **\"Send Message To Channel\"** to alert the sales team."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/sap-business-one/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/sap-business-one",
+    "readme": "services/sap-business-one/README.md",
+    "index": "services/sap-business-one/src/index.js"
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "slug": "paddle",
+  "name": "Paddle",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Manage your billing with [Paddle](https://www.paddle.com), the merchant-of-record platform for SaaS and digital products. This extension uses the current **Paddle Billing** API (not the legacy Paddle Classic API) to manage products, prices, customers, subscriptions, transactions, discounts, and refunds/credits.",
+  "actionCount": 29,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Products",
+    "Prices",
+    "Customers",
+    "Subscriptions",
+    "Transactions",
+    "Discounts",
+    "Adjustments"
+  ],
+  "actions": [
+    {
+      "name": "Create Product",
+      "category": "Products",
+      "description": "Creates a new product in your Paddle catalog. A product represents the item you sell (for example an app, a plan, or an add-on) and holds one or more prices. Requires a name and a tax category that determines how Paddle calculates tax. Optionally include a description, an HTTPS image URL, and custom_data key-value metadata."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Retrieves a paginated list of products in your Paddle catalog. Filter by status (active or archived) and control page size. Returns products with their tax category, description, and metadata alongside pagination details for fetching further pages."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves a single product by its Paddle product ID (pro_...). Returns the product's name, tax category, status, description, image URL, and any custom metadata."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates an existing product. Supply the product ID and only the fields you want to change: name, tax category, description, image URL, custom data, or status (set to Archived to archive the product). Omitted fields are left unchanged."
+    },
+    {
+      "name": "Create Price",
+      "category": "Prices",
+      "description": "Creates a price for an existing product. Set the unit price amount (in the currency's lowest denomination) and currency code. Provide a billing cycle to make it a recurring subscription price, or omit it for a one-time price. Optionally add a trial period and minimum/maximum quantity limits."
+    },
+    {
+      "name": "List Prices",
+      "category": "Prices",
+      "description": "Retrieves a paginated list of prices. Filter by product ID or status (active or archived) to narrow results. Returns each price with its unit price, billing cycle, and quantity limits, plus pagination details."
+    },
+    {
+      "name": "Get Price",
+      "category": "Prices",
+      "description": "Retrieves a single price by its Paddle price ID (pri_...). Returns the unit price, currency, billing cycle, trial period, quantity limits, and status."
+    },
+    {
+      "name": "Update Price",
+      "category": "Prices",
+      "description": "Updates an existing price. Supply the price ID and only the fields to change: description, name, unit price, billing cycle, trial period, quantity limits, or status (set to Archived to archive the price). Omitted fields are left unchanged."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a new customer record in Paddle. Requires a unique email address. Optionally include the customer's name and custom_data metadata. The returned customer ID (ctm_...) can be used when creating transactions or subscriptions."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Retrieves a paginated list of customers. Filter by status (active or archived) or search by email address or name. Returns each customer with their email, name, status, and metadata plus pagination details."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer by their Paddle customer ID (ctm_...). Returns the customer's email, name, status, locale, and custom metadata."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates an existing customer. Supply the customer ID and only the fields to change: email, name, custom data, or status. Set the status to Archived to archive the customer so they can no longer be used."
+    },
+    {
+      "name": "Get Customer Credit Balances",
+      "category": "Customers",
+      "description": "Retrieves the credit balances for a customer, grouped by currency. Returns available, reserved, and used credit amounts that can be applied to future transactions. Optionally filter to a single currency code."
+    },
+    {
+      "name": "List Subscriptions",
+      "category": "Subscriptions",
+      "description": "Retrieves a paginated list of subscriptions. Filter by status (active, canceled, past_due, paused, or trialing) and/or by customer ID. Returns each subscription with its items, billing details, and current status alongside pagination information."
+    },
+    {
+      "name": "Get Subscription",
+      "category": "Subscriptions",
+      "description": "Retrieves a single subscription by its Paddle subscription ID (sub_...). Returns the subscription's status, items, billing period, next billed date, scheduled changes, and customer details."
+    },
+    {
+      "name": "Update Subscription",
+      "category": "Subscriptions",
+      "description": "Updates a subscription's items and billing behavior. Provide the full desired list of items (each with a price ID and quantity) to replace the current items, and choose how Paddle handles proration when the change affects billing. Only the fields you supply are changed."
+    },
+    {
+      "name": "Pause Subscription",
+      "category": "Subscriptions",
+      "description": "Pauses an active subscription. Choose when the pause takes effect: at the end of the current billing period (default) or immediately. While paused, the customer is not billed until the subscription is resumed."
+    },
+    {
+      "name": "Resume Subscription",
+      "category": "Subscriptions",
+      "description": "Resumes a paused subscription. Choose when the resume takes effect: immediately or at the end of the current billing period. Once resumed, normal billing continues."
+    },
+    {
+      "name": "Cancel Subscription",
+      "category": "Subscriptions",
+      "description": "Cancels a subscription. Choose when the cancellation takes effect: at the end of the current billing period (so the customer keeps access until then) or immediately. Cancellation is permanent and cannot be undone."
+    },
+    {
+      "name": "List Transactions",
+      "category": "Transactions",
+      "description": "Retrieves a paginated list of transactions. Filter by status (draft, ready, billed, paid, completed, canceled, or past_due) and/or by customer ID. Returns each transaction with its items, totals, and status alongside pagination details."
+    },
+    {
+      "name": "Get Transaction",
+      "category": "Transactions",
+      "description": "Retrieves a single transaction by its Paddle transaction ID (txn_...). Returns the transaction's items, totals, tax breakdown, status, customer, and associated subscription (if any)."
+    },
+    {
+      "name": "Create Transaction",
+      "category": "Transactions",
+      "description": "Creates a transaction (an order or invoice) for a set of catalog prices. Provide one or more items, each with a price ID and quantity. Optionally attach an existing customer and choose the collection mode: automatic (Paddle charges the saved payment method) or manual (generates an invoice for the customer to pay)."
+    },
+    {
+      "name": "Get Transaction Invoice PDF",
+      "category": "Transactions",
+      "description": "Retrieves a link to the PDF invoice for a billed or completed transaction. Returns a temporary, secure URL where the invoice PDF can be downloaded. The URL expires after a short period, so download it promptly."
+    },
+    {
+      "name": "List Discounts",
+      "category": "Discounts",
+      "description": "Retrieves a paginated list of discounts. Filter by status (active, archived, expired, or used) and/or by discount code. Returns each discount with its type, amount, code, and recurrence settings alongside pagination details."
+    },
+    {
+      "name": "Create Discount",
+      "category": "Discounts",
+      "description": "Creates a discount that customers can apply at checkout. Set a description, an amount, and a type: Percentage (amount is a percent, e.g. 10 for 10%) or Flat (amount is in the currency's lowest denomination). Optionally set a redemption code, make it recurring, and restrict usage limits or expiry."
+    },
+    {
+      "name": "Get Discount",
+      "category": "Discounts",
+      "description": "Retrieves a single discount by its Paddle discount ID (dsc_...). Returns the discount's type, amount, code, recurrence settings, usage limits, and status."
+    },
+    {
+      "name": "Update Discount",
+      "category": "Discounts",
+      "description": "Updates an existing discount. Supply the discount ID and only the fields to change: description, amount, code, usage limit, expiry, or status (set to Archived to archive it). Omitted fields are left unchanged."
+    },
+    {
+      "name": "Create Adjustment",
+      "category": "Adjustments",
+      "description": "Creates an adjustment against a billed transaction to issue a refund or credit. Choose the action: Refund (returns money to the customer) or Credit (adds credit for manually-collected transactions). Provide a reason and either specific line items to adjust or a full adjustment covering the whole transaction."
+    },
+    {
+      "name": "List Adjustments",
+      "category": "Adjustments",
+      "description": "Retrieves a paginated list of adjustments (refunds and credits). Filter by action (refund or credit), status, transaction ID, or customer ID. Returns each adjustment with its action, totals, status, and reason alongside pagination details."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Provision a new product and its prices in your Paddle catalog straight from an automation.",
+    "Look up a customer, their subscriptions, and credit balances to answer billing questions.",
+    "Pause, resume, cancel, or change a subscription as part of a lifecycle or retention flow.",
+    "Create ad-hoc transactions and fetch invoice PDFs for manual (invoice) billing.",
+    "Issue refunds or credits (adjustments) against past transactions.",
+    "Create and manage discount codes for promotions."
+  ],
+  "agentIdeas": [
+    "After **Stripe** or a signup flow captures a lead, use **Paddle** \"Create Customer\" and \"Create Transaction\" to bill them and \"Get Transaction Invoice PDF\" to attach the invoice.",
+    "Combine **Paddle** \"List Subscriptions\" (status `past_due`) with **Gmail** \"Send Message\" to run a dunning/retention campaign.",
+    "Use **Paddle** \"Create Adjustment\" to refund a customer, then **Slack** \"Send Message To Channel\" to notify the finance channel.",
+    "Pair **Paddle** \"Create Discount\" with **Airtable** \"Create Record\" to track promo codes and their usage."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/paddle/public/icon.png",
+  "sourcePaths": {
+    "service": "services/paddle",
+    "readme": "services/paddle/README.md",
+    "index": "services/paddle/src/index.js"
+  }
+}

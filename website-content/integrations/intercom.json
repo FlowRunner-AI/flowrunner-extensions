@@ -1,0 +1,456 @@
+{
+  "slug": "intercom",
+  "name": "Intercom",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate your Intercom support and CRM workspace: manage contacts and companies, run and reply to conversations and tickets, send proactive messages, tag and segment people, submit behavioral events, and author Help Center content - all from a no-code flow.",
+  "actionCount": 79,
+  "triggerCount": 5,
+  "operationCategories": [
+    "Contacts",
+    "Companies",
+    "Conversations",
+    "Messaging",
+    "Tickets",
+    "Admins",
+    "Teams",
+    "Tags",
+    "Segments",
+    "Notes",
+    "Events",
+    "Data Attributes",
+    "Help Center",
+    "Subscriptions",
+    "Visitors"
+  ],
+  "actions": [
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact (a User or a Lead) in Intercom. Provide at least an email, an external ID, or a role. Use this to add a person to your workspace before messaging, tagging, or starting a conversation with them."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves the full details of a single contact by its Intercom ID. Use this to read a contact's attributes, tags, companies and subscription state before acting on them."
+    },
+    {
+      "name": "Get Contact by External ID",
+      "category": "Contacts",
+      "description": "Finds a contact by the external_id you assigned when creating it. Use this to look up a contact using your own system's identifier instead of the Intercom ID."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact's attributes. Only the fields you set are changed. Use this to enrich or correct a contact's email, name, phone, owner or custom data."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a single contact from Intercom. This cannot be undone. Use Archive Contact instead if you only want to hide the contact from lists."
+    },
+    {
+      "name": "Archive Contact",
+      "category": "Contacts",
+      "description": "Archives a single contact, hiding them from lists without deleting them. This is reversible with Unarchive Contact. Use this to declutter active lists while keeping the record."
+    },
+    {
+      "name": "Unarchive Contact",
+      "category": "Contacts",
+      "description": "Restores a previously archived contact, returning them to active lists. Use this to reverse an Archive Contact action."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Returns a page of contacts from your workspace. Use the cursor to page through results. Use this to browse or export contacts, or to feed a downstream action with contact IDs."
+    },
+    {
+      "name": "Search Contacts",
+      "category": "Contacts",
+      "description": "Searches contacts by a single attribute filter (e.g. email, name, role or created_at). Use this to find contacts matching a condition before acting on them."
+    },
+    {
+      "name": "Merge Contact",
+      "category": "Contacts",
+      "description": "Merges a Lead contact into a User contact, combining their data onto the user. The \"from\" contact must be a lead and the \"into\" contact must be a user. Use this to deduplicate after a known lead signs up."
+    },
+    {
+      "name": "Create or Update Company",
+      "category": "Companies",
+      "description": "Creates a company, or updates it if a company with the same Company ID already exists. Use this single action to keep an account record in sync from your own system, keyed by your external Company ID."
+    },
+    {
+      "name": "Get Company",
+      "category": "Companies",
+      "description": "Retrieves a single company by its Intercom ID. Use this to read a company's plan, size, attributes and metadata."
+    },
+    {
+      "name": "Find Company",
+      "category": "Companies",
+      "description": "Finds a company by your external Company ID or by name. Use this to locate the Intercom company record matching an account in your own system."
+    },
+    {
+      "name": "Update Company",
+      "category": "Companies",
+      "description": "Updates an existing company by its Intercom ID. Only the fields you set are changed. Note the external Company ID itself cannot be changed once set."
+    },
+    {
+      "name": "Delete Company",
+      "category": "Companies",
+      "description": "Permanently deletes a company by its Intercom ID. This cannot be undone."
+    },
+    {
+      "name": "List Companies",
+      "category": "Companies",
+      "description": "Returns a page of all companies in your workspace. Use this to browse or export companies, or to feed a downstream action with company IDs."
+    },
+    {
+      "name": "Attach Contact to Company",
+      "category": "Companies",
+      "description": "Associates a contact with a company, adding the contact to that company's member list. Use this to link a person to the account they belong to."
+    },
+    {
+      "name": "Detach Contact from Company",
+      "category": "Companies",
+      "description": "Removes the association between a contact and a company. Use this to unlink a person from an account they no longer belong to."
+    },
+    {
+      "name": "List Company Contacts",
+      "category": "Companies",
+      "description": "Lists the contacts attached to a company. Use this to see every person that belongs to an account."
+    },
+    {
+      "name": "Create Conversation",
+      "category": "Conversations",
+      "description": "Starts a new conversation initiated by a contact (a user or lead). Use this to open a support thread on behalf of a customer. The body is plain text (HTML is not supported)."
+    },
+    {
+      "name": "Get Conversation",
+      "category": "Conversations",
+      "description": "Retrieves a single conversation with its parts (messages, notes, assignments). Use this to read a thread's full history and current state."
+    },
+    {
+      "name": "List Conversations",
+      "category": "Conversations",
+      "description": "Returns a page of all conversations in your workspace, newest activity first. Use the cursor to page through results."
+    },
+    {
+      "name": "Search Conversations",
+      "category": "Conversations",
+      "description": "Searches conversations by a single attribute filter (e.g. created_at, state, open). Use this to find threads matching a condition before acting on them."
+    },
+    {
+      "name": "Reply to Conversation",
+      "category": "Conversations",
+      "description": "Adds a reply to a conversation - a public admin comment, an internal admin note, or a reply on behalf of the user. Optionally attach up to 10 public image URLs (Intercom fetches each one server-side). Use this to respond to a customer or leave a private note for teammates."
+    },
+    {
+      "name": "Assign Conversation",
+      "category": "Conversations",
+      "description": "Assigns a conversation to an admin or a team. Set the assignee to 0 to unassign. Use this to route a thread to the right owner or inbox."
+    },
+    {
+      "name": "Snooze Conversation",
+      "category": "Conversations",
+      "description": "Snoozes a conversation until a chosen time, after which it reopens. Use this to defer a thread you do not need to handle right now."
+    },
+    {
+      "name": "Open Conversation",
+      "category": "Conversations",
+      "description": "Reopens a closed or snoozed conversation. Use this to bring a thread back into the active queue."
+    },
+    {
+      "name": "Close Conversation",
+      "category": "Conversations",
+      "description": "Closes a conversation, optionally leaving a closing message. Use this to mark a support thread as resolved."
+    },
+    {
+      "name": "Attach Contact to Conversation",
+      "category": "Conversations",
+      "description": "Adds another contact as a participant on an existing conversation. Use this to loop an additional customer into a shared thread."
+    },
+    {
+      "name": "Convert Conversation to Ticket",
+      "category": "Conversations",
+      "description": "Converts a conversation into a ticket of the chosen type. Use this to escalate a support chat into a tracked ticket workflow."
+    },
+    {
+      "name": "Create Message",
+      "category": "Messaging",
+      "description": "Sends an admin-initiated in-app message or email to a user or lead. Use this to proactively reach out to a customer. Email messages also require a subject and a template. Note: the request value for an in-app message is \"in_app\" but the created message echoes it back in the response as \"inapp\" (no underscore) - both refer to the same in-app channel."
+    },
+    {
+      "name": "Create Ticket",
+      "category": "Tickets",
+      "description": "Creates a ticket of the chosen type for a contact, optionally linked to a company and assigned to an admin or team. Use this to open a tracked support or task ticket."
+    },
+    {
+      "name": "Get Ticket",
+      "category": "Tickets",
+      "description": "Retrieves a single ticket by its Intercom ticket ID. Use this to read a ticket's state, type, attributes and assignment."
+    },
+    {
+      "name": "Update Ticket",
+      "category": "Tickets",
+      "description": "Updates a ticket's state, assignment, linked company or attributes. Set Open to false to close the ticket. Use this to progress or reassign a ticket."
+    },
+    {
+      "name": "Delete Ticket",
+      "category": "Tickets",
+      "description": "Permanently deletes a ticket by its Intercom ticket ID. This cannot be undone."
+    },
+    {
+      "name": "Search Tickets",
+      "category": "Tickets",
+      "description": "Searches tickets by a single attribute filter (e.g. created_at, ticket_state_id, ticket_type_id, open). Tickets have no plain list endpoint, so use this to enumerate them."
+    },
+    {
+      "name": "Reply to Ticket",
+      "category": "Tickets",
+      "description": "Adds a reply to a ticket - a public admin comment, an internal admin note, or a reply on behalf of the user. Optionally attach up to 10 public image URLs (Intercom fetches each one server-side). Use this to update a customer or leave a private note on the ticket."
+    },
+    {
+      "name": "List Admins",
+      "category": "Admins",
+      "description": "Lists all admins (teammates) in your workspace, including their away status. Use this to discover admin IDs for assignment, replies and away-status changes."
+    },
+    {
+      "name": "Get Admin",
+      "category": "Admins",
+      "description": "Retrieves a single admin (teammate) by ID, including name, email and away status."
+    },
+    {
+      "name": "Set Admin Away",
+      "category": "Admins",
+      "description": "Sets an admin's away status on or off, and whether their new conversation replies should be reassigned. Use this to mark a teammate away (or back) automatically."
+    },
+    {
+      "name": "List Teams",
+      "category": "Teams",
+      "description": "Lists all teams in your workspace. Use this to discover team IDs for routing conversations and tickets."
+    },
+    {
+      "name": "Get Team",
+      "category": "Teams",
+      "description": "Retrieves a single team by ID, including its name and member admin IDs."
+    },
+    {
+      "name": "Create or Update Tag",
+      "category": "Tags",
+      "description": "Creates a tag with the given name, or renames an existing tag if you supply its ID. Use this to manage the tag vocabulary you apply to contacts, companies and conversations."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists all tags in your workspace. Use this to discover tag IDs and names for tagging actions."
+    },
+    {
+      "name": "Get Tag",
+      "category": "Tags",
+      "description": "Retrieves a single tag by ID, including its name."
+    },
+    {
+      "name": "Delete Tag",
+      "category": "Tags",
+      "description": "Permanently deletes a tag from your workspace, removing it from every record it was applied to."
+    },
+    {
+      "name": "Tag Contact",
+      "category": "Tags",
+      "description": "Applies an existing tag to a contact. Use this to label or segment a person."
+    },
+    {
+      "name": "Untag Contact",
+      "category": "Tags",
+      "description": "Removes a tag from a contact. Use this to unlabel a person."
+    },
+    {
+      "name": "Tag Company",
+      "category": "Tags",
+      "description": "Applies a tag (created if it does not exist) to a company. Use this to label or segment an account."
+    },
+    {
+      "name": "Untag Company",
+      "category": "Tags",
+      "description": "Removes a tag from a company. Use this to unlabel an account."
+    },
+    {
+      "name": "Tag Conversation",
+      "category": "Tags",
+      "description": "Applies a tag to a conversation on behalf of an admin. Use this to categorize a support thread."
+    },
+    {
+      "name": "Untag Conversation",
+      "category": "Tags",
+      "description": "Removes a tag from a conversation on behalf of an admin. Use this to uncategorize a support thread."
+    },
+    {
+      "name": "List Segments",
+      "category": "Segments",
+      "description": "Lists all contact segments in your workspace, optionally with member counts. Use this to discover segment IDs for filtering and reporting."
+    },
+    {
+      "name": "Get Segment",
+      "category": "Segments",
+      "description": "Retrieves a single segment by ID, including its name and person type."
+    },
+    {
+      "name": "Create Note",
+      "category": "Notes",
+      "description": "Adds an internal note to a contact, visible only to teammates. Use this to record context about a person that customers should not see."
+    },
+    {
+      "name": "List Notes",
+      "category": "Notes",
+      "description": "Lists the internal notes attached to a contact. Use this to read everything teammates have recorded about a person."
+    },
+    {
+      "name": "Get Note",
+      "category": "Notes",
+      "description": "Retrieves a single note by ID, including its body and author. Pick the note from the chosen contact's notes."
+    },
+    {
+      "name": "Submit Event",
+      "category": "Events",
+      "description": "Records a custom event for a contact (e.g. \"invited-friend\"). Events power behavioral targeting and timelines. Identify the contact by your user_id, their Intercom ID, or their email."
+    },
+    {
+      "name": "List Events",
+      "category": "Events",
+      "description": "Lists the recent custom events recorded for a single contact. Identify the contact by your user_id, their Intercom ID, or their email."
+    },
+    {
+      "name": "List Data Attributes",
+      "category": "Data Attributes",
+      "description": "Lists the custom and standard data attributes defined for contacts, companies or conversations. Use this to discover the attribute schema before reading or writing custom data."
+    },
+    {
+      "name": "Create Data Attribute",
+      "category": "Data Attributes",
+      "description": "Creates a custom data attribute on contacts or companies. Choose its value type; for a List attribute supply the allowed option values. Use this to extend your CRM schema."
+    },
+    {
+      "name": "Update Data Attribute",
+      "category": "Data Attributes",
+      "description": "Updates a custom data attribute - archive it, change its description or messenger access, or set new list options. Archiving (Archived = true) is how attributes are removed (there is no delete)."
+    },
+    {
+      "name": "Create Article",
+      "category": "Help Center",
+      "description": "Creates a Help Center article authored by a teammate, as a draft or published. Optionally nest it under a collection. Use this to publish self-serve documentation."
+    },
+    {
+      "name": "Get Article",
+      "category": "Help Center",
+      "description": "Retrieves a single Help Center article by ID, including its title, state and content."
+    },
+    {
+      "name": "Update Article",
+      "category": "Help Center",
+      "description": "Updates a Help Center article's title, body, description, state or author. Only the fields you set are changed. Use this to edit or publish documentation."
+    },
+    {
+      "name": "Delete Article",
+      "category": "Help Center",
+      "description": "Permanently deletes a Help Center article by ID. This cannot be undone."
+    },
+    {
+      "name": "List Articles",
+      "category": "Help Center",
+      "description": "Returns a page of all Help Center articles. Use the cursor to page through results."
+    },
+    {
+      "name": "Search Articles",
+      "category": "Help Center",
+      "description": "Full-text searches Help Center articles by phrase, optionally limited to a state. Use this to find documentation matching a query."
+    },
+    {
+      "name": "Create Collection",
+      "category": "Help Center",
+      "description": "Creates a Help Center collection (a top-level grouping of articles), optionally nested under a parent collection. Use this to organize your knowledge base."
+    },
+    {
+      "name": "Get Collection",
+      "category": "Help Center",
+      "description": "Retrieves a single Help Center collection by ID, including its name and description."
+    },
+    {
+      "name": "Update Collection",
+      "category": "Help Center",
+      "description": "Updates a Help Center collection's name, description or parent. Only the fields you set are changed."
+    },
+    {
+      "name": "Delete Collection",
+      "category": "Help Center",
+      "description": "Permanently deletes a Help Center collection by ID. This cannot be undone."
+    },
+    {
+      "name": "List Collections",
+      "category": "Help Center",
+      "description": "Returns a page of all Help Center collections. Use the cursor to page through results."
+    },
+    {
+      "name": "List Subscription Types",
+      "category": "Subscriptions",
+      "description": "Lists the subscription types (opt-in/opt-out preferences) available in your workspace. Use this to discover subscription IDs before attaching or detaching them on a contact."
+    },
+    {
+      "name": "Attach Subscription",
+      "category": "Subscriptions",
+      "description": "Subscribes a contact to a subscription type with an opt-in or opt-out consent. Use this to record a customer's communication preference."
+    },
+    {
+      "name": "Detach Subscription",
+      "category": "Subscriptions",
+      "description": "Removes a subscription type from a contact. Use this to clear a previously recorded communication preference."
+    },
+    {
+      "name": "Get Visitor",
+      "category": "Visitors",
+      "description": "Retrieves an anonymous visitor by your user_id identifier. Use this to read what Intercom knows about an unidentified web/messenger visitor."
+    },
+    {
+      "name": "Update Visitor",
+      "category": "Visitors",
+      "description": "Updates an anonymous visitor's name or custom attributes, identified by your user_id. Use this to enrich what Intercom knows about an unidentified visitor."
+    },
+    {
+      "name": "Convert Visitor",
+      "category": "Visitors",
+      "description": "Converts an anonymous visitor into a Lead or User contact, merging into the target contact's user_id. Use this when an unidentified visitor becomes a known person."
+    }
+  ],
+  "triggers": [
+    "New Conversation",
+    "New Contact",
+    "New Ticket",
+    "Conversation Closed",
+    "Conversation Replied"
+  ],
+  "idealUseCases": [
+    "Sync contacts and companies from your own system (create, find, update, merge, archive).",
+    "Triage support: create, search, reply to (with optional image attachments), assign, snooze, close, and convert conversations to tickets.",
+    "Run tickets end to end - create, update, reply, search, and delete.",
+    "Proactively reach customers with in-app or email messages.",
+    "Tag and segment contacts, companies, and conversations; record opt-in/opt-out subscriptions.",
+    "Track behavior by submitting custom events and listing a contact's event history.",
+    "Publish and maintain Help Center articles and collections.",
+    "React to new conversations, contacts, or tickets - or to conversations being closed or replied to - with polling triggers."
+  ],
+  "agentIdeas": [
+    "When an **Intercom** \"New Conversation\" trigger fires, use **Slack** \"Send Message To Channel\" to alert the support team with the conversation details for fast triage.",
+    "When a **Shopify** \"On New Order\" trigger fires, use **Intercom** \"Create or Update Company\" and \"Submit Event\" to record the purchase against the customer's Intercom profile.",
+    "When an **Intercom** \"New Contact\" trigger fires, use **Google Sheets** \"Add Row\" to log each new signup into a tracking spreadsheet."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/intercom/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/intercom",
+    "readme": "services/intercom/README.md",
+    "index": "services/intercom/src/index.js"
+  }
+}

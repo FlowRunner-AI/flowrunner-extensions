@@ -1,0 +1,1403 @@
+{
+  "slug": "pipedrive",
+  "name": "Pipedrive",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "A FlowRunner extension that integrates Pipedrive CRM via OAuth2, providing comprehensive access to deals, leads, persons, organizations, products, activities, projects, and account administration.",
+  "actionCount": 265,
+  "triggerCount": 0,
+  "operationCategories": [
+    "User Management",
+    "Activities",
+    "ActivityFields",
+    "ActivityTypes",
+    "Billing",
+    "CallLogs",
+    "Channels",
+    "Currencies",
+    "DealFields",
+    "Deals",
+    "Files",
+    "Filters",
+    "Goals",
+    "ItemSearch",
+    "LeadLabels",
+    "Leads",
+    "LeadSources",
+    "LegacyTeams",
+    "Mailbox",
+    "Meetings",
+    "NoteFields",
+    "Notes",
+    "OrganizationFields",
+    "Organizations",
+    "PermissionSets",
+    "PersonFields",
+    "Persons",
+    "Pipelines",
+    "ProductFields",
+    "Products",
+    "Projects",
+    "ProjectTemplates",
+    "Recents",
+    "Roles",
+    "Stages",
+    "Tasks",
+    "UserConnections",
+    "Users",
+    "UserSettings",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "Get Current User",
+      "category": "User Management",
+      "description": "Retrieves information about the current authenticated user"
+    },
+    {
+      "name": "Create Activity",
+      "category": "Activities",
+      "description": "Adds a new activity."
+    },
+    {
+      "name": "Get Activity",
+      "category": "Activities",
+      "description": "Returns details of a specific activity."
+    },
+    {
+      "name": "Update Activity",
+      "category": "Activities",
+      "description": "Updates the properties of an activity."
+    },
+    {
+      "name": "Delete Activity",
+      "category": "Activities",
+      "description": "Marks an activity as deleted."
+    },
+    {
+      "name": "List Activities",
+      "category": "Activities",
+      "description": "Returns all activities."
+    },
+    {
+      "name": "Delete Activities",
+      "category": "Activities",
+      "description": "Marks multiple activities as deleted."
+    },
+    {
+      "name": "List Activity Fields",
+      "category": "ActivityFields",
+      "description": "Returns all activity fields."
+    },
+    {
+      "name": "List Activity Types",
+      "category": "ActivityTypes",
+      "description": "Returns all activity types."
+    },
+    {
+      "name": "Create Activity Type",
+      "category": "ActivityTypes",
+      "description": "Adds a new activity type."
+    },
+    {
+      "name": "Delete Activity Types",
+      "category": "ActivityTypes",
+      "description": "Marks multiple activity types as deleted."
+    },
+    {
+      "name": "Delete Activity Type",
+      "category": "ActivityTypes",
+      "description": "Marks an activity type as deleted."
+    },
+    {
+      "name": "Update Activity Type",
+      "category": "ActivityTypes",
+      "description": "Updates the properties of an activity type."
+    },
+    {
+      "name": "List Billing Add-ons",
+      "category": "Billing",
+      "description": "Returns all billing add-ons for the company."
+    },
+    {
+      "name": "List Call Logs",
+      "category": "CallLogs",
+      "description": "Returns all call logs."
+    },
+    {
+      "name": "Create Call Log",
+      "category": "CallLogs",
+      "description": "Adds a new call log."
+    },
+    {
+      "name": "Get Call Log",
+      "category": "CallLogs",
+      "description": "Returns details of a specific call log."
+    },
+    {
+      "name": "Delete Call Log",
+      "category": "CallLogs",
+      "description": "Marks a call log as deleted."
+    },
+    {
+      "name": "Attach Call Log Recording",
+      "category": "CallLogs",
+      "description": "Attaches an audio recording to the call log."
+    },
+    {
+      "name": "Create channel",
+      "category": "Channels",
+      "description": "Adds a new channel."
+    },
+    {
+      "name": "Delete channel",
+      "category": "Channels",
+      "description": "Marks a channel as deleted."
+    },
+    {
+      "name": "Receives incoming message",
+      "category": "Channels",
+      "description": "Adds a message to a conversation. To use the endpoint, you need to have **Messengers integration** O..."
+    },
+    {
+      "name": "Delete conversation",
+      "category": "Channels",
+      "description": "Marks a channel as deleted."
+    },
+    {
+      "name": "List Currencies",
+      "category": "Currencies",
+      "description": "Returns all supported currencies."
+    },
+    {
+      "name": "List Deal Fields",
+      "category": "DealFields",
+      "description": "Returns all deal fields."
+    },
+    {
+      "name": "Create Deal Field",
+      "category": "DealFields",
+      "description": "Adds a new deal field."
+    },
+    {
+      "name": "Delete Deal Fields",
+      "category": "DealFields",
+      "description": "Marks multiple deal fields as deleted."
+    },
+    {
+      "name": "Get Deal Field",
+      "category": "DealFields",
+      "description": "Returns details of a specific deal field."
+    },
+    {
+      "name": "Delete Deal Field",
+      "category": "DealFields",
+      "description": "Marks a deal field as deleted."
+    },
+    {
+      "name": "Update Deal Field",
+      "category": "DealFields",
+      "description": "Updates the properties of a deal field."
+    },
+    {
+      "name": "List Deals",
+      "category": "Deals",
+      "description": "Returns all deals."
+    },
+    {
+      "name": "Create Deal",
+      "category": "Deals",
+      "description": "Adds a new deal."
+    },
+    {
+      "name": "Delete Deals",
+      "category": "Deals",
+      "description": "Marks multiple deals as deleted."
+    },
+    {
+      "name": "List Archived Deals",
+      "category": "Deals",
+      "description": "Returns all archived deals."
+    },
+    {
+      "name": "List Deals Collection",
+      "category": "Deals",
+      "description": "Returns all deals."
+    },
+    {
+      "name": "Search Deals",
+      "category": "Deals",
+      "description": "Searches all deals."
+    },
+    {
+      "name": "Get Deals Summary",
+      "category": "Deals",
+      "description": "Returns a summary of deals."
+    },
+    {
+      "name": "Get Archived Deals Summary",
+      "category": "Deals",
+      "description": "Returns a summary of archived deals."
+    },
+    {
+      "name": "Get Deals Timeline",
+      "category": "Deals",
+      "description": "Returns a timeline of deals."
+    },
+    {
+      "name": "Get Archived Deals Timeline",
+      "category": "Deals",
+      "description": "Returns a timeline of archived deals."
+    },
+    {
+      "name": "Delete Deal",
+      "category": "Deals",
+      "description": "Marks a deal as deleted."
+    },
+    {
+      "name": "Get Deal",
+      "category": "Deals",
+      "description": "Returns details of a specific deal."
+    },
+    {
+      "name": "Update Deal",
+      "category": "Deals",
+      "description": "Updates the properties of a deal."
+    },
+    {
+      "name": "List Deal Activities",
+      "category": "Deals",
+      "description": "Returns all activities associated with a deal."
+    },
+    {
+      "name": "List Deal Updates",
+      "category": "Deals",
+      "description": "Returns updates about deal field values."
+    },
+    {
+      "name": "Duplicate Deal",
+      "category": "Deals",
+      "description": "Duplicates a deal."
+    },
+    {
+      "name": "List Deal Files",
+      "category": "Deals",
+      "description": "Returns all files attached to a deal."
+    },
+    {
+      "name": "List Deal Flow",
+      "category": "Deals",
+      "description": "Returns updates about a deal."
+    },
+    {
+      "name": "List Deal Participants Updates",
+      "category": "Deals",
+      "description": "Returns updates about participants of a deal."
+    },
+    {
+      "name": "List Deal Followers",
+      "category": "Deals",
+      "description": "Returns all followers of a deal."
+    },
+    {
+      "name": "Add Deal Follower",
+      "category": "Deals",
+      "description": "Adds a follower to a deal."
+    },
+    {
+      "name": "Delete Deal Follower",
+      "category": "Deals",
+      "description": "Removes a follower from a deal."
+    },
+    {
+      "name": "List Deal Mail Messages",
+      "category": "Deals",
+      "description": "Returns all mail messages associated with a deal."
+    },
+    {
+      "name": "Merge Deals",
+      "category": "Deals",
+      "description": "Merges a deal with another deal."
+    },
+    {
+      "name": "List Deal Participants",
+      "category": "Deals",
+      "description": "Returns all participants of a deal."
+    },
+    {
+      "name": "Add Deal Participant",
+      "category": "Deals",
+      "description": "Adds a participant to a deal."
+    },
+    {
+      "name": "Delete Deal Participant",
+      "category": "Deals",
+      "description": "Removes a participant from a deal."
+    },
+    {
+      "name": "List Deal Permitted Users",
+      "category": "Deals",
+      "description": "Returns users permitted to access a deal."
+    },
+    {
+      "name": "List Deal Persons",
+      "category": "Deals",
+      "description": "Returns all persons associated with a deal."
+    },
+    {
+      "name": "List Deal Products",
+      "category": "Deals",
+      "description": "Returns all products attached to a deal."
+    },
+    {
+      "name": "Add Deal Product",
+      "category": "Deals",
+      "description": "Adds a product to a deal."
+    },
+    {
+      "name": "Update Deal Product",
+      "category": "Deals",
+      "description": "Updates a product attached to a deal."
+    },
+    {
+      "name": "Delete Deal Product",
+      "category": "Deals",
+      "description": "Removes a product from a deal."
+    },
+    {
+      "name": "List Files",
+      "category": "Files",
+      "description": "Returns all files."
+    },
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a new file."
+    },
+    {
+      "name": "Create Remote File",
+      "category": "Files",
+      "description": "Creates a remote file and links it to an item."
+    },
+    {
+      "name": "Link Remote File",
+      "category": "Files",
+      "description": "Links an existing remote file to an item."
+    },
+    {
+      "name": "Delete File",
+      "category": "Files",
+      "description": "Marks a file as deleted."
+    },
+    {
+      "name": "Get File",
+      "category": "Files",
+      "description": "Returns details of a specific file."
+    },
+    {
+      "name": "Update File",
+      "category": "Files",
+      "description": "Updates the properties of a file."
+    },
+    {
+      "name": "Download File",
+      "category": "Files",
+      "description": "Initializes a file download."
+    },
+    {
+      "name": "List Filters",
+      "category": "Filters",
+      "description": "Returns all filters."
+    },
+    {
+      "name": "Create Filter",
+      "category": "Filters",
+      "description": "Adds a new filter."
+    },
+    {
+      "name": "Delete Filters",
+      "category": "Filters",
+      "description": "Marks multiple filters as deleted."
+    },
+    {
+      "name": "Get Filter",
+      "category": "Filters",
+      "description": "Returns details of a specific filter."
+    },
+    {
+      "name": "Delete Filter",
+      "category": "Filters",
+      "description": "Marks a filter as deleted."
+    },
+    {
+      "name": "Update Filter",
+      "category": "Filters",
+      "description": "Updates the properties of a filter."
+    },
+    {
+      "name": "List Filter Helpers",
+      "category": "Filters",
+      "description": "Returns all filter helpers."
+    },
+    {
+      "name": "Create new goal",
+      "category": "Goals",
+      "description": "Adds a new goal."
+    },
+    {
+      "name": "Find goals",
+      "category": "Goals",
+      "description": "Returns data about goals based on criteria. For searching, append `{searchField}={searchValue}` to t..."
+    },
+    {
+      "name": "Update existing goal",
+      "category": "Goals",
+      "description": "Updates the properties of a goal."
+    },
+    {
+      "name": "Delete existing goal",
+      "category": "Goals",
+      "description": "Marks a goal as deleted."
+    },
+    {
+      "name": "Get result of goal",
+      "category": "Goals",
+      "description": "Returns details of a specific goal."
+    },
+    {
+      "name": "Search Items",
+      "category": "ItemSearch",
+      "description": "Performs search across multiple item types."
+    },
+    {
+      "name": "Search Items by Field",
+      "category": "ItemSearch",
+      "description": "Performs search using a specific field."
+    },
+    {
+      "name": "List Lead Labels",
+      "category": "LeadLabels",
+      "description": "Returns all lead labels."
+    },
+    {
+      "name": "Create Lead Label",
+      "category": "LeadLabels",
+      "description": "Adds a new lead label."
+    },
+    {
+      "name": "Update Lead Label",
+      "category": "LeadLabels",
+      "description": "Updates the properties of a lead label."
+    },
+    {
+      "name": "Delete Lead Label",
+      "category": "LeadLabels",
+      "description": "Marks a lead label as deleted."
+    },
+    {
+      "name": "List Leads",
+      "category": "Leads",
+      "description": "Returns all leads."
+    },
+    {
+      "name": "Create Lead",
+      "category": "Leads",
+      "description": "Adds a new lead."
+    },
+    {
+      "name": "List Archived Leads",
+      "category": "Leads",
+      "description": "Returns all archived leads."
+    },
+    {
+      "name": "Get Lead",
+      "category": "Leads",
+      "description": "Returns details of a specific lead."
+    },
+    {
+      "name": "Update Lead",
+      "category": "Leads",
+      "description": "Updates the properties of a lead."
+    },
+    {
+      "name": "Delete Lead",
+      "category": "Leads",
+      "description": "Marks a lead as deleted."
+    },
+    {
+      "name": "List Lead Permitted Users",
+      "category": "Leads",
+      "description": "Returns users permitted to access a lead."
+    },
+    {
+      "name": "Search Leads",
+      "category": "Leads",
+      "description": "Searches all leads."
+    },
+    {
+      "name": "List Lead Sources",
+      "category": "LeadSources",
+      "description": "Returns all lead sources."
+    },
+    {
+      "name": "List teams",
+      "category": "LegacyTeams",
+      "description": "Returns all legacyteams."
+    },
+    {
+      "name": "Create new team",
+      "category": "LegacyTeams",
+      "description": "Adds a new legacyteam."
+    },
+    {
+      "name": "Get single team",
+      "category": "LegacyTeams",
+      "description": "Returns details of a specific legacyteam."
+    },
+    {
+      "name": "Update team",
+      "category": "LegacyTeams",
+      "description": "Updates the properties of a legacyteam."
+    },
+    {
+      "name": "List users in team",
+      "category": "LegacyTeams",
+      "description": "Returns all legacyteams."
+    },
+    {
+      "name": "Create users to team",
+      "category": "LegacyTeams",
+      "description": "Adds a new legacyteam."
+    },
+    {
+      "name": "Delete users from team",
+      "category": "LegacyTeams",
+      "description": "Marks a legacyteam as deleted."
+    },
+    {
+      "name": "List teams of user",
+      "category": "LegacyTeams",
+      "description": "Returns all legacyteams."
+    },
+    {
+      "name": "Get one mail message",
+      "category": "Mailbox",
+      "description": "Returns details of a specific mailbox."
+    },
+    {
+      "name": "Get mail threads",
+      "category": "Mailbox",
+      "description": "Returns details of a specific mailbox."
+    },
+    {
+      "name": "Delete mail thread",
+      "category": "Mailbox",
+      "description": "Marks a mailbox as deleted."
+    },
+    {
+      "name": "Get one mail thread",
+      "category": "Mailbox",
+      "description": "Returns details of a specific mailbox."
+    },
+    {
+      "name": "Update mail thread details",
+      "category": "Mailbox",
+      "description": "Updates the properties of a mailbox."
+    },
+    {
+      "name": "List mail messages of mail thread",
+      "category": "Mailbox",
+      "description": "Returns all mailbox."
+    },
+    {
+      "name": "Link User Provider",
+      "category": "Meetings",
+      "description": "Links a user with an installed video call integration."
+    },
+    {
+      "name": "Delete User Provider Link",
+      "category": "Meetings",
+      "description": "Deletes the link between a user and video call integration."
+    },
+    {
+      "name": "List Note Fields",
+      "category": "NoteFields",
+      "description": "Returns all note fields."
+    },
+    {
+      "name": "List Notes",
+      "category": "Notes",
+      "description": "Returns all notes."
+    },
+    {
+      "name": "Create Note",
+      "category": "Notes",
+      "description": "Adds a new note."
+    },
+    {
+      "name": "Delete Note",
+      "category": "Notes",
+      "description": "Marks a note as deleted."
+    },
+    {
+      "name": "Get Note",
+      "category": "Notes",
+      "description": "Returns details of a specific note."
+    },
+    {
+      "name": "Update Note",
+      "category": "Notes",
+      "description": "Updates the properties of a note."
+    },
+    {
+      "name": "List Note Comments",
+      "category": "Notes",
+      "description": "Returns all comments for a note."
+    },
+    {
+      "name": "Add Note Comment",
+      "category": "Notes",
+      "description": "Adds a comment to a note."
+    },
+    {
+      "name": "Get Note Comment",
+      "category": "Notes",
+      "description": "Returns details of a specific comment."
+    },
+    {
+      "name": "Update Note Comment",
+      "category": "Notes",
+      "description": "Updates a comment related to a note."
+    },
+    {
+      "name": "Delete Note Comment",
+      "category": "Notes",
+      "description": "Deletes a comment related to a note."
+    },
+    {
+      "name": "List Organization Fields",
+      "category": "OrganizationFields",
+      "description": "Returns all organization fields."
+    },
+    {
+      "name": "Create Organization Field",
+      "category": "OrganizationFields",
+      "description": "Adds a new organization field."
+    },
+    {
+      "name": "Delete Organization Fields",
+      "category": "OrganizationFields",
+      "description": "Marks multiple organization fields as deleted."
+    },
+    {
+      "name": "Get Organization Field",
+      "category": "OrganizationFields",
+      "description": "Returns details of a specific organization field."
+    },
+    {
+      "name": "Delete Organization Field",
+      "category": "OrganizationFields",
+      "description": "Marks an organization field as deleted."
+    },
+    {
+      "name": "Update Organization Field",
+      "category": "OrganizationFields",
+      "description": "Updates the properties of an organization field."
+    },
+    {
+      "name": "List Organizations",
+      "category": "Organizations",
+      "description": "Returns all organizations."
+    },
+    {
+      "name": "Create Organization",
+      "category": "Organizations",
+      "description": "Adds a new organization."
+    },
+    {
+      "name": "List Organizations Collection",
+      "category": "Organizations",
+      "description": "Returns all organizations."
+    },
+    {
+      "name": "Search Organizations",
+      "category": "Organizations",
+      "description": "Searches all organizations."
+    },
+    {
+      "name": "Delete Organizations",
+      "category": "Organizations",
+      "description": "Marks multiple organizations as deleted."
+    },
+    {
+      "name": "Get Organization",
+      "category": "Organizations",
+      "description": "Returns details of a specific organization."
+    },
+    {
+      "name": "Update Organization",
+      "category": "Organizations",
+      "description": "Updates the properties of an organization."
+    },
+    {
+      "name": "Delete Organization",
+      "category": "Organizations",
+      "description": "Marks an organization as deleted."
+    },
+    {
+      "name": "List Organization Activities",
+      "category": "Organizations",
+      "description": "Returns all activities associated with an organization."
+    },
+    {
+      "name": "List Organization Updates",
+      "category": "Organizations",
+      "description": "Returns updates about organization field values."
+    },
+    {
+      "name": "List Organization Deals",
+      "category": "Organizations",
+      "description": "Returns all deals associated with an organization."
+    },
+    {
+      "name": "List Organization Files",
+      "category": "Organizations",
+      "description": "Returns all files attached to an organization."
+    },
+    {
+      "name": "List Organization Flow",
+      "category": "Organizations",
+      "description": "Returns updates about an organization."
+    },
+    {
+      "name": "List Organization Followers",
+      "category": "Organizations",
+      "description": "Returns all followers of an organization."
+    },
+    {
+      "name": "Add Organization Follower",
+      "category": "Organizations",
+      "description": "Adds a follower to an organization."
+    },
+    {
+      "name": "Delete Organization Follower",
+      "category": "Organizations",
+      "description": "Removes a follower from an organization."
+    },
+    {
+      "name": "List Organization Mail Messages",
+      "category": "Organizations",
+      "description": "Returns all mail messages associated with an organization."
+    },
+    {
+      "name": "Merge Organizations",
+      "category": "Organizations",
+      "description": "Merges an organization with another organization."
+    },
+    {
+      "name": "List Organization Permitted Users",
+      "category": "Organizations",
+      "description": "Returns users permitted to access an organization."
+    },
+    {
+      "name": "List Organization Persons",
+      "category": "Organizations",
+      "description": "Returns all persons associated with an organization."
+    },
+    {
+      "name": "List Permission Sets",
+      "category": "PermissionSets",
+      "description": "Returns all permission sets."
+    },
+    {
+      "name": "Get Permission Set",
+      "category": "PermissionSets",
+      "description": "Returns details of a specific permission set."
+    },
+    {
+      "name": "List Permission Set Assignments",
+      "category": "PermissionSets",
+      "description": "Returns all assignments for a permission set."
+    },
+    {
+      "name": "List Person Fields",
+      "category": "PersonFields",
+      "description": "Returns all person fields."
+    },
+    {
+      "name": "Create Person Field",
+      "category": "PersonFields",
+      "description": "Adds a new person field."
+    },
+    {
+      "name": "Delete Person Fields",
+      "category": "PersonFields",
+      "description": "Marks multiple person fields as deleted."
+    },
+    {
+      "name": "Get Person Field",
+      "category": "PersonFields",
+      "description": "Returns details of a specific person field."
+    },
+    {
+      "name": "Delete Person Field",
+      "category": "PersonFields",
+      "description": "Marks a person field as deleted."
+    },
+    {
+      "name": "Update Person Field",
+      "category": "PersonFields",
+      "description": "Updates the properties of a person field."
+    },
+    {
+      "name": "List Persons",
+      "category": "Persons",
+      "description": "Returns all persons."
+    },
+    {
+      "name": "Create Person",
+      "category": "Persons",
+      "description": "Adds a new person."
+    },
+    {
+      "name": "List Persons Collection",
+      "category": "Persons",
+      "description": "Returns all persons."
+    },
+    {
+      "name": "Search Persons",
+      "category": "Persons",
+      "description": "Searches all persons."
+    },
+    {
+      "name": "Delete Persons",
+      "category": "Persons",
+      "description": "Marks multiple persons as deleted."
+    },
+    {
+      "name": "Get Person",
+      "category": "Persons",
+      "description": "Returns details of a specific person."
+    },
+    {
+      "name": "Update Person",
+      "category": "Persons",
+      "description": "Updates the properties of a person."
+    },
+    {
+      "name": "Delete Person",
+      "category": "Persons",
+      "description": "Marks a person as deleted."
+    },
+    {
+      "name": "List Person Activities",
+      "category": "Persons",
+      "description": "Returns all activities associated with a person."
+    },
+    {
+      "name": "List Person Updates",
+      "category": "Persons",
+      "description": "Returns updates about person field values."
+    },
+    {
+      "name": "List Person Deals",
+      "category": "Persons",
+      "description": "Returns all deals associated with a person."
+    },
+    {
+      "name": "List Person Files",
+      "category": "Persons",
+      "description": "Returns all files attached to a person."
+    },
+    {
+      "name": "List Person Flow",
+      "category": "Persons",
+      "description": "Returns updates about a person."
+    },
+    {
+      "name": "List Person Followers",
+      "category": "Persons",
+      "description": "Returns all followers of a person."
+    },
+    {
+      "name": "Add Person Follower",
+      "category": "Persons",
+      "description": "Adds a follower to a person."
+    },
+    {
+      "name": "Delete Person Follower",
+      "category": "Persons",
+      "description": "Removes a follower from a person."
+    },
+    {
+      "name": "List Person Mail Messages",
+      "category": "Persons",
+      "description": "Returns all mail messages associated with a person."
+    },
+    {
+      "name": "Merge Persons",
+      "category": "Persons",
+      "description": "Merges a person with another person."
+    },
+    {
+      "name": "List Person Permitted Users",
+      "category": "Persons",
+      "description": "Returns users permitted to access a person."
+    },
+    {
+      "name": "Delete Person Picture",
+      "category": "Persons",
+      "description": "Deletes a person's picture."
+    },
+    {
+      "name": "Upload Person Picture",
+      "category": "Persons",
+      "description": "Uploads a picture for a person."
+    },
+    {
+      "name": "List Person Products",
+      "category": "Persons",
+      "description": "Returns all products associated with a person."
+    },
+    {
+      "name": "List Pipelines",
+      "category": "Pipelines",
+      "description": "Returns all pipelines."
+    },
+    {
+      "name": "Create Pipeline",
+      "category": "Pipelines",
+      "description": "Adds a new pipeline."
+    },
+    {
+      "name": "Delete Pipeline",
+      "category": "Pipelines",
+      "description": "Marks a pipeline as deleted."
+    },
+    {
+      "name": "Get Pipeline",
+      "category": "Pipelines",
+      "description": "Returns details of a specific pipeline."
+    },
+    {
+      "name": "Update Pipeline",
+      "category": "Pipelines",
+      "description": "Updates the properties of a pipeline."
+    },
+    {
+      "name": "Get Pipeline Conversion Rates",
+      "category": "Pipelines",
+      "description": "Returns conversion rates for a pipeline."
+    },
+    {
+      "name": "Get Pipeline Deals",
+      "category": "Pipelines",
+      "description": "Returns deals in a pipeline."
+    },
+    {
+      "name": "Get Pipeline Movement Statistics",
+      "category": "Pipelines",
+      "description": "Returns movement statistics for a pipeline."
+    },
+    {
+      "name": "List Product Fields",
+      "category": "ProductFields",
+      "description": "Returns all product fields."
+    },
+    {
+      "name": "Create Product Field",
+      "category": "ProductFields",
+      "description": "Adds a new product field."
+    },
+    {
+      "name": "Delete Product Fields",
+      "category": "ProductFields",
+      "description": "Marks multiple product fields as deleted."
+    },
+    {
+      "name": "Get Product Field",
+      "category": "ProductFields",
+      "description": "Returns details of a specific product field."
+    },
+    {
+      "name": "Delete Product Field",
+      "category": "ProductFields",
+      "description": "Marks a product field as deleted."
+    },
+    {
+      "name": "Update Product Field",
+      "category": "ProductFields",
+      "description": "Updates the properties of a product field."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Returns all products."
+    },
+    {
+      "name": "Create Product",
+      "category": "Products",
+      "description": "Adds a new product."
+    },
+    {
+      "name": "Search Products",
+      "category": "Products",
+      "description": "Searches all products."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Products",
+      "description": "Marks a product as deleted."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Returns details of a specific product."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates the properties of a product."
+    },
+    {
+      "name": "List Product Deals",
+      "category": "Products",
+      "description": "Returns all deals where product is attached."
+    },
+    {
+      "name": "List Product Files",
+      "category": "Products",
+      "description": "Returns all files attached to a product."
+    },
+    {
+      "name": "List Product Followers",
+      "category": "Products",
+      "description": "Returns all followers of a product."
+    },
+    {
+      "name": "Add Product Follower",
+      "category": "Products",
+      "description": "Adds a follower to a product."
+    },
+    {
+      "name": "Delete Product Follower",
+      "category": "Products",
+      "description": "Removes a follower from a product."
+    },
+    {
+      "name": "List Product Permitted Users",
+      "category": "Products",
+      "description": "Returns users permitted to access a product."
+    },
+    {
+      "name": "List projects",
+      "category": "Projects",
+      "description": "Returns all projects."
+    },
+    {
+      "name": "Create project",
+      "category": "Projects",
+      "description": "Adds a new project."
+    },
+    {
+      "name": "Get details of project",
+      "category": "Projects",
+      "description": "Returns details of a specific project."
+    },
+    {
+      "name": "Update project",
+      "category": "Projects",
+      "description": "Updates the properties of a project."
+    },
+    {
+      "name": "Delete project",
+      "category": "Projects",
+      "description": "Marks a project as deleted."
+    },
+    {
+      "name": "Archive project",
+      "category": "Projects",
+      "description": "Archives a project."
+    },
+    {
+      "name": "Returns project plan",
+      "category": "Projects",
+      "description": "Returns information about items in a project plan. Items consists of tasks and activities and are li..."
+    },
+    {
+      "name": "Update activity in project plan",
+      "category": "Projects",
+      "description": "Updates the properties of a project."
+    },
+    {
+      "name": "Update task in project plan",
+      "category": "Projects",
+      "description": "Updates the properties of a project."
+    },
+    {
+      "name": "Returns project groups",
+      "category": "Projects",
+      "description": "Returns all active groups under a specific project."
+    },
+    {
+      "name": "Returns project tasks",
+      "category": "Projects",
+      "description": "Returns tasks linked to a specific project."
+    },
+    {
+      "name": "Returns project activities",
+      "category": "Projects",
+      "description": "Returns activities linked to a specific project."
+    },
+    {
+      "name": "List project boards",
+      "category": "Projects",
+      "description": "Returns all projects."
+    },
+    {
+      "name": "Get project phases",
+      "category": "Projects",
+      "description": "Returns details of a specific project."
+    },
+    {
+      "name": "List Project Templates",
+      "category": "ProjectTemplates",
+      "description": "Returns all project templates."
+    },
+    {
+      "name": "Get Project Template",
+      "category": "ProjectTemplates",
+      "description": "Returns details of a specific project template."
+    },
+    {
+      "name": "Get Project Board",
+      "category": "ProjectTemplates",
+      "description": "Returns details of a specific project board."
+    },
+    {
+      "name": "Get Project Phase",
+      "category": "ProjectTemplates",
+      "description": "Returns details of a specific project phase."
+    },
+    {
+      "name": "Get Recents",
+      "category": "Recents",
+      "description": "Returns recently viewed items."
+    },
+    {
+      "name": "List roles",
+      "category": "Roles",
+      "description": "Returns all roles."
+    },
+    {
+      "name": "Create role",
+      "category": "Roles",
+      "description": "Adds a new role."
+    },
+    {
+      "name": "Delete role",
+      "category": "Roles",
+      "description": "Marks a role as deleted."
+    },
+    {
+      "name": "Get one role",
+      "category": "Roles",
+      "description": "Returns details of a specific role."
+    },
+    {
+      "name": "Update role details",
+      "category": "Roles",
+      "description": "Updates the properties of a role."
+    },
+    {
+      "name": "Delete role assignment",
+      "category": "Roles",
+      "description": "Marks a role as deleted."
+    },
+    {
+      "name": "List role assignments",
+      "category": "Roles",
+      "description": "Returns all roles."
+    },
+    {
+      "name": "Create role assignment",
+      "category": "Roles",
+      "description": "Adds a new role."
+    },
+    {
+      "name": "List role settings",
+      "category": "Roles",
+      "description": "Returns all roles."
+    },
+    {
+      "name": "Create or update role setting",
+      "category": "Roles",
+      "description": "Adds a new role."
+    },
+    {
+      "name": "List pipeline visibility for role",
+      "category": "Roles",
+      "description": "Returns all roles."
+    },
+    {
+      "name": "Update pipeline visibility for role",
+      "category": "Roles",
+      "description": "Updates the properties of a role."
+    },
+    {
+      "name": "List Stages",
+      "category": "Stages",
+      "description": "Returns all stages."
+    },
+    {
+      "name": "Create Stage",
+      "category": "Stages",
+      "description": "Adds a new stage."
+    },
+    {
+      "name": "Delete Stages",
+      "category": "Stages",
+      "description": "Marks multiple stages as deleted."
+    },
+    {
+      "name": "Get Stage",
+      "category": "Stages",
+      "description": "Returns details of a specific stage."
+    },
+    {
+      "name": "Delete Stage",
+      "category": "Stages",
+      "description": "Marks a stage as deleted."
+    },
+    {
+      "name": "Update Stage",
+      "category": "Stages",
+      "description": "Updates the properties of a stage."
+    },
+    {
+      "name": "List Stage Deals",
+      "category": "Stages",
+      "description": "Returns deals in a stage."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Returns all tasks."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Adds a new task."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Returns details of a specific task."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates the properties of a task."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Marks a task as deleted."
+    },
+    {
+      "name": "List User Connections",
+      "category": "UserConnections",
+      "description": "Returns all user connections."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Returns all users."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Adds a new user."
+    },
+    {
+      "name": "Find Users",
+      "category": "Users",
+      "description": "Finds users by name or email."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Returns details of a specific user."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates the properties of a user."
+    },
+    {
+      "name": "List User Followers",
+      "category": "Users",
+      "description": "Returns all followers of a user."
+    },
+    {
+      "name": "List User Permissions",
+      "category": "Users",
+      "description": "Returns all permissions for a user."
+    },
+    {
+      "name": "List User Role Assignments",
+      "category": "Users",
+      "description": "Returns all role assignments for a user."
+    },
+    {
+      "name": "List User Role Settings",
+      "category": "Users",
+      "description": "Returns all role settings for a user."
+    },
+    {
+      "name": "List User Settings",
+      "category": "UserSettings",
+      "description": "Returns all settings for the authorized user."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Returns all webhooks."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Adds a new webhook."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Deletes a webhook."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync deals, leads, persons, and organizations between Pipedrive and other systems",
+    "Automate pipeline and stage management as deals progress",
+    "Log calls, activities, notes, and tasks against CRM records",
+    "Search the CRM and enrich records from external data sources",
+    "Manage products, files, filters, goals, and webhooks programmatically",
+    "Administer users, roles, permission sets, and account settings"
+  ],
+  "agentIdeas": [
+    "When a new opportunity arrives, use **Pipedrive** \"Search Persons\" to find or \"Create Person\", then \"Create Deal\" and notify the sales team with **Slack** \"Send Message To Channel\".",
+    "Pull qualified rows from a tracker with **Google Sheets** \"Get Rows\", then call **Pipedrive** \"Create Lead\" or \"Create Deal\" for each to bulk-import them into the CRM.",
+    "After **Pipedrive** \"Update Deal\" moves a deal to a won stage, use **Gmail** \"Send Message\" to send the customer an onboarding email enriched with deal details from \"Get Deal\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/pipedrive/public/icon.png",
+  "sourcePaths": {
+    "service": "services/pipedrive",
+    "readme": "services/pipedrive/README.md",
+    "index": "services/pipedrive/src/index.js"
+  }
+}

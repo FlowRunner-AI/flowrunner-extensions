@@ -1,0 +1,227 @@
+{
+  "slug": "microsoft-power-bi",
+  "name": "Microsoft Power BI",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Connect to Microsoft Power BI through Microsoft OAuth2 (Entra ID) with delegated Power BI Service permissions to manage workspaces, datasets, reports, dashboards, dataflows, and apps via the Power BI REST API. Run DAX queries, stream rows into push datasets, refresh semantic models, and export reports to PDF, PowerPoint, or PNG into FlowRunner file storage.",
+  "actionCount": 36,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Workspaces",
+    "Datasets",
+    "DAX Queries",
+    "Push Datasets",
+    "Reports",
+    "Report Export",
+    "Dashboards",
+    "Dataflows",
+    "Apps",
+    "Platform"
+  ],
+  "actions": [
+    {
+      "name": "List Workspaces",
+      "category": "Workspaces",
+      "description": "Retrieves the Power BI workspaces (groups) the user has access to, including each workspace's ID, name, and capacity information. My workspace is not included in the list. Supports OData filtering and offset-based paging with the Max Results and Skip parameters."
+    },
+    {
+      "name": "List Datasets",
+      "category": "Datasets",
+      "description": "Retrieves the datasets (semantic models) in the selected workspace, or in My workspace when no workspace is chosen. Each dataset includes its ID, name, configured owner, and capability flags such as whether refresh and Q&A are supported."
+    },
+    {
+      "name": "Get Dataset",
+      "category": "Datasets",
+      "description": "Retrieves a single dataset (semantic model) by ID from the selected workspace or My workspace, including its name, configured owner, and capability flags such as whether it is refreshable or push-enabled."
+    },
+    {
+      "name": "Delete Dataset",
+      "category": "Datasets",
+      "description": "Permanently deletes a dataset (semantic model) from the selected workspace or My workspace. Reports built on the dataset stop working. This action cannot be undone. Returns a confirmation message; the API returns no content on success."
+    },
+    {
+      "name": "Refresh Dataset",
+      "category": "Datasets",
+      "description": "Triggers an asynchronous data refresh for a dataset (semantic model) in the selected workspace or My workspace. On shared capacity a maximum of eight refreshes per day is allowed (including scheduled refreshes). Use Get Refresh History to track the refresh outcome. Returns a confirmation message; the API responds with 202 Accepted and no body."
+    },
+    {
+      "name": "Get Refresh History",
+      "category": "Datasets",
+      "description": "Retrieves the refresh history of a dataset (semantic model) in the selected workspace or My workspace, including each refresh's type, start and end time, and completion status (Completed, Failed, Unknown, or Disabled). Failed entries include error details in the serviceExceptionJson property."
+    },
+    {
+      "name": "Get Dataset Parameters",
+      "category": "Datasets",
+      "description": "Retrieves the mashup (Power Query) parameters of a dataset (semantic model) in the selected workspace or My workspace, including each parameter's name, type, whether it is required, and its current value."
+    },
+    {
+      "name": "Update Dataset Parameters",
+      "category": "Datasets",
+      "description": "Updates the values of mashup (Power Query) parameters of a dataset (semantic model) in the selected workspace or My workspace. The caller must be the dataset owner (use Take Over Dataset first if not), and a dataset refresh is required for the new values to take effect. Returns a confirmation message; the API returns no content on success."
+    },
+    {
+      "name": "Take Over Dataset",
+      "category": "Datasets",
+      "description": "Transfers ownership of a dataset (semantic model) in a shared workspace to the connected user. Required before operations that only the dataset owner can perform, such as updating parameters or data source credentials. Only supported for datasets in shared workspaces, not in My workspace. Returns a confirmation message; the API returns no content on success."
+    },
+    {
+      "name": "Execute DAX Query",
+      "category": "DAX Queries",
+      "description": "Executes a DAX query against a dataset (semantic model) in the selected workspace or My workspace and returns the resulting rows. One query with one result table per call; up to 100,000 rows or 1,000,000 values (whichever is reached first) and 15 MB of data per query, with a limit of 120 query requests per minute per user. The tenant setting \"Dataset Execute Queries REST API\" must be enabled, and the user needs read and build permission on the dataset. Only DAX is supported (no MDX or DMV queries)."
+    },
+    {
+      "name": "Create Push Dataset",
+      "category": "Push Datasets",
+      "description": "Creates a new push dataset in the selected workspace or My workspace with the given table schema. Rows can then be streamed into the dataset with Add Rows to Table, and its data is immediately available to reports and dashboard tiles. Choose Push mode for datasets that keep data (queryable and usable in reports), Streaming for dashboard streaming tiles only, or Push Streaming for both."
+    },
+    {
+      "name": "Get Dataset Tables",
+      "category": "Push Datasets",
+      "description": "Retrieves the tables of a push dataset in the selected workspace or My workspace. Only supported for push datasets; regular imported or DirectQuery datasets do not expose their tables through this API."
+    },
+    {
+      "name": "Add Rows to Table",
+      "category": "Push Datasets",
+      "description": "Adds data rows to a table of a push dataset in the selected workspace or My workspace. Each row is an object whose keys match the table's column names. Push datasets accept up to 10,000 rows per request and 120 requests per minute; new data appears in connected reports and dashboard tiles immediately. Only supported for push datasets. Returns a confirmation message; the API returns no content on success."
+    },
+    {
+      "name": "Delete Rows from Table",
+      "category": "Push Datasets",
+      "description": "Removes all rows from a table of a push dataset in the selected workspace or My workspace. The table schema is kept, so new rows can be added afterwards. Only supported for push datasets. Returns a confirmation message; the API returns no content on success."
+    },
+    {
+      "name": "Update Table Schema",
+      "category": "Push Datasets",
+      "description": "Updates the schema (column definitions) of a table in a push dataset in the selected workspace or My workspace. Existing rows may be dropped depending on the schema change. Only supported for push datasets. Returns a confirmation message; the API returns the updated table on success."
+    },
+    {
+      "name": "List Reports",
+      "category": "Reports",
+      "description": "Retrieves the reports in the selected workspace, or in My workspace when no workspace is chosen. Each report includes its ID, name, type (PowerBIReport or PaginatedReport), associated dataset ID, and web and embed URLs."
+    },
+    {
+      "name": "Get Report",
+      "category": "Reports",
+      "description": "Retrieves a single report by ID from the selected workspace or My workspace, including its name, type, associated dataset ID, and web and embed URLs."
+    },
+    {
+      "name": "Get Report Pages",
+      "category": "Reports",
+      "description": "Retrieves the pages of a report in the selected workspace or My workspace, including each page's internal name, display name, and order. The internal page names can be used to export specific pages with Export Report to File."
+    },
+    {
+      "name": "Clone Report",
+      "category": "Reports",
+      "description": "Creates a copy of a report in the selected workspace or My workspace. Optionally place the clone in a different target workspace and/or rebind it to a different dataset. Reports with a live connection lose that connection and get a direct binding to the target dataset. Requires write permission on the report and build permission on the target dataset if one is specified."
+    },
+    {
+      "name": "Delete Report",
+      "category": "Reports",
+      "description": "Permanently deletes a report from the selected workspace or My workspace. This action cannot be undone. Returns a confirmation message; the API returns no content on success."
+    },
+    {
+      "name": "Export Report to File",
+      "category": "Report Export",
+      "description": "Exports a report to PDF, PowerPoint, or PNG, waits for the asynchronous export job to finish, downloads the result, and saves it to FlowRunner file storage, returning a URL to the stored file. Optionally export only specific pages (use Get Report Pages to find the internal page names) or include hidden pages. Requires the report's workspace to be on Premium, Embedded, or Fabric capacity. Waits up to about 4 minutes; for longer exports use Start Report Export, Get Report Export Status, and Save Exported Report File instead. PNG is only supported for Power BI (non-paginated) reports."
+    },
+    {
+      "name": "Start Report Export",
+      "category": "Report Export",
+      "description": "Starts an asynchronous export job for a report to PDF, PowerPoint, or PNG and returns immediately with the export job ID. Track progress with Get Report Export Status and retrieve the finished file with Save Exported Report File. Use this instead of Export Report to File when exports take longer than a few minutes. Requires the report's workspace to be on Premium, Embedded, or Fabric capacity."
+    },
+    {
+      "name": "Get Report Export Status",
+      "category": "Report Export",
+      "description": "Retrieves the status of an asynchronous report export job started with Start Report Export, including its state (NotStarted, Running, Succeeded, or Failed), progress percentage, and the resulting file extension once complete."
+    },
+    {
+      "name": "Save Exported Report File",
+      "category": "Report Export",
+      "description": "Downloads the file produced by a completed report export job and saves it to FlowRunner file storage, returning a URL to the stored file. The export job must have reached the Succeeded state (check with Get Report Export Status). The whole file is loaded into memory during transfer, so keep exports within the memory available to this function."
+    },
+    {
+      "name": "List Dashboards",
+      "category": "Dashboards",
+      "description": "Retrieves the dashboards in the selected workspace, or in My workspace when no workspace is chosen. Each dashboard includes its ID, display name, read-only flag, and web and embed URLs."
+    },
+    {
+      "name": "Get Dashboard",
+      "category": "Dashboards",
+      "description": "Retrieves a single dashboard by ID from the selected workspace or My workspace, including its display name, read-only flag, and web and embed URLs."
+    },
+    {
+      "name": "List Dashboard Tiles",
+      "category": "Dashboards",
+      "description": "Retrieves the tiles of a dashboard in the selected workspace or My workspace, including each tile's ID, title, size, position, and the report and dataset it is built on."
+    },
+    {
+      "name": "List Dataflows",
+      "category": "Dataflows",
+      "description": "Retrieves the dataflows in a shared workspace, including each dataflow's object ID, name, description, and model URL. Dataflows only exist in shared workspaces, so a workspace is required."
+    },
+    {
+      "name": "Refresh Dataflow",
+      "category": "Dataflows",
+      "description": "Triggers an asynchronous refresh for a dataflow in a shared workspace. Mail notification can be sent on failure; Mail On Completion is not supported for dataflows. Returns a confirmation message; the API returns no content on success."
+    },
+    {
+      "name": "List Apps",
+      "category": "Apps",
+      "description": "Retrieves the Power BI apps installed for the connected user, including each app's ID, name, description, publisher, and last update time."
+    },
+    {
+      "name": "Get App",
+      "category": "Apps",
+      "description": "Retrieves a single installed Power BI app by ID, including its name, description, publisher, and last update time. The app must be installed for the connected user."
+    },
+    {
+      "name": "List App Reports",
+      "category": "Apps",
+      "description": "Retrieves the reports published in an installed Power BI app, including each report's ID, name, associated dataset, and web and embed URLs. The app must be installed for the connected user."
+    },
+    {
+      "name": "List App Dashboards",
+      "category": "Apps",
+      "description": "Retrieves the dashboards published in an installed Power BI app, including each dashboard's ID, display name, and embed URL. The app must be installed for the connected user."
+    },
+    {
+      "name": "List Imports",
+      "category": "Platform",
+      "description": "Retrieves the imports (uploaded PBIX files and other content publications) in the selected workspace or My workspace, including each import's ID, name, state, and the reports and datasets it produced."
+    },
+    {
+      "name": "List Gateways",
+      "category": "Platform",
+      "description": "Retrieves the on-premises data gateways the connected user administers, including each gateway's ID, name, type, and public key. Only gateways for which the user has admin permission are returned; virtual network gateways are not supported."
+    },
+    {
+      "name": "List Capacities",
+      "category": "Platform",
+      "description": "Retrieves the Premium, Embedded, and Fabric capacities the connected user has access to, including each capacity's ID, display name, SKU, state, and region."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Trigger dataset refreshes on a schedule or after upstream data lands, then verify the outcome via refresh history",
+    "Push live data into streaming/push datasets to drive real-time dashboard tiles",
+    "Run DAX queries to pull KPIs and metrics into other automations",
+    "Export reports to PDF/PowerPoint/PNG and distribute them by email or chat",
+    "Clone and rebind reports across workspaces, or manage dataset ownership and Power Query parameters"
+  ],
+  "agentIdeas": [
+    "Use **Microsoft Power BI** \"Execute DAX Query\" to pull the latest KPI figures from a semantic model, then use **Microsoft Teams** \"Send Channel Message\" to post the summary to a leadership channel.",
+    "Use **Microsoft SQL Server** \"Execute Query\" to extract fresh transactional records, then stream them into a **Microsoft Power BI** push dataset with \"Add Rows to Table\" so dashboard tiles update in real time.",
+    "Use **Microsoft Power BI** \"Export Report to File\" to render a report to PDF, then use **Microsoft Excel 365** \"Update Range Values\" to log the export URL and timestamp into a distribution tracking workbook."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/microsoft-power-bi/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/microsoft-power-bi",
+    "readme": "services/microsoft-power-bi/README.md",
+    "index": "services/microsoft-power-bi/src/index.js"
+  }
+}

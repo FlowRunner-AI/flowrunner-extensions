@@ -1,0 +1,190 @@
+{
+  "slug": "gemini-ai",
+  "name": "Gemini AI",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrates Google's Gemini API into FlowRunner workflows with full provider coverage: multimodal content generation with Google Search grounding, URL context, code execution, and function calling; structured JSON output with response schemas; thinking-budget control for reasoning models; native image generation and editing (Nano Banana family); Veo video generation; text-to-speech with 30 voices and multi-speaker dialogue; embeddings; token counting; the Files API; explicit context caching; and half-price asynchronous batch processing. Generated images, audio, and video are saved to FlowRunner file storage and returned as URLs.",
+  "actionCount": 28,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Files",
+    "Content Generation",
+    "Image Generation",
+    "Speech Generation",
+    "Video Generation",
+    "Embeddings",
+    "Models",
+    "Context Caching",
+    "Batch Processing"
+  ],
+  "actions": [
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a file to the Gemini Files API for use in content generation. Downloads the file from the provided URL, uploads it to Gemini, and polls until the file is processed and ready. Supports documents, images, audio, and video files."
+    },
+    {
+      "name": "List Files",
+      "category": "Files",
+      "description": "Lists files uploaded to the Gemini Files API with pagination support. Returns file metadata including name, size, MIME type, and processing state."
+    },
+    {
+      "name": "Get File Info",
+      "category": "Files",
+      "description": "Retrieves metadata for a specific file uploaded to the Gemini Files API. Returns details including file name, MIME type, size, creation time, and processing state."
+    },
+    {
+      "name": "Delete File",
+      "category": "Files",
+      "description": "Deletes a file previously uploaded to the Gemini Files API. The file will no longer be available for content generation after deletion."
+    },
+    {
+      "name": "Generate Content",
+      "category": "Content Generation",
+      "description": "Generates content using a Gemini model with a text prompt and optional file reference. Supports configurable temperature, max output tokens, and response format (text or JSON). Use this to analyze uploaded files, answer questions, generate text, or produce structured JSON output. For grounding, thinking control, structured output schemas, safety settings, or tool use, see 'Generate Content (Advanced)'."
+    },
+    {
+      "name": "Generate Content (Advanced)",
+      "category": "Content Generation",
+      "description": "Generates content with the full Gemini feature set: multimodal inputs (Gemini file references or media URLs sent inline), multi-turn history, Google Search grounding with citations, URL context, code execution, custom function declarations, structured JSON output via a response schema, thinking budget control for reasoning models, safety settings, context caching, and full sampling controls. Returns the text plus thoughts, function calls, grounding metadata, and usage details."
+    },
+    {
+      "name": "Count Tokens",
+      "category": "Content Generation",
+      "description": "Counts the number of tokens a prompt (and optional Gemini file references) would consume for a given model, without generating content. Useful for staying within context windows and estimating costs."
+    },
+    {
+      "name": "Generate Image",
+      "category": "Image Generation",
+      "description": "Generates or edits images with a native Gemini image model (the gemini-*-image / 'Nano Banana' family). Optionally accepts input images by URL for editing, compositing, or style transfer. Generated images are saved to FlowRunner file storage and returned as public URLs together with any accompanying text."
+    },
+    {
+      "name": "Generate Speech",
+      "category": "Speech Generation",
+      "description": "Converts text to natural speech using a Gemini text-to-speech model, with a choice of 30 prebuilt voices and optional multi-speaker dialogue (assign a distinct voice to each named speaker in the transcript). Style, tone, accent, and pace can be steered in plain language within the text. The audio is saved to FlowRunner file storage as a WAV file and returned as a public URL."
+    },
+    {
+      "name": "Generate Video",
+      "category": "Video Generation",
+      "description": "Generates a video from a text prompt (and optional starting image) with a Veo model, waits for generation to complete, downloads the result, and saves it to FlowRunner file storage. Generation typically takes 1 to 6 minutes; for longer jobs or fire-and-forget flows, use 'Start Video Generation' with 'Get Video Operation' and 'Save Generated Video' instead."
+    },
+    {
+      "name": "Start Video Generation",
+      "category": "Video Generation",
+      "description": "Starts an asynchronous Veo video generation job and immediately returns the long-running operation name, without waiting for completion. Poll the job with 'Get Video Operation' and save the result with 'Save Generated Video'."
+    },
+    {
+      "name": "Get Video Operation",
+      "category": "Video Generation",
+      "description": "Checks the status of an asynchronous Veo video generation operation. Returns whether the job is done, the video download URI(s) once available, and the raw operation payload."
+    },
+    {
+      "name": "Save Generated Video",
+      "category": "Video Generation",
+      "description": "Downloads a generated Veo video from its download URI (authenticating with your API key) and saves it to FlowRunner file storage, returning a public URL. Use after 'Get Video Operation' reports the job as done. Note that Google retains generated videos on their servers for a limited time (typically 2 days)."
+    },
+    {
+      "name": "Embed Content",
+      "category": "Embeddings",
+      "description": "Generates a numeric embedding vector for a text using a Gemini embedding model. Supports task-type optimization (e.g. retrieval, similarity, classification) and configurable output dimensionality for storage-efficient vectors. Use for semantic search, RAG pipelines, clustering, and recommendations."
+    },
+    {
+      "name": "Batch Embed Contents",
+      "category": "Embeddings",
+      "description": "Generates embedding vectors for multiple texts in a single request using a Gemini embedding model. More efficient than calling 'Embed Content' repeatedly when indexing document collections."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists all models available through the Gemini API with their capabilities, token limits, and supported generation methods. Supports pagination."
+    },
+    {
+      "name": "Get Model",
+      "category": "Models",
+      "description": "Retrieves detailed metadata for a specific Gemini model, including its description, token limits, supported generation methods, and default sampling parameters."
+    },
+    {
+      "name": "Create Cached Content",
+      "category": "Context Caching",
+      "description": "Creates a cached content entry (explicit context caching) from text and/or uploaded Gemini files, tied to a specific model. Reusing the cache in generation requests via its name substantially reduces cost and latency for repeated large contexts. Caches require a model-dependent minimum size (typically 1,024 to 4,096 tokens) and expire after the TTL."
+    },
+    {
+      "name": "List Cached Contents",
+      "category": "Context Caching",
+      "description": "Lists cached content entries with their metadata (content itself is not returned). Supports pagination."
+    },
+    {
+      "name": "Get Cached Content",
+      "category": "Context Caching",
+      "description": "Retrieves metadata for a specific cached content entry, including its model, expiration time, and token usage."
+    },
+    {
+      "name": "Update Cached Content",
+      "category": "Context Caching",
+      "description": "Updates the expiration (TTL) of a cached content entry, extending or shortening its lifetime. Cached content itself cannot be modified after creation."
+    },
+    {
+      "name": "Delete Cached Content",
+      "category": "Context Caching",
+      "description": "Deletes a cached content entry immediately, stopping further storage charges. Generation requests referencing the deleted cache will fail."
+    },
+    {
+      "name": "Create Batch Job",
+      "category": "Batch Processing",
+      "description": "Submits an asynchronous batch generation job at 50% of the standard API cost with a 24-hour turnaround target. Provide simple text prompts, full GenerateContentRequest objects, or the name of a JSONL input file previously uploaded via 'Upload File' (required for jobs over 20 MB, up to 2 GB). Track the job with 'Get Batch Job'."
+    },
+    {
+      "name": "Get Batch Job",
+      "category": "Batch Processing",
+      "description": "Retrieves the status and results of a batch generation job. When the job has succeeded, inline results are returned directly; file-based jobs return an output file name to download with 'Download Batch Results'."
+    },
+    {
+      "name": "List Batch Jobs",
+      "category": "Batch Processing",
+      "description": "Lists batch generation jobs with their states and metadata. Supports pagination."
+    },
+    {
+      "name": "Cancel Batch Job",
+      "category": "Batch Processing",
+      "description": "Requests cancellation of a pending or running batch generation job. Requests already processed before cancellation may still be billed."
+    },
+    {
+      "name": "Delete Batch Job",
+      "category": "Batch Processing",
+      "description": "Deletes a batch generation job record. This removes the job from your list but does not cancel in-flight processing; cancel first if the job is still running."
+    },
+    {
+      "name": "Download Batch Results",
+      "category": "Batch Processing",
+      "description": "Downloads and parses the JSONL results file of a completed file-based batch job, returning the parsed result objects. Use the output file name reported by 'Get Batch Job'."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Analyzing documents, invoices, images, audio, and video with natural language prompts",
+    "Extracting structured JSON data from unstructured content using response schemas",
+    "Building research and Q&A agents grounded in Google Search results with citations",
+    "Generating and editing marketing images, product visuals, and social media assets",
+    "Producing narrated audio and multi-speaker dialogue from scripts",
+    "Generating short cinematic videos from text prompts or starting images",
+    "Powering semantic search and RAG pipelines with task-optimized embeddings",
+    "Processing large document collections at 50% cost via batch jobs",
+    "Reducing cost and latency of repeated large prompts with context caching"
+  ],
+  "agentIdeas": [
+    "When a **Google Drive** \"On New File\" trigger fires, use **Gemini AI** \"Upload File\" then \"Generate Content (Advanced)\" with a response schema to extract structured data, and write the results into **Google Sheets** \"Add Row\" for automated document processing",
+    "When a **Gmail** \"On New Attachment\" trigger fires, use **Gemini AI** \"Upload File\" and \"Generate Content\" to summarize the attachment, then send the summary back via **Gmail** \"Send Message\"",
+    "Build a grounded research agent by calling **Gemini AI** \"Generate Content (Advanced)\" with Google Search enabled, then post the sourced digest (with its grounding citations) via **Slack** \"Send Message To Channel\""
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/gemini-ai/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/gemini-ai",
+    "readme": "services/gemini-ai/README.md",
+    "index": "services/gemini-ai/src/index.js"
+  }
+}

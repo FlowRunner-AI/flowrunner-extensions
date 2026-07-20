@@ -1,0 +1,119 @@
+{
+  "slug": "tally",
+  "name": "Tally",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to [Tally](https://tally.so), the form builder, via the Tally API. Manage forms, questions, submissions, and webhooks, look up the current user and workspaces, and react to new form submissions in real time.",
+  "actionCount": 15,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Forms",
+    "Questions",
+    "Submissions",
+    "Webhooks",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "List Forms",
+      "category": "Forms",
+      "description": "Retrieves the forms in your Tally account as a paginated list. Each form includes its id, name, workspace id, status (BLANK, DRAFT, PUBLISHED, or DELETED), submission count, and whether it is closed for new responses. Returns up to 500 forms per page (default 50) together with hasMore/total pagination metadata. Use a form id with Get Form to retrieve the full block structure."
+    },
+    {
+      "name": "Get Form",
+      "category": "Forms",
+      "description": "Retrieves a single form by id, including its settings and the complete blocks structure (form title, question blocks, layout blocks, and their payloads). Use the blocks to understand the form layout or as a starting point for Update Form; use List Form Questions for a simpler question-focused view."
+    },
+    {
+      "name": "Create Form",
+      "category": "Forms",
+      "description": "Creates a new form from an array of Tally blocks. The form name is derived from the FORM_TITLE block. Choose Published to make the form live immediately, Draft to keep unpublished draft blocks, or Blank for an empty shell. Optionally create the form in a specific workspace (defaults to your default workspace). Returns the created form's metadata including its id."
+    },
+    {
+      "name": "Update Form",
+      "category": "Forms",
+      "description": "Updates a form's name and/or status. Set the status to Published to publish a draft form, or Draft/Blank to unpublish it. Only the provided properties are changed. Returns the updated form metadata."
+    },
+    {
+      "name": "Delete Form",
+      "category": "Forms",
+      "description": "Deletes a form by id and moves it to the trash together with its submissions. The form can be restored from the trash in the Tally dashboard."
+    },
+    {
+      "name": "List Form Questions",
+      "category": "Questions",
+      "description": "Retrieves all questions of a form, including each question's id, block type (e.g. INPUT_TEXT, INPUT_EMAIL, MULTIPLE_CHOICE), title, number of responses, and field definitions. Use this to map question ids to human-readable titles when interpreting submission responses."
+    },
+    {
+      "name": "List Submissions",
+      "category": "Submissions",
+      "description": "Retrieves a paginated list of submissions for a form together with the form's questions, so answers (keyed by questionId) can be mapped to question titles. Filter by completion status (All, Completed, or Partial), by an ISO 8601 date window, or fetch only submissions received after a specific submission id (useful for incremental syncs). Returns up to 500 submissions per page (default 50) plus per-filter totals and hasMore pagination metadata. Each submission includes signed previewUrl/pdfUrl links."
+    },
+    {
+      "name": "Get Submission",
+      "category": "Submissions",
+      "description": "Retrieves a single form submission by id, including all its responses (keyed by questionId) and the form's questions so answers can be mapped to question titles. Also returns signed previewUrl/pdfUrl links to view or download the submission."
+    },
+    {
+      "name": "Delete Submission",
+      "category": "Submissions",
+      "description": "Permanently deletes a specific submission from a form. This action cannot be undone."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Retrieves a paginated list of all webhooks across your accessible forms and workspaces. Each webhook includes its id, form id, endpoint URL, subscribed event types, custom HTTP headers, and whether it is enabled. Returns up to 100 webhooks per page (default 25)."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Creates a webhook on a form so Tally POSTs the submission payload to your endpoint each time the form receives a new submission (FORM_RESPONSE event). Optionally sign payloads with a signing secret and attach custom HTTP headers to each delivery. Returns the created webhook including its id. Use this to manage your own endpoints; to run FlowRunner flows on new submissions, use the On New Submission trigger instead."
+    },
+    {
+      "name": "Update Webhook",
+      "category": "Webhooks",
+      "description": "Updates an existing webhook's configuration. The Tally API requires the full configuration on update, so provide the form id and endpoint URL along with any changes. Toggle Enabled off to pause deliveries without deleting the webhook."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Deletes a webhook by id so Tally stops sending submission events to its endpoint. If this is the last webhook for a form, Tally also marks the form's webhooks integration as deleted."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Account",
+      "description": "Retrieves the profile of the user who owns the API key, including name, email, organization id, and subscription plan (FREE, PRO, or BUSINESS). Useful for verifying the connection and checking plan-dependent capabilities."
+    },
+    {
+      "name": "List Workspaces",
+      "category": "Account",
+      "description": "Retrieves a paginated list of the workspaces you have access to, including each workspace's id, name, members, and pending invites. Use a workspace id with Create Form to place new forms in a specific workspace."
+    }
+  ],
+  "triggers": [
+    "On New Submission"
+  ],
+  "idealUseCases": [
+    "Route new form submissions into spreadsheets, CRMs, or databases the moment they arrive",
+    "Sync respondent answers to a Slack channel or email for immediate team follow-up",
+    "Programmatically create, publish, and update forms from FlowRunner flows",
+    "Map question ids to human-readable titles when interpreting submission responses",
+    "Manage submission webhooks and clean up submissions across your Tally account"
+  ],
+  "agentIdeas": [
+    "When a **Tally** \"On New Submission\" trigger fires, use **Google Sheets** \"Add Row\" to log each respondent's answers into a submissions spreadsheet",
+    "When a **Tally** \"On New Submission\" trigger fires, use **Slack** \"Send Message To Channel\" to notify the team with the respondent's key answers for immediate follow-up",
+    "Use **Tally** \"List Submissions\" to pull a form's responses, then call **Notion** \"Create Page\" to archive each submission as a database entry for tracking"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/tally/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/tally",
+    "readme": "services/tally/README.md",
+    "index": "services/tally/src/index.js"
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "slug": "wekan",
+  "name": "Wekan",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Wekan](https://wekan.github.io/) — the open-source kanban board — with FlowRunner. Manage boards, lists (columns), cards, swimlanes and checklists on your own Wekan server. This service does not use OAuth; it authenticates with your username/email and password, which are exchanged for a bearer token and user id via the login endpoint.",
+  "actionCount": 19,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Boards",
+    "Lists",
+    "Cards",
+    "Swimlanes",
+    "Checklists"
+  ],
+  "actions": [
+    {
+      "name": "Get User Boards",
+      "category": "Boards",
+      "description": "Lists all boards owned by or shared with the currently authenticated Wekan user (the account configured on this connection). Each entry includes the board id, title and slug. Use this to discover board ids for the other operations."
+    },
+    {
+      "name": "Get Board",
+      "category": "Boards",
+      "description": "Retrieves a single Wekan board by its id, including its title, permission (public or private), color, members and other metadata."
+    },
+    {
+      "name": "Create Board",
+      "category": "Boards",
+      "description": "Creates a new Wekan board with the given title. You choose whether the board is public or private and its color theme, and set the owner (the user id that will own the board — defaults to the authenticated user). Wekan automatically provisions a default swimlane and list for the new board. Returns the new board's id and its default swimlane id."
+    },
+    {
+      "name": "Delete Board",
+      "category": "Boards",
+      "description": "Permanently deletes a Wekan board by its id, along with all of its swimlanes, lists and cards. This action cannot be undone."
+    },
+    {
+      "name": "Get Board's Cards Count",
+      "category": "Boards",
+      "description": "Returns the total number of cards on a Wekan board. Useful for reporting or for checking whether a board is empty before deleting it."
+    },
+    {
+      "name": "Get Lists",
+      "category": "Lists",
+      "description": "Lists all of the columns (lists) on a Wekan board, in board order. Each entry includes the list id and title. Cards belong to a list, so use this to discover list ids."
+    },
+    {
+      "name": "Get List",
+      "category": "Lists",
+      "description": "Retrieves a single list (column) on a Wekan board by its id, including its title and settings."
+    },
+    {
+      "name": "Create List",
+      "category": "Lists",
+      "description": "Creates a new list (column) on a Wekan board with the given title. The list is appended to the board. Returns the id of the new list."
+    },
+    {
+      "name": "Delete List",
+      "category": "Lists",
+      "description": "Permanently deletes a list (column) from a Wekan board by its id. This action cannot be undone."
+    },
+    {
+      "name": "Get Cards in List",
+      "category": "Cards",
+      "description": "Lists all cards contained in a specific list (column) on a Wekan board. Each entry includes the card id, title and description. Use this to discover card ids."
+    },
+    {
+      "name": "Get Card",
+      "category": "Cards",
+      "description": "Retrieves a single Wekan card by its id, including its title, description, due date, assignees, labels, members and swimlane. The board id and list id that contain the card are also required."
+    },
+    {
+      "name": "Create Card",
+      "category": "Cards",
+      "description": "Creates a new card in a list on a Wekan board. Requires a title, the author (the user id creating the card — defaults to the authenticated user) and the swimlane the card is placed in. Every board has a default swimlane; use Get Swimlanes to find its id, or pass it explicitly. Optionally sets a description. Returns the id of the new card."
+    },
+    {
+      "name": "Edit Card",
+      "category": "Cards",
+      "description": "Updates an existing Wekan card. Only the fields you provide are changed: title, description, due date, or the list the card lives in (moving it between columns). The board id, list id and card id are required to locate the card. Returns the card id."
+    },
+    {
+      "name": "Delete Card",
+      "category": "Cards",
+      "description": "Permanently deletes a card from a Wekan board by its id. This action cannot be undone."
+    },
+    {
+      "name": "Get Cards by Swimlane",
+      "category": "Cards",
+      "description": "Lists all cards that belong to a specific swimlane (horizontal row) on a Wekan board, across every list. Use this to see all cards grouped in one swimlane regardless of which column they are in."
+    },
+    {
+      "name": "Get Swimlanes",
+      "category": "Swimlanes",
+      "description": "Lists all swimlanes (horizontal rows) on a Wekan board. Every board has at least one Default swimlane. Use this to find the swimlane id required when creating cards."
+    },
+    {
+      "name": "Create Swimlane",
+      "category": "Swimlanes",
+      "description": "Creates a new swimlane (horizontal row) on a Wekan board with the given title. Returns the id of the new swimlane."
+    },
+    {
+      "name": "Get Card Checklists",
+      "category": "Checklists",
+      "description": "Lists all checklists attached to a specific card on a Wekan board. Each entry includes the checklist id and title."
+    },
+    {
+      "name": "Create Checklist",
+      "category": "Checklists",
+      "description": "Creates a new checklist on a card on a Wekan board with the given title. Checklist items are added separately. Returns the id of the new checklist."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create Wekan cards from incoming tickets, form submissions or chat messages",
+    "Sync tasks between Wekan and other project tools by creating, editing, moving or deleting cards",
+    "Provision new boards, lists and swimlanes as part of onboarding or project-kickoff workflows",
+    "Report on board activity by counting cards or listing cards grouped by list or swimlane",
+    "Build and maintain card checklists as work is broken down into subtasks"
+  ],
+  "agentIdeas": [
+    "When a **ClickUp** \"On Task Created\" trigger fires, call **Wekan** \"Create Card\" to mirror the task onto a Wekan board's default swimlane so both teams share one kanban view",
+    "Use **GitHub** \"Create Issue\" for a bug report, then call **Wekan** \"Create Card\" and \"Create Checklist\" to track the fix and its subtasks on an engineering board",
+    "After **Wekan** \"Get Board's Cards Count\" reports a backlog spike, use **Slack** \"Send Message To Channel\" to alert the team with the current card total for that board"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/wekan/public/icon.png",
+  "sourcePaths": {
+    "service": "services/wekan",
+    "readme": "services/wekan/README.md",
+    "index": "services/wekan/src/index.js"
+  }
+}

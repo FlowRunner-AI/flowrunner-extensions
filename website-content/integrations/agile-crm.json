@@ -1,0 +1,166 @@
+{
+  "slug": "agile-crm",
+  "name": "Agile CRM",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Manage Agile CRM contacts, companies, deals, tasks, notes, and tags directly from your flows. Authentication uses **HTTP Basic** with your account email and REST API key (`base64('{email}:{apiKey}')`); all requests target `https://{subdomain}.agilecrm.com/dev/api`.",
+  "actionCount": 25,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Contacts",
+    "Companies",
+    "Deals",
+    "Tasks",
+    "Notes"
+  ],
+  "actions": [
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new person contact in Agile CRM. Provide any of the simple fields (first name, last name, email, phone, company, title) which are converted into Agile's properties array, and/or pass a raw properties array for custom fields and non-default subtypes. Tags may be attached at creation."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by its Agile CRM id. The response includes the raw properties array plus a flattened 'simple' object for convenient field access."
+    },
+    {
+      "name": "Get Contact by Email",
+      "category": "Contacts",
+      "description": "Looks up a contact by its email address. Returns the matching contact with the raw properties array and a flattened 'simple' object, or an error if no contact matches."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves a page of contacts from Agile CRM using cursor-based pagination. Returns an array of contacts (each with a flattened 'simple' object) and a cursor for the next page when more results are available."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates properties on an existing contact. Provide the contact id plus any simple fields to change and/or a raw properties array. Only the supplied properties are modified; omitted properties are left untouched."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact by id. This action cannot be undone."
+    },
+    {
+      "name": "Search Contacts",
+      "category": "Contacts",
+      "description": "Full-text search across contacts or companies by keyword. Filter by record type and control page size. Returns matching records, each with a flattened 'simple' object."
+    },
+    {
+      "name": "Add Tags to Contact",
+      "category": "Contacts",
+      "description": "Adds one or more tags to a contact identified by email address. Tags already present are left unchanged."
+    },
+    {
+      "name": "Delete Tags from Contact",
+      "category": "Contacts",
+      "description": "Removes one or more tags from a contact identified by email address."
+    },
+    {
+      "name": "Create Company",
+      "category": "Companies",
+      "description": "Creates a company record in Agile CRM. Provide the company name and optional website/phone which are converted into Agile's properties array, and/or pass a raw properties array for custom fields."
+    },
+    {
+      "name": "Get Company",
+      "category": "Companies",
+      "description": "Retrieves a single company by its Agile CRM id, including the raw properties array and a flattened 'simple' object."
+    },
+    {
+      "name": "List Companies",
+      "category": "Companies",
+      "description": "Retrieves a page of companies using cursor-based pagination. Returns an array of companies (each with a flattened 'simple' object) and a cursor for the next page when available."
+    },
+    {
+      "name": "Update Company",
+      "category": "Companies",
+      "description": "Updates properties on an existing company. Provide the company id plus any simple fields to change and/or a raw properties array. Only supplied properties are modified."
+    },
+    {
+      "name": "Delete Company",
+      "category": "Companies",
+      "description": "Permanently deletes a company by id. This action cannot be undone."
+    },
+    {
+      "name": "Create Deal",
+      "category": "Deals",
+      "description": "Creates a deal (opportunity) in Agile CRM. Expected value is required. Associate the deal with a track (pipeline) and milestone using the Get Tracks and Get Milestones dictionaries, and optionally link it to contacts."
+    },
+    {
+      "name": "Get Deal",
+      "category": "Deals",
+      "description": "Retrieves a single deal (opportunity) by its Agile CRM id."
+    },
+    {
+      "name": "List Deals",
+      "category": "Deals",
+      "description": "Retrieves a page of deals (opportunities) using cursor-based pagination. Returns the deals array and a cursor for the next page when available."
+    },
+    {
+      "name": "Update Deal",
+      "category": "Deals",
+      "description": "Partially updates a deal. Provide the deal id plus any fields to change; omitted fields are left unchanged. Use the Get Tracks and Get Milestones dictionaries to select a track and milestone."
+    },
+    {
+      "name": "Delete Deal",
+      "category": "Deals",
+      "description": "Permanently deletes a deal (opportunity) by id. This action cannot be undone."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a task in Agile CRM. Set a subject, task type, priority, and due date (Unix timestamp in seconds), and optionally associate it with contacts."
+    },
+    {
+      "name": "List Pending Tasks",
+      "category": "Tasks",
+      "description": "Retrieves pending (incomplete) tasks due within the given number of days from today."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates an existing task. Provide the task id plus any fields to change; omitted fields are left unchanged."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task by id. This action cannot be undone."
+    },
+    {
+      "name": "Create Note",
+      "category": "Notes",
+      "description": "Creates a note and links it to one or more contacts. Provide a subject, description, and the contact ids to associate."
+    },
+    {
+      "name": "List Notes for Contact",
+      "category": "Notes",
+      "description": "Retrieves all notes attached to a specific contact, ordered by most recent first."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync inbound leads into Agile CRM as contacts and companies, then tag and route them automatically.",
+    "Keep sales pipelines current by creating and updating deals, tracks, and milestones from your flows.",
+    "Automate follow-up by creating tasks and notes tied to specific contacts.",
+    "Enrich or clean CRM records in bulk by searching, updating, and re-tagging contacts."
+  ],
+  "agentIdeas": [
+    "When **Typeform** \"Get Form Responses\" returns a new lead submission, call **Agile CRM**",
+    "After **Agile CRM** \"Create Deal\" runs, use **Gmail** \"Send Message\" to notify the sales owner",
+    "Use **Agile CRM** \"List Contacts\" to pull records, then **Google Sheets** \"Add Row\" to export each"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/agile-crm/public/icon.png",
+  "sourcePaths": {
+    "service": "services/agile-crm",
+    "readme": "services/agile-crm/README.md",
+    "index": "services/agile-crm/src/index.js"
+  }
+}

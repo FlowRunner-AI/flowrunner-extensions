@@ -1,0 +1,126 @@
+{
+  "slug": "linear",
+  "name": "Linear",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Linear](https://linear.app), the issue tracking and project management tool for software teams. Manage issues, projects, comments, teams, users, workflow states, and labels over Linear's GraphQL API, and react in real time to Linear events via webhooks. Authenticates with a Linear personal API key.",
+  "actionCount": 16,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Issues",
+    "Search",
+    "Teams",
+    "Projects",
+    "Users",
+    "Workflow States",
+    "Labels"
+  ],
+  "actions": [
+    {
+      "name": "Create Issue",
+      "category": "Issues",
+      "description": "Creates a new issue in a Linear team. Requires a team and a title; optionally set description (Markdown), assignee, priority, workflow state (status), labels, project, and due date. Returns the created issue with its identifier and URL."
+    },
+    {
+      "name": "Get Issue",
+      "category": "Issues",
+      "description": "Retrieves a single Linear issue by its ID (UUID) or identifier (e.g. ENG-42), including title, description, state, assignee, team, project, labels, and URL."
+    },
+    {
+      "name": "List Issues",
+      "category": "Issues",
+      "description": "Lists issues with optional filtering by team, assignee, or workflow state, and cursor-based pagination. Returns issue nodes plus pageInfo for fetching the next page."
+    },
+    {
+      "name": "Update Issue",
+      "category": "Issues",
+      "description": "Updates fields on an existing Linear issue. Provide only the fields you want to change; leave others blank to keep their current values. Supports title, description, assignee, priority, workflow state, labels, project, and due date."
+    },
+    {
+      "name": "Delete Issue",
+      "category": "Issues",
+      "description": "Archives a Linear issue. Linear does not hard-delete issues through this action; the issue is moved to the archive (issueArchive) and can be restored from Linear."
+    },
+    {
+      "name": "Create Comment",
+      "category": "Issues",
+      "description": "Adds a comment to a Linear issue. The comment body supports Markdown. Returns the created comment with its ID and URL."
+    },
+    {
+      "name": "Search Issues",
+      "category": "Search",
+      "description": "Full-text searches issues across the workspace by a query string, matching titles, descriptions, and identifiers. Returns matching issue nodes with pageInfo for pagination."
+    },
+    {
+      "name": "List Teams",
+      "category": "Teams",
+      "description": "Lists teams in the workspace with cursor-based pagination. Returns team nodes (id, name, key, description) plus pageInfo for the next page."
+    },
+    {
+      "name": "Get Team",
+      "category": "Teams",
+      "description": "Retrieves a single Linear team by ID, including its name, key, description, and default issue-related settings."
+    },
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Lists projects in the workspace with cursor-based pagination. Returns project nodes (id, name, description, state, progress) plus pageInfo for the next page."
+    },
+    {
+      "name": "Create Project",
+      "category": "Projects",
+      "description": "Creates a project associated with one or more teams. Requires a name and at least one team; optionally set a description and initial state. Returns the created project with its ID and URL."
+    },
+    {
+      "name": "Update Project",
+      "category": "Projects",
+      "description": "Updates an existing Linear project. Provide only the fields you want to change; leave others blank to keep their current values. Supports name, description, and state."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists members of the workspace with cursor-based pagination. Returns user nodes (id, name, email, active status) plus pageInfo for the next page."
+    },
+    {
+      "name": "Get Viewer",
+      "category": "Users",
+      "description": "Returns the authenticated user (the owner of the API key) along with basic workspace details. Useful as a connection check to confirm the API key is valid."
+    },
+    {
+      "name": "List Workflow States",
+      "category": "Workflow States",
+      "description": "Lists workflow states (issue statuses such as Todo, In Progress, Done), optionally filtered to a single team. Returns state nodes (id, name, type, color, position) plus pageInfo."
+    },
+    {
+      "name": "List Labels",
+      "category": "Labels",
+      "description": "Lists issue labels in the workspace with cursor-based pagination. Returns label nodes (id, name, color, and the team it belongs to, if any) plus pageInfo."
+    }
+  ],
+  "triggers": [
+    "On Linear Event"
+  ],
+  "idealUseCases": [
+    "Automatically create Linear issues from form submissions, support tickets, or monitoring alerts",
+    "Keep external systems in sync by updating issue status, assignee, or labels as work progresses",
+    "Post Markdown comments to issues to relay updates from other tools or notify stakeholders",
+    "Trigger downstream automations the moment an issue, comment, project, or label changes",
+    "Search and report on issues across the workspace for dashboards or digests"
+  ],
+  "agentIdeas": [
+    "When an **On Linear Event** trigger fires for a newly created issue, use **Slack** \"Send Message To Channel\" to alert the team channel with the issue title and URL.",
+    "Use **Google Sheets** \"Get Rows\" to read a backlog of tasks, then call Linear \"Create Issue\" for each row to bulk-import work into a team.",
+    "When an **On Linear Event** trigger reports an issue moving to a Done state, use **Gmail** \"Send Message\" to email the stakeholder that their request is complete."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/linear/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/linear",
+    "readme": "services/linear/README.md",
+    "index": "services/linear/src/index.js"
+  }
+}

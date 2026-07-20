@@ -1,0 +1,47 @@
+{
+  "slug": "brandfetch",
+  "name": "Brandfetch",
+  "marketingCategory": "Sales Intelligence & Enrichment",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Look up brand assets and company data through the [Brandfetch Brand API v2](https://developers.brandfetch.com). Retrieve logos, color palettes, fonts, links, and firmographics for any company by domain or brand ID, and search for brands by name. Authenticates with a Brandfetch Brand API key sent as an `Authorization: Bearer` header (get one at [developers.brandfetch.com](https://developers.brandfetch.com)).",
+  "actionCount": 2,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Brand"
+  ],
+  "actions": [
+    {
+      "name": "Get Brand",
+      "category": "Brand",
+      "description": "Retrieves the full brand profile for a company by its domain (e.g. \"nike.com\") or Brandfetch brand ID. Returns the complete Brandfetch record - name, domain, short and long descriptions, all logos (logo/symbol/icon/other) with their formats and download URLs, the color palette (accent/dark/light/brand with hex values), fonts, social and website links, images, industries, and company firmographics (employees, founded year, kind, location, financial identifiers). For convenience, also surfaces a flattened \"primaryLogoUrl\" and \"primaryColor\" so flows can grab the main brand assets without traversing the raw arrays. Accepts stock tickers, ISINs, and crypto symbols as identifiers too. Returns 404 if the brand is not found."
+    },
+    {
+      "name": "Search Brands",
+      "category": "Brand",
+      "description": "Searches Brandfetch for brands matching a name or partial domain (e.g. \"nike\", \"stripe\"). Returns a list of matching brands, each with its Brandfetch brand ID, display name, primary domain, an icon URL, and a \"claimed\" flag indicating whether the brand owner has claimed the profile. Use a result's domain or brand ID with Get Brand to retrieve the full brand record. Returns an empty list when there are no matches."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Enrich a CRM company or lead record with logos, brand colors, and firmographics starting from just its email domain.",
+    "Auto-brand generated documents, decks, or emails by pulling a company's primary logo and accent color.",
+    "Resolve a company name a user typed into a canonical domain and brand ID before storing it.",
+    "Build a brand directory or media kit by fetching structured brand records at scale."
+  ],
+  "agentIdeas": [
+    "Use **Brandfetch** \"Search Brands\" to resolve a company name to its domain, then **Brandfetch** \"Get Brand\" to fetch its logo and firmographics, and **HubSpot** \"Create Company\" to store the enriched record.",
+    "After **HubSpot** \"Create Contact\" fires with a work email, call **Brandfetch** \"Get Brand\" on the email's domain to attach the employer's logo and accent color to the contact.",
+    "Use **Brandfetch** \"Get Brand\" to pull a client's `primaryLogoUrl` and `primaryColor`, then **Google Sheets** \"Add Row\" to log the brand assets into a client onboarding sheet."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/brandfetch/public/icon.png",
+  "sourcePaths": {
+    "service": "services/brandfetch",
+    "readme": "services/brandfetch/README.md",
+    "index": "services/brandfetch/src/index.js"
+  }
+}

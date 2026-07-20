@@ -1,0 +1,65 @@
+{
+  "slug": "uplead",
+  "name": "UpLead",
+  "marketingCategory": "Sales Intelligence & Enrichment",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Access UpLead's B2B contact and company database from FlowRunner. Enrich people and companies, search for contacts at a target company, and check your remaining API credits. Every successful response wraps its payload under `data`, alongside a `userInfo` object reporting `availableCredits`.",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Enrichment",
+    "Prospecting",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Enrich Person",
+      "category": "Enrichment",
+      "description": "Enriches a single person and returns their professional profile: full name, job title, job function, management level, verified work email (with email status), phone and mobile direct-dial numbers, location, LinkedIn URL, and current company. Look someone up by their work email, or by first name, last name, and company domain. One UpLead credit is consumed per successful match with a valid or accept-all email."
+    },
+    {
+      "name": "Enrich Company",
+      "category": "Enrichment",
+      "description": "Enriches a company and returns firmographic details: legal name, domain, full address, phone and fax, employee count, revenue, industry, SIC/NAICS codes and descriptions, description, year founded, logo URL, and social profiles (LinkedIn, Twitter, Facebook, YouTube, Crunchbase, Instagram). Look up a company by its domain or by company name. One UpLead credit is consumed per successful match."
+    },
+    {
+      "name": "Search Contacts",
+      "category": "Prospecting",
+      "description": "Searches UpLead's B2B database for contacts at a company and returns a paginated list of people (under data.results) with their titles, verified emails and email statuses, phone numbers, LinkedIn URLs, and locations. Filter by company domain plus optional job function, management level, job title, and location (city, state, country). The data.meta object carries pagination details (total, page, next_page, previous_page, first_page, last_page). Credits are consumed only when contact records are revealed."
+    },
+    {
+      "name": "Enrich Person and Company",
+      "category": "Enrichment",
+      "description": "Enriches a person and their company in a single call from a work email. Returns the combined profile under data: the person's name, title, verified email and email status, mobile direct-dial, and LinkedIn, with the company's firmographics nested under data.company (industry, employee count, revenue, location, social links). Use this when you only have an email and want both records at once."
+    },
+    {
+      "name": "Get Remaining Credits",
+      "category": "Account",
+      "description": "Returns the number of API credits remaining on the connected UpLead account (under data.credits), along with the account email (data.email). Use this to check account status and confirm the API key is valid before running enrichment or search operations."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Enrich an inbound lead's work email into a full contact profile (title, verified email, phone, LinkedIn, company) before routing it to sales.",
+    "Build prospect lists by searching all contacts at a target company, filtered by job function, seniority, title, and location.",
+    "Enrich a company by domain to pull firmographics (employees, revenue, industry, SIC/NAICS, socials) for account scoring or CRM sync.",
+    "Turn a bare email into both the person and their company record in a single call for fast form-fill or CRM auto-population.",
+    "Monitor remaining API credits and validate the connection before running batch enrichment jobs."
+  ],
+  "agentIdeas": [
+    "Use UpLead **Enrich Person and Company** on an inbound email, then call **HubSpot** \"Create Contact\" and \"Create Company\" to auto-populate the CRM with a verified, enriched record.",
+    "Run UpLead **Search Contacts** against a target company domain, then use **Google Sheets** \"Add Rows\" to build a fresh prospect list of names, titles, and verified emails.",
+    "After UpLead **Enrich Company** returns firmographics for a new domain, use **Pipedrive** \"Create Deal\" to open an opportunity pre-filled with the account's size, revenue, and industry."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/uplead/public/icon.png",
+  "sourcePaths": {
+    "service": "services/uplead",
+    "readme": "services/uplead/README.md",
+    "index": "services/uplead/src/index.js"
+  }
+}

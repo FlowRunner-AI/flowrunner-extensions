@@ -1,0 +1,158 @@
+{
+  "slug": "instagram-business",
+  "name": "Instagram for Business",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Publish and manage content on Instagram Business/Creator accounts through the Meta Graph API. Publish photos, reels, stories, and carousels via the container-then-publish flow with automatic status polling; list and inspect media; moderate comments (including hide and reply); pull account and media insights; and search public hashtags. Instagram account parameters auto-resolve to the connected Business/Creator account when left blank.",
+  "actionCount": 23,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Publishing",
+    "Media",
+    "Comments",
+    "Insights",
+    "Account",
+    "Hashtags"
+  ],
+  "actions": [
+    {
+      "name": "Publish Photo",
+      "category": "Publishing",
+      "description": "Publishes a single photo to the Instagram feed. Uses the Graph API two-step flow: an image container is created via POST /{ig-user-id}/media and, because image containers are ready immediately, published right away via POST /{ig-user-id}/media_publish. The Image URL must point to a publicly reachable JPEG on a server that allows Instagram to fetch it. Supports a caption (with hashtags/mentions), an optional location tag, and raw user tags. Requires the instagram_content_publish permission (Advanced Access for public accounts). Counts against the 50 API posts / 24h publishing limit."
+    },
+    {
+      "name": "Publish Reel",
+      "category": "Publishing",
+      "description": "Publishes a Reel (short-form video) to Instagram. Creates a REELS container via POST /{ig-user-id}/media with the Video URL, then polls GET /{creation-id}?fields=status_code every five seconds until the video finishes transcoding (status FINISHED) before publishing via POST /{ig-user-id}/media_publish. Surfaces ERROR/EXPIRED processing failures with the reported reason. The Video URL must be a publicly reachable MP4/MOV meeting Instagram's Reels specs. Optionally set a cover image or thumbnail offset and choose whether the Reel also appears in the main feed. Requires instagram_content_publish. Counts against the 50 API posts / 24h publishing limit."
+    },
+    {
+      "name": "Publish Story",
+      "category": "Publishing",
+      "description": "Publishes a Story (24-hour ephemeral post) to Instagram from either an image or a video. Creates a STORIES container via POST /{ig-user-id}/media; image Stories publish immediately while video Stories are polled until processing finishes. Provide exactly one of Image URL or Video URL (both publicly reachable). Requires instagram_content_publish. Counts against the 50 API posts / 24h publishing limit."
+    },
+    {
+      "name": "Publish Carousel",
+      "category": "Publishing",
+      "description": "Publishes a multi-item carousel (2-10 photos and/or videos) to the Instagram feed. Creates a child container for each item with is_carousel_item true, polls any video children until processing finishes, then creates the parent CAROUSEL container referencing the child ids and publishes it. Each item supplies exactly one of image_url or video_url (both publicly reachable). Requires instagram_content_publish. A carousel counts as a single post against the 50 API posts / 24h publishing limit."
+    },
+    {
+      "name": "Get Container Status",
+      "category": "Publishing",
+      "description": "Retrieves the processing status of a media container created during publishing, via GET /{creation-id}?fields=status_code,status. Use this to inspect a container between the create and publish steps. status_code is one of IN_PROGRESS, FINISHED, ERROR, EXPIRED, or PUBLISHED; status provides a human-readable detail message."
+    },
+    {
+      "name": "Get Publishing Limit",
+      "category": "Publishing",
+      "description": "Reports how many posts the account has published through the API within the rolling 24-hour window, via GET /{ig-user-id}/content_publishing_limit. Instagram permits up to 50 API-published posts per 24 hours (carousels count as one). Returns config (the configured quota) and quota_usage (posts used so far). Check this before bulk publishing to avoid rate-limit errors."
+    },
+    {
+      "name": "List Media",
+      "category": "Media",
+      "description": "Lists media (posts, reels, carousels) published on the Instagram account, newest first, via GET /{ig-user-id}/media. Each item includes id, caption, media_type, media_url, thumbnail_url (for videos), permalink, timestamp, and engagement counts (like_count, comments_count). Supports paging via limit and an after cursor."
+    },
+    {
+      "name": "Get Media",
+      "category": "Media",
+      "description": "Retrieves a single media object by id via GET /{ig-media-id}. Returns id, caption, media_type, media_product_type, media_url, thumbnail_url, permalink, timestamp, username, like_count, comments_count, and — for carousels — the child media (children{media_url,media_type}). Pass a custom comma-separated Fields value to override the defaults."
+    },
+    {
+      "name": "Get Media Children",
+      "category": "Media",
+      "description": "Lists the child media of a carousel album via GET /{ig-media-id}/children. Each child includes id, media_type, media_url, thumbnail_url, and permalink. Only carousel (album) media have children; calling this on a single photo/video returns an empty list."
+    },
+    {
+      "name": "List Comments",
+      "category": "Comments",
+      "description": "Lists top-level comments on a media object via GET /{ig-media-id}/comments, including each comment's id, text, username, timestamp, like_count, and nested replies{id,text,username}. Supports paging via limit and an after cursor. Requires instagram_manage_comments."
+    },
+    {
+      "name": "Get Comment",
+      "category": "Comments",
+      "description": "Retrieves a single comment by id via GET /{ig-comment-id}. Returns id, text, username, timestamp, like_count, hidden, and nested replies{id,text,username}. Requires instagram_manage_comments."
+    },
+    {
+      "name": "Create Comment",
+      "category": "Comments",
+      "description": "Posts a top-level comment on a media object via POST /{ig-media-id}/comments. Returns the new comment id. Requires instagram_manage_comments. Comments can only be added to media on accounts you manage."
+    },
+    {
+      "name": "Reply to Comment",
+      "category": "Comments",
+      "description": "Posts a reply to an existing comment via POST /{ig-comment-id}/replies, creating a threaded response. Returns the new reply's comment id. Requires instagram_manage_comments."
+    },
+    {
+      "name": "Hide or Unhide Comment",
+      "category": "Comments",
+      "description": "Hides or unhides a comment via POST /{ig-comment-id} with the hide flag. Hidden comments remain but are not shown publicly under the media. Set Hide to true to hide, or false to unhide. Requires instagram_manage_comments."
+    },
+    {
+      "name": "Delete Comment",
+      "category": "Comments",
+      "description": "Permanently deletes a comment via DELETE /{ig-comment-id}. This cannot be undone. You can only delete comments on media of accounts you manage. Requires instagram_manage_comments."
+    },
+    {
+      "name": "Get Account Insights",
+      "category": "Insights",
+      "description": "Retrieves account-level insights via GET /{ig-user-id}/insights. Choose one or more metrics; interaction metrics (Reach, Accounts Engaged, Total Interactions, Likes, Comments, Shares, Saves) are automatically requested with metric_type=total_value as Instagram requires, while time-series metrics (Follower Count, Profile Views) return per-period values. Pick a period (Day, Week, or 28 Days) and optionally bound the range with Since/Until (Unix epoch seconds or ISO 8601). Requires instagram_manage_insights. Some metrics require the account to have at least 100 followers."
+    },
+    {
+      "name": "Get Media Insights",
+      "category": "Insights",
+      "description": "Retrieves per-media insights via GET /{ig-media-id}/insights. Choose one or more metrics from Reach, Likes, Comments, Saved, Shares, Views, and Total Interactions. Metric availability varies by media type (feed image, video/reel, carousel, story), so requesting a metric unsupported for the given media returns an error — start with Reach and Total Interactions, which are widely supported. Requires instagram_manage_insights."
+    },
+    {
+      "name": "Get Account Info",
+      "category": "Account",
+      "description": "Retrieves profile details for an Instagram Business/Creator account via GET /{ig-user-id}. Returns id, username, name, biography, website, followers_count, follows_count, media_count, and profile_picture_url. Requires instagram_basic."
+    },
+    {
+      "name": "List Connected IG Accounts",
+      "category": "Account",
+      "description": "Lists the Instagram Business/Creator accounts reachable through your Facebook Pages, via GET /me/accounts?fields=name,instagram_business_account. Only Pages with a linked Instagram account are returned. Each entry pairs the Facebook Page name with the linked Instagram account id and username — use those ids as the Instagram Account ID on other actions. Requires pages_show_list and instagram_basic."
+    },
+    {
+      "name": "Get Tagged Media",
+      "category": "Account",
+      "description": "Lists media in which the Instagram account has been tagged, via GET /{ig-user-id}/tags. Each item includes id, caption, media_type, and permalink. Supports paging via limit and an after cursor. Requires instagram_basic."
+    },
+    {
+      "name": "Search Hashtag",
+      "category": "Hashtags",
+      "description": "Resolves a hashtag name to its hashtag id via GET /ig_hashtag_search?user_id={ig-user-id}&q={tag}. The returned id is required by Get Hashtag Top Media and Get Hashtag Recent Media. Do not include the leading '#'. Instagram limits hashtag queries to 30 unique hashtags per 7-day rolling window per account. Requires instagram_basic."
+    },
+    {
+      "name": "Get Hashtag Top Media",
+      "category": "Hashtags",
+      "description": "Lists the most popular public media for a hashtag via GET /{ig-hashtag-id}/top_media?user_id={ig-user-id}. Each item includes id, caption, media_type, permalink, and like_count. Obtain the hashtag id from Search Hashtag first. Counts against the 30-hashtag / 7-day query limit. Requires instagram_basic."
+    },
+    {
+      "name": "Get Hashtag Recent Media",
+      "category": "Hashtags",
+      "description": "Lists the most recently published public media for a hashtag via GET /{ig-hashtag-id}/recent_media?user_id={ig-user-id}. Each item includes id, caption, media_type, permalink, and like_count. Obtain the hashtag id from Search Hashtag first. Counts against the 30-hashtag / 7-day query limit. Requires instagram_basic."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically publish AI-generated or curated photos, reels, and stories on a schedule",
+    "Cross-post content from other platforms into an Instagram carousel or single-media post",
+    "Monitor and moderate comments by replying to, hiding, or deleting them programmatically",
+    "Track account growth and post performance by pulling account and media insights into reports",
+    "Discover trending content by searching hashtags and fetching their top or recent media"
+  ],
+  "agentIdeas": [
+    "Use **AI Image Generator** \"Generate Image\" to create post artwork, then call **Instagram for Business** \"Publish Photo\" to publish it and \"Create Comment\" to seed the first comment with a hashtag set.",
+    "Use **Google Drive** \"Download File\" to pull approved marketing assets, then call **Instagram for Business** \"Publish Carousel\" to post them as a multi-image carousel.",
+    "On a schedule, call **Instagram for Business** \"Get Account Insights\" and \"Get Media Insights\", then use **Google Sheets** \"Add Row\" to log follower growth and post performance into a tracking spreadsheet."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/instagram-business/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/instagram-business",
+    "readme": "services/instagram-business/README.md",
+    "index": "services/instagram-business/src/index.js"
+  }
+}

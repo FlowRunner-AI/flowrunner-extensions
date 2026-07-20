@@ -1,0 +1,132 @@
+{
+  "slug": "sentry",
+  "name": "Sentry",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner service for [Sentry](https://sentry.io) — application error monitoring and performance tracking. Manage projects, triage issues, inspect events, and coordinate releases and deploys directly from your flows. Authenticates with a Sentry auth token.",
+  "actionCount": 18,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Projects",
+    "Issues",
+    "Events",
+    "Releases",
+    "Teams"
+  ],
+  "actions": [
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Lists all projects the authenticated token can access within the configured organization. Returns each project's slug, name, id, platform, and status. Results are paginated with Sentry's cursor-based pagination; pass a cursor to retrieve additional pages."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves the full details of a single project by its slug, including platform, features, teams, and configuration. Use List Projects or the Projects dictionary to find a project slug."
+    },
+    {
+      "name": "Create Project",
+      "category": "Projects",
+      "description": "Creates a new project under a team in the organization. Requires the owning team's slug, a project name, and optionally a platform identifier (e.g. python, javascript, node). Returns the created project including its generated slug."
+    },
+    {
+      "name": "Update Project",
+      "category": "Projects",
+      "description": "Updates the settings of an existing project such as its display name, slug, and platform. Only provided fields are changed. Returns the updated project."
+    },
+    {
+      "name": "List Issues",
+      "category": "Issues",
+      "description": "Lists issues (aggregated error groups) for a project, filtered with Sentry's issue search syntax. Supports a search query (e.g. 'is:unresolved', 'is:assigned level:error'), a stats period window, and a sort order. Results are cursor-paginated. Returns each issue's id, title, culprit, status, level, event count, and first/last seen timestamps."
+    },
+    {
+      "name": "Get Issue",
+      "category": "Issues",
+      "description": "Retrieves the full details of a single issue by its numeric issue id, including its status, assignee, level, tags, event counts, and metadata. The issue id can be found in a permalink or from List Issues."
+    },
+    {
+      "name": "Update Issue",
+      "category": "Issues",
+      "description": "Updates an issue's status (resolve, unresolve, or ignore/mute) and/or its assignee. Set status to Resolved to mark it fixed, Unresolved to reopen it, or Ignored to mute it. Assign to a user with a value like 'user:123' or a username/email, or to a team with 'team:456'. Returns the updated issue."
+    },
+    {
+      "name": "Delete Issue",
+      "category": "Issues",
+      "description": "Permanently deletes an issue and all of its associated events. This action cannot be undone. Returns an empty result on success."
+    },
+    {
+      "name": "List Issue Events",
+      "category": "Issues",
+      "description": "Lists the individual events that belong to an issue, most recent first. Each event represents a single occurrence with its own id, timestamp, message, tags, and user context. Results are cursor-paginated."
+    },
+    {
+      "name": "Get Latest Event",
+      "category": "Issues",
+      "description": "Retrieves the most recent event for an issue, including its full payload: message, stack trace / exception entries, tags, breadcrumbs, request context, and user. Useful for inspecting the newest occurrence of an error."
+    },
+    {
+      "name": "List Project Events",
+      "category": "Events",
+      "description": "Lists individual events captured for a project, most recent first, across all issues. Each event includes its id, associated issue (groupID), message, timestamp, tags, and user. Results are cursor-paginated."
+    },
+    {
+      "name": "Get Event",
+      "category": "Events",
+      "description": "Retrieves the full details of a single event within a project by its event id, including message, platform, stack trace / exception entries, tags, breadcrumbs, and context."
+    },
+    {
+      "name": "List Releases",
+      "category": "Releases",
+      "description": "Lists releases for the organization, most recent first. Each release includes its version, associated projects, commit count, deploy count, and creation date. Optionally filter with a query string. Results are cursor-paginated."
+    },
+    {
+      "name": "Create Release",
+      "category": "Releases",
+      "description": "Creates a new release for one or more projects in the organization. Provide a version identifier and the list of project slugs the release applies to. Optionally include a VCS ref (commit sha) and a URL. Returns the created release."
+    },
+    {
+      "name": "Get Release",
+      "category": "Releases",
+      "description": "Retrieves the details of a single release by its version, including associated projects, commit and deploy counts, authors, and the last event and deploy timestamps."
+    },
+    {
+      "name": "Delete Release",
+      "category": "Releases",
+      "description": "Permanently deletes a release by its version. The release can only be deleted if it has no associated events. Returns an empty result on success."
+    },
+    {
+      "name": "Create Deploy",
+      "category": "Releases",
+      "description": "Records a deploy of a release to an environment. Provide the release version and the target environment (e.g. production, staging), and optionally a deploy name and time range. Returns the created deploy."
+    },
+    {
+      "name": "List Teams",
+      "category": "Teams",
+      "description": "Lists all teams in the organization the token can access. Returns each team's slug, name, id, member count, and project count. Results are cursor-paginated."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Auto-triage new issues by resolving, ignoring, or assigning them based on rules in your flow.",
+    "Fan out critical error notifications to chat, on-call, or ticketing tools.",
+    "Record releases and deploys as part of a CI/CD pipeline so Sentry can associate errors with the right version.",
+    "Pull issue and event details into reports, spreadsheets, or downstream dashboards.",
+    "Provision new projects under a team and keep their platform and slug in sync."
+  ],
+  "agentIdeas": [
+    "Run a scheduled flow using **Sentry** \"List Issues\" with `is:unresolved`, then use **GitHub** \"Create Issue\" to open a tracking ticket for each new bug and **Sentry** \"Update Issue\" to assign it.",
+    "When **Sentry** \"List Issues\" surfaces a new critical issue, use **PagerDuty** \"Create Incident\" to page the on-call engineer and **Slack** \"Send Message To Channel\" to alert the team channel with a link to the issue.",
+    "After a deployment flow completes, call **Sentry** \"Create Release\" and \"Create Deploy\" to record the version, then use **Google Sheets** \"Add Row\" to log the release version, environment, and timestamp for audit tracking."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/sentry/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/sentry",
+    "readme": "services/sentry/README.md",
+    "index": "services/sentry/src/index.js"
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "slug": "airtop",
+  "name": "Airtop",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Cloud browser automation for AI agents. Airtop runs real, stateful cloud browsers you can drive programmatically: open pages, scrape or AI-query their content in natural language, and interact with elements described in plain English — no CSS selectors required. Authenticate with an API key (sent as a Bearer token) created at [portal.airtop.ai](https://portal.airtop.ai) and added to the service's **API Key** configuration item.",
+  "actionCount": 18,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Sessions",
+    "Windows",
+    "Content",
+    "Interactions",
+    "Screenshot"
+  ],
+  "actions": [
+    {
+      "name": "Create Session",
+      "category": "Sessions",
+      "description": "Starts a new cloud browser session. A session is a stateful, isolated browser instance that persists across calls until it times out or is terminated. This is the first step of the Airtop lifecycle: create a session, open one or more windows (tabs) at URLs, run scrape/query/interaction operations, then terminate the session to release resources. Optionally load a saved profile to reuse persistent authentication (logged-in cookies), enable a proxy, set an idle timeout, or turn on captcha solving and session recording."
+    },
+    {
+      "name": "Get Session",
+      "category": "Sessions",
+      "description": "Retrieves details and current status for a single browser session by its ID, including whether it is running, its connection info, and configuration. Use this to confirm a session is still active before opening windows or running operations."
+    },
+    {
+      "name": "List Sessions",
+      "category": "Sessions",
+      "description": "Lists browser sessions for the account, optionally filtered by status. Returns paginated results with each session's ID, status, and metadata. Useful for finding active sessions to reuse or terminating stale ones."
+    },
+    {
+      "name": "Terminate Session",
+      "category": "Sessions",
+      "description": "Ends a browser session immediately, closing all its windows and releasing resources. Always terminate sessions you no longer need — sessions bill until they end or hit their idle timeout. This is the final step of the Airtop lifecycle."
+    },
+    {
+      "name": "Save Profile On Termination",
+      "category": "Sessions",
+      "description": "Marks a running session so that when it terminates, its browser profile (cookies, local storage, logged-in state) is saved under the given profile name. Load that profile in a future Create Session to skip logging in again — the core pattern for persistent authentication in Airtop."
+    },
+    {
+      "name": "Create Window",
+      "category": "Windows",
+      "description": "Opens a new browser window (tab) inside an existing session and navigates it to the given URL. Returns the window ID used by all content and interaction operations. Optionally wait for a specific page-load milestone before returning."
+    },
+    {
+      "name": "Get Window Info",
+      "category": "Windows",
+      "description": "Retrieves information about an open window, including its live-view URL — a shareable link that streams a real-time, optionally interactive view of the browser tab so a human can watch or take over (for example to complete a manual login or captcha). Optionally include a navigation bar in the live view."
+    },
+    {
+      "name": "Load URL",
+      "category": "Windows",
+      "description": "Navigates an existing window to a new URL, reusing the same tab and its session state (cookies, authentication). Optionally wait for a page-load milestone before returning."
+    },
+    {
+      "name": "Close Window",
+      "category": "Windows",
+      "description": "Closes a single window (tab) within a session while leaving the session itself running. Use this to free a tab you are done with without ending the whole session."
+    },
+    {
+      "name": "Scrape Content",
+      "category": "Content",
+      "description": "Extracts the full content of the currently loaded page in a window as structured text/markdown, suitable for downstream processing or feeding to an AI. Returns the page content without requiring a natural-language prompt. Use Page Query instead when you want a specific answer rather than the whole page."
+    },
+    {
+      "name": "Page Query",
+      "category": "Content",
+      "description": "Asks a natural-language question about the page currently loaded in a window and returns an AI-generated answer. Use it to extract specific data (\"What is the product price?\"), answer yes/no questions (\"Is the user logged in?\"), or pull structured fields. Provide an optional JSON Schema to force the answer into a structured JSON shape. Enable Follow Pagination Links to let Airtop click through pagination or load-more controls to gather more content (costs more credits)."
+    },
+    {
+      "name": "Paginated Extract",
+      "category": "Content",
+      "description": "Extracts a list of results that spans multiple pages, automatically paginating (following next-page links, load-more buttons, or infinite scroll) and aggregating the items. Ideal for scraping search results, product listings, or tables that continue across pages. Provide an optional JSON Schema to shape each item."
+    },
+    {
+      "name": "Summarize Content",
+      "category": "Content",
+      "description": "Produces an AI-generated summary of the page currently loaded in a window. Optionally steer the summary with a prompt (e.g. 'Summarize the key pricing points in three bullets'). Useful for condensing long articles or documentation into a short digest."
+    },
+    {
+      "name": "Click Element",
+      "category": "Interactions",
+      "description": "Clicks an element on the page identified by a natural-language description rather than a CSS selector — Airtop's AI locates the matching element visually. For example: 'the blue Sign In button' or 'the first search result link'. Optionally wait for navigation to finish after the click."
+    },
+    {
+      "name": "Type Text",
+      "category": "Interactions",
+      "description": "Types text into an input field identified by a natural-language description (e.g. 'the email address field'). Airtop's AI locates the field visually. Optionally clear the field first, and press Enter or Tab after typing to submit or advance a form."
+    },
+    {
+      "name": "Hover Element",
+      "category": "Interactions",
+      "description": "Moves the mouse over an element identified by a natural-language description, triggering hover states such as dropdown menus or tooltips. Airtop's AI locates the element visually."
+    },
+    {
+      "name": "Scroll Page",
+      "category": "Interactions",
+      "description": "Scrolls a window's page. Choose to scroll to an edge (top, bottom, left, right) or scroll toward an element described in natural language (e.g. 'the footer links'). Useful for loading lazy content or bringing a target into view before interacting with it."
+    },
+    {
+      "name": "Take Screenshot",
+      "category": "Screenshot",
+      "description": "Captures a screenshot of the page currently loaded in a window and saves it to FlowRunner file storage, returning a downloadable URL. Use it to visually verify page state or capture evidence during an automation."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Scraping data from sites that require login, JavaScript rendering, or navigation across pages",
+    "Extracting specific answers or structured JSON from a page with natural-language queries",
+    "Automating multi-step web flows (log in, click, type, submit) without brittle selectors",
+    "Reusing persistent authentication across runs via saved browser profiles",
+    "Handing a live, interactive browser view to a human to complete a manual login or captcha",
+    "Capturing screenshots as visual evidence of page state during an automation"
+  ],
+  "agentIdeas": [
+    "Chain **Airtop** \"Create Session\" → \"Create Window\" → \"Page Query\" to extract a structured field from a login-gated page, then store it with **Airtable** \"Create Record\".",
+    "Use **Airtop** \"Scrape Content\" to pull an article's text, feed it to **OpenAI** \"Create Response\" for summarization, and post the digest to **Slack** \"Send Message To Channel\".",
+    "Run **Airtop** \"Paginated Extract\" over a multi-page search-results listing, then append each row to a spreadsheet with **Google Sheets** \"Add Rows\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/airtop/public/icon.png",
+  "sourcePaths": {
+    "service": "services/airtop",
+    "readme": "services/airtop/README.md",
+    "index": "services/airtop/src/index.js"
+  }
+}

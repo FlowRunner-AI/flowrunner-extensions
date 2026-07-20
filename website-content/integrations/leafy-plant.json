@@ -1,0 +1,58 @@
+{
+  "slug": "leafy-plant",
+  "name": "Leafy Plant",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Identify plants from a photo URL and look up horticultural data using the [Leafy Plant API](https://leafyplant.app/developers). Search 40,000+ species, fetch care guides (watering, light, soil, temperature), and check toxicity for humans and pets.",
+  "actionCount": 4,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Identification",
+    "Care"
+  ],
+  "actions": [
+    {
+      "name": "Identify Plant",
+      "category": "Identification",
+      "description": "Identifies a plant from a publicly accessible image URL. Returns ranked candidate species with scientific and common names, a confidence label, and a description of what was seen. Use a candidate's scientific name with Get Care Guide or Get Toxicity."
+    },
+    {
+      "name": "Get Care Guide",
+      "category": "Care",
+      "description": "Returns a care guide for a plant species, including watering, light, soil, and temperature guidance. Accepts a scientific or common plant name."
+    },
+    {
+      "name": "Search Plants",
+      "category": "Identification",
+      "description": "Searches the Leafy plant database by common or scientific name. Returns a list of matching plants with their family, genus, slug, and care/toxicity availability flags. Use a result's scientific name with Get Care Guide or Get Toxicity."
+    },
+    {
+      "name": "Get Toxicity",
+      "category": "Care",
+      "description": "Returns plant toxicity information for humans and pets. Provide a plant species and optionally an animal to check (e.g. cat, dog, horse). Indicates whether toxicity data is available and any notes."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Identify a plant from a user-submitted or stored image and return its species and a description.",
+    "Build a plant-care assistant that returns watering, light, soil, and temperature guidance for a species.",
+    "Warn pet owners whether a plant is toxic to cats, dogs, horses, or people.",
+    "Power a searchable species picker across common and scientific plant names."
+  ],
+  "agentIdeas": [
+    "Use **Leafy Plant** \"Identify Plant\" on a customer photo, then **Gmail** \"Send Message\" to reply with the identified species and its care guide.",
+    "After **Leafy Plant** \"Search Plants\" and \"Get Care Guide\", use **Google Sheets** \"Add Row\" to log each species with its watering and light requirements.",
+    "Combine **Leafy Plant** \"Get Toxicity\" with **Airtable** \"Create Record\" to maintain a pet-safety database of plants flagged toxic to cats or dogs."
+  ],
+  "icon": "/logo.png",
+  "iconFile": "services/leafy-plant/public/logo.png",
+  "sourcePaths": {
+    "service": "services/leafy-plant",
+    "readme": "services/leafy-plant/README.md",
+    "index": "services/leafy-plant/src/index.js"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "slug": "aws-bedrock",
+  "name": "AWS Bedrock",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Run inference against [Amazon Bedrock](https://aws.amazon.com/bedrock/) foundation models (Anthropic Claude, Amazon Nova/Titan, Meta Llama, Mistral, Cohere, Stability AI, and more) and discover the models available in your region. Authentication uses standard AWS credentials via hand-rolled SigV4 signing (zero npm dependencies), supporting both direct access keys and cross-account IAM Role (STS AssumeRole).",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Converse",
+      "category": null,
+      "description": "Sends messages to a Bedrock foundation model through the unified Converse API, which works identically across Anthropic Claude, Amazon Nova/Titan, Meta Llama, Mistral, Cohere, and other chat models. Supply either a full messages array ([{role, content:[{text}]}]) or, for simple cases, a single prompt string (optionally with a system instruction) that is wrapped into one user message. Returns the assistant message, token usage, and stop reason."
+    },
+    {
+      "name": "Invoke Model",
+      "category": null,
+      "description": "Invokes a Bedrock model directly with a raw, model-specific request body and returns the parsed model-specific response. Use this for models or parameters not covered by Converse (e.g. embeddings, image generation, or provider-native payloads). The body shape depends on the target model; see the AWS Bedrock inference parameters documentation for each provider (for example Anthropic uses {\"anthropic_version\":\"bedrock-2023-05-31\",\"max_tokens\":1024,\"messages\":[...]}, Amazon Titan Text uses {\"inputText\":\"...\"})."
+    },
+    {
+      "name": "Generate Image",
+      "category": null,
+      "description": "Generates an image from a text prompt using an image model such as amazon.titan-image-generator-v2:0 or a Stability AI model, then saves the decoded PNG to FlowRunner file storage and returns a downloadable URL. This is a convenience wrapper over Invoke Model that builds the request body for the selected model family and decodes the base64 image from the response."
+    },
+    {
+      "name": "List Foundation Models",
+      "category": null,
+      "description": "Lists the Amazon Bedrock foundation models available in the configured region, with optional filtering by provider name or output modality. Returns model summaries including model ID, name, provider, and supported input/output modalities. Availability is region-specific; a listed model must also be enabled for your account before it can be invoked."
+    },
+    {
+      "name": "Get Foundation Model",
+      "category": null,
+      "description": "Retrieves the full details of a single Amazon Bedrock foundation model by its model ID, including provider, supported modalities, streaming support, inference types, and lifecycle status."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Add multi-model chat/LLM inference to a flow with a single unified payload that works across every chat-capable Bedrock model.",
+    "Generate images from text prompts and store them as downloadable FlowRunner files.",
+    "Run provider-native payloads (embeddings, image generation, model-specific parameters) that the unified Converse API does not expose.",
+    "Discover which foundation models are enabled and available in a given AWS region before invoking them."
+  ],
+  "agentIdeas": [
+    "Use **AWS Bedrock** \"Converse\" to draft a customer reply from an incoming message, then send it with **Amazon SES** \"Send Email\".",
+    "Use **AWS Bedrock** \"Generate Image\" to create marketing artwork from a prompt, then call **S3 Storage** \"Upload Object from URL\" to archive the generated image in a bucket.",
+    "When a **Google Sheets** \"On New Row\" trigger fires with support-ticket text, use **AWS Bedrock** \"Converse\" to classify and summarize it, then use **Slack** \"Send Message To Channel\" to route the summary to the on-call team."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/aws-bedrock/public/icon.png",
+  "sourcePaths": {
+    "service": "services/aws-bedrock",
+    "readme": "services/aws-bedrock/README.md",
+    "index": "services/aws-bedrock/src/index.js"
+  }
+}

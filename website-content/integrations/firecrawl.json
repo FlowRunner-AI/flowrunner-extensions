@@ -1,0 +1,129 @@
+{
+  "slug": "firecrawl",
+  "name": "Firecrawl",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Firecrawl](https://www.firecrawl.dev) — the web data API that turns any website into clean, LLM-ready Markdown or structured data. Covers the full Firecrawl v2 API: scraping, batch scraping, crawling, URL mapping, web search, and LLM-powered structured extraction, plus account credit/token usage. Authenticated with your Firecrawl API key.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Scraping",
+    "Batch Scraping",
+    "Crawling",
+    "Mapping",
+    "Search",
+    "Extraction",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Scrape URL",
+      "category": "Scraping",
+      "description": "Scrapes a single URL synchronously and returns its content in the requested formats: clean Markdown, an LLM-generated summary, HTML, raw HTML, page links, image URLs, screenshots, or structured JSON extracted with a prompt and/or JSON Schema. Handles JavaScript rendering, PDFs, proxies, and caching (maxAge) automatically, and supports browser actions (click, scroll, type, wait) before capture. Costs 1 credit per page for basic formats; JSON extraction and enhanced proxying cost more."
+    },
+    {
+      "name": "Start Batch Scrape",
+      "category": "Batch Scraping",
+      "description": "Starts an asynchronous batch scrape of multiple URLs and returns a job id immediately. Each URL is scraped with the same options (formats, main-content filtering, JSON extraction). Retrieve progress and results with Get Batch Scrape Status, or use Batch Scrape and Wait for a one-step synchronous version. Supports an optional webhook that fires on started, page, completed, and failed events."
+    },
+    {
+      "name": "Get Batch Scrape Status",
+      "category": "Batch Scraping",
+      "description": "Returns the status and results of a batch scrape job started with Start Batch Scrape. While running, status is \"scraping\" with progress counters; when finished it is \"completed\" or \"failed\" and data contains the scraped documents. Large result sets are chunked (about 10MB per response) - when next is a URL, pass it as Next Page URL in a follow-up call to fetch the remaining documents."
+    },
+    {
+      "name": "Batch Scrape and Wait",
+      "category": "Batch Scraping",
+      "description": "Scrapes multiple URLs in one synchronous step: starts a batch scrape job, polls until it completes, and returns all scraped documents. Follows result pagination automatically (up to 5 chunks of about 10MB; a remaining next URL is returned if there is even more data). Fails with a descriptive error if the job does not finish within Max Wait Seconds - the job keeps running and can still be read with Get Batch Scrape Status. Best for small to medium URL lists; use Start Batch Scrape with a webhook for very large jobs."
+    },
+    {
+      "name": "Start Crawl",
+      "category": "Crawling",
+      "description": "Starts an asynchronous crawl of a website and returns a job id immediately. Firecrawl discovers pages from the start URL (optionally guided by a natural-language prompt), follows links up to the page limit, and scrapes each page with the given scrape options. Supports include/exclude path regex filters, sitemap handling, subdomain and external-link traversal, crawl delay, concurrency limits, and completion webhooks. Retrieve results with Get Crawl Status, or use Crawl and Wait for a one-step synchronous version."
+    },
+    {
+      "name": "Get Crawl Status",
+      "category": "Crawling",
+      "description": "Returns the status and results of a crawl job started with Start Crawl. While running, status is \"scraping\" with total/completed progress counters; when finished it is \"completed\" or \"failed\" and data contains the scraped pages. Large result sets are chunked (about 10MB per response) - when next is a URL, pass it as Next Page URL in a follow-up call to fetch the remaining pages. Crawl results expire about 24 hours after completion."
+    },
+    {
+      "name": "Crawl and Wait",
+      "category": "Crawling",
+      "description": "Crawls a website in one synchronous step: starts a crawl job, polls until it completes, and returns all scraped pages. Follows result pagination automatically (up to 5 chunks of about 10MB; a remaining next URL is returned if there is even more data). Fails with a descriptive error if the crawl does not finish within Max Wait Seconds - the job keeps running and can still be read with Get Crawl Status. Best for small crawls (set a low Limit); use Start Crawl with a webhook for large sites."
+    },
+    {
+      "name": "Cancel Crawl",
+      "category": "Crawling",
+      "description": "Cancels a running crawl job. Pages scraped before cancellation remain available through Get Crawl Status until the job expires. Credits already consumed are not refunded."
+    },
+    {
+      "name": "Get Crawl Errors",
+      "category": "Crawling",
+      "description": "Returns the per-URL errors of a crawl job and the list of URLs that were blocked by robots.txt. Use it to diagnose why a crawl returned fewer pages than expected."
+    },
+    {
+      "name": "Get Active Crawls",
+      "category": "Crawling",
+      "description": "Lists all crawl jobs of your team that are currently running, including each job's id, start URL, and crawler options. Useful for monitoring long crawls or finding a job id to cancel."
+    },
+    {
+      "name": "Map Website",
+      "category": "Mapping",
+      "description": "Discovers the URLs of a website extremely fast, combining sitemap parsing and link discovery, and returns them as a list with titles and descriptions. Optionally ranks results by relevance to a search term. Ideal for choosing which pages to scrape before running a crawl, or for building site inventories. Returns up to 100,000 links."
+    },
+    {
+      "name": "Search Web",
+      "category": "Search",
+      "description": "Searches the web and returns organic results from web pages, news, and images, optionally scraping the full content of each result in one call. Supports time-range filters, category filters (GitHub, Research, PDF), geo-targeting, and per-result scrape formats such as Markdown. When Formats or Scrape Options are provided, every result is scraped and includes its content; otherwise only titles, descriptions, and URLs are returned (faster and cheaper)."
+    },
+    {
+      "name": "Start Extract",
+      "category": "Extraction",
+      "description": "Starts an asynchronous LLM extraction job that pulls structured data from one or more URLs based on a prompt and/or JSON Schema, and returns a job id immediately. URLs support glob patterns (e.g. https://example.com/blog/*) to extract across whole site sections, and web search enrichment can fill in data missing from the pages. Retrieve the extracted data with Get Extract Status, or use Extract and Wait for a one-step synchronous version."
+    },
+    {
+      "name": "Get Extract Status",
+      "category": "Extraction",
+      "description": "Returns the status and result of an LLM extraction job started with Start Extract. While running, status is \"processing\"; when finished it is \"completed\" (data contains the extracted object), \"failed\", or \"cancelled\". Extraction results expire after some time, so read them promptly."
+    },
+    {
+      "name": "Extract and Wait",
+      "category": "Extraction",
+      "description": "Extracts structured data from one or more URLs in one synchronous step: starts an LLM extraction job, polls until it completes, and returns the extracted object. URLs support glob patterns (e.g. https://example.com/blog/*), and web search enrichment can fill in missing data. Fails with a descriptive error if the job does not finish within Max Wait Seconds - the job keeps running and can still be read with Get Extract Status. Best for a handful of URLs; use Start Extract for large site-wide extractions."
+    },
+    {
+      "name": "Get Credit Usage",
+      "category": "Account",
+      "description": "Returns the remaining and total scraping credits of your team for the current billing period, including the billing period start and end dates. Use it to monitor consumption before running large crawls or batch scrapes."
+    },
+    {
+      "name": "Get Token Usage",
+      "category": "Account",
+      "description": "Returns the remaining and total extraction tokens of your team for the current billing period, including the billing period start and end dates. Tokens are consumed by LLM-powered features such as Extract and JSON-format scraping."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Convert any web page or PDF into clean Markdown or an LLM summary for RAG and agent context",
+    "Crawl an entire site or section and extract structured data with a prompt or JSON Schema",
+    "Discover a site's URLs fast (map) to plan targeted scrapes before running a full crawl",
+    "Search the web and scrape the top results' full content in a single call",
+    "Monitor Firecrawl credit and token consumption before running large jobs"
+  ],
+  "agentIdeas": [
+    "Use **Firecrawl** \"Extract and Wait\" with a JSON Schema to pull structured lead or pricing data from a list of URLs, then call **Google Sheets** \"Add Rows\" to append each extracted record into a tracking spreadsheet.",
+    "After a **Firecrawl** \"Crawl and Wait\" job scrapes a documentation site, use **Notion** \"Create Page\" to publish each page's clean Markdown into a knowledge base.",
+    "Use **Firecrawl** \"Search Web\" to gather and scrape the top results on a topic, then post a **Slack** \"Send Message To Channel\" summary with the key findings and source links."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/firecrawl/public/icon.png",
+  "sourcePaths": {
+    "service": "services/firecrawl",
+    "readme": "services/firecrawl/README.md",
+    "index": "services/firecrawl/src/index.js"
+  }
+}

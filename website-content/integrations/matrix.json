@@ -1,0 +1,150 @@
+{
+  "slug": "matrix",
+  "name": "Matrix",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Connect FlowRunner to a [Matrix](https://matrix.org/) homeserver via the Matrix [Client-Server API](https://spec.matrix.org/latest/client-server-api/). Authenticate with a homeserver URL and a Bearer access token to send messages and events, manage rooms and memberships, read profiles, and move media in and out of the homeserver's media repository. Each send generates a unique transaction ID automatically for idempotency.",
+  "actionCount": 22,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messaging",
+    "Rooms",
+    "Profile",
+    "Media"
+  ],
+  "actions": [
+    {
+      "name": "Send Message",
+      "category": "Messaging",
+      "description": "Sends a message event (m.room.message) to a room. Choose Text for a standard message, Notice for automated/bot messages, or Emote for an action message. Supply an optional HTML formatted body (with format set to org.matrix.custom.html) for rich formatting. A unique transaction ID is generated automatically for idempotency. Returns the created event ID."
+    },
+    {
+      "name": "Send Notice",
+      "category": "Messaging",
+      "description": "Sends an m.notice message to a room. Notices are intended for automated or bot-generated content and are typically rendered less prominently than normal messages by Matrix clients. Supply an optional HTML formatted body for rich formatting. Returns the created event ID."
+    },
+    {
+      "name": "Send Event",
+      "category": "Messaging",
+      "description": "Sends an arbitrary event of any type to a room with a custom content object. Use this for event types beyond m.room.message (e.g. m.reaction, m.sticker, or custom application events). The content must be a JSON object matching the event type's schema. A unique transaction ID is generated automatically. Returns the created event ID."
+    },
+    {
+      "name": "Redact Event",
+      "category": "Messaging",
+      "description": "Redacts (removes the content of) a previously sent event, such as deleting a message. The event remains in the room history but its content is stripped. Provide an optional reason that is recorded with the redaction. A unique transaction ID is generated automatically. Returns the redaction event ID."
+    },
+    {
+      "name": "Create Room",
+      "category": "Rooms",
+      "description": "Creates a new Matrix room. Set a name and topic, choose a visibility preset (Public Chat is publicly joinable, Private Chat is invite-only), optionally reserve a local room alias, invite users on creation, and flag the room as a direct message. Returns the new room ID."
+    },
+    {
+      "name": "Join Room",
+      "category": "Rooms",
+      "description": "Joins a room by its room ID or alias. Accepts either a room ID (e.g. !abc123:matrix.org) or an alias (e.g. #room:matrix.org). Returns the joined room's ID."
+    },
+    {
+      "name": "Leave Room",
+      "category": "Rooms",
+      "description": "Leaves a room the account is currently a member of. The room remains in history until forgotten. Returns an empty object on success."
+    },
+    {
+      "name": "Forget Room",
+      "category": "Rooms",
+      "description": "Forgets a room, removing it from the account's room list and its history from the server for this user. The account must have already left the room. Returns an empty object on success."
+    },
+    {
+      "name": "Invite User",
+      "category": "Rooms",
+      "description": "Invites a user to a room by their full user ID. The invited user must accept the invitation to join. Returns an empty object on success."
+    },
+    {
+      "name": "Kick User",
+      "category": "Rooms",
+      "description": "Kicks a user from a room, setting their membership to leave. The user can rejoin if the room permits. Requires sufficient power level in the room. Provide an optional reason. Returns an empty object on success."
+    },
+    {
+      "name": "Get Joined Rooms",
+      "category": "Rooms",
+      "description": "Returns the list of room IDs the account is currently joined to."
+    },
+    {
+      "name": "Get Room Messages",
+      "category": "Rooms",
+      "description": "Retrieves a paginated window of events from a room's timeline. By default it fetches the most recent messages (backwards direction). Use the returned end token as the from value to page further, and set the direction and limit as needed. Returns the event chunk plus start/end pagination tokens."
+    },
+    {
+      "name": "Get Room State",
+      "category": "Rooms",
+      "description": "Returns the full current state of a room as an array of state events (membership, name, topic, power levels, join rules, and more)."
+    },
+    {
+      "name": "Get Room Members",
+      "category": "Rooms",
+      "description": "Returns the membership events for a room, describing each member and their membership state (join, invite, leave, ban)."
+    },
+    {
+      "name": "Resolve Room Alias",
+      "category": "Rooms",
+      "description": "Resolves a human-readable room alias (e.g. #room:matrix.org) to its canonical room ID and the list of servers known to have members in the room."
+    },
+    {
+      "name": "Set Room Topic",
+      "category": "Rooms",
+      "description": "Sets the topic (m.room.topic state event) of a room. Requires sufficient power level. Returns the state event ID."
+    },
+    {
+      "name": "Set Room Name",
+      "category": "Rooms",
+      "description": "Sets the display name (m.room.name state event) of a room. Requires sufficient power level. Returns the state event ID."
+    },
+    {
+      "name": "Get Profile",
+      "category": "Profile",
+      "description": "Retrieves a user's public profile: their display name and avatar URL (an mxc:// media URI). Works for any user ID on any federated homeserver."
+    },
+    {
+      "name": "Set Display Name",
+      "category": "Profile",
+      "description": "Sets the display name for a user. You can only set the display name of the account that owns the access token. Returns an empty object on success."
+    },
+    {
+      "name": "Whoami",
+      "category": "Profile",
+      "description": "Returns the user ID (and device ID, if applicable) associated with the configured access token. Useful as a connection and credential check."
+    },
+    {
+      "name": "Upload Media",
+      "category": "Media",
+      "description": "Downloads a file from a publicly accessible source URL and uploads it to the Matrix homeserver's media repository. Returns the resulting mxc:// content URI, which can be referenced in message content (e.g. m.image, m.file) via Send Event."
+    },
+    {
+      "name": "Download Media",
+      "category": "Media",
+      "description": "Downloads media from the Matrix homeserver's media repository and stores it in FlowRunner file storage, returning a URL to the stored file. Provide the server name and media ID from an mxc:// URI (mxc://serverName/mediaId)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Post automated notifications, alerts, or bot messages into Matrix rooms with plain-text or rich HTML formatting.",
+    "Provision and administer rooms: create rooms, invite or kick members, and set names and topics as part of onboarding or event workflows.",
+    "Archive or audit conversations by paging through a room's timeline and reading its state and membership.",
+    "Bridge external files into Matrix by uploading media from a URL, or export attachments by downloading media into FlowRunner file storage."
+  ],
+  "agentIdeas": [
+    "When a **Slack** \"On Channel Message\" trigger fires, use **Matrix** \"Send Message\" to mirror the message into a Matrix room, keeping both communities in sync.",
+    "Use **Discord** \"Get Messages\" to pull a channel's recent history, then call **Matrix** \"Send Notice\" to post a bot-formatted digest into a Matrix room.",
+    "Fetch an attachment with **Matrix** \"Download Media\", then use **Discord** \"Send Message\" to forward the stored file link into a Discord channel."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/matrix/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/matrix",
+    "readme": "services/matrix/README.md",
+    "index": "services/matrix/src/index.js"
+  }
+}

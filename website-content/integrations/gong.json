@@ -1,0 +1,270 @@
+{
+  "slug": "gong",
+  "name": "Gong",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Bring Gong's revenue-intelligence data into your FlowRunner automations. Read and upload calls, pull AI-derived call insights and transcripts, retrieve user activity and interaction stats, work with the call library and scorecards, schedule integration meetings, run GDPR/CCPA data-privacy lookups and erasures, read audit logs, and manage permission profiles. Sync your own CRM objects and field schema into Gong's Generic CRM integration, and automate Gong Engage flows by assigning or removing prospects and inspecting their flow assignments - all from the no-code editor.",
+  "actionCount": 43,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Calls",
+    "Users",
+    "Workspaces",
+    "Library",
+    "Stats",
+    "Scorecards",
+    "Meetings",
+    "Data Privacy",
+    "Logs",
+    "Permission Profiles",
+    "CRM",
+    "Flows"
+  ],
+  "actions": [
+    {
+      "name": "List Calls",
+      "category": "Calls",
+      "description": "Lists Gong calls that started within a date range, newest data paged via a cursor. Use this to find recent calls before pulling their details, transcript, or extensive AI data."
+    },
+    {
+      "name": "Get Call",
+      "category": "Calls",
+      "description": "Retrieves the metadata of a single Gong call by its ID (title, times, duration, host, direction). Use after List Calls to inspect one call's details."
+    },
+    {
+      "name": "Add Call",
+      "category": "Calls",
+      "description": "Uploads a call from a non-integrated telephony system into Gong so it can be processed and analyzed. Provide the parties (internal users by userId, external people by name + email/phone) and a media download URL or follow up with Upload Call Media. The Primary User is automatically added to the parties if you do not list them, since Gong requires the host to be a party."
+    },
+    {
+      "name": "Get Extensive Call Data",
+      "category": "Calls",
+      "description": "Retrieves rich, AI-derived data for calls - topics, trackers, brief, outline, highlights, key points, parties, interaction stats, and media URLs. Filter by specific Call IDs or by a date range. Toggle which content sections to include."
+    },
+    {
+      "name": "Get Call Transcripts",
+      "category": "Calls",
+      "description": "Retrieves speaker-attributed, time-stamped transcripts for one or more calls. Filter by specific Call IDs or by a date range. Use to feed call text into summarization, search, or compliance flows."
+    },
+    {
+      "name": "Upload Call Media",
+      "category": "Calls",
+      "description": "Attaches an audio or video recording (up to 1.5GB) to a call that was created with Add Call. Use this when you uploaded call metadata first and now want to push the recording file itself."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists the Gong users in your account (name, email, active status, title, manager), paged via a cursor. Use to enumerate your team or feed user pickers."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single Gong user by ID (email, name, title, phone, manager, active status). Use after List Users to inspect one teammate."
+    },
+    {
+      "name": "List Users (Extensive)",
+      "category": "Users",
+      "description": "Lists users with filtering - by specific User IDs or a created-date range - and optional avatars. Use when you need to narrow the user list rather than fetch everyone."
+    },
+    {
+      "name": "List Workspaces",
+      "category": "Workspaces",
+      "description": "Lists all workspaces in your Gong company (id, name, description). Use to discover workspace IDs that scope calls, library, scorecards, and permission profiles."
+    },
+    {
+      "name": "List Library Folders",
+      "category": "Library",
+      "description": "Returns the library folder hierarchy for a workspace (folder names, who created them, nested subfolders). Use to navigate the call library before listing a folder's calls."
+    },
+    {
+      "name": "List Calls in Folder",
+      "category": "Library",
+      "description": "Lists the calls saved in a specific library folder (title, URL, when added, and any note). Use to pull the curated calls a team has bookmarked."
+    },
+    {
+      "name": "Get Day-by-Day Activity",
+      "category": "Stats",
+      "description": "Returns per-user activity counters broken out day by day over a date range (calls hosted, calls attended, and more). Use for daily activity dashboards and rep coaching."
+    },
+    {
+      "name": "Get Aggregated Activity",
+      "category": "Stats",
+      "description": "Returns per-user activity counters aggregated over the whole date range (one row per user). Use for period-over-period rollups and leaderboards."
+    },
+    {
+      "name": "Get Activity by Period",
+      "category": "Stats",
+      "description": "Returns per-user activity counters grouped into time buckets (day, week, or month) across the date range. Use to chart activity trends over time."
+    },
+    {
+      "name": "Get Interaction Stats",
+      "category": "Stats",
+      "description": "Returns conversation-interaction metrics per user over a date range (talk ratio, longest monologue, interactivity). Use to surface coaching signals on listening vs. talking."
+    },
+    {
+      "name": "List Scorecards",
+      "category": "Scorecards",
+      "description": "Lists the call scorecards configured in Gong (name, workspace, enabled status, and their questions). Use to discover scorecard IDs and question structure before reading answered scorecards."
+    },
+    {
+      "name": "Get Answered Scorecards",
+      "category": "Scorecards",
+      "description": "Returns the filled-in scorecard reviews for calls - who was reviewed, by whom, when, and the per-question answers and scores. Filter by call date, review date, reviewed users, or scorecards."
+    },
+    {
+      "name": "Create Meeting",
+      "category": "Meetings",
+      "description": "Schedules a new integration meeting in Gong with an organizer and a list of invitees. Use to push externally-scheduled meetings into Gong so they can be recorded and analyzed."
+    },
+    {
+      "name": "Update Meeting",
+      "category": "Meetings",
+      "description": "Updates an existing integration meeting's time, organizer, and full invitee list (the invitee list replaces the previous one). Use to reschedule or change attendees of a meeting created via Create Meeting."
+    },
+    {
+      "name": "Delete Meeting",
+      "category": "Meetings",
+      "description": "Cancels/deletes an integration meeting in Gong by its ID. This removes the scheduled meeting created via Create Meeting; use with care."
+    },
+    {
+      "name": "Get Meeting Integration Status",
+      "category": "Meetings",
+      "description": "Validates that the meetings integration is configured and returns its status. Use as a connectivity/health check before creating or updating meetings."
+    },
+    {
+      "name": "Get Data for Email",
+      "category": "Data Privacy",
+      "description": "Finds all Gong data (calls, emails, references) associated with an email address. Use this to review what exists for a person before running an erasure for a GDPR/CCPA request."
+    },
+    {
+      "name": "Erase Data for Email",
+      "category": "Data Privacy",
+      "description": "PERMANENTLY and irreversibly erases all Gong data associated with an email address (for GDPR/CCPA right-to-be-forgotten). Run Get Data for Email first to review the impact - this cannot be undone."
+    },
+    {
+      "name": "Get Data for Phone",
+      "category": "Data Privacy",
+      "description": "Finds all Gong data associated with a phone number. Use to review references for a person (by phone) before running an erasure for a GDPR/CCPA request."
+    },
+    {
+      "name": "Erase Data for Phone",
+      "category": "Data Privacy",
+      "description": "PERMANENTLY and irreversibly erases all Gong data associated with a phone number (for GDPR/CCPA right-to-be-forgotten). Run Get Data for Phone first to review the impact - this cannot be undone."
+    },
+    {
+      "name": "List Logs",
+      "category": "Logs",
+      "description": "Retrieves Gong audit/API logs of a given type within a time range (who did what, when). Use for auditing API usage and account activity. Gong does not publish a fixed list of log types, so enter the type string exactly."
+    },
+    {
+      "name": "List Permission Profiles",
+      "category": "Permission Profiles",
+      "description": "Lists all permission profiles in a workspace (id, name, description). Use to discover the access profiles available before fetching one or its members."
+    },
+    {
+      "name": "Get Permission Profile",
+      "category": "Permission Profiles",
+      "description": "Retrieves a single permission profile by ID, including its permission flags. Use after List Permission Profiles to inspect what a profile grants."
+    },
+    {
+      "name": "List Permission Profile Users",
+      "category": "Permission Profiles",
+      "description": "Lists the users assigned to a permission profile, paged via a cursor. Use to audit who holds a given access profile."
+    },
+    {
+      "name": "Register CRM Integration",
+      "category": "CRM",
+      "description": "Registers a new Generic CRM integration in Gong and returns its Integration ID, which every other CRM Data API call needs to identify which CRM dataset to read or write. Gong allows only one active integration at a time - registering while one already exists returns a conflict."
+    },
+    {
+      "name": "List CRM Integrations",
+      "category": "CRM",
+      "description": "Lists every Generic CRM integration registered on this Gong account, including each one's Integration ID, owner email, and name. Use to find the Integration ID needed by every other CRM Data API call, or to confirm none exists yet before Register CRM Integration."
+    },
+    {
+      "name": "Delete CRM Integration",
+      "category": "CRM",
+      "description": "Permanently deletes a Generic CRM integration and all of its uploaded CRM data. This runs asynchronously and can take up to 24 hours - poll Get CRM Request Status with the same Client Request ID to track completion. This is irreversible."
+    },
+    {
+      "name": "Upload CRM Objects",
+      "category": "CRM",
+      "description": "Uploads CRM entity records (accounts, contacts, deals, leads, business users, or stages) to Gong from a newline-delimited JSON (LDJSON) file - one JSON object per line, all of the same Object Type. Processing is asynchronous; poll Get CRM Request Status with the same Client Request ID to confirm success."
+    },
+    {
+      "name": "Get CRM Objects",
+      "category": "CRM",
+      "description": "Retrieves the field values Gong has stored for specific CRM objects, looked up by their CRM IDs, within one integration. Provide up to 100 object IDs per request; any IDs beyond 100 are ignored by Gong."
+    },
+    {
+      "name": "Upload CRM Object Schema",
+      "category": "CRM",
+      "description": "Defines or updates which CRM fields Gong should track for an object type - add new fields, relabel existing ones, or mark a field deleted (which removes it from the schema and clears its value from every object). Run this before uploading objects that reference the new fields with Upload CRM Objects."
+    },
+    {
+      "name": "List CRM Object Schema Fields",
+      "category": "CRM",
+      "description": "Lists the CRM fields Gong currently tracks for an integration, optionally filtered to one object type. Use to review a schema before uploading changes with Upload CRM Object Schema."
+    },
+    {
+      "name": "Get CRM Request Status",
+      "category": "CRM",
+      "description": "Checks the processing status of an asynchronous CRM Data API call (Upload CRM Objects, Upload CRM Object Schema, or Delete CRM Integration) by its Client Request ID. Returns PENDING, IN_PROGRESS, DONE, or FAILED, plus per-line error details when a bulk upload partially fails."
+    },
+    {
+      "name": "List Flows",
+      "category": "Flows",
+      "description": "Lists the Gong Engage flows visible to a user - their own flows, company flows, and flows shared with them (name, folder, visibility, creation date), paged via a cursor. Flows in deleted or inaccessible folders are omitted. Use to discover Flow IDs before assigning prospects."
+    },
+    {
+      "name": "Assign Prospects to Flow",
+      "category": "Flows",
+      "description": "Adds contacts or leads (by CRM ID) to a Gong Engage flow, creating a running flow instance for each. Assign up to 200 prospects per request; the response separates successfully assigned prospects from any that failed, with a reason for each failure."
+    },
+    {
+      "name": "Get Prospects' Assigned Flows",
+      "category": "Flows",
+      "description": "Looks up which Gong Engage flow instances the given CRM prospects (contacts or leads) are currently assigned to, including flow name, instance owner, status, and workspace. Gong's API only supports this prospect-to-flows direction - there is no endpoint that lists every prospect assigned to a given flow."
+    },
+    {
+      "name": "Remove Prospect from Flow by CRM ID",
+      "category": "Flows",
+      "description": "Removes one CRM prospect (contact or lead) from a Gong Engage flow by their CRM ID. Leave Flow empty to remove the prospect from every flow they are currently assigned to; returns the flow instance IDs that were unassigned."
+    },
+    {
+      "name": "Remove Prospects from Flow by Instance ID",
+      "category": "Flows",
+      "description": "Removes prospects from their Gong Engage flows using flow instance IDs (returned by Assign Prospects to Flow or Get Prospects' Assigned Flows). Accepts up to 100 flow instance IDs per request and returns which ones were successfully unassigned."
+    }
+  ],
+  "triggers": [
+    "On New Call"
+  ],
+  "idealUseCases": [
+    "Sync new calls into a data warehouse or CRM as they are processed (On New Call trigger).",
+    "Summarize or search call transcripts and AI content (topics, brief, key points) in downstream nodes.",
+    "Build rep-activity and conversation-interaction dashboards (talk ratio, calls hosted/attended).",
+    "Upload calls from a non-integrated telephony system, then attach the recording media.",
+    "Automate GDPR/CCPA right-to-be-forgotten lookups and erasures by email or phone.",
+    "Push externally-scheduled meetings into Gong and audit API usage via logs.",
+    "Sync accounts, contacts, deals, and leads from your own CRM into Gong's Generic CRM integration, defining the tracked field schema first.",
+    "Automate Gong Engage outreach: assign new prospects to a flow, look up which flows a prospect is in, and remove them when a deal closes."
+  ],
+  "agentIdeas": [
+    "When a **Gong** \"On New Call\" trigger fires, chain **Gong** \"Get Call Transcripts\" and then **Gmail** \"Send Message\" to email the account owner an AI-written recap of the conversation.",
+    "Use **Gong** \"Get Aggregated Activity\" to pull per-rep call counters over a date range, then **Google Sheets** \"Add Row\" to append each rep's numbers into a weekly activity leaderboard.",
+    "When a **Gong** \"On New Call\" trigger fires, use **Slack** \"Send Message To Channel\" to post the call title, host, and link to the deal team the moment the recording is available.",
+    "Use **Google Sheets** \"Get Rows\" to read a list of new leads and their CRM IDs, then call **Gong** \"Assign Prospects to Flow\" to enroll each one in a Gong Engage outreach flow."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/gong/public/icon.png",
+  "sourcePaths": {
+    "service": "services/gong",
+    "readme": "services/gong/README.md",
+    "index": "services/gong/src/index.js"
+  }
+}

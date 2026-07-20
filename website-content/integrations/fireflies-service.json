@@ -1,0 +1,73 @@
+{
+  "slug": "fireflies-service",
+  "name": "Fireflies.ai",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrates the Fireflies.ai meeting intelligence platform into FlowRunner workflows. Retrieve meeting transcripts and AI-generated summaries, search past meetings, upload audio/video files for transcription, and invite the Fireflies notetaker bot (\"Fred\") to live Zoom, Google Meet, or Microsoft Teams calls.",
+  "actionCount": 6,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Transcripts",
+    "AI Summary",
+    "Uploads"
+  ],
+  "actions": [
+    {
+      "name": "List Transcripts",
+      "category": "Transcripts",
+      "description": "Retrieves a list of meeting transcripts with optional filters by title, date range, host email, and participant email. Returns transcript summary metadata (id, title, date, duration, host, participants, meeting link). Use Get Transcript to fetch the full transcript with sentences and AI summary."
+    },
+    {
+      "name": "Get Transcript",
+      "category": "Transcripts",
+      "description": "Retrieves the full details of a single meeting transcript by ID, including all sentences with speakers and timestamps, attendees, the AI-generated summary with action items and keywords, and links to the audio/video recording."
+    },
+    {
+      "name": "Search Transcripts",
+      "category": "Transcripts",
+      "description": "Searches transcripts by title using a case-insensitive substring match. Useful when you know part of a meeting title but not its exact ID. Returns transcript summary metadata. Note: Fireflies' GraphQL API only filters by title, not full-text content."
+    },
+    {
+      "name": "Get Transcript Summary",
+      "category": "AI Summary",
+      "description": "Retrieves only the AI-generated summary outputs for a transcript (overview, action items, keywords, outline, bullet gist, topics, short summary) along with basic meeting metadata. Use this when you only need the AI analysis and don't need the full sentence-by-sentence transcript."
+    },
+    {
+      "name": "Upload Audio",
+      "category": "Uploads",
+      "description": "Submits an audio/video file URL to Fireflies for transcription. Fireflies fetches the file from the URL and processes it asynchronously; the resulting transcript will appear in your dashboard and via List Transcripts shortly after. Supports common audio and video formats (mp3, mp4, wav, m4a, webm)."
+    },
+    {
+      "name": "Add Fred to Live Meeting",
+      "category": "Uploads",
+      "description": "Invites the Fireflies notetaker bot (\"Fred\") to join a live meeting on Zoom, Google Meet, or Microsoft Teams. The bot joins the meeting and records/transcribes it. The transcript appears in your Fireflies dashboard after the meeting ends."
+    }
+  ],
+  "triggers": [
+    "On New Transcript"
+  ],
+  "idealUseCases": [
+    "Automatically syncing meeting notes and action items into project management or CRM tools",
+    "Notifying teams in chat channels when a new meeting transcript becomes available",
+    "Extracting structured action items from meetings and creating tasks downstream",
+    "Building searchable archives of past meeting discussions and decisions",
+    "Transcribing pre-recorded audio or video files at scale via URL upload",
+    "Auto-inviting a notetaker bot to scheduled live meetings for hands-free capture"
+  ],
+  "agentIdeas": [
+    "When a **Fireflies.ai** \"On New Transcript\" trigger fires, call \"Get Transcript Summary\" to extract the AI overview and action items, then use **Notion** \"Create Page\" to file the meeting notes into a team workspace.",
+    "When a **Fireflies.ai** \"On New Transcript\" trigger fires, call \"Get Transcript Summary\" and use **Asana** \"Create Task\" for each extracted action item, assigning them based on the meeting participants.",
+    "When a **Dropbox** \"On New File\" trigger fires for a folder of recordings, call **Dropbox** \"Get Temporary Link\" and pass the URL to **Fireflies.ai** \"Upload Audio\" to transcribe each recording, then use **Slack** \"Send Message To Channel\" to notify the team that the transcript is being prepared."
+  ],
+  "icon": "/logo.png",
+  "iconFile": "services/fireflies-service/public/logo.png",
+  "sourcePaths": {
+    "service": "services/fireflies-service",
+    "readme": "services/fireflies-service/README.md",
+    "index": "services/fireflies-service/src/index.js"
+  }
+}

@@ -1,0 +1,263 @@
+{
+  "slug": "klaviyo",
+  "name": "Klaviyo",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Klaviyo email and SMS marketing automation for FlowRunner: manage profiles, subscriptions, lists, segments, events, metrics with aggregate analytics, campaigns, templates, flows, tags, and GDPR/CCPA data privacy requests.",
+  "actionCount": 43,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Profiles",
+    "Subscriptions",
+    "Lists",
+    "Segments",
+    "Events",
+    "Metrics",
+    "Campaigns",
+    "Templates",
+    "Flows",
+    "Tags",
+    "Data Privacy"
+  ],
+  "actions": [
+    {
+      "name": "List Profiles",
+      "category": "Profiles",
+      "description": "Retrieves a page of profiles from the Klaviyo account with cursor-based pagination (up to 100 per page). Supports Klaviyo JSON:API filtering (e.g. equals(email,\"a@b.com\"), greater-than(created,2025-01-01T00:00:00Z)) and sorting by created, updated, or email. Returns items (profile resources) and nextCursor for fetching the next page."
+    },
+    {
+      "name": "Get Profile",
+      "category": "Profiles",
+      "description": "Retrieves a single profile by its Klaviyo profile ID, including identifiers, name, organization, location, and custom properties. Optionally includes the profile's channel subscriptions and predictive analytics (CLV, churn risk, expected next order date) via Additional Fields."
+    },
+    {
+      "name": "Get Profile by Email",
+      "category": "Profiles",
+      "description": "Finds a profile by its exact email address using a Klaviyo filter query. Returns the matching profile resource (type, id, attributes) or null when no profile with that email exists. Use the returned id with Get Profile, Update Profile, or list membership operations."
+    },
+    {
+      "name": "Create Profile",
+      "category": "Profiles",
+      "description": "Creates a new profile in Klaviyo. At least one identifier (email, phone number, or external ID) is required. Fails with a duplicate error if a profile with the same identifier already exists — use Create or Update Profile for upsert behavior. Phone numbers must be in E.164 format (e.g. +15005550006)."
+    },
+    {
+      "name": "Update Profile",
+      "category": "Profiles",
+      "description": "Updates attributes of an existing profile identified by its Klaviyo profile ID. Only the provided fields are changed; omitted fields keep their current values. Custom properties are merged into the profile's existing properties."
+    },
+    {
+      "name": "Create or Update Profile",
+      "category": "Profiles",
+      "description": "Upserts a profile: creates it if no profile matches the given identifier, or updates the existing profile's attributes if one does. Ideal for syncing contacts from external systems without checking existence first. At least one identifier (email, phone number, or external ID) is required."
+    },
+    {
+      "name": "Suppress Profiles",
+      "category": "Profiles",
+      "description": "Suppresses one or more profiles from receiving email marketing by adding a USER_SUPPRESSED suppression for each email address. Suppressed profiles remain in the account but are excluded from all email sends until unsuppressed. Processed asynchronously by Klaviyo."
+    },
+    {
+      "name": "Unsuppress Profiles",
+      "category": "Profiles",
+      "description": "Removes email marketing suppressions for one or more profiles so they can receive email campaigns and flows again. Only removes suppressions (e.g. USER_SUPPRESSED); it does not change unsubscribe consent recorded for a profile. Processed asynchronously by Klaviyo."
+    },
+    {
+      "name": "Subscribe Profiles",
+      "category": "Subscriptions",
+      "description": "Subscribes a person to email and/or SMS marketing with explicit SUBSCRIBED consent, optionally adding them to a list. If the list uses double opt-in, Klaviyo sends a confirmation message instead of subscribing immediately. Provide an email for the Email channel and an E.164 phone number for the SMS channel. Processed asynchronously by Klaviyo."
+    },
+    {
+      "name": "Unsubscribe Profiles",
+      "category": "Subscriptions",
+      "description": "Unsubscribes a person from email and/or SMS marketing by recording UNSUBSCRIBED consent, optionally removing them from a specific list. Provide an email for the Email channel and an E.164 phone number for the SMS channel. Processed asynchronously by Klaviyo."
+    },
+    {
+      "name": "List Lists",
+      "category": "Lists",
+      "description": "Retrieves the lists in the Klaviyo account with cursor-based pagination (10 lists per page). Supports Klaviyo JSON:API filtering on name, id, created, and updated (e.g. equals(name,\"Newsletter\")). Returns items (list resources) and nextCursor for the next page."
+    },
+    {
+      "name": "Get List",
+      "category": "Lists",
+      "description": "Retrieves a single list by ID, including its name, opt-in process, and timestamps. Optionally includes the list's current profile count (computed on demand by Klaviyo, which may add latency on very large lists)."
+    },
+    {
+      "name": "Create List",
+      "category": "Lists",
+      "description": "Creates a new list in the Klaviyo account with the given name. Returns the created list resource including its ID, which can be used with Add Profiles to List and Subscribe Profiles."
+    },
+    {
+      "name": "Update List",
+      "category": "Lists",
+      "description": "Renames an existing list. Only the list name can be changed via the API; membership is managed with Add Profiles to List, Remove Profiles from List, and Subscribe Profiles."
+    },
+    {
+      "name": "Delete List",
+      "category": "Lists",
+      "description": "Permanently deletes a list from the Klaviyo account. Profiles that belong to the list are NOT deleted — only the list and its memberships are removed. This action cannot be undone."
+    },
+    {
+      "name": "Add Profiles to List",
+      "category": "Lists",
+      "description": "Adds up to 1000 existing profiles to a list by their Klaviyo profile IDs. This directly adds list memberships without recording marketing consent — use Subscribe Profiles when you need SUBSCRIBED consent or double opt-in handling."
+    },
+    {
+      "name": "Remove Profiles from List",
+      "category": "Lists",
+      "description": "Removes up to 1000 profiles from a list by their Klaviyo profile IDs. Only the list membership is removed — the profiles themselves and their consent status are unchanged."
+    },
+    {
+      "name": "Get List Profiles",
+      "category": "Lists",
+      "description": "Retrieves the profiles that belong to a list with cursor-based pagination (up to 100 per page). Supports Klaviyo JSON:API filtering on profile fields (e.g. equals(email,\"a@b.com\"), greater-than(joined_group_at,2025-01-01T00:00:00Z)). Returns items (profile resources) and nextCursor."
+    },
+    {
+      "name": "List Segments",
+      "category": "Segments",
+      "description": "Retrieves the segments in the Klaviyo account with cursor-based pagination (10 segments per page). Supports Klaviyo JSON:API filtering on name, id, created, updated, is_active, and is_starred (e.g. equals(is_active,true)). Returns items (segment resources) and nextCursor."
+    },
+    {
+      "name": "Get Segment",
+      "category": "Segments",
+      "description": "Retrieves a single segment by ID, including its name, activity flags, and timestamps. Optionally includes the segment's current profile count (computed on demand by Klaviyo, which may add latency on very large segments)."
+    },
+    {
+      "name": "Get Segment Profiles",
+      "category": "Segments",
+      "description": "Retrieves the profiles that currently belong to a segment with cursor-based pagination (up to 100 per page). Supports Klaviyo JSON:API filtering on profile fields (e.g. equals(email,\"a@b.com\"), greater-than(joined_group_at,2025-01-01T00:00:00Z)). Returns items (profile resources) and nextCursor."
+    },
+    {
+      "name": "Create Event",
+      "category": "Events",
+      "description": "Tracks a custom event (e.g. Placed Order, Viewed Product) for a profile identified by email and/or phone number. If the metric or profile does not exist yet, Klaviyo creates it automatically. Events can trigger flows and power segments and analytics. Processed asynchronously by Klaviyo."
+    },
+    {
+      "name": "List Events",
+      "category": "Events",
+      "description": "Retrieves events from the Klaviyo account with cursor-based pagination, newest first by default. Filter by metric and/or profile using the convenience parameters, or supply a raw JSON:API filter. Optionally includes the related metric, profile, and attribution resources in the response."
+    },
+    {
+      "name": "Get Event",
+      "category": "Events",
+      "description": "Retrieves a single event by its Klaviyo event ID, including its timestamp and event properties. Optionally includes the related metric, profile, and attribution resources in the response's included array."
+    },
+    {
+      "name": "List Metrics",
+      "category": "Metrics",
+      "description": "Retrieves the metrics (event types) in the Klaviyo account with cursor-based pagination, including built-in metrics and those created by integrations (e.g. Shopify's Placed Order). Supports filtering by integration name or category, e.g. equals(integration.name,\"Shopify\")."
+    },
+    {
+      "name": "Get Metric",
+      "category": "Metrics",
+      "description": "Retrieves a single metric by ID, including its name, creation and update timestamps, and the integration that produces it (if any). Use the metric ID with List Events and Query Metric Aggregates."
+    },
+    {
+      "name": "Query Metric Aggregates",
+      "category": "Metrics",
+      "description": "Runs an aggregate analytics query over a metric for a date range, returning time-bucketed measurements such as event count, total value (revenue), and unique profile count. Supports hourly, daily, weekly, or monthly intervals, optional grouping by event dimensions (e.g. $message), and a timezone for bucketing. Ideal for building reports and dashboards from Klaviyo event data."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Retrieves campaigns for a messaging channel (Email or SMS — the Klaviyo API requires a channel filter) with cursor-based pagination. Additional JSON:API filters on name, status, created_at, etc. can be combined, e.g. equals(status,\"Draft\"). Returns items (campaign resources) and nextCursor."
+    },
+    {
+      "name": "Get Campaign",
+      "category": "Campaigns",
+      "description": "Retrieves a single campaign by ID, including its name, status, audiences, send options, send strategy, and tracking options. Campaign creation involves complex nested payloads, so this service focuses on listing, inspecting, sending, and deleting campaigns created in the Klaviyo UI."
+    },
+    {
+      "name": "Delete Campaign",
+      "category": "Campaigns",
+      "description": "Permanently deletes a campaign from the Klaviyo account. This action cannot be undone. Sent campaign analytics may no longer be accessible after deletion — consider archiving in the Klaviyo UI instead if you need to keep reporting."
+    },
+    {
+      "name": "Send Campaign",
+      "category": "Campaigns",
+      "description": "Triggers the send job for an existing draft campaign, sending it to its configured audiences according to its send strategy. The campaign must be fully configured (audience, message content, sender) in Klaviyo before it can be sent. Sending is processed asynchronously by Klaviyo."
+    },
+    {
+      "name": "Get Campaign Recipient Estimation",
+      "category": "Campaigns",
+      "description": "Retrieves the estimated number of recipients a campaign will be sent to, based on its included and excluded audiences. The estimation is computed by Klaviyo when the campaign audience is saved and may lag recent audience changes."
+    },
+    {
+      "name": "List Templates",
+      "category": "Templates",
+      "description": "Retrieves the email templates in the Klaviyo account with cursor-based pagination (10 templates per page). Filter by exact name using the convenience parameter or supply a raw JSON:API filter on id, name, created, or updated. Returns items (template resources) and nextCursor."
+    },
+    {
+      "name": "Get Template",
+      "category": "Templates",
+      "description": "Retrieves a single email template by ID, including its name, editor type, HTML content, and plain-text version. Use with Render Template to produce personalized output for a given context."
+    },
+    {
+      "name": "Create Template",
+      "category": "Templates",
+      "description": "Creates a new HTML (code editor) email template with the given name and content. The HTML may include Django-style template variables such as {{ first_name }} that are resolved when the template is rendered or sent. Returns the created template resource including its ID."
+    },
+    {
+      "name": "Render Template",
+      "category": "Templates",
+      "description": "Renders an email template with the provided context variables, resolving placeholders like {{ first_name }} into final HTML and text. Useful for previewing personalized output or producing HTML for sending through another channel."
+    },
+    {
+      "name": "List Flows",
+      "category": "Flows",
+      "description": "Retrieves the automation flows in the Klaviyo account with cursor-based pagination. Supports Klaviyo JSON:API filtering on name, status, archived, created, updated, and trigger_type, e.g. equals(status,\"live\"). Returns items (flow resources) and nextCursor."
+    },
+    {
+      "name": "Get Flow",
+      "category": "Flows",
+      "description": "Retrieves a single automation flow by ID, including its name, status (live, draft, or manual), archived state, trigger type, and timestamps."
+    },
+    {
+      "name": "Update Flow Status",
+      "category": "Flows",
+      "description": "Changes the status of an automation flow: Live (actively sending to profiles that enter it), Draft (paused, no sends), or Manual (only profiles you add manually go through it). Setting a flow to Live starts real message sends — verify the flow content first."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Retrieves the organizational tags in the Klaviyo account with cursor-based pagination. Tags can be applied to lists, segments, campaigns, and flows in Klaviyo. Supports JSON:API filtering on name, e.g. contains(name,\"holiday\")."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new tag in the account's default tag group. Tags help organize lists, segments, campaigns, and flows. Returns the created tag resource including its ID."
+    },
+    {
+      "name": "Delete Tag",
+      "category": "Tags",
+      "description": "Permanently deletes a tag from the Klaviyo account and removes it from every resource it is applied to. The tagged lists, segments, campaigns, and flows themselves are not affected. This action cannot be undone."
+    },
+    {
+      "name": "Request Profile Deletion",
+      "category": "Data Privacy",
+      "description": "Submits a GDPR/CCPA data privacy deletion request for the profile with the given email address. WARNING: this permanently and irreversibly deletes the profile and all of its associated data (events, consent history, analytics) from Klaviyo once processed. Use Suppress Profiles instead if you only want to stop sending to someone."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync contacts from a CRM, store, or spreadsheet into Klaviyo with upsert (Create or Update Profile) and manage list membership or marketing consent",
+    "Track custom events (orders, product views, sign-ups) to power flows, segments, and analytics",
+    "Build reports and dashboards from time-bucketed metric aggregates (event count, revenue, unique profiles)",
+    "Trigger and inspect email/SMS campaigns and automation flows, and render personalized templates",
+    "Handle unsubscribes, suppressions, and irreversible data privacy deletion requests for compliance"
+  ],
+  "agentIdeas": [
+    "When a **Shopify** \"On New Order\" trigger fires, call **Klaviyo** \"Create Event\" (Placed Order) and \"Create or Update Profile\" to feed the customer into Klaviyo flows and revenue analytics",
+    "Use **Google Sheets** \"Get Rows\" to read a contact export, then call **Klaviyo** \"Create or Update Profile\" and \"Subscribe Profiles\" to sync each contact into a Klaviyo list with SUBSCRIBED consent",
+    "After a **Klaviyo** \"Query Metric Aggregates\" run, use **Gmail** \"Send Message\" to email the weekly revenue-and-engagement report to stakeholders"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/klaviyo/public/icon.png",
+  "sourcePaths": {
+    "service": "services/klaviyo",
+    "readme": "services/klaviyo/README.md",
+    "index": "services/klaviyo/src/index.js"
+  }
+}

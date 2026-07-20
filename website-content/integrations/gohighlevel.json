@@ -1,0 +1,334 @@
+{
+  "slug": "gohighlevel",
+  "name": "GoHighLevel",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "All-in-one GoHighLevel CRM integration for managing contacts, opportunities, conversations, calendar, businesses, tasks, notes, tags, workflows, forms, invoices, and products. Automate lead management, deal tracking, multi-channel messaging, invoicing, and scheduling through OAuth2 authentication.",
+  "actionCount": 56,
+  "triggerCount": 2,
+  "operationCategories": [
+    "Custom Fields",
+    "Contacts",
+    "Opportunities",
+    "Conversations",
+    "Calendar",
+    "Businesses",
+    "Tasks",
+    "Notes",
+    "Tags",
+    "Workflows",
+    "Forms",
+    "Invoices",
+    "Products"
+  ],
+  "actions": [
+    {
+      "name": "List Custom Fields",
+      "category": "Custom Fields",
+      "description": "Lists the custom fields defined in your GoHighLevel location. Custom fields let you store extra data on contacts or opportunities beyond the standard fields. Use this to find a field's ID and data type before setting its value with Upsert Contact."
+    },
+    {
+      "name": "Search Contacts",
+      "category": "Contacts",
+      "description": "Searches for contacts in your GoHighLevel location using a query string. Returns matching contacts with their profile details including name, email, phone, address, and tags."
+    },
+    {
+      "name": "Get Contact By ID",
+      "category": "Contacts",
+      "description": "Retrieves detailed information about a specific contact using their unique GoHighLevel contact ID. Returns complete contact profile data including name, email, phone, address, tags, and custom fields."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact in your GoHighLevel location with the specified profile details. At minimum, a location ID is required. Additional fields such as name, email, phone, and tags can be provided."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact in GoHighLevel with new profile information. Only the fields provided will be updated; all other contact data remains unchanged."
+    },
+    {
+      "name": "Upsert Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact or updates an existing one, matched by email or phone according to your location's Allow Duplicate Contact setting. Use this instead of Create Contact when you are not sure whether the contact already exists."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact from your GoHighLevel location. This action cannot be undone, and all associated data including conversations and appointments will be removed."
+    },
+    {
+      "name": "Search Opportunities",
+      "category": "Opportunities",
+      "description": "Searches for opportunities in your GoHighLevel location with optional filtering by pipeline. Returns matching opportunities with their deal details including name, monetary value, pipeline stage, and status."
+    },
+    {
+      "name": "Get Opportunity By ID",
+      "category": "Opportunities",
+      "description": "Retrieves detailed information about a specific opportunity using its unique GoHighLevel opportunity ID. Returns complete deal data including pipeline position, monetary value, contact association, and current status."
+    },
+    {
+      "name": "Create Opportunity",
+      "category": "Opportunities",
+      "description": "Creates a new opportunity (deal) in your GoHighLevel location within a specified pipeline and stage. Associates the opportunity with a contact and allows setting a monetary value and status."
+    },
+    {
+      "name": "Update Opportunity",
+      "category": "Opportunities",
+      "description": "Updates an existing opportunity in GoHighLevel with new deal information. Only the fields provided will be updated; all other opportunity data remains unchanged."
+    },
+    {
+      "name": "Update Opportunity Status",
+      "category": "Opportunities",
+      "description": "Updates only the status of an existing opportunity in GoHighLevel. Use this method to quickly mark an opportunity as won, lost, or abandoned without modifying other fields."
+    },
+    {
+      "name": "Delete Opportunity",
+      "category": "Opportunities",
+      "description": "Permanently deletes an opportunity from your GoHighLevel location. This action cannot be undone, and the deal record will be removed from the pipeline."
+    },
+    {
+      "name": "Send Message",
+      "category": "Conversations",
+      "description": "Sends a message to a contact through the specified communication channel in GoHighLevel. Supports SMS, Email, WhatsApp, and other messaging channels. For Email type, a subject line and optional HTML content can be provided."
+    },
+    {
+      "name": "Get Messages",
+      "category": "Conversations",
+      "description": "Retrieves messages from a specific conversation in GoHighLevel. Returns the message history including sender information, message content, delivery status, and timestamps."
+    },
+    {
+      "name": "Get Conversation By ID",
+      "category": "Conversations",
+      "description": "Retrieves detailed information about a specific conversation using its unique GoHighLevel conversation ID. Returns conversation metadata including associated contact, last message details, and unread status."
+    },
+    {
+      "name": "Delete Conversation",
+      "category": "Conversations",
+      "description": "Permanently deletes a conversation from your GoHighLevel location. This action cannot be undone, and all messages within the conversation will be removed."
+    },
+    {
+      "name": "List Calendars",
+      "category": "Calendar",
+      "description": "Retrieves all calendars from a specific GoHighLevel location. Returns calendar names, IDs, descriptions, and active status for scheduling and appointment management."
+    },
+    {
+      "name": "Get Calendar Free Slots",
+      "category": "Calendar",
+      "description": "Retrieves the free time slots for a calendar within a date range (maximum 31 days). Returns an availability map keyed by date, with each date listing the open slot start times. Use this before Create Appointment to offer a contact real open times."
+    },
+    {
+      "name": "Create Appointment",
+      "category": "Calendar",
+      "description": "Creates a new appointment in a GoHighLevel calendar. Associates the appointment with a contact and allows setting the time range, title, and initial status."
+    },
+    {
+      "name": "Get Appointment By ID",
+      "category": "Calendar",
+      "description": "Retrieves detailed information about a specific appointment using its unique GoHighLevel appointment ID. Returns appointment details including calendar, contact, time range, title, and current status."
+    },
+    {
+      "name": "Update Appointment",
+      "category": "Calendar",
+      "description": "Updates an existing appointment in GoHighLevel with new scheduling or status information. Only the fields provided will be updated; all other appointment data remains unchanged."
+    },
+    {
+      "name": "Delete Appointment",
+      "category": "Calendar",
+      "description": "Permanently deletes an appointment or blocked time slot from a GoHighLevel calendar. This action cannot be undone."
+    },
+    {
+      "name": "List Businesses",
+      "category": "Businesses",
+      "description": "Lists the businesses in your GoHighLevel location. Businesses group contacts under a company or organization. Returns each business with its name, contact details, and address."
+    },
+    {
+      "name": "Get Business By ID",
+      "category": "Businesses",
+      "description": "Retrieves detailed information about a specific business using its unique GoHighLevel business ID. Returns complete business profile data including name, email, phone, website, and address."
+    },
+    {
+      "name": "Create Business",
+      "category": "Businesses",
+      "description": "Creates a new business in your GoHighLevel location. A business groups contacts under a company or organization. At minimum, a name is required; address and contact fields are optional."
+    },
+    {
+      "name": "Update Business",
+      "category": "Businesses",
+      "description": "Updates an existing business in GoHighLevel with new profile information. Only the fields provided will be updated; all other business data remains unchanged."
+    },
+    {
+      "name": "Delete Business",
+      "category": "Businesses",
+      "description": "Permanently deletes a business from your GoHighLevel location. This action cannot be undone, and the business record will be removed."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Retrieves a list of tasks associated with a specific contact in GoHighLevel. Returns task details including title, description, due date, assigned user, and current status."
+    },
+    {
+      "name": "Get Task By ID",
+      "category": "Tasks",
+      "description": "Retrieves detailed information about a specific task associated with a contact using its unique task ID. Returns complete task data including title, description, due date, assigned user, and status."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a new task for a specific contact in GoHighLevel. Tasks help track follow-ups, to-dos, and action items. A title and due date are required; you can add details, assign a team member, and mark it complete."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates an existing task associated with a contact in GoHighLevel. Only the fields provided will be updated; all other task data remains unchanged."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task associated with a contact from your GoHighLevel location. This action cannot be undone."
+    },
+    {
+      "name": "List Notes",
+      "category": "Notes",
+      "description": "Retrieves a list of notes associated with a specific contact in GoHighLevel. Returns note content and timestamps for tracking interactions and internal comments about the contact."
+    },
+    {
+      "name": "Get Note By ID",
+      "category": "Notes",
+      "description": "Retrieves a specific note by its ID for a contact in GoHighLevel. Returns the full note content and metadata."
+    },
+    {
+      "name": "Create Note",
+      "category": "Notes",
+      "description": "Creates a new note for a specific contact in GoHighLevel. Notes are used to record interactions, observations, and internal comments about the contact."
+    },
+    {
+      "name": "Update Note",
+      "category": "Notes",
+      "description": "Updates an existing note for a contact in GoHighLevel. Replaces the note body with the new content provided."
+    },
+    {
+      "name": "Delete Note",
+      "category": "Notes",
+      "description": "Permanently deletes a note associated with a contact from your GoHighLevel location. This action cannot be undone."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Retrieves all tags from a specific GoHighLevel location. Tags are used to categorize and segment contacts for targeted workflows and campaigns."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new tag in your GoHighLevel location. Tags are used to categorize contacts and trigger workflows based on tag assignments."
+    },
+    {
+      "name": "Add Tags To Contact",
+      "category": "Tags",
+      "description": "Adds one or more tags to a specific contact in GoHighLevel. Tags help categorize contacts for segmentation, automation triggers, and targeted campaigns."
+    },
+    {
+      "name": "Remove Tags From Contact",
+      "category": "Tags",
+      "description": "Removes one or more tags from a specific contact in GoHighLevel. This removes the tag association from the contact without deleting the tags themselves."
+    },
+    {
+      "name": "Trigger Workflow",
+      "category": "Workflows",
+      "description": "Triggers a GoHighLevel workflow for a specific contact. The workflow will execute all its configured actions and steps for the specified contact."
+    },
+    {
+      "name": "List Forms",
+      "category": "Forms",
+      "description": "Retrieves all forms from a specific GoHighLevel location. Returns form names, IDs, and location associations for managing form-based lead capture and data collection."
+    },
+    {
+      "name": "Get Form Submissions",
+      "category": "Forms",
+      "description": "Retrieves form submissions for a specific form in GoHighLevel. Returns submitted data, contact associations, and timestamps. Supports date range filtering and pagination for large result sets."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Retrieves a list of invoices from your GoHighLevel location with optional status filtering. Returns invoice details including name, invoice number, amount, currency, and current status."
+    },
+    {
+      "name": "Get Invoice By ID",
+      "category": "Invoices",
+      "description": "Retrieves detailed information about a specific invoice using its unique GoHighLevel invoice ID. Returns complete invoice data including line items, amounts, contact association, and payment status."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates a new invoice in your GoHighLevel location for a specific contact. The contact's name, email and phone are read from the contact record automatically. Provide the invoice name, currency, one or more line items, and the issue date."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Replaces the core details of an existing invoice in GoHighLevel. The update endpoint requires the full invoice, so provide the name, currency, line items, issue date and due date every time."
+    },
+    {
+      "name": "Send Invoice",
+      "category": "Invoices",
+      "description": "Sends an existing GoHighLevel invoice to its contact. Choose how it is delivered - by email, SMS, or both. A sending user is required."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Retrieves a list of products from your GoHighLevel location with optional search filtering. Returns product details including name, description, and type."
+    },
+    {
+      "name": "Get Product By ID",
+      "category": "Products",
+      "description": "Retrieves detailed information about a specific product using its unique GoHighLevel product ID. Returns complete product data including name, description, type, and timestamps."
+    },
+    {
+      "name": "Create Product",
+      "category": "Products",
+      "description": "Creates a new product in your GoHighLevel location. Products can be used in invoices, payment links, and order forms. A name and product type are required. To set pricing, use the Create Product Price action afterwards."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates an existing product in GoHighLevel. GoHighLevel requires the name and product type on every update, so provide them both. To change pricing, use the Create Product Price action."
+    },
+    {
+      "name": "Create Product Price",
+      "category": "Products",
+      "description": "Adds a price to a product in GoHighLevel. A product can have one or more prices - a one-time charge or a recurring subscription. Prices are what invoices, payment links, and order forms actually charge."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Products",
+      "description": "Permanently deletes a product from your GoHighLevel location. This action cannot be undone, and the product will no longer be available for invoices or order forms."
+    }
+  ],
+  "triggers": [
+    "On New Opportunity",
+    "On New Form Submission"
+  ],
+  "idealUseCases": [
+    "Automating lead capture, contact management, and tagging across channels",
+    "Tracking sales opportunities through pipeline stages with status updates",
+    "Sending multi-channel messages (SMS, Email, WhatsApp) to contacts",
+    "Scheduling and managing calendar appointments for sales and support",
+    "Managing invoices, products, and billing workflows",
+    "Building automated follow-up sequences with tasks and notes"
+  ],
+  "agentIdeas": [
+    "Use **GoHighLevel** \"Search Contacts\" to find new leads, then call **Gmail** \"Send Message\" to deliver a personalized welcome email with onboarding instructions",
+    "When a **Google Sheets** \"On New Row\" trigger fires with a new lead entry, use **GoHighLevel** \"Create Contact\" to add the lead and \"Create Opportunity\" to open a deal in the pipeline",
+    "After **GoHighLevel** \"Update Opportunity Status\" marks a deal as won, use **Slack** \"Send Message To Channel\" to notify the team with the deal details"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/gohighlevel/public/icon.png",
+  "sourcePaths": {
+    "service": "services/gohighlevel",
+    "readme": "services/gohighlevel/README.md",
+    "index": "services/gohighlevel/src/index.js"
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "slug": "telegram",
+  "name": "Telegram",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Comprehensive Telegram Bot API integration for automated messaging, group management, and webhook handling. Enables full bot functionality including sending messages, media files, and location data, along with real-time event monitoring for building interactive bot workflows.",
+  "actionCount": 15,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Messaging",
+    "Chat Management",
+    "Bot Management",
+    "File Management"
+  ],
+  "actions": [
+    {
+      "name": "Send Message",
+      "category": "Messaging",
+      "description": "Sends a text message to a specified chat, group, or channel."
+    },
+    {
+      "name": "Send Photo",
+      "category": "Messaging",
+      "description": "Sends a photo to a specified chat, group, or channel with optional caption."
+    },
+    {
+      "name": "Send Document",
+      "category": "Messaging",
+      "description": "Sends a general file (document) to a specified chat, group, or channel."
+    },
+    {
+      "name": "Get Chat Info",
+      "category": "Chat Management",
+      "description": "Retrieves information about a chat, group, or channel."
+    },
+    {
+      "name": "Get Chat Member",
+      "category": "Chat Management",
+      "description": "Retrieves information about a member of a chat, group, or channel."
+    },
+    {
+      "name": "Get Bot Info",
+      "category": "Bot Management",
+      "description": "Retrieves basic information about the bot."
+    },
+    {
+      "name": "Get Updates",
+      "category": "Bot Management",
+      "description": "Retrieves incoming updates for the bot (messages, callbacks, etc.)."
+    },
+    {
+      "name": "Get Webhook Info",
+      "category": "Bot Management",
+      "description": "Retrieves current webhook status and information."
+    },
+    {
+      "name": "Edit Message Text",
+      "category": "Messaging",
+      "description": "Edits text and formatting of a message sent by the bot."
+    },
+    {
+      "name": "Delete Message",
+      "category": "Messaging",
+      "description": "Deletes a message, including service messages."
+    },
+    {
+      "name": "Forward Message",
+      "category": "Messaging",
+      "description": "Forwards messages of any kind from one chat to another."
+    },
+    {
+      "name": "Send Audio",
+      "category": "Messaging",
+      "description": "Sends audio files to a specified chat. Audio must be in MP3 or M4A format."
+    },
+    {
+      "name": "Send Sticker",
+      "category": "Messaging",
+      "description": "Sends static .WEBP, animated .TGS, or video .WEBM stickers to a specified chat."
+    },
+    {
+      "name": "Send Location",
+      "category": "Messaging",
+      "description": "Sends a point on the map to a specified chat."
+    },
+    {
+      "name": "Get File",
+      "category": "File Management",
+      "description": "Gets basic information about a file and prepares it for downloading."
+    }
+  ],
+  "triggers": [
+    "On New Message"
+  ],
+  "idealUseCases": [
+    "Building automated customer support and chatbots",
+    "Implementing notification and alert systems via Telegram",
+    "Managing groups and channels with automated moderation",
+    "Distributing news and content to multiple chats",
+    "Creating interactive bot workflows with commands and callbacks",
+    "Setting up real-time monitoring for messages and events",
+    "Automating file and media sharing processes",
+    "Broadcasting announcements to multiple channels",
+    "Collecting user feedback and engagement data",
+    "Forwarding important messages between chats"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/telegram/public/icon.png",
+  "sourcePaths": {
+    "service": "services/telegram",
+    "readme": "services/telegram/README.md",
+    "index": "services/telegram/src/index.js"
+  }
+}

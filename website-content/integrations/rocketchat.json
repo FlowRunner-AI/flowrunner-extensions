@@ -1,0 +1,183 @@
+{
+  "slug": "rocketchat",
+  "name": "Rocket.Chat",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner service for [Rocket.Chat](https://rocket.chat/), the open-source team communication platform. Post and manage messages, work with channels, private groups, and direct messages, administer users, and upload files — against your own self-hosted (or cloud) Rocket.Chat server. Authentication uses a Personal Access Token (User ID + Auth Token) sent as `X-User-Id` / `X-Auth-Token` headers.",
+  "actionCount": 28,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messages",
+    "Channels",
+    "Groups",
+    "Direct Messages",
+    "Users",
+    "Files"
+  ],
+  "actions": [
+    {
+      "name": "Post Message",
+      "category": "Messages",
+      "description": "Posts a new message to a channel, private group, or direct message. Target the destination with a channel name prefixed by \"#\" (or a username prefixed by \"@\" for a DM) or a room ID. Supports display customization via alias, emoji, and avatar overrides, plus an array of rich attachment objects (each may include title, text, color, image_url, and fields)."
+    },
+    {
+      "name": "Send Message",
+      "category": "Messages",
+      "description": "Sends a message using the fuller message object form, which supports client-supplied message IDs and advanced fields. Requires the target room ID (rid) and message text (msg). Use Post Message for simpler channel-name based posting."
+    },
+    {
+      "name": "Update Message",
+      "category": "Messages",
+      "description": "Updates the text of an existing message. Requires the room ID that contains the message and the message ID to edit. The edit replaces the message text and marks the message as edited."
+    },
+    {
+      "name": "Delete Message",
+      "category": "Messages",
+      "description": "Permanently deletes a message from a room. Requires the room ID and the message ID. Deletion is subject to the server's message-editing permissions and time limits."
+    },
+    {
+      "name": "Get Channel Messages",
+      "category": "Messages",
+      "description": "Retrieves the message history of a public channel by room ID. Supports limiting the number of returned messages and bounding the range with oldest/latest ISO timestamps for pagination."
+    },
+    {
+      "name": "Pin Message",
+      "category": "Messages",
+      "description": "Pins a message to its room so it appears in the room's pinned-messages list. Requires the message ID. Pinned messages remain highlighted until unpinned."
+    },
+    {
+      "name": "Star Message",
+      "category": "Messages",
+      "description": "Stars a message for the authenticated user, adding it to their personal starred-messages list. Requires the message ID. Starring is private to the acting user."
+    },
+    {
+      "name": "React to Message",
+      "category": "Messages",
+      "description": "Adds (or toggles) an emoji reaction on a message. Requires the message ID and an emoji shortname such as :thumbsup: (colons optional). If the reaction already exists for the acting user it is removed, matching Rocket.Chat's toggle behavior."
+    },
+    {
+      "name": "Create Channel",
+      "category": "Channels",
+      "description": "Creates a new public channel with the given name. Optionally seeds the channel with an initial set of members supplied as an array of usernames. Channel names may not contain spaces."
+    },
+    {
+      "name": "Get Channel Info",
+      "category": "Channels",
+      "description": "Retrieves details about a public channel. Identify the channel by its name or by its room ID (supply at least one). Returns metadata including topic, announcement, member count, and creation info."
+    },
+    {
+      "name": "List Channels",
+      "category": "Channels",
+      "description": "Lists public channels the authenticated user can access. Supports pagination via count and offset to page through large workspaces."
+    },
+    {
+      "name": "Archive Channel",
+      "category": "Channels",
+      "description": "Archives a public channel by room ID, making it read-only and hiding it from active channel lists. Archived channels can be unarchived later by an administrator."
+    },
+    {
+      "name": "Delete Channel",
+      "category": "Channels",
+      "description": "Permanently deletes a public channel by room ID, removing all of its messages. This action cannot be undone."
+    },
+    {
+      "name": "Invite User to Channel",
+      "category": "Channels",
+      "description": "Adds a user to a public channel. Requires the channel room ID and the ID of the user to invite. The user gains access to the channel and its history per the room settings."
+    },
+    {
+      "name": "Kick User from Channel",
+      "category": "Channels",
+      "description": "Removes a user from a public channel. Requires the channel room ID and the ID of the user to remove. The user loses access to the channel."
+    },
+    {
+      "name": "Set Channel Topic",
+      "category": "Channels",
+      "description": "Sets or replaces the topic line of a public channel. Requires the channel room ID and the new topic text. Pass an empty topic to clear it."
+    },
+    {
+      "name": "Set Channel Announcement",
+      "category": "Channels",
+      "description": "Sets or replaces the announcement banner of a public channel. Requires the channel room ID and the new announcement text. Announcements are shown prominently at the top of the channel."
+    },
+    {
+      "name": "Create Group",
+      "category": "Groups",
+      "description": "Creates a new private group (private channel) with the given name. Optionally seeds the group with an initial set of members supplied as an array of usernames. Only invited members can see a private group."
+    },
+    {
+      "name": "Get Group Info",
+      "category": "Groups",
+      "description": "Retrieves details about a private group. Identify the group by its name or by its room ID (supply at least one). Returns metadata including topic, announcement, and member count."
+    },
+    {
+      "name": "List Groups",
+      "category": "Groups",
+      "description": "Lists private groups the authenticated user is a member of. Supports pagination via count and offset. Only groups the acting user belongs to are returned."
+    },
+    {
+      "name": "Create Direct Message",
+      "category": "Direct Messages",
+      "description": "Creates (or returns the existing) direct-message room between the authenticated user and the specified username. Use the returned room ID to send messages into the DM."
+    },
+    {
+      "name": "Send Direct Message",
+      "category": "Direct Messages",
+      "description": "Sends a direct message to a user by their username. Delivers the text to the one-on-one DM with that user, creating the DM room implicitly. Supports optional alias, emoji, and avatar overrides."
+    },
+    {
+      "name": "Get User Info",
+      "category": "Users",
+      "description": "Retrieves the profile of a user. Identify the user by their user ID or username (supply at least one). Returns name, email, status, roles, and account metadata subject to the caller's permissions."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a new user account. Requires email, display name, password, and username. Requires the caller to have user-administration permissions. The new account is created active unless the server enforces verification."
+    },
+    {
+      "name": "Get Me",
+      "category": "Users",
+      "description": "Returns the profile of the authenticated user associated with the configured credentials. Useful as a connection and credentials check, since a successful response confirms the server URL, user ID, and token are valid."
+    },
+    {
+      "name": "Set User Status",
+      "category": "Users",
+      "description": "Sets the authenticated user's presence and custom status message. The presence is one of Online, Away, Busy, or Offline; the optional message is shown alongside the status."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates an existing user account. Requires the target user ID and a data object containing the fields to change (for example name, email, password, active, or roles). Requires user-administration permissions."
+    },
+    {
+      "name": "Upload File to Room",
+      "category": "Files",
+      "description": "Uploads a file from a URL into a room and posts it as a file message. Requires the target room ID and the source file URL; optional message text and description are attached to the file post. The file is downloaded, then uploaded to the room via multipart, so the room members receive it as a shared attachment."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Broadcast automated alerts, build notifications, or reports into a Rocket.Chat channel or DM",
+    "Create channels or private groups and seed them with members as part of onboarding workflows",
+    "Pin, star, or react to messages to triage and highlight important updates",
+    "Provision, update, or look up user accounts on a self-hosted workspace",
+    "Share generated files or documents into a room by URL"
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to read a list of new hires, then call **Rocket.Chat** \"Create User\" and \"Create Group\" to provision accounts and a private onboarding group for each",
+    "When a **GitHub** or **Jenkins** build event is received, use **Rocket.Chat** \"Post Message\" to alert the engineering channel with the status and a link",
+    "Use **OpenAI** \"Create Chat Completion\" to summarize a long document, then call **Rocket.Chat** \"Send Direct Message\" to deliver the summary to the requesting user by username"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/rocketchat/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/rocketchat",
+    "readme": "services/rocketchat/README.md",
+    "index": "services/rocketchat/src/index.js"
+  }
+}

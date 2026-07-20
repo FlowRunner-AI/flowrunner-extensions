@@ -1,0 +1,42 @@
+{
+  "slug": "openthesaurus",
+  "name": "OpenThesaurus",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Look up **German-language synonyms** using the free, public [OpenThesaurus](https://www.openthesaurus.de) thesaurus. No authentication or API key is required. Results are grouped into synonym sets (synsets) where every term is a synonym of the query word; both the query and all returned terms are German words.",
+  "actionCount": 1,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Thesaurus"
+  ],
+  "actions": [
+    {
+      "name": "Get Synonyms",
+      "category": "Thesaurus",
+      "description": "Looks up German synonyms for a word using the OpenThesaurus thesaurus. Returns synonym groups (synsets), where every term in a group is a synonym of the query word — note that OpenThesaurus is a GERMAN-language dictionary, so both the query and all returned terms are German words. If the word is unknown the synsets array is simply empty (this is not an error). Optional flags expand the response: enable Similar Words to get up to five phonetically close terms (useful for typos), Substring Matches for words containing the query, Starts With for words beginning with the query, and Sub/Super Synsets to include the hyponyms (more specific) and hypernyms (more general) of each synonym group. Enable Base Form to also resolve the query's base/dictionary form."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Enriching German content with alternative word choices during automated writing or editing workflows.",
+    "Suggesting phonetically similar words to correct likely typos in user-submitted German text.",
+    "Expanding search or tagging vocabularies by pulling related German terms for a keyword.",
+    "Feeding synonym groups into an AI prompt to vary phrasing or improve German copy."
+  ],
+  "agentIdeas": [
+    "Call **OpenThesaurus** \"Get Synonyms\" to gather German alternatives for a keyword, then pass them to **DeepL** \"Translate Text\" to produce matching translations in another language.",
+    "Use **OpenThesaurus** \"Get Synonyms\" to build a list of related German terms and feed them into **OpenAI** \"Create Chat Completion\" to rewrite a paragraph with more varied vocabulary.",
+    "Pull synonym groups with **OpenThesaurus** \"Get Synonyms\" and log each term with **Google Sheets** \"Add Row\" to maintain a German keyword and synonym reference sheet."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/openthesaurus/public/icon.png",
+  "sourcePaths": {
+    "service": "services/openthesaurus",
+    "readme": "services/openthesaurus/README.md",
+    "index": "services/openthesaurus/src/index.js"
+  }
+}

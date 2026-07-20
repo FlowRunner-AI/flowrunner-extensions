@@ -1,0 +1,107 @@
+{
+  "slug": "wufoo",
+  "name": "Wufoo",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Wufoo](https://www.wufoo.com/) online forms with FlowRunner. List forms and their fields, read and create form entries (submissions), work with reports, audit account users, and manage submission webhooks — all through the Wufoo REST API v3.",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Forms",
+    "Entries",
+    "Reports",
+    "Users",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "List Forms",
+      "category": "Forms",
+      "description": "Lists all forms in the Wufoo account, each with its Name, Hash (the form identifier used by every other Wufoo operation), public status, and links to its fields and entries. Use a form's Hash as the \"Form Identifier\" argument elsewhere. Supports paging and an optional count of entries submitted today."
+    },
+    {
+      "name": "Get Form",
+      "category": "Forms",
+      "description": "Retrieves a single form by its identifier (the form Hash from List Forms, or the form URL slug). Returns the form's metadata including Name, description, public status, redirect settings, and links to its fields and entries."
+    },
+    {
+      "name": "List Form Fields",
+      "category": "Forms",
+      "description": "Lists all fields on a form, including each field's ID (e.g. \"Field1\", \"Field105\"), Title, Type, whether it is required, sub-fields (for address/name/checkbox fields), and choices (for select/radio fields). Wufoo entries are keyed by these Field IDs, so run this first to map human-readable labels to the Field{n} keys needed to build filters, submit entries, or interpret entry data."
+    },
+    {
+      "name": "List Entries",
+      "category": "Entries",
+      "description": "Lists submissions (entries) for a form. Each entry is keyed by Field IDs (e.g. \"Field1\", \"Field105\") plus EntryId and DateCreated — run List Form Fields to map those IDs to labels. Supports paging (pageStart / pageSize, max 100 per page), sorting by a Field ID, and an optional single-condition filter (Field ID + operator + value). Set Include System Fields to return submission metadata such as IP and completion status."
+    },
+    {
+      "name": "Get Entry Count",
+      "category": "Entries",
+      "description": "Returns the total number of entries (submissions) for a form as an EntryCount value. Useful for reporting or pagination without retrieving the entries themselves."
+    },
+    {
+      "name": "Create Entry",
+      "category": "Entries",
+      "description": "Submits a new entry to a form, exactly as if a user filled it out. Provide field values as a map keyed by Field ID (e.g. {\"Field1\":\"Jane\",\"Field105\":\"jane@example.com\"}) — run List Form Fields first to discover the Field IDs and types. Date fields expect YYYYMMDD. Returns Success, the new EntryId, and links. Note: submissions are rate-limited to 50 per user per 5-minute window."
+    },
+    {
+      "name": "List Reports",
+      "category": "Reports",
+      "description": "Lists all reports in the Wufoo account, each with its Name, Hash (report identifier), description, visibility, and links to its entries and widgets. Use a report's Hash with the other report operations."
+    },
+    {
+      "name": "Get Report",
+      "category": "Reports",
+      "description": "Retrieves a single report by its identifier (the report Hash from List Reports, or the report URL slug). Returns the report's metadata including Name, description, visibility, and links to its entries and widgets."
+    },
+    {
+      "name": "Get Report Entries",
+      "category": "Reports",
+      "description": "Returns the entries included in a report, keyed by Field IDs just like form entries. Use List Form Fields on the underlying form to map Field IDs to labels."
+    },
+    {
+      "name": "Get Report Widgets",
+      "category": "Reports",
+      "description": "Returns the widgets (charts, graphs, and summary tiles) that make up a report, including each widget's type, title, size, and configuration. Useful for reconstructing report visualizations or reading aggregated metrics."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists all users on the Wufoo account, each with their Hash, name, email, and administrative flags (whether they can create/manage forms, reports, and users). Useful for auditing account access."
+    },
+    {
+      "name": "Add Webhook",
+      "category": "Webhooks",
+      "description": "Registers (or updates) a webhook on a form so Wufoo POSTs entry data to your URL whenever the form is submitted. Provide the callback URL, an optional handshake key (echoed back on each POST so you can verify authenticity), and whether to include field metadata in the payload. Returns the created webhook's WebHookHash — save it to delete the webhook later."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Removes a webhook from a form so Wufoo stops POSTing submissions to it. Requires the form identifier and the webhook Hash returned by Add Webhook."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new Wufoo form submissions into a CRM, spreadsheet, or database.",
+    "Programmatically submit entries to a Wufoo form from another system.",
+    "Report on submission volume and read report entries/widgets for dashboards.",
+    "Register a webhook so downstream automations react to each new submission.",
+    "Audit account users and their form/report/user administration permissions."
+  ],
+  "agentIdeas": [
+    "After **List Entries** returns new Wufoo submissions, use **Google Sheets** \"Add Row\" to log each entry (mapped from its `Field{n}` values) into a tracking spreadsheet.",
+    "When a lead form is submitted, read it with **List Entries** and call **HubSpot** \"Create Contact\" to push the applicant's details into your CRM.",
+    "Use **List Form Fields** and **Get Entry Count** to build a submission-volume summary, then send it with **Gmail** \"Send Message\" as a daily digest email."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/wufoo/public/icon.png",
+  "sourcePaths": {
+    "service": "services/wufoo",
+    "readme": "services/wufoo/README.md",
+    "index": "services/wufoo/src/index.js"
+  }
+}

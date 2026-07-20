@@ -1,0 +1,97 @@
+{
+  "slug": "apollo",
+  "name": "Apollo.io",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "A comprehensive sales intelligence and lead enrichment integration that connects Apollo's prospecting database with automated workflows. This extension enables AI-powered lead qualification, contact data verification, and systematic engagement processes for building targeted prospect lists and managing outreach campaigns.",
+  "actionCount": 11,
+  "triggerCount": 0,
+  "operationCategories": [
+    "People Enrichment",
+    "Company Research",
+    "People Search",
+    "Task Management",
+    "Team Management",
+    "Sequences",
+    "Contact Management"
+  ],
+  "actions": [
+    {
+      "name": "Enrich Person",
+      "category": "People Enrichment",
+      "description": "Enriches a person's profile using Apollo for AI-powered lead qualification and contact data verification. Ideal for AI agents building prospect lists, validating contact information before outreach, or enriching CRM data with comprehensive professional details including employment history, contact info, and social profiles."
+    },
+    {
+      "name": "Enrich People",
+      "category": "People Enrichment",
+      "description": "Enriches up to 100 people using Apollo's Bulk Enrichment endpoint."
+    },
+    {
+      "name": "Enrich Organization",
+      "category": "Company Research",
+      "description": "Enriches a company using its domain."
+    },
+    {
+      "name": "People Search",
+      "category": "People Search",
+      "description": "Search and filter people using Apollo's advanced search for AI-driven prospecting and lead generation. Perfect for AI agents building targeted prospect lists, researching potential customers by job title/seniority/location, or finding decision-makers within specific companies and industries."
+    },
+    {
+      "name": "Search Organizations",
+      "category": "Company Research",
+      "description": "Search and filter companies using Apollo's comprehensive database for AI-powered market research and account-based marketing. Ideal for AI agents identifying target companies by size/revenue/technology stack, building account lists for outreach campaigns, or researching market segments and competitor landscapes."
+    },
+    {
+      "name": "Get Organization Job Postings",
+      "category": "Company Research",
+      "description": "Retrieve public job postings for a specific organization using its Apollo ID."
+    },
+    {
+      "name": "Create Task",
+      "category": "Task Management",
+      "description": "Creates task assignments for Apollo contacts, enabling AI agents to automate follow-up workflows and schedule outreach activities. Perfect for building systematic engagement processes, assigning manual review tasks, or triggering human touchpoints in automated sequences."
+    },
+    {
+      "name": "Get a List of Users",
+      "category": "Team Management",
+      "description": "Retrieve the IDs and info for all users (teammates) in your Apollo account. These IDs are used in operations like Create Task, Create Deal, and more."
+    },
+    {
+      "name": "Search Sequences",
+      "category": "Sequences",
+      "description": "Search for Apollo sequences using a text query and pagination options."
+    },
+    {
+      "name": "Add Contacts to Sequence",
+      "category": "Sequences",
+      "description": "Add one or more contacts to an Apollo sequence using their IDs."
+    },
+    {
+      "name": "Search Contacts",
+      "category": "Contact Management",
+      "description": "Search for contacts that have been added to your Apollo account, using filters like keyword, stage, and sort order."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Building AI agents for automated lead qualification and prospecting",
+    "Enriching CRM data with comprehensive professional contact details",
+    "Creating targeted prospect lists using advanced search filters",
+    "Automating follow-up workflows and scheduling outreach activities",
+    "Conducting market research and competitor landscape analysis",
+    "Managing account-based marketing campaigns with systematic engagement",
+    "Validating contact information before outreach campaigns"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/apollo/public/icon.png",
+  "sourcePaths": {
+    "service": "services/apollo",
+    "readme": "services/apollo/README.md",
+    "index": "services/apollo/src/index.js"
+  }
+}

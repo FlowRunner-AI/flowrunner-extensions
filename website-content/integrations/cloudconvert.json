@@ -1,0 +1,119 @@
+{
+  "slug": "cloudconvert",
+  "name": "CloudConvert",
+  "marketingCategory": "Utilities & Personal",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Convert, merge, capture, optimize, archive, and inspect files through the CloudConvert v2 API. Every conversion action accepts a public URL or a FlowRunner file, and by default waits for the job to finish and saves the output back to FlowRunner file storage. Raw job graphs and job/task management give full access to CloudConvert pipelines when the convenience actions are not enough.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Conversion",
+    "Jobs",
+    "Tasks",
+    "Reference",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Convert File",
+      "category": "Conversion",
+      "description": "Converts a file to another format using CloudConvert (200+ formats: documents, spreadsheets, presentations, images, audio, video, ebooks, and more). Provide the source as a public URL or a FlowRunner file, pick the target format (the dropdown narrows to reachable formats when Input Format is set), and optionally choose a conversion engine or pass engine-specific options (e.g. page ranges for PDF input). By default the action waits for the conversion to finish and saves the converted file to FlowRunner file storage, returning its URL. Use List Supported Formats to explore available conversions."
+    },
+    {
+      "name": "Merge Files to PDF",
+      "category": "Conversion",
+      "description": "Merges multiple files into a single PDF document. Accepts any mix of public file URLs plus optionally one FlowRunner file (at least two inputs in total); non-PDF inputs (images, Office documents, etc.) are converted automatically during the merge. Files are merged in the order provided, with the FlowRunner file last. By default the action waits for completion and saves the merged PDF to FlowRunner file storage, returning its URL."
+    },
+    {
+      "name": "Capture Website",
+      "category": "Conversion",
+      "description": "Captures a website as a PDF document or a PNG/JPG screenshot using a headless browser. Control the viewport size, when the capture is taken (page load event, DOM ready, or network idle), an extra wait time, and for PDF output an optional page range. By default the action waits for completion and saves the capture to FlowRunner file storage, returning its URL."
+    },
+    {
+      "name": "Optimize File",
+      "category": "Conversion",
+      "description": "Reduces the file size of a PDF, PNG, or JPG without changing its format. Choose an optimization profile tuned for web viewing, printing, or archiving, and optionally an image quality level (1-100) for JPG/PNG input. By default the action waits for completion and saves the optimized file to FlowRunner file storage, returning its URL."
+    },
+    {
+      "name": "Create Archive",
+      "category": "Conversion",
+      "description": "Bundles multiple files into a single archive (ZIP, RAR, 7Z, or TAR). Accepts any mix of public file URLs plus optionally one FlowRunner file (at least one input). By default the action waits for completion and saves the archive to FlowRunner file storage, returning its URL."
+    },
+    {
+      "name": "Create Thumbnail",
+      "category": "Conversion",
+      "description": "Creates a thumbnail image (PNG, JPG, or WEBP) from a document, image, or video file. Set the maximum width and height in pixels and how the source should fit: shrink to fit within the bounds, crop to fill them exactly, or stretch ignoring the aspect ratio. By default the action waits for completion and saves the thumbnail to FlowRunner file storage, returning its URL."
+    },
+    {
+      "name": "Extract Metadata",
+      "category": "Conversion",
+      "description": "Extracts metadata from a file (e.g. PDF author, title, page count, producer; image EXIF data; video codec details) and returns it as a JSON object. The metadata is read directly from the CloudConvert task result - no output file is produced."
+    },
+    {
+      "name": "Create Job",
+      "category": "Jobs",
+      "description": "Creates a CloudConvert job from a raw task graph - the escape hatch for arbitrary pipelines not covered by the convenience actions (e.g. one import fanned out to several conversions, watermarking, or webhook-driven jobs). Tasks is a JSON object keyed by task name; each task needs an operation (import/url, import/upload, convert, merge, archive, optimize, thumbnail, metadata, capture-website, export/url, ...) and its operation-specific parameters, with input referencing upstream task names. When waiting, the finished job is returned with each task's result (export/url tasks expose temporary download URLs in result.files); outputs are NOT auto-saved to FlowRunner file storage."
+    },
+    {
+      "name": "Get Job",
+      "category": "Jobs",
+      "description": "Retrieves a CloudConvert job by ID, including its status (waiting, processing, finished, or error), timestamps, tag, and all tasks with their results. For finished jobs with an export/url task, the temporary download URLs are available in the task's result.files. Use this to check on jobs started with Wait For Completion disabled."
+    },
+    {
+      "name": "List Jobs",
+      "category": "Jobs",
+      "description": "Lists CloudConvert jobs for the account, newest first, with pagination. Filter by status (Processing, Finished, or Error) and/or by the tag assigned at creation. Optionally include each job's tasks in the response. Returns the jobs plus pagination metadata."
+    },
+    {
+      "name": "Delete Job",
+      "category": "Jobs",
+      "description": "Deletes a CloudConvert job together with all of its tasks and stored data. Note that CloudConvert deletes jobs automatically 24 hours after they end, so explicit deletion is mainly useful for removing sensitive files early."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single CloudConvert task by ID, including its operation, status, timing, consumed credits, payload, and result (e.g. result.files with download URLs for export/url tasks, or result.metadata for metadata tasks). Useful for inspecting one step of a job in detail."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Lists CloudConvert tasks for the account, newest first, with pagination. Filter by the job they belong to, by status (Waiting, Processing, Finished, or Error), and/or by operation type (Convert, Merge, Export URL, etc.). Returns the tasks plus pagination metadata."
+    },
+    {
+      "name": "List Supported Formats",
+      "category": "Reference",
+      "description": "Lists the conversion format pairs CloudConvert supports, optionally filtered by input and/or output format. Each entry describes one supported input-to-output conversion with the engine used, the credits it costs, and its format group (document, image, video, audio, archive, ...). Use this to discover what a given file type can be converted to before calling Convert File."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Account",
+      "description": "Retrieves the CloudConvert account associated with the configured API key, including the remaining conversion credits. Useful for monitoring credit balance before running large conversion batches and for verifying that the API key is valid."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Convert incoming documents, images, audio, or video between 200+ formats within a flow",
+    "Merge a batch of files (Office docs, images, PDFs) into a single PDF for reports or invoices",
+    "Capture a webpage as a PDF or screenshot for archiving or notifications",
+    "Shrink PDFs and images, or generate thumbnails, before storing or emailing them",
+    "Bundle generated files into a ZIP/7Z/TAR archive for delivery",
+    "Extract PDF, image EXIF, or video metadata to drive downstream logic",
+    "Build arbitrary multi-step conversion pipelines with raw job graphs and monitor them via jobs/tasks"
+  ],
+  "agentIdeas": [
+    "When a **Dropbox** \"On New File\" trigger fires, call **CloudConvert** \"Convert File\" to convert the file to PDF, then store the result back with **Dropbox** \"Upload File from URL\".",
+    "Use **Google Drive** \"Download File\" to pull a set of source files, then **CloudConvert** \"Merge Files to PDF\" to combine them into one report and re-upload with **Google Drive** \"Upload File\".",
+    "After **CloudConvert** \"Capture Website\" saves a webpage screenshot to storage, use **Gmail** \"Send Message\" to email the capture to stakeholders as an attachment."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/cloudconvert/public/icon.png",
+  "sourcePaths": {
+    "service": "services/cloudconvert",
+    "readme": "services/cloudconvert/README.md",
+    "index": "services/cloudconvert/src/index.js"
+  }
+}

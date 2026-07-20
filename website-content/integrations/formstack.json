@@ -1,0 +1,124 @@
+{
+  "slug": "formstack",
+  "name": "Formstack",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage online forms, submissions, fields, folders, webhooks, and confirmations through the Formstack **V2025 API** (base `https://www.formstack.com/api/v2025`, plural resources, no `.json` suffixes, JSON responses). Authenticates with a Formstack **Personal Access Token** that starts with `fs_pat_`, sent as `Authorization: Bearer <accessToken>`. Create the token in Formstack → Account → API / Personal Access Tokens.",
+  "actionCount": 16,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Forms",
+    "Submissions",
+    "Fields",
+    "Folders",
+    "Webhooks",
+    "Confirmations"
+  ],
+  "actions": [
+    {
+      "name": "List Forms",
+      "category": "Forms",
+      "description": "Retrieves the forms in your Formstack account, paginated and optionally filtered by name or folder. Each form includes its id, name, submission count, and live URL. Use a form id with Get Form to retrieve full field definitions. Uses the Formstack V2025 API (GET /forms)."
+    },
+    {
+      "name": "Get Form",
+      "category": "Forms",
+      "description": "Retrieves a single form by id, including its full field definitions. The returned fields map each field id to its label and type — this mapping is how you interpret submission data, which stores values keyed by field id (see Get Submission). Uses the Formstack V2025 API (GET /forms/{formId})."
+    },
+    {
+      "name": "Create Form",
+      "category": "Forms",
+      "description": "Creates a new form in your Formstack account with the given name. Optionally place it in a folder. The response includes the new form's id and URL; use Create Field to add fields to it. Uses the Formstack V2025 API (POST /forms)."
+    },
+    {
+      "name": "Copy Form",
+      "category": "Forms",
+      "description": "Creates a duplicate of an existing form, including its fields and settings. The copy is created as a new form with its own id. Uses the Formstack V2025 API (POST /forms/{formId}/copy)."
+    },
+    {
+      "name": "Delete Form",
+      "category": "Forms",
+      "description": "Permanently deletes a form and all of its submissions. This action cannot be undone. Uses the Formstack V2025 API (DELETE /forms/{formId})."
+    },
+    {
+      "name": "List Submissions",
+      "category": "Submissions",
+      "description": "Retrieves submissions for a form, paginated and ordered by submission time. Filter by a time window (min/max time, Eastern Time) or a keyword search across field values. Enable \"Include Data\" to return the submitted field values; each value is keyed by field id — use Get Form or List Form Fields to map field ids to labels. Uses the Formstack V2025 API (GET /forms/{formId}/submissions)."
+    },
+    {
+      "name": "Get Submission",
+      "category": "Submissions",
+      "description": "Retrieves a single submission by id, including its field values. Each value is returned keyed by field id — use Get Form or List Form Fields to map those field ids to human-readable labels. Uses the Formstack V2025 API (GET /submissions/{submissionId})."
+    },
+    {
+      "name": "Create Submission",
+      "category": "Submissions",
+      "description": "Creates a new submission for a form. Provide the field values as an array of objects, each with a field id and a value (e.g. {\"field\":\"48234502\",\"value\":\"jane@example.com\"}). Field ids come from Get Form or List Form Fields. In the V2025 API each entry is sent as {\"id\":<field id>,\"value\":{\"value\":<value>}} inside a \"fields\" array. Uses the Formstack V2025 API (POST /forms/{formId}/submissions)."
+    },
+    {
+      "name": "Delete Submission",
+      "category": "Submissions",
+      "description": "Permanently deletes a submission by id. This action cannot be undone. Uses the Formstack V2025 API (DELETE /submissions/{submissionId})."
+    },
+    {
+      "name": "List Form Fields",
+      "category": "Fields",
+      "description": "Retrieves the field definitions for a form. Each field includes its id, label, and type. This mapping of field id to label is essential for interpreting submission data, which stores values keyed by field id. Uses the Formstack V2025 API (GET /forms/{formId}/fields)."
+    },
+    {
+      "name": "Create Field",
+      "category": "Fields",
+      "description": "Adds a new field to a form. Choose a field type and provide a label. Returns the created field including its new id, which you can then use when creating submissions. Uses the Formstack V2025 API (POST /forms/{formId}/fields)."
+    },
+    {
+      "name": "List Folders",
+      "category": "Folders",
+      "description": "Retrieves the form folders in your Formstack account. Each folder includes its id and name. Use a folder id to filter forms or to place a new form in a folder. Uses the Formstack V2025 API (GET /folders)."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Retrieves the webhooks configured for a form. Each webhook includes its id and target URL. Webhooks notify an external URL each time the form receives a new submission. Uses the Formstack V2025 API (GET /forms/{formId}/webhooks)."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Creates a webhook on a form. Formstack will POST the submission payload to the given URL each time the form receives a new submission. Returns the created webhook including its id. Uses the Formstack V2025 API (POST /forms/{formId}/webhooks)."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Permanently removes a webhook by id. Formstack will stop notifying its URL of new submissions. Requires both the form id and the webhook id. Uses the Formstack V2025 API (DELETE /forms/{formId}/webhooks/{webhookId})."
+    },
+    {
+      "name": "List Confirmations",
+      "category": "Confirmations",
+      "description": "Retrieves the confirmation (thank-you) emails configured for a form. Each confirmation includes its id, name, and message/recipient settings sent after a user submits the form. Uses the Formstack V2025 API (GET /forms/{formId}/confirmations)."
+    }
+  ],
+  "triggers": [
+    "On New Submission"
+  ],
+  "idealUseCases": [
+    "Sync new form submissions into a CRM, spreadsheet, or database as they arrive.",
+    "Programmatically create forms and fields, then collect submissions via the API.",
+    "Notify a team channel or send an email whenever a form receives a new submission.",
+    "Manage submission data, webhooks, and folders as part of a larger automation."
+  ],
+  "agentIdeas": [
+    "When a **Formstack** \"On New Submission\" trigger fires, use **Google Sheets** \"Add Row\" to log the submission (after mapping field ids to labels with \"List Form Fields\") and **Slack** \"Send Message To Channel\" to alert the team.",
+    "When a **Formstack** \"On New Submission\" trigger fires, call **Formstack** \"Get Form\" to resolve field labels, then use **Gmail** \"Send Message\" to email a formatted copy of the submission to a recipient.",
+    "Use **Google Sheets** \"Get Rows\" to read a list of contacts and call **Formstack** \"Create Submission\" for each one to seed a form with records."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/formstack/public/icon.png",
+  "sourcePaths": {
+    "service": "services/formstack",
+    "readme": "services/formstack/README.md",
+    "index": "services/formstack/src/index.js"
+  }
+}

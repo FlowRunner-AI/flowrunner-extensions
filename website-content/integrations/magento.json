@@ -1,0 +1,182 @@
+{
+  "slug": "magento",
+  "name": "Magento 2",
+  "marketingCategory": "E-commerce",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Magento 2 / Adobe Commerce](https://business.adobe.com/products/magento/magento-commerce.html) with FlowRunner. Manage products, orders, customers, categories, and sales documents (invoices, shipments, credit memos) through the Magento REST API (`/rest/V1`).",
+  "actionCount": 28,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Products",
+    "Orders",
+    "Customers",
+    "Categories",
+    "Sales Documents"
+  ],
+  "actions": [
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Retrieves a paginated list of catalog products using Magento searchCriteria filters. Provide an array of filters (each with field, value and conditionType) to narrow results — e.g. filter by status, type_id, name (with a \"like\" condition and % wildcards) or price. Returns matching product items plus total_count and the applied search_criteria."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves a single catalog product by its SKU, including price, status, visibility, type, attribute set and custom attributes."
+    },
+    {
+      "name": "Create Product",
+      "category": "Products",
+      "description": "Creates a new catalog product. SKU and name are required. Status is Enabled/Disabled and Visibility controls where the product appears (Not Visible, Catalog, Search, or Catalog & Search). Use custom attributes for attributes such as description, url_key or category_ids. Defaults: attribute set 4 (Default), type \"simple\"."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates an existing catalog product identified by SKU. Only the fields you provide are changed. Pass custom attributes to update attributes such as description or category assignments."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Products",
+      "description": "Permanently deletes a catalog product by SKU. Returns true on success."
+    },
+    {
+      "name": "Update Stock",
+      "category": "Products",
+      "description": "Updates the stock item (quantity and stock status) for a product SKU. Requires the stock item ID, which you can find on the product's stockItems data. Set quantity and whether the product is in stock."
+    },
+    {
+      "name": "Get Stock Item",
+      "category": "Products",
+      "description": "Retrieves the stock item (inventory) details for a product SKU, including quantity, stock status, and the item_id needed to update stock."
+    },
+    {
+      "name": "List Orders",
+      "category": "Orders",
+      "description": "Retrieves a paginated list of sales orders using searchCriteria filters. Common filters: status (e.g. pending, processing, complete, canceled, holded), customer_email, created_at (with from/to conditions). Returns order items plus total_count."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves a single sales order by its entity ID, including line items, totals, status, addresses and payment information."
+    },
+    {
+      "name": "Create Invoice for Order",
+      "category": "Orders",
+      "description": "Creates an invoice for an order, optionally capturing payment and notifying the customer. Leave items empty to invoice all invoiceable items, or provide specific order item IDs and quantities. Returns the new invoice ID."
+    },
+    {
+      "name": "Create Shipment",
+      "category": "Orders",
+      "description": "Creates a shipment for an order, optionally with specific items and tracking numbers, and can notify the customer. Leave items empty to ship all shippable items. Returns the new shipment ID."
+    },
+    {
+      "name": "Add Order Comment",
+      "category": "Orders",
+      "description": "Adds a comment to an order's status history, optionally changing the order status and notifying the customer."
+    },
+    {
+      "name": "Cancel Order",
+      "category": "Orders",
+      "description": "Cancels an order by its entity ID. Only orders in a cancelable state can be canceled. Returns true on success."
+    },
+    {
+      "name": "Hold Order",
+      "category": "Orders",
+      "description": "Places an order on hold by its entity ID. A held order cannot be invoiced or shipped until it is unheld. Returns true on success."
+    },
+    {
+      "name": "Unhold Order",
+      "category": "Orders",
+      "description": "Releases an order from hold by its entity ID, returning it to its previous state. Returns true on success."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Searches customers using searchCriteria filters. Common filters: email, firstname, lastname, created_at, group_id. Returns matching customer items plus total_count."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer by ID, including email, name, group, store, and address book."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a new customer account. Email, first name and last name are required. Optionally set a password (otherwise the customer must set one via email), and the website and customer group."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates an existing customer identified by ID. Only the fields you provide are changed. Note that Magento requires the email on update, so it is always sent when provided."
+    },
+    {
+      "name": "Delete Customer",
+      "category": "Customers",
+      "description": "Permanently deletes a customer account by ID. Returns true on success."
+    },
+    {
+      "name": "List Categories",
+      "category": "Categories",
+      "description": "Retrieves the category tree starting from a root category. Returns a nested tree with each category's id, name, is_active, level, and children_data. Optionally set the root category ID and how many levels deep to traverse."
+    },
+    {
+      "name": "Get Category",
+      "category": "Categories",
+      "description": "Retrieves a single category by ID, including name, parent, active status, path, and custom attributes."
+    },
+    {
+      "name": "Create Category",
+      "category": "Categories",
+      "description": "Creates a new category under a parent category. Name is required. Set the parent category ID (defaults to the store root, 2) and whether the category is active."
+    },
+    {
+      "name": "Get Products in Category",
+      "category": "Categories",
+      "description": "Retrieves the list of products assigned to a category, with each product's SKU, position, and category ID."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Sales Documents",
+      "description": "Retrieves a paginated list of invoices using searchCriteria filters. Common filters: order_id, state, created_at. Returns invoice items plus total_count."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Sales Documents",
+      "description": "Retrieves a single invoice by its entity ID, including line items and totals."
+    },
+    {
+      "name": "List Shipments",
+      "category": "Sales Documents",
+      "description": "Retrieves a paginated list of shipments using searchCriteria filters. Common filters: order_id, created_at. Returns shipment items plus total_count."
+    },
+    {
+      "name": "List Credit Memos",
+      "category": "Sales Documents",
+      "description": "Retrieves a paginated list of credit memos (refunds) using searchCriteria filters. Common filters: order_id, state, created_at. Returns credit memo items plus total_count."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync catalog products and stock levels between Magento and an external system of record.",
+    "Automate order fulfillment: invoice, ship, and comment on orders as they progress.",
+    "Keep customer records in step with your CRM or marketing platform.",
+    "Report on sales activity by querying orders, invoices, shipments, and credit memos with `searchCriteria` filters.",
+    "Manage the category tree and category-to-product assignments programmatically."
+  ],
+  "agentIdeas": [
+    "Use **Magento 2** \"List Orders\" to pull newly placed orders, then **ShipBob** \"Create Order\" to push each into fulfillment and **Gmail** \"Send Message\" to email the customer a confirmation with the expected ship date.",
+    "When stock runs low, use **Magento 2** \"Get Stock Item\" to check the on-hand quantity and **Magento 2** \"Update Stock\" to replenish it, then log the change with **Google Sheets** \"Add Row\".",
+    "Use **Magento 2** \"List Customers\" filtered by `created_at` to find new buyers, then **Slack** \"Send Message To Channel\" to alert the sales team and **Google Sheets** \"Add Row\" to append them to a follow-up sheet."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/magento/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/magento",
+    "readme": "services/magento/README.md",
+    "index": "services/magento/src/index.js"
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "slug": "twist",
+  "name": "Twist",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Twist](https://twist.com/), Doist's team communication app built around organized, threaded conversations. It uses OAuth 2 to manage workspaces, channels, threads, comments, and direct-message conversations following Twist's workspace → channel → thread → comment hierarchy.",
+  "actionCount": 27,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Workspaces",
+    "Channels",
+    "Threads",
+    "Comments",
+    "Messages",
+    "Users"
+  ],
+  "actions": [
+    {
+      "name": "Get Workspaces",
+      "category": "Workspaces",
+      "description": "Retrieves all Twist workspaces the connected user belongs to. A workspace is the top-level container that holds channels, threads, and conversations for an organization or team."
+    },
+    {
+      "name": "Get Workspace",
+      "category": "Workspaces",
+      "description": "Retrieves a single Twist workspace by its numeric ID, including its name, color, creator, and default conversation."
+    },
+    {
+      "name": "Get Default Workspace",
+      "category": "Workspaces",
+      "description": "Retrieves the connected user's default Twist workspace. Useful as a starting point when no specific workspace ID is known."
+    },
+    {
+      "name": "Get Channels",
+      "category": "Channels",
+      "description": "Lists channels within a workspace. Channels group related threads (like topics or projects). By default only active channels are returned; enable \"Include Archived\" to also return archived channels."
+    },
+    {
+      "name": "Get Channel",
+      "category": "Channels",
+      "description": "Retrieves a single channel by its numeric ID, including its name, description, visibility, and archived state."
+    },
+    {
+      "name": "Add Channel",
+      "category": "Channels",
+      "description": "Creates a new channel in a workspace. Set \"Public\" to true so all workspace members can join, or false for a private channel limited to invited members. The description supports Twist markdown."
+    },
+    {
+      "name": "Update Channel",
+      "category": "Channels",
+      "description": "Updates an existing channel's name, description, or public visibility. Only the fields you provide are changed. The description supports Twist markdown."
+    },
+    {
+      "name": "Archive Channel",
+      "category": "Channels",
+      "description": "Archives a channel, hiding it from the active channel list while preserving its threads. Use Update Channel or Remove Channel afterwards if needed; archived channels can be re-created by admins in the Twist UI."
+    },
+    {
+      "name": "Remove Channel",
+      "category": "Channels",
+      "description": "Permanently deletes a channel and all of its threads. This action cannot be undone."
+    },
+    {
+      "name": "Get Threads",
+      "category": "Threads",
+      "description": "Lists threads within a channel, newest first. A thread is a titled, focused discussion inside a channel. Use \"Limit\" to control how many are returned."
+    },
+    {
+      "name": "Get Thread",
+      "category": "Threads",
+      "description": "Retrieves a single thread by its numeric ID, including its title, content, creator, and metadata."
+    },
+    {
+      "name": "Add Thread",
+      "category": "Threads",
+      "description": "Starts a new thread in a channel with a title and body. The content supports Twist markdown, including mentions written as [Name](twist-mention://USER_ID). Recipients is a comma-separated list of user IDs to notify, or the literal value EVERYONE to notify all channel members."
+    },
+    {
+      "name": "Update Thread",
+      "category": "Threads",
+      "description": "Updates an existing thread's title and/or content. Only the fields you provide are changed. The content supports Twist markdown."
+    },
+    {
+      "name": "Star Thread",
+      "category": "Threads",
+      "description": "Stars (favorites) a thread for the connected user so it can be found quickly in their starred list."
+    },
+    {
+      "name": "Move Thread",
+      "category": "Threads",
+      "description": "Moves a thread from its current channel into a different channel within the same workspace."
+    },
+    {
+      "name": "Close Thread",
+      "category": "Threads",
+      "description": "Marks a thread as closed (resolved), signaling that the discussion is complete. Closed threads can be reopened later."
+    },
+    {
+      "name": "Reopen Thread",
+      "category": "Threads",
+      "description": "Reopens a previously closed thread so the discussion can continue."
+    },
+    {
+      "name": "Remove Thread",
+      "category": "Threads",
+      "description": "Permanently deletes a thread and all of its comments. This action cannot be undone."
+    },
+    {
+      "name": "Get Comments",
+      "category": "Comments",
+      "description": "Lists the comments (replies) on a thread in chronological order. Use \"Limit\" to control how many are returned."
+    },
+    {
+      "name": "Add Comment",
+      "category": "Comments",
+      "description": "Posts a new comment (reply) to a thread. The content supports Twist markdown, including mentions written as [Name](twist-mention://USER_ID). Recipients is a comma-separated list of user IDs to notify, or the literal value EVERYONE."
+    },
+    {
+      "name": "Update Comment",
+      "category": "Comments",
+      "description": "Updates the content of an existing comment. The content supports Twist markdown."
+    },
+    {
+      "name": "Remove Comment",
+      "category": "Comments",
+      "description": "Permanently deletes a comment from its thread. This action cannot be undone."
+    },
+    {
+      "name": "Get Conversations",
+      "category": "Messages",
+      "description": "Lists the direct-message conversations in a workspace. Conversations are private, ongoing chats between members (as opposed to channel threads)."
+    },
+    {
+      "name": "Get Conversation Messages",
+      "category": "Messages",
+      "description": "Lists the messages in a direct-message conversation in chronological order. Use \"Limit\" to control how many are returned."
+    },
+    {
+      "name": "Add Message",
+      "category": "Messages",
+      "description": "Sends a new message into a direct-message conversation. The content supports Twist markdown, including mentions written as [Name](twist-mention://USER_ID)."
+    },
+    {
+      "name": "Get Workspace Users",
+      "category": "Users",
+      "description": "Lists all users who are members of a workspace, including their IDs, names, and email addresses. Useful for resolving recipients and mentions."
+    },
+    {
+      "name": "Get Session User",
+      "category": "Users",
+      "description": "Retrieves the profile of the currently connected Twist user, including name, email, and default workspace. Useful for verifying that the connection is authorized."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically start a thread or post a comment in a channel when an event happens in another system (a new ticket, deploy, or form submission).",
+    "Create and organize channels for new projects or teams, then seed them with an initial thread.",
+    "Notify specific members or everyone by adding threads, comments, or direct messages with mentions.",
+    "Resolve conversations by closing threads once work is complete, and reopen them if follow-up is needed.",
+    "Sync direct-message conversations or channel discussions into logs, dashboards, or spreadsheets."
+  ],
+  "agentIdeas": [
+    "When a **Slack** \"On Channel Message\" trigger fires in a monitored channel, use **Twist** \"Add Thread\" to open an organized, titled discussion in the relevant workspace channel for follow-up.",
+    "When **Linear** \"Create Issue\" produces a new bug or feature, use **Twist** \"Add Comment\" on the tracking thread (or \"Add Message\" to a conversation) to notify the responsible members with a `twist-mention` link.",
+    "Use **Twist** \"Get Conversation Messages\" to pull a direct-message discussion, then call **Todoist** \"Create Task\" to turn each action item into a tracked to-do."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/twist/public/icon.png",
+  "sourcePaths": {
+    "service": "services/twist",
+    "readme": "services/twist/README.md",
+    "index": "services/twist/src/index.js"
+  }
+}

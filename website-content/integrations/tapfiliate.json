@@ -1,0 +1,152 @@
+{
+  "slug": "tapfiliate",
+  "name": "Tapfiliate",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage affiliate, referral and influencer tracking on [Tapfiliate](https://tapfiliate.com) directly from your flows. This service wraps the Tapfiliate REST API (v1.6) to work with affiliates, programs, conversions, commissions and customers. Authentication uses an API key sent in the `X-Api-Key` header (Tapfiliate: **Settings -> API**).",
+  "actionCount": 22,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Affiliates",
+    "Programs",
+    "Conversions",
+    "Commissions",
+    "Customers"
+  ],
+  "actions": [
+    {
+      "name": "Create Affiliate",
+      "category": "Affiliates",
+      "description": "Creates a new affiliate account. Requires firstname, lastname and email. Optionally set a password (otherwise the affiliate receives an activation email), a company object (name, description, address), and additional profile fields. Returns the created affiliate including its generated id and referral code."
+    },
+    {
+      "name": "Get Affiliate",
+      "category": "Affiliates",
+      "description": "Retrieves a single affiliate by its id, including profile details, referral link, company, meta data and approval status."
+    },
+    {
+      "name": "List Affiliates",
+      "category": "Affiliates",
+      "description": "Lists affiliates in the account, optionally filtered by click id, source id or referral code. Results are paginated (25 per page by default); use the page parameter to fetch subsequent pages."
+    },
+    {
+      "name": "Update Affiliate",
+      "category": "Affiliates",
+      "description": "Updates an existing affiliate's profile fields such as first name, last name, email, password or company object. Only the fields you provide are changed. Returns the updated affiliate."
+    },
+    {
+      "name": "Delete Affiliate",
+      "category": "Affiliates",
+      "description": "Permanently deletes an affiliate by id. This removes the affiliate from the account; use with care as it cannot be undone."
+    },
+    {
+      "name": "Approve Affiliate",
+      "category": "Affiliates",
+      "description": "Approves an affiliate's participation in a specific program. Approval is per program, so provide both the program id and the affiliate id. Returns the updated program affiliation."
+    },
+    {
+      "name": "Disapprove Affiliate",
+      "category": "Affiliates",
+      "description": "Disapproves (revokes approval for) an affiliate in a specific program. Approval is per program, so provide both the program id and the affiliate id."
+    },
+    {
+      "name": "List Programs",
+      "category": "Programs",
+      "description": "Lists all affiliate programs configured in the account, including their id, title, currency and commission structure. Results are paginated."
+    },
+    {
+      "name": "Get Program",
+      "category": "Programs",
+      "description": "Retrieves a single affiliate program by its id, including title, currency, commission settings and asset details."
+    },
+    {
+      "name": "Add Affiliate to Program",
+      "category": "Programs",
+      "description": "Adds an existing affiliate to a program. Identify the affiliate by id or email, and optionally set whether they are approved immediately and assign a coupon. Returns the created program affiliation."
+    },
+    {
+      "name": "List Program Affiliates",
+      "category": "Programs",
+      "description": "Lists the affiliates enrolled in a specific program, optionally filtered by approval status. Results are paginated."
+    },
+    {
+      "name": "Create Conversion",
+      "category": "Conversions",
+      "description": "Records a conversion (sale or lead) and its commissions. Attribute it with at least one tracking identifier: click id, referral code, customer id or coupon. You may pass an external_id (your order id), an amount for automatic commission calculation, an explicit program group, a manual commissions array, and arbitrary meta_data. Returns the created conversion with generated commissions."
+    },
+    {
+      "name": "Get Conversion",
+      "category": "Conversions",
+      "description": "Retrieves a single conversion by its id, including its amount, attributed affiliate, commissions and meta data."
+    },
+    {
+      "name": "List Conversions",
+      "category": "Conversions",
+      "description": "Lists conversions in the account, optionally filtered by program, affiliate, external id, or a created date range. Results are paginated."
+    },
+    {
+      "name": "Add Commission to Conversion",
+      "category": "Conversions",
+      "description": "Adds an additional commission to an existing conversion. Provide the conversion id and the conversion sub-amount the commission is calculated from, with an optional comment and commission type. Returns the created commission."
+    },
+    {
+      "name": "List Commissions",
+      "category": "Commissions",
+      "description": "Lists commissions in the account, optionally filtered by payout status (pending, approved, disapproved or paid), affiliate, or conversion. Results are paginated."
+    },
+    {
+      "name": "Get Commission",
+      "category": "Commissions",
+      "description": "Retrieves a single commission by its id, including its amount, approval status, affiliate and parent conversion."
+    },
+    {
+      "name": "Approve Commission",
+      "category": "Commissions",
+      "description": "Approves a pending commission by id, making it eligible for payout. Returns the updated commission."
+    },
+    {
+      "name": "Disapprove Commission",
+      "category": "Commissions",
+      "description": "Disapproves a commission by id, removing it from the payable balance. Returns the updated commission."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a customer record and attributes it to an affiliate for customer-based (recurring) tracking. Attribute with a click id or referral code, and provide the customer id and optional name. Returns the created customer."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer by its id, including the attributed affiliate and status."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Lists customers in the account, optionally filtered by the attributed affiliate, program, or a created date range. Results are paginated."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically enroll new signups as affiliates and approve them into the right program.",
+    "Record sales as conversions and generate affiliate commissions when orders are placed.",
+    "Sync commission approval/payout status with your accounting or ops tools.",
+    "Attribute customers to affiliates for recurring (customer-based) tracking.",
+    "Report on affiliates, programs and conversions inside broader automation workflows."
+  ],
+  "agentIdeas": [
+    "When a **Shopify** \"On New Order\" trigger fires, use **Tapfiliate** \"Create Conversion\" to record the sale and generate the referring affiliate's commission.",
+    "Use **WooCommerce** \"Create Order\" alongside **Tapfiliate** \"Create Customer\" to attribute each new buyer to their affiliate for recurring commission tracking.",
+    "After a **Tapfiliate** \"Approve Commission\", use **Stripe** \"Create Refund\" or a payout flow to reconcile the affiliate's payable balance when an order is later refunded."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/tapfiliate/public/icon.png",
+  "sourcePaths": {
+    "service": "services/tapfiliate",
+    "readme": "services/tapfiliate/README.md",
+    "index": "services/tapfiliate/src/index.js"
+  }
+}

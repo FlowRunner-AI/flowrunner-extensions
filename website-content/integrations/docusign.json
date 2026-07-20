@@ -1,0 +1,92 @@
+{
+  "slug": "docusign",
+  "name": "DocuSign",
+  "marketingCategory": "Documents & E-signature",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate document signing workflows with DocuSign's eSignature platform. Send envelopes from templates or custom documents, track signing progress, manage recipients, and trigger workflows based on envelope lifecycle events such as completion, decline, or voiding.",
+  "actionCount": 9,
+  "triggerCount": 4,
+  "operationCategories": [
+    "Envelopes",
+    "Documents",
+    "Recipients"
+  ],
+  "actions": [
+    {
+      "name": "Send Envelope from Template",
+      "category": "Envelopes",
+      "description": "Creates and sends a DocuSign envelope using a pre-configured template. Assign a signer to a template role and optionally customize the email subject and body. Set status to 'created' to save as draft without sending."
+    },
+    {
+      "name": "Send Envelope with Document",
+      "category": "Envelopes",
+      "description": "Creates and sends a DocuSign envelope with a document from a URL. Downloads the document, embeds it in the envelope, and assigns a signer. Ideal for dynamically generated documents or files stored in Flowrunner."
+    },
+    {
+      "name": "Get Envelope Status",
+      "category": "Envelopes",
+      "description": "Retrieves the current status and details of a DocuSign envelope including sent date, status changes, and recipient information. Use this to check if an envelope has been signed, delivered, or declined."
+    },
+    {
+      "name": "List Envelopes",
+      "category": "Envelopes",
+      "description": "Lists envelopes from your DocuSign account with optional filtering by status, date range, and search text. Results are ordered by last modified date descending. Use this to find envelopes or monitor signing progress."
+    },
+    {
+      "name": "Void Envelope",
+      "category": "Envelopes",
+      "description": "Voids (cancels) a sent DocuSign envelope, preventing any further signing activity. A void reason is required and will be visible to all recipients. Only envelopes with status 'sent' or 'delivered' can be voided."
+    },
+    {
+      "name": "Resend Envelope",
+      "category": "Envelopes",
+      "description": "Resends email notifications to all pending recipients of a DocuSign envelope. Useful when recipients have not received or lost the original signing notification email."
+    },
+    {
+      "name": "Download Document",
+      "category": "Documents",
+      "description": "Downloads a specific document from a DocuSign envelope as a PDF. Use document ID 'combined' to get all documents merged into a single PDF, or 'certificate' to download the certificate of completion."
+    },
+    {
+      "name": "List Envelope Documents",
+      "category": "Documents",
+      "description": "Lists all documents contained in a DocuSign envelope, including their names, IDs, and file types. Useful for identifying which document to download from a multi-document envelope."
+    },
+    {
+      "name": "Get Envelope Recipients",
+      "category": "Recipients",
+      "description": "Retrieves all recipients of a DocuSign envelope with their signing status, delivery timestamps, and role information. Returns signers, carbon copy recipients, and other recipient types with their individual completion status."
+    }
+  ],
+  "triggers": [
+    "On Envelope Completed",
+    "On Envelope Sent",
+    "On Envelope Declined",
+    "On Envelope Voided"
+  ],
+  "idealUseCases": [
+    "Sending contracts and agreements for signature using pre-built templates",
+    "Creating envelopes with dynamically generated documents from URLs",
+    "Tracking envelope status and monitoring signing progress",
+    "Automating post-signature workflows when documents are completed",
+    "Handling declined or voided envelopes with escalation or retry logic",
+    "Downloading signed documents for archival or further processing",
+    "Resending signing notifications to recipients who missed the original email"
+  ],
+  "agentIdeas": [
+    "When DocuSign's \"On Envelope Completed\" trigger fires, use Google Sheets' \"Add Row\" to log the signed envelope details into a contract tracking spreadsheet for compliance records",
+    "Use Salesforce Essentials' \"Find Record\" to retrieve a contact's details, then call DocuSign's \"Send Envelope from Template\" to send a personalized agreement for signature",
+    "When DocuSign's \"On Envelope Declined\" trigger fires, use Slack's \"Send Message To Channel\" to alert the sales team with the envelope subject and decline reason so they can follow up immediately"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/docusign/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/docusign",
+    "readme": "services/docusign/README.md",
+    "index": "services/docusign/src/index.js"
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "slug": "mailjet",
+  "name": "Mailjet",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Send transactional and bulk emails through the Mailjet Send API v3.1 and manage your Mailjet contacts, contact lists, templates and delivery statistics. Authenticate with a Mailjet API Key and Secret Key combined into HTTP Basic auth against `https://api.mailjet.com`.",
+  "actionCount": 16,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Email Sending",
+    "Contacts",
+    "Contact Lists",
+    "Templates",
+    "Messages & Statistics"
+  ],
+  "actions": [
+    {
+      "name": "Send Email",
+      "category": "Email Sending",
+      "description": "Sends a transactional email through the Mailjet Send API v3.1. Supports plain text and HTML content, CC/BCC recipients, reply-to, file attachments (downloaded from URLs and embedded as base64), stored Mailjet templates with variables, a custom ID and event payload for tracking, and sandbox mode for validation without actual delivery. When a template is selected, subject and body parts are optional. Returns the delivery status with a MessageID and MessageUUID for each recipient."
+    },
+    {
+      "name": "Send Bulk Emails",
+      "category": "Email Sending",
+      "description": "Sends up to 50 fully-formed messages in a single Mailjet Send API v3.1 call. Each message object is passed through as-is and must follow the Mailjet v3.1 message schema, e.g. {\"From\":{\"Email\":\"sender@example.com\",\"Name\":\"Sender\"},\"To\":[{\"Email\":\"recipient@example.com\"}],\"Subject\":\"Hello\",\"TextPart\":\"Hi there\"}. Optional message fields include HTMLPart, Cc, Bcc, ReplyTo, TemplateID, TemplateLanguage, Variables, Attachments, CustomID and EventPayload. Returns the per-message delivery status array."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact in the Mailjet global contact database. The contact can then be subscribed to contact lists and enriched with custom properties. Fails if a contact with the same email address already exists. Returns the created contact with its numeric ID."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact from the Mailjet contact database by its numeric ID or email address. Returns the contact's profile including name, campaign exclusion flag, delivery counters and activity timestamps."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves contacts from the Mailjet global contact database with pagination. Returns the contacts with their IDs, email addresses, names and activity counters, plus count and total metadata."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates a contact's name and campaign exclusion flag in the Mailjet contact database. The email address itself cannot be changed. Returns the updated contact."
+    },
+    {
+      "name": "Update Contact Properties",
+      "category": "Contacts",
+      "description": "Sets custom property values on a contact (e.g. first name, country, plan). Properties must already be defined in your Mailjet account (Contacts - Contact properties, or via the /contactmetadata API) before values can be assigned. Provide the values as a simple key-value object; it is converted to Mailjet's Data array format. Returns the contact's updated property data."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact from your Mailjet account using the GDPR-compliant v4 contacts endpoint. This removes the contact and its personal data irreversibly; historical statistics are anonymized. Requires the numeric contact ID (use Get Contact to look it up by email first)."
+    },
+    {
+      "name": "Create Contact List",
+      "category": "Contact Lists",
+      "description": "Creates a new contact list in your Mailjet account. Contacts can then be added to the list with Manage List Subscription. Returns the created list with its numeric ID."
+    },
+    {
+      "name": "List Contact Lists",
+      "category": "Contact Lists",
+      "description": "Retrieves the contact lists in your Mailjet account with pagination. Returns each list's ID, name, subscriber count and creation date, plus count and total metadata."
+    },
+    {
+      "name": "Manage List Subscription",
+      "category": "Contact Lists",
+      "description": "Adds a contact to a contact list, removes it, or unsubscribes it, in a single call. If the contact does not exist yet, it is created automatically. \"Add Force\" (re)subscribes even previously unsubscribed contacts, while \"Add No Force\" respects an existing unsubscription. Optionally sets the contact's name and custom property values at the same time. Returns the resulting list membership record."
+    },
+    {
+      "name": "List Templates",
+      "category": "Templates",
+      "description": "Retrieves the email templates owned by your Mailjet account (user-created templates, including those built with Passport). Returns each template's numeric ID, name, categories and edit mode, plus count and total metadata. Use a template's ID with Send Email."
+    },
+    {
+      "name": "List Messages",
+      "category": "Messages & Statistics",
+      "description": "Retrieves processed messages sent from your Mailjet account, with optional filtering by time range and recipient email address. Returns each message's ID, status, contact, sender and timing details, plus count and total metadata."
+    },
+    {
+      "name": "Get Message",
+      "category": "Messages & Statistics",
+      "description": "Retrieves the details of a single sent message by its Mailjet message ID (as returned by Send Email or List Messages). Returns the message's status, recipient, sender, subject, size and timing details."
+    },
+    {
+      "name": "Get Message History",
+      "category": "Messages & Statistics",
+      "description": "Retrieves the event history of a sent message (sent, opened, clicked, bounced, etc.) by its Mailjet message ID. Returns the chronological list of events with timestamps and user agent details where available."
+    },
+    {
+      "name": "Get Stat Counters",
+      "category": "Messages & Statistics",
+      "description": "Retrieves aggregated email statistics (sent, delivered, opened, clicked, bounced, spam, unsubscribed counts) from Mailjet's statcounters API. Statistics can be sourced for the whole API key, a specific campaign or a contact list, timed by message or by event, and aggregated at hourly, daily or lifetime resolution."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send transactional emails (receipts, notifications, password resets) with HTML content, attachments and stored templates",
+    "Deliver up to 50 personalized messages in a single bulk send",
+    "Keep a synchronized contact database, subscribe contacts to lists and set custom properties",
+    "Monitor deliverability by pulling message events, histories and aggregated statistics"
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires with a subscription request, use **Mailjet** \"Manage List Subscription\" to add the sender to a contact list, then **Mailjet** \"Send Email\" to deliver a welcome message from a stored template",
+    "Use **Google Sheets** \"Get Rows\" to read a mailing roster, then call **Mailjet** \"Create Contact\" and \"Update Contact Properties\" for each row to sync subscribers into Mailjet",
+    "After **Mailjet** \"Send Bulk Emails\", periodically call **Mailjet** \"Get Stat Counters\" and log delivered, opened and bounced counts to **Google Sheets** \"Add Row\" for a campaign performance report"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/mailjet/public/icon.png",
+  "sourcePaths": {
+    "service": "services/mailjet",
+    "readme": "services/mailjet/README.md",
+    "index": "services/mailjet/src/index.js"
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "slug": "slack",
+  "name": "Slack",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Enables seamless interaction with the Slack API for automating workspace activities. Includes real-time and polling triggers, rich messaging with Block Kit support, interactive buttons, and channel management actions. Supports OAuth2 connection and handles multiple workspaces.",
+  "actionCount": 16,
+  "triggerCount": 8,
+  "operationCategories": [
+    "User Management",
+    "Channel Management",
+    "Message Operations",
+    "File Operations",
+    "Search Operations"
+  ],
+  "actions": [
+    {
+      "name": "Find Member",
+      "category": "User Management",
+      "description": "Locates Slack workspace members for AI agents to identify users, verify team membership, or gather user information for personalized interactions. Essential for user lookup, permission checking, or building user-specific automation workflows."
+    },
+    {
+      "name": "Find Members",
+      "category": "User Management",
+      "description": "Filters users based on a search string. Matches Slack ID or email exactly, and username or display name partially, all case-insensitive."
+    },
+    {
+      "name": "Find Channel",
+      "category": "Channel Management",
+      "description": "Searches for a Slack channel by its ID or name."
+    },
+    {
+      "name": "Create Public Channel",
+      "category": "Channel Management",
+      "description": "Creates new public Slack channels for AI agents to organize team communications, set up project-specific discussions, or establish dedicated spaces for automated workflows. Perfect for dynamic channel creation based on project needs or automated team organization."
+    },
+    {
+      "name": "Create Private Channel",
+      "category": "Channel Management",
+      "description": "Creates a new private Slack channel"
+    },
+    {
+      "name": "Invite User To Channel",
+      "category": "Channel Management",
+      "description": "Invites a user to a specific Slack channel"
+    },
+    {
+      "name": "Kick User From Channel",
+      "category": "Channel Management",
+      "description": "Kicks a user from a specific Slack channel"
+    },
+    {
+      "name": "Send Message To Channel",
+      "category": "Message Operations",
+      "description": "Sends messages to Slack channels with optional Block Kit rich layouts. Supports plain text with Slack formatting, or advanced Block Kit JSON for buttons, menus, and interactive elements. Returns the message timestamp and channel ID for later updates or tracking."
+    },
+    {
+      "name": "Send Direct Message",
+      "category": "Message Operations",
+      "description": "Sends a direct message to a user on Slack with optional Block Kit rich layouts. Supports plain text with Slack formatting, or advanced Block Kit JSON for buttons, menus, and interactive elements. Returns the message timestamp and channel ID for later updates or tracking."
+    },
+    {
+      "name": "Delete Message In Channel",
+      "category": "Message Operations",
+      "description": "Deletes a specific message from a Slack channel."
+    },
+    {
+      "name": "Update Message In Channel",
+      "category": "Message Operations",
+      "description": "Updates a specific message in a Slack channel. Supports plain text updates or replacing the entire message content with Block Kit JSON. Commonly used after a button click to swap interactive buttons with a confirmation message."
+    },
+    {
+      "name": "Get Message",
+      "category": "Message Operations",
+      "description": "Retrieves a specific message from a Slack channel by a message ID."
+    },
+    {
+      "name": "Get File Info",
+      "category": "File Operations",
+      "description": "Retrieves detailed information about a Slack file using its ID."
+    },
+    {
+      "name": "Search Messages",
+      "category": "Search Operations",
+      "description": "Searches Slack message history for AI agents to analyze past conversations, find relevant information, or extract insights from team communications. Perfect for building knowledge bases, analyzing sentiment, or finding specific information across all channels."
+    },
+    {
+      "name": "Get Latest Channel Messages",
+      "category": "Message Operations",
+      "description": "Retrieves the latest messages (up to 100) from a specific Slack channel."
+    },
+    {
+      "name": "Get Latest Thread Messages",
+      "category": "Message Operations",
+      "description": "Retrieves the latest 1000 messages from a specific thread in a Slack channel."
+    }
+  ],
+  "triggers": [
+    "On Message from Query",
+    "On Mention",
+    "On Channel Message",
+    "On Reaction Added",
+    "On New Member",
+    "On Channel Created",
+    "On File Shared",
+    "On Block Action"
+  ],
+  "idealUseCases": [
+    "Monitor Slack channels for specific messages, reactions, or button clicks.",
+    "Build interactive approval flows with Block Kit buttons and update messages after user action.",
+    "Trigger workflows when users join, interact in channels, or click interactive elements.",
+    "Automate message delivery to channels or users with rich layouts (buttons, menus, images).",
+    "Manage channels and members dynamically.",
+    "Query and retrieve Slack data like messages and files."
+  ],
+  "agentIdeas": [
+    "When a **Slack** \"On Block Action\" trigger fires from an approval button click, use **Jira Issues** \"Transition Issue\" to move the corresponding ticket to \"Approved\" status, then use **Slack** \"Update Message In Channel\" to replace the buttons with a confirmation message.",
+    "When a **Google Sheets** \"On New Row\" trigger fires with a new lead, use **Slack** \"Send Message To Channel\" with Block Kit buttons to notify the sales team and let them claim the lead via \"On Block Action\".",
+    "When a **HubSpot** \"Create Deal\" action completes, use **Slack** \"Send Direct Message\" to notify the assigned sales rep with deal details."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/slack/public/icon.png",
+  "sourcePaths": {
+    "service": "services/slack",
+    "readme": "services/slack/README.md",
+    "index": "services/slack/src/index.js"
+  }
+}

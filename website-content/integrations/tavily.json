@@ -1,0 +1,78 @@
+{
+  "slug": "tavily",
+  "name": "Tavily",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Tavily is the web access layer for AI agents. This extension provides AI-optimized web search, page content extraction, website crawling and mapping, an asynchronous deep-research agent that produces cited reports, and API usage monitoring, all via the Tavily API (`https://api.tavily.com`). Authentication uses a Tavily API key (starts with `tvly-`).",
+  "actionCount": 7,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Search",
+    "Extraction",
+    "Crawling",
+    "Research",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Search",
+      "category": "Search",
+      "description": "Runs an AI-optimized web search and returns ranked, agent-ready results with relevance scores and content snippets. Supports general, news, and finance topics, optional LLM-generated answers, raw page content (markdown or text), image results with descriptions, domain include/exclude filters (up to 300/150 domains), date filtering (relative time range or explicit start/end dates), country boosting for the general topic, and exact phrase matching. Set Auto Parameters to let Tavily choose the optimal search settings for the query automatically (explicitly set values still take precedence). Returns up to 20 results per call."
+    },
+    {
+      "name": "Extract Content",
+      "category": "Extraction",
+      "description": "Extracts the page content from up to 20 URLs in a single call and returns it as clean markdown or plain text, ready for LLM consumption. Advanced depth additionally retrieves tables and embedded content at 2 credits per 5 successful extractions (Basic costs 1 credit per 5). Optionally provide a query to rerank the extracted content chunks by relevance to it. URLs that cannot be extracted are listed in failed_results with an error message instead of failing the whole call."
+    },
+    {
+      "name": "Crawl Website",
+      "category": "Crawling",
+      "description": "Crawls a website starting from a base URL, following internal links up to the configured depth and breadth, and returns the extracted content of every crawled page. Supports natural-language instructions to focus the crawl (e.g. 'find all pages about the Python SDK'; doubles the per-page cost), regex filters on paths and domains, and markdown or text output. Crawling costs 1 credit per 10 pages extracted (2 with instructions), plus extraction costs when Advanced depth is used. Suited for ingesting documentation sites, knowledge bases, or blogs into an AI workflow."
+    },
+    {
+      "name": "Map Website",
+      "category": "Crawling",
+      "description": "Traverses a website starting from a base URL and returns the list of discovered page URLs without extracting their content, producing a sitemap-style overview of the site structure. Supports natural-language instructions to focus the traversal (doubles the per-page cost), regex filters on paths and domains, and depth/breadth limits. Costs 1 credit per 10 pages mapped (2 with instructions). Use it to discover pages before a targeted Extract Content or Crawl Website call."
+    },
+    {
+      "name": "Start Research",
+      "category": "Research",
+      "description": "Starts an asynchronous deep-research task in which a Tavily research agent plans, searches, and synthesizes a cited report on the given question. Returns immediately with a request ID and a pending status; retrieve the finished report with Get Research Results. Choose the Mini model for speed, Pro for exhaustive depth, or Auto to let Tavily decide per task. Supports soft domain preferences, hard domain blocklists (up to 20 each), citation formatting, report length control, and an optional JSON Schema for structured output instead of a markdown report."
+    },
+    {
+      "name": "Get Research Results",
+      "category": "Research",
+      "description": "Retrieves the status and results of a research task started with Start Research. While the task is still running the response status is 'pending' or 'in_progress' and contains no content; poll again after a delay. When the status is 'completed', the response contains the research report content (a markdown string, or a JSON object if an output schema was provided) along with the list of sources used. Research tasks typically take from under a minute (Mini) to several minutes (Pro)."
+    },
+    {
+      "name": "Get API Usage",
+      "category": "Account",
+      "description": "Returns credit usage for the current API key and the overall account for the current billing cycle. Key-level metrics include total credits used, the key limit (null if unlimited), and a per-endpoint breakdown (search, extract, crawl, map, research). Account-level metrics include the current plan name, plan usage and limit, pay-as-you-go usage and limit, and the same per-endpoint breakdown. Use it to monitor consumption or gate expensive operations in a flow."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Give an AI agent live, ranked web search results with relevance scores and content snippets instead of stale training data",
+    "Extract clean markdown or text from a batch of URLs for LLM consumption",
+    "Crawl or map documentation sites, knowledge bases, and blogs to ingest their content into a workflow",
+    "Run a deep-research agent that plans, searches, and synthesizes a cited report on a complex question",
+    "Monitor credit consumption to gate expensive operations in a flow"
+  ],
+  "agentIdeas": [
+    "Use **Search** to gather current web results on a topic, then call **Notion** \"Create Page\" to save the ranked findings and source links into a research database",
+    "Run **Start Research** followed by **Get Research Results** to produce a cited report, then use **Google Docs** \"Create Document\" to publish the finished markdown report as a shareable doc",
+    "After a **Map Website** call discovers a site's pages, feed them into **Extract Content** and log each page's summary to **Airtable** via \"Create Record\" for a searchable content index",
+    "When a **Crawl Website** run finishes ingesting a documentation site, post a completion summary with key links to a team channel using **Slack** \"Send Message To Channel\""
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/tavily/public/icon.png",
+  "sourcePaths": {
+    "service": "services/tavily",
+    "readme": "services/tavily/README.md",
+    "index": "services/tavily/src/index.js"
+  }
+}

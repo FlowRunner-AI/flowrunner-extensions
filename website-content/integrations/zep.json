@@ -1,0 +1,132 @@
+{
+  "slug": "zep",
+  "name": "Zep",
+  "marketingCategory": "Vector Stores & AI Infra",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Long-term memory for AI agents and assistants. This service integrates [Zep Cloud](https://www.getzep.com) with FlowRunner so your flows can store conversation history, build a per-user knowledge graph, and pull relevant memory back into LLM prompts. Zep authenticates with a single API Key sent as an `Authorization: Api-Key <key>` header.",
+  "actionCount": 18,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Users",
+    "Threads",
+    "Memory",
+    "Graph",
+    "Graphs"
+  ],
+  "actions": [
+    {
+      "name": "Add User",
+      "category": "Users",
+      "description": "Creates a new user in Zep. A user is the top-level owner of threads and a personal knowledge graph. Provide a unique user ID; email, names, and arbitrary metadata are optional. Zep begins building the user's memory graph as data is added."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single user by their user ID, including profile fields, metadata, and system timestamps."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists users in the project with pagination. Returns users ordered by creation time along with the total row count. Use page number and page size to page through large user sets."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates an existing user's email, names, or metadata. Only the fields you provide are changed. Metadata replaces the stored metadata object."
+    },
+    {
+      "name": "Delete User",
+      "category": "Users",
+      "description": "Permanently deletes a user and all associated threads, messages, and graph data. This action cannot be undone."
+    },
+    {
+      "name": "Get User Node",
+      "category": "Users",
+      "description": "Retrieves the central graph node that represents a user in their knowledge graph, including the node's summary and attributes derived from all data Zep has ingested for that user. Useful for inspecting what Zep has learned about the user."
+    },
+    {
+      "name": "Create Thread",
+      "category": "Threads",
+      "description": "Creates a conversation thread owned by a user. A thread is Zep's current unit for grouping conversation messages (it replaces the older session concept). Messages added to the thread feed the user's memory graph and power thread context retrieval."
+    },
+    {
+      "name": "Get Thread",
+      "category": "Threads",
+      "description": "Retrieves a thread's metadata and owning user by thread ID."
+    },
+    {
+      "name": "List User Threads",
+      "category": "Threads",
+      "description": "Lists all threads that belong to a given user, ordered by creation time."
+    },
+    {
+      "name": "Delete Thread",
+      "category": "Threads",
+      "description": "Permanently deletes a thread and its messages. Graph data already extracted into the user's memory is retained. This action cannot be undone."
+    },
+    {
+      "name": "Add Messages",
+      "category": "Memory",
+      "description": "Adds one or more conversation messages to a thread. Each message has a role (user, assistant, or system), the message content, and an optional speaker name. Zep ingests the messages into the user's knowledge graph and uses them to build retrievable memory. This is how you record a conversation turn."
+    },
+    {
+      "name": "Get Thread Context",
+      "category": "Memory",
+      "description": "Returns Zep's assembled memory context for a thread: a ready-to-inject context block summarizing the most relevant facts, entities, and messages about the user, drawn from the whole knowledge graph. This is the flagship retrieval operation - drop the returned context string into your LLM prompt to give the assistant long-term memory. Choose \"summary\" mode for a concise narrative or \"basic\" mode for raw relevant facts and edges."
+    },
+    {
+      "name": "Get Messages",
+      "category": "Memory",
+      "description": "Retrieves the raw conversation messages stored on a thread, with pagination. Returns messages in chronological order along with the total count."
+    },
+    {
+      "name": "Add Graph Data",
+      "category": "Graph",
+      "description": "Adds arbitrary data directly to a knowledge graph, bypassing the conversation flow. Provide free-form text, a JSON string, or a message string, targeted at either a user's graph (user ID) or a shared graph (graph ID). Zep extracts entities and facts and merges them into the graph. Use this to ingest documents, business records, or external knowledge into memory."
+    },
+    {
+      "name": "Search Graph",
+      "category": "Graph",
+      "description": "Searches a knowledge graph for the most relevant facts (edges) or entities (nodes) given a natural-language query. Scope the search to a user's graph or a shared graph, choose whether to return edges, nodes, episodes, thread summaries, or observations, and cap the number of results. This is the core retrieval primitive for pulling targeted memory into a prompt or tool call."
+    },
+    {
+      "name": "Get User Graph Episodes",
+      "category": "Graph",
+      "description": "Retrieves the most recent episodes (raw ingested data chunks such as messages or documents) from a user's knowledge graph. Episodes are the source records from which Zep extracts nodes and edges."
+    },
+    {
+      "name": "Create Graph",
+      "category": "Graphs",
+      "description": "Creates a graph, a shared knowledge graph not tied to a single user. Shared graphs hold knowledge used across many users (for example company policies or product facts) and can be searched independently of any user's graph. Provide a unique graph ID plus an optional name and description."
+    },
+    {
+      "name": "Get Graph",
+      "category": "Graphs",
+      "description": "Retrieves a shared graph and its metadata by graph ID."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Give a chatbot or AI agent persistent, cross-conversation memory of each user by injecting **Get Thread Context** into every prompt.",
+    "Record conversation turns from any channel (Slack, Telegram, support inbox) into a per-user thread with **Add Messages**.",
+    "Ingest documents, business records, or external knowledge into a user or shared graph with **Add Graph Data**, then retrieve targeted facts with **Search Graph**.",
+    "Maintain a shared knowledge base (company policies, product facts) in a shared graph that many users' agents can search.",
+    "Inspect what Zep has learned about a user via **Get User Node** and **Get User Graph Episodes**."
+  ],
+  "agentIdeas": [
+    "Record each turn of an assistant conversation with **Zep** \"Add Messages\", then call **Zep** \"Get Thread Context\" and pass the returned context into **OpenAI** \"Create Chat Completion\" so the reply reflects everything Zep has learned about the user.",
+    "When a **Slack** \"On Channel Message\" trigger fires, log the message to a user's thread with **Zep** \"Add Messages\", fetch memory with **Zep** \"Get Thread Context\", and generate a grounded reply with **Anthropic Claude** \"Ask Claude\".",
+    "When a **Telegram** \"On New Message\" trigger fires, use **Zep** \"Search Graph\" to pull the most relevant facts about the user and feed them into **Anthropic Claude** \"Send Messages\" before replying via **Telegram** \"Send Message\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/zep/public/icon.png",
+  "sourcePaths": {
+    "service": "services/zep",
+    "readme": "services/zep/README.md",
+    "index": "services/zep/src/index.js"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "slug": "front-service",
+  "name": "Front",
+  "marketingCategory": "Helpdesk & ITSM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrates the Front shared inbox platform into FlowRunner workflows. Manage conversations across email, SMS, and chat channels, post internal team comments, maintain the contact and account directory, and react to new conversations, inbound messages, or comments.",
+  "actionCount": 19,
+  "triggerCount": 3,
+  "operationCategories": [
+    "Conversations",
+    "Attachments",
+    "Comments",
+    "Contacts",
+    "Accounts"
+  ],
+  "actions": [
+    {
+      "name": "List Conversations",
+      "category": "Conversations",
+      "description": "Retrieves a paginated list of Front conversations with optional filters by inbox, tag, assignee, status, and free-text query (Front Query Language). Returns conversation metadata including subject, status, last message preview, and recipient."
+    },
+    {
+      "name": "Get Conversation",
+      "category": "Conversations",
+      "description": "Retrieves a single conversation by ID with full metadata: subject, status, recipient, assignee, tags, links, custom fields, and counts."
+    },
+    {
+      "name": "Search Conversations",
+      "category": "Conversations",
+      "description": "Searches conversations using Front Query Language. Supports operators like subject:, from:, is:unread, is:open, tag:, inbox:, before:/after:. Returns matching conversations sorted by relevance."
+    },
+    {
+      "name": "Update Conversation",
+      "category": "Conversations",
+      "description": "Updates a conversation's status, assignee, inbox, or tags. Only the fields you provide are changed; leave others empty to keep them unchanged."
+    },
+    {
+      "name": "Archive Conversation",
+      "category": "Conversations",
+      "description": "Convenience action that archives a conversation. Equivalent to Update Conversation with status set to archived."
+    },
+    {
+      "name": "List Conversation Messages",
+      "category": "Conversations",
+      "description": "Retrieves the paginated list of messages in a conversation, with content, author, recipients, and direction (inbound/outbound)."
+    },
+    {
+      "name": "Send Message",
+      "category": "Conversations",
+      "description": "Sends a new outbound message through a Front channel, starting a new conversation. Supports email, SMS, and other channel types. Optionally attaches files by URL (each URL is fetched and uploaded as an attachment)."
+    },
+    {
+      "name": "Reply to Conversation",
+      "category": "Conversations",
+      "description": "Sends a reply message in an existing conversation. Uses the conversation's default channel unless a different one is specified. Optionally attaches files by URL."
+    },
+    {
+      "name": "Get Attachment",
+      "category": "Attachments",
+      "description": "Downloads a Front message attachment and stores it in FlowRunner Files, returning a URL to the stored file. Accepts either an attachment id (e.g. fil_123) from a message's attachments list, or the attachment's full Front download URL."
+    },
+    {
+      "name": "List Comments",
+      "category": "Comments",
+      "description": "Retrieves internal comments on a conversation. Comments are team-only notes that are not visible to the customer."
+    },
+    {
+      "name": "Add Comment",
+      "category": "Comments",
+      "description": "Posts an internal comment on a conversation. Comments are team-only notes (not visible to the customer) and support @-mentions of teammates by ID."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves a paginated list of contacts in the Front workspace. Use Search Contacts to look up by handle (email/phone) instead."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by ID with name, description, handles (email/phone/social), and linked accounts."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact with name, description, and handles. Handles is a comma-separated list in 'source:handle' format, e.g., 'email:jane@example.com,phone:+15551234567'."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates a contact's name and/or description. To modify handles use Front's specific handle endpoints (not exposed in v1)."
+    },
+    {
+      "name": "List Accounts",
+      "category": "Accounts",
+      "description": "Retrieves a paginated list of accounts (companies) in the Front workspace. Accounts group contacts under a single organization."
+    },
+    {
+      "name": "Get Account",
+      "category": "Accounts",
+      "description": "Retrieves a single account by ID with name, description, domains, external ID, and custom fields."
+    },
+    {
+      "name": "Create Account",
+      "category": "Accounts",
+      "description": "Creates a new account (company). Domains let Front automatically associate inbound emails from that domain with this account."
+    },
+    {
+      "name": "Update Account",
+      "category": "Accounts",
+      "description": "Updates an account's name, domains, or description. Only the fields you provide are changed."
+    }
+  ],
+  "triggers": [
+    "On New Conversation",
+    "On New Inbound Message",
+    "On New Comment"
+  ],
+  "idealUseCases": [
+    "Triaging new conversations by routing them to the right inbox, assignee, or tag based on content",
+    "Sending templated outbound emails or SMS replies through Front channels as part of a workflow",
+    "Posting internal comments to alert teammates when external systems report relevant events",
+    "Syncing Front contacts and accounts with a CRM so customer context stays consistent",
+    "Notifying chat channels or creating downstream tasks when new inbound customer messages arrive"
+  ],
+  "agentIdeas": [
+    "When a **Front** \"On New Inbound Message\" trigger fires, use **Gemini AI** \"Generate Content\" to draft a suggested reply, then call **Front** \"Add Comment\" to post the draft as an internal note for a teammate to send.",
+    "When a **HubSpot** \"Create Contact\" event creates a new lead, use **Front** \"Create Contact\" to mirror the contact and **Front** \"Send Message\" to deliver a welcome email through the support channel.",
+    "When a **Front** \"On New Conversation\" trigger fires with a VIP tag, use **Slack** \"Send Message To Channel\" to alert the on-call channel with the conversation subject and recipient."
+  ],
+  "icon": "/logo.png",
+  "iconFile": "services/front-service/public/logo.png",
+  "sourcePaths": {
+    "service": "services/front-service",
+    "readme": "services/front-service/README.md",
+    "index": "services/front-service/src/index.js"
+  }
+}

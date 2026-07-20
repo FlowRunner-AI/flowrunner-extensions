@@ -1,0 +1,120 @@
+{
+  "slug": "nasa",
+  "name": "NASA",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Access NASA's open APIs for astronomy imagery, Mars rover photos, near-Earth object tracking, full-disc Earth imagery, Landsat satellite imagery, space-weather events, and the NASA Image and Video Library. Authentication uses a single `api.nasa.gov` API key passed as the `api_key` query parameter; it defaults to `DEMO_KEY` (rate-limited) so you can try the service without signing up.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Astronomy Picture of the Day",
+    "Mars Rover Photos",
+    "Asteroids NeoWs",
+    "EPIC Earth Imagery",
+    "Earth",
+    "DONKI Space Weather",
+    "Image Library"
+  ],
+  "actions": [
+    {
+      "name": "Get APOD",
+      "category": "Astronomy Picture of the Day",
+      "description": "Retrieves NASA's Astronomy Picture of the Day (APOD): a curated image or video with an explanation written by a professional astronomer. Provide a single date for one entry, a start_date/end_date range for multiple entries, or a count for a set of random entries (date and range cannot be combined with count). Set thumbs to true to include a thumbnail URL when the media is a video."
+    },
+    {
+      "name": "Get Mars Rover Photos",
+      "category": "Mars Rover Photos",
+      "description": "Retrieves images taken by cameras aboard a NASA Mars rover on a specific Martian sol (mission day) or Earth date. You must supply either Sol or Earth Date. Optionally filter by a specific camera and paginate through results (25 photos per page). Supported rovers: Curiosity, Opportunity, Spirit, and Perseverance."
+    },
+    {
+      "name": "Get Rover Manifest",
+      "category": "Mars Rover Photos",
+      "description": "Retrieves the mission manifest for a NASA Mars rover, summarizing its landing/launch dates, mission status, maximum sol and Earth date reached, total photos taken, and a per-sol breakdown of available photos and cameras. Useful for discovering which sols and cameras have imagery before fetching photos."
+    },
+    {
+      "name": "Get Latest Photos",
+      "category": "Mars Rover Photos",
+      "description": "Retrieves the most recent images taken by a NASA Mars rover, from its latest available sol. Returns the same photo structure as Get Mars Rover Photos but without requiring a sol or Earth date. Supported rovers: Curiosity, Opportunity, Spirit, and Perseverance."
+    },
+    {
+      "name": "Get Asteroids Feed",
+      "category": "Asteroids NeoWs",
+      "description": "Retrieves a feed of near-Earth objects (asteroids) with close-approach data within a date range, from NASA's NeoWs (Near Earth Object Web Service). The date range cannot exceed 7 days. If End Date is omitted it defaults to 7 days after Start Date; if both are omitted the next 7 days from today are returned. Results are grouped by close-approach date."
+    },
+    {
+      "name": "Lookup Asteroid",
+      "category": "Asteroids NeoWs",
+      "description": "Retrieves detailed information for a single near-Earth object by its NeoWs asteroid ID, including size estimates, orbital data, hazard classification, and the full history of close approaches to Earth and other bodies."
+    },
+    {
+      "name": "Browse Asteroids",
+      "category": "Asteroids NeoWs",
+      "description": "Retrieves a paginated list of all near-Earth objects in NASA's NeoWs dataset, ordered by NeoWs reference ID. Use Page and Size to iterate through the full catalog (tens of thousands of objects). Returns each object's size, hazard status, and close-approach data."
+    },
+    {
+      "name": "Get EPIC Natural",
+      "category": "EPIC Earth Imagery",
+      "description": "Retrieves metadata for EPIC (Earth Polychromatic Imaging Camera) natural-color images of the full sunlit Earth captured by the DSCOVR spacecraft. Omit Date to get the most recent available imagery, or provide a date (YYYY-MM-DD) to get imagery for that day. Each entry includes the image identifier, caption, and centroid coordinates; build the full image URL from the returned identifier and date."
+    },
+    {
+      "name": "Get EPIC Enhanced",
+      "category": "EPIC Earth Imagery",
+      "description": "Retrieves metadata for EPIC (Earth Polychromatic Imaging Camera) enhanced-color images of the full sunlit Earth captured by the DSCOVR spacecraft. Enhanced imagery has additional color/contrast processing applied. Omit Date for the most recent available imagery, or provide a date (YYYY-MM-DD) for that day. Build the full image URL from the returned identifier and date."
+    },
+    {
+      "name": "Get Earth Imagery",
+      "category": "Earth",
+      "description": "Retrieves a Landsat 8 satellite image of the Earth's surface for a given latitude and longitude, from NASA's Earth imagery API. Optionally specify a date to get the closest available image on or before it, and a degree width (dim) for the image footprint. Returns image metadata including a URL to the rendered PNG."
+    },
+    {
+      "name": "Get Earth Assets",
+      "category": "Earth",
+      "description": "Retrieves the list of available Landsat 8 imagery dates for a given latitude and longitude from NASA's Earth API. Use this to discover which dates have imagery before requesting a specific image via Get Earth Imagery."
+    },
+    {
+      "name": "Get Solar Flares",
+      "category": "DONKI Space Weather",
+      "description": "Retrieves solar flare (FLR) events within a date range from NASA's DONKI (Space Weather Database Of Notifications, Knowledge, Information). Each event includes begin/peak/end times, flare class type, source location, active region number, and linked instruments. If dates are omitted, DONKI defaults to the last 30 days."
+    },
+    {
+      "name": "Get Geomagnetic Storms",
+      "category": "DONKI Space Weather",
+      "description": "Retrieves geomagnetic storm (GST) events within a date range from NASA's DONKI space weather database. Each event includes its start time and a series of observed Kp index readings that quantify the storm's intensity, plus links to related solar events. If dates are omitted, DONKI defaults to the last 30 days."
+    },
+    {
+      "name": "Get CMEs",
+      "category": "DONKI Space Weather",
+      "description": "Retrieves coronal mass ejection (CME) events within a date range from NASA's DONKI space weather database. Each event includes the start time, source location, associated instruments, analyses (speed, direction, and half-angle), and linked events. If dates are omitted, DONKI defaults to the last 30 days."
+    },
+    {
+      "name": "Search NASA Images",
+      "category": "Image Library",
+      "description": "Searches NASA's public Image and Video Library for media matching a free-text query. This endpoint does not require an API key. Optionally restrict results to a specific media type (image, video, or audio). Returns a collection of matching assets with titles, descriptions, thumbnail links, and asset URLs."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Post NASA's Astronomy Picture of the Day to a channel or newsletter on a schedule",
+    "Monitor near-Earth asteroids and alert when a potentially hazardous object approaches",
+    "Track solar flares, geomagnetic storms, and CMEs for space-weather dashboards",
+    "Collect Mars rover photos or EPIC full-Earth imagery for research and content pipelines",
+    "Search NASA's media library for images, video, or audio matching a topic"
+  ],
+  "agentIdeas": [
+    "Fetch the daily image with **Get APOD**, then use **Slack** \"Send Message To Channel\" to post the title, explanation, and image URL to a team or community channel each morning.",
+    "Pull upcoming close approaches with **Get Asteroids Feed** and log each object's name, size, miss distance, and hazard flag into a spreadsheet via **Google Sheets** \"Add Rows\" for ongoing tracking.",
+    "Retrieve recent **Get Solar Flares** or **Get CMEs** events, then alert an operations channel with **Slack** \"Send Message To Channel\" whenever a significant space-weather event is detected.",
+    "Search NASA's media library with **Search NASA Images**, then archive the returned assets into a shared drive using **Google Drive** \"Upload File\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/nasa/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/nasa",
+    "readme": "services/nasa/README.md",
+    "index": "services/nasa/src/index.js"
+  }
+}

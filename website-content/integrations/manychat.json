@@ -1,0 +1,188 @@
+{
+  "slug": "manychat",
+  "name": "ManyChat",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Chat marketing automation across Facebook Messenger, Instagram, WhatsApp, Telegram, and SMS. Manage subscribers, tags, custom and bot fields, and send content or existing flows to subscribers on any connected channel. Authenticate with a ManyChat API key (a ManyChat Pro account is required), sent as `Authorization: Bearer <token>`.",
+  "actionCount": 29,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Subscribers",
+    "Tagging",
+    "Custom Fields",
+    "Bot Fields",
+    "Sending",
+    "Page"
+  ],
+  "actions": [
+    {
+      "name": "Get Subscriber",
+      "category": "Subscribers",
+      "description": "Retrieves full profile information for a subscriber by ID, including name, gender, locale, channel identifiers (Messenger, Instagram, WhatsApp, phone, email), opt-in statuses, subscription timestamps, custom field values, and tags. Works for subscribers on any connected channel."
+    },
+    {
+      "name": "Find Subscribers by Name",
+      "category": "Subscribers",
+      "description": "Searches subscribers whose full name matches the given text and returns a list of matching subscriber profiles. Useful for locating a subscriber when you only know their display name."
+    },
+    {
+      "name": "Find Subscriber by System Field",
+      "category": "Subscribers",
+      "description": "Finds a subscriber by email address or phone number (system fields). Provide at least one of the two; if both are given, ManyChat matches on either. Returns the matching subscriber profile or an empty result when no subscriber matches."
+    },
+    {
+      "name": "Find Subscribers by Custom Field",
+      "category": "Subscribers",
+      "description": "Finds subscribers whose custom field exactly matches the given value. Select the custom field and provide the value to match; returns a list of matching subscriber profiles."
+    },
+    {
+      "name": "Create Subscriber",
+      "category": "Subscribers",
+      "description": "Creates a new subscriber in ManyChat for phone-based channels (WhatsApp and SMS). Messenger and Instagram subscribers cannot be created via the API - they must opt in through the channel itself. Provide a phone or WhatsApp phone plus any profile details; record the consent phrase your business collected for compliance."
+    },
+    {
+      "name": "Update Subscriber",
+      "category": "Subscribers",
+      "description": "Updates profile details of an existing subscriber - name, phone, email, gender, SMS/email opt-in flags, and consent phrase. Only the fields you provide are changed; all others keep their current values."
+    },
+    {
+      "name": "Add Tag to Subscriber",
+      "category": "Tagging",
+      "description": "Applies an existing tag to a subscriber, selected by tag ID. Tags can be used for segmentation, automation conditions, and triggering flows."
+    },
+    {
+      "name": "Add Tag to Subscriber by Name",
+      "category": "Tagging",
+      "description": "Applies a tag to a subscriber by tag name instead of ID. The tag must already exist in the ManyChat account - use Create Tag first if needed."
+    },
+    {
+      "name": "Remove Tag from Subscriber",
+      "category": "Tagging",
+      "description": "Removes a tag from a subscriber, selected by tag ID. The tag itself remains in the account and stays applied to other subscribers."
+    },
+    {
+      "name": "Remove Tag from Subscriber by Name",
+      "category": "Tagging",
+      "description": "Removes a tag from a subscriber by tag name instead of ID. The tag itself remains in the account and stays applied to other subscribers."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tagging",
+      "description": "Retrieves all tags defined in the ManyChat account with their IDs and names."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tagging",
+      "description": "Creates a new tag in the ManyChat account. The tag can then be applied to subscribers with Add Tag to Subscriber."
+    },
+    {
+      "name": "Delete Tag",
+      "category": "Tagging",
+      "description": "Permanently deletes a tag from the ManyChat account by ID, removing it from every subscriber it was applied to. This cannot be undone."
+    },
+    {
+      "name": "Delete Tag by Name",
+      "category": "Tagging",
+      "description": "Permanently deletes a tag from the ManyChat account by name, removing it from every subscriber it was applied to. This cannot be undone."
+    },
+    {
+      "name": "Set Custom Field",
+      "category": "Custom Fields",
+      "description": "Sets a custom field value on a subscriber, selected by field ID. The value should match the field's type: text, number, boolean (true/false), date (YYYY-MM-DD), or datetime (ISO 8601 such as 2025-07-02T00:00:00+00:00)."
+    },
+    {
+      "name": "Set Custom Field by Name",
+      "category": "Custom Fields",
+      "description": "Sets a custom field value on a subscriber by field name instead of ID. The value should match the field's type: text, number, boolean (true/false), date (YYYY-MM-DD), or datetime (ISO 8601)."
+    },
+    {
+      "name": "List Custom Fields",
+      "category": "Custom Fields",
+      "description": "Retrieves all subscriber custom fields defined in the ManyChat account with their IDs, names, types, and descriptions."
+    },
+    {
+      "name": "Create Custom Field",
+      "category": "Custom Fields",
+      "description": "Creates a new subscriber custom field in the ManyChat account. Choose the field type carefully - it cannot be changed after creation."
+    },
+    {
+      "name": "Set Bot Field",
+      "category": "Bot Fields",
+      "description": "Sets the value of a bot field (a global variable shared across all subscribers), selected by field ID. The value should match the field's type: text, number, boolean (true/false), date (YYYY-MM-DD), or datetime (ISO 8601)."
+    },
+    {
+      "name": "Set Bot Field by Name",
+      "category": "Bot Fields",
+      "description": "Sets the value of a bot field (a global variable shared across all subscribers) by field name instead of ID. The value should match the field's type: text, number, boolean (true/false), date (YYYY-MM-DD), or datetime (ISO 8601)."
+    },
+    {
+      "name": "List Bot Fields",
+      "category": "Bot Fields",
+      "description": "Retrieves all bot fields (global variables shared across all subscribers) defined in the ManyChat account, including their current values."
+    },
+    {
+      "name": "Create Bot Field",
+      "category": "Bot Fields",
+      "description": "Creates a new bot field (a global variable shared across all subscribers) with an optional initial value. Choose the field type carefully - it cannot be changed after creation."
+    },
+    {
+      "name": "Send Content",
+      "category": "Sending",
+      "description": "Sends a message to a subscriber on their channel. Provide Message Text for a simple text message, or Raw Content with a full ManyChat dynamic content object ({messages, actions, quick_replies}) for rich messages - Raw Content takes precedence when both are set. On Facebook Messenger, sending outside the 24-hour messaging window requires a Message Tag (or a One-Time Notification topic); on WhatsApp, messages outside the 24-hour service window must use pre-approved template messages. Rate limit: 25 requests per second."
+    },
+    {
+      "name": "Send Flow",
+      "category": "Sending",
+      "description": "Starts an existing ManyChat flow for a subscriber, sending its first message immediately. Channel messaging rules still apply: on Facebook Messenger the 24-hour messaging window is enforced, and WhatsApp requires pre-approved templates outside its 24-hour service window."
+    },
+    {
+      "name": "Send Content by User Ref",
+      "category": "Sending",
+      "description": "Sends a message to a Facebook user identified by a user_ref from the checkbox plugin, before they become a full subscriber. Provide Message Text for a simple text message or Raw Content for a rich ManyChat dynamic content object - Raw Content takes precedence when both are set. Each user_ref can only be messaged once and expires after use."
+    },
+    {
+      "name": "Get Page Info",
+      "category": "Page",
+      "description": "Retrieves information about the connected ManyChat account/page: ID, name, category, avatar, username, description, Pro status, and timezone. Despite the \"page\" naming, this reflects the whole ManyChat account regardless of channel (Messenger, Instagram, WhatsApp, Telegram, SMS)."
+    },
+    {
+      "name": "List Flows",
+      "category": "Page",
+      "description": "Retrieves all flows and flow folders in the ManyChat account. Each flow includes its namespace (ns) identifier, which is what Send Flow expects, plus its name and folder."
+    },
+    {
+      "name": "List Growth Tools",
+      "category": "Page",
+      "description": "Retrieves all growth tools (widgets) configured in the ManyChat account with their IDs, names, and types."
+    },
+    {
+      "name": "List OTN Topics",
+      "category": "Page",
+      "description": "Retrieves all One-Time Notification (OTN) topics defined in the ManyChat account. Subscribers who opted in to a topic can be messaged once outside Facebook's 24-hour messaging window via Send Content with the OTN Topic Name parameter."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync subscribers and their custom field values with your CRM, e-commerce store, or spreadsheets",
+    "Tag and segment subscribers automatically based on events elsewhere in your stack",
+    "Send transactional or promotional messages and trigger existing ManyChat flows from your own workflows",
+    "Look up subscriber profiles by name, email, phone, or custom field to enrich or route conversations",
+    "Maintain global bot fields to drive dynamic content and business logic across all subscribers"
+  ],
+  "agentIdeas": [
+    "When a **Shopify** \"On New Order\" trigger fires, use ManyChat \"Find Subscriber by System Field\" to locate the buyer by email, then \"Send Content\" with a Post-Purchase Update message tag to confirm the order.",
+    "Use ManyChat \"Find Subscribers by Custom Field\" to pull qualified leads, then call **HubSpot** \"Create Contact\" to push each one into your CRM for sales follow-up.",
+    "After a **Shopify** \"On New Customer\" trigger fires, use ManyChat \"Add Tag to Subscriber by Name\" to tag the subscriber and **Google Sheets** \"Add Row\" to log the new customer to a shared tracking sheet."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/manychat/public/icon.png",
+  "sourcePaths": {
+    "service": "services/manychat",
+    "readme": "services/manychat/README.md",
+    "index": "services/manychat/src/index.js"
+  }
+}

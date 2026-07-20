@@ -1,0 +1,116 @@
+{
+  "slug": "microsoft-todo",
+  "name": "Microsoft To Do",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Microsoft To Do](https://www.microsoft.com/en-us/microsoft-365/microsoft-to-do-list-app) built on the [Microsoft Graph To Do API](https://learn.microsoft.com/en-us/graph/api/resources/todo-overview) (v1.0). It lets flows manage task lists, create and update tasks with due dates, reminders, importance, categories, and recurrence, complete or reopen tasks, and work with checklist items (subtasks) — all on behalf of the connected user (delegated permissions).",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Task Lists",
+    "Tasks",
+    "Checklist Items"
+  ],
+  "actions": [
+    {
+      "name": "Create Task List",
+      "category": "Task Lists",
+      "description": "Creates a new task list in the signed-in user's Microsoft To Do account with the given display name."
+    },
+    {
+      "name": "List Task Lists",
+      "category": "Task Lists",
+      "description": "Retrieves the signed-in user's To Do task lists, including each list's ID, display name, ownership, sharing status, and well-known list name (such as the default Tasks list)."
+    },
+    {
+      "name": "Update Task List",
+      "category": "Task Lists",
+      "description": "Renames an existing task list. Well-known lists such as the default Tasks list cannot be renamed."
+    },
+    {
+      "name": "Delete Task List",
+      "category": "Task Lists",
+      "description": "Permanently deletes a task list and all tasks it contains. Well-known lists such as the default Tasks list cannot be deleted."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a new task in a task list. Supports a plain-text body, due date, reminder, importance level, categories, and an optional Microsoft Graph recurrence pattern for repeating tasks."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single task by its ID, including its title, body, status, importance, due date, reminder, categories, and recurrence settings."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Retrieves tasks from a task list, optionally filtered by completion status. Supports paging via Max Results and Skip, or via the Next Page Link returned by a previous call."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates one or more properties of an existing task. Only the provided fields are changed; omitted fields keep their current values. Use Complete Task or Reopen Task to change the completion status."
+    },
+    {
+      "name": "Complete Task",
+      "category": "Tasks",
+      "description": "Marks a task as completed. For recurring tasks, Microsoft To Do automatically creates the next occurrence."
+    },
+    {
+      "name": "Reopen Task",
+      "category": "Tasks",
+      "description": "Reopens a completed task by setting its status back to not started, clearing the completion date."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task from a task list, including all of its checklist items."
+    },
+    {
+      "name": "Add Checklist Item",
+      "category": "Checklist Items",
+      "description": "Adds a checklist item (subtask) to a task. Checklist items appear as steps under the task in Microsoft To Do."
+    },
+    {
+      "name": "List Checklist Items",
+      "category": "Checklist Items",
+      "description": "Retrieves all checklist items (subtasks) of a task, including each item's ID, display name, checked state, and timestamps."
+    },
+    {
+      "name": "Check Or Uncheck Checklist Item",
+      "category": "Checklist Items",
+      "description": "Marks a checklist item (subtask) as checked or unchecked."
+    },
+    {
+      "name": "Delete Checklist Item",
+      "category": "Checklist Items",
+      "description": "Permanently deletes a checklist item (subtask) from a task."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Create tasks automatically from incoming emails, form submissions, CRM events, or support tickets",
+    "Sync tasks between Microsoft To Do and other task/project systems (Asana, ClickUp, Google Tasks)",
+    "Build daily digests of due or overdue tasks and post them to chat or email",
+    "Mark tasks completed from external events (e.g. a deployment finishing, a ticket closing)",
+    "Provision per-project task lists on demand and populate them with templated tasks and checklist steps",
+    "Add checklist steps to an existing task as a workflow progresses"
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires with an actionable request, use **Microsoft To Do** \"Create Task\" with a due date and high importance so nothing slips through the inbox.",
+    "Use **Google Sheets** \"On New Row\" to detect a new project entry, then call **Microsoft To Do** \"Create Task List\" and \"Create Task\" to scaffold the project's task board, adding \"Add Checklist Item\" steps for each subtask.",
+    "On a schedule, use **Microsoft To Do** \"List Tasks\" with the Not Completed filter and **Slack** \"Send Message To Channel\" to post a daily digest of outstanding work."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/microsoft-todo/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/microsoft-todo",
+    "readme": "services/microsoft-todo/README.md",
+    "index": "services/microsoft-todo/src/index.js"
+  }
+}

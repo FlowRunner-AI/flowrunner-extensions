@@ -1,0 +1,180 @@
+{
+  "slug": "confluence",
+  "name": "Confluence",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Connects FlowRunner to Confluence Cloud through Atlassian OAuth 2.0 (3LO), automatically resolving the connected account's cloudId. Manage spaces, pages, blog posts, footer and inline comments, attachments (including upload/download via FlowRunner file storage), and labels, and search content with CQL.",
+  "actionCount": 27,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Spaces",
+    "Pages",
+    "Blog Posts",
+    "Comments",
+    "Attachments",
+    "Labels",
+    "Search",
+    "Users"
+  ],
+  "actions": [
+    {
+      "name": "List Spaces",
+      "category": "Spaces",
+      "description": "Lists the Confluence spaces the connected account can see, with optional type (global/personal) and status (current/archived) filters. Results are cursor-paginated: pass the returned nextCursor back into Cursor to fetch the next page. Returns up to 250 spaces per page (default 25)."
+    },
+    {
+      "name": "Get Space",
+      "category": "Spaces",
+      "description": "Retrieves a single Confluence space by its ID, including key, name, type, status, and homepage ID. Optionally includes the space description in plain text or rendered view format."
+    },
+    {
+      "name": "List Pages",
+      "category": "Pages",
+      "description": "Lists pages across the whole Confluence site with optional space, status, and exact-title filters. Results are cursor-paginated: pass the returned nextCursor back into Cursor for the next page. Returns up to 250 pages per page (default 25). Page bodies are not included — use Get Page to fetch content."
+    },
+    {
+      "name": "Get Page",
+      "category": "Pages",
+      "description": "Retrieves a single Confluence page by its ID, including title, status, space, parent, version, and the page body. Choose the body format: Storage (XHTML source, editable), Atlas Doc Format (ADF JSON), or View (rendered HTML)."
+    },
+    {
+      "name": "Get Pages in Space",
+      "category": "Pages",
+      "description": "Lists all pages that belong to a specific Confluence space, with optional status filter and sorting. Results are cursor-paginated: pass the returned nextCursor back into Cursor for the next page. Returns up to 250 pages per page (default 25)."
+    },
+    {
+      "name": "Get Child Pages",
+      "category": "Pages",
+      "description": "Lists the direct child pages of a Confluence page (one level down; it does not recurse into grandchildren). Useful for walking a page tree. Results are cursor-paginated: pass the returned nextCursor back into Cursor for the next page."
+    },
+    {
+      "name": "Create Page",
+      "category": "Pages",
+      "description": "Creates a new page in a Confluence space, optionally nested under a parent page. The body uses Confluence storage format (XHTML) — simple HTML like <p>, <h1>, <ul>, <table>, <a> works directly. Create as Current (published) or Draft."
+    },
+    {
+      "name": "Update Page",
+      "category": "Pages",
+      "description": "Updates a Confluence page's title, body, and/or status. Only pass the fields you want to change — the action first fetches the current page, merges your changes, and automatically increments the version number as Confluence requires. The body uses storage format (XHTML); simple HTML works."
+    },
+    {
+      "name": "Delete Page",
+      "category": "Pages",
+      "description": "Deletes a Confluence page. By default the page is moved to the trash (recoverable). Turn on Purge to permanently remove a page that is already in the trash, or Draft to delete a draft page instead of a published one."
+    },
+    {
+      "name": "List Blog Posts",
+      "category": "Blog Posts",
+      "description": "Lists blog posts across the Confluence site with optional space and status filters. Results are cursor-paginated: pass the returned nextCursor back into Cursor for the next page. Returns up to 250 blog posts per page (default 25). Bodies are not included — use Get Blog Post for content."
+    },
+    {
+      "name": "Get Blog Post",
+      "category": "Blog Posts",
+      "description": "Retrieves a single Confluence blog post by its ID, including title, status, space, version, and the post body in the chosen format (Storage XHTML, Atlas Doc Format JSON, or rendered View HTML)."
+    },
+    {
+      "name": "Create Blog Post",
+      "category": "Blog Posts",
+      "description": "Creates a new blog post in a Confluence space. The body uses Confluence storage format (XHTML) — simple HTML like <p>, <h2>, <ul> works directly. Create as Current (published, dated today) or Draft."
+    },
+    {
+      "name": "List Footer Comments on Page",
+      "category": "Comments",
+      "description": "Lists the footer comments (the regular comments shown below the page content) on a Confluence page, including their bodies in the chosen format. Results are cursor-paginated: pass the returned nextCursor back into Cursor for the next page."
+    },
+    {
+      "name": "Create Footer Comment",
+      "category": "Comments",
+      "description": "Adds a footer comment to a Confluence page, or a threaded reply to an existing footer comment when Parent Comment ID is provided (the Page parameter is ignored for replies). The body defaults to storage format (XHTML) — simple HTML works."
+    },
+    {
+      "name": "Get Comment",
+      "category": "Comments",
+      "description": "Retrieves a single footer comment by its ID, including its body in the chosen format, author, version, and the page or parent comment it belongs to."
+    },
+    {
+      "name": "Delete Comment",
+      "category": "Comments",
+      "description": "Permanently deletes a footer comment from a Confluence page. Deleted comments are removed permanently and cannot be restored; replies to the comment are deleted with it."
+    },
+    {
+      "name": "List Inline Comments on Page",
+      "category": "Comments",
+      "description": "Lists the inline comments (comments anchored to highlighted text inside the page content) on a Confluence page, including their bodies and resolution status. Results are cursor-paginated: pass the returned nextCursor back into Cursor for the next page."
+    },
+    {
+      "name": "List Page Attachments",
+      "category": "Attachments",
+      "description": "Lists the files attached to a Confluence page, including filename, media type, file size, and download link. Optionally filter by exact filename. Results are cursor-paginated: pass the returned nextCursor back into Cursor for the next page."
+    },
+    {
+      "name": "Get Attachment",
+      "category": "Attachments",
+      "description": "Retrieves the metadata of a single Confluence attachment by its ID — filename, media type, file size, owning page, version, and download link. To fetch the file's bytes, use Download Attachment."
+    },
+    {
+      "name": "Upload Attachment",
+      "category": "Attachments",
+      "description": "Uploads a FlowRunner file as an attachment on a Confluence page. The upload is marked as a minor edit, so page watchers are not notified. Fails if an attachment with the same filename already exists on the page — delete or rename first in that case."
+    },
+    {
+      "name": "Download Attachment",
+      "category": "Attachments",
+      "description": "Downloads a Confluence attachment's contents and saves them to FlowRunner file storage, returning the saved file's URL along with its name, media type, and size. Use the returned URL in subsequent flow steps."
+    },
+    {
+      "name": "Delete Attachment",
+      "category": "Attachments",
+      "description": "Deletes an attachment from a Confluence page. By default the attachment is moved to the trash (recoverable). Turn on Purge to permanently remove an attachment that is already in the trash."
+    },
+    {
+      "name": "Get Page Labels",
+      "category": "Labels",
+      "description": "Lists the labels applied to a Confluence page, optionally filtered by label prefix (Global, My, Team, or System). Results are cursor-paginated: pass the returned nextCursor back into Cursor for the next page."
+    },
+    {
+      "name": "Add Labels to Page",
+      "category": "Labels",
+      "description": "Adds one or more labels to a Confluence page using the standard global prefix. Labels are lowercase, single-word tags used for organizing and finding content (existing labels are unaffected). Returns the page's resulting label list."
+    },
+    {
+      "name": "Remove Label from Page",
+      "category": "Labels",
+      "description": "Removes a single label (global prefix) from a Confluence page. The label itself continues to exist on any other content it is applied to."
+    },
+    {
+      "name": "Search Content (CQL)",
+      "category": "Search",
+      "description": "Searches Confluence content using CQL (Confluence Query Language). Either provide a raw CQL query for full control, or use the convenience filters (Text, Space Key, Content Type) and the query is built for you. Returns matching content with excerpts, ranked by relevance, with offset-based pagination via Start."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users",
+      "description": "Retrieves the profile of the Confluence user the connection is authorized as — account ID, display name, public name, email (when visible), and profile picture. Useful for attributing flow activity or looking up the connected account's ID."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Publish or update Confluence pages and blog posts programmatically, with version numbers incremented automatically on updates.",
+    "Sync documents and files into Confluence by uploading attachments, then download or link them in later flow steps.",
+    "Build knowledge-base automations: create child pages under a parent, tag content with labels, and organize spaces.",
+    "Monitor and moderate discussion by listing, creating, and deleting footer and inline comments on pages.",
+    "Surface relevant content across the site using CQL search or the convenience Text/Space/Type filters."
+  ],
+  "agentIdeas": [
+    "After a **Jira** \"Create Issue\" fires, use Confluence \"Create Page\" to publish a linked design or spec page and \"Add Labels to Page\" to tag it for the project.",
+    "Use **Google Docs** \"Export Document\" to render a doc, then Confluence \"Upload Attachment\" to attach it to a page and \"Create Footer Comment\" to announce the update.",
+    "When a **Slack** \"On File Shared\" trigger fires, use Confluence \"Upload Attachment\" to archive the file onto the relevant page, then \"Download Attachment\" to reuse it in later steps."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/confluence/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/confluence",
+    "readme": "services/confluence/README.md",
+    "index": "services/confluence/src/index.js"
+  }
+}

@@ -1,0 +1,1466 @@
+{
+  "slug": "okta",
+  "name": "Okta",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate identity and access management in your Okta org from FlowRunner. Manage users, organize them into groups, automate membership with group rules, assign applications and admin roles, manage MFA factors and authenticators, read the System Log, and configure org security: sign-on and password policies with their rules, network zones, trusted origins, outbound event / inline hooks, external identity providers, profile schemas and mappings, and custom OAuth authorization servers with their token scopes, claims, access policies and rules, and signing keys. Manage application credentials end to end - SSO signing keys and CSRs, OAuth client JSON Web Keys and secrets, app logos, and resource-server keys - and identity-provider keys, signing keys, CSRs, and stored social tokens. Read and update individual application user and group assignments. Audit and revoke users' OAuth grants, tokens, and sign-in sessions. Authenticates with an Okta API token (SSWS) over your org base URL.",
+  "actionCount": 276,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Users",
+    "User Lifecycle",
+    "Groups",
+    "Group Rules",
+    "Applications",
+    "Admin Roles",
+    "MFA Factors",
+    "System Log",
+    "Network Zones",
+    "Trusted Origins",
+    "Event Hooks",
+    "Inline Hooks",
+    "Behaviors",
+    "User Types",
+    "ThreatInsight",
+    "Devices",
+    "Linked Objects",
+    "Policies",
+    "Policy Rules",
+    "Authorization Servers",
+    "Authorization Server Scopes",
+    "Authorization Server Claims",
+    "Schemas",
+    "Profile Mappings",
+    "Sessions",
+    "Authenticators",
+    "Identity Providers",
+    "User OAuth Grants",
+    "Authorization Server Policies",
+    "Authorization Server Keys",
+    "Application Credentials",
+    "Identity Provider Keys"
+  ],
+  "actions": [
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a new user in your Okta org with a profile (name, email, login) and optionally a starting password. Use this to provision someone - turn off \"Activate on Create\" to stage the account for later activation."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single user's full profile and status by id, login, or email. Use this to read a user before updating or acting on them."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists users in your org, optionally narrowed by a quick search or a SCIM-style filter expression. Returns a page plus a cursor for the next page. Use this to find or enumerate users."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Partially updates a user's profile - only the fields you provide are changed; the rest are left as-is. Use this to edit a name, email, or phone without replacing the whole profile."
+    },
+    {
+      "name": "Delete User",
+      "category": "Users",
+      "description": "Removes a user. An ACTIVE user is deactivated by the first delete; enable \"Permanently Delete\" to deactivate then permanently delete. Already-deactivated (DEPROVISIONED) users are handled gracefully - permanent delete works in a single step and a missing user is treated as already removed. Destructive - use with care."
+    },
+    {
+      "name": "Get User Groups",
+      "category": "Users",
+      "description": "Lists every group a user belongs to. Use this to audit a user's group memberships."
+    },
+    {
+      "name": "List Assigned App Links",
+      "category": "Users",
+      "description": "Lists the application links (apps) assigned to a user - the apps they see on their Okta dashboard. Use this to see what a user can access."
+    },
+    {
+      "name": "Activate User",
+      "category": "User Lifecycle",
+      "description": "Activates a STAGED or DEPROVISIONED user (status moves to ACTIVE, asynchronously). With the email off, returns an activation URL/token you can deliver yourself."
+    },
+    {
+      "name": "Deactivate User",
+      "category": "User Lifecycle",
+      "description": "Deactivates a user (status moves to DEPROVISIONED), removing their access. Use this to offboard someone without permanently deleting the account."
+    },
+    {
+      "name": "Suspend User",
+      "category": "User Lifecycle",
+      "description": "Suspends an ACTIVE user (status moves to SUSPENDED) so they cannot sign in, while keeping their assignments. Use this for a temporary hold; unsuspend to restore."
+    },
+    {
+      "name": "Unsuspend User",
+      "category": "User Lifecycle",
+      "description": "Returns a SUSPENDED user to ACTIVE so they can sign in again. Use this to restore access after a temporary suspension."
+    },
+    {
+      "name": "Unlock User",
+      "category": "User Lifecycle",
+      "description": "Unlocks a LOCKED_OUT user (returns to ACTIVE) so they can sign in with their current password. Use this when too many failed sign-ins have locked someone out."
+    },
+    {
+      "name": "Expire Password",
+      "category": "User Lifecycle",
+      "description": "Expires a user's password (status moves to PASSWORD_EXPIRED), forcing a reset at their next sign-in. Use this to require a password change."
+    },
+    {
+      "name": "Reset Password",
+      "category": "User Lifecycle",
+      "description": "Begins a password reset for a user. With the email off, returns a one-time reset URL you can deliver yourself. Use this to help a user recover access."
+    },
+    {
+      "name": "Reset Factors",
+      "category": "User Lifecycle",
+      "description": "Resets (clears) all enrolled MFA factors for a user, forcing re-enrollment. Use this when a user loses their device or you suspect their MFA is compromised."
+    },
+    {
+      "name": "Change Password",
+      "category": "User Lifecycle",
+      "description": "Changes a user's password when the current password is known (self-service style). The new password must meet the org's password policy. (Mutates live credentials.)"
+    },
+    {
+      "name": "Set Password",
+      "category": "User Lifecycle",
+      "description": "Admin-sets a user's password directly, with no current password needed. Use this to reset the password for a user you manage. The new password must meet the org's password policy."
+    },
+    {
+      "name": "Create Group",
+      "category": "Groups",
+      "description": "Creates a new Okta group with a name and optional description. Use this to organize users for access assignment or rules."
+    },
+    {
+      "name": "Get Group",
+      "category": "Groups",
+      "description": "Retrieves a single group's details by id. Use this to read a group before updating it or managing its membership."
+    },
+    {
+      "name": "List Groups",
+      "category": "Groups",
+      "description": "Lists groups in your org, optionally narrowed by a quick search or a SCIM-style filter. Returns a page plus a cursor for the next page. Use this to find or enumerate groups."
+    },
+    {
+      "name": "Update Group",
+      "category": "Groups",
+      "description": "Replaces an Okta group's profile (name and description). Only OKTA_GROUP profiles can be edited - app and built-in groups cannot. Use this to rename or re-describe a group."
+    },
+    {
+      "name": "Delete Group",
+      "category": "Groups",
+      "description": "Permanently deletes an Okta group. Members are not deleted, only the group. Destructive - use with care."
+    },
+    {
+      "name": "Add User to Group",
+      "category": "Groups",
+      "description": "Adds a user to a group. Use this to grant the user whatever access the group confers."
+    },
+    {
+      "name": "Remove User from Group",
+      "category": "Groups",
+      "description": "Removes a user from a group, revoking any access the group conferred. Destructive - use with care."
+    },
+    {
+      "name": "List Group Members",
+      "category": "Groups",
+      "description": "Lists the users who are members of a group. Returns a page plus a cursor for the next page. Use this to audit who is in a group."
+    },
+    {
+      "name": "List Assigned Apps for Group",
+      "category": "Groups",
+      "description": "Lists the applications assigned to a group - every member of the group gets these apps. Use this to see what access a group grants."
+    },
+    {
+      "name": "Create Group Rule",
+      "category": "Group Rules",
+      "description": "Creates a group rule that auto-assigns matching users into one or more groups based on an Okta Expression Language condition. Created INACTIVE - activate it to start applying. Use this to automate group membership."
+    },
+    {
+      "name": "List Group Rules",
+      "category": "Group Rules",
+      "description": "Lists the group rules in your org. Returns a page plus a cursor for the next page. Use this to find a rule to activate, deactivate, or delete."
+    },
+    {
+      "name": "Activate Group Rule",
+      "category": "Group Rules",
+      "description": "Activates a group rule so it begins evaluating and assigning matching users. Use this after creating or editing a rule."
+    },
+    {
+      "name": "Deactivate Group Rule",
+      "category": "Group Rules",
+      "description": "Deactivates a group rule so it stops evaluating. A rule must be deactivated before it can be deleted. Use this to pause automated assignment."
+    },
+    {
+      "name": "Delete Group Rule",
+      "category": "Group Rules",
+      "description": "Deletes a group rule. The rule must be INACTIVE first (deactivate it before deleting). Destructive - use with care."
+    },
+    {
+      "name": "List Applications",
+      "category": "Applications",
+      "description": "Lists the applications configured in your org, optionally narrowed by a quick search or filter. Returns a page plus a cursor for the next page. Use this to find an app to assign users or groups to."
+    },
+    {
+      "name": "Get Application",
+      "category": "Applications",
+      "description": "Retrieves a single application's details by id. Use this to inspect an app's sign-on mode and status before assigning users or groups."
+    },
+    {
+      "name": "Assign User to Application",
+      "category": "Applications",
+      "description": "Assigns a user to an application, optionally with an app-specific username. Use this to grant one person access to an app. (Requires a pre-configured app instance.)"
+    },
+    {
+      "name": "Unassign User from Application",
+      "category": "Applications",
+      "description": "Removes a user's assignment to an application, revoking their access to it. Destructive - use with care."
+    },
+    {
+      "name": "Assign Group to Application",
+      "category": "Applications",
+      "description": "Assigns a group to an application - every member of the group gets the app. Optionally set an assignment priority. Use this to grant a whole team access at once. (Requires a pre-configured app instance.)"
+    },
+    {
+      "name": "Remove Group from Application",
+      "category": "Applications",
+      "description": "Removes a group's assignment to an application, revoking the app for its members (unless granted another way). Destructive - use with care."
+    },
+    {
+      "name": "List Application Users",
+      "category": "Applications",
+      "description": "Lists the users assigned to an application. Returns a page plus a cursor for the next page. Use this to audit who has access to an app."
+    },
+    {
+      "name": "List Application Group Assignments",
+      "category": "Applications",
+      "description": "Lists the group assignments for an application - which groups grant this app to their members. Use this to audit group-based access to an app."
+    },
+    {
+      "name": "Assign Role to User",
+      "category": "Admin Roles",
+      "description": "Grants a standard Okta admin role to a user. Use this to delegate administrative privileges such as Help Desk or App Administrator."
+    },
+    {
+      "name": "List Roles Assigned to User",
+      "category": "Admin Roles",
+      "description": "Lists the admin roles assigned to a user. Use this to audit a user's administrative privileges, or to find the assignment id needed to remove a role."
+    },
+    {
+      "name": "Remove Role from User",
+      "category": "Admin Roles",
+      "description": "Removes an admin role from a user using the role ASSIGNMENT id (from List Roles Assigned to User - not the role type). Destructive - use with care."
+    },
+    {
+      "name": "List Factors",
+      "category": "MFA Factors",
+      "description": "Lists the MFA factors a user has enrolled (SMS, TOTP app, push, etc.) with their status. Use this to audit a user's multi-factor setup or to find a factor to activate or reset."
+    },
+    {
+      "name": "Enroll Factor",
+      "category": "MFA Factors",
+      "description": "Enrolls a new MFA factor for a user (e.g. SMS, voice, email, or an authenticator app). SMS/voice/email enrollment sends a real message that the user confirms via Activate Factor. Use this to set up multi-factor for someone."
+    },
+    {
+      "name": "Activate Factor",
+      "category": "MFA Factors",
+      "description": "Activates a PENDING_ACTIVATION factor using the one-time code the user received out-of-band (SMS/email/TOTP). Use this to finish enrolling a factor after Enroll Factor."
+    },
+    {
+      "name": "Reset Factor",
+      "category": "MFA Factors",
+      "description": "Removes (unenrolls) an enrolled MFA factor for a user. Use this to clear a single factor - e.g. an old phone - without resetting all of the user's factors. Destructive - use with care."
+    },
+    {
+      "name": "Get Logs",
+      "category": "System Log",
+      "description": "Reads the org's System Log (audit trail) within a time window, optionally filtered by event type or a keyword. Returns a page plus a cursor for the next page. Use this to investigate activity or pull events for reporting."
+    },
+    {
+      "name": "List Network Zones",
+      "category": "Network Zones",
+      "description": "Lists the IP and dynamic network zones in your org, optionally narrowed by a SCIM filter. Returns a page plus a cursor for the next page. Use this to find a zone to view, edit, or use in a sign-on policy."
+    },
+    {
+      "name": "Create Network Zone",
+      "category": "Network Zones",
+      "description": "Creates a network zone - an IP zone (explicit CIDR/range list) or a dynamic zone (geo/ASN-based). Use a Policy zone in sign-on rules, or a Blocklist zone to always block its addresses."
+    },
+    {
+      "name": "Get Network Zone",
+      "category": "Network Zones",
+      "description": "Retrieves a single network zone by id, including its gateways and proxies. Use this to inspect a zone before editing it."
+    },
+    {
+      "name": "Update Network Zone",
+      "category": "Network Zones",
+      "description": "Replaces a network zone (PUT is a full replace - supply the name, type, and the complete set of gateways/proxies). Use this to edit a zone's address ranges or usage."
+    },
+    {
+      "name": "Delete Network Zone",
+      "category": "Network Zones",
+      "description": "Deletes a network zone. The zone must be INACTIVE first - deactivate it before deleting. Destructive - use with care."
+    },
+    {
+      "name": "Activate Network Zone",
+      "category": "Network Zones",
+      "description": "Activates a network zone so it can be referenced in policies. Use this after creating or editing a zone."
+    },
+    {
+      "name": "Deactivate Network Zone",
+      "category": "Network Zones",
+      "description": "Deactivates a network zone (required before it can be deleted). Use this to take a zone out of service."
+    },
+    {
+      "name": "List Trusted Origins",
+      "category": "Trusted Origins",
+      "description": "Lists the trusted origins (CORS / redirect / iframe-embed) registered in your org. Returns a page plus a cursor for the next page. Use this to find an origin to view or edit."
+    },
+    {
+      "name": "Create Trusted Origin",
+      "category": "Trusted Origins",
+      "description": "Registers a trusted origin and what it is trusted for (CORS, Redirect, and/or Iframe Embed). Use this to allow a web app at a specific URL to make CORS calls or be a redirect target."
+    },
+    {
+      "name": "Get Trusted Origin",
+      "category": "Trusted Origins",
+      "description": "Retrieves a single trusted origin by id. Use this to inspect an origin's scopes and status before editing it."
+    },
+    {
+      "name": "Update Trusted Origin",
+      "category": "Trusted Origins",
+      "description": "Replaces a trusted origin (PUT is a full replace - supply the name, origin, and the complete set of scopes). Use this to rename an origin or change what it is trusted for."
+    },
+    {
+      "name": "Delete Trusted Origin",
+      "category": "Trusted Origins",
+      "description": "Deletes a trusted origin, revoking the trust it conferred. Destructive - use with care."
+    },
+    {
+      "name": "Activate Trusted Origin",
+      "category": "Trusted Origins",
+      "description": "Activates a trusted origin so its trust takes effect. Use this to re-enable a previously deactivated origin."
+    },
+    {
+      "name": "Deactivate Trusted Origin",
+      "category": "Trusted Origins",
+      "description": "Deactivates a trusted origin so its trust no longer applies. Use this to temporarily disable an origin without deleting it."
+    },
+    {
+      "name": "List Event Hooks",
+      "category": "Event Hooks",
+      "description": "Lists the outbound event hooks in your org - registrations that POST Okta events to an external HTTPS endpoint. Use this to find a hook to view, edit, or activate."
+    },
+    {
+      "name": "Create Event Hook",
+      "category": "Event Hooks",
+      "description": "Registers an event hook that POSTs the chosen Okta events to your HTTPS endpoint. After creating, verify the hook so Okta confirms your endpoint, then activate it. Use this to push Okta events to an external service."
+    },
+    {
+      "name": "Get Event Hook",
+      "category": "Event Hooks",
+      "description": "Retrieves a single event hook by id, including its events and channel config. Use this to inspect a hook before editing or verifying it."
+    },
+    {
+      "name": "Update Event Hook",
+      "category": "Event Hooks",
+      "description": "Replaces an event hook's name, events, and channel (full replace). Use this to change which events fire, the delivery URL, or the filter expression."
+    },
+    {
+      "name": "Delete Event Hook",
+      "category": "Event Hooks",
+      "description": "Deletes an event hook. The hook must be INACTIVE first - deactivate it before deleting. Destructive - use with care."
+    },
+    {
+      "name": "Activate Event Hook",
+      "category": "Event Hooks",
+      "description": "Activates an event hook so Okta begins delivering its events. Use this after the hook is verified."
+    },
+    {
+      "name": "Deactivate Event Hook",
+      "category": "Event Hooks",
+      "description": "Deactivates an event hook so Okta stops delivering its events (required before delete). Use this to pause a hook."
+    },
+    {
+      "name": "Verify Event Hook",
+      "category": "Event Hooks",
+      "description": "Triggers Okta's one-time verification handshake against the hook's delivery URL. The endpoint must echo the X-Okta-Verification-Challenge header. Run this once after creating a hook, before activating it. (Requires a live external endpoint that answers the challenge.)"
+    },
+    {
+      "name": "List Inline Hooks",
+      "category": "Inline Hooks",
+      "description": "Lists the inline hooks in your org - synchronous hooks Okta calls mid-flow (token transform, registration, password import, etc.). Optionally filter by type. Use this to find a hook to view or edit."
+    },
+    {
+      "name": "Create Inline Hook",
+      "category": "Inline Hooks",
+      "description": "Creates an inline hook - a synchronous call Okta makes to your HTTPS endpoint mid-flow that can modify the outcome. The type (which flow it plugs into) is immutable after creation. Use this to customize token, registration, or password-import behavior."
+    },
+    {
+      "name": "Get Inline Hook",
+      "category": "Inline Hooks",
+      "description": "Retrieves a single inline hook by id, including its type and channel config. Use this to inspect a hook before editing it."
+    },
+    {
+      "name": "Update Inline Hook",
+      "category": "Inline Hooks",
+      "description": "Updates an inline hook's name and channel (the type is immutable). Use this to change the endpoint URL, auth, or display name of a hook."
+    },
+    {
+      "name": "Delete Inline Hook",
+      "category": "Inline Hooks",
+      "description": "Deletes an inline hook. The hook must be INACTIVE first - deactivate it before deleting. Destructive - use with care."
+    },
+    {
+      "name": "Activate Inline Hook",
+      "category": "Inline Hooks",
+      "description": "Activates an inline hook so Okta begins calling it during the relevant flow. Use this after creating or editing a hook."
+    },
+    {
+      "name": "Deactivate Inline Hook",
+      "category": "Inline Hooks",
+      "description": "Deactivates an inline hook so Okta stops calling it (required before delete). Use this to pause a hook."
+    },
+    {
+      "name": "Execute Inline Hook",
+      "category": "Inline Hooks",
+      "description": "Test-fires an inline hook against your endpoint with a sample CloudEvents payload, returning the commands your endpoint responds with. Use this to validate a hook end to end. (Requires a live external endpoint reachable from Okta.)"
+    },
+    {
+      "name": "Create Application",
+      "category": "Applications",
+      "description": "Creates an app instance in your org. Bookmark = a clickable link tile on the dashboard; SWA Auto-Login = a form-fill SSO app. The settings fields change with the chosen sign-on mode. (OIDC/SAML apps are configured in the Admin Console, not here.)"
+    },
+    {
+      "name": "Replace Application",
+      "category": "Applications",
+      "description": "Replaces an app instance (PUT is a full replace - supply the label, sign-on mode and the complete settings). Use this to edit a Bookmark or SWA app's URLs."
+    },
+    {
+      "name": "Delete Application",
+      "category": "Applications",
+      "description": "Permanently deletes an app instance. The app must be INACTIVE first - deactivate it before deleting. Destructive - use with care."
+    },
+    {
+      "name": "Activate Application",
+      "category": "Applications",
+      "description": "Activates an app instance so it appears for assigned users. Use this after creating or editing an app."
+    },
+    {
+      "name": "Deactivate Application",
+      "category": "Applications",
+      "description": "Deactivates an app instance (required before it can be deleted). Use this to take an app out of service."
+    },
+    {
+      "name": "List Behavior Rules",
+      "category": "Behaviors",
+      "description": "Lists the behavior detection rules in your org (velocity / impossible-travel, anomalous location / IP / device / ASN). Use this to find a rule to view, edit, or use in a risk-based sign-on policy."
+    },
+    {
+      "name": "Create Behavior Rule",
+      "category": "Behaviors",
+      "description": "Creates a behavior detection rule. Pick the anomaly type (e.g. Velocity for impossible travel) and the tuning fields adjust to it. Reference the rule in a sign-on policy to trigger step-up MFA on suspicious behavior."
+    },
+    {
+      "name": "Get Behavior Rule",
+      "category": "Behaviors",
+      "description": "Retrieves a single behavior detection rule by id, including its type and tuning settings. Use this to inspect a rule before editing it."
+    },
+    {
+      "name": "Update Behavior Rule",
+      "category": "Behaviors",
+      "description": "Replaces a behavior detection rule (PUT is a full replace - supply name, type and the complete settings). Use this to retune a rule's thresholds."
+    },
+    {
+      "name": "Delete Behavior Rule",
+      "category": "Behaviors",
+      "description": "Deletes a behavior detection rule. Destructive - once removed it can no longer be referenced by policies."
+    },
+    {
+      "name": "Activate Behavior Rule",
+      "category": "Behaviors",
+      "description": "Activates a behavior detection rule so it starts evaluating sign-ins. Use this after creating or retuning a rule."
+    },
+    {
+      "name": "Deactivate Behavior Rule",
+      "category": "Behaviors",
+      "description": "Deactivates a behavior detection rule so it stops evaluating sign-ins. Use this to pause a rule without deleting it."
+    },
+    {
+      "name": "List User Types",
+      "category": "User Types",
+      "description": "Lists the user types in your org (the default type plus any custom types). Each type can carry its own profile schema. Use this to find a type to assign at user creation or to edit."
+    },
+    {
+      "name": "Create User Type",
+      "category": "User Types",
+      "description": "Creates a custom user type. The machine name is immutable after creation; only the display name and description can change later. An org allows the default type plus up to 9 custom types."
+    },
+    {
+      "name": "Get User Type",
+      "category": "User Types",
+      "description": "Retrieves a single user type by id. Pick a type from the dropdown, or use the org default. Use this to inspect a type before editing."
+    },
+    {
+      "name": "Update User Type",
+      "category": "User Types",
+      "description": "Partially updates a user type - only the display name and description are mutable (the machine name is fixed). Leave a field blank to keep its current value."
+    },
+    {
+      "name": "Replace User Type",
+      "category": "User Types",
+      "description": "Fully replaces a user type. PUT requires the machine name echoed back (it stays immutable - it must equal the existing name) plus the new display name and description."
+    },
+    {
+      "name": "Delete User Type",
+      "category": "User Types",
+      "description": "Deletes a custom user type. You cannot delete the default type or a type that is currently assigned to users. Destructive - use with care."
+    },
+    {
+      "name": "Get ThreatInsight Configuration",
+      "category": "ThreatInsight",
+      "description": "Retrieves your org's ThreatInsight configuration - how Okta responds to sign-ins from suspicious IPs and which network zones are excluded. Read this before updating it."
+    },
+    {
+      "name": "Update ThreatInsight Configuration",
+      "category": "ThreatInsight",
+      "description": "Sets how Okta responds to sign-ins from suspicious IPs (None / Audit / Block) and optionally excludes trusted network zones from ThreatInsight. Read the current config first, then write your change."
+    },
+    {
+      "name": "List Devices",
+      "category": "Devices",
+      "description": "Lists the managed/enrolled devices in your org, optionally narrowed by a SCIM filter (e.g. status eq \"ACTIVE\" or profile.platform eq \"WINDOWS\"). Returns a page plus a cursor for the next page. (Devices enroll via Okta Verify / client agents - they are not created through this API.)"
+    },
+    {
+      "name": "Get Device",
+      "category": "Devices",
+      "description": "Retrieves a single device by id, including its profile (display name, platform, OS, encryption status). Use this to inspect a device before acting on it."
+    },
+    {
+      "name": "Delete Device",
+      "category": "Devices",
+      "description": "Permanently deletes a device. The device must be DEACTIVATED first - deactivate it before deleting. Destructive - use with care."
+    },
+    {
+      "name": "Activate Device",
+      "category": "Devices",
+      "description": "Activates a device, returning it to the ACTIVE state. Use this to bring a deactivated or new device back into service."
+    },
+    {
+      "name": "Deactivate Device",
+      "category": "Devices",
+      "description": "Deactivates a device (required before it can be deleted). This is destructive to the device's factors and certificates. Use with care."
+    },
+    {
+      "name": "Suspend Device",
+      "category": "Devices",
+      "description": "Temporarily suspends a device (non-destructive). A suspended device cannot be used for sign-in until unsuspended."
+    },
+    {
+      "name": "Unsuspend Device",
+      "category": "Devices",
+      "description": "Unsuspends a previously suspended device, returning it to ACTIVE. Only SUSPENDED devices can be unsuspended."
+    },
+    {
+      "name": "List Device Users",
+      "category": "Devices",
+      "description": "Lists the users linked to a device, with each user's management status and screen-lock type. Use this to see who a device belongs to."
+    },
+    {
+      "name": "List User Blocks",
+      "category": "Users",
+      "description": "Lists the IP/device blocks currently applied to a user (e.g. from a suspicious-activity event). Use this to see why a user may be locked out from certain locations or devices."
+    },
+    {
+      "name": "List User Devices",
+      "category": "Users",
+      "description": "Lists the devices enrolled or managed for a user, with each device's status and platform. Use this to audit which devices a user signs in from."
+    },
+    {
+      "name": "Reactivate User",
+      "category": "Users",
+      "description": "Restarts the activation flow for a user in the PROVISIONED or DEPROVISIONED state. With \"Send Email\" off, returns a fresh activation URL/token you can deliver yourself. Use this to re-invite a staged or deactivated user."
+    },
+    {
+      "name": "Forgot Password",
+      "category": "Users",
+      "description": "Starts the self-service password reset flow for a user. With \"Send Email\" off, returns a one-time reset URL you can deliver yourself instead of emailing it. Use this to help a user who is locked out."
+    },
+    {
+      "name": "Reset Password via Recovery Question",
+      "category": "Users",
+      "description": "Resets a user's password by answering their existing recovery question. Use this for a self-service reset where the user knows their recovery answer but not their password."
+    },
+    {
+      "name": "Change Recovery Question",
+      "category": "Users",
+      "description": "Changes a user's recovery question and answer, validating the change against their current password. Use this to update the question a user answers during self-service password recovery."
+    },
+    {
+      "name": "Verify Factor",
+      "category": "MFA Factors",
+      "description": "Verifies an enrolled MFA factor by submitting its passcode (sms/call/email/totp/token) or its security-question answer. Leave the passcode empty on the first call to trigger a CHALLENGE that sends the code. Use this to complete a step-up verification."
+    },
+    {
+      "name": "Resend Enrollment Challenge",
+      "category": "MFA Factors",
+      "description": "Re-sends the activation challenge for a factor that is still PENDING_ACTIVATION (e.g. resend the SMS or email code). Use this when the original code expired or never arrived."
+    },
+    {
+      "name": "List Supported Factors",
+      "category": "MFA Factors",
+      "description": "Lists the MFA factor types a user is eligible to enroll, filtered by your org's policy. Use this to show a user only the factors they can actually set up."
+    },
+    {
+      "name": "List Security Questions",
+      "category": "MFA Factors",
+      "description": "Lists the security questions available for a user to enroll as a recovery/MFA factor. Use this to populate a question picker before enrolling the security-question factor."
+    },
+    {
+      "name": "Get Group Rule",
+      "category": "Group Rules",
+      "description": "Retrieves a single group rule by id - its match expression, target groups, exclusions, and status. Turn on \"Expand Group Names\" to embed a group-id->name map so the result is easier to read."
+    },
+    {
+      "name": "Replace Group Rule",
+      "category": "Group Rules",
+      "description": "Fully replaces a group rule's name, match expression, target groups, and exclusions. The rule must be INACTIVE first (deactivate it before replacing). Use this to edit how an auto-assignment rule works."
+    },
+    {
+      "name": "List Group Owners",
+      "category": "Groups",
+      "description": "Lists the owners assigned to a group - the users or groups that can manage its membership. Use this to audit who controls a group."
+    },
+    {
+      "name": "Assign Group Owner",
+      "category": "Groups",
+      "description": "Assigns a user or group as an owner of a group, letting them manage its membership. Pick the owner type, then paste the user or group ID. Use this to delegate group administration."
+    },
+    {
+      "name": "Remove Group Owner",
+      "category": "Groups",
+      "description": "Removes an owner from a group, revoking their ability to manage its membership. Use the owner id from List Group Owners. Destructive."
+    },
+    {
+      "name": "List Linked Object Definitions",
+      "category": "Linked Objects",
+      "description": "Lists the custom user-to-user relationship definitions in your org (e.g. manager/subordinate, mentor/mentee). Use this to see which linked-object relationships exist before linking users."
+    },
+    {
+      "name": "Create Linked Object Definition",
+      "category": "Linked Objects",
+      "description": "Creates a custom user-to-user relationship definition with a primary side and an associated side (e.g. manager / subordinate). Use this once to define a relationship you can then assign between users."
+    },
+    {
+      "name": "Get Linked Object Definition",
+      "category": "Linked Objects",
+      "description": "Retrieves a single linked-object definition by its primary or associated name. Use this to inspect a relationship's two sides before linking users."
+    },
+    {
+      "name": "Delete Linked Object Definition",
+      "category": "Linked Objects",
+      "description": "Deletes a whole linked-object relationship definition (both sides). Specify either the primary or associated name. Destructive - any user links using this relationship are removed."
+    },
+    {
+      "name": "Link Users",
+      "category": "Linked Objects",
+      "description": "Links two users in a relationship: the \"Associated User\" becomes the associated side (e.g. the subordinate) and the \"Primary User\" becomes the primary side (e.g. the manager) for the chosen relationship. Use this to set a manager, mentor, or other custom link."
+    },
+    {
+      "name": "List User Linked Values",
+      "category": "Linked Objects",
+      "description": "Lists a user's linked values for a relationship - the link to their primary (if they are associated) or their associated users (if they are primary). Use this to read who a user reports to or who reports to them."
+    },
+    {
+      "name": "Unlink User",
+      "category": "Linked Objects",
+      "description": "Removes a user's relationship link for the named relationship (clears the link on the associated user's side). Use this to unset a manager, mentor, or other custom link. Destructive."
+    },
+    {
+      "name": "List Policies",
+      "category": "Policies",
+      "description": "Lists policies of a given type (e.g. Global Session, Password, MFA Enroll). Okta requires the policy type - pick it from the dropdown. Use this to find a policy id before editing it or its rules."
+    },
+    {
+      "name": "Create Policy",
+      "category": "Policies",
+      "description": "Creates a policy of the chosen type. OKTA_SIGN_ON (Global Session) and PASSWORD work on any org; ACCESS_POLICY / PROFILE_ENROLLMENT require an Identity Engine org. Conditions and actions are type-specific sub-forms."
+    },
+    {
+      "name": "Get Policy",
+      "category": "Policies",
+      "description": "Retrieves a single policy by id, including its conditions. Use this to inspect a policy before editing it or its rules."
+    },
+    {
+      "name": "Replace Policy",
+      "category": "Policies",
+      "description": "Fully replaces a policy (PUT overwrite). The type is immutable and must match the existing policy. Use this to rename a policy or change its conditions/actions."
+    },
+    {
+      "name": "Delete Policy",
+      "category": "Policies",
+      "description": "Deletes a policy permanently. Destructive - its rules go with it. Use with care."
+    },
+    {
+      "name": "Activate Policy",
+      "category": "Policies",
+      "description": "Activates a policy so it is evaluated at sign-in. Use this after creating or editing a policy."
+    },
+    {
+      "name": "Deactivate Policy",
+      "category": "Policies",
+      "description": "Deactivates a policy (required before it can be deleted in some cases). Use this to take a policy out of evaluation without deleting it."
+    },
+    {
+      "name": "List Policy Rules",
+      "category": "Policy Rules",
+      "description": "Lists the rules inside a policy, in evaluation order. Use this to find a rule id before editing or reordering it."
+    },
+    {
+      "name": "Create Policy Rule",
+      "category": "Policy Rules",
+      "description": "Adds a rule to a policy. The rule type must match the parent policy (e.g. SIGN_ON for a Global Session policy). Conditions and actions are type-specific sub-forms."
+    },
+    {
+      "name": "Get Policy Rule",
+      "category": "Policy Rules",
+      "description": "Retrieves a single rule inside a policy by id. Use this to inspect a rule's conditions and actions before editing."
+    },
+    {
+      "name": "Replace Policy Rule",
+      "category": "Policy Rules",
+      "description": "Fully replaces a rule inside a policy (PUT overwrite). The rule type is immutable and must match the existing rule. Use this to change a rule's conditions or actions."
+    },
+    {
+      "name": "Delete Policy Rule",
+      "category": "Policy Rules",
+      "description": "Deletes a rule from a policy permanently. Destructive - use with care."
+    },
+    {
+      "name": "Activate Policy Rule",
+      "category": "Policy Rules",
+      "description": "Activates a rule inside a policy so it is evaluated. Use this after creating or editing a rule."
+    },
+    {
+      "name": "Deactivate Policy Rule",
+      "category": "Policy Rules",
+      "description": "Deactivates a rule inside a policy (required before it can be deleted). Use this to disable a rule without deleting it."
+    },
+    {
+      "name": "List Authorization Servers",
+      "category": "Authorization Servers",
+      "description": "Lists custom OAuth 2.0 / OIDC authorization servers in your org. Use this to find a server id before managing its scopes, claims, or lifecycle. Requires the API Access Management add-on."
+    },
+    {
+      "name": "Create Authorization Server",
+      "category": "Authorization Servers",
+      "description": "Creates a custom OAuth 2.0 / OIDC authorization server with one or more token audiences. Use this to issue API access tokens with custom scopes and claims. Requires the API Access Management add-on."
+    },
+    {
+      "name": "Get Authorization Server",
+      "category": "Authorization Servers",
+      "description": "Retrieves a single authorization server by id, including its audiences, issuer, and signing credentials. Use this to inspect a server before editing it."
+    },
+    {
+      "name": "Replace Authorization Server",
+      "category": "Authorization Servers",
+      "description": "Fully replaces an authorization server (PUT overwrite - supply name and the complete audience list). Use this to rename a server or change its audiences/issuer mode."
+    },
+    {
+      "name": "Delete Authorization Server",
+      "category": "Authorization Servers",
+      "description": "Deletes an authorization server permanently. It must be deactivated first (Okta returns 403 if it is active). Destructive - use with care."
+    },
+    {
+      "name": "Activate Authorization Server",
+      "category": "Authorization Servers",
+      "description": "Activates an authorization server so it can issue tokens. Use this after creating or editing a server."
+    },
+    {
+      "name": "Deactivate Authorization Server",
+      "category": "Authorization Servers",
+      "description": "Deactivates an authorization server (required before it can be deleted). Use this to stop a server from issuing tokens without deleting it."
+    },
+    {
+      "name": "List Token Scopes",
+      "category": "Authorization Server Scopes",
+      "description": "Lists the custom OAuth scopes defined on an authorization server. Use this to find a scope id before editing or deleting it."
+    },
+    {
+      "name": "Create Token Scope",
+      "category": "Authorization Server Scopes",
+      "description": "Creates a custom OAuth scope on an authorization server. Use this to define a permission (e.g. car:drive) that apps can request. Requires the API Access Management add-on."
+    },
+    {
+      "name": "Get Token Scope",
+      "category": "Authorization Server Scopes",
+      "description": "Retrieves a single custom OAuth scope by id. Use this to inspect a scope before editing it."
+    },
+    {
+      "name": "Replace Token Scope",
+      "category": "Authorization Server Scopes",
+      "description": "Fully replaces a custom OAuth scope (PUT overwrite). Use this to rename a scope or change its consent behavior."
+    },
+    {
+      "name": "Delete Token Scope",
+      "category": "Authorization Server Scopes",
+      "description": "Deletes a custom OAuth scope from an authorization server permanently. Destructive - use with care."
+    },
+    {
+      "name": "List Token Claims",
+      "category": "Authorization Server Claims",
+      "description": "Lists the custom token claims defined on an authorization server. Use this to find a claim id before editing or deleting it."
+    },
+    {
+      "name": "Create Token Claim",
+      "category": "Authorization Server Claims",
+      "description": "Creates a custom token claim on an authorization server - a value (Okta Expression or a group match) injected into the access or ID token. Requires the API Access Management add-on."
+    },
+    {
+      "name": "Get Token Claim",
+      "category": "Authorization Server Claims",
+      "description": "Retrieves a single custom token claim by id. Use this to inspect a claim before editing it."
+    },
+    {
+      "name": "Replace Token Claim",
+      "category": "Authorization Server Claims",
+      "description": "Fully replaces a custom token claim (PUT overwrite). Use this to change a claim's value, type, or scope binding."
+    },
+    {
+      "name": "Delete Token Claim",
+      "category": "Authorization Server Claims",
+      "description": "Deletes a custom token claim from an authorization server permanently. Destructive - use with care."
+    },
+    {
+      "name": "Get User Schema",
+      "category": "Schemas",
+      "description": "Retrieves a user profile schema (base + custom attributes). Use 'default' for the default user type, or a type's schema id from List User Types. Use this to inspect the available profile attributes before mapping or updating them."
+    },
+    {
+      "name": "Update User Schema",
+      "category": "Schemas",
+      "description": "Adds, edits, or removes custom user profile attributes by sending a JSON-Schema Draft 4 fragment. Use this to extend the user profile with org-specific fields. Set a property to null to remove it."
+    },
+    {
+      "name": "Get Group Schema",
+      "category": "Schemas",
+      "description": "Retrieves the group profile schema (base + custom attributes). Use this to inspect the available group profile attributes."
+    },
+    {
+      "name": "Update Group Schema",
+      "category": "Schemas",
+      "description": "Adds, edits, or removes custom group profile attributes via a JSON-Schema fragment. Base group properties cannot be changed. Set a property to null to remove it."
+    },
+    {
+      "name": "Get App User Schema",
+      "category": "Schemas",
+      "description": "Retrieves an application's user profile schema (the attributes Okta provisions to that app). Use this to inspect app-user attributes before editing mappings."
+    },
+    {
+      "name": "Update App User Schema",
+      "category": "Schemas",
+      "description": "Adds, edits, or removes custom attributes on an application's user schema via a JSON-Schema fragment. App custom properties may carry an externalName. Set a property to null to remove it."
+    },
+    {
+      "name": "List Profile Mappings",
+      "category": "Profile Mappings",
+      "description": "Lists the attribute mappings between sources and targets (e.g. Okta user -> an app's user profile). Use this to find a mapping id before retrieving or editing it."
+    },
+    {
+      "name": "Get Profile Mapping",
+      "category": "Profile Mappings",
+      "description": "Retrieves a single profile mapping by id, including each target property's expression and push status. Use this to inspect a mapping before editing it."
+    },
+    {
+      "name": "Update Profile Mapping",
+      "category": "Profile Mappings",
+      "description": "Updates the attribute mappings on a profile mapping. Each target property maps to {expression, pushStatus}. Use this to control which attributes flow to a downstream app. Set a property to null to remove its mapping."
+    },
+    {
+      "name": "Get Session",
+      "category": "Sessions",
+      "description": "Retrieves a single sign-in session by its id, including the user, status, and expiry. Use this to inspect a live session (the id comes from a prior authentication or a System Log event). There is no list-sessions endpoint, so the id is entered directly."
+    },
+    {
+      "name": "Refresh Session",
+      "category": "Sessions",
+      "description": "Extends a sign-in session's lifetime (its expiry is pushed out). Use this to keep an active session alive."
+    },
+    {
+      "name": "Revoke Session",
+      "category": "Sessions",
+      "description": "Immediately ends a single sign-in session - the user is signed out of it. Destructive - use with care."
+    },
+    {
+      "name": "Revoke All User Sessions",
+      "category": "Sessions",
+      "description": "Ends all of a user's sign-in sessions, forcing them to re-authenticate everywhere. Optionally also revoke their OAuth tokens and clear remembered devices. Use this to lock out a compromised account."
+    },
+    {
+      "name": "List Authenticators",
+      "category": "Authenticators",
+      "description": "Lists the MFA authenticators configured in your org (email, phone, security key, etc.) with each one's status. Use this to find an authenticator id before editing it."
+    },
+    {
+      "name": "Create Authenticator",
+      "category": "Authenticators",
+      "description": "Adds an MFA authenticator to your org (e.g. Duo Security or a Temporary Access Code). Fill in the connection settings for the chosen type. Use this to offer a new sign-in factor."
+    },
+    {
+      "name": "Get Authenticator",
+      "category": "Authenticators",
+      "description": "Retrieves a single authenticator by id, including its settings and status. Use this to inspect an authenticator before editing it."
+    },
+    {
+      "name": "Replace Authenticator",
+      "category": "Authenticators",
+      "description": "Fully replaces an authenticator's configuration (PUT overwrite). The type must match the existing one. Built-in authenticators (email/password/phone/security question) are configured this way."
+    },
+    {
+      "name": "Activate Authenticator",
+      "category": "Authenticators",
+      "description": "Activates an authenticator so users can enroll and use it for MFA. Use this after adding or configuring one."
+    },
+    {
+      "name": "Deactivate Authenticator",
+      "category": "Authenticators",
+      "description": "Deactivates an authenticator so users can no longer enroll or use it for MFA. Use with care - existing enrollments may be affected."
+    },
+    {
+      "name": "List Authenticator Methods",
+      "category": "Authenticators",
+      "description": "Lists the methods within an authenticator (e.g. SMS and voice under the Phone authenticator) with each method's status. Use this to find a method type before editing it."
+    },
+    {
+      "name": "Get Authenticator Method",
+      "category": "Authenticators",
+      "description": "Retrieves a single method within an authenticator, including its settings. Use this to inspect a method before editing it."
+    },
+    {
+      "name": "Replace Authenticator Method",
+      "category": "Authenticators",
+      "description": "Updates a method within an authenticator (its status and any method-specific settings, e.g. WebAuthn user verification). Use this to tune how a method behaves."
+    },
+    {
+      "name": "Activate Authenticator Method",
+      "category": "Authenticators",
+      "description": "Activates a method within an authenticator (e.g. enable SMS under Phone). Use this to let users enroll that method."
+    },
+    {
+      "name": "Deactivate Authenticator Method",
+      "category": "Authenticators",
+      "description": "Deactivates a method within an authenticator (e.g. disable voice under Phone). Use with care."
+    },
+    {
+      "name": "List Custom AAGUIDs",
+      "category": "Authenticators",
+      "description": "Lists the custom WebAuthn AAGUIDs (security-key vendor/model allowlist) on an authenticator. Use this to see which security-key models are permitted."
+    },
+    {
+      "name": "Create Custom AAGUID",
+      "category": "Authenticators",
+      "description": "Adds a custom WebAuthn AAGUID (a security-key vendor/model) to an authenticator's allowlist, with its attestation root certificate(s). Use this to permit a specific security-key model."
+    },
+    {
+      "name": "Get Custom AAGUID",
+      "category": "Authenticators",
+      "description": "Retrieves a single custom WebAuthn AAGUID by id. Use this to inspect an allowed security-key model."
+    },
+    {
+      "name": "Replace Custom AAGUID",
+      "category": "Authenticators",
+      "description": "Fully replaces a custom WebAuthn AAGUID (PUT overwrite). Use this to rename it or update its attestation certificates."
+    },
+    {
+      "name": "Delete Custom AAGUID",
+      "category": "Authenticators",
+      "description": "Removes a custom WebAuthn AAGUID from an authenticator's allowlist. That security-key model is no longer permitted. Destructive - use with care."
+    },
+    {
+      "name": "Get Well-Known App Authenticator Config",
+      "category": "Authenticators",
+      "description": "Retrieves the public discovery document for a custom-app (push) authenticator - its enroll endpoint and supported methods - for a given OAuth client id. Read-only."
+    },
+    {
+      "name": "List Identity Providers",
+      "category": "Identity Providers",
+      "description": "Lists the external identity providers (social and enterprise IdPs) configured in your org. Use this to find an IdP id before editing, activating, or deleting it."
+    },
+    {
+      "name": "Create Identity Provider",
+      "category": "Identity Providers",
+      "description": "Adds an external identity provider so users can sign in through it (e.g. Google, a generic OIDC, or SAML 2.0 provider). Fill in the connection settings for the chosen type. Use this to enable social or enterprise federated sign-in."
+    },
+    {
+      "name": "Get Identity Provider",
+      "category": "Identity Providers",
+      "description": "Retrieves a single identity provider by id, including its protocol and policy configuration. Use this to inspect an IdP before editing it."
+    },
+    {
+      "name": "Replace Identity Provider",
+      "category": "Identity Providers",
+      "description": "Fully replaces an identity provider's configuration (PUT overwrite). The type must match the existing IdP. Use this to update connection settings or policy."
+    },
+    {
+      "name": "Delete Identity Provider",
+      "category": "Identity Providers",
+      "description": "Deletes an identity provider permanently. Deactivate it first. Destructive - use with care."
+    },
+    {
+      "name": "Activate Identity Provider",
+      "category": "Identity Providers",
+      "description": "Activates an identity provider so users can sign in through it. Use this after creating or reconfiguring an IdP."
+    },
+    {
+      "name": "Deactivate Identity Provider",
+      "category": "Identity Providers",
+      "description": "Deactivates an identity provider so users can no longer sign in through it. Required before deleting."
+    },
+    {
+      "name": "List IdP Users",
+      "category": "Identity Providers",
+      "description": "Lists the Okta users linked to an identity provider. Use this to audit which users authenticate through an external IdP."
+    },
+    {
+      "name": "Get IdP User",
+      "category": "Identity Providers",
+      "description": "Retrieves a single IdP-linked user, including the external id mapping. Use this to inspect a user's link to an external IdP."
+    },
+    {
+      "name": "Link User to IdP",
+      "category": "Identity Providers",
+      "description": "Links an Okta user to an external identity provider by external id, so they can sign in through it. Use this for SAML/social IdPs that map by a known subject id."
+    },
+    {
+      "name": "Unlink User from IdP",
+      "category": "Identity Providers",
+      "description": "Removes the link between an Okta user and an external identity provider. The user can no longer sign in through that IdP. Use with care."
+    },
+    {
+      "name": "List User Grants",
+      "category": "User OAuth Grants",
+      "description": "Lists the OAuth 2.0 consent grants a user has approved (the scopes they have allowed apps to access). Use this to audit a user's consents before revoking them."
+    },
+    {
+      "name": "Revoke All User Grants",
+      "category": "User OAuth Grants",
+      "description": "Revokes ALL OAuth 2.0 consent grants for a user - every app loses the access the user previously approved. Destructive - use with care."
+    },
+    {
+      "name": "Get User Grant",
+      "category": "User OAuth Grants",
+      "description": "Retrieves a single OAuth consent grant by id. Use this to inspect a grant before revoking it."
+    },
+    {
+      "name": "Revoke User Grant",
+      "category": "User OAuth Grants",
+      "description": "Revokes a single OAuth consent grant - the app loses access to that one scope. Destructive - use with care."
+    },
+    {
+      "name": "List User Clients",
+      "category": "User OAuth Grants",
+      "description": "Lists the OAuth clients (apps) that currently hold grants or refresh tokens for a user. Use this to find a client id before listing or revoking its grants/tokens."
+    },
+    {
+      "name": "List Grants For Client",
+      "category": "User OAuth Grants",
+      "description": "Lists the OAuth consent grants a user gave to one specific client (app). Use this to scope an audit or revoke to a single app."
+    },
+    {
+      "name": "Revoke Grants For Client",
+      "category": "User OAuth Grants",
+      "description": "Revokes all OAuth consent grants a user gave to one specific client (app). Destructive - that app loses all the user's approved scopes."
+    },
+    {
+      "name": "List Refresh Tokens For Client",
+      "category": "User OAuth Grants",
+      "description": "Lists the OAuth refresh tokens one client (app) holds for a user. Use this to find a token id before getting or revoking it."
+    },
+    {
+      "name": "Revoke All Tokens For Client",
+      "category": "User OAuth Grants",
+      "description": "Revokes all OAuth refresh tokens one client (app) holds for a user - the user must re-authenticate to that app. Destructive - use with care."
+    },
+    {
+      "name": "Get Refresh Token",
+      "category": "User OAuth Grants",
+      "description": "Retrieves a single OAuth refresh token by id. Use this to inspect a token before revoking it."
+    },
+    {
+      "name": "Revoke Refresh Token",
+      "category": "User OAuth Grants",
+      "description": "Revokes a single OAuth refresh token - the user must re-authenticate to that app for that session. Destructive - use with care."
+    },
+    {
+      "name": "List Authorization Server Policies",
+      "category": "Authorization Server Policies",
+      "description": "Lists the access policies on a custom authorization server. Use this to find a policy id before editing its rules. Requires the API Access Management add-on."
+    },
+    {
+      "name": "Create Authorization Server Policy",
+      "category": "Authorization Server Policies",
+      "description": "Creates an OAuth access policy on a custom authorization server. By default it applies to all clients; pass a Conditions object to scope it to specific client ids. Requires the API Access Management add-on."
+    },
+    {
+      "name": "Get Authorization Server Policy",
+      "category": "Authorization Server Policies",
+      "description": "Retrieves a single access policy from a custom authorization server. Use this to inspect a policy before editing it."
+    },
+    {
+      "name": "Replace Authorization Server Policy",
+      "category": "Authorization Server Policies",
+      "description": "Fully replaces an access policy on a custom authorization server (PUT overwrite). Use this to rename a policy or change its client scope."
+    },
+    {
+      "name": "Delete Authorization Server Policy",
+      "category": "Authorization Server Policies",
+      "description": "Deletes an access policy from a custom authorization server permanently. Destructive - use with care."
+    },
+    {
+      "name": "Activate Authorization Server Policy",
+      "category": "Authorization Server Policies",
+      "description": "Activates an access policy on a custom authorization server so it starts enforcing. Use this after creating a staged policy."
+    },
+    {
+      "name": "Deactivate Authorization Server Policy",
+      "category": "Authorization Server Policies",
+      "description": "Deactivates an access policy on a custom authorization server (required before delete). Use this to take a policy out of service."
+    },
+    {
+      "name": "List Authorization Server Policy Rules",
+      "category": "Authorization Server Policies",
+      "description": "Lists the rules of an access policy on a custom authorization server. Use this to find a rule id before editing it."
+    },
+    {
+      "name": "Create Authorization Server Policy Rule",
+      "category": "Authorization Server Policies",
+      "description": "Creates a rule within an access policy on a custom authorization server - it decides which people, grant types, and scopes the policy permits, and sets the token lifetimes. Requires the API Access Management add-on."
+    },
+    {
+      "name": "Get Authorization Server Policy Rule",
+      "category": "Authorization Server Policies",
+      "description": "Retrieves a single rule of an access policy on a custom authorization server. Use this to inspect a rule before editing it."
+    },
+    {
+      "name": "Replace Authorization Server Policy Rule",
+      "category": "Authorization Server Policies",
+      "description": "Fully replaces a rule of an access policy on a custom authorization server (PUT overwrite). Use this to change which people/grant types/scopes the rule permits or its token lifetimes."
+    },
+    {
+      "name": "Delete Authorization Server Policy Rule",
+      "category": "Authorization Server Policies",
+      "description": "Deletes a rule from an access policy on a custom authorization server permanently. Destructive - use with care."
+    },
+    {
+      "name": "Activate Authorization Server Policy Rule",
+      "category": "Authorization Server Policies",
+      "description": "Activates a rule within an access policy on a custom authorization server so it starts enforcing."
+    },
+    {
+      "name": "Deactivate Authorization Server Policy Rule",
+      "category": "Authorization Server Policies",
+      "description": "Deactivates a rule within an access policy on a custom authorization server (required before delete)."
+    },
+    {
+      "name": "List Authorization Server Keys",
+      "category": "Authorization Server Keys",
+      "description": "Lists the signing keys (JWKs) of a custom authorization server - Okta uses these to sign tokens. Use this to read the current and next keys."
+    },
+    {
+      "name": "Get Authorization Server Key",
+      "category": "Authorization Server Keys",
+      "description": "Retrieves a single signing key (JWK) of a custom authorization server by its kid. Use this to inspect a specific key."
+    },
+    {
+      "name": "Rotate Authorization Server Keys",
+      "category": "Authorization Server Keys",
+      "description": "Rotates the signing keys of a custom authorization server - the NEXT key becomes ACTIVE and a fresh NEXT key is generated. Use this for scheduled key rotation. Only signing keys are rotatable."
+    },
+    {
+      "name": "List Authorization Server Clients",
+      "category": "Authorization Server Keys",
+      "description": "Lists the OAuth 2.0 client applications that use a custom authorization server. Use this to audit which apps request tokens from this server."
+    },
+    {
+      "name": "Get Application User",
+      "category": "Applications",
+      "description": "Retrieves a user's assignment to an application, including their app-specific profile and credentials. Use this to inspect what a user looks like inside an app."
+    },
+    {
+      "name": "Update Application User",
+      "category": "Applications",
+      "description": "Updates a user's assignment to an application - set their app-specific username/password (for SWA/password-push apps) and/or their app profile attributes. Use this to fix a user's identity inside an app."
+    },
+    {
+      "name": "Get Application Group Assignment",
+      "category": "Applications",
+      "description": "Retrieves a group's assignment to an application, including the assignment profile (e.g. mapped manager/department). Use this to inspect how a group provisions to an app."
+    },
+    {
+      "name": "Update Application Group Assignment",
+      "category": "Applications",
+      "description": "Updates a group's assignment-profile on an application via JSON-Patch operations - e.g. change the manager or department mapped to that group. Use this to adjust how a group provisions without re-assigning it."
+    },
+    {
+      "name": "List Application Keys",
+      "category": "Application Credentials",
+      "description": "Lists an application's SSO signing-key credentials (the X.509 certificates Okta uses to sign SAML assertions for this app). Use this to find a key id before getting or cloning it."
+    },
+    {
+      "name": "Generate Application Key",
+      "category": "Application Credentials",
+      "description": "Generates a new SSO signing-key credential (X.509 certificate) for an application, valid for the chosen number of years. Use this to add a fresh signing cert ahead of rotation."
+    },
+    {
+      "name": "Get Application Key",
+      "category": "Application Credentials",
+      "description": "Retrieves a single SSO signing-key credential of an application by its kid. Use this to inspect a specific certificate."
+    },
+    {
+      "name": "Clone Application Key",
+      "category": "Application Credentials",
+      "description": "Copies an application's SSO signing-key credential into another application. Use this when two apps must share the same signing certificate."
+    },
+    {
+      "name": "List Application CSRs",
+      "category": "Application Credentials",
+      "description": "Lists an application's certificate signing requests (CSRs). Use this to find a CSR id before getting, revoking, or publishing a signed cert against it."
+    },
+    {
+      "name": "Generate Application CSR",
+      "category": "Application Credentials",
+      "description": "Generates a certificate signing request (CSR) for an application so you can have it signed by your own CA, then publish the signed cert back. Provide the certificate subject (at least a common name)."
+    },
+    {
+      "name": "Get Application CSR",
+      "category": "Application Credentials",
+      "description": "Retrieves a single certificate signing request (CSR) of an application by its id. Use this to read the CSR text to send to your CA."
+    },
+    {
+      "name": "Revoke Application CSR",
+      "category": "Application Credentials",
+      "description": "Revokes (deletes) a pending certificate signing request from an application. Use this to discard a CSR you no longer intend to publish. Destructive - use with care."
+    },
+    {
+      "name": "Publish Application CSR",
+      "category": "Application Credentials",
+      "description": "Publishes a CA-signed certificate against an application's pending CSR, turning it into an active signing-key credential. Paste the signed certificate in PEM format."
+    },
+    {
+      "name": "List Application Client Keys",
+      "category": "Application Credentials",
+      "description": "Lists the OAuth/OIDC client JSON Web Keys (JWKs) registered on an application (for private_key_jwt client authentication). Use this to find a JWK id before getting or managing it."
+    },
+    {
+      "name": "Add Application Client Key",
+      "category": "Application Credentials",
+      "description": "Adds an OAuth/OIDC client JSON Web Key (JWK) to an application - the public half of a key the client uses for private_key_jwt authentication. Supply the RSA public key (kid, e, n)."
+    },
+    {
+      "name": "Get Application Client Key",
+      "category": "Application Credentials",
+      "description": "Retrieves a single OAuth/OIDC client JSON Web Key of an application by its id. Use this to inspect a registered client key."
+    },
+    {
+      "name": "Delete Application Client Key",
+      "category": "Application Credentials",
+      "description": "Deletes an inactive OAuth/OIDC client JSON Web Key from an application. The key must be deactivated first. Destructive - use with care."
+    },
+    {
+      "name": "Activate Application Client Key",
+      "category": "Application Credentials",
+      "description": "Activates an OAuth/OIDC client JSON Web Key on an application so the client can authenticate with it."
+    },
+    {
+      "name": "Deactivate Application Client Key",
+      "category": "Application Credentials",
+      "description": "Deactivates an OAuth/OIDC client JSON Web Key on an application (required before delete)."
+    },
+    {
+      "name": "List Application Client Secrets",
+      "category": "Application Credentials",
+      "description": "Lists the OAuth/OIDC client secrets registered on an application. The full secret value is only returned at creation; this shows ids, status, and hashes. Use this to find a secret id."
+    },
+    {
+      "name": "Create Application Client Secret",
+      "category": "Application Credentials",
+      "description": "Creates a new OAuth/OIDC client secret on an application. Leave the secret blank to let Okta generate one - the full value is returned only this once, so capture it. Use this to rotate a client secret."
+    },
+    {
+      "name": "Get Application Client Secret",
+      "category": "Application Credentials",
+      "description": "Retrieves a single OAuth/OIDC client secret of an application by its id. The full secret value is only shown at creation; later reads may mask it."
+    },
+    {
+      "name": "Delete Application Client Secret",
+      "category": "Application Credentials",
+      "description": "Deletes an inactive OAuth/OIDC client secret from an application. The secret must be deactivated first. Destructive - use with care."
+    },
+    {
+      "name": "Activate Application Client Secret",
+      "category": "Application Credentials",
+      "description": "Activates an OAuth/OIDC client secret on an application so it can be used to authenticate the client."
+    },
+    {
+      "name": "Deactivate Application Client Secret",
+      "category": "Application Credentials",
+      "description": "Deactivates an OAuth/OIDC client secret on an application (required before delete)."
+    },
+    {
+      "name": "Upload Application Logo",
+      "category": "Application Credentials",
+      "description": "Uploads a logo image for an application (PNG/JPG/SVG/GIF, under 1 MB; 200x200 recommended). Pick a file from Flowrunner storage. The image is streamed to Okta as a multipart upload."
+    },
+    {
+      "name": "List Resource Server Keys",
+      "category": "Application Credentials",
+      "description": "Lists the resource-server public JSON Web Keys of a custom authorization server (used to validate encrypted/signed requests). Use this to find a key id before managing it."
+    },
+    {
+      "name": "Add Resource Server Key",
+      "category": "Application Credentials",
+      "description": "Adds a resource-server public JSON Web Key to a custom authorization server. Supply the RSA public key (kid, e, n) and whether it's for signing or encryption."
+    },
+    {
+      "name": "Get Resource Server Key",
+      "category": "Application Credentials",
+      "description": "Retrieves a single resource-server JSON Web Key of a custom authorization server by its id."
+    },
+    {
+      "name": "Delete Resource Server Key",
+      "category": "Application Credentials",
+      "description": "Deletes an inactive resource-server JSON Web Key from a custom authorization server. The key must be deactivated first. Destructive - use with care."
+    },
+    {
+      "name": "Activate Resource Server Key",
+      "category": "Application Credentials",
+      "description": "Activates a resource-server JSON Web Key on a custom authorization server so it can be used."
+    },
+    {
+      "name": "Deactivate Resource Server Key",
+      "category": "Application Credentials",
+      "description": "Deactivates a resource-server JSON Web Key on a custom authorization server (required before delete)."
+    },
+    {
+      "name": "List Org IdP Keys",
+      "category": "Identity Provider Keys",
+      "description": "Lists the org-level Identity Provider key store - X.509 certificates you upload once and reference from multiple IdP configs. Paginates through every shared cert. Use this to find a key id."
+    },
+    {
+      "name": "Create Org IdP Key",
+      "category": "Identity Provider Keys",
+      "description": "Adds an X.509 certificate to the org-level Identity Provider key store, so IdP configs can reference it. Paste the certificate as base64-DER (a PEM body with no header lines)."
+    },
+    {
+      "name": "Get Org IdP Key",
+      "category": "Identity Provider Keys",
+      "description": "Retrieves a single org-level Identity Provider key by its kid. Use this to inspect a shared certificate."
+    },
+    {
+      "name": "Replace Org IdP Key",
+      "category": "Identity Provider Keys",
+      "description": "Fully replaces an org-level Identity Provider key (PUT overwrite) with a new X.509 certificate. Use this to rotate a shared certificate."
+    },
+    {
+      "name": "Delete Org IdP Key",
+      "category": "Identity Provider Keys",
+      "description": "Deletes an org-level Identity Provider key from the key store. The key must not be in use by any IdP. Destructive - use with care."
+    },
+    {
+      "name": "List IdP Signing Keys",
+      "category": "Identity Provider Keys",
+      "description": "Lists the signing keys of a specific Identity Provider - the certificates Okta uses to sign requests to that IdP. Use this to find a key id before getting or cloning it."
+    },
+    {
+      "name": "List Active IdP Signing Key",
+      "category": "Identity Provider Keys",
+      "description": "Retrieves the currently active signing key(s) of a specific Identity Provider. Use this to see which cert Okta is signing requests with right now."
+    },
+    {
+      "name": "Generate IdP Signing Key",
+      "category": "Identity Provider Keys",
+      "description": "Generates a new signing key (X.509 certificate) for a specific Identity Provider, valid for the chosen number of years. Use this to add a fresh signing cert ahead of rotation."
+    },
+    {
+      "name": "Get IdP Signing Key",
+      "category": "Identity Provider Keys",
+      "description": "Retrieves a single signing key of a specific Identity Provider by its kid. Use this to inspect a certificate."
+    },
+    {
+      "name": "Clone IdP Signing Key",
+      "category": "Identity Provider Keys",
+      "description": "Copies an Identity Provider's signing key into another IdP. Use this when two IdP configs must share the same signing certificate."
+    },
+    {
+      "name": "List IdP CSRs",
+      "category": "Identity Provider Keys",
+      "description": "Lists the certificate signing requests (CSRs) of a specific Identity Provider. Use this to find a CSR id before getting, revoking, or publishing a signed cert against it."
+    },
+    {
+      "name": "Generate IdP CSR",
+      "category": "Identity Provider Keys",
+      "description": "Generates a certificate signing request (CSR) for a specific Identity Provider so you can have it signed by your own CA, then publish the signed cert back. Provide the certificate subject (at least a common name)."
+    },
+    {
+      "name": "Get IdP CSR",
+      "category": "Identity Provider Keys",
+      "description": "Retrieves a single certificate signing request (CSR) of a specific Identity Provider by its id. Use this to read the CSR text to send to your CA."
+    },
+    {
+      "name": "Revoke IdP CSR",
+      "category": "Identity Provider Keys",
+      "description": "Revokes (deletes) a pending certificate signing request from a specific Identity Provider. Use this to discard a CSR you no longer intend to publish. Destructive - use with care."
+    },
+    {
+      "name": "Publish IdP CSR",
+      "category": "Identity Provider Keys",
+      "description": "Publishes a CA-signed certificate against a specific Identity Provider's pending CSR, turning it into an active signing key. Paste the signed certificate in PEM format."
+    },
+    {
+      "name": "List Social IdP User Tokens",
+      "category": "Identity Provider Keys",
+      "description": "Lists the social/OIDC tokens Okta holds for a user linked through a specific Identity Provider (e.g. the access/ID tokens from the upstream provider). Use this to inspect a linked user's stored tokens."
+    }
+  ],
+  "triggers": [
+    "On New System Log Event"
+  ],
+  "idealUseCases": [
+    "Onboard and offboard employees: create, activate, suspend, deactivate, or delete users.",
+    "Keep group membership current - add/remove users, or let group rules auto-assign by attribute.",
+    "Grant or revoke application access for a user or a whole group.",
+    "Delegate administration by assigning and removing standard admin roles.",
+    "Reset passwords and MFA factors for help-desk and security workflows, including recovery-question and verify/resend flows.",
+    "Define custom user-to-user relationships (e.g. manager/subordinate, mentor/mentee) with linked objects, and assign group owners.",
+    "Pull System Log events for auditing, alerting, or reporting, or react in real time via the polling trigger.",
+    "Define IP/dynamic network zones and CORS/redirect trusted origins for sign-on policy and app security.",
+    "Register outbound event hooks to push Okta events to your services, and inline hooks to customize token, registration, and password-import flows.",
+    "Connect external identity providers (OIDC, SAML 2.0, social) and link or unlink users to them.",
+    "Extend user, group, and app profile schemas with custom attributes, and tune profile mappings to downstream apps.",
+    "Add and configure MFA authenticators (Duo, Temporary Access Code, WebAuthn allowlists) and their methods.",
+    "Audit and revoke a user's OAuth grants and refresh tokens, and clear a user's sign-in sessions in response to a security event.",
+    "Rotate application and identity-provider credentials: generate or clone SSO signing keys, manage CSRs, register OAuth client keys/secrets, and rotate authorization-server signing keys.",
+    "Govern API access on custom authorization servers by managing access policies, their rules, and resource-server keys."
+  ],
+  "agentIdeas": [
+    "**Automated onboarding**: create a user, add them to the right groups, assign their applications, and enroll an MFA factor - all in one flow triggered by a new-hire record.",
+    "**Security-incident response**: watch the System Log trigger for a suspicious event, then suspend the user, revoke their OAuth grants and refresh tokens, and clear their active sessions.",
+    "**Access recertification**: list a user's admin roles, application assignments, and OAuth grants on a schedule and report anything unexpected for review.",
+    "**Self-service password/MFA help desk**: reset a password or MFA factors, resend an enrollment challenge, or unlock a locked-out user from a support ticket.",
+    "**Policy-as-code**: create sign-on/password policies with their rules, define network zones and trusted origins, and toggle ThreatInsight to enforce security posture from version-controlled definitions.",
+    "**Credential rotation**: rotate authorization-server signing keys, generate or clone application SSO keys, and manage CSRs and OAuth client secrets on a recurring routine.",
+    "**IdP lifecycle**: connect an external OIDC/SAML identity provider, link users to it, and manage its signing keys and CSRs.",
+    "**Group-driven automation**: define group rules that auto-assign users by profile attribute, then grant those groups application access."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/okta/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/okta",
+    "readme": "services/okta/README.md",
+    "index": "services/okta/src/index.js"
+  }
+}

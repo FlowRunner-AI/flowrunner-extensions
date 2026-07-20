@@ -1,0 +1,113 @@
+{
+  "slug": "deepl",
+  "name": "DeepL",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for the [DeepL API](https://developers.deepl.com/) — high-quality neural machine translation, AI-assisted writing improvement (DeepL Write), full document translation with formatting preserved, and multilingual glossary management.",
+  "actionCount": 14,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Translation",
+    "Writing",
+    "Documents",
+    "Glossaries",
+    "Languages",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Translate Text",
+      "category": "Translation",
+      "description": "Translates text into a target language using DeepL's neural machine translation. The source language is auto-detected unless specified. Supports formality control (for supported target languages), custom glossaries, translation context, next-generation quality-optimized models, sentence splitting control, formatting preservation and XML/HTML tag handling. Returns the translated text and the detected source language. Text is limited to 128 KiB per request."
+    },
+    {
+      "name": "Improve Text",
+      "category": "Writing",
+      "description": "Improves the writing of a text using DeepL Write — fixing grammar, punctuation and phrasing while preserving meaning. Optionally rephrases into a specific writing style (simple, business, academic, casual) OR tone (enthusiastic, friendly, confident, diplomatic) — style and tone are mutually exclusive and cannot be combined in one request. Available for a limited set of languages (e.g. English, German, French, Spanish, Italian, Portuguese). Returns the improved text and the detected source language."
+    },
+    {
+      "name": "Upload Document",
+      "category": "Documents",
+      "description": "Uploads a document (docx, pptx, xlsx, pdf, srt, txt, html, xlf and more) to DeepL for full-document translation with formatting preserved. Downloads the file from the provided URL (FlowRunner file URL or any public URL) and submits it. Returns a document_id and document_key — keep BOTH values, they are required to check translation status and to download the result. Documents are billed at a minimum of 50,000 characters each."
+    },
+    {
+      "name": "Get Document Status",
+      "category": "Documents",
+      "description": "Checks the translation status of a previously uploaded document. Returns the status ('queued', 'translating', 'done' or 'error'), the estimated seconds remaining while translating, the billed character count once done, and an error message if the translation failed. Poll this until the status is 'done', then use Download Translated Document."
+    },
+    {
+      "name": "Download Translated Document",
+      "category": "Documents",
+      "description": "Downloads the translated document once its status is 'done' (check with Get Document Status first), saves it to FlowRunner file storage and returns its URL. Each translated document can only be downloaded for a limited time after translation completes."
+    },
+    {
+      "name": "Create Glossary",
+      "category": "Glossaries",
+      "description": "Creates a multilingual glossary (v3) that enforces custom term translations during text and document translation. Provide the glossary name, the source and target language of the entries, and the entries as an object mapping source terms to target terms, e.g. {\"artist\":\"Künstler\"}. Advanced: pass a raw Dictionaries array instead to create multiple language pairs at once. Returns the created glossary with its glossary_id."
+    },
+    {
+      "name": "List Glossaries",
+      "category": "Glossaries",
+      "description": "Lists all glossaries in the DeepL account with their IDs, names, language-pair dictionaries and entry counts."
+    },
+    {
+      "name": "Get Glossary",
+      "category": "Glossaries",
+      "description": "Retrieves the metadata of a glossary by its ID, including its name, language-pair dictionaries, entry counts and creation time. Use Get Glossary Entries to fetch the actual term pairs."
+    },
+    {
+      "name": "Get Glossary Entries",
+      "category": "Glossaries",
+      "description": "Retrieves the term pairs of one language-pair dictionary in a glossary. Returns both the raw TSV entries as provided by DeepL and a convenient parsed object mapping source terms to target terms."
+    },
+    {
+      "name": "Edit Glossary",
+      "category": "Glossaries",
+      "description": "Updates a glossary (v3): rename it and/or replace the entries of one language-pair dictionary. Provide a new name, or the source/target language pair plus an entries object — the entries fully REPLACE the existing entries of that language pair. Returns the updated glossary metadata."
+    },
+    {
+      "name": "Delete Glossary",
+      "category": "Glossaries",
+      "description": "Permanently deletes a glossary and all of its language-pair dictionaries by its ID. Returns a deletion confirmation."
+    },
+    {
+      "name": "List Source Languages",
+      "category": "Languages",
+      "description": "Lists all languages DeepL can translate from, with their language codes and names."
+    },
+    {
+      "name": "List Target Languages",
+      "category": "Languages",
+      "description": "Lists all languages DeepL can translate into, with their language codes, names and whether they support the formality option."
+    },
+    {
+      "name": "Get Usage",
+      "category": "Account",
+      "description": "Retrieves the current billing-period usage of the DeepL account: characters translated so far and the character limit of the plan."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Translate incoming messages, form submissions or support tickets into a customer's language before replying",
+    "Localize documents (docx, pptx, xlsx, pdf, srt, html and more) while preserving their formatting",
+    "Polish drafted copy with DeepL Write to fix grammar and rephrase into a chosen style or tone",
+    "Enforce consistent brand and domain terminology across translations using custom glossaries",
+    "Monitor DeepL character usage against the plan limit within an automation"
+  ],
+  "agentIdeas": [
+    "When a **Dropbox** \"On New File\" trigger fires, use **DeepL** \"Upload Document\" and \"Download Translated Document\" to produce a localized copy, then share it via **Gmail** \"Send Message\"",
+    "Use **DeepL** \"Translate Text\" to localize incoming content, then call **Notion** \"Create Page\" to store each translation as a page in a localization database",
+    "Use **DeepL** \"Translate Text\" to translate a batch of strings, then log the source and translated text with **Google Sheets** \"Add Row\" for review"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/deepl/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/deepl",
+    "readme": "services/deepl/README.md",
+    "index": "services/deepl/src/index.js"
+  }
+}

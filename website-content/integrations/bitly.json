@@ -1,0 +1,115 @@
+{
+  "slug": "bitly",
+  "name": "Bitly",
+  "marketingCategory": "Utilities & Personal",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Shorten, manage, and measure links with [Bitly](https://bitly.com) from FlowRunner. Create short links, retrieve and update Bitlinks, pull click analytics, generate QR codes, and inspect your groups and organizations. Authenticates with a Bitly access token sent as a Bearer token (`Authorization: Bearer <accessToken>`).",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Links",
+    "Metrics",
+    "QR Codes",
+    "Organization"
+  ],
+  "actions": [
+    {
+      "name": "Shorten Link",
+      "category": "Links",
+      "description": "Shortens a long URL into a Bitlink in a single call. This is the fastest way to create a short link: provide a long URL and optionally a branded domain and group. Returns the created Bitlink id (e.g. bit.ly/abc123) and its full short link. If the same long URL was already shortened in the group, Bitly returns the existing Bitlink."
+    },
+    {
+      "name": "Create Bitlink",
+      "category": "Links",
+      "description": "Creates a fully configured Bitlink from a long URL. Unlike Shorten Link, this supports a title, tags, and mobile deep links so you can organize and route the link at creation time. Returns the complete Bitlink object including its id and short link."
+    },
+    {
+      "name": "Get Bitlink",
+      "category": "Links",
+      "description": "Retrieves the full details of an existing Bitlink, including its long URL, title, tags, archived state, and creation time. Provide the Bitlink id in the form \"bit.ly/abc123\" (the protocol is optional and stripped automatically)."
+    },
+    {
+      "name": "Update Bitlink",
+      "category": "Links",
+      "description": "Updates an existing Bitlink's title, tags, and/or archived state. Only the fields you provide are changed; leave a field blank to keep its current value. Supplying tags replaces the full tag list on the Bitlink."
+    },
+    {
+      "name": "Expand Bitlink",
+      "category": "Links",
+      "description": "Expands a Bitlink back to its original long URL without requiring group scopes. Provide the Bitlink id (e.g. bit.ly/abc123) and receive the destination long URL and creation time."
+    },
+    {
+      "name": "Get Clicks Summary",
+      "category": "Metrics",
+      "description": "Returns the total number of clicks for a Bitlink over a time range. Choose the time unit (e.g. day, hour) and how many units of history to include. Useful for a single click count rather than a time series."
+    },
+    {
+      "name": "Get Clicks",
+      "category": "Metrics",
+      "description": "Returns a time series of click counts for a Bitlink, one data point per time unit. Choose the unit (e.g. day, hour) and the number of units of history. Use this for charting clicks over time."
+    },
+    {
+      "name": "Get Clicks by Country",
+      "category": "Metrics",
+      "description": "Returns click counts for a Bitlink broken down by the country where each click originated. Choose the time unit and history length. Useful for understanding the geographic reach of a link."
+    },
+    {
+      "name": "Get Clicks by Referrer",
+      "category": "Metrics",
+      "description": "Returns click counts for a Bitlink broken down by referring source (e.g. direct, facebook.com, email). Choose the time unit and history length. Useful for understanding which channels drive traffic to a link."
+    },
+    {
+      "name": "List Bitlinks by Group",
+      "category": "Links",
+      "description": "Lists the Bitlinks belonging to a group, most recent first. Supports pagination via page and size, and optional filtering by search term, tags, and archived state. Use Get Group or List Groups to find a group GUID."
+    },
+    {
+      "name": "Create QR Code",
+      "category": "QR Codes",
+      "description": "Generates a QR code image for an existing Bitlink and saves it to FlowRunner file storage, returning a downloadable URL. Provide the Bitlink id (e.g. bit.ly/abc123). The QR code encodes the Bitlink so scans are tracked as clicks."
+    },
+    {
+      "name": "List Groups",
+      "category": "Organization",
+      "description": "Lists the groups (Bitly Sub-Domains / BSDs) available to your account. Groups scope Bitlinks, campaigns, and permissions. Optionally filter by organization GUID. Use a returned group GUID with link and metrics operations."
+    },
+    {
+      "name": "Get Group",
+      "category": "Organization",
+      "description": "Retrieves the details of a single group (BSD) by its GUID, including its name, organization, role, and BSDs. Use List Groups to discover available group GUIDs."
+    },
+    {
+      "name": "Get Organizations",
+      "category": "Organization",
+      "description": "Lists the organizations your account belongs to. An organization is the top-level container for groups, users, and billing. Use a returned organization GUID to filter groups."
+    },
+    {
+      "name": "Get User",
+      "category": "Organization",
+      "description": "Returns the profile of the authenticated Bitly user, including name, email, default group GUID, and login. Useful as a quick connection check to confirm the access token is valid."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically shorten campaign or content URLs and post the resulting Bitlinks to social, email, or chat channels.",
+    "Track and report click performance by pulling per-Bitlink click summaries, time series, country, and referrer breakdowns.",
+    "Generate branded QR codes for print or in-app use that route to tracked Bitlinks.",
+    "Keep a catalog of Bitlinks in sync by listing, updating titles/tags, or archiving links across a group."
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to read long marketing URLs, call **Bitly** \"Shorten Link\" for each, then write the short links back with **Google Sheets** \"Add Row\".",
+    "After **Bitly** \"Create Bitlink\" produces a tracked short link, use **Slack** \"Send Message To Channel\" to share it with the marketing team for a campaign launch.",
+    "On a schedule, call **Bitly** \"Get Clicks Summary\" for key Bitlinks and use **Google Sheets** \"Add Row\" to log daily click totals into a performance dashboard."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/bitly/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/bitly",
+    "readme": "services/bitly/README.md",
+    "index": "services/bitly/src/index.js"
+  }
+}

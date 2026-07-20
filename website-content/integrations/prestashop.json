@@ -1,0 +1,186 @@
+{
+  "slug": "prestashop",
+  "name": "PrestaShop",
+  "marketingCategory": "E-commerce",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connects FlowRunner to a self-hosted PrestaShop store through its Webservice API. Manage the product catalog, per-product stock, categories, customers, orders (including status changes), addresses, carts and store reference data, plus a generic escape hatch to reach any other webservice resource. Reads are returned as JSON and writes are converted internally to the XML the webservice requires, so you always work with plain objects.",
+  "actionCount": 28,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Products",
+    "Stock",
+    "Categories",
+    "Customers",
+    "Orders",
+    "Addresses",
+    "Carts",
+    "Store Reference",
+    "Advanced"
+  ],
+  "actions": [
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Lists products from the store catalog with full field data. Supports filtering by name (contains match), reference/SKU (exact match) and active status, plus pagination (limit/offset) and sorting. Multilanguage fields are returned in the configured language. Product stock lives in stock_availables - use the Stock operations to read or change quantities."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves a single product by its numeric id, including prices, SEO fields and associations (categories, images, combinations, stock_availables). Multilanguage fields are returned in the configured language. The stock_availables association contains the id needed by Update Stock Quantity."
+    },
+    {
+      "name": "Create Product",
+      "category": "Products",
+      "description": "Creates a product in the catalog. Sends an XML body as required by the PrestaShop webservice; multilanguage fields (name, descriptions, URL slug) are written for the configured language. The URL slug (link_rewrite) is auto-generated from the name when not provided, and state is set to 1 (published). Stock quantity cannot be set here - after creation use Update Stock Quantity on the product's stock_available record."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates a product. Because the PrestaShop webservice PUT is a full replace, this operation first fetches the current product as JSON, merges your changes into it, strips read-only fields (manufacturer_name, quantity, position_in_category, id_default_image, id_default_combination, type, new, date_add, date_upd) and sends the merged XML back. Multilanguage fields are updated only for the configured language; other languages are preserved. Category associations are only rewritten when Category IDs is provided; when changing the default category make sure it is included there (or already associated)."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Products",
+      "description": "Permanently deletes a product from the catalog by its numeric id. This cannot be undone; associated combinations, images and stock records are removed by PrestaShop."
+    },
+    {
+      "name": "List Stock Availables",
+      "category": "Stock",
+      "description": "Lists stock_available records (PrestaShop's per-product/per-combination stock rows). Filter by product id to find the stock record(s) of a specific product: simple products have one row with id_product_attribute 0, products with combinations have one row per combination plus an aggregate row. Use the returned id with Update Stock Quantity."
+    },
+    {
+      "name": "Get Stock Available",
+      "category": "Stock",
+      "description": "Retrieves a single stock_available record by its id, including the current quantity, the product and combination it belongs to, and the out-of-stock behavior."
+    },
+    {
+      "name": "Update Stock Quantity",
+      "category": "Stock",
+      "description": "Sets the available quantity of a stock_available record. The webservice PUT is a full replace, so the current record is fetched first and merged with the new quantity (and optionally the out-of-stock behavior) before being sent back as XML. Stock records cannot be created or deleted via the webservice - only updated."
+    },
+    {
+      "name": "List Categories",
+      "category": "Categories",
+      "description": "Lists catalog categories with full field data, including parent relationships and depth. Supports filtering by name (contains match) and active status, plus pagination. In a default store, category 1 is Root and category 2 is Home (the usual parent for new categories)."
+    },
+    {
+      "name": "Get Category",
+      "category": "Categories",
+      "description": "Retrieves a single category by its numeric id, including its parent, level, SEO fields and associations (child categories and products)."
+    },
+    {
+      "name": "Create Category",
+      "category": "Categories",
+      "description": "Creates a catalog category under the given parent. Sends an XML body; the name, description and URL slug are written for the configured language, and the slug (link_rewrite) is auto-generated from the name when not provided. In a default store use parent id 2 (Home) for top-level categories."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Lists customer accounts with full field data. Supports filtering by email, first name and last name (contains match) plus pagination. Password hashes are included in the raw records - avoid exposing them downstream."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer account by its numeric id, including contact details, group, newsletter/opt-in flags and the groups association."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a customer account. The password is sent in plain text over your store's HTTPS connection and hashed by PrestaShop on save (the webservice passwd setter hashes incoming values). The email must be unique in the store."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates a customer account. The webservice PUT is a full replace, so the current record is fetched, merged with your changes and sent back as XML with read-only fields stripped (last_passwd_gen, secure_key, reset password fields, timestamps). The stored password hash is echoed back unchanged - PrestaShop only re-hashes the passwd field when its value differs - so this operation never alters the customer's password."
+    },
+    {
+      "name": "Delete Customer",
+      "category": "Customers",
+      "description": "Permanently deletes a customer account by its numeric id. This cannot be undone. The customer's orders remain in the store but are no longer linked to an account."
+    },
+    {
+      "name": "List Orders",
+      "category": "Orders",
+      "description": "Lists orders with full field data, including totals, payment method and current state. Supports filtering by order state, reference and creation date range, plus pagination. Sorted by id, newest first by default. Each order's line items are in its associations.order_rows."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves a single order by its numeric id, including totals, payment details, delivery/invoice address ids and the current state. The line items (products, quantities, unit prices) are included in associations.order_rows - no separate call is needed."
+    },
+    {
+      "name": "Update Order Status",
+      "category": "Orders",
+      "description": "Changes an order's status the way PrestaShop documents it: by creating an order_history record (POST /api/order_histories) linking the order to the new order state. Depending on the store's state configuration this can trigger customer emails, invoice generation or stock movements. Requires POST permission on the order_histories resource for the webservice key."
+    },
+    {
+      "name": "List Order States",
+      "category": "Orders",
+      "description": "Lists all order states configured in the store (e.g. Awaiting payment, Payment accepted, Shipped, Delivered, Canceled) with their flags: paid, logable, shipped, delivery, invoice and the display color. Use the state id with List Orders (filter) or Update Order Status."
+    },
+    {
+      "name": "List Addresses",
+      "category": "Addresses",
+      "description": "Lists addresses stored in the store's address book with full field data. Filter by customer id to get a specific customer's delivery and invoice addresses. Orders reference these records via id_address_delivery and id_address_invoice."
+    },
+    {
+      "name": "Get Address",
+      "category": "Addresses",
+      "description": "Retrieves a single address by its numeric id, including the owner (id_customer), country, street, postcode, city and phone numbers."
+    },
+    {
+      "name": "List Carts",
+      "category": "Carts",
+      "description": "Lists shopping carts with full field data, including abandoned carts. Filter by customer id to inspect a specific customer's carts. Cart line items are in each cart's associations.cart_rows. A cart that resulted in an order is referenced by that order's id_cart."
+    },
+    {
+      "name": "Get Cart",
+      "category": "Carts",
+      "description": "Retrieves a single shopping cart by its numeric id. The products in the cart (product id, combination id, delivery address and quantity) are included in associations.cart_rows."
+    },
+    {
+      "name": "List Manufacturers",
+      "category": "Store Reference",
+      "description": "Lists manufacturers (brands) with full field data. Supports filtering by name (contains match) and pagination. Use a manufacturer id when creating or updating products."
+    },
+    {
+      "name": "List Languages",
+      "category": "Store Reference",
+      "description": "Lists the languages installed in the store with their numeric ids, ISO codes and locales. Use a language id in the service's Language ID configuration to control which language multilanguage fields are read and written in."
+    },
+    {
+      "name": "List Currencies",
+      "category": "Store Reference",
+      "description": "Lists the currencies configured in the store with their ISO codes, conversion rates and active status. Order and product monetary amounts are expressed in the store's default currency unless stated otherwise."
+    },
+    {
+      "name": "Call Webservice Resource",
+      "category": "Advanced",
+      "description": "Escape hatch for the 60+ PrestaShop webservice resources not covered by dedicated operations (e.g. combinations, order_carriers, specific_prices, taxes, zones). Sends an authenticated request to {storeUrl}/api/{resource path}. Reads are returned as JSON (output_format=JSON is appended automatically); for POST and PUT provide a full PrestaShop XML body (<?xml version=\"1.0\" encoding=\"UTF-8\"?><prestashop>...</prestashop>). The webservice key must have the matching permission ticked for the resource."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync products, prices and multilanguage fields between PrestaShop and external systems (PIM, spreadsheets, ERPs)",
+    "Keep stock quantities up to date from a warehouse, supplier feed or fulfillment provider",
+    "Automate order fulfillment by advancing order status (triggering PrestaShop's emails, invoices and stock movements)",
+    "Export new customers and orders to a CRM, accounting tool or marketing platform",
+    "Reach uncovered resources (combinations, specific prices, taxes, carriers) via the generic Call Webservice Resource action"
+  ],
+  "agentIdeas": [
+    "Use **ShipBob** \"Get Inventory\" to read current warehouse stock, then call **PrestaShop** \"Update Stock Quantity\" on each product's stock_available record to keep the storefront in sync.",
+    "When a **ShipBob** \"On Order Shipped\" trigger fires, call **PrestaShop** \"Update Order Status\" to advance the matching order to a Shipped state so the customer receives PrestaShop's shipping notification.",
+    "After **PrestaShop** \"List Customers\" returns new accounts, call **Klaviyo** \"Create or Update Profile\" to add each shopper to your marketing lists."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/prestashop/public/icon.png",
+  "sourcePaths": {
+    "service": "services/prestashop",
+    "readme": "services/prestashop/README.md",
+    "index": "services/prestashop/src/index.js"
+  }
+}

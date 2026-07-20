@@ -1,0 +1,85 @@
+{
+  "slug": "wiza",
+  "name": "Wiza",
+  "marketingCategory": "Sales Intelligence & Enrichment",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Advanced lead generation and contact enrichment platform for building targeted prospect lists and automating outreach preparation workflows.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "List Management",
+    "Contact Enrichment",
+    "Lead Search",
+    "Account Management"
+  ],
+  "actions": [
+    {
+      "name": "Create Wiza List",
+      "category": "List Management",
+      "description": "Creates targeted prospect lists in Wiza for AI agents to organize leads, build contact databases, or prepare for automated outreach campaigns. Perfect for systematic lead generation, contact enrichment workflows, or building segmented prospect databases."
+    },
+    {
+      "name": "Get List",
+      "category": "List Management",
+      "description": "Retrieves a specific list from your Wiza account by its ID, including stats, email options, and enrichment metadata."
+    },
+    {
+      "name": "Get List Contacts",
+      "category": "List Management",
+      "description": "Retrieves contacts from a specific Wiza list, filtered by segment (people, valid, or risky)."
+    },
+    {
+      "name": "Start Individual Reveal",
+      "category": "Contact Enrichment",
+      "description": "Enriches individual contact information for AI agents to gather detailed prospect data, verify contact details, or enhance lead profiles with email, phone, and company information. Essential for personalized outreach and lead qualification workflows."
+    },
+    {
+      "name": "Get Individual Reveal",
+      "category": "Contact Enrichment",
+      "description": "Retrieves the result of a previously started individual reveal request in Wiza by its ID."
+    },
+    {
+      "name": "Prospect Search",
+      "category": "Lead Search",
+      "description": "Finds targeted prospects for AI agents to identify potential leads, research market segments, or build custom prospect lists based on specific criteria. Perfect for AI-driven lead generation, market research, and automated prospecting workflows."
+    },
+    {
+      "name": "Create Prospect List",
+      "category": "List Management",
+      "description": "Creates a new prospect list in Wiza using filter criteria and email preferences."
+    },
+    {
+      "name": "Continue Prospect Search",
+      "category": "Lead Search",
+      "description": "Continues a previously created prospect list search by providing the list ID and optional overrides."
+    },
+    {
+      "name": "Get Credits",
+      "category": "Account Management",
+      "description": "Retrieves the current usage credits from your Wiza account including email, phone, export, and API credits."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automated LinkedIn profile enrichment and contact discovery",
+    "Targeted prospect list building and lead generation",
+    "Contact data validation and email verification",
+    "Sales pipeline automation and lead qualification",
+    "CRM integration and contact database management",
+    "Outbound marketing campaign preparation",
+    "Market research and competitor analysis",
+    "API credit monitoring and usage optimization"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.jpeg",
+  "iconFile": "services/wiza/public/icon.jpeg",
+  "sourcePaths": {
+    "service": "services/wiza",
+    "readme": "services/wiza/README.md",
+    "index": "services/wiza/src/index.js"
+  }
+}

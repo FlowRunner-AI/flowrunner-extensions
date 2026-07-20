@@ -1,0 +1,138 @@
+{
+  "slug": "clicksend",
+  "name": "ClickSend",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Comprehensive communication platform integration enabling SMS, MMS, voice messages, fax, and postal mail delivery. Manage contact lists and launch multi-channel campaigns with ease.",
+  "actionCount": 19,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messaging",
+    "Contact Management",
+    "Campaigns",
+    "Fax Services",
+    "Postal Services",
+    "Voice Services",
+    "API Utilities"
+  ],
+  "actions": [
+    {
+      "name": "Send SMS",
+      "category": "Messaging",
+      "description": "Send SMS to one recipient with optional scheduling and sender customization."
+    },
+    {
+      "name": "Create Contact List",
+      "category": "Contact Management",
+      "description": "Create new contact list for organizing and managing contacts."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contact Management",
+      "description": "Creates a new contact in the given contact list with comprehensive contact information."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contact Management",
+      "description": "Delete a specific contact from the list permanently."
+    },
+    {
+      "name": "Delete Contact List",
+      "category": "Contact Management",
+      "description": "Delete a specific contact list permanently."
+    },
+    {
+      "name": "Create SMS Campaign",
+      "category": "Campaigns",
+      "description": "Create SMS Campaign allows you to create and send up to 20,000 SMS messages to users from one contact list in a single API call. If the 'Schedule' input field is left empty, the SMS campaign will be sent immediately."
+    },
+    {
+      "name": "Send Fax",
+      "category": "Fax Services",
+      "description": "Sends a new fax document in PDF format to a specified recipient."
+    },
+    {
+      "name": "Send Letter",
+      "category": "Postal Services",
+      "description": "The PDF document is sent by mail. It is printed, folded, placed in an envelope, and delivered to any address worldwide."
+    },
+    {
+      "name": "Send MMS",
+      "category": "Messaging",
+      "description": "Send MMS to one recipient with media file attachment and optional scheduling."
+    },
+    {
+      "name": "Send MMS Campaign",
+      "category": "Campaigns",
+      "description": "Send MMS Campaign allows you to send up to 20,000 MMS to users from one contact list in one API call."
+    },
+    {
+      "name": "Send Postcard",
+      "category": "Postal Services",
+      "description": "Sends a postcard through the mail. The PDF file is printed and shipped to any address worldwide."
+    },
+    {
+      "name": "Send SMS To Contact List",
+      "category": "Messaging",
+      "description": "This method enables you to send up to 1,000 SMS messages to a targeted list of contacts."
+    },
+    {
+      "name": "Send Voice Message",
+      "category": "Voice Services",
+      "description": "Send a text-to-speech voice message with customizable voice and language options."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contact Management",
+      "description": "Update a specific existing contact with new information."
+    },
+    {
+      "name": "Search Contact By Email",
+      "category": "Contact Management",
+      "description": "Search for a contact in a given contact list based on an email address."
+    },
+    {
+      "name": "Search Contact By Phone",
+      "category": "Contact Management",
+      "description": "Search for a contact in a given contact list by phone number."
+    },
+    {
+      "name": "Search Contact List",
+      "category": "Contact Management",
+      "description": "Search a contact list by its name."
+    },
+    {
+      "name": "Raw ClickSend Request",
+      "category": "API Utilities",
+      "description": "Performs a raw http request to the ClickSend service. The request can be arbitrarily configured. More detailed information on how to form a specific request to the ClickSend service can be found here: https://developers.clicksend.com/docs"
+    },
+    {
+      "name": "Send Voice Message To Contact List",
+      "category": "Voice Services",
+      "description": "Sends text-to-speech messages to contacts from a specific contact list. You can post up to 1000 messages with each API call."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sending transactional SMS notifications for order updates and alerts",
+    "Managing customer contact lists with automated campaigns",
+    "Delivering voice messages for appointment reminders and confirmations",
+    "Sending physical postcards and letters for marketing campaigns",
+    "Creating multi-channel communication workflows combining SMS, MMS, and voice",
+    "Building customer support notification systems with multiple delivery methods",
+    "Automating bulk messaging campaigns to targeted contact segments",
+    "Integrating fax delivery for document-heavy business processes"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.svg",
+  "iconFile": "services/clicksend/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/clicksend",
+    "readme": "services/clicksend/README.md",
+    "index": "services/clicksend/src/index.js"
+  }
+}

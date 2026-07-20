@@ -1,0 +1,79 @@
+{
+  "slug": "bubble",
+  "name": "Bubble",
+  "marketingCategory": "Cloud & Infrastructure",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to a [Bubble](https://bubble.io) app's **Data API** and **Workflow API** using a bearer API token. Read, search, create, modify, replace, delete, and bulk-import database records (\"things\"), and trigger backend (API) workflows against your app's Live or Development branch.",
+  "actionCount": 8,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Data",
+    "Workflow"
+  ],
+  "actions": [
+    {
+      "name": "Get Thing",
+      "category": "Data",
+      "description": "Retrieves a single thing (database record) by its unique id from a Bubble app data type. The data type name is the lowercase singular name of the type as defined in your app's database (e.g. \"user\", \"order\"). Returns the full object with all fields the API token is permitted to view, including Bubble's built-in fields (_id, Created Date, Modified Date, Created By)."
+    },
+    {
+      "name": "List / Search Things",
+      "category": "Data",
+      "description": "Retrieves a paginated list of things from a Bubble data type, optionally filtered by search constraints and sorted. Constraints is a JSON array of objects, each { \"key\": <field name>, \"constraint_type\": <type>, \"value\": <value> }. Supported constraint_type values: \"equals\", \"not equal\", \"is_empty\", \"is_not_empty\", \"text contains\", \"not text contains\", \"greater than\", \"less than\", \"in\", \"not in\", \"contains\", \"not contains\", \"empty\", \"not empty\", \"geographic_search\". Example: [{\"key\":\"status\",\"constraint_type\":\"equals\",\"value\":\"active\"},{\"key\":\"age\",\"constraint_type\":\"greater than\",\"value\":18}]. Bubble caps results at 100 per call; use the returned cursor to page through more. Response is wrapped in { response: { results, cursor, count, remaining } }."
+    },
+    {
+      "name": "Create Thing",
+      "category": "Data",
+      "description": "Creates a new thing (database record) in a Bubble data type. Provide the fields as an object whose keys are your data type's field names and whose values are the field values (strings, numbers, booleans, dates as ISO strings, or lists as arrays). Fields must be exposed for creation via the API in your app's privacy rules. Returns the new thing's id, e.g. { \"id\": \"1583277659147x...\" }."
+    },
+    {
+      "name": "Modify Thing",
+      "category": "Data",
+      "description": "Partially updates an existing thing. Only the fields you supply are changed; all other fields keep their current values. Provide the fields object with just the keys you want to update. To fully overwrite a thing (clearing unspecified fields) use Replace Thing instead. Returns no body on success."
+    },
+    {
+      "name": "Replace Thing",
+      "category": "Data",
+      "description": "Fully replaces an existing thing with the provided fields. Any field not included in the fields object is reset to empty. Use Modify Thing when you only want to change a subset of fields. Returns no body on success."
+    },
+    {
+      "name": "Delete Thing",
+      "category": "Data",
+      "description": "Permanently deletes a thing from a Bubble data type by its id. This cannot be undone. The data type's \"Delete via API\" privacy rule must allow the operation. Returns no body on success."
+    },
+    {
+      "name": "Bulk Create Things",
+      "category": "Data",
+      "description": "Creates many things at once in a single data type. Provide an array of objects, each object being one thing's field/value pairs. Bubble processes them as newline-delimited JSON (Content-Type text/plain). The response is a newline-delimited list of per-item results, one line per input object, each indicating success (with the new id) or an error. Ideal for importing datasets efficiently."
+    },
+    {
+      "name": "Trigger Workflow",
+      "category": "Workflow",
+      "description": "Triggers a Bubble backend workflow (API endpoint) by name and passes parameters to it. The workflow name is the endpoint name you defined under Backend Workflows in your app; it must be exposed as a public API workflow and its authentication must allow the API token. Parameters are sent as a JSON body whose keys match the workflow's expected parameter keys. Returns whatever the workflow's response step returns (defaults to a status and any custom response fields)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync records between a Bubble app's database and external systems (CRMs, spreadsheets, sheets).",
+    "Query a data type with search constraints to fetch filtered, sorted, paginated result sets.",
+    "Create or bulk-import records into Bubble from incoming data or file uploads.",
+    "Keep records current by partially modifying or fully replacing things.",
+    "Fire off Bubble backend workflows from an automation, passing in parameters."
+  ],
+  "agentIdeas": [
+    "Use **Airtable** \"Get Records\" to pull rows from a base, then call **Bubble** \"Bulk Create Things\" to import them into a Bubble data type in one pass.",
+    "After **Bubble** \"List / Search Things\" returns filtered records, use **Google Sheets** \"Add Row\" to log each result into a reporting spreadsheet.",
+    "When new data arrives, call **Bubble** \"Create Thing\" and then **Slack** \"Send Message To Channel\" to notify a team channel that the record was created."
+  ],
+  "icon": "/icon.jpeg",
+  "iconFile": "services/bubble/public/icon.jpeg",
+  "sourcePaths": {
+    "service": "services/bubble",
+    "readme": "services/bubble/README.md",
+    "index": "services/bubble/src/index.js"
+  }
+}

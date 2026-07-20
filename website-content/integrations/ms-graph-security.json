@@ -1,0 +1,110 @@
+{
+  "slug": "ms-graph-security",
+  "name": "Microsoft Graph Security",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate security operations across Microsoft Defender and Microsoft Sentinel from FlowRunner over the [Microsoft Graph Security API](https://learn.microsoft.com/en-us/graph/api/resources/security-api-overview). Triage alerts and incidents, monitor your Microsoft Secure Score posture, and manage threat intelligence indicators. Authentication uses OAuth 2.0 with delegated permissions.",
+  "actionCount": 14,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Alerts",
+    "Incidents",
+    "Secure Score",
+    "Threat Intelligence"
+  ],
+  "actions": [
+    {
+      "name": "List Alerts",
+      "category": "Alerts",
+      "description": "Retrieves security alerts from the modern alerts_v2 collection, which tracks suspicious activities detected across Microsoft Defender and Microsoft Sentinel. Supports OData filtering, sorting, and result limiting. The filterable properties include status, severity, classification, determination, serviceSource, assignedTo, createdDateTime, and lastUpdateDateTime. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "Get Alert",
+      "category": "Alerts",
+      "description": "Retrieves a single security alert from the alerts_v2 collection by its ID, including its status, severity, classification, determination, associated incident, and the full evidence collection (devices, files, processes, user accounts, and more)."
+    },
+    {
+      "name": "Update Alert",
+      "category": "Alerts",
+      "description": "Updates the triage fields of a security alert in the alerts_v2 collection, such as its status, assigned owner, classification, and determination. Only the fields you provide are changed. Returns the updated alert object."
+    },
+    {
+      "name": "List Legacy Alerts",
+      "category": "Alerts",
+      "description": "Retrieves security alerts from the legacy alerts collection (the original Microsoft Graph Security alert entity). Prefer List Alerts for current work; use this only when integrating with providers or workflows that still depend on the legacy schema. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "List Incidents",
+      "category": "Incidents",
+      "description": "Retrieves security incidents, which correlate related alerts into a single case. Supports OData filtering and optionally expands the related alerts inline. The filterable properties include status, severity, assignedTo, classification, determination, and createdDateTime. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "Get Incident",
+      "category": "Incidents",
+      "description": "Retrieves a single security incident by its ID, including its status, severity, assignment, classification, determination, custom tags, and summary. Optionally expands the full collection of related alerts inline."
+    },
+    {
+      "name": "Update Incident",
+      "category": "Incidents",
+      "description": "Updates the triage fields of a security incident, such as its status, assigned owner, classification, determination, and custom tags. Only the fields you provide are changed. Custom tags replace the existing tag collection. Returns the updated incident object."
+    },
+    {
+      "name": "List Secure Scores",
+      "category": "Secure Score",
+      "description": "Retrieves the tenant's Microsoft Secure Score history, where each entry represents a snapshot of the security posture on a given day, including the current score, maximum achievable score, and per-control breakdown. The most recent scores are returned first. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "Get Secure Score",
+      "category": "Secure Score",
+      "description": "Retrieves a single Microsoft Secure Score snapshot by its ID, including the current and maximum score, comparative averages, enabled security services, and the full control-by-control score breakdown for that day."
+    },
+    {
+      "name": "List Secure Score Control Profiles",
+      "category": "Secure Score",
+      "description": "Retrieves the Secure Score control profiles, which describe each security control that contributes to the tenant's Secure Score, including its category, maximum score, remediation guidance, mitigated threats, and current review state. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "Update Secure Score Control Profile",
+      "category": "Secure Score",
+      "description": "Updates the review state of a Secure Score control profile, for example to mark a control as ignored or third-party managed, assign it, and add a note explaining the decision. Microsoft Graph requires a vendorInformation block on every update; this action supplies the standard Microsoft SecureScore vendor values automatically. Returns the updated control profile."
+    },
+    {
+      "name": "List Threat Intelligence Indicators",
+      "category": "Threat Intelligence",
+      "description": "Retrieves the threat intelligence indicators (tiIndicators) your application has submitted to Microsoft security products such as Microsoft Defender for Endpoint and Microsoft Sentinel. Each indicator carries an observable (URL, domain, IP, or file hash), an action, a threat type, and a Traffic Light Protocol level. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "Create Threat Intelligence Indicator",
+      "category": "Threat Intelligence",
+      "description": "Submits a new threat intelligence indicator (tiIndicator) to a Microsoft security product so it can be matched against telemetry and drive an allow, block, or alert action. Provide at least one observable: a domain name, URL, destination IP address, or file hash (with its hash type). An action, threat type, Traffic Light Protocol level, target product, description, and expiration date are required by Microsoft Graph. Returns the created indicator."
+    },
+    {
+      "name": "Delete Threat Intelligence Indicator",
+      "category": "Threat Intelligence",
+      "description": "Deletes a threat intelligence indicator (tiIndicator) that your application previously submitted, removing it from the target security product. Returns a confirmation message; Microsoft Graph returns no content on success."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Triage security alerts and incidents automatically: set status, assign an owner, and record classification and determination.",
+    "Correlate and resolve incidents that group related alerts into a single case.",
+    "Track your tenant's Microsoft Secure Score over time and manage the review state of individual controls.",
+    "Push threat intelligence indicators (URLs, domains, IPs, file hashes) into Microsoft security products for allow, block, or alert actions."
+  ],
+  "agentIdeas": [
+    "When **Microsoft Graph Security** \"List Incidents\" surfaces a high-severity active incident, use **Microsoft Teams** \"Send Channel Message\" to alert the security operations channel.",
+    "After triaging with **Microsoft Graph Security** \"Update Alert\", use **Outlook** \"Send Message\" to notify the assigned owner with the alert details.",
+    "Periodically call **Microsoft Graph Security** \"List Secure Scores\" and record the current and maximum score to track your security posture trend over time."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/ms-graph-security/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/ms-graph-security",
+    "readme": "services/ms-graph-security/README.md",
+    "index": "services/ms-graph-security/src/index.js"
+  }
+}

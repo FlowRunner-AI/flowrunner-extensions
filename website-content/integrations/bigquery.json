@@ -1,0 +1,99 @@
+{
+  "slug": "bigquery",
+  "name": "Google BigQuery",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Google BigQuery](https://cloud.google.com/bigquery), Google Cloud's serverless data warehouse. Run GoogleSQL queries with named parameters, stream rows into tables, read table data without query cost, and manage datasets and tables. Query results are automatically converted from BigQuery's wire format into plain JSON row objects keyed by column name, with typed numbers and booleans and ISO 8601 timestamps. Authentication is self-contained: the service signs a service-account JWT and exchanges it for a Google Cloud access token, with no SDK, no OAuth consent screen, and zero npm dependencies.",
+  "actionCount": 11,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Queries",
+    "Table Data",
+    "Datasets",
+    "Tables"
+  ],
+  "actions": [
+    {
+      "name": "Run Query",
+      "category": "Queries",
+      "description": "Runs a GoogleSQL query and returns the result rows as plain JSON objects keyed by column name (BigQuery's wire format is converted automatically; INT64/FLOAT64/BOOL values are typed and TIMESTAMP values are returned as ISO 8601 strings). Supports named query parameters: reference them in SQL as @name (e.g. WHERE age > @minAge) and supply values in the Query Parameters object. Waits up to Timeout Ms for the query to finish; if it has not completed by then, returns jobComplete: false with a jobId to pass to 'Get Query Results'. DML statements (INSERT/UPDATE/DELETE/MERGE) are supported and report numDmlAffectedRows."
+    },
+    {
+      "name": "Get Query Results",
+      "category": "Queries",
+      "description": "Retrieves the results of a query job started by 'Run Query' — either to finish a query that returned jobComplete: false, or to fetch additional pages of a large result set using the pageToken from a previous call. Rows are returned as plain JSON objects keyed by column name, exactly like 'Run Query'. If the job is still running, returns jobComplete: false so you can retry."
+    },
+    {
+      "name": "Insert Rows",
+      "category": "Table Data",
+      "description": "Streams rows into a BigQuery table via the insertAll API. Each row is a plain JSON object whose keys match the table's column names. Rows become available for querying within seconds, but note that streamed rows can take up to 90 minutes to become available for copy and export operations. Returns success: true when every row was accepted; otherwise success is false and insertErrors lists the zero-based index and error details of each rejected row."
+    },
+    {
+      "name": "List Rows",
+      "category": "Table Data",
+      "description": "Reads rows directly from a BigQuery table without running a query (no query cost). Rows are returned as plain JSON objects keyed by column name, converted from BigQuery's wire format using the table's schema. Supports paging by row offset (Start Index) or by the pageToken returned from a previous call. For filtered or transformed reads, use 'Run Query' instead."
+    },
+    {
+      "name": "List Datasets",
+      "category": "Datasets",
+      "description": "Lists the datasets in the project, returning each dataset's ID, location, full resource ID, and labels. Supports pagination for projects with many datasets."
+    },
+    {
+      "name": "Create Dataset",
+      "category": "Datasets",
+      "description": "Creates a new dataset in the project. The dataset ID must be unique within the project and may contain only letters, numbers, and underscores (up to 1024 characters). The location is fixed at creation time and cannot be changed later; it defaults to the Location config item, or to US when neither is set."
+    },
+    {
+      "name": "Delete Dataset",
+      "category": "Datasets",
+      "description": "Permanently deletes a dataset from the project. THIS IS DESTRUCTIVE AND CANNOT BE UNDONE. By default the request fails if the dataset still contains tables; enable Delete Contents to delete the dataset together with all of its tables, views, and data."
+    },
+    {
+      "name": "List Tables",
+      "category": "Tables",
+      "description": "Lists the tables, views, and materialized views in a dataset, returning each object's ID, type, and creation time. Supports pagination for datasets with many tables."
+    },
+    {
+      "name": "Get Table",
+      "category": "Tables",
+      "description": "Retrieves a table's metadata: its full schema (column names, types, and modes), row count, size in bytes, type (table, view, or materialized view), description, and timestamps. Does not read any row data — use 'List Rows' or 'Run Query' for that."
+    },
+    {
+      "name": "Create Table",
+      "category": "Tables",
+      "description": "Creates a new empty table in a dataset with the given column schema. Each schema field defines a column name, data type (String, Integer, Float, Numeric, Boolean, Timestamp, Date, JSON, Record, etc.), and mode (Nullable, Required, or Repeated). Record columns can define nested child fields. The table ID must be unique within the dataset."
+    },
+    {
+      "name": "Delete Table",
+      "category": "Tables",
+      "description": "Permanently deletes a table and all of its data from a dataset. THIS IS DESTRUCTIVE AND CANNOT BE UNDONE (recovery is only possible within the dataset's time-travel window via SQL, typically 7 days)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Run analytical SQL queries and use the resulting rows directly in flow logic",
+    "Parameterize queries safely with `@name` placeholders instead of string concatenation",
+    "Stream events, leads, or metrics from other services into a BigQuery table in near real time",
+    "Page through large result sets or long-running queries with job-based result retrieval",
+    "Read table contents without incurring query cost for exports and syncs",
+    "Provision datasets and tables (including nested Record columns) as part of an automation"
+  ],
+  "agentIdeas": [
+    "Call **Stripe** \"List Payment Intents\" on a schedule, then **Google BigQuery** \"Insert Rows\" to stream payment records into an `analytics.payments` table for warehouse-side revenue reporting.",
+    "Run **Google BigQuery** \"Run Query\" on a schedule to compute daily KPIs, then **Slack** \"Send Message To Channel\" to post the numbers to a metrics channel.",
+    "Call **Google BigQuery** \"Run Query\" with a named `@customerId` parameter to pull a customer's usage history, then **Google Vertex AI** \"Generate Content\" to draft a personalized renewal email.",
+    "Use **Google Sheets** \"On New Row\" trigger and **Google BigQuery** \"Insert Rows\" to mirror a shared spreadsheet into a governed warehouse table.",
+    "Run **Google BigQuery** \"List Rows\" page by page to export a table, then **Airtable** \"Create Record\" for each row to hydrate an operational base."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/bigquery/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/bigquery",
+    "readme": "services/bigquery/README.md",
+    "index": "services/bigquery/src/index.js"
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "slug": "messagebird",
+  "name": "MessageBird",
+  "marketingCategory": "SMS, Voice & Push",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for the [MessageBird](https://bird.com) (now **Bird**) communications platform. Send SMS and voice messages, verify phone numbers with one-time passwords, look up and validate numbers, and manage contacts and groups.",
+  "actionCount": 19,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messaging",
+    "Voice",
+    "Verify",
+    "Lookup",
+    "Contacts",
+    "Groups",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Send SMS",
+      "category": "Messaging",
+      "description": "Sends an SMS or binary message to one or more recipients through the MessageBird (Bird) platform. Supports an alphanumeric sender name or phone number originator, a message reference for tracking, and scheduled delivery. The response includes per-recipient delivery status. Note: alphanumeric originators are not supported in all countries and cannot receive replies."
+    },
+    {
+      "name": "Get Message",
+      "category": "Messaging",
+      "description": "Retrieves a single SMS message by its unique identifier, including its current per-recipient delivery status, originator, body, and timestamps."
+    },
+    {
+      "name": "List Messages",
+      "category": "Messaging",
+      "description": "Retrieves a paginated list of previously sent and received messages. Use the limit and offset parameters to page through results."
+    },
+    {
+      "name": "Send Voice Message",
+      "category": "Voice",
+      "description": "Sends a text-to-speech voice message (voice call) to one or more recipients. The body text is read aloud in the selected language and voice. Answering-machine behavior is configurable via the 'If Machine' setting."
+    },
+    {
+      "name": "Send Verification",
+      "category": "Verify",
+      "description": "Sends a one-time password (OTP) to a recipient to verify ownership of a phone number. The code can be delivered via SMS, spoken via text-to-speech, or sent as a flash call. Use the returned verification ID with 'Verify Token' to confirm the code entered by the user."
+    },
+    {
+      "name": "Verify Token",
+      "category": "Verify",
+      "description": "Verifies the one-time password (OTP) entered by a user against a previously created verification. Returns a 'verified' status on success or an error if the token is incorrect or expired."
+    },
+    {
+      "name": "Get Verification",
+      "category": "Verify",
+      "description": "Retrieves the status and details of an existing verification request by its identifier without submitting a token."
+    },
+    {
+      "name": "Delete Verification",
+      "category": "Verify",
+      "description": "Deletes (cancels) an existing verification request so that its token can no longer be used. Returns an empty response on success."
+    },
+    {
+      "name": "Phone Number Lookup",
+      "category": "Lookup",
+      "description": "Validates a phone number and returns metadata including the number type, country code, and multiple formatted representations (E.164, international, national, RFC3966). Use this to check number validity before sending."
+    },
+    {
+      "name": "Lookup HLR",
+      "category": "Lookup",
+      "description": "Performs a Home Location Register (HLR) lookup on a phone number to retrieve live network status, current carrier, and whether the number is reachable or ported. HLR lookups may incur a charge on your account."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact in your MessageBird (Bird) address book. Contacts store a phone number (msisdn), optional first and last name, and up to four custom fields for storing additional metadata."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by its unique identifier, including phone number, name, custom fields, and the groups the contact belongs to."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves a paginated list of contacts from your address book. Use the limit and offset parameters to page through results."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact's phone number, name, or custom fields. Only the fields you provide are changed; omitted fields are left untouched."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact from your address book by its unique identifier. Returns an empty response on success."
+    },
+    {
+      "name": "List Groups",
+      "category": "Groups",
+      "description": "Retrieves a paginated list of contact groups from your account. Groups let you organize contacts and send messages to many recipients at once."
+    },
+    {
+      "name": "Add Contact to Group",
+      "category": "Groups",
+      "description": "Adds one or more existing contacts to a contact group. Contacts must already exist in your address book; pass their contact identifiers. Returns an empty response on success."
+    },
+    {
+      "name": "Remove Contact from Group",
+      "category": "Groups",
+      "description": "Removes a single contact from a contact group. The contact itself is not deleted from your address book. Returns an empty response on success."
+    },
+    {
+      "name": "Get Balance",
+      "category": "Account",
+      "description": "Retrieves the current balance of your MessageBird (Bird) account, including the amount, payment type (prepaid or postpaid), and currency."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send transactional or notification SMS to customers and internal teams from your workflows.",
+    "Add phone-number OTP verification (SMS, TTS, or flash call) to sign-up and login flows.",
+    "Validate and enrich phone numbers with lookup and HLR checks before messaging.",
+    "Trigger text-to-speech voice calls for critical alerts and reminders.",
+    "Sync and maintain contacts and groups as an address book for outbound campaigns.",
+    "Monitor account balance and message delivery status."
+  ],
+  "agentIdeas": [
+    "When a **Shopify** \"On New Order\" trigger fires, use **MessageBird** \"Send SMS\" to text the",
+    "Before adding a lead to **HubSpot** with \"Create Contact\", call **MessageBird** \"Phone Number",
+    "Use **MessageBird** \"Send Verification\" and \"Verify Token\" to OTP-verify a phone number, then"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/messagebird/public/icon.png",
+  "sourcePaths": {
+    "service": "services/messagebird",
+    "readme": "services/messagebird/README.md",
+    "index": "services/messagebird/src/index.js"
+  }
+}

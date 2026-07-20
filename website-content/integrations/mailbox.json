@@ -1,0 +1,50 @@
+{
+  "slug": "mailbox",
+  "name": "Mailbox",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Comprehensive email management solution for reading, sending, and managing emails through SMTP and IMAP protocols.",
+  "actionCount": 3,
+  "triggerCount": 0,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Read Inbox",
+      "category": null,
+      "description": "Reads the inbox and retrieves the last N emails, parsing them into a structured format. Supports various filter criteria including sender, recipient, subject, date ranges, and read status."
+    },
+    {
+      "name": "Mark Email As Unread",
+      "category": null,
+      "description": "Marks a specified email as unread in the mailbox. This allows you to reset the read status of an email that was previously marked as read."
+    },
+    {
+      "name": "Send Email",
+      "category": null,
+      "description": "Sends an email using SMTP configuration. Supports both plain text and HTML content, along with CC, BCC, priority settings and custom reply-to addresses."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automated email monitoring and processing workflows",
+    "Customer support ticket management and auto-responses",
+    "Marketing email campaign management and tracking",
+    "Email-based data collection and lead generation",
+    "Notification systems and alert management",
+    "Email archiving and backup automation",
+    "Multi-account email synchronization",
+    "Automated email classification and filtering"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/mailbox/public/icon.png",
+  "sourcePaths": {
+    "service": "services/mailbox",
+    "readme": "services/mailbox/README.md",
+    "index": "services/mailbox/src/index.js"
+  }
+}

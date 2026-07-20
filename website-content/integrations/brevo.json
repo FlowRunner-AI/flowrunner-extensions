@@ -1,0 +1,238 @@
+{
+  "slug": "brevo",
+  "name": "Brevo",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "All-in-one marketing and CRM platform integration for transactional email, SMS messaging, contact management, and sales pipeline operations. Manage contacts, lists, deals, companies, tasks, and notes through a unified API.",
+  "actionCount": 38,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Email Sending",
+    "Contacts",
+    "Contact Lists",
+    "SMS",
+    "CRM - Deals",
+    "CRM - Companies",
+    "CRM - Tasks",
+    "CRM - Notes",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Send Transactional Email",
+      "category": "Email Sending",
+      "description": "Send a transactional email to a single recipient with full customization of sender, content, and scheduling options."
+    },
+    {
+      "name": "Send Template Email",
+      "category": "Email Sending",
+      "description": "Send an email using a pre-built Brevo template with dynamic variables and recipient customization."
+    },
+    {
+      "name": "Get Email Templates",
+      "category": "Email Sending",
+      "description": "Retrieve a list of available email templates from your Brevo account with pagination support."
+    },
+    {
+      "name": "Get Transactional Emails",
+      "category": "Email Sending",
+      "description": "Retrieve a list of transactional emails with filtering by recipient, event type, and date range."
+    },
+    {
+      "name": "Get Email Statistics",
+      "category": "Email Sending",
+      "description": "Retrieve aggregated email statistics for transactional emails with optional date range and tag filtering."
+    },
+    {
+      "name": "Get Senders",
+      "category": "Email Sending",
+      "description": "Retrieve all verified email senders configured in your Brevo account."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Create a new contact in Brevo with email, personal details, list assignments, and custom attributes."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieve detailed information about a specific contact by email address, ID, or external ID."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Update an existing contact's information including email, personal details, list memberships, and attributes."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently delete a contact from your Brevo account by email address, ID, or external ID."
+    },
+    {
+      "name": "Get Contacts",
+      "category": "Contacts",
+      "description": "Retrieve a paginated list of all contacts in your Brevo account."
+    },
+    {
+      "name": "Create List",
+      "category": "Contact Lists",
+      "description": "Create a new contact list in a specified folder for organizing and managing your contacts."
+    },
+    {
+      "name": "Get Lists",
+      "category": "Contact Lists",
+      "description": "Retrieve a paginated list of all contact lists in your Brevo account."
+    },
+    {
+      "name": "Get List Contacts",
+      "category": "Contact Lists",
+      "description": "Retrieve a paginated list of contacts belonging to a specific contact list."
+    },
+    {
+      "name": "Add Contacts to List",
+      "category": "Contact Lists",
+      "description": "Add one or more contacts to a specific contact list by their email addresses."
+    },
+    {
+      "name": "Remove Contacts from List",
+      "category": "Contact Lists",
+      "description": "Remove one or more contacts from a specific contact list by their email addresses."
+    },
+    {
+      "name": "Send Transactional SMS",
+      "category": "SMS",
+      "description": "Send a transactional SMS message to a single recipient with sender customization and tagging."
+    },
+    {
+      "name": "Get SMS Statistics",
+      "category": "SMS",
+      "description": "Retrieve aggregated SMS statistics with optional date range and tag filtering."
+    },
+    {
+      "name": "Create Deal",
+      "category": "CRM - Deals",
+      "description": "Create a new deal in the Brevo CRM with a name and optional attributes such as pipeline, stage, and owner."
+    },
+    {
+      "name": "Get Deal",
+      "category": "CRM - Deals",
+      "description": "Retrieve detailed information about a specific CRM deal by its unique identifier."
+    },
+    {
+      "name": "Update Deal",
+      "category": "CRM - Deals",
+      "description": "Update an existing CRM deal's name and attributes such as stage, pipeline, owner, or amount."
+    },
+    {
+      "name": "Delete Deal",
+      "category": "CRM - Deals",
+      "description": "Permanently delete a specific CRM deal by its unique identifier."
+    },
+    {
+      "name": "Get Deals",
+      "category": "CRM - Deals",
+      "description": "Retrieve a paginated list of all CRM deals in your Brevo account."
+    },
+    {
+      "name": "Create Company",
+      "category": "CRM - Companies",
+      "description": "Create a new company in the Brevo CRM with a name and optional custom attributes."
+    },
+    {
+      "name": "Get Company",
+      "category": "CRM - Companies",
+      "description": "Retrieve detailed information about a specific company by its unique identifier."
+    },
+    {
+      "name": "Update Company",
+      "category": "CRM - Companies",
+      "description": "Update an existing company's name and attributes in the Brevo CRM."
+    },
+    {
+      "name": "Delete Company",
+      "category": "CRM - Companies",
+      "description": "Permanently delete a specific company from the Brevo CRM by its unique identifier."
+    },
+    {
+      "name": "Get Companies",
+      "category": "CRM - Companies",
+      "description": "Retrieve a paginated list of all companies in the Brevo CRM."
+    },
+    {
+      "name": "Create Task",
+      "category": "CRM - Tasks",
+      "description": "Create a new task in the Brevo CRM with scheduling, notes, and associations to contacts, deals, or companies."
+    },
+    {
+      "name": "Get Task",
+      "category": "CRM - Tasks",
+      "description": "Retrieve detailed information about a specific CRM task by its unique identifier."
+    },
+    {
+      "name": "Update Task",
+      "category": "CRM - Tasks",
+      "description": "Update an existing CRM task's name, status, scheduling, or notes."
+    },
+    {
+      "name": "Delete Task",
+      "category": "CRM - Tasks",
+      "description": "Permanently delete a specific CRM task by its unique identifier."
+    },
+    {
+      "name": "Get Tasks",
+      "category": "CRM - Tasks",
+      "description": "Retrieve a paginated list of all CRM tasks in your Brevo account."
+    },
+    {
+      "name": "Create Note",
+      "category": "CRM - Notes",
+      "description": "Create a new note in the Brevo CRM and associate it with contacts, deals, or companies."
+    },
+    {
+      "name": "Get Note",
+      "category": "CRM - Notes",
+      "description": "Retrieve detailed information about a specific CRM note by its unique identifier."
+    },
+    {
+      "name": "Update Note",
+      "category": "CRM - Notes",
+      "description": "Update an existing CRM note's text content and associated contacts, deals, or companies."
+    },
+    {
+      "name": "Delete Note",
+      "category": "CRM - Notes",
+      "description": "Permanently delete a specific CRM note by its unique identifier."
+    },
+    {
+      "name": "Get Account Info",
+      "category": "Account",
+      "description": "Retrieve your Brevo account information including plan details, credits, and relay configuration."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sending transactional emails and template-based notifications for order confirmations and alerts",
+    "Managing contact lists and segmenting audiences for targeted campaigns",
+    "Tracking CRM deals through sales pipelines with stage management",
+    "Sending transactional SMS messages for time-sensitive notifications",
+    "Automating contact creation and updates from external data sources",
+    "Managing CRM tasks and notes for sales team coordination",
+    "Monitoring email and SMS delivery statistics for reporting"
+  ],
+  "agentIdeas": [
+    "Use **Parseur** \"Get Parsed Data\" to extract lead details from incoming emails, then call **Brevo** \"Create Contact\" to add each lead and \"Add Contacts to List\" to assign them to a nurture list",
+    "When a **Google Sheets** \"On New Row\" trigger fires with a new order, use **Brevo** \"Send Template Email\" to send the customer an order confirmation using a pre-built template with dynamic variables",
+    "When a **Slack** \"On Block Action\" trigger fires from a deal-approval button, use **Brevo** \"Update Deal\" to advance the deal stage in the CRM pipeline and **Slack** \"Update Message In Channel\" to confirm the action"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/brevo/public/icon.png",
+  "sourcePaths": {
+    "service": "services/brevo",
+    "readme": "services/brevo/README.md",
+    "index": "services/brevo/src/index.js"
+  }
+}

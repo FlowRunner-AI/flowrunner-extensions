@@ -1,0 +1,40 @@
+{
+  "slug": "ai-image-generator",
+  "name": "AI Image Generator",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Generate images from text prompts using OpenAI's DALL-E models. Supports multiple sizes, quality levels, and returns a hosted file URL ready for use in downstream flow steps.",
+  "actionCount": 1,
+  "triggerCount": 0,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Generate Image",
+      "category": null,
+      "description": "Generates high-quality AI images based on text prompts using OpenAI's DALL·E or GPT-Image models. Perfect for AI agents creating visual content, marketing materials, or concept art with customizable parameters for size, quality, and model-specific settings."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generating product visuals or marketing images from text descriptions on demand",
+    "Creating custom illustrations for blog posts, social media, or email campaigns",
+    "Building image generation pipelines where output URLs feed directly into other services",
+    "Producing concept art or design mockups from natural language prompts"
+  ],
+  "agentIdeas": [
+    "Use **AI Image Generator** \"Generate Image\" to create a product photo from a description, then pass the returned URL to **Brevo** \"Send Transactional Email\" to include it in a customer notification",
+    "When a **Google Sheets** \"On New Row\" trigger fires with a prompt column, use **AI Image Generator** \"Generate Image\" and write the resulting URL back with **Google Sheets** \"Update Cell\"",
+    "Combine with **Slack** \"Send Message To Channel\" to post newly generated images directly to a design review channel with a Block Kit image block"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/ai-image-generator/public/icon.png",
+  "sourcePaths": {
+    "service": "services/ai-image-generator",
+    "readme": "services/ai-image-generator/README.md",
+    "index": "services/ai-image-generator/src/index.js"
+  }
+}

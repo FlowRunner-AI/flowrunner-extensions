@@ -1,0 +1,101 @@
+{
+  "slug": "beeminder",
+  "name": "Beeminder",
+  "marketingCategory": "Utilities & Personal",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connects FlowRunner to [Beeminder](https://www.beeminder.com/), the goal-tracking service that puts money on the line. Manage goals and their datapoints, refresh graphs, read your user profile, and issue charges through the Beeminder API v1. Authentication uses a personal auth token sent as the `auth_token` query parameter; the username defaults to `me`, resolving to the account that owns the token.",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "User",
+    "Goals",
+    "Datapoints",
+    "Charges"
+  ],
+  "actions": [
+    {
+      "name": "Get User",
+      "category": "User",
+      "description": "Retrieves the authenticated Beeminder user's profile, including their timezone, last-updated timestamp, urgency load, and deadbeat status (whether payment info is out of date). Set Include Associations to fetch full details for every goal in a single call; use sparingly, as it is an expensive request."
+    },
+    {
+      "name": "List Goals",
+      "category": "Goals",
+      "description": "Lists all of the authenticated user's goals, sorted by urgency (most at-risk first). Each goal includes its slug, title, goal type, units, bright red line parameters, safety buffer, and pledge amount."
+    },
+    {
+      "name": "Get Goal",
+      "category": "Goals",
+      "description": "Retrieves a single goal by its slug, including its bright red line, safety buffer, pledge, and progress metrics. Optionally include the goal's full datapoint history in the response."
+    },
+    {
+      "name": "Create Goal",
+      "category": "Goals",
+      "description": "Creates a new goal for the authenticated user. Requires a slug, title, goal type, and units. You must supply exactly two of Goal Date, Goal Value, and Rate; Beeminder computes the third. Goal type determines the aggregation behavior (e.g. Do More, Odometer, Weight Loss)."
+    },
+    {
+      "name": "Update Goal",
+      "category": "Goals",
+      "description": "Updates the mutable attributes of an existing goal, such as its title, y-axis label, secrecy, and bright red line (roadall). The goal type cannot be changed after creation."
+    },
+    {
+      "name": "Refresh Goal Graph",
+      "category": "Goals",
+      "description": "Forces Beeminder to refetch any autodata for the goal and regenerate its graph image. Returns true if the request was queued. Use conservatively, as graph regeneration is resource-intensive."
+    },
+    {
+      "name": "Create Datapoint",
+      "category": "Datapoints",
+      "description": "Adds a single datapoint to a goal. Only Value is required; Beeminder timestamps the datapoint now unless you supply a Timestamp or Daystamp. Supply a Request ID to make the call idempotent: repeating a create with the same Request ID updates the existing datapoint instead of creating a duplicate, which is essential for safe retries."
+    },
+    {
+      "name": "List Datapoints",
+      "category": "Datapoints",
+      "description": "Lists the datapoints for a goal. Supports sorting by any datapoint attribute and limiting the number of results returned."
+    },
+    {
+      "name": "Update Datapoint",
+      "category": "Datapoints",
+      "description": "Updates an existing datapoint's value, timestamp, or comment by its ID. Only the fields you provide are changed."
+    },
+    {
+      "name": "Delete Datapoint",
+      "category": "Datapoints",
+      "description": "Permanently deletes a datapoint from a goal by its ID and returns the deleted datapoint."
+    },
+    {
+      "name": "Create Datapoints Batch",
+      "category": "Datapoints",
+      "description": "Creates multiple datapoints on a goal in a single request. Pass an array of datapoint objects, each supporting the same fields as a single create (value, timestamp, daystamp, comment, requestid). Returns the array of created datapoints."
+    },
+    {
+      "name": "Charge User",
+      "category": "Charges",
+      "description": "Charges the authenticated user's payment method on file. Amount is in US dollars (minimum $1.00) and a note is required to explain the charge. Set Dry Run to validate the charge without actually processing it. Use with care, as this moves real money."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Log progress automatically to a Do More or Odometer goal whenever an activity happens in another app (a task completed, a commit pushed, a workout tracked).",
+    "Keep a goal's datapoints in sync from a spreadsheet or database by batch-creating datapoints on a schedule.",
+    "Use idempotent datapoint creation (via Request ID) so retried automations never create duplicate entries.",
+    "Read a goal's safety buffer and urgency to alert yourself when it is about to derail.",
+    "Programmatically create, update, or refresh goals as part of a habit-building workflow."
+  ],
+  "agentIdeas": [
+    "When **Todoist** \"Complete Task\" fires, call **Beeminder** \"Create Datapoint\" (with a Request ID for safe retries) to log the completion against a Do More goal.",
+    "On a schedule, use **Google Sheets** \"Get Rows\" to read tracked activity, then **Beeminder** \"Create Datapoints Batch\" to sync all entries onto a goal in one request.",
+    "Use **Beeminder** \"Get Goal\" to read a goal's safety buffer and urgency, then **Slack** \"Send Message To Channel\" to alert a channel when the goal is about to derail."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/beeminder/public/icon.png",
+  "sourcePaths": {
+    "service": "services/beeminder",
+    "readme": "services/beeminder/README.md",
+    "index": "services/beeminder/src/index.js"
+  }
+}

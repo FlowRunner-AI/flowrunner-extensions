@@ -1,0 +1,107 @@
+{
+  "slug": "hunter",
+  "name": "Hunter.io",
+  "marketingCategory": "Sales Intelligence & Enrichment",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Find, verify, and enrich professional email addresses with the [Hunter.io API v2](https://hunter.io/api-documentation/v2). Discover every email at a domain, guess a specific person's address, verify deliverability before sending, enrich contacts with person and company data, and manage leads and leads lists.",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Email Discovery",
+    "Email Verification",
+    "Enrichment",
+    "Account",
+    "Leads"
+  ],
+  "actions": [
+    {
+      "name": "Domain Search",
+      "category": "Email Discovery",
+      "description": "Finds every email address publicly associated with a domain or company. Returns the detected email pattern (e.g. {first}.{last}@domain), the organization name, and a list of emails, each with a confidence score, type (personal/generic), owner name, position, seniority, department, and the web sources where it was found. Use the type, seniority, and department filters to narrow results, and limit/offset to paginate. Provide either a domain or a company name."
+    },
+    {
+      "name": "Email Finder",
+      "category": "Email Discovery",
+      "description": "Finds the most likely email address for a specific person at a company. Provide the person's first and last name plus a domain or company name; Hunter returns the single best-guess email with a confidence score, the person's position, and the web sources supporting the guess. Ideal for locating one known individual's address rather than listing a whole domain."
+    },
+    {
+      "name": "Email Verifier",
+      "category": "Email Verification",
+      "description": "Verifies the deliverability of a single email address. Returns an overall status (valid, invalid, accept_all, webmail, disposable, or unknown), a numeric confidence score, and the individual checks performed: format/regexp validity, gibberish detection, disposable and webmail flags, MX record presence, SMTP server reachability, SMTP mailbox check, and accept-all/block indicators. Use before sending to reduce bounces."
+    },
+    {
+      "name": "Email Count",
+      "category": "Email Discovery",
+      "description": "Returns how many email addresses Hunter knows for a given domain or company without consuming search credits. Provides the total count, the split between personal and generic emails, and breakdowns by department and seniority. Useful as a lightweight check of how much coverage a domain has before running a full Domain Search."
+    },
+    {
+      "name": "Combined Enrichment",
+      "category": "Enrichment",
+      "description": "Enriches an email address with both person and company data in a single call. Returns a person profile (full name, location, employment title and seniority, social handles) alongside the company profile of their employer (name, domain, industry/sector, location, founded year, employee count). Combines Hunter's Person and Company enrichment for a complete picture of a contact."
+    },
+    {
+      "name": "Get Account",
+      "category": "Account",
+      "description": "Returns details about the authenticated Hunter account, including the owner name, plan, team information, and API usage. Use it as a connection check and to monitor how many search, verification, and enrichment requests have been used versus what remains for the current billing period."
+    },
+    {
+      "name": "List Leads",
+      "category": "Leads",
+      "description": "Lists leads saved in the Hunter account, most recent first. Supports pagination via limit and offset, filtering to a specific leads list, and filtering by lead fields such as email, first name, last name, and company. Returns each lead's id, contact details, position, company, website, and source, along with pagination metadata."
+    },
+    {
+      "name": "Create Lead",
+      "category": "Leads",
+      "description": "Creates a new lead in the Hunter account. Only the email is strictly required, but you can attach the person's name, position, company, website, phone number, social profiles, a source label, free-form notes, and assign the lead to a specific leads list. Returns the created lead including its generated id."
+    },
+    {
+      "name": "Get Lead",
+      "category": "Leads",
+      "description": "Retrieves a single lead by its numeric id, returning the full lead record including contact details, position, company, website, social profiles, source, notes, and the leads list it belongs to."
+    },
+    {
+      "name": "Update Lead",
+      "category": "Leads",
+      "description": "Updates an existing lead identified by its numeric id. Only the fields you provide are changed; leave a field empty to keep its current value. Editable fields include name, position, company, website, phone number, social profiles, source, and notes."
+    },
+    {
+      "name": "Delete Lead",
+      "category": "Leads",
+      "description": "Permanently deletes a lead from the Hunter account by its numeric id. This action cannot be undone. Returns a simple confirmation object on success."
+    },
+    {
+      "name": "List Leads Lists",
+      "category": "Leads",
+      "description": "Lists all leads lists in the Hunter account. Each leads list groups related leads together; the response includes each list's id, name, and the number of leads it contains, plus pagination metadata."
+    },
+    {
+      "name": "Create Leads List",
+      "category": "Leads",
+      "description": "Creates a new leads list in the Hunter account to group related leads. Provide a name; the response returns the new list's id and name. Use the returned id when creating leads to assign them to this list."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Discover all publicly available emails at a company domain, with confidence scores and the detected email pattern.",
+    "Find the most likely email address for a named individual at a given company.",
+    "Verify an email's deliverability (MX, SMTP, disposable/webmail checks) before adding it to an outreach campaign.",
+    "Enrich a known email with the person's role and their company's profile.",
+    "Save qualified contacts as leads and organize them into leads lists."
+  ],
+  "agentIdeas": [
+    "Use **Hunter.io** \"Domain Search\" to pull contacts at a target company, \"Email Verifier\" to filter to deliverable addresses, then **Gmail** \"Send Message\" to reach out.",
+    "After **Hunter.io** \"Email Finder\" locates a prospect's address, use \"Create Lead\" to save them, then **Airtable** \"Create Record\" to log the lead in your CRM.",
+    "Combine **Hunter.io** \"Combined Enrichment\" with **Google Sheets** \"Add Row\" to build an enriched contact list from a batch of raw email addresses."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/hunter/public/icon.png",
+  "sourcePaths": {
+    "service": "services/hunter",
+    "readme": "services/hunter/README.md",
+    "index": "services/hunter/src/index.js"
+  }
+}

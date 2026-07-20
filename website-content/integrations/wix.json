@@ -1,0 +1,216 @@
+{
+  "slug": "wix",
+  "name": "Wix",
+  "marketingCategory": "CMS & Content",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connects FlowRunner to the Wix REST API (`https://www.wixapis.com`) using an account-level API key. It covers CRM contacts with labels, CMS data collections (Wix Data v2), Wix Stores products, eCommerce orders and fulfillments, blog draft posts with optional immediate publish, coupons, site members, and site properties across a single connected Wix site.",
+  "actionCount": 34,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Contacts",
+    "CMS Data",
+    "Store Products",
+    "Orders",
+    "Blog",
+    "Coupons",
+    "Members",
+    "Site"
+  ],
+  "actions": [
+    {
+      "name": "Query Contacts",
+      "category": "Contacts",
+      "description": "Queries CRM contacts on the connected Wix site using the Contacts v4 query language. Supports a raw filter object (e.g. {\"info.name.last\":{\"$eq\":\"Lovelace\"}} or {\"primaryInfo.email\":{\"$contains\":\"@acme.com\"}}), sorting by any contact field, and offset paging. Returns matching contacts with their revision, primary info, and full contact info, plus paging metadata."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single CRM contact by its ID, including the current revision (needed for updates), primary email and phone, name, labels, and extended fields."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new CRM contact on the connected Wix site. Provide convenience fields (first/last name, email, phone, label keys) and optionally an Additional Info object for advanced contact info such as addresses, company, jobTitle, birthdate, or extendedFields. Returns the created contact with its ID and revision."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates fields of an existing CRM contact. Wix requires the contact's current revision for optimistic locking; if you omit it, the service fetches the contact first and uses its latest revision automatically. Only the fields present in the Info object are overwritten. Returns the updated contact."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a CRM contact by ID. Contacts that are also site members or contributors cannot be deleted this way. Returns a confirmation object."
+    },
+    {
+      "name": "List Contact Labels",
+      "category": "Contacts",
+      "description": "Lists the contact labels defined on the connected Wix site, including system labels and custom labels. Each label has a key (used when labeling contacts), a display name, and a label type. Supports offset paging."
+    },
+    {
+      "name": "Label Contact",
+      "category": "Contacts",
+      "description": "Adds one or more labels to a CRM contact. Label keys must already exist on the site (use List Contact Labels or the labels dictionary to find keys). Returns the updated contact with its full label list."
+    },
+    {
+      "name": "Unlabel Contact",
+      "category": "Contacts",
+      "description": "Removes one or more labels from a CRM contact. The labels themselves are not deleted from the site, only detached from this contact. Returns the updated contact with its remaining labels."
+    },
+    {
+      "name": "Query Data Items",
+      "category": "CMS Data",
+      "description": "Queries items in a Wix CMS data collection using the Wix Data v2 query language. Supports a raw filter object over item data fields (e.g. {\"data.status\":{\"$eq\":\"active\"}} or field names directly like {\"title\":{\"$contains\":\"launch\"}}), sorting, offset paging, and an optional total count. Returns matching data items and paging metadata."
+    },
+    {
+      "name": "Get Data Item",
+      "category": "CMS Data",
+      "description": "Retrieves a single item from a Wix CMS data collection by its item ID. Returns the data item including its full data payload and system fields (_id, _createdDate, _updatedDate)."
+    },
+    {
+      "name": "Insert Data Item",
+      "category": "CMS Data",
+      "description": "Inserts a new item into a Wix CMS data collection. Provide the item's fields as a data object; Wix generates the item ID unless you include an _id field. Returns the created data item."
+    },
+    {
+      "name": "Update Data Item",
+      "category": "CMS Data",
+      "description": "Fully replaces an existing item in a Wix CMS data collection. The provided data object replaces the item's previous data entirely, so include every field you want to keep. Returns the updated data item."
+    },
+    {
+      "name": "Save Data Item",
+      "category": "CMS Data",
+      "description": "Upserts an item in a Wix CMS data collection: creates the item when the _id in the data object does not exist (or is omitted) and replaces it when it does. Ideal for rerunnable imports and sync jobs. Note that on update the provided data fully replaces the existing item. Returns the saved data item."
+    },
+    {
+      "name": "Remove Data Item",
+      "category": "CMS Data",
+      "description": "Permanently removes an item from a Wix CMS data collection by its item ID. Returns the removed data item as it existed before deletion."
+    },
+    {
+      "name": "List Data Collections",
+      "category": "CMS Data",
+      "description": "Lists the CMS data collections available on the connected Wix site, including custom collections and app collections (e.g. Stores/Products). Returns each collection's ID, display name, field definitions, and capabilities, plus paging metadata."
+    },
+    {
+      "name": "Query Products",
+      "category": "Store Products",
+      "description": "Queries products in the Wix Stores catalog (v1). Accepts a filter object which is automatically stringified as required by the Stores v1 API (e.g. {\"name\":{\"$contains\":\"shirt\"}}), a sort field with direction, offset paging, and an option to include full variant data. Returns matching products and result metadata."
+    },
+    {
+      "name": "Get Product",
+      "category": "Store Products",
+      "description": "Retrieves a single Wix Stores product by its ID, including pricing, stock, media, product options, and additional info sections."
+    },
+    {
+      "name": "Create Product",
+      "category": "Store Products",
+      "description": "Creates a new product in the Wix Stores catalog. Provide the name, type, and price, plus optional description, SKU, and visibility. Use Additional Fields for advanced product properties such as productOptions, manageVariants, discount, ribbon, or weight. Returns the created product."
+    },
+    {
+      "name": "Update Product",
+      "category": "Store Products",
+      "description": "Updates fields of an existing Wix Stores product. Only the fields present in the Product object are changed, e.g. {\"name\":\"New Name\",\"priceData\":{\"price\":29},\"visible\":false}. Returns the updated product."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Store Products",
+      "description": "Permanently deletes a product from the Wix Stores catalog by its ID. Returns a confirmation object."
+    },
+    {
+      "name": "Search Orders",
+      "category": "Orders",
+      "description": "Searches eCommerce orders on the connected Wix site (covers Stores, Bookings, and other Wix sales channels). Accepts a raw filter object (e.g. {\"status\":{\"$eq\":\"APPROVED\"}} or {\"paymentStatus\":{\"$eq\":\"PAID\"}}), sorting (e.g. by createdDate), and cursor paging. Returns matching orders and a cursor for the next page."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves a single eCommerce order by its ID, including line items, buyer info, price summary, payment and fulfillment statuses, and shipping details."
+    },
+    {
+      "name": "Create Order Fulfillment",
+      "category": "Orders",
+      "description": "Creates a fulfillment for an eCommerce order, optionally with tracking information. The order must be in an approved state, and each line item can only belong to one fulfillment. Tracking links are auto-generated for known carriers (fedex, ups, usps, dhl, canadaPost); for custom carriers provide the tracking link explicitly. Returns the fulfillment ID and the order with its fulfillments."
+    },
+    {
+      "name": "List Blog Posts",
+      "category": "Blog",
+      "description": "Lists published blog posts on the connected Wix site with offset paging and sorting. Optionally restricts results to featured posts. Returns post summaries including title, excerpt, slug, first published date, and category/tag IDs."
+    },
+    {
+      "name": "Get Blog Post",
+      "category": "Blog",
+      "description": "Retrieves a single published blog post by its ID, including title, excerpt, slug, hero image, category and tag IDs, and publication dates."
+    },
+    {
+      "name": "Create Draft Blog Post",
+      "category": "Blog",
+      "description": "Creates a draft blog post on the connected Wix site, optionally publishing it immediately. Provide plain text content (automatically converted to Wix rich content paragraphs, split on blank lines) or a full Ricos rich content object for advanced formatting. When calling with an API key, Member ID identifies the post author. Returns the created draft post."
+    },
+    {
+      "name": "List Blog Categories",
+      "category": "Blog",
+      "description": "Lists the blog categories on the connected Wix site with offset paging. Returns each category's ID, label, slug, description, and post count. Use category IDs when creating draft posts or filtering posts."
+    },
+    {
+      "name": "Query Coupons",
+      "category": "Coupons",
+      "description": "Queries coupons on the connected Wix site. Accepts a filter object which is automatically stringified as required by the Coupons v2 API (e.g. {\"specification.code\":\"SUMMER20\"}), plus offset paging. Returns matching coupons with their specifications and usage data."
+    },
+    {
+      "name": "Create Coupon",
+      "category": "Coupons",
+      "description": "Creates a coupon on the connected Wix site. Choose the discount type (fixed amount off, percent off, or free shipping) and provide the coupon code customers will enter at checkout. The coupon applies storewide by default; pass a Scope object to limit it to specific products or collections. Returns the new coupon's ID."
+    },
+    {
+      "name": "Get Coupon",
+      "category": "Coupons",
+      "description": "Retrieves a single coupon by its ID, including its specification (name, code, discount, validity window, scope) and usage statistics."
+    },
+    {
+      "name": "Delete Coupon",
+      "category": "Coupons",
+      "description": "Permanently deletes a coupon by its ID. Customers can no longer redeem the coupon code after deletion. Returns a confirmation object."
+    },
+    {
+      "name": "List Members",
+      "category": "Members",
+      "description": "Lists site members on the connected Wix site with offset paging. Choose a fieldset to control how much data is returned per member: Public (basic profile), Extended (adds status and privacy), or Full (all fields including contact details). Member IDs are used as authors for blog draft posts."
+    },
+    {
+      "name": "Get Member",
+      "category": "Members",
+      "description": "Retrieves a single site member by ID. Choose a fieldset to control how much data is returned: Public (basic profile), Extended (adds status and privacy), or Full (all fields including contact details)."
+    },
+    {
+      "name": "Get Site Properties",
+      "category": "Site",
+      "description": "Retrieves the connected Wix site's properties, including site display name, language, locale, currency, time zone, categories, and business contact details. Useful for verifying the connection and reading site-level settings."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new leads or customers into Wix CRM contacts and apply labels for segmentation",
+    "Import, upsert, and query records in Wix CMS data collections for content-driven sites",
+    "Manage the Wix Stores catalog by creating, updating, and querying products",
+    "Fulfill eCommerce orders with carrier tracking and monitor order and payment status",
+    "Automate blog publishing by drafting posts from plain text or Ricos rich content",
+    "Create and manage promotional coupons for stores and bookings"
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires with a sales inquiry, use **Wix** \"Create Contact\" and then \"Label Contact\" to add the sender to Wix CRM under a \"Leads\" label",
+    "Use **Wix** \"Search Orders\" to pull recently approved orders, then call **Google Sheets** \"Add Rows\" to log each order into a fulfillment tracking spreadsheet",
+    "Use **Shopify** \"Get Product\" details for a bestselling item, then call **Wix** \"Create Product\" to cross-list the same product in the Wix Stores catalog"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/wix/public/icon.png",
+  "sourcePaths": {
+    "service": "services/wix",
+    "readme": "services/wix/README.md",
+    "index": "services/wix/src/index.js"
+  }
+}

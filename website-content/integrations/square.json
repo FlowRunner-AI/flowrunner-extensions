@@ -1,0 +1,339 @@
+{
+  "slug": "square",
+  "name": "Square",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to the [Square](https://squareup.com/) v2 API to run payments, refunds, orders, catalog, customers, cards on file, invoices, inventory, subscriptions, payouts and team management. Authenticates with a personal access token and supports both Production and Sandbox environments.",
+  "actionCount": 58,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Locations",
+    "Payments",
+    "Refunds",
+    "Orders",
+    "Catalog",
+    "Customers",
+    "Cards",
+    "Invoices",
+    "Inventory",
+    "Subscriptions",
+    "Payouts",
+    "Team"
+  ],
+  "actions": [
+    {
+      "name": "List Locations",
+      "category": "Locations",
+      "description": "Lists all business locations of the Square account, including inactive ones. Each location includes its ID, name, address, timezone, currency, status and capabilities. Location IDs are required by many other operations such as Create Payment, Create Order and Create Invoice."
+    },
+    {
+      "name": "Get Location",
+      "category": "Locations",
+      "description": "Retrieves full details of a single business location by its ID, including address, business hours, capabilities, currency and status. Pass the special value \"main\" to retrieve the account's main location."
+    },
+    {
+      "name": "List Payments",
+      "category": "Payments",
+      "description": "Lists payments taken by the account, newest first by default. Supports filtering by an RFC 3339 time window (defaults to the last year, maximum one year range) and by location. Results are paginated with a cursor; pass the returned cursor to fetch the next page."
+    },
+    {
+      "name": "Get Payment",
+      "category": "Payments",
+      "description": "Retrieves full details of a single payment by its ID, including amounts, status, card details, processing fees, associated order and customer, and the version token needed for updates."
+    },
+    {
+      "name": "Create Payment",
+      "category": "Payments",
+      "description": "Charges a payment source. The source can be a card on file (a card ID created with Create Card), or the special values CASH / EXTERNAL to record payments taken outside Square. Amount is in cents (smallest currency unit), e.g. 1000 = $10.00. When Autocomplete is off the payment is only authorized and must later be finished with Complete Payment or voided with Cancel Payment. An idempotency key is generated automatically unless you provide one."
+    },
+    {
+      "name": "Update Payment",
+      "category": "Payments",
+      "description": "Updates the amount or tip of a payment that is in the APPROVED state (created with Autocomplete off), before it is completed. Amounts are in cents (smallest currency unit). Requires the payment's current version token, available from Get Payment."
+    },
+    {
+      "name": "Complete Payment",
+      "category": "Payments",
+      "description": "Captures (completes) a payment that was previously authorized with Create Payment and Autocomplete off. By default an approved payment must be completed within 6 days or it is automatically voided."
+    },
+    {
+      "name": "Cancel Payment",
+      "category": "Payments",
+      "description": "Cancels (voids) a payment in the APPROVED state, releasing the hold on the buyer's funds. Only payments created with Autocomplete off can be canceled; completed payments must be refunded instead with Refund Payment."
+    },
+    {
+      "name": "Refund Payment",
+      "category": "Refunds",
+      "description": "Refunds all or part of a completed payment. The refund amount is in cents (smallest currency unit) and must not exceed the remaining refundable balance of the payment. An idempotency key is generated automatically unless you provide one. Refunds are processed asynchronously; check the status with Get Refund."
+    },
+    {
+      "name": "List Refunds",
+      "category": "Refunds",
+      "description": "Lists refunds issued by the account, newest first by default. Supports filtering by an RFC 3339 time window (defaults to the last year, maximum one year range) and by location. Results are paginated with a cursor."
+    },
+    {
+      "name": "Get Refund",
+      "category": "Refunds",
+      "description": "Retrieves full details of a single payment refund by its ID, including its status (PENDING, COMPLETED, REJECTED or FAILED), amount and associated payment."
+    },
+    {
+      "name": "Create Order",
+      "category": "Orders",
+      "description": "Creates an order at a location. Line items can reference catalog item variations by ID or be ad hoc items with a name and a unit price in cents (smallest currency unit). Optional order-level taxes and discounts are applied with ORDER scope by default. The created order is OPEN and can later be paid with Pay Order. An idempotency key is generated automatically unless you provide one."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves full details of a single order by its ID, including line items, taxes, discounts, fulfillments, tenders, totals and the version number needed for updates."
+    },
+    {
+      "name": "Update Order",
+      "category": "Orders",
+      "description": "Updates an open order using sparse updates: pass only the fields to add or change in the Order object, and list dot-notation paths of fields to remove in Fields To Clear (e.g. line_items[uid].note). Requires the order's current version number from Get Order for optimistic concurrency."
+    },
+    {
+      "name": "Search Orders",
+      "category": "Orders",
+      "description": "Searches orders across one or more locations with optional filters on order state and a date-time window on the created, updated or closed timestamp. When a date-time filter is used, results are sorted by that same field. Results are paginated with a cursor."
+    },
+    {
+      "name": "Pay Order",
+      "category": "Orders",
+      "description": "Pays for an open order using one or more previously approved payments (created with Create Payment and Autocomplete off), or marks it paid with a zero total. The sum of the payments must equal the order total. Requires the order's current version number."
+    },
+    {
+      "name": "Calculate Order",
+      "category": "Orders",
+      "description": "Calculates totals, taxes and discounts for an order without creating it. Pass a full Order object in Square API format (snake_case, including location_id and line_items); the response returns the order with all computed amounts in cents (smallest currency unit). Useful for previewing a cart before Create Order."
+    },
+    {
+      "name": "Clone Order",
+      "category": "Orders",
+      "description": "Creates a new DRAFT order as a copy of an existing order. The draft copies line items, taxes and discounts but not payment information, and can be modified with Update Order before being finalized. An idempotency key is generated automatically unless you provide one."
+    },
+    {
+      "name": "List Catalog",
+      "category": "Catalog",
+      "description": "Lists catalog objects of the selected types (items, categories, taxes, discounts, etc.). When no types are selected, all types are returned. Results are paginated with a cursor. Deleted objects are not included."
+    },
+    {
+      "name": "Get Catalog Object",
+      "category": "Catalog",
+      "description": "Retrieves a single catalog object (item, variation, category, tax, etc.) by its ID. Optionally includes related objects, e.g. the category and taxes of an item, in a separate related_objects array."
+    },
+    {
+      "name": "Upsert Catalog Item",
+      "category": "Catalog",
+      "description": "Creates or updates a catalog object. In simple mode, provide a name and price to create an ITEM with a single fixed-price variation (price in cents, smallest currency unit). For full control (updates, other object types, multiple variations), provide a complete CatalogObject in the Raw Object parameter instead, which overrides the simple-mode parameters. An idempotency key is generated automatically unless you provide one."
+    },
+    {
+      "name": "Delete Catalog Object",
+      "category": "Catalog",
+      "description": "Deletes a catalog object and all of its children by ID. For example, deleting an ITEM also deletes all of its ITEM_VARIATION children. Returns the IDs of all deleted objects. Deletion is permanent."
+    },
+    {
+      "name": "Search Catalog",
+      "category": "Catalog",
+      "description": "Searches catalog objects by a text filter matched against names, descriptions and abbreviations, optionally limited to specific object types. Results are paginated with a cursor and include deleted objects only when requested via the API defaults (deleted objects are excluded)."
+    },
+    {
+      "name": "Get Catalog Info",
+      "category": "Catalog",
+      "description": "Retrieves information about the Square Catalog API for the account, including batch size limits for catalog operations and the standard-unit measurement metadata."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Lists customer profiles of the account with optional sorting by creation date or by default alphabetical order. Results are paginated with a cursor; pass the returned cursor to fetch the next page."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves full details of a customer profile by its ID, including name, contact information, address, note, creation source and the version number needed for updates."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a customer profile. At least one of first name, last name, company name, email address or phone number must be provided. Phone numbers must be valid and include the country code, e.g. +14155551234. An idempotency key is generated automatically unless you provide one."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates a customer profile. Only the provided fields are changed; other fields keep their current values. Optionally pass the customer's current version number (from Get Customer) for optimistic concurrency."
+    },
+    {
+      "name": "Delete Customer",
+      "category": "Customers",
+      "description": "Permanently deletes a customer profile. Optionally pass the customer's current version number for optimistic concurrency. Deleting a customer does not delete their linked payments or orders."
+    },
+    {
+      "name": "Search Customers",
+      "category": "Customers",
+      "description": "Searches customer profiles by email address, phone number and/or reference ID using exact or fuzzy matching. Fuzzy matching finds records with any sequence of the query characters (e.g. \"amel\" matches amelia@example.com). Results can be sorted by creation date and are paginated with a cursor."
+    },
+    {
+      "name": "Create Card",
+      "category": "Cards",
+      "description": "Saves a card on file for a customer so it can be charged later with Create Payment. The source is the ID of an existing payment made with the card (or a payment token from Square's Web Payments SDK). An idempotency key is generated automatically unless you provide one."
+    },
+    {
+      "name": "List Cards",
+      "category": "Cards",
+      "description": "Lists cards on file, optionally limited to a single customer and optionally including disabled cards. Results are paginated with a cursor."
+    },
+    {
+      "name": "Get Card",
+      "category": "Cards",
+      "description": "Retrieves details of a card on file by its ID, including brand, last 4 digits, expiration, billing address, linked customer and enabled status. Full card numbers are never returned."
+    },
+    {
+      "name": "Disable Card",
+      "category": "Cards",
+      "description": "Disables a card on file so it can no longer be charged. Disabling a card is permanent; to charge the customer again a new card must be saved with Create Card."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates a draft invoice for an existing order. The invoice remains a draft until Publish Invoice is called, which sends it (Email delivery) or generates a public payment URL (Share Manually delivery). The full balance is requested by default with an optional due date. An idempotency key is generated automatically unless you provide one."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Lists invoices for a location, most recently created first. Results are paginated with a cursor; pass the returned cursor to fetch the next page."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves full details of an invoice by its ID, including status, payment requests, delivery method, public URL (after publishing) and the version number needed for updates."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Updates a draft or published invoice using sparse updates: pass only the fields to change in the Invoice object (Square API format, snake_case) and list fields to remove in Fields To Clear. Requires the invoice's current version number from Get Invoice. Published invoices only allow limited changes."
+    },
+    {
+      "name": "Publish Invoice",
+      "category": "Invoices",
+      "description": "Publishes a draft invoice, changing its status from DRAFT and making it payable. Depending on the delivery method, Square emails the invoice to the customer or returns a public payment URL to share manually. Requires the invoice's current version number. An idempotency key is generated automatically unless you provide one."
+    },
+    {
+      "name": "Cancel Invoice",
+      "category": "Invoices",
+      "description": "Cancels a published invoice so it can no longer be paid. The customer is notified when applicable. Invoices that are already paid, refunded, canceled or failed cannot be canceled. Requires the invoice's current version number."
+    },
+    {
+      "name": "Delete Invoice",
+      "category": "Invoices",
+      "description": "Permanently deletes a DRAFT invoice. Published invoices cannot be deleted; cancel them instead with Cancel Invoice. Deleting the invoice also removes its association with the order."
+    },
+    {
+      "name": "Search Invoices",
+      "category": "Invoices",
+      "description": "Searches invoices by location and optionally by customer, sorted by invoice date (newest first by default). Square currently requires exactly one location ID in the filter. Results are paginated with a cursor."
+    },
+    {
+      "name": "Get Inventory Count",
+      "category": "Inventory",
+      "description": "Retrieves the current calculated stock counts of a catalog item variation, optionally limited to specific locations. Quantities are returned as decimal strings per location and state (e.g. IN_STOCK). Results are paginated with a cursor."
+    },
+    {
+      "name": "Batch Retrieve Inventory Counts",
+      "category": "Inventory",
+      "description": "Retrieves current stock counts for multiple catalog item variations and/or locations in one call. Filters combine as intersections; omit a filter to include everything. Results are paginated with a cursor."
+    },
+    {
+      "name": "Adjust Inventory",
+      "category": "Inventory",
+      "description": "Records an inventory adjustment that moves a quantity of a catalog item variation from one state to another at a location, e.g. from In Stock to Sold, or from None to In Stock to receive new stock. The quantity is a positive number. An idempotency key is generated automatically unless you provide one."
+    },
+    {
+      "name": "Record Physical Count",
+      "category": "Inventory",
+      "description": "Records a physical count of a catalog item variation at a location, setting the absolute quantity on hand for the given state (In Stock by default). Use this after a stocktake to overwrite the calculated quantity. An idempotency key is generated automatically unless you provide one."
+    },
+    {
+      "name": "Create Subscription",
+      "category": "Subscriptions",
+      "description": "Enrolls a customer in a subscription plan variation at a location. If a card on file is provided, Square charges it automatically each billing period; otherwise the customer is invoiced. The start date defaults to today. An idempotency key is generated automatically unless you provide one."
+    },
+    {
+      "name": "Search Subscriptions",
+      "category": "Subscriptions",
+      "description": "Searches subscriptions filtered by customer and/or location. Filters combine as intersections; omit both to list all subscriptions. Results are paginated with a cursor."
+    },
+    {
+      "name": "Get Subscription",
+      "category": "Subscriptions",
+      "description": "Retrieves full details of a subscription by its ID, including status, plan variation, billing anchor dates, charged card and the version number needed for updates."
+    },
+    {
+      "name": "Update Subscription",
+      "category": "Subscriptions",
+      "description": "Updates a subscription using sparse updates: pass only the fields to change in the Subscription object (Square API format, snake_case), e.g. a new card_id. Include the current version from Get Subscription for optimistic concurrency."
+    },
+    {
+      "name": "Cancel Subscription",
+      "category": "Subscriptions",
+      "description": "Schedules a subscription cancellation at the end of the current billing period (the paid-through date). The subscription stays active until then and no further charges are made."
+    },
+    {
+      "name": "Pause Subscription",
+      "category": "Subscriptions",
+      "description": "Schedules a pause of a subscription. By default the pause starts at the beginning of the next billing cycle; optionally set an effective date, the number of billing cycles to pause for (indefinite when omitted), and a reason."
+    },
+    {
+      "name": "Resume Subscription",
+      "category": "Subscriptions",
+      "description": "Resumes a paused or deactivated subscription, either immediately or at the start of the next billing cycle, optionally on a specific effective date."
+    },
+    {
+      "name": "List Payouts",
+      "category": "Payouts",
+      "description": "Lists payouts (transfers of Square balance to the seller's bank account or card) with optional filters on location, status and an RFC 3339 time window. Results are paginated with a cursor. Requires the account to have the payouts read permission."
+    },
+    {
+      "name": "Get Payout",
+      "category": "Payouts",
+      "description": "Retrieves details of a single payout by its ID, including status, amount, destination (bank account or card) and timestamps. Amounts are in cents (smallest currency unit)."
+    },
+    {
+      "name": "List Payout Entries",
+      "category": "Payouts",
+      "description": "Lists the individual entries that make up a payout, such as charges, refunds and fees, each with gross, fee and net amounts in cents (smallest currency unit). Results are paginated with a cursor."
+    },
+    {
+      "name": "Search Team Members",
+      "category": "Team",
+      "description": "Searches team member profiles of the account, optionally filtered by assigned location and by active/inactive status. Results are paginated with a cursor."
+    },
+    {
+      "name": "Get Team Member",
+      "category": "Team",
+      "description": "Retrieves a team member profile by its ID, including name, contact information, status, owner flag and assigned locations."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Charge saved cards on file, capture or void authorized payments, and issue full or partial refunds",
+    "Create and pay orders, then generate and publish invoices with email or shareable payment links",
+    "Sync catalog items, customers and multi-location inventory counts with external systems",
+    "Enroll customers in subscription plans and manage pauses, resumes and cancellations",
+    "Reconcile settlements by reading payouts and their individual entries"
+  ],
+  "agentIdeas": [
+    "When a **Shopify** \"On New Order\" trigger fires, use **Square** \"Create Order\" and \"Create Payment\" to record and charge the order against a saved card on file.",
+    "After **Square** \"Refund Payment\" completes, use **QuickBooks Online** \"Create Payment\" to record the reversal, then **Slack** \"Send Message To Channel\" to alert the finance team.",
+    "Use **Square** \"List Payouts\" and \"List Payout Entries\" to pull settlement detail, then **Google Sheets** \"Add Row\" to append each entry into a reconciliation spreadsheet."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/square/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/square",
+    "readme": "services/square/README.md",
+    "index": "services/square/src/index.js"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "slug": "google-translate",
+  "name": "Google Translate",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Translate text between 130+ languages, detect the language of any text, and list supported languages using the [Google Cloud Translation API (Basic, v2)](https://cloud.google.com/translate/docs/basic/translating-text). Authenticates with a simple Google Cloud API key.",
+  "actionCount": 3,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Translation",
+    "Language Detection"
+  ],
+  "actions": [
+    {
+      "name": "Translate Text",
+      "category": "Translation",
+      "description": "Translates text into the target language using Google Cloud Translation (v2). Accepts a single string or an array of up to 128 strings mapped from a previous step. When Source Language is empty, Google auto-detects it and returns the detected code per translation. HTML-escaped characters that the API returns in Text format (e.g. &#39;) are automatically decoded back to plain characters; in HTML format the markup is preserved as returned by Google."
+    },
+    {
+      "name": "Detect Language",
+      "category": "Language Detection",
+      "description": "Detects the language of the provided text using Google Cloud Translation (v2). Returns the most likely ISO-639-1 language code with a confidence score between 0 and 1, plus the full list of detections. Accepts a single string or an array of strings mapped from a previous step; with an array, the top-level language and confidence reflect the first string."
+    },
+    {
+      "name": "List Languages",
+      "category": "Language Detection",
+      "description": "Lists all languages supported by Google Cloud Translation (v2). Each entry contains the ISO-639-1 language code (used as Target Language or Source Language in Translate Text) and the language's display name, localized to the requested Names Language."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Translate incoming customer messages, form submissions, or support tickets into your team's language before routing them.",
+    "Localize outbound emails, notifications, or product content into each recipient's language.",
+    "Detect the language of user-generated text and branch a flow based on the result.",
+    "Translate batches of strings (up to 128 per call) mapped from a previous step, such as spreadsheet rows or CRM records."
+  ],
+  "agentIdeas": [
+    "Use **Google Translate** \"Detect Language\" on an inbound message, then \"Translate Text\" to English and reply via **Gmail** \"Send Message\" in the sender's original language.",
+    "After **Google Sheets** \"Get Rows\", use **Google Translate** \"Translate Text\" with the mapped array of cell values to localize an entire product catalog in one call.",
+    "Combine **Slack** message triggers with **Google Translate** \"Translate Text\" to mirror a support channel into a second language in real time."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/google-translate/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/google-translate",
+    "readme": "services/google-translate/README.md",
+    "index": "services/google-translate/src/index.js"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "slug": "peekalink",
+  "name": "Peekalink",
+  "marketingCategory": "Utilities & Personal",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Peekalink turns any URL into rich, structured link-preview metadata — titles, descriptions, images, and favicons — plus platform-specific details for recognized services such as YouTube, Twitter/X, Reddit, and Amazon. Authentication uses an API key sent as the `X-API-Key` header.",
+  "actionCount": 2,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Link Preview"
+  ],
+  "actions": [
+    {
+      "name": "Preview Link",
+      "category": "Link Preview",
+      "description": "Generates a rich preview for a single URL. Returns core metadata (title, description, url, domain, type, size, contentType, redirected, updatedAt) plus a main image and favicon when available. For recognized services (YouTube, Twitter/X, Reddit, Amazon, and more) a type-specific details object is included with platform data such as video, author, or product information. Use Check Availability first if you want to confirm a link is previewable before spending a request."
+    },
+    {
+      "name": "Check Availability",
+      "category": "Link Preview",
+      "description": "Checks whether Peekalink can generate a preview for a URL without generating the full preview. Returns a single boolean, isAvailable. Useful as an inexpensive pre-check before calling Preview Link, for validating user-submitted links, or for filtering a batch of URLs down to those that will resolve."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Enriching user-submitted URLs with title, description, and preview imagery before storing or displaying them",
+    "Building link-preview cards for chat, social, or content-aggregation workflows",
+    "Extracting platform-specific details (video, author, or product data) from recognized services",
+    "Pre-validating a batch of links to filter out those that cannot be previewed, saving requests"
+  ],
+  "agentIdeas": [
+    "Use **Peekalink** \"Preview Link\" to enrich a shared URL, then post the title, description, and image with **Slack** \"Send Message To Channel\" as a rich preview card.",
+    "Use **Peekalink** \"Check Availability\" to filter a list of URLs, then run **Peekalink** \"Preview Link\" on the valid ones and log the extracted metadata into a spreadsheet with **Google Sheets** \"Add Row\".",
+    "Use **Peekalink** \"Preview Link\" to fetch a URL's title, description, and image, then create a bookmarked reference with **Notion** \"Create Page\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/peekalink/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/peekalink",
+    "readme": "services/peekalink/README.md",
+    "index": "services/peekalink/src/index.js"
+  }
+}

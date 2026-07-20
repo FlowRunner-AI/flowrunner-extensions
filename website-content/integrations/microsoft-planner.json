@@ -1,0 +1,172 @@
+{
+  "slug": "microsoft-planner",
+  "name": "Microsoft Planner",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Manage Microsoft Planner boards through the Microsoft Graph API (v1.0) using OAuth2. Create and organize plans inside Microsoft 365 groups, structure work with buckets, and create, update, and assign tasks with dates, priority, progress, and category labels. Planner versions every object with etags and requires an `If-Match` header on all writes; this service fetches the current etag automatically before each update or delete, so flows never handle etags manually.",
+  "actionCount": 26,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Plans",
+    "Buckets",
+    "Tasks",
+    "Task Details",
+    "Assignments"
+  ],
+  "actions": [
+    {
+      "name": "List Plans",
+      "category": "Plans",
+      "description": "Retrieves all Planner plans owned by a Microsoft 365 group, including each plan's ID, title, owner, container, and creation info."
+    },
+    {
+      "name": "Get Plan",
+      "category": "Plans",
+      "description": "Retrieves a single Planner plan by its ID, including its title, owner group, container, and creation info."
+    },
+    {
+      "name": "Create Plan",
+      "category": "Plans",
+      "description": "Creates a new Planner plan inside a Microsoft 365 group. The signed-in user must be a member of the group that will contain the plan. A group can own up to 200 plans."
+    },
+    {
+      "name": "Update Plan",
+      "category": "Plans",
+      "description": "Renames a Planner plan. The plan's current version (etag) is fetched automatically and sent in the required If-Match header, so no manual etag handling is needed."
+    },
+    {
+      "name": "Delete Plan",
+      "category": "Plans",
+      "description": "Permanently deletes a Planner plan together with all of its buckets and tasks. The plan's current version (etag) is fetched automatically and sent in the required If-Match header."
+    },
+    {
+      "name": "Get Plan Details",
+      "category": "Plans",
+      "description": "Retrieves the details object of a plan, including its category (label) descriptions and the collection of users the plan is shared with."
+    },
+    {
+      "name": "Update Plan Details",
+      "category": "Plans",
+      "description": "Updates a plan's details: category (label) descriptions and/or the collection of users the plan is shared with. Only the provided keys are changed. The details object's current version (etag) is fetched automatically and sent in the required If-Match header."
+    },
+    {
+      "name": "List Buckets",
+      "category": "Buckets",
+      "description": "Retrieves all buckets (board columns) of a plan, including each bucket's ID, name, plan ID, and order hint."
+    },
+    {
+      "name": "Get Bucket",
+      "category": "Buckets",
+      "description": "Retrieves a single bucket by its ID, including its name, plan ID, and order hint."
+    },
+    {
+      "name": "Create Bucket",
+      "category": "Buckets",
+      "description": "Creates a new bucket (board column) in a plan. New buckets are placed according to the order hint; the default places the bucket at the end of the board."
+    },
+    {
+      "name": "Update Bucket",
+      "category": "Buckets",
+      "description": "Renames a bucket (board column). The bucket's current version (etag) is fetched automatically and sent in the required If-Match header."
+    },
+    {
+      "name": "Delete Bucket",
+      "category": "Buckets",
+      "description": "Permanently deletes a bucket (board column) and all tasks it contains. The bucket's current version (etag) is fetched automatically and sent in the required If-Match header."
+    },
+    {
+      "name": "List Plan Tasks",
+      "category": "Tasks",
+      "description": "Retrieves all tasks of a plan, including titles, bucket assignments, progress, priority, dates, and assignees. Large plans are paged; follow the returned @odata.nextLink via the Next Page Link parameter."
+    },
+    {
+      "name": "List Bucket Tasks",
+      "category": "Tasks",
+      "description": "Retrieves all tasks of a single bucket (board column), including titles, progress, priority, dates, and assignees. Large buckets are paged; follow the returned @odata.nextLink via the Next Page Link parameter."
+    },
+    {
+      "name": "List My Tasks",
+      "category": "Tasks",
+      "description": "Retrieves all Planner tasks assigned to the signed-in user across all plans. Large result sets are paged; follow the returned @odata.nextLink via the Next Page Link parameter."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single Planner task by its ID, including its title, plan, bucket, progress, priority, dates, assignments, and applied category labels."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a new task in a plan, optionally placed in a specific bucket and assigned to one or more users. Supports start and due dates, priority (Urgent, Important, Medium, Low), completion percentage, and applied category labels."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates one or more properties of an existing task: title, bucket, dates, priority, completion percentage, applied category labels, or assignments. Only the provided fields are changed. The task's current version (etag) is fetched automatically and sent in the required If-Match header. Set Percent Complete to 100 to mark the task completed."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a Planner task, including its checklist items and attachments (references). The task's current version (etag) is fetched automatically and sent in the required If-Match header."
+    },
+    {
+      "name": "Get Task Details",
+      "category": "Task Details",
+      "description": "Retrieves the details object of a task, including its description, preview type, checklist items with their GUIDs, and external references (attachments)."
+    },
+    {
+      "name": "Update Task Details",
+      "category": "Task Details",
+      "description": "Updates a task's details: description, preview type, checklist items, and/or external references (attachments). Only the provided fields are changed. The details object's current version (etag) is fetched automatically and sent in the required If-Match header. For simple checklist management, prefer the dedicated Add Checklist Items, Update Checklist Item, and Delete Checklist Item actions."
+    },
+    {
+      "name": "Add Checklist Items",
+      "category": "Task Details",
+      "description": "Adds one or more checklist items (subtasks) to a task from a simple list of titles. Item GUIDs are generated automatically and the items are created unchecked. The details object's current version (etag) is fetched automatically and sent in the required If-Match header."
+    },
+    {
+      "name": "Update Checklist Item",
+      "category": "Task Details",
+      "description": "Updates a single checklist item (subtask) of a task: check or uncheck it and/or change its title. The details object's current version (etag) is fetched automatically and sent in the required If-Match header."
+    },
+    {
+      "name": "Delete Checklist Item",
+      "category": "Task Details",
+      "description": "Permanently deletes a single checklist item (subtask) from a task. The details object's current version (etag) is fetched automatically and sent in the required If-Match header."
+    },
+    {
+      "name": "Assign User To Task",
+      "category": "Assignments",
+      "description": "Assigns a user to a Planner task. The user must have access to the plan (typically a member of the plan's group). Existing assignees are kept; a task can have up to 20 assignees. The task's current version (etag) is fetched automatically and sent in the required If-Match header."
+    },
+    {
+      "name": "Unassign User From Task",
+      "category": "Assignments",
+      "description": "Removes a user from a Planner task's assignees. Other assignees are kept. The task's current version (etag) is fetched automatically and sent in the required If-Match header."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create a Planner task in the right bucket when a new lead, ticket, or form submission arrives",
+    "Keep boards organized by adding buckets and updating task bucket, dates, priority, or completion as work progresses",
+    "Break tasks into subtasks by adding and checking off checklist items programmatically",
+    "Assign the right team members to tasks and keep assignees in sync as ownership changes",
+    "Report on all tasks assigned to the signed-in user, or on all tasks within a specific plan or bucket"
+  ],
+  "agentIdeas": [
+    "When a task is created in Planner via **Create Task**, use **Microsoft Teams** \"Send Channel Message\" to notify the assigned team's channel with the task title and due date",
+    "Use **Microsoft Planner** \"List My Tasks\" to gather the signed-in user's open work, then call **Outlook** \"Send Message\" to email a daily digest of outstanding tasks",
+    "When an **Outlook** \"Get Messages List\" flow surfaces an actionable email, call **Microsoft Planner** \"Create Task\" and **Add Checklist Items** to turn it into a tracked task with subtasks"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/microsoft-planner/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/microsoft-planner",
+    "readme": "services/microsoft-planner/README.md",
+    "index": "services/microsoft-planner/src/index.js"
+  }
+}

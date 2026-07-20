@@ -1,0 +1,98 @@
+{
+  "slug": "squarespace",
+  "name": "Squarespace",
+  "marketingCategory": "E-commerce",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate Squarespace Commerce with your FlowRunner workflows using a single API key. Manage products, orders, and inventory, fulfill orders with shipment tracking, and react to new and fulfilled orders through polling triggers.",
+  "actionCount": 11,
+  "triggerCount": 2,
+  "operationCategories": [
+    "Products",
+    "Orders",
+    "Inventory"
+  ],
+  "actions": [
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Retrieves products from a Squarespace store, optionally filtered by product type. Returns product details including variants, pricing, and visibility. Use the cursor to page through large catalogs."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves detailed information about a single product including all variants, images, pricing, and visibility."
+    },
+    {
+      "name": "Create Product",
+      "category": "Products",
+      "description": "Creates a new physical product in a Squarespace store with a single variant (name, price, optional SKU and starting stock). Non-physical types (service, gift card, digital) require additional configuration and are not created here."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates an existing product's name, description, visibility, or URL slug. Only the fields you provide are changed."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Products",
+      "description": "Permanently deletes a product from the Squarespace store. This action cannot be undone."
+    },
+    {
+      "name": "List Orders",
+      "category": "Orders",
+      "description": "Retrieves orders from a Squarespace store. Filter by fulfillment status, or by a modified-date range. Note: a date range and a pagination cursor cannot be used together - page through a date range using the returned cursor only."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves detailed information about a specific order including line items, shipping and billing addresses, fulfillment status, and totals."
+    },
+    {
+      "name": "Fulfill Order",
+      "category": "Orders",
+      "description": "Marks an order as fulfilled with optional shipment tracking, and optionally emails the customer. Squarespace returns no content on success, so a confirmation summary is returned."
+    },
+    {
+      "name": "List Inventory",
+      "category": "Inventory",
+      "description": "Retrieves inventory for all product variants including stock quantities, SKUs, and whether stock is unlimited."
+    },
+    {
+      "name": "Get Inventory Item",
+      "category": "Inventory",
+      "description": "Retrieves inventory for a single product variant including current stock and whether it is unlimited."
+    },
+    {
+      "name": "Adjust Stock",
+      "category": "Inventory",
+      "description": "Adjusts the stock quantity for a product variant. Use a positive number to add stock and a negative number to reduce it. Squarespace returns no content on success, so a confirmation summary is returned."
+    }
+  ],
+  "triggers": [
+    "On New Order",
+    "On Order Fulfilled"
+  ],
+  "idealUseCases": [
+    "Syncing your Squarespace catalog with external systems by listing, creating, and updating products",
+    "Automating order fulfillment and shipment tracking as new orders arrive",
+    "Monitoring stock levels and adjusting quantities across product variants",
+    "Notifying customers or internal teams when orders are placed or fulfilled",
+    "Building sales and inventory reports from order and inventory data"
+  ],
+  "agentIdeas": [
+    "When a **Squarespace** \"On New Order\" trigger fires, use **ShipBob** \"Create Order\" to push the line items to your 3PL for fulfillment",
+    "When a **Squarespace** \"On Order Fulfilled\" trigger fires, use **Gmail** \"Send Message\" to email the customer their carrier and tracking details",
+    "Use **Squarespace** \"List Orders\" to pull the day's sales, then **Google Sheets** \"Add Row\" to append each order to a revenue tracking sheet"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/squarespace/public/icon.png",
+  "sourcePaths": {
+    "service": "services/squarespace",
+    "readme": "services/squarespace/README.md",
+    "index": "services/squarespace/src/index.js"
+  }
+}

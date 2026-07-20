@@ -1,0 +1,134 @@
+{
+  "slug": "pdfco",
+  "name": "PDF.co",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Advanced PDF processing and document intelligence platform with AI-powered data extraction, format conversion, and comprehensive document manipulation capabilities.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Invoice Processing",
+    "Text Extraction",
+    "Image Conversion",
+    "Document Merging",
+    "Document Splitting",
+    "Document Editing",
+    "Document Analysis",
+    "PDF Optimization",
+    "Job Management",
+    "PDF Security",
+    "Barcode Generation",
+    "Barcode Recognition",
+    "Document Conversion"
+  ],
+  "actions": [
+    {
+      "name": "Parse Invoice with AI",
+      "category": "Invoice Processing",
+      "description": "Extracts structured invoice data from PDF documents using PDF.co's advanced AI-powered Invoice Parser. This intelligent system automatically identifies and extracts key invoice information including vendor details, billing addresses, line items, taxes, totals, dates, and invoice numbers without requiring templates or manual configuration. The AI engine is trained on thousands of invoice formats and provides reliable extraction from various invoice layouts and styles."
+    },
+    {
+      "name": "Convert PDF to Text (Basic)",
+      "category": "Text Extraction",
+      "description": "Converts PDF documents to plain text using PDF.co's streamlined text extraction engine. This method provides fast, efficient text extraction optimized for PDFs with selectable text content. Ideal for documents with standard text formatting where OCR capabilities are not required. For scanned documents, advanced text processing, or enhanced extraction features, use the advanced conversion method instead."
+    },
+    {
+      "name": "Convert PDF to Text (Advanced)",
+      "category": "Text Extraction",
+      "description": "Converts PDF documents to text using PDF.co's advanced text extraction engine with comprehensive OCR capabilities, language support, and region-specific extraction. This method provides enhanced text processing for scanned documents, multi-language content, and complex document layouts with precise control over extraction parameters and output formatting."
+    },
+    {
+      "name": "Convert PDF to Images",
+      "category": "Image Conversion",
+      "description": "Converts PDF pages to high-quality images in multiple formats (JPG, PNG, WEBP, TIFF). Each PDF page becomes a separate image file. Supports region extraction, custom resolution settings, and various image optimization options through profiles. Ideal for creating thumbnails, previews, or extracting visual content from PDFs."
+    },
+    {
+      "name": "Merge PDF Documents",
+      "category": "Document Merging",
+      "description": "Combines multiple PDF documents into a single unified PDF file with precise control over document order and optimization settings. Documents are merged sequentially, preserving the original page structure and content while allowing for compression and quality optimization. This standard merge operation is optimized for PDF files exclusively and maintains document integrity throughout the process."
+    },
+    {
+      "name": "Merge Documents (Multi-Type)",
+      "category": "Document Merging",
+      "description": "Merges multiple documents (PDF, Word, Excel, images, or ZIP) into a single PDF using PDF.co's advanced merge endpoint."
+    },
+    {
+      "name": "Split PDF",
+      "category": "Document Splitting",
+      "description": "Splits a PDF into multiple PDF files using page indexes or page ranges."
+    },
+    {
+      "name": "Delete PDF Pages",
+      "category": "Document Editing",
+      "description": "Deletes selected pages inside a PDF file."
+    },
+    {
+      "name": "Classify PDF",
+      "category": "Document Analysis",
+      "description": "Automatically finds class of input PDF, JPG, PNG document by analyzing its content using the built-in AI or custom defined classification rules."
+    },
+    {
+      "name": "Compress PDF",
+      "category": "PDF Optimization",
+      "description": "Optimizes input PDF files up to 13 times smaller in file size by optimizing images and objects inside."
+    },
+    {
+      "name": "Check Background Job Status",
+      "category": "Job Management",
+      "description": "Retrieves the current status and results of an asynchronous background job that was previously initiated with PDF.co API. Use this method to check if long-running operations have completed and to download the results. Essential for monitoring the progress of async PDF processing tasks."
+    },
+    {
+      "name": "Add Security to PDF",
+      "category": "PDF Security",
+      "description": "Adds password and security limitations to PDF."
+    },
+    {
+      "name": "Remove Security from PDF",
+      "category": "PDF Security",
+      "description": "Removes existing limits and password from existing PDF files."
+    },
+    {
+      "name": "Generate Barcode Image",
+      "category": "Barcode Generation",
+      "description": "Creates high-quality barcode images in various formats including QR Code, Code 128, DataMatrix, PDF417, and many other standard barcode types. Supports custom sizing, logo embedding (for QR codes), and various output formats. Perfect for inventory management, product labeling, document tracking, and mobile applications."
+    },
+    {
+      "name": "Read Barcodes",
+      "category": "Barcode Recognition",
+      "description": "Reads barcodes from images and PDF. Can read all popular barcode types from QR Code and Code 128, EAN to Datamatrix, PDF417, GS1 and many other barcodes."
+    },
+    {
+      "name": "Convert PDF to Multiple Formats",
+      "category": "Document Conversion",
+      "description": "Converts PDF documents to various output formats including structured data (CSV, JSON, Excel), web formats (HTML, XML), plain text, and images. This universal conversion method handles format detection and optimal conversion settings automatically. Perfect for data extraction, content migration, and format standardization workflows."
+    },
+    {
+      "name": "Convert Multiple Formats to PDF",
+      "category": "Document Conversion",
+      "description": "Converts various document formats (Word, Excel, HTML, images, emails, URLs) into high-quality PDF documents. Supports both file URLs and raw HTML content, with optional HTML template integration for consistent branding and formatting. Ideal for document standardization, report generation, and archival purposes."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automated invoice and receipt processing workflows",
+    "Document digitization and OCR text extraction",
+    "PDF splitting, merging, and batch processing",
+    "Barcode generation and scanning automation",
+    "Document security and password protection management",
+    "File format conversion and standardization",
+    "Business document classification and analysis",
+    "Document compression and optimization workflows"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.svg",
+  "iconFile": "services/pdfco/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/pdfco",
+    "readme": "services/pdfco/README.md",
+    "index": "services/pdfco/src/index.js"
+  }
+}

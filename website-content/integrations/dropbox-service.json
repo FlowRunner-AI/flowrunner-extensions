@@ -1,0 +1,139 @@
+{
+  "slug": "dropbox-service",
+  "name": "Dropbox",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Complete Dropbox integration for AI-agent flows: OAuth2 authentication, file management (list, upload, download, move, copy, delete, search), sharing (links and folder members), account information, and polling triggers that react to changes in watched folders.",
+  "actionCount": 18,
+  "triggerCount": 3,
+  "operationCategories": [
+    "File Operations",
+    "File Management",
+    "File Search",
+    "Sharing",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "List Folder Contents",
+      "category": "File Operations",
+      "description": "Lists the files and subfolders inside a Dropbox folder. Use this to enumerate a directory before downloading, processing, or organizing items. Supports recursive traversal, pagination, and incremental change tracking through the returned cursor."
+    },
+    {
+      "name": "Get File Metadata",
+      "category": "File Operations",
+      "description": "Retrieves metadata for a specific file or folder in Dropbox by its path or ID. Returns properties such as name, size, content hash, revision, and modification timestamps without downloading the file's contents. Use this to inspect items before processing or to validate that a path exists."
+    },
+    {
+      "name": "Upload File from URL",
+      "category": "File Operations",
+      "description": "Downloads a file from a public URL and uploads its content to Dropbox at the specified location. Useful for archiving externally hosted files, capturing API responses, or pushing AI-generated assets into Dropbox. Limited to 150 MB per file; larger uploads require Dropbox upload sessions which are not supported in this version."
+    },
+    {
+      "name": "Download File",
+      "category": "File Operations",
+      "description": "Downloads a file from Dropbox and stores it in the Flowrunner file storage. Returns the public Flowrunner URL of the saved copy, which can be passed to downstream actions or AI agent tools that operate on file URLs."
+    },
+    {
+      "name": "Get Temporary Link",
+      "category": "File Operations",
+      "description": "Generates a short-lived, unauthenticated direct download URL for a Dropbox file. The link is valid for approximately four hours and is useful for handing a file off to external systems that cannot authenticate against Dropbox directly."
+    },
+    {
+      "name": "Create Folder",
+      "category": "File Management",
+      "description": "Creates a new folder at the specified location in Dropbox. Useful for preparing destinations before uploads or for organizing files into hierarchies. Optional auto-renaming avoids collisions when a folder with the same name already exists."
+    },
+    {
+      "name": "Delete File or Folder",
+      "category": "File Management",
+      "description": "Permanently deletes a file or folder in Dropbox. When deleting a folder, all nested files and subfolders are removed as well. This action is irreversible from the API surface; users can still recover the item from the Dropbox web trash if needed."
+    },
+    {
+      "name": "Move File or Folder",
+      "category": "File Management",
+      "description": "Moves or renames a file or folder in Dropbox by changing its path. Use this for reorganizing folder structures, renaming items, or relocating processed files to archive locations. The source and destination must be on the same Dropbox account."
+    },
+    {
+      "name": "Copy File or Folder",
+      "category": "File Management",
+      "description": "Creates a copy of a file or folder at a new location in Dropbox while leaving the original intact. Use this to duplicate templates, snapshot a folder before edits, or stage files for processing without disturbing the source."
+    },
+    {
+      "name": "Search Files",
+      "category": "File Search",
+      "description": "Searches Dropbox for files and folders matching a query. Supports scoping to a folder, filtering by file extension, and filtering by high-level file category. Returns the best-matching entries along with a cursor for pagination."
+    },
+    {
+      "name": "Create Shared Link",
+      "category": "Sharing",
+      "description": "Creates a shareable link for a Dropbox file or folder. Optionally restricts access to logged-in members, sets an expiration timestamp, configures a password, and controls whether the recipient can download the content."
+    },
+    {
+      "name": "List Shared Links",
+      "category": "Sharing",
+      "description": "Lists shared links visible to the current Dropbox account, optionally narrowing the result to links for a specific file. Use the returned cursor to paginate through large result sets."
+    },
+    {
+      "name": "Revoke Shared Link",
+      "category": "Sharing",
+      "description": "Revokes a previously created shared link by URL so it can no longer be used to access the underlying file or folder. Note: revoking a direct link does not affect access granted by shared links on parent folders."
+    },
+    {
+      "name": "Share Folder",
+      "category": "Sharing",
+      "description": "Converts a regular Dropbox folder into a shared folder that members can be invited to. The operation may complete synchronously or be queued for asynchronous processing, in which case a job ID is returned that callers can poll via Dropbox's job-status endpoints."
+    },
+    {
+      "name": "Add Folder Member",
+      "category": "Sharing",
+      "description": "Invites a user (by email) to join a Dropbox shared folder at the requested access level. Optionally suppresses email notifications and includes a custom message visible to the invitee."
+    },
+    {
+      "name": "Remove Folder Member",
+      "category": "Sharing",
+      "description": "Removes a member from a Dropbox shared folder. Optionally lets the removed user retain a personal copy of the folder's contents in their own Dropbox."
+    },
+    {
+      "name": "Get Current Account",
+      "category": "Account",
+      "description": "Retrieves profile information for the currently connected Dropbox account, including account ID, display name, email, country, and account type. Use this to confirm which Dropbox identity an agent flow is operating against."
+    },
+    {
+      "name": "Get Space Usage",
+      "category": "Account",
+      "description": "Retrieves the storage quota for the current Dropbox account, including used bytes and the total allocation. Use this to gate uploads, surface quota warnings to users, or generate usage reports."
+    }
+  ],
+  "triggers": [
+    "On New File",
+    "On New Folder",
+    "On File Modified"
+  ],
+  "idealUseCases": [
+    "Ingesting client uploads or third-party deliveries from Dropbox into automated pipelines",
+    "Archiving externally hosted assets and AI-generated content into organized Dropbox folders",
+    "Building document processing workflows that read from and write back to Dropbox",
+    "Managing shared folders, invitations, and access levels for collaborative teams",
+    "Generating temporary download links to hand files to external systems without Dropbox credentials",
+    "Monitoring folders for new uploads, new subfolders, or revised documents to trigger downstream actions",
+    "Reorganizing, renaming, and archiving processed files based on workflow outcomes",
+    "Reporting on Dropbox storage usage and account identity inside automation runs"
+  ],
+  "agentIdeas": [
+    "When a **Dropbox** \"On New File\" trigger fires for a watched intake folder, call **Dropbox** \"Get Temporary Link\" and pass the URL to **PDF.co** \"Parse Invoice with AI\" to extract structured invoice data automatically as documents arrive.",
+    "When a **Dropbox** \"On File Modified\" trigger fires on a contract folder, use **Slack** \"Send Message To Channel\" to notify the legal channel with the file name and a link generated by **Dropbox** \"Create Shared Link\" for quick review.",
+    "After a **Dropbox** \"Upload File from URL\" action archives an AI-generated report, call **Notion** \"Create Database Item\" to log the file path, shared link, and metadata into a knowledge-base database for team discoverability."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/dropbox-service/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/dropbox-service",
+    "readme": "services/dropbox-service/README.md",
+    "index": "services/dropbox-service/src/index.js"
+  }
+}

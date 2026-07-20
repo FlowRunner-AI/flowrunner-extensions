@@ -1,0 +1,293 @@
+{
+  "slug": "smartsheet",
+  "name": "Smartsheet",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Manage Smartsheet work-management data — sheets, rows, columns, attachments, discussions, workspaces, folders, reports, and webhooks — through a personal API access token. Supports the US, EU, and Gov data regions, and exports/downloads sheet and attachment files directly to FlowRunner file storage.",
+  "actionCount": 49,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Sheets",
+    "Rows",
+    "Columns",
+    "Attachments",
+    "Discussions",
+    "Workspaces & Folders",
+    "Reports",
+    "Search",
+    "Users & Contacts",
+    "Update Requests",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "List Sheets",
+      "category": "Sheets",
+      "description": "Lists all sheets the token's user has access to, with id, name, access level, permalink, and timestamps. Results are paginated (100 per page by default) — use Page and Page Size to walk large accounts, and Modified Since to fetch only recently changed sheets."
+    },
+    {
+      "name": "Get Sheet",
+      "category": "Sheets",
+      "description": "Retrieves a sheet with its columns and rows. Every row carries a cells array of {columnId, value, displayValue}. Rows can be filtered with Rows Modified Since or Row Numbers, trimmed with Column IDs, and paginated with Page/Page Size. Use Include to also load attachments, discussions, formatting, or rich objectValue cell data."
+    },
+    {
+      "name": "Create Sheet",
+      "category": "Sheets",
+      "description": "Creates a new sheet in the user's Sheets folder from a name and a column list. Exactly one column must be marked primary and it must be of type Text / Number. Returns the created sheet with its generated sheet and column IDs."
+    },
+    {
+      "name": "Copy Sheet",
+      "category": "Sheets",
+      "description": "Copies a sheet into a folder, a workspace, or the user's Sheets folder (Home). By default only the sheet structure is copied — select Include options (Data, Attachments, Discussions, etc.) to copy content as well. Returns the new sheet's id and permalink."
+    },
+    {
+      "name": "Move Sheet",
+      "category": "Sheets",
+      "description": "Moves a sheet into a folder, a workspace, or the user's Sheets folder (Home). The mover must be the sheet owner or a workspace admin. Returns the sheet with its new location's permalink."
+    },
+    {
+      "name": "Update Sheet",
+      "category": "Sheets",
+      "description": "Renames a sheet and/or updates its user settings (critical path highlighting, summary task display). Only the provided fields are changed. Returns the updated sheet."
+    },
+    {
+      "name": "Delete Sheet",
+      "category": "Sheets",
+      "description": "Permanently deletes a sheet, including all of its rows, attachments, and discussions. This cannot be undone from the API — the sheet does not go to a trash folder."
+    },
+    {
+      "name": "Export Sheet",
+      "category": "Sheets",
+      "description": "Exports a sheet as an Excel (.xlsx), PDF, or CSV file and saves it to FlowRunner file storage, returning a download URL. CSV and Excel contain the grid data; PDF renders the sheet with an optional paper size. Note that CSV export includes only the primary grid without formatting."
+    },
+    {
+      "name": "Add Rows",
+      "category": "Rows",
+      "description": "Adds one or more rows to a sheet. Each row carries cells [{columnId, value|formula, strict}] and an optional location (toTop, toBottom, parentId, siblingId) — rows go to the bottom when no location is set. Provide multiple rows via Rows, or a single row via the convenience Cells parameter plus the location toggles. Returns the created rows with their generated IDs and row numbers."
+    },
+    {
+      "name": "Update Rows",
+      "category": "Rows",
+      "description": "Updates cell values in one or more existing rows. Each entry needs the row id and a cells array [{columnId, value|formula, strict}]; only the listed cells are changed, all other cells keep their values. Returns the updated rows."
+    },
+    {
+      "name": "Get Row",
+      "category": "Rows",
+      "description": "Retrieves a single row with its cells [{columnId, value, displayValue}], row number, hierarchy info, and timestamps. Use Include to add each cell's column type or rich objectValue data (contacts, multi-picklist values, hyperlinks)."
+    },
+    {
+      "name": "Delete Rows",
+      "category": "Rows",
+      "description": "Permanently deletes one or more rows from a sheet, including their attachments and discussions. With Ignore Rows Not Found enabled (the default), already-deleted row IDs are skipped instead of failing the whole call. Returns the IDs of the deleted rows."
+    },
+    {
+      "name": "Move Rows to Another Sheet",
+      "category": "Rows",
+      "description": "Moves rows from one sheet to another. Both sheets must share compatible columns for cell data to carry over. Child rows move with their parents. Returns rowMappings pairing each source row ID with its new ID in the destination sheet."
+    },
+    {
+      "name": "Copy Rows to Another Sheet",
+      "category": "Rows",
+      "description": "Copies rows from one sheet to another, leaving the originals in place. Cell data carries over where the destination has compatible columns. Returns rowMappings pairing each source row ID with the ID of its copy in the destination sheet."
+    },
+    {
+      "name": "Get Cell History",
+      "category": "Rows",
+      "description": "Retrieves the change history of a single cell — every value it has held, with who changed it and when, newest first. Identify the cell by sheet, row ID, and column. Results are paginated."
+    },
+    {
+      "name": "List Columns",
+      "category": "Columns",
+      "description": "Lists all columns of a sheet with their IDs, titles, types, picklist options, and positions. Column IDs from this list are what row cells reference via columnId."
+    },
+    {
+      "name": "Get Column",
+      "category": "Columns",
+      "description": "Retrieves a single column's definition — title, type, picklist options, position, width, and validation flag."
+    },
+    {
+      "name": "Add Column",
+      "category": "Columns",
+      "description": "Adds a new column to a sheet at the given 0-based position. Choose a data type, supply Options for a Dropdown (Picklist) column, and optionally enable validation to restrict cells to valid values. Returns the created column with its generated ID."
+    },
+    {
+      "name": "Update Column",
+      "category": "Columns",
+      "description": "Updates a column's title, type, position, picklist options, or validation flag. Only the provided fields are changed. Changing the type of a column that already contains data converts existing values where possible."
+    },
+    {
+      "name": "Delete Column",
+      "category": "Columns",
+      "description": "Permanently deletes a column and all of its cell data from a sheet. This cannot be undone from the API. The primary column cannot be deleted."
+    },
+    {
+      "name": "List Attachments",
+      "category": "Attachments",
+      "description": "Lists all attachments on a sheet, including sheet-level, row-level, and comment-level attachments. Each entry shows the attachment type (FILE or LINK), parent object, size, and creator. Use Get Attachment to obtain a download URL for a specific entry."
+    },
+    {
+      "name": "Attach URL to Row",
+      "category": "Attachments",
+      "description": "Attaches a web link (URL) to a row. The link appears in the row's attachments panel in Smartsheet. Returns the created attachment record."
+    },
+    {
+      "name": "Attach File to Row",
+      "category": "Attachments",
+      "description": "Uploads a FlowRunner file as a file attachment on a row using Smartsheet's simple upload (raw request body with a Content-Disposition filename). Returns the created attachment record with its Smartsheet ID."
+    },
+    {
+      "name": "Get Attachment",
+      "category": "Attachments",
+      "description": "Retrieves an attachment's metadata including a temporary download URL. The url field expires after urlExpiresInMillis (about 2 minutes) — fetch it immediately, or use Download Attachment to save the file to FlowRunner storage instead."
+    },
+    {
+      "name": "Download Attachment",
+      "category": "Attachments",
+      "description": "Downloads a file attachment's bytes from Smartsheet and saves them to FlowRunner file storage, returning a stable download URL. Use this instead of Get Attachment when a later step needs the file, since Smartsheet's own download URLs expire after about 2 minutes. Only FILE attachments can be downloaded (not LINK attachments)."
+    },
+    {
+      "name": "Delete Attachment",
+      "category": "Attachments",
+      "description": "Permanently deletes an attachment from a sheet. For files with multiple versions, this deletes all versions."
+    },
+    {
+      "name": "List Discussions",
+      "category": "Discussions",
+      "description": "Lists all discussions on a sheet, both sheet-level and row-level. Enable Include Comments to embed each discussion's full comment thread in the response."
+    },
+    {
+      "name": "Create Discussion on Row",
+      "category": "Discussions",
+      "description": "Starts a new discussion thread on a row with an initial comment. The discussion appears in the row's conversation panel in Smartsheet. Returns the created discussion including the first comment."
+    },
+    {
+      "name": "Create Discussion on Sheet",
+      "category": "Discussions",
+      "description": "Starts a new sheet-level discussion thread with an initial comment. Sheet discussions are not tied to a specific row. Returns the created discussion including the first comment."
+    },
+    {
+      "name": "Add Comment",
+      "category": "Discussions",
+      "description": "Adds a comment to an existing discussion thread. Returns the created comment with its author and timestamp."
+    },
+    {
+      "name": "Delete Discussion",
+      "category": "Discussions",
+      "description": "Permanently deletes a discussion thread and all of its comments and comment attachments from a sheet."
+    },
+    {
+      "name": "List Workspaces",
+      "category": "Workspaces & Folders",
+      "description": "Lists all workspaces the token's user can access, with id, name, access level, and permalink. Results are paginated."
+    },
+    {
+      "name": "Get Workspace",
+      "category": "Workspaces & Folders",
+      "description": "Retrieves a workspace and lists its contents — sheets, folders, reports, dashboards, and templates. By default only top-level items are returned; enable Load All to include the full nested folder hierarchy."
+    },
+    {
+      "name": "Create Workspace",
+      "category": "Workspaces & Folders",
+      "description": "Creates a new empty workspace owned by the token's user. Returns the workspace with its generated ID and permalink."
+    },
+    {
+      "name": "List Home Folders",
+      "category": "Workspaces & Folders",
+      "description": "Lists the folders in the user's Sheets (home) area — the personal space outside of workspaces. Results are paginated."
+    },
+    {
+      "name": "Get Folder",
+      "category": "Workspaces & Folders",
+      "description": "Retrieves a folder and lists its contents — sheets, subfolders, reports, dashboards, and templates. Works for folders in the home area and in workspaces."
+    },
+    {
+      "name": "Create Folder in Workspace",
+      "category": "Workspaces & Folders",
+      "description": "Creates a new folder at the top level of a workspace. Returns the folder with its generated ID and permalink."
+    },
+    {
+      "name": "List Reports",
+      "category": "Reports",
+      "description": "Lists all reports the token's user can access, with id, name, access level, and permalink. Results are paginated."
+    },
+    {
+      "name": "Get Report",
+      "category": "Reports",
+      "description": "Retrieves a report with its columns and aggregated rows pulled from the source sheets. Each row includes a sheetId identifying which source sheet it came from. Rows are paginated with Page and Page Size."
+    },
+    {
+      "name": "Search Sheet",
+      "category": "Search",
+      "description": "Performs a full-text search within a single sheet and returns matching rows with context. Each result carries the objectId (row ID) and parentObjectId (sheet ID), which can be fed into Get Row."
+    },
+    {
+      "name": "Search Everything",
+      "category": "Search",
+      "description": "Performs a full-text search across all Smartsheet content the user can access — sheet names, cell data, comments, attachments, folder/workspace names, and more. Narrow the search with Scopes. Each result identifies the matching object and its parent so follow-up actions can fetch it."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users & Contacts",
+      "description": "Retrieves the profile of the user who owns the access token — email, name, locale, admin and licensing flags, and account info. Useful for verifying the connection and identifying the acting user."
+    },
+    {
+      "name": "List Users",
+      "category": "Users & Contacts",
+      "description": "Lists the users in the organization account. Requires system administrator rights on the Smartsheet account. Optionally filter to specific email addresses. Results are paginated."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Users & Contacts",
+      "description": "Lists the user's personal contacts from their Smartsheet Contact List. Contact emails are valid values for Contact List columns and for Create Update Request recipients. Results are paginated."
+    },
+    {
+      "name": "Create Update Request",
+      "category": "Update Requests",
+      "description": "Sends an update-request email asking recipients to edit specific rows of a sheet. Recipients get a link to a form limited to the chosen rows (and optionally chosen columns) and do not need a Smartsheet license to respond. Returns the created update request."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Lists all webhooks owned by the token's user, with their scope, target sheet, callback URL, enabled flag, and status. Results are paginated."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Creates a webhook that notifies a callback URL about all changes (*.* events) on a sheet. The webhook is created disabled with status NEW_NOT_VERIFIED — call Set Webhook Status to enable it, which starts Smartsheet's verification handshake: the callback endpoint must echo the Smartsheet-Hook-Challenge header value back (in a Smartsheet-Hook-Response header or a smartsheetHookResponse JSON body field) before events flow."
+    },
+    {
+      "name": "Set Webhook Status",
+      "category": "Webhooks",
+      "description": "Enables or disables a webhook. Enabling triggers Smartsheet's verification handshake: a challenge request is sent to the callback URL, and the endpoint must echo the Smartsheet-Hook-Challenge header value back (in a Smartsheet-Hook-Response header or a smartsheetHookResponse JSON body field). If the endpoint does not respond correctly, the webhook stays disabled with a failure status."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Permanently deletes a webhook. Smartsheet stops sending events to its callback URL immediately."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Append form submissions or CRM records as new rows in a project-tracking sheet, then send an update request asking owners to fill in the remaining fields.",
+    "Export a sheet to Excel, PDF, or CSV on a schedule and deliver the download link by email or chat.",
+    "Sync rows between sheets, copy or move sheets into workspaces, and keep an audit trail via cell history.",
+    "Search across all Smartsheet content, fetch the matching rows, and act on them in a downstream step.",
+    "Attach files or links to rows and download row attachments into FlowRunner storage for further processing."
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to pull records from a spreadsheet, then call **Smartsheet** \"Add Rows\" to mirror each row into a Smartsheet project tracker.",
+    "Run **Smartsheet** \"Export Sheet\" to produce a PDF or Excel file, then use **Gmail** \"Send Message\" to email the download link to stakeholders.",
+    "Run **Smartsheet** \"Search Everything\" to locate matching rows, feed each result into \"Get Row\", and post a summary to a channel with **Slack** \"Send Message To Channel\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/smartsheet/public/icon.png",
+  "sourcePaths": {
+    "service": "services/smartsheet",
+    "readme": "services/smartsheet/README.md",
+    "index": "services/smartsheet/src/index.js"
+  }
+}

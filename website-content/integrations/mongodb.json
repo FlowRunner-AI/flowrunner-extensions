@@ -1,0 +1,152 @@
+{
+  "slug": "mongodb",
+  "name": "MongoDB",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [MongoDB](https://www.mongodb.com/) databases, including MongoDB Atlas. Connects directly to a MongoDB deployment using the official [`mongodb`](https://www.mongodb.com/docs/drivers/node/current/) Node.js driver and exposes the full document lifecycle (find, insert, update, replace, delete), aggregation pipelines, and collection/index management. It uses a **connect-per-call** model: every operation opens a short-lived `MongoClient`, runs its command, and always closes the connection when the call finishes — no clients or pools are cached between invocations.",
+  "actionCount": 22,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Documents",
+    "Aggregation",
+    "Collections",
+    "Indexes",
+    "Vector Search"
+  ],
+  "actions": [
+    {
+      "name": "Find Documents",
+      "category": "Documents",
+      "description": "Queries a collection with a MongoDB filter and returns the matching documents plus their count. Supports the full MongoDB query syntax in the filter (comparison, logical and element operators, e.g. {\"age\":{\"$gte\":18},\"status\":\"active\"}), field projection, sorting, and limit/skip pagination. 24-hex-character strings under an _id key in the filter are automatically converted to ObjectId. ObjectId and Date values in results are returned as strings."
+    },
+    {
+      "name": "Find One Document",
+      "category": "Documents",
+      "description": "Returns the first document matching a MongoDB filter, or null when nothing matches. Supports the full MongoDB query syntax in the filter and optional field projection. 24-hex-character strings under an _id key are automatically converted to ObjectId, so {\"_id\":\"665f1c2ab7e4a3d2f0a11b22\"} finds a document by its ObjectId directly."
+    },
+    {
+      "name": "Insert Document",
+      "category": "Documents",
+      "description": "Inserts a single document into a collection and returns the generated (or provided) _id as a string. When no _id is supplied MongoDB generates an ObjectId; a supplied _id that is a 24-hex-character string is converted to an ObjectId automatically."
+    },
+    {
+      "name": "Insert Documents",
+      "category": "Documents",
+      "description": "Bulk-inserts an array of documents into a collection in a single call and returns the inserted count plus a map of array index to generated _id (as strings). Supplied _id values that are 24-hex-character strings are converted to ObjectId automatically."
+    },
+    {
+      "name": "Update Document",
+      "category": "Documents",
+      "description": "Updates the first document matching the filter. The Update object may use MongoDB update operators ($set, $inc, $push, $unset, ...); if it contains no $-operators it is automatically wrapped in {\"$set\": ...} so plain field/value objects update fields instead of replacing the document. Optionally upserts (inserts a new document) when nothing matches. 24-hex strings under _id in the filter are converted to ObjectId."
+    },
+    {
+      "name": "Update Documents",
+      "category": "Documents",
+      "description": "Updates ALL documents matching the filter in a single operation. The Update object may use MongoDB update operators ($set, $inc, $push, $unset, ...); if it contains no $-operators it is automatically wrapped in {\"$set\": ...}. A non-empty filter is required to prevent accidental collection-wide updates from an empty input — to intentionally update every document, use a match-all filter such as {\"_id\":{\"$exists\":true}}. Optionally upserts when nothing matches."
+    },
+    {
+      "name": "Replace Document",
+      "category": "Documents",
+      "description": "Replaces the ENTIRE first document matching the filter with the provided replacement document (all previous fields are removed except _id). Use Update Document instead to change individual fields. Optionally upserts when nothing matches. 24-hex strings under _id in the filter are converted to ObjectId."
+    },
+    {
+      "name": "Delete Document",
+      "category": "Documents",
+      "description": "Deletes the first document matching the filter and returns the deleted count (0 or 1). A non-empty filter is required to prevent accidental deletions from an empty input. 24-hex strings under _id in the filter are converted to ObjectId, so {\"_id\":\"665f1c2ab7e4a3d2f0a11b22\"} deletes a document by id directly."
+    },
+    {
+      "name": "Delete Documents",
+      "category": "Documents",
+      "description": "Deletes ALL documents matching the filter and returns the deleted count. A non-empty filter is required to prevent accidental collection-wide deletion from an empty input — to intentionally delete every document, use a match-all filter such as {\"_id\":{\"$exists\":true}}, or drop and recreate the collection."
+    },
+    {
+      "name": "Count Documents",
+      "category": "Aggregation",
+      "description": "Counts the documents matching a MongoDB filter (full query syntax supported). Leave the filter empty to count all documents in the collection. 24-hex strings under _id in the filter are converted to ObjectId automatically."
+    },
+    {
+      "name": "Distinct Values",
+      "category": "Aggregation",
+      "description": "Returns the distinct values of a field across the documents matching an optional filter, plus the number of distinct values. Works with nested fields using dot notation (e.g. address.city). ObjectId and Date values are returned as strings."
+    },
+    {
+      "name": "Aggregate",
+      "category": "Aggregation",
+      "description": "Runs a MongoDB aggregation pipeline (an ordered array of stages such as $match, $group, $sort, $project, $lookup, $unwind, $facet) and returns the resulting documents. The pipeline runs with allowDiskUse enabled so large $group/$sort stages are not memory-bound, and the operation is allowed up to 120 seconds. 24-hex strings under _id keys in pipeline stages are converted to ObjectId; results are returned JSON-safe (ObjectId/Date as strings)."
+    },
+    {
+      "name": "List Collections",
+      "category": "Collections",
+      "description": "Lists all collections and views in the configured database with each one's name and type (collection, view, or timeseries). Useful for discovering what data is available before reading or writing."
+    },
+    {
+      "name": "Create Collection",
+      "category": "Collections",
+      "description": "Explicitly creates a new collection in the configured database. MongoDB also creates collections implicitly on first insert, so this is mainly useful to create a collection ahead of time. Fails if a collection with the same name already exists."
+    },
+    {
+      "name": "Drop Collection",
+      "category": "Collections",
+      "description": "DESTRUCTIVE: permanently deletes an entire collection, including ALL of its documents and indexes. This cannot be undone. Returns whether the collection was dropped (false when it did not exist)."
+    },
+    {
+      "name": "Create Index",
+      "category": "Indexes",
+      "description": "Creates an index on a collection from a keys specification (1 ascending, -1 descending, or \"text\"/\"2dsphere\" for special indexes) and optional index options such as unique, a custom name, sparse, or expireAfterSeconds for TTL indexes. Returns the created index name. Creating an index that already exists is a no-op."
+    },
+    {
+      "name": "List Indexes",
+      "category": "Indexes",
+      "description": "Lists all indexes defined on a collection, including each index's name, key specification, and options such as unique or expireAfterSeconds. Every collection has at least the default _id index."
+    },
+    {
+      "name": "Vector Search",
+      "category": "Vector Search",
+      "description": "Runs an Atlas Vector Search ($vectorSearch) query against a collection and returns the nearest documents to the supplied query vector, each annotated with a relevance score under \"vectorSearchScore\". Requires MongoDB Atlas (or MongoDB 8.2+) and a pre-created vector search index on the target field. Provide the index name, the field path that stores the embedding vector, and the query vector (an array of numbers matching the index's dimensionality). numCandidates controls how many nearest neighbours the approximate search considers (higher is more accurate but slower; typically 10-20x the limit), and limit caps the returned documents. An optional pre-filter (standard MongoDB query syntax over fields indexed as \"filter\" in the vector index) narrows the search space before the vector comparison. ObjectId and Date values in results are returned as strings."
+    },
+    {
+      "name": "Create Search Index",
+      "category": "Vector Search",
+      "description": "Creates an Atlas Search or Atlas Vector Search index on a collection (MongoDB Atlas or MongoDB 8.2+ only). For a Vector Search index, use type \"Vector Search\" and a definition with a \"fields\" array, e.g. {\"fields\":[{\"type\":\"vector\",\"path\":\"embedding\",\"numDimensions\":1536,\"similarity\":\"cosine\"}]} (similarity is euclidean, cosine, or dotProduct); add {\"type\":\"filter\",\"path\":\"<field>\"} entries for fields you want to pre-filter on. For a standard Atlas Search index, use type \"Search\" and a mappings-based definition. Index builds are asynchronous — the index becomes queryable a short time after this call returns. Returns the created index name."
+    },
+    {
+      "name": "List Search Indexes",
+      "category": "Vector Search",
+      "description": "Lists all Atlas Search and Atlas Vector Search indexes defined on a collection, including each index's name, type, current build status (e.g. BUILDING, READY, FAILED), whether it is queryable, and its latest definition. Requires MongoDB Atlas or MongoDB 8.2+. Returns an empty list when the collection has no search indexes."
+    },
+    {
+      "name": "Update Search Index",
+      "category": "Vector Search",
+      "description": "Updates the definition of an existing Atlas Search or Atlas Vector Search index by name (MongoDB Atlas or MongoDB 8.2+ only). Supply the full new definition — it replaces the current one. The index is rebuilt asynchronously and remains queryable with the previous definition until the rebuild completes. Use the same definition shape as Create Search Index for the index's type."
+    },
+    {
+      "name": "Drop Search Index",
+      "category": "Vector Search",
+      "description": "Permanently deletes an Atlas Search or Atlas Vector Search index from a collection by name (MongoDB Atlas or MongoDB 8.2+ only). This does not delete any documents — only the search index. Queries that relied on the index will fail until an equivalent index is recreated."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Read, insert, update, and delete documents in an application database from within a workflow.",
+    "Run aggregation pipelines ($match, $group, $lookup, $facet, ...) for reporting and analytics steps.",
+    "Sync records between MongoDB and other apps (spreadsheets, CRMs, messaging tools).",
+    "Discover a database's structure by listing collections and inspecting indexes.",
+    "Bulk-load arrays of records fetched from an API or another service into a collection."
+  ],
+  "agentIdeas": [
+    "Use MongoDB \"Aggregate\" to compute daily order totals, then use **Google Sheets** \"Add Rows\" to append them to a reporting spreadsheet for stakeholders.",
+    "Use **Google Sheets** \"Get Rows\" to read a batch of records and MongoDB \"Insert Documents\" to load them into a collection.",
+    "After MongoDB \"Find Documents\" surfaces records needing attention (e.g. overdue subscriptions), use **Gmail** \"Send Message\" or **Slack** \"Send Message To Channel\" to notify the responsible team."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/mongodb/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/mongodb",
+    "readme": "services/mongodb/README.md",
+    "index": "services/mongodb/src/index.js"
+  }
+}

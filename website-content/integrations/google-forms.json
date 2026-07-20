@@ -1,0 +1,80 @@
+{
+  "slug": "google-forms",
+  "name": "Google Forms",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Complete Google Forms management for creating, updating, and processing form responses. Build dynamic survey workflows, manage form structures, and extract valuable data from submissions.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Get Forms List",
+      "category": null,
+      "description": "Retrieves a list of Google Forms available in Google Drive."
+    },
+    {
+      "name": "Delete Form",
+      "category": null,
+      "description": "Deletes a Google Form by its ID."
+    },
+    {
+      "name": "Create Form",
+      "category": null,
+      "description": "Creates a new Google Form."
+    },
+    {
+      "name": "Update Form Advanced",
+      "category": null,
+      "description": "Updates a Google Form using the batchUpdate request. This method allows for multiple item modifications within a single request, including adding, updating, or removing form items. Refer to the official Google Forms API documentation for more details on the structure and supported operations https://developers.google.com/forms/api/reference/rest/v1/forms/batchUpdate ."
+    },
+    {
+      "name": "Change Field Position",
+      "category": null,
+      "description": "Move Field Form."
+    },
+    {
+      "name": "Delete Field Form",
+      "category": null,
+      "description": "Delete Field Form."
+    },
+    {
+      "name": "Get Form Details",
+      "category": null,
+      "description": "Retrieves details of a specified Google Form by its ID."
+    },
+    {
+      "name": "Get Form Responses List",
+      "category": null,
+      "description": "Lists all responses for a specified Google Form."
+    },
+    {
+      "name": "Get Form Response by ID",
+      "category": null,
+      "description": "Retrieves a specific response for a Google Form by its response ID."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Creating dynamic surveys and forms for customer feedback collection",
+    "Managing form structures with automated field updates and modifications",
+    "Processing form responses for lead generation and customer insights",
+    "Building automated survey workflows with conditional logic and branching",
+    "Integrating form data with CRM systems and marketing automation",
+    "Creating feedback collection systems for product and service improvement",
+    "Managing large-scale data collection campaigns with form validation",
+    "Automating form response analysis and reporting workflows"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/google-forms/public/icon.png",
+  "sourcePaths": {
+    "service": "services/google-forms",
+    "readme": "services/google-forms/README.md",
+    "index": "services/google-forms/src/index.js"
+  }
+}

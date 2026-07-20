@@ -1,0 +1,48 @@
+{
+  "slug": "parseur",
+  "name": "Parseur Document Parser",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Parseur is an AI-powered document parsing service that extracts structured data from emails, PDFs, and other documents. This FlowRunner extension integrates Parseur's powerful document processing capabilities.",
+  "actionCount": 4,
+  "triggerCount": 1,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Upload Document",
+      "category": null,
+      "description": "Uploads a document to a mailbox for parsing"
+    },
+    {
+      "name": "List Documents",
+      "category": null,
+      "description": "Lists all documents in a mailbox"
+    },
+    {
+      "name": "Reprocess Document",
+      "category": null,
+      "description": "Reprocesses a document with updated template or settings"
+    },
+    {
+      "name": "Delete Document",
+      "category": null,
+      "description": "Deletes a document from a mailbox"
+    }
+  ],
+  "triggers": [
+    "On Document Processed"
+  ],
+  "idealUseCases": [],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/parseur/public/icon.png",
+  "sourcePaths": {
+    "service": "services/parseur",
+    "readme": "services/parseur/README.md",
+    "index": "services/parseur/src/index.js"
+  }
+}

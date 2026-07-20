@@ -1,0 +1,98 @@
+{
+  "slug": "storyblok",
+  "name": "Storyblok",
+  "marketingCategory": "CMS & Content",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate the [Storyblok](https://www.storyblok.com/) headless CMS with FlowRunner. Read published or draft content through the Content Delivery API v2, and create, update, publish, and delete content through the Management API.",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Content Delivery",
+    "Content Management"
+  ],
+  "actions": [
+    {
+      "name": "Get Stories",
+      "category": "Content Delivery",
+      "description": "Retrieves a paginated list of stories (content entries) from a space using the Content Delivery API. Supports filtering by slug prefix, draft vs published version, sorting, and advanced field filtering. Requires a Content Delivery token. The draft version requires a preview token."
+    },
+    {
+      "name": "Get Story",
+      "category": "Content Delivery",
+      "description": "Retrieves a single story by its full slug or numeric ID using the Content Delivery API. Returns the story object including its resolved content. Requires a Content Delivery token; the draft version requires a preview token."
+    },
+    {
+      "name": "Get Datasource Entries",
+      "category": "Content Delivery",
+      "description": "Retrieves entries (key/value pairs) from a datasource using the Content Delivery API. Useful for shared configuration values, translation strings, and select options. Requires a Content Delivery token."
+    },
+    {
+      "name": "Get Links",
+      "category": "Content Delivery",
+      "description": "Retrieves the link tree of a space using the Content Delivery API. Returns a lightweight map of all stories with their slugs, parent relationships, and folder flags — ideal for building navigation menus. Requires a Content Delivery token."
+    },
+    {
+      "name": "Get Tags",
+      "category": "Content Delivery",
+      "description": "Retrieves all tags used across stories in a space using the Content Delivery API, each with a count of how many stories use it. Requires a Content Delivery token."
+    },
+    {
+      "name": "Create Story",
+      "category": "Content Management",
+      "description": "Creates a new story (content entry) in the configured space using the Management API. Provide a display name, a full slug, and a content object whose component matches a content type defined in the space. Requires a Management token and a Space ID. Optionally publishes the story on creation."
+    },
+    {
+      "name": "Update Story",
+      "category": "Content Management",
+      "description": "Updates an existing story in the configured space using the Management API. Only the fields you provide are changed. Requires a Management token and a Space ID. Optionally publishes the story after updating."
+    },
+    {
+      "name": "Delete Story",
+      "category": "Content Management",
+      "description": "Permanently deletes a story from the configured space using the Management API. This cannot be undone. Requires a Management token and a Space ID."
+    },
+    {
+      "name": "Publish Story",
+      "category": "Content Management",
+      "description": "Publishes a story in the configured space using the Management API, making its current draft content live. Requires a Management token and a Space ID."
+    },
+    {
+      "name": "List Stories",
+      "category": "Content Management",
+      "description": "Lists stories in the configured space using the Management API, including drafts and unpublished content. Supports pagination and filtering by slug prefix. Requires a Management token and a Space ID. Use this (rather than Get Stories) when you need editorial metadata such as unpublished changes."
+    },
+    {
+      "name": "Get Space",
+      "category": "Content Management",
+      "description": "Retrieves details about the configured space using the Management API, including its name, plan, domain, default language, and environment settings. Requires a Management token and a Space ID."
+    },
+    {
+      "name": "List Assets",
+      "category": "Content Management",
+      "description": "Lists assets (images, documents, and other uploaded files) in the configured space using the Management API. Supports pagination and filtering by containing folder. Requires a Management token and a Space ID."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync stories, datasource entries, and assets from Storyblok into other apps or databases.",
+    "Build navigation menus and sitemaps from a space's link tree.",
+    "Programmatically create or update stories from form submissions, spreadsheets, or AI-generated drafts, then publish them.",
+    "Preview draft content in downstream workflows before it goes live."
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to pull a batch of content rows, then call **Storyblok** \"Create Story\" (with publish enabled) to load each row into the CMS as a live story.",
+    "When a **Webflow** \"On Form Submit\" trigger fires, use **Storyblok** \"Create Story\" to draft a matching content entry and **Storyblok** \"Publish Story\" to make it live once reviewed.",
+    "Use **Storyblok** \"Get Stories\" to fetch recently updated draft content, then **Slack** \"Send Message To Channel\" to notify the editorial team that new drafts are ready for review."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/storyblok/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/storyblok",
+    "readme": "services/storyblok/README.md",
+    "index": "services/storyblok/src/index.js"
+  }
+}

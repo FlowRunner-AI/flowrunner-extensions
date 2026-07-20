@@ -1,0 +1,174 @@
+{
+  "slug": "onfleet",
+  "name": "Onfleet",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Last-mile delivery management for FlowRunner. Create and dispatch delivery tasks, manage drivers (workers) and teams, define reusable destinations and recipients, and auto-dispatch routes — all backed by the [Onfleet API v2](https://docs.onfleet.com/). Authenticates with **HTTP Basic auth** using your Onfleet API key as the username and an empty password.",
+  "actionCount": 26,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Tasks",
+    "Workers",
+    "Teams",
+    "Destinations",
+    "Recipients",
+    "Hubs",
+    "Organization"
+  ],
+  "actions": [
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a delivery task, the core unit of work in Onfleet. A task has one destination and (optionally) one recipient. Provide the destination either by referencing an existing Destination ID, or inline via a structured address and/or [longitude, latitude] coordinates. Provide the recipient either by an existing Recipient ID or inline via name and phone. Optionally assign the task to a worker, team, or container, set pickup/dropoff time windows (completeAfter/completeBefore), add notes and quantity, or enable auto-assignment."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single task by its Onfleet ID, including its state, destination, recipients, assignment, timing windows, and tracking URL."
+    },
+    {
+      "name": "Get Task by Short ID",
+      "category": "Tasks",
+      "description": "Retrieves a task using its human-readable short ID (the 8-character code shown in tracking URLs and the dashboard) instead of the full Onfleet ID."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Lists tasks within a time range, optionally filtered by state. Results are paginated via a lastId cursor returned by the previous page. The From time is required by Onfleet; To defaults to the current time."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates fields on an existing task, such as notes, timing windows, quantity, or recipient assignment. Only the provided fields are changed. Completed tasks cannot be updated."
+    },
+    {
+      "name": "Complete Task",
+      "category": "Tasks",
+      "description": "Force-completes a task on behalf of the assigned worker (the task must be in the active state). Set Success to true for a successful delivery or false to mark it as failed/unable to complete, and optionally attach completion notes."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task. Only tasks that have not yet been completed can be deleted."
+    },
+    {
+      "name": "List Workers",
+      "category": "Workers",
+      "description": "Lists all workers (drivers) in the organization, including their name, phone, assigned teams, vehicle, and current on-duty status."
+    },
+    {
+      "name": "Get Worker",
+      "category": "Workers",
+      "description": "Retrieves a single worker by ID, including profile, teams, vehicle, on-duty status, and (if on a task) current location."
+    },
+    {
+      "name": "Create Worker",
+      "category": "Workers",
+      "description": "Creates a new worker (driver). Requires a name, a phone number in international format, and at least one team. Optionally provide a vehicle. The worker receives an SMS invite to the Onfleet driver app."
+    },
+    {
+      "name": "Update Worker",
+      "category": "Workers",
+      "description": "Updates an existing worker's name, team memberships, or vehicle. Only the provided fields are changed. The worker's phone number cannot be changed via this operation."
+    },
+    {
+      "name": "Delete Worker",
+      "category": "Workers",
+      "description": "Permanently removes a worker from the organization. Any tasks currently assigned to them become unassigned."
+    },
+    {
+      "name": "Get Worker Schedule",
+      "category": "Workers",
+      "description": "Retrieves a worker's schedule: the days they are scheduled to work along with shift start times, durations, and timezone."
+    },
+    {
+      "name": "List Teams",
+      "category": "Teams",
+      "description": "Lists all teams in the organization, including their name, member worker IDs, associated hub, and enabled self-assignment settings."
+    },
+    {
+      "name": "Get Team",
+      "category": "Teams",
+      "description": "Retrieves a single team by ID, including its member workers, associated hub, and managers."
+    },
+    {
+      "name": "Create Team",
+      "category": "Teams",
+      "description": "Creates a new team. Requires a name; optionally seed it with worker IDs and an associated hub."
+    },
+    {
+      "name": "Get Team's Tasks",
+      "category": "Teams",
+      "description": "Retrieves the tasks currently associated with a team's worklist (unassigned tasks in the team plus tasks assigned to the team's workers). Supports optional time-range filtering."
+    },
+    {
+      "name": "Auto-Dispatch Team",
+      "category": "Teams",
+      "description": "Triggers Onfleet's automatic dispatch for a team, assigning the team's unassigned tasks to its available on-duty workers and optimizing their routes. Returns a dispatch ID for tracking."
+    },
+    {
+      "name": "Create Destination",
+      "category": "Destinations",
+      "description": "Creates a reusable destination that can be referenced by ID when creating tasks. Provide a structured address and/or explicit [longitude, latitude] coordinates. Reusing destinations avoids re-geocoding the same location."
+    },
+    {
+      "name": "Get Destination",
+      "category": "Destinations",
+      "description": "Retrieves a destination by ID, including its resolved address and [longitude, latitude] coordinates."
+    },
+    {
+      "name": "Create Recipient",
+      "category": "Recipients",
+      "description": "Creates a reusable recipient (the end customer receiving a delivery). Requires a name and a phone number in international format. Recipients can then be referenced by ID or looked up by name/phone when creating tasks."
+    },
+    {
+      "name": "Get Recipient by Name",
+      "category": "Recipients",
+      "description": "Looks up a recipient by their exact full name (case-insensitive). Returns the matching recipient record."
+    },
+    {
+      "name": "Get Recipient by Phone",
+      "category": "Recipients",
+      "description": "Looks up a recipient by their phone number. Returns the matching recipient record."
+    },
+    {
+      "name": "Update Recipient",
+      "category": "Recipients",
+      "description": "Updates an existing recipient's name, phone, notes, or SMS notification preference. Only the provided fields are changed."
+    },
+    {
+      "name": "List Hubs",
+      "category": "Hubs",
+      "description": "Lists the organization's hubs (physical dispatch locations such as warehouses or stores) with their name, address, and coordinates. Hub IDs can be used when creating teams."
+    },
+    {
+      "name": "Get Organization Details",
+      "category": "Organization",
+      "description": "Retrieves details about the authenticated organization (name, email, timezone, country, and enabled features). Useful as a connection check to confirm the API key is valid."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Turn incoming e-commerce or CRM orders into Onfleet delivery tasks with the correct destination and recipient",
+    "Onboard drivers and organize them into teams, then auto-dispatch and optimize their routes",
+    "Maintain reusable destinations and recipients so repeat deliveries skip re-geocoding and re-typing customer details",
+    "Track task status, complete or delete tasks, and share tracking URLs with customers",
+    "Confirm connectivity and read organization settings before running delivery automations"
+  ],
+  "agentIdeas": [
+    "When a new **Shopify** order arrives (**Get List of Orders** / **Get Order**), call Onfleet **Create Task** with the customer's inline destination address and `[longitude, latitude]` coordinates to schedule a same-day delivery",
+    "After Onfleet **Auto-Dispatch Team** assigns routes, use **Twilio** \"Send SMS\" to text each customer their tracking URL returned by **Get Task**",
+    "When a **WooCommerce** order ships (**Get Order** / **List Orders**), create the delivery via Onfleet **Create Task** and log the resulting task ID and short ID to **Google Sheets** \"Add Row\" for reconciliation"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/onfleet/public/icon.png",
+  "sourcePaths": {
+    "service": "services/onfleet",
+    "readme": "services/onfleet/README.md",
+    "index": "services/onfleet/src/index.js"
+  }
+}

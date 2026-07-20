@@ -1,0 +1,136 @@
+{
+  "slug": "google-drive-api",
+  "name": "Google Drive",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Complete Google Drive automation for file management, content processing, and collaborative workflows. Upload, organize, share, copy, export, and read files, and trigger actions based on file system changes.",
+  "actionCount": 17,
+  "triggerCount": 3,
+  "operationCategories": [
+    "File Sharing",
+    "File Management",
+    "File Operations",
+    "File Upload",
+    "File Search",
+    "File Export",
+    "Folder Operations"
+  ],
+  "actions": [
+    {
+      "name": "Add File Sharing Preference",
+      "category": "File Sharing",
+      "description": "Configures file sharing permissions for AI agents to control document access, collaborate with team members, or make files publicly available. Perfect for automated workflows that need to share generated reports, grant access to specific users, or create public links for content distribution."
+    },
+    {
+      "name": "Create Shortcut",
+      "category": "File Management",
+      "description": "Creates file shortcuts for AI agents to organize content across multiple locations, create quick access links, or build dynamic file structures. Perfect for automated workflows that need to reference files in multiple folders without duplicating content."
+    },
+    {
+      "name": "Get Folder Listing",
+      "category": "File Operations",
+      "description": "Retrieves a complete list of files from a Google Drive folder for AI agents to process directory contents, analyze file structures, or manage collections of documents. Perfect for automated workflows that need to iterate through files, generate reports on folder contents, or process multiple files in batch operations."
+    },
+    {
+      "name": "Create File",
+      "category": "File Operations",
+      "description": "Creates new files in Google Drive for AI agents to generate reports, save processed data, create documentation, or store AI outputs. Perfect for automated workflows that need to create text files, Google Docs, or store structured data directly in Drive."
+    },
+    {
+      "name": "Move File",
+      "category": "File Management",
+      "description": "Relocates files within Google Drive for AI agents to organize content, sort documents by category, or restructure file hierarchies automatically. Essential for automated workflows that need to maintain organized folder structures or move files based on content analysis."
+    },
+    {
+      "name": "Upload File",
+      "category": "File Upload",
+      "description": "Downloads files from URLs and uploads them to Google Drive, enabling AI agents to archive web content, save API responses, or collect files from external sources. Perfect for automated workflows that need to backup files from other services or capture generated content."
+    },
+    {
+      "name": "Get File Content",
+      "category": "File Operations",
+      "description": "Retrieves file content for AI agents to analyze documents, process data, extract information, or use file contents in automated workflows. Perfect for reading text files, JSON data, CSV content, or any other text-based file format for further processing."
+    },
+    {
+      "name": "Get File Data",
+      "category": "File Operations",
+      "description": "Retrieves file metadata for AI agents to analyze file properties, check modification dates, get sharing links, or gather file information for processing workflows. Essential for file management automation and content organization."
+    },
+    {
+      "name": "Download File",
+      "category": "File Operations",
+      "description": "Downloads a file from Google Drive and saves it to the Files."
+    },
+    {
+      "name": "Find Folder",
+      "category": "File Search",
+      "description": "Locates folders in Google Drive for AI agents to find target directories, verify folder existence, or get folder information for file organization workflows. Perfect for automated systems that need to find specific folders before performing file operations."
+    },
+    {
+      "name": "Find File",
+      "category": "File Search",
+      "description": "Searches for specific files in Google Drive for AI agents to locate documents, verify file existence, or get file details for processing workflows. Essential for automated systems that need to find files by name, type, or location before performing operations."
+    },
+    {
+      "name": "Find Multiple Files",
+      "category": "File Search",
+      "description": "Retrieves a list of files from Google Drive based on the specified criteria."
+    },
+    {
+      "name": "Rename File/Folder",
+      "category": "File Management",
+      "description": "Updates a file or folder name."
+    },
+    {
+      "name": "Delete File",
+      "category": "File Management",
+      "description": "Permanently deletes a file owned by the user without moving it to the trash. If the file belongs to a shared drive, the user must be an `organizer` on the parent folder. If the target is a folder, all descendants owned by the user are also deleted."
+    },
+    {
+      "name": "Copy File",
+      "category": "File Management",
+      "description": "Creates a copy of a file in Google Drive. This method creates a copy of an existing file by its file ID. The copied file will be owned by the user who makes the request. If the file belongs to a shared drive, the user must have sufficient permissions to copy the file."
+    },
+    {
+      "name": "Export File",
+      "category": "File Export",
+      "description": "Exports a Google Workspace document to the requested MIME type and returns the exported byte content. Note that the exported content is limited to 10MB."
+    },
+    {
+      "name": "Create Folder",
+      "category": "Folder Operations",
+      "description": "Creates a new folder in Google Drive."
+    }
+  ],
+  "triggers": [
+    "On New File",
+    "On New Folder",
+    "On File Updated"
+  ],
+  "idealUseCases": [
+    "Automating document processing workflows and file organization systems",
+    "Managing collaborative file sharing and permission control",
+    "Processing uploaded files for content analysis and data extraction",
+    "Building automated backup and archival systems for business documents",
+    "Creating dynamic file organization based on content analysis and metadata",
+    "Monitoring folders for new uploads to trigger immediate processing",
+    "Integrating file operations with project management and workflow systems",
+    "Generating reports and documents automatically and storing them in organized structures"
+  ],
+  "agentIdeas": [
+    "When a **Google Drive** \"On New File\" trigger fires, use \"Get File Content\" to read the document and **Gmail** \"Send Message\" to email a summary to the team.",
+    "Use **PDF.co** \"Parse Invoice with AI\" on a downloaded invoice, then **Google Sheets** \"Add Row\" to log the data and **Google Drive** \"Move File\" to archive the original.",
+    "When a **Google Drive** \"On New Folder\" trigger fires, use \"Add File Sharing Preference\" to grant access and **Gmail** \"Send Message\" to notify collaborators."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/google-drive-api/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/google-drive-api",
+    "readme": "services/google-drive-api/README.md",
+    "index": "services/google-drive-api/src/index.js"
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "slug": "s3",
+  "name": "S3 Storage",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Universal S3-compatible object storage integration supporting 13+ providers including Amazon S3, Cloudflare R2, DigitalOcean Spaces, Backblaze B2, MinIO, Wasabi, and more. Manage buckets and objects with two authentication methods: direct API Key credentials or IAM Role via STS AssumeRole for cross-account access.",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Bucket Management",
+    "Object Management"
+  ],
+  "actions": [
+    {
+      "name": "List Buckets",
+      "category": "Bucket Management",
+      "description": "Lists all S3 buckets available in the configured account. Returns bucket names and creation dates. Useful for discovering available storage locations and verifying bucket existence."
+    },
+    {
+      "name": "Create Bucket",
+      "category": "Bucket Management",
+      "description": "Creates a new S3 bucket with the specified name. Bucket names must be globally unique across all AWS accounts, contain only lowercase letters, numbers, hyphens, and periods, and be between 3 and 63 characters long."
+    },
+    {
+      "name": "Delete Bucket",
+      "category": "Bucket Management",
+      "description": "Deletes an existing S3 bucket. The bucket must be empty before it can be deleted. All objects and versions within the bucket must be removed first."
+    },
+    {
+      "name": "List Objects",
+      "category": "Object Management",
+      "description": "Lists objects in an S3 bucket with optional prefix filtering and pagination. Returns object keys, sizes, last modified dates, and storage classes. Supports listing up to 1000 objects per request with continuation token for pagination."
+    },
+    {
+      "name": "Upload Object",
+      "category": "Object Management",
+      "description": "Uploads text or JSON content directly to an S3 bucket as an object. Supports setting a custom content type and storage class. For uploading binary files from a URL, use the \"Upload Object from URL\" action instead."
+    },
+    {
+      "name": "Upload Object from URL",
+      "category": "Object Management",
+      "description": "Downloads a file from a given URL and uploads it to an S3 bucket. Useful for transferring files from external sources directly into S3 without manual download steps."
+    },
+    {
+      "name": "Get Presigned URL",
+      "category": "Object Management",
+      "description": "Generates a temporary presigned URL that provides time-limited access to a private S3 object. The URL can be shared with users or services that need temporary access without requiring AWS credentials. Supports both download (GET) and upload (PUT) operations."
+    },
+    {
+      "name": "Delete Object",
+      "category": "Object Management",
+      "description": "Permanently deletes an object from an S3 bucket. This action cannot be undone unless versioning is enabled on the bucket. Use with caution as deleted objects cannot be recovered from non-versioned buckets."
+    },
+    {
+      "name": "Copy Object",
+      "category": "Object Management",
+      "description": "Copies an object from one location to another within the same bucket or across different buckets. The source object remains unchanged. Useful for creating backups, moving files between folders, or duplicating objects across buckets."
+    },
+    {
+      "name": "Get Object Metadata",
+      "category": "Object Management",
+      "description": "Retrieves metadata for an S3 object without downloading the object content. Returns information such as content type, content length, last modified date, ETag, and any custom metadata. Useful for checking if an object exists or inspecting its properties."
+    },
+    {
+      "name": "Delete Multiple Objects",
+      "category": "Object Management",
+      "description": "Deletes up to 1000 objects from an S3 bucket in a single API call. Provide object keys separated by commas or newlines. Returns detailed results showing which objects were successfully deleted and which failed. Much more efficient than deleting objects one at a time."
+    },
+    {
+      "name": "Check Object Exists",
+      "category": "Object Management",
+      "description": "Checks whether an object exists in an S3 bucket without downloading its content. Returns existence status and the last modified timestamp if the object is found. More lightweight than retrieving full object metadata when you only need to verify existence."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Uploading and organizing files in S3-compatible storage from automated workflows",
+    "Generating temporary presigned URLs for secure, time-limited file sharing",
+    "Backing up files or external data to cloud object storage",
+    "Copying objects across buckets for archival, migration, or replication workflows",
+    "Monitoring bucket contents and verifying object existence before processing",
+    "Bulk-deleting objects for automated storage cleanup and lifecycle management",
+    "Transferring files from external URLs directly into S3 without intermediate steps"
+  ],
+  "agentIdeas": [
+    "When a \"File Uploaded\" trigger fires, use **S3 Storage** \"Upload Object from URL\" to replicate the file into an S3 bucket for off-site backup, then use **Slack** \"Send Message To Channel\" to notify the team with the object key and bucket name.",
+    "Use **S3 Storage** \"List Objects\" to scan a bucket for new report files, then call **Gmail** \"Send Message\" with a **S3 Storage** \"Get Presigned URL\" link so recipients can securely download each report without AWS credentials.",
+    "When a **Google Sheets** \"On New Row\" trigger fires with asset metadata, use **S3 Storage** \"Upload Object from URL\" to fetch and store each asset in S3, then use **Google Sheets** \"Update Row\" to write back the object key and storage confirmation."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/s3/public/icon.png",
+  "sourcePaths": {
+    "service": "services/s3",
+    "readme": "services/s3/README.md",
+    "index": "services/s3/src/index.js"
+  }
+}

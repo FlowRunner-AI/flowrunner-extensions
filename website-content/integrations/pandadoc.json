@@ -1,0 +1,179 @@
+{
+  "slug": "pandadoc",
+  "name": "PandaDoc",
+  "marketingCategory": "Documents & E-signature",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Create documents from PandaDoc templates or uploaded PDF/DOCX files, send them for eSignature, generate embedded signing sessions and ready-to-share links, download completed PDFs to FlowRunner file storage, and manage templates, contacts, folders, members, webhook subscriptions, and API logs. Authenticates with a PandaDoc API key.",
+  "actionCount": 27,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Documents",
+    "Templates",
+    "Contacts",
+    "Folders",
+    "Members",
+    "Webhooks",
+    "API Logs"
+  ],
+  "actions": [
+    {
+      "name": "List Documents",
+      "category": "Documents",
+      "description": "Lists documents in the workspace with optional filtering by search text, status, tag, folder, source template, creation date range, and deletion flag. Returns up to 100 documents per page (default 50) with id, name, status, and timestamps; use Get Document Details for the full content of a specific document."
+    },
+    {
+      "name": "Get Document Status",
+      "category": "Documents",
+      "description": "Retrieves basic information about a document: id, name, current status (e.g. document.uploaded, document.draft, document.sent, document.completed), timestamps, and version. Useful for polling a freshly created document, which stays in document.uploaded for a few seconds before becoming document.draft and sendable."
+    },
+    {
+      "name": "Get Document Details",
+      "category": "Documents",
+      "description": "Retrieves the full details of a document, including recipients with their completion status, tokens, fields with current values, pricing tables, grand total, tags, and creation metadata. Use this after a document is completed to read the values recipients filled in."
+    },
+    {
+      "name": "Create Document from Template",
+      "category": "Documents",
+      "description": "Creates a new document from a PandaDoc template, assigning recipients to template roles and pre-filling tokens (variables), fields, metadata, and pricing tables. The new document starts in the transient document.uploaded status and becomes document.draft after a few seconds of processing — use Send Document (which waits for draft automatically) or poll Get Document Status before sending."
+    },
+    {
+      "name": "Create Document from File",
+      "category": "Documents",
+      "description": "Creates a new document by uploading a file (PDF or DOCX) from FlowRunner file storage. Optionally parses form fields embedded in the file into PandaDoc fields. The new document starts in the transient document.uploaded status and becomes document.draft once processing finishes (file parsing can take several seconds) — use Send Document, which waits for draft automatically."
+    },
+    {
+      "name": "Send Document",
+      "category": "Documents",
+      "description": "Sends a document to its recipients for review and signing. A freshly created document stays in the transient document.uploaded status for a few seconds; this action automatically polls the document every 2 seconds (up to 30 seconds) until it reaches document.draft before sending. Enable Silent to mark the document as sent without emailing the recipients (useful when sharing links yourself via Create Document Link)."
+    },
+    {
+      "name": "Create Document Link",
+      "category": "Documents",
+      "description": "Creates a signing session for one recipient of a sent document and returns both the session ID and a ready-to-share link (https://app.pandadoc.com/s/{sessionId}). The document must already be sent (use Send Document with Silent enabled to avoid PandaDoc's own emails) and the email must match one of the document's recipients. The link expires after the given lifetime."
+    },
+    {
+      "name": "Download Document PDF",
+      "category": "Documents",
+      "description": "Downloads a document as a PDF, saves it to FlowRunner file storage, and returns the stored file's URL. Optionally stamps a text watermark with configurable color, font size, and opacity onto every page. Works for documents in draft, sent, and completed states."
+    },
+    {
+      "name": "Update Document Name",
+      "category": "Documents",
+      "description": "Renames a document. Only documents in the document.draft status can be updated; sent or completed documents cannot be renamed via the API."
+    },
+    {
+      "name": "Delete Document",
+      "category": "Documents",
+      "description": "Permanently deletes a document from the workspace. This cannot be undone via the API."
+    },
+    {
+      "name": "List Templates",
+      "category": "Templates",
+      "description": "Lists templates in the workspace with optional filtering by search text, tag, and template folder. Returns up to 100 templates per page (default 50) with id, name, version, and timestamps; use Get Template Details for a template's roles, tokens, and fields."
+    },
+    {
+      "name": "Get Template Details",
+      "category": "Templates",
+      "description": "Retrieves the full details of a template, including its roles (needed to assign recipients in Create Document from Template), tokens (variables), fields, pricing tables, and content placeholders."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists all contacts in the workspace, optionally filtered by exact email address. Contacts store recipient details (name, company, address) that PandaDoc reuses when adding them to documents."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by ID, including email, name, company, job title, phone, and address fields."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact in the workspace. Only the email address is required; name, company, and address details are reused by PandaDoc whenever the contact is added to a document."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact. Only the provided fields are changed; fields left empty keep their current values."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact from the workspace. Documents the contact already appears on are not affected."
+    },
+    {
+      "name": "List Document Folders",
+      "category": "Folders",
+      "description": "Lists document folders in the workspace. Pass a parent folder UUID to list its subfolders, or leave it empty to list root-level folders. Folder UUIDs are used to file documents with Create Document from Template/File and to filter List Documents."
+    },
+    {
+      "name": "Create Document Folder",
+      "category": "Folders",
+      "description": "Creates a new document folder, optionally nested inside an existing parent folder. Returns the new folder's UUID for use when creating or filtering documents."
+    },
+    {
+      "name": "List Template Folders",
+      "category": "Folders",
+      "description": "Lists template folders in the workspace. Pass a parent folder UUID to list its subfolders, or leave it empty to list root-level folders. Template folder UUIDs can be used to filter List Templates."
+    },
+    {
+      "name": "List Members",
+      "category": "Members",
+      "description": "Lists all workspace members with their membership ID, user ID, email, name, role, and active status. Membership IDs can be used to filter documents by owner and with Get Member."
+    },
+    {
+      "name": "Get Member",
+      "category": "Members",
+      "description": "Retrieves the details of a single workspace member by membership ID, including email, name, role, and active status."
+    },
+    {
+      "name": "List Webhook Subscriptions",
+      "category": "Webhooks",
+      "description": "Lists all webhook subscriptions configured for the workspace, including each subscription's UUID, target URL, subscribed trigger events, extra payload sections, and active status."
+    },
+    {
+      "name": "Create Webhook Subscription",
+      "category": "Webhooks",
+      "description": "Creates a webhook subscription that POSTs event notifications to your URL when the selected events occur (document state changes, recipient completion, document updates/deletions, or creation failures). Optionally include extra payload sections (fields, tokens, products, pricing) in the notification body. Returns the subscription with its UUID and the shared key used to verify webhook signatures."
+    },
+    {
+      "name": "Delete Webhook Subscription",
+      "category": "Webhooks",
+      "description": "Permanently deletes a webhook subscription so its URL stops receiving event notifications."
+    },
+    {
+      "name": "List API Log Events",
+      "category": "API Logs",
+      "description": "Lists recent PandaDoc API request logs for the account, filterable by time range, HTTP response status codes, and HTTP methods. Useful for debugging integration issues. Use Get API Log Event with a log ID for full request/response details."
+    },
+    {
+      "name": "Get API Log Event",
+      "category": "API Logs",
+      "description": "Retrieves the full details of a single API log event, including the request URL, method, response status, timing, and the request/response bodies. Useful for diagnosing why a specific API call failed."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Auto-generate a contract from a template when a CRM deal is won, pre-fill client tokens, and send it for signature.",
+    "Turn an uploaded PDF or DOCX into a signable document and email it to recipients with a custom subject and message.",
+    "Create a per-recipient signing link to embed in your own app or portal instead of PandaDoc's default emails.",
+    "Download the signed PDF (optionally watermarked) to file storage once a document is completed, for archival.",
+    "Register webhook subscriptions to react to document state changes downstream."
+  ],
+  "agentIdeas": [
+    "When a **HubSpot** \"Get Deal By ID\" returns a won deal, call **PandaDoc** \"Create Document from Template\" with the client as a recipient, then \"Send Document\" to route the contract for signature.",
+    "After **PandaDoc** \"Send Document\" (Silent), use \"Create Document Link\" to mint a signing link and **Slack** \"Send Message To Channel\" to post it to the deal's channel for the account team.",
+    "Once a document is completed, use **PandaDoc** \"Download Document PDF\" to save the signed file, then **Gmail** \"Send Message\" to email it to the client, or **Google Drive** \"Upload File\" to archive it in a shared folder."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/pandadoc/public/icon.png",
+  "sourcePaths": {
+    "service": "services/pandadoc",
+    "readme": "services/pandadoc/README.md",
+    "index": "services/pandadoc/src/index.js"
+  }
+}

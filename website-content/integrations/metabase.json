@@ -1,0 +1,153 @@
+{
+  "slug": "metabase",
+  "name": "Metabase",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to [Metabase](https://www.metabase.com/), the open-source business intelligence platform. Run saved questions and ad-hoc queries, manage cards, collections, dashboards, and databases, and export query results as JSON or CSV. Authenticates with your Metabase Server URL and an `x-api-key` API key.",
+  "actionCount": 22,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Cards",
+    "Datasets",
+    "Databases",
+    "Collections",
+    "Dashboards",
+    "Users & Health"
+  ],
+  "actions": [
+    {
+      "name": "List Cards",
+      "category": "Cards",
+      "description": "Lists saved questions (cards) in the Metabase instance. Optionally filter the set with the \"Filter\" option (e.g. mine, bookmarked, archived, or by database/table). Returns each card's id, name, description, collection, display type, and metadata. Use a card id with Get Card, Run Card Query, Update Card, or Delete Card."
+    },
+    {
+      "name": "Get Card",
+      "category": "Cards",
+      "description": "Retrieves a single saved question (card) by its id, including its name, description, query definition (dataset_query), display type, visualization settings, collection, and result metadata."
+    },
+    {
+      "name": "Create Card",
+      "category": "Cards",
+      "description": "Creates a new saved question (card). Provide a name, the database id to run against, and a native SQL query (or a full MBQL query object). The card is saved with the given display type and optional collection and description. Returns the created card including its new id."
+    },
+    {
+      "name": "Update Card",
+      "category": "Cards",
+      "description": "Updates an existing saved question (card). Only the fields you provide are changed; empty fields are left as-is. Supports renaming, changing the description, moving to another collection, updating the display type, replacing the SQL/query definition, and archiving/unarchiving."
+    },
+    {
+      "name": "Delete Card",
+      "category": "Cards",
+      "description": "Permanently deletes a saved question (card) by its id. This cannot be undone. To keep the card but hide it, use Update Card with Archived set to true instead."
+    },
+    {
+      "name": "Run Card Query",
+      "category": "Cards",
+      "description": "Runs a saved question (card) and returns its result rows. The response includes the column definitions and the data rows exactly as Metabase computes them. Optionally pass parameter values as a JSON array to fill the card's parameters."
+    },
+    {
+      "name": "Run Card Query Export",
+      "category": "Cards",
+      "description": "Runs a saved question (card) and returns its results serialized in the chosen export format. Choose JSON for structured row objects or CSV for spreadsheet-ready text. Useful when you need the full result set to hand off to another step."
+    },
+    {
+      "name": "Run Query",
+      "category": "Datasets",
+      "description": "Runs an ad-hoc query against a database without saving a card, and returns the result rows and column definitions. Provide a native SQL query, or a full MBQL query object via Query JSON for structured queries."
+    },
+    {
+      "name": "Export Query",
+      "category": "Datasets",
+      "description": "Runs an ad-hoc query against a database and returns the results serialized in the chosen export format (JSON or CSV) instead of the raw Metabase result envelope. Provide a native SQL query or a full MBQL query object."
+    },
+    {
+      "name": "List Databases",
+      "category": "Databases",
+      "description": "Lists the databases connected to this Metabase instance, including each database's id, name, engine, and connection metadata. Use a database id with Get Database, Get Database Metadata, Sync Schema, Run Query, or Create Card."
+    },
+    {
+      "name": "Get Database",
+      "category": "Databases",
+      "description": "Retrieves a single database connection by its id, including its name, engine, connection details (with secrets redacted), and feature flags."
+    },
+    {
+      "name": "Get Database Metadata",
+      "category": "Databases",
+      "description": "Retrieves the full schema metadata for a database: its tables and, for each table, the fields with their names, base types, and semantic types. Useful for discovering what to query before building a card or ad-hoc query."
+    },
+    {
+      "name": "Sync Database Schema",
+      "category": "Databases",
+      "description": "Triggers a schema sync for a database, prompting Metabase to re-scan the database for new, changed, or removed tables and columns. Returns immediately; the sync runs asynchronously in Metabase."
+    },
+    {
+      "name": "List Collections",
+      "category": "Collections",
+      "description": "Lists collections (folders that organize cards and dashboards), including each collection's id, name, location, and archived state. Use a collection id with Get Collection Items or when creating/moving cards."
+    },
+    {
+      "name": "Get Collection Items",
+      "category": "Collections",
+      "description": "Lists the items inside a collection — cards, dashboards, sub-collections, and other objects — with their id, name, and model type. Optionally restrict to specific model types (e.g. only cards or only dashboards)."
+    },
+    {
+      "name": "Create Collection",
+      "category": "Collections",
+      "description": "Creates a new collection (folder) for organizing cards and dashboards. Provide a name, an optional description, and an optional parent collection to nest it under. Returns the created collection including its new id."
+    },
+    {
+      "name": "List Dashboards",
+      "category": "Dashboards",
+      "description": "Lists dashboards in the Metabase instance, including each dashboard's id, name, description, collection, and archived state. Use a dashboard id with Get Dashboard."
+    },
+    {
+      "name": "Get Dashboard",
+      "category": "Dashboards",
+      "description": "Retrieves a single dashboard by its id, including its name, description, parameters, and the cards (dashcards) placed on it with their layout positions."
+    },
+    {
+      "name": "Create Dashboard",
+      "category": "Dashboards",
+      "description": "Creates a new, empty dashboard. Provide a name, an optional description, and an optional collection to place it in. Add cards to it afterward in Metabase or via the dashboard cards API. Returns the created dashboard including its new id."
+    },
+    {
+      "name": "List Users",
+      "category": "Users & Health",
+      "description": "Lists user accounts in the Metabase instance, including each user's id, name, email, and status. Requires an admin-level API key to see all users."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users & Health",
+      "description": "Returns the account associated with the configured API key, including id, name, email, and permission flags. Use this as a connection check to confirm the server URL and API key are valid."
+    },
+    {
+      "name": "Health Check",
+      "category": "Users & Health",
+      "description": "Checks whether the Metabase instance is up and healthy. Returns the instance's health status. This endpoint does not require authentication and is useful for readiness checks."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Run a saved question (card) or ad-hoc SQL query on a schedule and route the rows into another system.",
+    "Export query results as JSON or CSV to hand off to reporting, email, or spreadsheet steps.",
+    "Programmatically create and update cards, dashboards, and collections to keep BI content in sync.",
+    "Discover a database's tables and fields, then build a native SQL or structured MBQL query against it.",
+    "Trigger a schema sync after upstream data-model changes so Metabase reflects new tables and columns."
+  ],
+  "agentIdeas": [
+    "Use **Metabase** \"Run Card Query Export\" to pull a saved report as CSV, then use **Gmail** \"Send Message\" to email the export to stakeholders on a schedule.",
+    "Use **Metabase** \"Run Query\" to execute an ad-hoc SQL query, then use **Google Sheets** \"Add Row\" to append each result row into a live tracking spreadsheet.",
+    "After **Metabase** \"Run Card Query\" returns anomalous metrics, use **Slack** \"Send Message To Channel\" to post a summary alert to the analytics channel."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/metabase/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/metabase",
+    "readme": "services/metabase/README.md",
+    "index": "services/metabase/src/index.js"
+  }
+}

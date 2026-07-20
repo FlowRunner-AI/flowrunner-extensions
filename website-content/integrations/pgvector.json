@@ -1,0 +1,94 @@
+{
+  "slug": "pgvector",
+  "name": "PGVector",
+  "marketingCategory": "Vector Stores & AI Infra",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [pgvector](https://github.com/pgvector/pgvector) — the open-source vector-similarity extension for [PostgreSQL](https://www.postgresql.org/). It connects directly to a PostgreSQL server over TCP using the official [`pg`](https://node-postgres.com/) driver and exposes everything needed to build a vector store: enabling the extension, creating vector tables and ANN indexes, inserting/upserting embeddings, and running nearest-neighbour similarity searches. It uses a **connect-per-call** model: every operation opens a short-lived `pg.Client`, runs its query, and always closes the connection when the call finishes — no connections or pools are cached between invocations.",
+  "actionCount": 10,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Extension",
+    "Tables",
+    "Indexes",
+    "Embeddings",
+    "Search",
+    "SQL",
+    "Schema"
+  ],
+  "actions": [
+    {
+      "name": "Enable Extension",
+      "category": "Extension",
+      "description": "Enables the pgvector extension on the connected database by running CREATE EXTENSION IF NOT EXISTS vector. Run this once per database before creating vector tables, indexes, or performing similarity searches. Requires a role with privileges to create extensions (typically a superuser or the database owner); most managed providers such as Supabase, Neon and AWS RDS ship pgvector and permit this."
+    },
+    {
+      "name": "Create Vector Table",
+      "category": "Tables",
+      "description": "Creates a table with a pgvector column of the given fixed dimension, plus an id column and any optional metadata columns. The id column type is selectable: Serial (auto-incrementing integer primary key), Text (text primary key), or UUID (uuid primary key). Metadata columns are added with the raw Postgres type you specify (e.g. text, int, jsonb, timestamptz). The table is created only if it does not already exist. Ensure the pgvector extension is enabled first (see Enable Extension)."
+    },
+    {
+      "name": "Create Index",
+      "category": "Indexes",
+      "description": "Creates an approximate-nearest-neighbour index on a vector column to dramatically speed up similarity searches on large tables (without an index, searches perform an exact but slower full scan). Choose HNSW (higher recall and query speed, slower to build, more memory) or IVFFlat (faster to build, less memory; best created after the table already holds representative data). The metric must match the metric used at query time. HNSW accepts optional m and ef_construction tuning; IVFFlat accepts an optional lists count."
+    },
+    {
+      "name": "Insert Embeddings",
+      "category": "Embeddings",
+      "description": "Bulk-inserts rows containing vector embeddings into a table. Each row is an object whose embedding column holds an array of numbers (converted to a pgvector literal); any other keys are treated as regular column values (id, content, metadata, etc.). The column set is the union of keys across all rows; rows missing a key insert NULL. All values are bound as parameters. Returns the inserted rows (via RETURNING *) and the inserted count."
+    },
+    {
+      "name": "Upsert Embeddings",
+      "category": "Embeddings",
+      "description": "Inserts embedding rows, updating existing rows when a unique constraint on the conflict column is violated (INSERT ... ON CONFLICT ... DO UPDATE). All non-conflict columns are refreshed from the incoming row. Ideal for re-embedding: re-running with the same ids replaces their vectors and metadata in place. The conflict column must be covered by a primary key or unique index. Returns the resulting rows (via RETURNING *) and the affected count."
+    },
+    {
+      "name": "Delete Embeddings",
+      "category": "Embeddings",
+      "description": "Deletes embedding rows either by a list of ids (matched against the id column) or by equality conditions in a Where object. Exactly one of the two selectors must be provided; this guard prevents accidental full-table deletion. Returns the number of deleted rows."
+    },
+    {
+      "name": "Similarity Search",
+      "category": "Search",
+      "description": "Finds the rows whose vectors are nearest to a query embedding, ordered nearest-first. Pass the query embedding as an array of numbers and pick a distance metric (Cosine, L2/Euclidean, or Inner Product) — it must match the metric of any index on the column for that index to be used. Returns each matched row plus a computed distance column, smaller meaning more similar; for Cosine, similarity = 1 - distance. Optionally restrict columns returned, apply equality filters via the Where object, or supply a raw SQL Where Clause for advanced metadata filtering. Runs with a 120-second limit."
+    },
+    {
+      "name": "Execute Query",
+      "category": "SQL",
+      "description": "Executes an arbitrary SQL statement (SELECT, INSERT, UPDATE, DELETE, DDL, CTEs, pgvector operations, etc.) and returns the resulting rows, the affected row count, and result field metadata. Use $1, $2, ... placeholders together with the Parameters array to safely bind values — including vector literals such as '[0.1,0.2,0.3]' — and never interpolate user input into the SQL string. Statements are limited to 120 seconds."
+    },
+    {
+      "name": "Get Table Schema",
+      "category": "Schema",
+      "description": "Returns the column definitions of a table from information_schema.columns: column name, data type, underlying type name, nullability, default expression, maximum character length, and ordinal position. Columns of the pgvector type are flagged (isVector true, udtName \"vector\") so you can identify embedding columns before searching or inserting."
+    },
+    {
+      "name": "List Tables",
+      "category": "Schema",
+      "description": "Lists all tables and views in user schemas (system schemas pg_catalog and information_schema are excluded), including each object's schema, name, type, and whether it contains at least one pgvector column (hasVectorColumn). Useful for discovering which tables hold embeddings."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Build a semantic-search or Retrieval-Augmented Generation (RAG) backend on top of PostgreSQL.",
+    "Store embeddings produced by an embedding model (OpenAI, Cohere, local models) alongside their source text and metadata.",
+    "Retrieve the most similar documents to a query embedding for grounding an LLM's answer.",
+    "Deduplicate or cluster records by vector similarity.",
+    "Maintain a vector index that stays in sync with your existing relational data."
+  ],
+  "agentIdeas": [
+    "Call **OpenAI** \"Create Embeddings\" (or **Cohere** \"Create Embeddings\") to vectorize a user's question, then PGVector **Similarity Search** to fetch the most relevant documents for a Retrieval-Augmented Generation answer.",
+    "After ingesting new content, use **Cohere** \"Create Embeddings\" to embed each chunk and PGVector **Upsert Embeddings** to keep the vector store in sync, then run **Create Index** once to accelerate future searches.",
+    "Combine PGVector **Similarity Search** with **Slack** \"Send Message To Channel\" to surface the closest matching knowledge-base articles to a support question."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/pgvector/public/icon.png",
+  "sourcePaths": {
+    "service": "services/pgvector",
+    "readme": "services/pgvector/README.md",
+    "index": "services/pgvector/src/index.js"
+  }
+}

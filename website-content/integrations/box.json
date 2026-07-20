@@ -1,0 +1,298 @@
+{
+  "slug": "box",
+  "name": "Box",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Connect FlowRunner to [Box](https://www.box.com/) to manage cloud files and folders via OAuth2: upload, download, organize, version, comment, task, apply metadata, share, search, manage collaborators, recover from trash, and react to item events in real time.",
+  "actionCount": 49,
+  "triggerCount": 3,
+  "operationCategories": [
+    "Files",
+    "Folders",
+    "Sharing",
+    "Collaborations",
+    "Search",
+    "Account",
+    "Uploads",
+    "Versions",
+    "Comments",
+    "Tasks",
+    "Metadata",
+    "Trash"
+  ],
+  "actions": [
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a Flowrunner file's contents into a Box folder, creating a new Box file. Use this to push a generated document, export, or attachment into Box. Files must be under 50MB."
+    },
+    {
+      "name": "Get File Info",
+      "category": "Files",
+      "description": "Retrieves the metadata for a single Box file — name, size, parent folder, timestamps, and shared-link status. Use this to inspect a file before acting on it."
+    },
+    {
+      "name": "Download File",
+      "category": "Files",
+      "description": "Downloads a Box file's contents and saves them to Flowrunner file storage, returning the saved file's URL. Box redirects to its download host, which this action follows automatically."
+    },
+    {
+      "name": "Update File",
+      "category": "Files",
+      "description": "Renames a Box file and/or updates its description and tags. Leave a field blank to keep its current value. To move a file to another folder, use Move File instead."
+    },
+    {
+      "name": "Move File",
+      "category": "Files",
+      "description": "Moves a Box file into a different folder. Use this to reorganize files; the file keeps its ID and name."
+    },
+    {
+      "name": "Copy File",
+      "category": "Files",
+      "description": "Copies a Box file into a folder, optionally under a new name. The original is left untouched and a new file is created."
+    },
+    {
+      "name": "Delete File",
+      "category": "Files",
+      "description": "Deletes a Box file. Depending on the account's settings the file is moved to trash or permanently removed. This cannot be undone from here."
+    },
+    {
+      "name": "Create Folder",
+      "category": "Folders",
+      "description": "Creates a new folder inside a parent folder. Use this to set up a destination before uploading or moving files."
+    },
+    {
+      "name": "Get Folder Info",
+      "category": "Folders",
+      "description": "Retrieves the metadata for a Box folder — name, parent, timestamps, and a preview of its contents. Use this to inspect a folder before listing or modifying it."
+    },
+    {
+      "name": "List Folder Items",
+      "category": "Folders",
+      "description": "Lists the files, folders, and web links inside a Box folder, with paging and sorting. Use this to browse a folder's contents or feed downstream actions with item IDs."
+    },
+    {
+      "name": "Update Folder",
+      "category": "Folders",
+      "description": "Renames a Box folder and/or updates its description. Leave a field blank to keep its current value. To move a folder, use Move Folder instead."
+    },
+    {
+      "name": "Move Folder",
+      "category": "Folders",
+      "description": "Moves a Box folder (and everything inside it) into a different parent folder. The folder keeps its ID and name."
+    },
+    {
+      "name": "Copy Folder",
+      "category": "Folders",
+      "description": "Copies a Box folder and all of its contents into a destination folder, optionally under a new name. The root folder (id 0) cannot be copied."
+    },
+    {
+      "name": "Delete Folder",
+      "category": "Folders",
+      "description": "Deletes a Box folder. Turn on Delete Contents to remove a non-empty folder and everything inside it; otherwise the call fails if the folder is not empty."
+    },
+    {
+      "name": "Create File Shared Link",
+      "category": "Sharing",
+      "description": "Creates or updates a shared link on a Box file so it can be shared by URL. Choose who can use the link and whether they can download. Returns the file with its shared-link details."
+    },
+    {
+      "name": "Create Folder Shared Link",
+      "category": "Sharing",
+      "description": "Creates or updates a shared link on a Box folder so it can be shared by URL. Choose who can use the link and whether they can download its contents. Returns the folder with its shared-link details."
+    },
+    {
+      "name": "Remove Shared Link",
+      "category": "Sharing",
+      "description": "Removes the shared link from a Box file or folder, revoking URL access. The item itself is not deleted."
+    },
+    {
+      "name": "Add Collaboration",
+      "category": "Collaborations",
+      "description": "Invites a user or group to collaborate on a Box file or folder with a chosen role (Editor, Viewer, etc.). Use this to grant someone access to shared content."
+    },
+    {
+      "name": "Get Collaboration",
+      "category": "Collaborations",
+      "description": "Retrieves a single collaboration by its ID, showing the role, status, who has access, and the item. Pick a folder to populate the collaboration picker."
+    },
+    {
+      "name": "List Folder Collaborations",
+      "category": "Collaborations",
+      "description": "Lists the collaborators on a Box folder — who has access and at what role. Use this to audit sharing or to find a collaboration ID to update or remove."
+    },
+    {
+      "name": "List File Collaborations",
+      "category": "Collaborations",
+      "description": "Lists the collaborators on a Box file — who has access and at what role. Use this to audit sharing or to find a collaboration ID to update or remove."
+    },
+    {
+      "name": "Update Collaboration",
+      "category": "Collaborations",
+      "description": "Changes a collaborator's role on a Box file or folder (for example from Viewer to Editor). Pick a folder to populate the collaboration picker."
+    },
+    {
+      "name": "Remove Collaboration",
+      "category": "Collaborations",
+      "description": "Removes a collaboration, revoking that user's or group's access to the Box file or folder. Pick a folder to populate the collaboration picker."
+    },
+    {
+      "name": "Search Content",
+      "category": "Search",
+      "description": "Searches Box for files, folders, and web links matching a query across names, descriptions, and contents. Use this to locate items when you don't know their IDs."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Account",
+      "description": "Returns the profile of the connected Box user — name, login email, and storage usage. Use this to confirm which account is connected."
+    },
+    {
+      "name": "Upload Large File",
+      "category": "Uploads",
+      "description": "Uploads a large file (over 50 MB) to Box using the chunked upload API: it creates an upload session, streams the file in parts, and commits it. Use Upload File for smaller files."
+    },
+    {
+      "name": "List File Versions",
+      "category": "Versions",
+      "description": "Lists the version history of a Box file. Requires a Box premium account; on free accounts only the current version is returned."
+    },
+    {
+      "name": "Get File Version",
+      "category": "Versions",
+      "description": "Retrieves the details of a single version of a Box file. Get version IDs from List File Versions."
+    },
+    {
+      "name": "Promote File Version",
+      "category": "Versions",
+      "description": "Promotes an older version of a Box file to be the current version (Box keeps the old versions). Get version IDs from List File Versions."
+    },
+    {
+      "name": "Delete File Version",
+      "category": "Versions",
+      "description": "Moves an older version of a Box file to the trash. The current version is unaffected. Get version IDs from List File Versions."
+    },
+    {
+      "name": "Create Comment",
+      "category": "Comments",
+      "description": "Adds a comment to a Box file. Use this to leave review notes or feedback on a document."
+    },
+    {
+      "name": "List File Comments",
+      "category": "Comments",
+      "description": "Lists the comments on a Box file, with paging. Use this to read feedback or find a comment ID to edit or delete."
+    },
+    {
+      "name": "Get Comment",
+      "category": "Comments",
+      "description": "Retrieves a single comment by its ID. Pick a file to populate the comment picker."
+    },
+    {
+      "name": "Update Comment",
+      "category": "Comments",
+      "description": "Edits the text of an existing Box comment. You can only edit your own comments."
+    },
+    {
+      "name": "Delete Comment",
+      "category": "Comments",
+      "description": "Deletes a Box comment. You can only delete your own comments."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a task on a Box file (for review or completion). Use this to request approval or action on a document from collaborators."
+    },
+    {
+      "name": "List File Tasks",
+      "category": "Tasks",
+      "description": "Lists all tasks on a Box file. Use this to see outstanding reviews or find a task ID to update or delete."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single task by its ID. Pick a file to populate the task picker."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates a Box task's action, message, due date, or completion rule. Leave a field blank to keep its current value."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Deletes a Box task. This also removes any assignments on it."
+    },
+    {
+      "name": "Create Metadata Instance",
+      "category": "Metadata",
+      "description": "Applies a metadata template to a Box file, setting its field values. Pick a template from your enterprise templates and supply the field values as a JSON object."
+    },
+    {
+      "name": "Get Metadata Instance",
+      "category": "Metadata",
+      "description": "Reads the metadata a template has stored on a Box file (its field values). Pick the same template and scope used to apply it."
+    },
+    {
+      "name": "List Metadata Instances",
+      "category": "Metadata",
+      "description": "Lists all metadata templates applied to a Box file and their stored values. Use this to discover which templates are on a file."
+    },
+    {
+      "name": "Delete Metadata Instance",
+      "category": "Metadata",
+      "description": "Removes a metadata template (and its values) from a Box file. The file itself is unaffected."
+    },
+    {
+      "name": "List Trashed Items",
+      "category": "Trash",
+      "description": "Lists the files and folders currently in the Box trash, with paging and sorting. Use this to find an item to restore or permanently delete."
+    },
+    {
+      "name": "Restore File",
+      "category": "Trash",
+      "description": "Restores a file from the Box trash. Optionally rename it or restore it to a different folder if the original name or parent is gone."
+    },
+    {
+      "name": "Restore Folder",
+      "category": "Trash",
+      "description": "Restores a folder (and its contents) from the Box trash. Optionally rename it or restore it to a different parent if the original is gone."
+    },
+    {
+      "name": "Permanently Delete File",
+      "category": "Trash",
+      "description": "Permanently deletes a file from the Box trash. This cannot be undone. Get IDs from List Trashed Items."
+    },
+    {
+      "name": "Permanently Delete Folder",
+      "category": "Trash",
+      "description": "Permanently deletes a folder from the Box trash. This cannot be undone. Get IDs from List Trashed Items."
+    }
+  ],
+  "triggers": [
+    "On File Event",
+    "On Folder Event",
+    "On Collaboration Event"
+  ],
+  "idealUseCases": [
+    "Upload or download files between Box and FlowRunner file storage.",
+    "Organize, version, comment on, and task content.",
+    "Apply metadata and share via expiring, password-protected links.",
+    "Manage collaborators and search content before acting on it.",
+    "React to Box file, folder, and collaboration events in real time."
+  ],
+  "agentIdeas": [
+    "When **Box** \"On File Event\" fires, use \"Download File\" and pass the URL to **PDF.co** \"Parse Invoice with AI\".",
+    "Use **Box** \"Search Content\" to find a report, then **Gmail** \"Send Message\" to email its link.",
+    "After **Box** \"Upload File\", log the file with **Google Sheets** \"Add Row\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/box/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/box",
+    "readme": "services/box/README.md",
+    "index": "services/box/src/index.js"
+  }
+}

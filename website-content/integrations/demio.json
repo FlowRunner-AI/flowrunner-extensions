@@ -1,0 +1,64 @@
+{
+  "slug": "demio",
+  "name": "Demio",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner service for [Demio](https://demio.com), the webinar and virtual event platform. This integration wraps the Demio Public API v1 (`https://my.demio.com/api/v1`) so you can list webinars, inspect scheduled sessions, register participants, and pull per-session participant and attendance data directly from your FlowRunner flows.",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Events",
+    "Registration",
+    "Participants"
+  ],
+  "actions": [
+    {
+      "name": "List Events",
+      "category": "Events",
+      "description": "Lists the webinars (events) in your Demio account. Filter by type to return Upcoming (scheduled) events, Past events, or Automated (evergreen) events. Each event includes its id, name, and scheduled session dates. Use the returned event id with Get Event, Register Participant, and (via a session date_id) List Session Participants."
+    },
+    {
+      "name": "Get Event",
+      "category": "Events",
+      "description": "Retrieves the full details of a single webinar (event) by its id, including its name, registration settings, and its scheduled sessions. The response contains a \"dates\" array where each entry has a date_id, status, and start datetime/timezone — use those date_id values with Get Event Session, Register Participant, and List Session Participants. Set Active Dates Only to return only currently active (not-yet-run) sessions."
+    },
+    {
+      "name": "Get Event Session",
+      "category": "Events",
+      "description": "Retrieves details for a single scheduled session (date) of a webinar (event). Provide the event id and the session date_id. Returns that session's status, start date/time, timezone, and registration details. To discover the available date_id values for an event, call Get Event and read its \"dates\" array."
+    },
+    {
+      "name": "Register Participant",
+      "category": "Registration",
+      "description": "Registers a person for a Demio webinar. Provide the participant's name and email (both required). To target a specific event and session, pass the event id and the session date_id (get date_id values from the \"dates\" array of Get Event); alternatively pass the event's public registration ref URL. Optional fields — last name, company, website, phone number, GDPR consent, and arbitrary custom fields — are matched against your event's registration form. Returns the created registrant, typically including their unique join link."
+    },
+    {
+      "name": "List Session Participants",
+      "category": "Participants",
+      "description": "Lists the participants (registrants and attendees) for a single webinar session, keyed by that session's date_id. Each participant includes their name, email, custom fields, attendance flag, and status. Optionally filter by status to return only, e.g., people who attended or did not attend. Discover a session's date_id from the \"dates\" array of Get Event. Use this for post-webinar reporting, syncing registrants, or checking attendance."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically register leads captured elsewhere into an upcoming Demio webinar session",
+    "Sync webinar registrants and attendees into a CRM or marketing list",
+    "Pull post-webinar analytics for reporting and engagement follow-up",
+    "Look up a webinar's scheduled session dates to schedule reminders around them"
+  ],
+  "agentIdeas": [
+    "Use **HubSpot** \"Search Contacts\" to find leads matching a segment, then call **Demio** \"Register Participant\" to enroll each one in an upcoming webinar session and capture their join link.",
+    "After a webinar, call **Demio** \"List Session Participants\" (filtered by status) and use **Gmail** \"Send Message\" to email attendees a recording link and non-attendees a replay invitation.",
+    "Use **Demio** \"Get Event\" to read the next session's start time from its `dates` array, then use **Google Calendar** \"Create Event\" to add a team reminder before the webinar begins."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/demio/public/icon.png",
+  "sourcePaths": {
+    "service": "services/demio",
+    "readme": "services/demio/README.md",
+    "index": "services/demio/src/index.js"
+  }
+}

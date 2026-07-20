@@ -1,0 +1,105 @@
+{
+  "slug": "kobotoolbox",
+  "name": "KoBoToolbox",
+  "marketingCategory": "HR & Recruiting",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [KoBoToolbox](https://www.kobotoolbox.org/) to manage forms (assets), read and manage collected data (submissions), and generate data exports. Built on the KoBoToolbox KPI v2 REST API and authenticated with an account API token (`Authorization: Token`).",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Assets",
+    "Submissions",
+    "Exports"
+  ],
+  "actions": [
+    {
+      "name": "List Assets",
+      "category": "Assets",
+      "description": "Lists assets (forms and projects) on your KoBoToolbox account. Returns a paginated envelope with the total count and an array of assets, each including its uid, name, asset_type, owner, deployment status, and submission count. Use the optional search text to filter by name and limit/start for pagination."
+    },
+    {
+      "name": "Get Asset",
+      "category": "Assets",
+      "description": "Retrieves a single asset (form/project) by its uid, including metadata such as name, asset_type, owner, permissions, deployment status, and submission count. Does not include full survey content unless requested via Get Asset Content."
+    },
+    {
+      "name": "Get Asset Content",
+      "category": "Assets",
+      "description": "Retrieves the full definition of an asset, including its survey content (questions, choices, settings). Returns the same asset object as Get Asset plus the content structure used to build the form. Useful for inspecting or duplicating a form's schema."
+    },
+    {
+      "name": "Create Asset",
+      "category": "Assets",
+      "description": "Creates a new asset (typically a survey/form) on your KoBoToolbox account. Provide a name and an optional content object describing the survey structure (survey questions, choices, settings). The created asset is a draft; deploy it with Deploy Asset before collecting data. Returns the created asset including its new uid."
+    },
+    {
+      "name": "Deploy Asset",
+      "category": "Assets",
+      "description": "Deploys an asset for the first time, creating an active deployment that can receive submissions. Sets the deployment to active. Use Redeploy Asset to push subsequent changes to an already-deployed form. Returns the deployment object."
+    },
+    {
+      "name": "Redeploy Asset",
+      "category": "Assets",
+      "description": "Redeploys an already-deployed asset, pushing its latest saved version to the active deployment and (re)activating it. Use this after editing a form that was previously deployed. Returns the updated deployment object."
+    },
+    {
+      "name": "Get Deployment",
+      "category": "Assets",
+      "description": "Retrieves the deployment details for an asset, including whether it is active, the deployed version identifier, the backend, and the current submission count. Returns an error if the asset has never been deployed."
+    },
+    {
+      "name": "Get Submissions",
+      "category": "Submissions",
+      "description": "Retrieves submitted data (records) for a deployed asset. Supports a Mongo-style JSON query filter, sorting, and pagination. Returns an envelope with the total matching count and a results array of submission objects. Each submission includes system fields (_id, _uuid, _submission_time) plus the answered question fields."
+    },
+    {
+      "name": "Get Submission",
+      "category": "Submissions",
+      "description": "Retrieves a single submission (record) by its numeric id for a deployed asset. Returns the full submission object including system fields and all answered question fields."
+    },
+    {
+      "name": "Get Submission Count",
+      "category": "Submissions",
+      "description": "Returns the total number of submissions for a deployed asset. Fetches a minimal page of data and reads the count field from the response envelope, so it is efficient regardless of how many submissions exist."
+    },
+    {
+      "name": "Delete Submission",
+      "category": "Submissions",
+      "description": "Permanently deletes a single submission (record) by its numeric id from a deployed asset. This action cannot be undone. Returns a confirmation object."
+    },
+    {
+      "name": "Create Export",
+      "category": "Exports",
+      "description": "Creates a data export task for a deployed asset in the requested format (CSV or XLS). Optionally controls which fields are included and the label language. Exports are generated asynchronously; the response includes the export uid and a URL to poll/download once complete. Use List Exports to check status and retrieve the download link."
+    },
+    {
+      "name": "List Exports",
+      "category": "Exports",
+      "description": "Lists the export tasks previously created for a deployed asset, including each export's uid, format, status (created/processing/complete/error), and download URL once complete. Use this to retrieve the download link for an export created with Create Export."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically pull new survey submissions into spreadsheets, databases, or notifications as they arrive",
+    "Filter collected records with Mongo-style JSON queries for reporting and downstream processing",
+    "Programmatically create, deploy, and redeploy survey forms across projects",
+    "Generate CSV/XLS exports and route the download links to stakeholders",
+    "Monitor submission counts and clean up records as part of data-management workflows"
+  ],
+  "agentIdeas": [
+    "After **Get Submissions** returns new records filtered by a Mongo-style query, use **Google Sheets** \"Add Row\" to append each submission into a reporting spreadsheet",
+    "Call **Create Export** then **List Exports** to obtain a completed CSV/XLS download link, and use **Gmail** \"Send Message\" to email the export to stakeholders",
+    "When a new asset is created with **Create Asset** and activated via **Deploy Asset**, use **Google Drive** \"Upload File\" to archive the exported response data for backup"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/kobotoolbox/public/icon.png",
+  "sourcePaths": {
+    "service": "services/kobotoolbox",
+    "readme": "services/kobotoolbox/README.md",
+    "index": "services/kobotoolbox/src/index.js"
+  }
+}

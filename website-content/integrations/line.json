@@ -1,0 +1,117 @@
+{
+  "slug": "line",
+  "name": "LINE",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Send and manage messages through the [LINE Messaging API](https://developers.line.biz/en/docs/messaging-api/) for a LINE Official Account. Push and reply to chats, multicast/broadcast/narrowcast, download media a user sent you, look up user and group profiles, check your message quota and usage, and inspect rich menus. Authenticates with your channel access token.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messaging",
+    "Profile",
+    "Insights",
+    "Rich Menu",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Push Message",
+      "category": "Messaging",
+      "description": "Sends a message proactively to a single user, group, or chat room by ID. Provide the destination ID plus either a simple Message text (wrapped as a text message automatically) or a raw Messages array of LINE message objects (text, image, video, sticker, template, flex, etc.) for rich content. A raw Messages array, when supplied, takes precedence over the Message text. Up to 5 message objects can be sent in one call. Note: this is a proactive push and consumes your monthly message quota."
+    },
+    {
+      "name": "Reply Message",
+      "category": "Messaging",
+      "description": "Replies to a user's message using a reply token. The reply token is delivered inside an incoming webhook event (the `replyToken` field of a message/follow/postback event) and can only be used once, within roughly 30 seconds of receiving the event. Provide either a simple Message text or a raw Messages array (max 5). Unlike Push Message, replies do NOT consume your monthly message quota."
+    },
+    {
+      "name": "Multicast Message",
+      "category": "Messaging",
+      "description": "Sends the same message to multiple users at once by their user IDs (up to 500 per call). Cannot target group or room IDs — use Push Message for those. Provide either a simple Message text or a raw Messages array (max 5 message objects). Consumes your monthly message quota (one message per recipient)."
+    },
+    {
+      "name": "Broadcast Message",
+      "category": "Messaging",
+      "description": "Sends a message to all users who have added your LINE Official Account as a friend (all followers). Provide either a simple Message text or a raw Messages array (max 5 message objects). Broadcasts consume a large portion of your monthly message quota — one message per follower — so use with care."
+    },
+    {
+      "name": "Narrowcast Message",
+      "category": "Messaging",
+      "description": "Sends a message to a filtered subset of followers using a recipient filter (audience, demographic, or operator conditions) and/or a message-limit target. Provide the raw Recipient filter object and either a simple Message text or a raw Messages array (max 5). Narrowcast is processed asynchronously (LINE returns HTTP 202 Accepted with an empty body); its per-request delivery status is tracked by LINE and can be checked in the LINE Official Account Manager. Consumes your monthly message quota."
+    },
+    {
+      "name": "Get Message Content",
+      "category": "Messaging",
+      "description": "Downloads the binary media (image, video, audio, or file) that a user sent in a message, identified by the message ID from a webhook message event. The content is fetched from LINE's content server, saved to FlowRunner file storage, and a downloadable URL is returned. Note: message content is only retrievable for a limited period after the message is received."
+    },
+    {
+      "name": "Get Profile",
+      "category": "Profile",
+      "description": "Retrieves the LINE profile of a user who is friends with your Official Account, by user ID. Returns the display name, user ID, profile picture URL, status message, and language. Only works for users who have added your account as a friend."
+    },
+    {
+      "name": "Get Group Member Profile",
+      "category": "Profile",
+      "description": "Retrieves the profile of a specific member within a group chat, by group ID and user ID. Returns display name, user ID, and profile picture URL. The bot must be a member of the group."
+    },
+    {
+      "name": "Get Group Summary",
+      "category": "Profile",
+      "description": "Retrieves summary information about a group chat by group ID, including the group ID, group name, and group icon (picture URL). The bot must be a member of the group."
+    },
+    {
+      "name": "Get Message Quota",
+      "category": "Insights",
+      "description": "Retrieves the monthly message quota for your LINE Official Account. Returns the quota type (`limited` or `none`) and, when limited, the maximum number of push/broadcast messages allowed in the current month."
+    },
+    {
+      "name": "Get Message Consumption",
+      "category": "Insights",
+      "description": "Retrieves the number of messages sent in the current month that count against the monthly quota. Returns the total usage so far this month."
+    },
+    {
+      "name": "Get Sent Message Count",
+      "category": "Insights",
+      "description": "Retrieves the number of push messages successfully sent on a specific date. Provide the date in yyyyMMdd format (UTC+9). The status may be `ready` (data available in `success`), `unready` (aggregation not finished, try again later), `unavailable_for_privacy` (too few messages to report for privacy reasons), or `out_of_service` (date outside the retention period). Only dates within roughly the last 60 days are available."
+    },
+    {
+      "name": "List Rich Menus",
+      "category": "Rich Menu",
+      "description": "Lists all rich menus registered on your LINE Official Account. Returns each rich menu's ID, name, size, chat bar text, selection state, and defined tap areas. Rich menus are the customizable menus shown at the bottom of a chat."
+    },
+    {
+      "name": "Get Rich Menu",
+      "category": "Rich Menu",
+      "description": "Retrieves a single rich menu by its ID. Returns the rich menu's name, size, chat bar text, selection state, and tap areas with their bound actions."
+    },
+    {
+      "name": "Get Bot Info",
+      "category": "Account",
+      "description": "Retrieves basic information about the bot associated with the channel access token, including the bot's user ID, basic ID, premium ID, display name, icon URL, chat mode, and mark-as-read mode. Useful as a quick connection/credentials check."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send proactive notifications or campaign messages to a user, group, or chat room",
+    "Reply to an incoming user message within a webhook flow using the one-time reply token",
+    "Fan out an announcement to many users via multicast, broadcast, or narrowcast",
+    "Download images, videos, audio, or files that users send to your Official Account",
+    "Enrich workflows with user/group profile data and monitor monthly message quota usage"
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires, use **LINE** \"Push Message\" to instantly notify a team member's LINE chat with the sender and subject.",
+    "Use **LINE** \"Get Message Content\" to download an image a user sent, then generate a caption or edited variant with **AI Image Generator** \"Generate Image\" and send it back with **LINE** \"Reply Message\".",
+    "On a **Google Sheets** \"On New Row\" trigger, use **LINE** \"Multicast Message\" to broadcast the new entry (such as an event update) to a curated list of user IDs."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/line/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/line",
+    "readme": "services/line/README.md",
+    "index": "services/line/src/index.js"
+  }
+}

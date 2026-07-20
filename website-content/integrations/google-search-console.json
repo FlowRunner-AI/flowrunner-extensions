@@ -1,0 +1,91 @@
+{
+  "slug": "google-search-console",
+  "name": "Google Search Console",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Google Search Console](https://search.google.com/search-console) — query search performance data (clicks, impressions, CTR, average position) across the full dimension and filter surface, manage properties and sitemaps, and inspect URL index status through the [Search Console API](https://developers.google.com/webmaster-tools) using the connected user's Google account (OAuth 2.0).",
+  "actionCount": 10,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Search Analytics",
+    "Sites",
+    "Sitemaps",
+    "URL Inspection"
+  ],
+  "actions": [
+    {
+      "name": "Query Search Analytics",
+      "category": "Search Analytics",
+      "description": "Queries Google Search performance data (clicks, impressions, CTR, and average position) for a Search Console property. Rows are returned as plain objects keyed by the selected dimensions (e.g. {\"query\":\"flowrunner\",\"clicks\":42,...}), sorted by clicks descending (or by date ascending when grouped by date). Dates use YYYY-MM-DD in America/Los_Angeles (PT) time; data typically has a delay of 2-3 days unless Data State includes fresh data. Group by up to several dimensions (Date, Query, Page, Country, Device, Search Appearance, Hour — Hour requires the hourly Data State), filter by search type (Web, Image, Video, News, Discover, Google News), and narrow results with a single convenience filter (dimension + operator + expression) or the full Dimension Filter Groups JSON structure. Returns up to 25,000 rows per request (default 1,000); use Start Row to paginate. Country values are ISO 3166-1 alpha-3 codes (e.g. \"usa\", \"deu\"); device values are DESKTOP, MOBILE, or TABLET."
+    },
+    {
+      "name": "List Sites",
+      "category": "Sites",
+      "description": "Lists all Search Console properties (sites) accessible to the connected user, both verified and unverified. Each entry includes the site URL (URL-prefix properties like \"https://www.example.com/\" or domain properties like \"sc-domain:example.com\") and the user's permission level: siteOwner, siteFullUser, siteRestrictedUser, or siteUnverifiedUser."
+    },
+    {
+      "name": "Get Site",
+      "category": "Sites",
+      "description": "Retrieves a single Search Console property from the connected user's account, returning its site URL and the user's permission level (siteOwner, siteFullUser, siteRestrictedUser, or siteUnverifiedUser). Fails if the property is not in the user's Search Console account."
+    },
+    {
+      "name": "Add Site",
+      "category": "Sites",
+      "description": "Adds a property (site) to the connected user's Search Console account. The property still has to be verified through Search Console before most data becomes available — adding it here does not verify ownership. Returns a confirmation object."
+    },
+    {
+      "name": "Delete Site",
+      "category": "Sites",
+      "description": "Removes a property (site) from the connected user's Search Console account. This only unlinks the property from the user's account — it does not delete any Search Console data or affect the website itself. Returns a confirmation object."
+    },
+    {
+      "name": "List Sitemaps",
+      "category": "Sitemaps",
+      "description": "Lists the sitemaps submitted for a Search Console property, or the sitemaps referenced by a specific sitemap index file. Each entry includes the sitemap URL, type (sitemap, rssFeed, atomFeed, patternSitemap, urlList, notSitemap), submission and last-download timestamps, pending status, error and warning counts, and per-content-type submitted/indexed URL counts."
+    },
+    {
+      "name": "Get Sitemap",
+      "category": "Sitemaps",
+      "description": "Retrieves details about a specific sitemap submitted for a Search Console property: its type, submission and last-download timestamps, pending status, error and warning counts, and per-content-type submitted/indexed URL counts. Useful for checking whether Google has processed a sitemap and how many of its URLs were indexed."
+    },
+    {
+      "name": "Submit Sitemap",
+      "category": "Sitemaps",
+      "description": "Submits a sitemap for a Search Console property, asking Google to crawl and process it. The sitemap file must already be published on the website at the given URL. Re-submitting an existing sitemap requests reprocessing. Returns a confirmation object; use Get Sitemap afterwards to check processing status, errors, and indexed URL counts."
+    },
+    {
+      "name": "Delete Sitemap",
+      "category": "Sitemaps",
+      "description": "Deletes a sitemap from a Search Console property. This removes the sitemap submission from Search Console — it does not delete the sitemap file from the website, and Google may still crawl URLs it already knows about. Returns a confirmation object."
+    },
+    {
+      "name": "Inspect URL",
+      "category": "URL Inspection",
+      "description": "Inspects a URL through the Search Console URL Inspection API and returns Google's index status for it: whether the page is indexed (verdict PASS/FAIL/NEUTRAL), coverage state, last crawl time, crawling user agent, robots.txt and indexing allowance, the Google-selected vs. user-declared canonical URL, plus mobile usability, rich results, and AMP results when available. Also returns a link to the full report in Search Console. The URL must belong to the specified property, and the connected user needs at least full access to that property. Rate-limited by Google to about 2,000 inspections per property per day."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Pull daily/weekly search analytics (top queries, pages, countries, devices) into reports or dashboards",
+    "Monitor a site's organic performance and alert when clicks or average position shift",
+    "Automate sitemap submission and check how many URLs Google has indexed",
+    "Verify whether a newly published page is indexed and view its Google-selected canonical",
+    "Add or remove properties and audit permission levels across accounts"
+  ],
+  "agentIdeas": [
+    "Use **Google Search Console** \"Query Search Analytics\" to pull the week's top queries and pages, then use **Google Sheets** \"Add Row\" to append each row into a performance-tracking spreadsheet",
+    "After publishing a page, use **Google Search Console** \"Submit Sitemap\" and then \"Inspect URL\" to confirm indexing, and use **Slack** \"Send Message To Channel\" to notify the team of the index verdict",
+    "Use **Google Search Console** \"Query Search Analytics\" to detect queries where average position dropped, then use **Gmail** \"Send Message\" to email an SEO summary with the affected pages"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/google-search-console/public/icon.png",
+  "sourcePaths": {
+    "service": "services/google-search-console",
+    "readme": "services/google-search-console/README.md",
+    "index": "services/google-search-console/src/index.js"
+  }
+}

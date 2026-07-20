@@ -1,0 +1,143 @@
+{
+  "slug": "help-scout",
+  "name": "Help Scout",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Help Scout](https://www.helpscout.com/) — a customer support platform built around shared mailboxes. This service wraps the [Help Scout Mailbox API 2.0](https://developer.helpscout.com/mailbox-api/) and lets flows manage conversations, threads, customers, mailboxes, users and tags.",
+  "actionCount": 20,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Conversations",
+    "Customers",
+    "Mailboxes",
+    "Users",
+    "Tags"
+  ],
+  "actions": [
+    {
+      "name": "Create Conversation",
+      "category": "Conversations",
+      "description": "Creates a new conversation in a Help Scout mailbox with an initial thread. The customer is identified by email and is created automatically if they do not exist yet. The initial thread can be a customer message (as if the customer wrote in), a reply from your team, or an internal note. Optionally applies tags and assigns the conversation to a user. Returns the newly created conversation."
+    },
+    {
+      "name": "Get Conversation",
+      "category": "Conversations",
+      "description": "Retrieves a single conversation by its ID, including subject, status, assignee, tags, customer and mailbox references. Optionally embeds the full list of threads (messages, replies and notes) in the response."
+    },
+    {
+      "name": "List Conversations",
+      "category": "Conversations",
+      "description": "Lists conversations with optional filters: mailbox, status, tag, modification date and Help Scout's advanced search query syntax (e.g. (subject:\"refund\" AND tag:\"vip\")). Results are paginated with 25 conversations per page; use the Page parameter and the returned page metadata to iterate."
+    },
+    {
+      "name": "Update Conversation",
+      "category": "Conversations",
+      "description": "Updates a conversation's subject, status and/or assignee. Each provided field is applied as a separate patch operation; fields left empty are not changed. To unassign a conversation, use the Assign Conversation operation with the Unassign option."
+    },
+    {
+      "name": "Delete Conversation",
+      "category": "Conversations",
+      "description": "Permanently deletes a conversation by its ID. This action cannot be undone - the conversation and all of its threads are removed from Help Scout."
+    },
+    {
+      "name": "Add Reply",
+      "category": "Conversations",
+      "description": "Adds a reply thread to an existing conversation. The reply is sent to the customer by email (unless created as a draft). The customer must be identified by their Help Scout customer ID or email address. Optionally changes the conversation status in the same call."
+    },
+    {
+      "name": "Add Note",
+      "category": "Conversations",
+      "description": "Adds an internal note thread to an existing conversation. Notes are visible only to your team, never to the customer. Optionally changes the conversation status in the same call."
+    },
+    {
+      "name": "List Threads",
+      "category": "Conversations",
+      "description": "Lists all threads of a conversation in reverse chronological order: customer messages, team replies, internal notes and line items (status changes, assignments). Each thread includes its type, author, body text and timestamps."
+    },
+    {
+      "name": "Assign Conversation",
+      "category": "Conversations",
+      "description": "Assigns a conversation to a Help Scout user, or removes the current assignee when the Unassign option is enabled."
+    },
+    {
+      "name": "Add Tags",
+      "category": "Conversations",
+      "description": "Adds one or more tags to a conversation, preserving the tags it already has. Tags that do not exist yet in your Help Scout account are created automatically."
+    },
+    {
+      "name": "Remove Tags",
+      "category": "Conversations",
+      "description": "Removes one or more tags from a conversation, keeping all other tags in place. Tag names that are not currently applied to the conversation are ignored."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a new customer record in Help Scout with a name, email address and optional phone number and organization. Returns the newly created customer. Fails if a customer with the same email already exists."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer by their ID, including name, organization, job title and embedded contact entries (emails, phones, social profiles, websites, chat handles and address)."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Lists customers with optional filters by email address, first name, last name or Help Scout's advanced search query syntax. Results are paginated with 50 customers per page."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates a customer's profile fields: first name, last name, job title, organization, location and background notes. Only the provided fields are changed; existing values are preserved for the rest. Contact entries (emails, phones) are managed by Help Scout as separate sub-resources and are not modified by this operation."
+    },
+    {
+      "name": "List Mailboxes",
+      "category": "Mailboxes",
+      "description": "Lists all mailboxes the connected Help Scout app has access to, including their IDs, names, slugs and email addresses."
+    },
+    {
+      "name": "List Mailbox Folders",
+      "category": "Mailboxes",
+      "description": "Lists the folders of a mailbox (e.g. Unassigned, Mine, Drafts, Assigned, Closed, Spam and custom folders) with the count of active and total conversations in each."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists Help Scout users (team members) with optional filters by email address or mailbox membership. Each user includes their ID, name, email, role and timezone. Results are paginated with 50 users per page."
+    },
+    {
+      "name": "Get Me",
+      "category": "Users",
+      "description": "Retrieves the Help Scout account owner profile associated with the configured app credentials. Useful as a connection check to verify that the App ID and App Secret are valid."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists all tags used across your Help Scout account, including each tag's ID, name, color and the number of conversations it is applied to. Results are paginated with 100 tags per page."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create Help Scout conversations from inbound web forms, chat, or other channels.",
+    "Triage support queues by assigning conversations, adding/removing tags, and updating status.",
+    "Post automated replies or internal notes to conversations as part of a workflow.",
+    "Sync customer records (create/update) from a CRM or signup flow.",
+    "Report on mailboxes, folders, users, and tag usage for support analytics."
+  ],
+  "agentIdeas": [
+    "When an **Intercom** or **Zendesk** conversation needs escalation, use Help Scout **Create",
+    "Fetch new signups with **Google Sheets** \"Get Rows\", then call Help Scout **Create Customer**",
+    "After Help Scout **Assign Conversation** or **Add Note**, use **Slack** \"Send Message To Channel\"",
+    "Use Help Scout **List Conversations** to pull unresolved cases, then log a daily summary via"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/help-scout/public/icon.png",
+  "sourcePaths": {
+    "service": "services/help-scout",
+    "readme": "services/help-scout/README.md",
+    "index": "services/help-scout/src/index.js"
+  }
+}

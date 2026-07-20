@@ -1,0 +1,140 @@
+{
+  "slug": "weaviate",
+  "name": "Weaviate",
+  "marketingCategory": "Vector Stores & AI Infra",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Weaviate](https://weaviate.io), the open-source vector database. Manage collections and objects through the REST API and run vector, semantic, keyword, and hybrid searches through the GraphQL API — without writing GraphQL by hand (a raw GraphQL escape hatch is included for advanced use cases).",
+  "actionCount": 20,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Collections",
+    "Objects",
+    "Search",
+    "Utilities"
+  ],
+  "actions": [
+    {
+      "name": "Create Collection",
+      "category": "Collections",
+      "description": "Creates a new collection (class) in the Weaviate schema. Optionally define a vectorizer module, typed properties, and advanced configuration (e.g. vectorIndexConfig, moduleConfig, replicationConfig) merged into the request body. If no properties are provided, Weaviate adds them automatically via auto-schema when objects are inserted."
+    },
+    {
+      "name": "List Collections",
+      "category": "Collections",
+      "description": "Retrieves the full Weaviate schema, including every collection (class) with its properties, vectorizer, and module configuration."
+    },
+    {
+      "name": "Get Collection",
+      "category": "Collections",
+      "description": "Retrieves the schema definition of a single collection (class), including its properties, vectorizer, and index configuration."
+    },
+    {
+      "name": "Delete Collection",
+      "category": "Collections",
+      "description": "Permanently deletes a collection (class) from the schema, including ALL objects stored in it. This action cannot be undone."
+    },
+    {
+      "name": "Create Object",
+      "category": "Objects",
+      "description": "Creates a single data object in a collection. If the collection uses a vectorizer module, the vector is generated automatically; otherwise supply the vector explicitly. Optionally provide a UUID to control the object ID (otherwise Weaviate generates one)."
+    },
+    {
+      "name": "Get Object",
+      "category": "Objects",
+      "description": "Retrieves a single data object by its collection and UUID, optionally including its stored embedding vector."
+    },
+    {
+      "name": "Update Object (Merge)",
+      "category": "Objects",
+      "description": "Partially updates an existing object by merging the provided properties into it (HTTP PATCH). Properties not included in the request keep their current values. If the collection uses a vectorizer, the vector is re-computed when affected text changes."
+    },
+    {
+      "name": "Replace Object",
+      "category": "Objects",
+      "description": "Replaces an existing object entirely (HTTP PUT). All previous properties are discarded and replaced with the provided ones. Use \"Update Object (Merge)\" to change only specific properties."
+    },
+    {
+      "name": "Delete Object",
+      "category": "Objects",
+      "description": "Permanently deletes a single data object by its collection and UUID. This action cannot be undone."
+    },
+    {
+      "name": "List Objects",
+      "category": "Objects",
+      "description": "Lists data objects in a collection with cursor-based pagination. Pass the ID of the last object from the previous page as the \"After\" cursor to fetch the next page. The cursor requires the collection and limit to stay the same between calls."
+    },
+    {
+      "name": "Batch Create Objects",
+      "category": "Objects",
+      "description": "Creates multiple data objects in a single batch request — much faster than creating them one by one. Each array item can be either a plain properties object (e.g. {\"title\":\"Hello\"}) or a full object shape with \"properties\" and optional \"id\" and \"vector\" keys. Returns per-object results including success or failure status."
+    },
+    {
+      "name": "Batch Delete Objects",
+      "category": "Objects",
+      "description": "Deletes all objects in a collection that match a where filter, in a single batch request. Use Dry Run to preview how many objects would be deleted without actually deleting them. Note: Weaviate limits batch deletes to 10,000 matches per call by default — repeat the call for larger deletions."
+    },
+    {
+      "name": "Search (Vector)",
+      "category": "Search",
+      "description": "Performs a vector similarity search (nearVector) in a collection using an embedding you supply. Works with any collection, including those without a vectorizer module. Optionally restrict results with a maximum distance or minimum certainty (certainty applies to cosine distance only) and a where filter. When Return Properties is omitted, all scalar properties from the collection schema are returned."
+    },
+    {
+      "name": "Search (Text)",
+      "category": "Search",
+      "description": "Performs a semantic text search (nearText) in a collection. REQUIRES the collection to use a vectorizer module (e.g. text2vec-openai) — for external providers, set the module API key via the \"Inference API Keys\" configuration. Optionally restrict results with a maximum distance or minimum certainty and a where filter. When Return Properties is omitted, all scalar properties from the collection schema are returned."
+    },
+    {
+      "name": "Search (Keyword)",
+      "category": "Search",
+      "description": "Performs a keyword search using the BM25 ranking algorithm. Works on any collection without requiring a vectorizer. Optionally restrict the search to specific properties and filter results with a where filter. When Return Properties is omitted, all scalar properties from the collection schema are returned."
+    },
+    {
+      "name": "Search (Hybrid)",
+      "category": "Search",
+      "description": "Performs a hybrid search combining vector similarity and BM25 keyword ranking. Alpha controls the balance: 0 = pure keyword search, 1 = pure vector search (default 0.75). Without an explicit vector, the query text is vectorized by the collection's vectorizer module (set external module keys via the \"Inference API Keys\" configuration); supply a vector to use hybrid search on collections without a vectorizer. When Return Properties is omitted, all scalar properties from the collection schema are returned."
+    },
+    {
+      "name": "GraphQL Query (Raw)",
+      "category": "Search",
+      "description": "Executes an arbitrary GraphQL query against the Weaviate GraphQL endpoint — an escape hatch for advanced features not covered by the dedicated search operations (Explore, groupBy, cross-reference resolution, sort, autocut, etc.). Returns the raw \"data\" payload; GraphQL errors are surfaced as thrown errors even when the HTTP status is 200."
+    },
+    {
+      "name": "Aggregate Count",
+      "category": "Search",
+      "description": "Counts the objects in a collection using a GraphQL Aggregate query, optionally restricted by a where filter. Useful for checking collection size or how many objects match a condition."
+    },
+    {
+      "name": "Get Meta",
+      "category": "Utilities",
+      "description": "Retrieves metadata about the Weaviate instance, including the server version, hostname, and the enabled modules (vectorizers, rerankers, generative modules)."
+    },
+    {
+      "name": "Check Liveness",
+      "category": "Utilities",
+      "description": "Checks whether the Weaviate instance is alive and ready to receive traffic via the readiness endpoint (/v1/.well-known/ready). Returns true when the instance is ready, false otherwise (unreachable or not ready)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Build a semantic search or RAG backend by inserting embeddings and querying them with vector, text, keyword, or hybrid search.",
+    "Sync records from other systems into Weaviate collections in bulk and keep them up to date.",
+    "Filter, count, and clean up stored objects with where filters and batch deletes.",
+    "Run advanced GraphQL features (sort, groupBy, autocut, cross-references) through the raw query escape hatch."
+  ],
+  "agentIdeas": [
+    "Use **OpenAI** \"Create Embeddings\" to vectorize a batch of documents, then call **Weaviate** \"Batch Create Objects\" to index them into a collection for semantic search.",
+    "When a **Gmail** \"On New Email\" trigger fires, embed the message with **OpenAI** \"Create Embeddings\" and store it via **Weaviate** \"Create Object\" to build a searchable email knowledge base.",
+    "Use **Weaviate** \"Search (Hybrid)\" to retrieve the most relevant records for a user question, then pass them to **OpenAI** as context for a grounded answer, and log the result with **Google Sheets** \"Get Rows\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/weaviate/public/icon.png",
+  "sourcePaths": {
+    "service": "services/weaviate",
+    "readme": "services/weaviate/README.md",
+    "index": "services/weaviate/src/index.js"
+  }
+}

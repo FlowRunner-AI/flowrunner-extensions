@@ -1,0 +1,127 @@
+{
+  "slug": "airtable",
+  "name": "Airtable",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "A comprehensive integration that enables seamless interaction with Airtable databases. This extension provides full CRUD operations for bases, tables, records, and comments, along with real-time monitoring capabilities for automated workflows and data synchronization.",
+  "actionCount": 17,
+  "triggerCount": 2,
+  "operationCategories": [
+    "Bases",
+    "Tables",
+    "Records",
+    "Comments"
+  ],
+  "actions": [
+    {
+      "name": "Get All Bases",
+      "category": "Bases",
+      "description": "Retrieves all accessible Airtable bases for the authenticated user. Perfect for AI agents to discover available workspaces and their access permissions before performing data operations."
+    },
+    {
+      "name": "Get Base Schema",
+      "category": "Bases",
+      "description": "Retrieves the complete schema for an Airtable base, including all tables, fields, views, and their configurations. Essential for AI agents to understand data structure before performing operations."
+    },
+    {
+      "name": "Create Base",
+      "category": "Bases",
+      "description": "Creates a new Airtable base with specified tables and initial structure. Perfect for AI agents to dynamically provision new workspaces and data structures for projects or applications."
+    },
+    {
+      "name": "Create Table",
+      "category": "Tables",
+      "description": "Creates a new table within an existing Airtable base with specified fields and structure. Ideal for AI agents to dynamically provision data storage as needed for different use cases."
+    },
+    {
+      "name": "Update Table",
+      "category": "Tables",
+      "description": "Updates the name and/or description of an existing table. Useful for AI agents to maintain organized data structures as requirements evolve."
+    },
+    {
+      "name": "Find Record",
+      "category": "Records",
+      "description": "Retrieves a single record from an Airtable table using flexible search options. Perfect for AI agents to locate specific records based on field values or complex search formulas."
+    },
+    {
+      "name": "Find Many Records",
+      "category": "Records",
+      "description": "Retrieves multiple records from an Airtable table using flexible search criteria and formulas. Supports both simple field-based searches and complex Airtable formula syntax for advanced filtering."
+    },
+    {
+      "name": "Create or Update Record",
+      "category": "Records",
+      "description": "Intelligently updates an existing record if found, or creates a new record if none exists. Perfect for AI agents implementing upsert operations without manual record existence checks."
+    },
+    {
+      "name": "Create Record",
+      "category": "Records",
+      "description": "Creates a new record in an Airtable table with specified field values. Perfect for AI agents to add structured data, populate databases, or create entries based on processed information."
+    },
+    {
+      "name": "Create Records",
+      "category": "Records",
+      "description": "Creates multiple new records in batch (up to 10 records). Efficient for AI agents to bulk-insert structured data while maintaining referential integrity and reducing API calls."
+    },
+    {
+      "name": "Update Record",
+      "category": "Records",
+      "description": "Updates specific fields in an existing Airtable record while preserving other field values. Perfect for AI agents to modify data based on processed information or user interactions."
+    },
+    {
+      "name": "Delete Records",
+      "category": "Records",
+      "description": "Deletes multiple records in batch using their unique identifiers. Efficient for AI agents to clean up obsolete data or perform bulk maintenance operations."
+    },
+    {
+      "name": "Delete Record",
+      "category": "Records",
+      "description": "Deletes a single record by its unique identifier. Useful for AI agents to remove specific data entries based on business logic or data lifecycle management."
+    },
+    {
+      "name": "Get Latest Comments",
+      "category": "Comments",
+      "description": "Retrieves up to 100 comments for a specific record, ordered from newest to oldest. Perfect for AI agents to analyze collaboration history and track record discussions."
+    },
+    {
+      "name": "Create Comment",
+      "category": "Comments",
+      "description": "Creates a new comment on a specific record for collaboration and documentation purposes. Ideal for AI agents to add contextual notes, status updates, or processing logs."
+    },
+    {
+      "name": "Update Comment",
+      "category": "Comments",
+      "description": "Updates the text content of an existing comment on a record. Note that users can only update comments they created. Perfect for AI agents to correct or enhance previously added notes."
+    },
+    {
+      "name": "Delete Comment",
+      "category": "Comments",
+      "description": "Deletes a comment from a record. Users can only delete comments they created (Enterprise Admins can delete any comment). Useful for AI agents to clean up outdated or incorrect notes."
+    }
+  ],
+  "triggers": [
+    "On New or Updated Record",
+    "On New Record"
+  ],
+  "idealUseCases": [
+    "Automating data entry and record management across multiple Airtable bases",
+    "Building AI agents that need to sync and process structured data in real-time",
+    "Creating automated workflows that respond to new or updated records",
+    "Implementing data validation and cleanup processes for large datasets",
+    "Developing customer relationship management automation",
+    "Setting up content management systems with automated publishing workflows",
+    "Building inventory tracking and management systems"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.webp",
+  "iconFile": "services/airtable/public/icon.webp",
+  "sourcePaths": {
+    "service": "services/airtable",
+    "readme": "services/airtable/README.md",
+    "index": "services/airtable/src/index.js"
+  }
+}

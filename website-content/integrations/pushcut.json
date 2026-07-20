@@ -1,0 +1,75 @@
+{
+  "slug": "pushcut",
+  "name": "Pushcut",
+  "marketingCategory": "SMS, Voice & Push",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Send rich mobile notifications, run Shortcuts and HomeKit scenes, and manage webhook subscriptions using the [Pushcut Web API](https://www.pushcut.io/webapi). Pushcut turns your iPhone, iPad, and Apple Watch into programmable notification and automation endpoints.",
+  "actionCount": 7,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Notifications",
+    "Execute",
+    "Devices",
+    "Subscriptions"
+  ],
+  "actions": [
+    {
+      "name": "Send Notification",
+      "category": "Notifications",
+      "description": "Sends a predefined notification, identified by its name, to your Pushcut devices. The notification must first be created in the Pushcut app (Notifications tab); this operation triggers it and can override its title, text, image, sound, actions, and target devices at send time. Supports dynamic actions (each opening a URL or running a Shortcut), a default tap action, time-sensitive delivery, and grouping via a thread ID."
+    },
+    {
+      "name": "List Notifications",
+      "category": "Notifications",
+      "description": "Lists the notifications you have defined in the Pushcut app, returning each notification's name and identifier. Use a returned name with Send Notification."
+    },
+    {
+      "name": "Execute Action",
+      "category": "Execute",
+      "description": "Runs a Shortcut, activates a HomeKit scene, or triggers a Pushcut automation on your devices. Provide exactly one of Shortcut, HomeKit Scene, or Automation. Optionally pass an input value, a delay before execution (e.g. \"10s\", \"5m\", \"1h\"), and specific target devices. Use an Identifier together with a delay to later cancel the scheduled execution."
+    },
+    {
+      "name": "List Devices",
+      "category": "Devices",
+      "description": "Lists the devices connected to your Pushcut account, returning each device's id and name. Useful as a connection check and to discover device names for the Devices parameter on Send Notification and Execute Action."
+    },
+    {
+      "name": "List Subscriptions",
+      "category": "Subscriptions",
+      "description": "Lists your active API subscriptions (server-side webhooks). Each subscription fires the given URL whenever the named Pushcut action is triggered. Returns each subscription's id, action name, and URL."
+    },
+    {
+      "name": "Add Subscription",
+      "category": "Subscriptions",
+      "description": "Creates an API subscription that sends an HTTP request to the given URL whenever the specified Pushcut action is triggered. Returns the created subscription id, which you can pass to Remove Subscription."
+    },
+    {
+      "name": "Remove Subscription",
+      "category": "Subscriptions",
+      "description": "Deletes an API subscription by its id, stopping its webhook from firing. Get subscription ids from List Subscriptions or Add Subscription."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send a predefined, actionable notification to your devices from any workflow, with an overridden title, text, image, sound, and action buttons.",
+    "Trigger a Shortcut, activate a HomeKit scene, or run a Pushcut automation on a device (optionally after a delay).",
+    "Fan out server-side webhooks: subscribe an external URL to a Pushcut action so it fires whenever that action runs.",
+    "Confirm connectivity and discover device and notification names for use in other steps."
+  ],
+  "agentIdeas": [
+    "After a long-running workflow finishes, use **Pushcut** \"Send Notification\" to alert your phone with a time-sensitive notification and a tap action that opens the result.",
+    "Combine a monitoring trigger with **Pushcut** \"Execute Action\" to activate a HomeKit scene (e.g. turn on lights) when an event occurs.",
+    "Use **Pushcut** \"Add Subscription\" to have a Pushcut button call a FlowRunner webhook, wiring a physical/tap action into an automated workflow."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/pushcut/public/icon.png",
+  "sourcePaths": {
+    "service": "services/pushcut",
+    "readme": "services/pushcut/README.md",
+    "index": "services/pushcut/src/index.js"
+  }
+}

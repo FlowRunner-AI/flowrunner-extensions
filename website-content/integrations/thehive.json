@@ -1,0 +1,137 @@
+{
+  "slug": "thehive",
+  "name": "TheHive",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [TheHive](https://strangebee.com/thehive/), the open-source Security Incident Response Platform (SIRP). This service targets the **TheHive 5** REST API (`/api/v1`) and automates SOC incident response — managing cases, tasks, observables, and alerts — from your FlowRunner flows. It authenticates with an API key sent as a Bearer token.",
+  "actionCount": 19,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Cases",
+    "Tasks",
+    "Observables",
+    "Alerts",
+    "Query"
+  ],
+  "actions": [
+    {
+      "name": "Create Case",
+      "category": "Cases",
+      "description": "Creates a new case in TheHive. A case is the central container for a security investigation and groups tasks, observables, and analyst notes. Provide at minimum a title and description. Severity, TLP (Traffic Light Protocol sharing level), and PAP (Permissible Actions Protocol) accept friendly labels that are translated to TheHive's numeric codes. Returns the created case including its generated id and number."
+    },
+    {
+      "name": "Get Case",
+      "category": "Cases",
+      "description": "Retrieves a single case by its id (e.g. \"~8200\"). Returns the full case object including severity, TLP/PAP, status, tags, assignee, and timestamps."
+    },
+    {
+      "name": "Update Case",
+      "category": "Cases",
+      "description": "Updates fields on an existing case. Only the fields you provide are changed; omitted fields are left untouched. Severity, TLP, and PAP accept friendly labels that map to TheHive's numeric codes. Returns no content on success."
+    },
+    {
+      "name": "Delete Case",
+      "category": "Cases",
+      "description": "Permanently deletes a case by id, along with its tasks and observables. This action cannot be undone. Returns a success indicator."
+    },
+    {
+      "name": "List Cases",
+      "category": "Cases",
+      "description": "Lists cases using TheHive's query API, with optional keyword filtering and pagination. Internally posts a query pipeline to /query: [{ \"_name\": \"listCase\" }, (optional keyword filter), { \"_name\": \"page\", \"from\": ..., \"to\": ... }]. For advanced filtering use the Run Query operation. Returns an array of case objects."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a task within a case. Tasks track investigation steps and can be grouped and assigned. Provide the parent case id and a task title; group, status, and description are optional. Returns the created task."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single task by its id. Returns the task object including title, group, status, assignee, and timestamps."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates fields on an existing task. Only the fields you provide are changed. Commonly used to advance a task's status. Returns a success indicator."
+    },
+    {
+      "name": "List Case Tasks",
+      "category": "Tasks",
+      "description": "Lists the tasks belonging to a case using TheHive's query API. Internally posts [{ \"_name\": \"getCase\", \"idOrName\": caseId }, { \"_name\": \"tasks\" }, { \"_name\": \"page\", \"from\": ..., \"to\": ... }] to /query. Returns an array of task objects."
+    },
+    {
+      "name": "Create Observable",
+      "category": "Observables",
+      "description": "Adds an observable (a piece of technical evidence such as an IP, domain, URL, hash, or email) to a case. Set \"ioc\" to mark it as an Indicator of Compromise and \"sighted\" if it has been seen in your environment. Returns an array containing the created observable(s)."
+    },
+    {
+      "name": "Get Observable",
+      "category": "Observables",
+      "description": "Retrieves a single observable by its id. Returns the observable object including its data type, value, IOC/sighted flags, TLP, and timestamps."
+    },
+    {
+      "name": "List Case Observables",
+      "category": "Observables",
+      "description": "Lists the observables belonging to a case using TheHive's query API. Internally posts [{ \"_name\": \"getCase\", \"idOrName\": caseId }, { \"_name\": \"observables\" }, { \"_name\": \"page\", \"from\": ..., \"to\": ... }] to /query. Returns an array of observable objects."
+    },
+    {
+      "name": "Create Alert",
+      "category": "Alerts",
+      "description": "Creates an alert in TheHive. Alerts are notifications from external sources (SIEM, email, threat feeds) that analysts triage and optionally promote to cases. The combination of type, source, and sourceRef uniquely identifies an alert. Observables can be attached inline as an array of { dataType, data } objects. Returns the created alert."
+    },
+    {
+      "name": "Get Alert",
+      "category": "Alerts",
+      "description": "Retrieves a single alert by its id. Returns the full alert object including type, source, sourceRef, severity, TLP, status, and timestamps."
+    },
+    {
+      "name": "Update Alert",
+      "category": "Alerts",
+      "description": "Updates fields on an existing alert. Only the fields you provide are changed. Useful for re-triaging (changing severity, TLP, tags, or status) before promoting to a case. Returns a success indicator."
+    },
+    {
+      "name": "Promote Alert to Case",
+      "category": "Alerts",
+      "description": "Promotes an alert into a new case, copying its details and observables. Optionally supply a case template name and field overrides (any Create Case fields) to apply during promotion. Returns the newly created case."
+    },
+    {
+      "name": "Merge Alert into Case",
+      "category": "Alerts",
+      "description": "Merges an existing alert into an existing case, adding the alert's observables and details to that case instead of creating a new one. Returns the updated case."
+    },
+    {
+      "name": "List Alerts",
+      "category": "Alerts",
+      "description": "Lists alerts using TheHive's query API, with optional keyword filtering and pagination. Internally posts [{ \"_name\": \"listAlert\" }, (optional keyword filter), { \"_name\": \"page\", \"from\": ..., \"to\": ... }] to /query. For advanced filtering use the Run Query operation. Returns an array of alert objects."
+    },
+    {
+      "name": "Run Query",
+      "category": "Query",
+      "description": "Runs a raw TheHive query using its query DSL against the /query endpoint. This is the escape hatch for advanced search and reporting not covered by the dedicated operations. Provide the \"query\" as an array of pipeline stages, each an object with a \"_name\" (e.g. listCase, listAlert, filter, sort, page). Example: [{\"_name\":\"listCase\"},{\"_name\":\"filter\",\"_field\":\"status\",\"_value\":\"New\"},{\"_name\":\"page\",\"from\":0,\"to\":25}]. Returns whatever the query produces (usually an array)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Auto-create a case from an external alert (SIEM, email, ticketing) and scaffold its investigation tasks.",
+    "Ingest alerts from threat feeds, then triage and promote or merge them into cases.",
+    "Enrich cases by attaching IPs, domains, hashes, and URLs as observables, flagging IOCs and sightings.",
+    "Advance task status and update case fields as an investigation progresses.",
+    "Report on open cases and alerts using keyword filters or the raw query DSL."
+  ],
+  "agentIdeas": [
+    "When a **Slack** \"On Channel Message\" trigger reports a suspicious event, use **TheHive** \"Create Alert\" to open an investigation, then post the case link back with **Slack** \"Send Message To Channel\".",
+    "Use **Gmail** \"On New Email\" to catch phishing reports, call **TheHive** \"Create Alert\" with the sender and URLs as observables, then \"Promote Alert to Case\" once triaged.",
+    "After **TheHive** \"List Cases\" or \"Run Query\" returns open incidents, use **Google Sheets** \"Add Row\" to log each case's number, severity, and status into an incident tracking spreadsheet."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/thehive/public/icon.png",
+  "sourcePaths": {
+    "service": "services/thehive",
+    "readme": "services/thehive/README.md",
+    "index": "services/thehive/src/index.js"
+  }
+}

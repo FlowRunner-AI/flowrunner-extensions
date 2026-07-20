@@ -1,0 +1,159 @@
+{
+  "slug": "figma",
+  "name": "Figma",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrate [Figma](https://www.figma.com) with FlowRunner. This service wraps the Figma REST API to read files, export images, manage comments and reactions, browse teams/projects, inspect components and styles, view version history, and manage webhook subscriptions.",
+  "actionCount": 23,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Files",
+    "Images",
+    "Comments",
+    "Projects",
+    "Components & Styles",
+    "User",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "Get File",
+      "category": "Files",
+      "description": "Retrieves the full document JSON tree for a Figma file, including the node hierarchy, components, styles, and metadata. For large files this response can be very big, so use Depth to limit how many levels of the node tree are returned, or use Node IDs to fetch only specific nodes. Accepts a raw file key or a full figma.com/file or /design URL."
+    },
+    {
+      "name": "Get File Nodes",
+      "category": "Files",
+      "description": "Retrieves only the specified nodes from a Figma file rather than the entire document tree, producing a much lighter response than Get File. Returns a map of node ID to its document subtree, components, and styles. Ideal when you already know which frames or components you need."
+    },
+    {
+      "name": "Get File Metadata",
+      "category": "Files",
+      "description": "Retrieves lightweight metadata for a Figma file without the node tree: name, last modified timestamp, thumbnail URL, version, editor type, role, and link access. Use this as a fast way to check a file's identity and freshness before deciding whether to fetch the full document."
+    },
+    {
+      "name": "Get File Versions",
+      "category": "Files",
+      "description": "Retrieves the version history of a Figma file, listing each saved version with its ID, label, description, creation time, and the user who created it. Version IDs returned here can be passed to Get File, Get File Nodes, or Export Image to work with a historical snapshot."
+    },
+    {
+      "name": "Export Image",
+      "category": "Images",
+      "description": "Renders one or more nodes of a Figma file to images and returns a map of node ID to a temporary Figma-hosted image URL (these URLs expire after roughly 30 days). Supports PNG, JPG, SVG, and PDF output at a configurable scale. When Save To Storage is enabled, each rendered image is downloaded and re-hosted in FlowRunner file storage and the returned URLs point at those permanent copies instead."
+    },
+    {
+      "name": "Get Image Fills",
+      "category": "Images",
+      "description": "Retrieves download URLs for all images used as fills within a Figma file, returned as a map of image reference to a temporary Figma-hosted URL. These are the raw uploaded images referenced by imageRef in node fills, as opposed to Export Image which renders nodes on demand."
+    },
+    {
+      "name": "Get Comments",
+      "category": "Comments",
+      "description": "Retrieves all comments on a Figma file, including their message text, author, creation time, resolution status, and pin location (node or canvas coordinates). Replies are linked to their parent comment via the parent_id field."
+    },
+    {
+      "name": "Post Comment",
+      "category": "Comments",
+      "description": "Posts a new comment on a Figma file, or a reply to an existing comment. A comment can be pinned to a specific node (by node ID, with optional x/y offset within that node) or to an absolute canvas position (x/y), or left unpinned. To reply to an existing comment, provide its comment ID."
+    },
+    {
+      "name": "Delete Comment",
+      "category": "Comments",
+      "description": "Permanently deletes a comment from a Figma file. Only the comment's author can delete it. Deleting a top-level comment also removes its replies."
+    },
+    {
+      "name": "Get Comment Reactions",
+      "category": "Comments",
+      "description": "Retrieves all emoji reactions on a specific comment, including the reacting user and the emoji shortcode used."
+    },
+    {
+      "name": "Add Comment Reaction",
+      "category": "Comments",
+      "description": "Adds an emoji reaction to a comment. The emoji must be provided as a Figma-supported shortcode such as :eyes:, :heart_eyes:, :thumbsup:, or :thumbsdown:."
+    },
+    {
+      "name": "Get Team Projects",
+      "category": "Projects",
+      "description": "Lists all projects belonging to a Figma team. The team ID is the number in a team URL such as figma.com/files/team/{teamId}. Use Get Project Files to list the files within a returned project."
+    },
+    {
+      "name": "Get Project Files",
+      "category": "Projects",
+      "description": "Lists all files within a Figma project, returning each file's key, name, thumbnail URL, and last modified time. Use a returned file key with Get File, Export Image, or the comment operations."
+    },
+    {
+      "name": "Get Team Components",
+      "category": "Components & Styles",
+      "description": "Lists the published components in a Figma team's libraries, with pagination. Each entry includes the component key, name, description, thumbnail, containing file, and update times. Use a component key with Get Component for full metadata."
+    },
+    {
+      "name": "Get File Components",
+      "category": "Components & Styles",
+      "description": "Lists all published components defined within a single Figma file, including each component's key, name, description, and node location. Unlike Get Team Components this is scoped to one file and does not require library publishing at the team level."
+    },
+    {
+      "name": "Get Component",
+      "category": "Components & Styles",
+      "description": "Retrieves full metadata for a single published component by its component key, including its name, description, containing file, node ID, thumbnail, and the component set it belongs to (if any). Component keys are returned by Get Team Components and Get File Components."
+    },
+    {
+      "name": "Get Team Component Sets",
+      "category": "Components & Styles",
+      "description": "Lists the published component sets (variant groupings) in a Figma team's libraries, with pagination. Each entry includes the set key, name, description, containing file, and thumbnail."
+    },
+    {
+      "name": "Get Team Styles",
+      "category": "Components & Styles",
+      "description": "Lists the published styles (color, text, effect, and grid styles) in a Figma team's libraries, with pagination. Each entry includes the style key, name, description, style type, and containing file."
+    },
+    {
+      "name": "Get File Styles",
+      "category": "Components & Styles",
+      "description": "Lists all published styles defined within a single Figma file, including each style's key, name, description, and style type (FILL, TEXT, EFFECT, or GRID). Scoped to one file, unlike Get Team Styles."
+    },
+    {
+      "name": "Get Me",
+      "category": "User",
+      "description": "Retrieves the profile of the user who owns the configured personal access token: their user ID, email, handle, and avatar. Useful as a quick connection and credential check."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Lists Figma v2 webhooks visible to the token, scoped by context. Webhooks deliver events (file updates, comments, version updates, library publishes) to an external HTTPS endpoint you control. Note: these operations only manage webhook subscriptions in Figma; Figma requires a stable, passcode-verified receiving endpoint, so event delivery is NOT wired to a FlowRunner trigger by this service."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Creates a Figma v2 webhook that posts events to an external HTTPS endpoint you control. On creation Figma sends a PING to verify the endpoint, and every delivery includes the passcode so your receiver can authenticate it. Note: this only registers the subscription in Figma; delivery is NOT wired to a FlowRunner trigger, so you must host and verify the receiving endpoint yourself."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Deletes a Figma v2 webhook by its ID, stopping all future event deliveries to its endpoint."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Export selected frames or components to PNG/JPG/SVG/PDF and archive durable copies for release notes, changelogs, or asset pipelines.",
+    "Sync design system inventory (components, component sets, styles) from a team or file into external documentation or tracking tools.",
+    "Notify a chat channel or log a spreadsheet row whenever a new file version is published or a comment is posted.",
+    "Automate design-review workflows by reading comments, posting replies, and adding reactions programmatically.",
+    "Inspect a file's document tree or specific nodes to feed design tokens and metadata into downstream automations."
+  ],
+  "agentIdeas": [
+    "Use **Figma** \"Export Image\" to render selected frames to PNG, then **Notion** \"Create Page\" to publish a design handoff page embedding the exported assets and file metadata.",
+    "After **Figma** \"Get File Versions\" reveals a new published version, use **Slack** \"Send Message To Channel\" to notify the design team with the version label and author.",
+    "Use **Figma** \"Get Team Components\" to inventory a team's design system, then **Google Sheets** \"Add Row\" to log each component's name, key, and containing file into a tracking spreadsheet."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/figma/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/figma",
+    "readme": "services/figma/README.md",
+    "index": "services/figma/src/index.js"
+  }
+}

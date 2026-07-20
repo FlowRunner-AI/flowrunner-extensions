@@ -1,0 +1,148 @@
+{
+  "slug": "zulip",
+  "name": "Zulip",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Connect FlowRunner to a Zulip organization to send stream and direct messages, manage streams (channels) and users, react to and edit messages, upload files, and register event queues. Authenticates with HTTP Basic auth using your Zulip email and API key against your organization's Site URL.",
+  "actionCount": 21,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messages",
+    "Streams",
+    "Users",
+    "Events"
+  ],
+  "actions": [
+    {
+      "name": "Send Message",
+      "category": "Messages",
+      "description": "Sends a message to a Zulip stream (channel) or as a direct message. For a stream message, set Type to \"Stream\", provide the stream name in Recipients, and set a Topic. For a direct message, set Type to \"Direct\" and provide Recipients as a JSON array of user emails or IDs, e.g. [\"user@example.com\"] or [9,10]; Topic is ignored. Returns the created message ID."
+    },
+    {
+      "name": "Get Messages",
+      "category": "Messages",
+      "description": "Retrieves messages from Zulip relative to an anchor point. Use Anchor (\"newest\", \"oldest\", \"first_unread\", or a message ID) with Num Before / Num After to page. Optionally filter with a Narrow, a JSON array of {operator, operand} objects, e.g. [{\"operator\":\"stream\",\"operand\":\"general\"}]."
+    },
+    {
+      "name": "Update Message",
+      "category": "Messages",
+      "description": "Edits an existing message's content and/or moves it to a different topic. Provide the message ID and at least one of Content or Topic. Topic edits apply to stream messages."
+    },
+    {
+      "name": "Delete Message",
+      "category": "Messages",
+      "description": "Permanently deletes a message by its ID. Requires appropriate permissions in the Zulip organization."
+    },
+    {
+      "name": "Add Reaction",
+      "category": "Messages",
+      "description": "Adds an emoji reaction to a message. Provide the message ID and the emoji name (without colons), e.g. \"thumbs_up\"."
+    },
+    {
+      "name": "Remove Reaction",
+      "category": "Messages",
+      "description": "Removes an emoji reaction previously added to a message. Provide the message ID and the emoji name (without colons)."
+    },
+    {
+      "name": "Get Message Read Receipts",
+      "category": "Messages",
+      "description": "Returns the list of user IDs who have marked a specific message as read. Read receipts must be enabled in the Zulip organization."
+    },
+    {
+      "name": "Upload File",
+      "category": "Messages",
+      "description": "Uploads a file to Zulip, then stores it in FlowRunner file storage and returns both the Zulip upload URL and a downloadable FlowRunner URL. Use the returned Zulip URL in message content as a Markdown link, e.g. [file.pdf](/user_uploads/...). Large files (25MB+) may fail due to network timeouts."
+    },
+    {
+      "name": "Get Streams",
+      "category": "Streams",
+      "description": "Retrieves the streams (channels) the authenticated user can access, including their IDs, names, and descriptions."
+    },
+    {
+      "name": "Get Stream ID",
+      "category": "Streams",
+      "description": "Looks up the numeric stream ID for a given stream (channel) name."
+    },
+    {
+      "name": "Get Stream Topics",
+      "category": "Streams",
+      "description": "Retrieves the recent topics in a stream (channel), identified by its numeric stream ID. Use Get Stream ID first if you only have the stream name."
+    },
+    {
+      "name": "Subscribe to Streams",
+      "category": "Streams",
+      "description": "Subscribes the authenticated user to one or more streams (channels). Provide stream names as an array; any names that do not exist are created automatically. Optionally set a description applied only to newly created streams."
+    },
+    {
+      "name": "Create Stream",
+      "category": "Streams",
+      "description": "Creates a new stream (channel) by subscribing the authenticated user to it. In Zulip, streams are created implicitly when subscribing to a non-existent name. Optionally mark it private (invite-only) and set a description."
+    },
+    {
+      "name": "Unsubscribe from Streams",
+      "category": "Streams",
+      "description": "Unsubscribes the authenticated user from one or more streams (channels). Provide the stream names as an array of strings."
+    },
+    {
+      "name": "Get Users",
+      "category": "Users",
+      "description": "Retrieves all users (members) in the Zulip organization, including their IDs, emails, full names, and roles."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves details of a single user by their numeric user ID."
+    },
+    {
+      "name": "Get Own User",
+      "category": "Users",
+      "description": "Retrieves the profile of the authenticated user (bot or user). Useful as a connection check to verify the site URL, email, and API key are valid."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a new user in the Zulip organization. Requires administrator permissions. Provide the new user's email, password, and full name."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates an existing user identified by their numeric user ID. Requires administrator permissions. Provide any of full name or role to change."
+    },
+    {
+      "name": "Deactivate User",
+      "category": "Users",
+      "description": "Deactivates (deletes) a user in the Zulip organization by their numeric user ID. Requires administrator permissions. The user can be reactivated later."
+    },
+    {
+      "name": "Register Event Queue",
+      "category": "Events",
+      "description": "Registers an event queue with Zulip and returns a queue ID and the current state. Provide the event types to subscribe to as an array, e.g. [\"message\"]. Note: fetching events from the queue uses long-polling and is not supported here."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Post alerts, deploy notifications, or report summaries into a Zulip stream topic",
+    "Send direct messages to individuals or groups from an automated workflow",
+    "Add or remove emoji reactions to acknowledge or triage messages",
+    "Upload files (logs, PDFs, images) and reference them in message content",
+    "Provision, update, or deactivate organization members during onboarding/offboarding",
+    "Look up streams, topics, and users to route messages dynamically"
+  ],
+  "agentIdeas": [
+    "Use **Zulip** \"Get Streams\" to resolve the target channel, then **Zulip** \"Send Message\" to post a formatted status update to its topic",
+    "When a **Slack** \"On Channel Message\" trigger fires, use **Zulip** \"Send Message\" to mirror the message into a Zulip stream so both teams stay in sync",
+    "Fetch new rows with **Google Sheets** \"Get Rows\", then call **Zulip** \"Create User\" for each entry to onboard members into the organization",
+    "Use **Zulip** \"Upload File\" to store a generated report, then **Gmail** \"Send Message\" to email the downloadable FlowRunner link to stakeholders"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/zulip/public/icon.png",
+  "sourcePaths": {
+    "service": "services/zulip",
+    "readme": "services/zulip/README.md",
+    "index": "services/zulip/src/index.js"
+  }
+}

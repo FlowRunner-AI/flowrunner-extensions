@@ -1,0 +1,134 @@
+{
+  "slug": "openrouter",
+  "name": "OpenRouter",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [OpenRouter](https://openrouter.ai) — a unified API for hundreds of AI models from OpenAI, Anthropic, Google, Meta, Mistral, DeepSeek and many more, with automatic routing, model fallbacks, provider preferences and transparent per-request cost accounting. Covers chat, vision, image/video generation, speech, embeddings, reranking and account insights.",
+  "actionCount": 18,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Chat",
+    "Images",
+    "Audio",
+    "Video",
+    "Embeddings",
+    "Insights",
+    "Models",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Chat Completion",
+      "category": "Chat",
+      "description": "Generates a text response for a single prompt using any of the hundreds of models available through OpenRouter (OpenAI, Anthropic, Google, Meta, Mistral, DeepSeek and more) via one unified API. Supports an optional system prompt, model fallbacks for automatic failover, provider sorting (cheapest/fastest/lowest latency), reasoning effort for reasoning models, JSON mode and OpenRouter's web search plugin for grounded answers. Defaults to the 'openrouter/auto' router, which picks the best model for the prompt. Returns the generated text, extracted reasoning (when available), the model and provider that served the request, finish reason, token usage and the generation ID for cost lookup via Get Generation."
+    },
+    {
+      "name": "Chat Completion (Advanced)",
+      "category": "Chat",
+      "description": "Sends a fully custom chat completion request through OpenRouter's unified API with complete control over the request: full messages array (multi-turn conversations, multimodal content parts), model fallbacks, the complete provider routing preferences object (order, only, ignore, quantizations, sort, allow_fallbacks, data_collection, max_price, require_parameters), reasoning configuration, plugins (web search, file parser, auto router, context compression and more), tool/function calling passthrough, structured outputs via a response format object (json_object or json_schema) and all sampling parameters. Returns the raw OpenRouter API response including choices, tool calls, provider and usage."
+    },
+    {
+      "name": "Analyze Image",
+      "category": "Chat",
+      "description": "Analyzes one or more images with any multimodal model available through OpenRouter and answers a prompt about them — describe content, extract text, compare images or answer visual questions. Accepts public image URLs or base64 data URLs. Supports JSON mode for structured extraction. Returns the answer text, the model and provider that served the request, finish reason and token usage."
+    },
+    {
+      "name": "Generate Image",
+      "category": "Images",
+      "description": "Generates one or more images from a text prompt using any image generation model available through OpenRouter (Seedream, FLUX, Gemini image models, GPT Image and more). Supports aspect ratio, resolution tier, output format, quality, background treatment, deterministic seeds and reference images for image-to-image generation. Saves each generated image to FlowRunner file storage and returns their URLs together with generation usage and cost."
+    },
+    {
+      "name": "Text to Speech",
+      "category": "Audio",
+      "description": "Converts text into speech audio using any text-to-speech model available through OpenRouter (e.g. OpenAI TTS, Voxtral). Saves the generated audio to FlowRunner file storage and returns its URL."
+    },
+    {
+      "name": "Transcribe Audio",
+      "category": "Audio",
+      "description": "Transcribes an audio file into text using any speech-to-text model available through OpenRouter (Whisper, Voxtral, Gemini and more). Downloads the audio from the provided URL (FlowRunner file URL or any public URL, max 25 MB) and returns the transcription with usage. Verbose JSON output adds detected language, duration and segment/word-level timestamps on OpenAI-compatible providers."
+    },
+    {
+      "name": "Generate Video",
+      "category": "Video",
+      "description": "Submits an asynchronous video generation job using any video model available through OpenRouter (Veo, Sora, Seedance and more). Returns immediately with a job ID and status — poll the job with Get Video Status and save the finished video with Download Video, or provide a callback URL to be notified when the job completes."
+    },
+    {
+      "name": "Get Video Status",
+      "category": "Video",
+      "description": "Polls the status of a video generation job by its job ID. The status progresses through pending, in_progress and completed (or failed/cancelled/expired). Once completed, the response includes the generation ID for cost lookup and unsigned URLs of the results; save the video with Download Video."
+    },
+    {
+      "name": "Download Video",
+      "category": "Video",
+      "description": "Downloads the finished video content of a completed video generation job, saves it to FlowRunner file storage and returns its URL. Use the index parameter to pick a specific result when the job produced multiple videos."
+    },
+    {
+      "name": "Create Embeddings",
+      "category": "Embeddings",
+      "description": "Generates embedding vectors for one or more texts using any embeddings model available through OpenRouter (OpenAI, Google, Qwen, Mistral and more). Returns the embedding vectors together with the model used and token usage — ideal for semantic search, clustering and RAG pipelines."
+    },
+    {
+      "name": "Rerank Documents",
+      "category": "Embeddings",
+      "description": "Reranks a list of documents by relevance to a search query using a rerank model available through OpenRouter (e.g. Cohere Rerank). Returns the documents sorted by relevance score with their original indexes — ideal as a precision step after vector search in RAG pipelines."
+    },
+    {
+      "name": "Get Generation",
+      "category": "Insights",
+      "description": "Retrieves detailed request and usage metadata for a past generation by its ID (returned by every chat completion), including the exact total cost in credits, native and normalized token counts, cached/reasoning token counts, provider name, latency, generation time and finish reason. Use it for precise per-request cost accounting."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists models available through OpenRouter with rich filtering: free-text search, use-case category, input/output modalities, minimum context length, maximum prompt price and server-side sorting (popularity, newest, price, context, throughput, latency, intelligence). Each model includes its pricing, context length, architecture, supported parameters and description."
+    },
+    {
+      "name": "Get Model Endpoints",
+      "category": "Models",
+      "description": "Retrieves all provider endpoints serving a specific model, with each endpoint's provider name, pricing, context length, max completion tokens, quantization, supported parameters, uptime and status. Use it to compare providers before pinning routing with provider preferences."
+    },
+    {
+      "name": "List Providers",
+      "category": "Models",
+      "description": "Lists all inference providers available through OpenRouter with their slugs (for use in provider routing preferences), headquarters, datacenter regions, and privacy policy, terms of service and status page URLs."
+    },
+    {
+      "name": "Get Credits",
+      "category": "Account",
+      "description": "Retrieves the total credits purchased and total credits used for the OpenRouter account. The remaining balance is total_credits minus total_usage — useful for balance monitoring and low-credit alerts in flows."
+    },
+    {
+      "name": "Get Key Info",
+      "category": "Account",
+      "description": "Retrieves information about the API key used for this connection, including its label, spending limit, remaining limit, limit reset interval, free-tier status and current usage — useful for monitoring spend and rate limit headroom in flows."
+    },
+    {
+      "name": "Get Activity",
+      "category": "Account",
+      "description": "Retrieves the account's usage activity for the last 30 days, grouped by day, model and provider — each item includes request count, prompt/completion/reasoning token totals and spend. Optionally filter to a single UTC date."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Run chat completions against any provider through one API, with automatic failover and cheapest/fastest routing.",
+    "Generate images and videos, transcribe audio, and synthesize speech without provider-specific integrations.",
+    "Build RAG pipelines with embeddings plus rerank as a precision step after vector search.",
+    "Track exact per-request spend and account balance for cost monitoring and low-credit alerts."
+  ],
+  "agentIdeas": [
+    "After a **Chat Completion** (or **Analyze Image**) produces a summary, use **Notion** \"Create Page\" to file the result and **OpenRouter** \"Get Generation\" to record the exact credit cost alongside it.",
+    "When a **Dropbox** \"On New File\" trigger fires for an audio drop folder, call **Dropbox** \"Get Temporary Link\" and pass the URL to **OpenRouter** \"Transcribe Audio\", then log the transcript to **Google Sheets** \"Add Row\".",
+    "Poll **OpenRouter** \"Get Credits\" on a schedule and, when the remaining balance runs low, use **Slack** \"Send Message To Channel\" to alert the team before flows start failing."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/openrouter/public/icon.png",
+  "sourcePaths": {
+    "service": "services/openrouter",
+    "readme": "services/openrouter/README.md",
+    "index": "services/openrouter/src/index.js"
+  }
+}

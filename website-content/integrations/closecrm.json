@@ -1,0 +1,393 @@
+{
+  "slug": "closecrm",
+  "name": "Close CRM",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "A FlowRunner extension that integrates Close CRM via OAuth2, providing access to leads, contacts, opportunities, activities (notes, calls, emails, SMS, meetings), tasks, sequences, bulk actions, search, webhooks, and account configuration. Dropdown parameters expose friendly plain-string labels (e.g., status types) that map internally to Close API values.",
+  "actionCount": 63,
+  "triggerCount": 20,
+  "operationCategories": [
+    "Leads",
+    "Contacts",
+    "Opportunities",
+    "Notes",
+    "Calls",
+    "Emails",
+    "SMS",
+    "Meetings",
+    "Tasks",
+    "Activity Feed",
+    "Configuration",
+    "Users",
+    "Search",
+    "Sequences",
+    "Bulk Actions",
+    "Webhooks",
+    "Audit Log",
+    "Files"
+  ],
+  "actions": [
+    {
+      "name": "List Leads",
+      "category": "Leads",
+      "description": "Lists leads with optional free-text Smart View query, pagination, and field selection. Use the `query` parameter for Close's powerful filtering syntax (e.g., `status_label:\"Qualified\" date_created>=last_30_days`)."
+    },
+    {
+      "name": "Get Lead",
+      "category": "Leads",
+      "description": "Fetches a single lead by ID, including its contacts, opportunities, and custom field values."
+    },
+    {
+      "name": "Create Lead",
+      "category": "Leads",
+      "description": "Creates a new lead with optional inline contacts, addresses, status, and custom field values. Pass contacts as objects with name/title/emails/phones."
+    },
+    {
+      "name": "Update Lead",
+      "category": "Leads",
+      "description": "Updates a lead. Only sent fields change (partial update via PUT). Set status by name with statusLabel or by ID with statusId."
+    },
+    {
+      "name": "Delete Lead",
+      "category": "Leads",
+      "description": "Permanently deletes a lead and all its activities/opportunities. This action cannot be undone."
+    },
+    {
+      "name": "Merge Leads",
+      "category": "Leads",
+      "description": "Merges a source lead into a destination lead, combining all contacts, activities, and opportunities. The source lead is deleted."
+    },
+    {
+      "name": "Find Lead by Email",
+      "category": "Leads",
+      "description": "Searches leads by an email address present on any contact. Returns the first matching lead or null."
+    },
+    {
+      "name": "Find Lead by Phone",
+      "category": "Leads",
+      "description": "Searches leads by a phone number present on any contact. Returns the first matching lead or null."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists contacts, optionally scoped to a single lead. Supports the same query / pagination as List Leads."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by ID with all emails, phones, and URLs."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a contact under an existing lead with emails, phones, URLs, and optional custom fields."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates a contact. Only sent fields change. Emails / phones / URLs arrays REPLACE existing values when provided."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact from its lead."
+    },
+    {
+      "name": "List Opportunities",
+      "category": "Opportunities",
+      "description": "Lists opportunities with optional lead / pipeline / status filters and pagination."
+    },
+    {
+      "name": "Get Opportunity",
+      "category": "Opportunities",
+      "description": "Retrieves a single opportunity by ID, including its status and value details."
+    },
+    {
+      "name": "Create Opportunity",
+      "category": "Opportunities",
+      "description": "Creates an opportunity on a lead with value, status, and optional confidence / expected-close date."
+    },
+    {
+      "name": "Update Opportunity",
+      "category": "Opportunities",
+      "description": "Updates an opportunity. Only sent fields change. Move it through the pipeline by setting statusId."
+    },
+    {
+      "name": "Delete Opportunity",
+      "category": "Opportunities",
+      "description": "Permanently deletes an opportunity."
+    },
+    {
+      "name": "List Notes",
+      "category": "Notes",
+      "description": "Lists note activities, optionally filtered by lead."
+    },
+    {
+      "name": "Create Note",
+      "category": "Notes",
+      "description": "Creates a note on a lead. Notes appear in the lead's activity timeline."
+    },
+    {
+      "name": "Update Note",
+      "category": "Notes",
+      "description": "Updates an existing note's text."
+    },
+    {
+      "name": "Delete Note",
+      "category": "Notes",
+      "description": "Permanently removes a note from the lead timeline."
+    },
+    {
+      "name": "List Calls",
+      "category": "Calls",
+      "description": "Lists call activities (Twilio-dialed or manually logged), optionally filtered by lead or direction."
+    },
+    {
+      "name": "Log Call",
+      "category": "Calls",
+      "description": "Logs a call activity on a lead (does NOT actually dial — for that, use the Close in-app dialer). Useful for recording calls handled outside Close."
+    },
+    {
+      "name": "Update Call",
+      "category": "Calls",
+      "description": "Updates a logged call's note, duration, or recording URL."
+    },
+    {
+      "name": "Delete Call",
+      "category": "Calls",
+      "description": "Permanently removes a call activity record."
+    },
+    {
+      "name": "List Emails",
+      "category": "Emails",
+      "description": "Lists email activities, optionally filtered by lead."
+    },
+    {
+      "name": "Send Email",
+      "category": "Emails",
+      "description": "Sends an email through a connected email account, OR logs/drafts an email without sending. Set `status` to `outbox` to actually send, `draft` to save as draft, `sent`/`inbox` to log a previously-sent email."
+    },
+    {
+      "name": "Delete Email",
+      "category": "Emails",
+      "description": "Permanently removes an email activity (drafts or logged emails). Sent emails are removed from the Close timeline only."
+    },
+    {
+      "name": "List SMS",
+      "category": "SMS",
+      "description": "Lists SMS activities, optionally filtered by lead."
+    },
+    {
+      "name": "Send SMS",
+      "category": "SMS",
+      "description": "Sends an SMS (status `outbox`) or logs an SMS (`sent`/`inbox`) on a lead. Sending requires a Close phone number provisioned for the org."
+    },
+    {
+      "name": "Delete SMS",
+      "category": "SMS",
+      "description": "Permanently removes an SMS activity."
+    },
+    {
+      "name": "List Meetings",
+      "category": "Meetings",
+      "description": "Lists meeting activities, optionally filtered by lead. Meetings are typically created via Calendar integrations."
+    },
+    {
+      "name": "Get Meeting",
+      "category": "Meetings",
+      "description": "Retrieves a single meeting activity with attendees and conference URL details."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Lists tasks with filters for assignee, lead, completion state, type, and date window."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a lead task with optional due date and assignee."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates a task's text, due date, assignee, or completion state."
+    },
+    {
+      "name": "Complete Task",
+      "category": "Tasks",
+      "description": "Shortcut for marking a task complete."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task."
+    },
+    {
+      "name": "List Activities",
+      "category": "Activity Feed",
+      "description": "Lists all activities (note, call, email, sms, meeting, task_completed, etc.) in chronological order, optionally filtered by lead and type."
+    },
+    {
+      "name": "List Pipelines",
+      "category": "Configuration",
+      "description": "Lists opportunity pipelines defined in the org, including all statuses and their order."
+    },
+    {
+      "name": "List Lead Statuses",
+      "category": "Configuration",
+      "description": "Lists all lead statuses configured in the org."
+    },
+    {
+      "name": "List Opportunity Statuses",
+      "category": "Configuration",
+      "description": "Lists all opportunity statuses configured in the org, grouped by status type (active/won/lost)."
+    },
+    {
+      "name": "List Custom Fields",
+      "category": "Configuration",
+      "description": "Lists custom field definitions for a given object type (lead, contact, opportunity, activity, shared). Use this to map external field names to Close custom field IDs (`cf_*`)."
+    },
+    {
+      "name": "List Custom Object Types",
+      "category": "Configuration",
+      "description": "Lists custom object types defined in the org (Close's flexible structured-data feature)."
+    },
+    {
+      "name": "Get Me",
+      "category": "Users",
+      "description": "Returns information about the currently connected user, including their organizations."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists active users in the connected organization."
+    },
+    {
+      "name": "Run Advanced Search",
+      "category": "Search",
+      "description": "Executes a Close Smart View / Advanced Search query and returns matching objects. Provide a `query` filter object (simple form) OR a native Close query tree (advanced form). Cursors expire in 30 seconds — do not pause between pages."
+    },
+    {
+      "name": "Run Smart View",
+      "category": "Search",
+      "description": "Runs a saved search (Smart View) by ID and returns matching results. Cursors expire in 30 seconds."
+    },
+    {
+      "name": "List Sequences",
+      "category": "Sequences",
+      "description": "Lists available email sequences (drip campaigns) in the org."
+    },
+    {
+      "name": "Subscribe Contact to Sequence",
+      "category": "Sequences",
+      "description": "Adds a contact to an email sequence. Close starts sending the first step on the next scheduled run."
+    },
+    {
+      "name": "Pause Sequence Subscription",
+      "category": "Sequences",
+      "description": "Pauses an active sequence subscription. The contact will not receive further steps until resumed."
+    },
+    {
+      "name": "Resume Sequence Subscription",
+      "category": "Sequences",
+      "description": "Resumes a paused sequence subscription."
+    },
+    {
+      "name": "Bulk Edit Leads",
+      "category": "Bulk Actions",
+      "description": "Starts a background job that applies ONE field operation to every lead matched by the filter. Returns a job ID — poll Get Bulk Action Status (kind=edit) until status='complete'."
+    },
+    {
+      "name": "Bulk Delete Leads",
+      "category": "Bulk Actions",
+      "description": "Starts a background job that deletes every lead matched by the filter. Returns a job ID. DESTRUCTIVE."
+    },
+    {
+      "name": "Bulk Email",
+      "category": "Bulk Actions",
+      "description": "Starts a background job that sends a templated email to every lead/contact matched by the filter. Returns a job ID."
+    },
+    {
+      "name": "Get Bulk Action Status",
+      "category": "Bulk Actions",
+      "description": "Polls the status of a bulk action job. status is one of: queued, in_progress, complete, errored."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Lists all webhook subscriptions configured in the connected organization."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Subscribes to Close events at an external URL. The returned signature_key is required to verify incoming requests and is shown ONLY ONCE — store it immediately."
+    },
+    {
+      "name": "Update Webhook",
+      "category": "Webhooks",
+      "description": "Updates a webhook's events list or status (active/paused). Use this to resume a webhook auto-paused after repeated delivery failures."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Permanently removes a webhook subscription."
+    },
+    {
+      "name": "List Events",
+      "category": "Audit Log",
+      "description": "Lists organization audit events (object created / updated / deleted). Only ~30 days of history is retained — use webhooks for older data."
+    },
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a file to Close so you can attach it to notes, emails, or activities. Pick the file from FlowRunner storage or paste a public URL. Files up to 25 MB are supported."
+    }
+  ],
+  "triggers": [
+    "On Lead Created",
+    "On Lead Updated",
+    "On Lead Status Changed",
+    "On Lead Deleted",
+    "On Lead Merged",
+    "On Opportunity Created",
+    "On Opportunity Updated",
+    "On Opportunity Status Changed",
+    "On Contact Created",
+    "On Contact Updated",
+    "On Task Created",
+    "On Task Completed",
+    "On Note Created",
+    "On Call Completed",
+    "On Email Sent",
+    "On Email Received",
+    "On SMS Sent",
+    "On SMS Received",
+    "On Meeting Completed",
+    "On Custom Activity Created"
+  ],
+  "idealUseCases": [
+    "Sync leads, contacts, and opportunities between Close and other systems",
+    "Automate lead status and opportunity pipeline progression",
+    "Log and manage activities: notes, calls, emails, SMS, and meetings",
+    "Create, update, complete, and assign follow-up tasks",
+    "Run Smart Views and advanced searches to segment and enrich records",
+    "Subscribe contacts to email sequences and manage bulk lead actions",
+    "React in real time to CRM changes via webhook-backed triggers"
+  ],
+  "agentIdeas": [
+    "When a **Close CRM** \"On Lead Status Changed\" trigger fires for a won deal, use **Gmail** \"Send Message\" to send the customer an onboarding email enriched with details from \"Get Lead\".",
+    "Pull new prospect rows with **Google Sheets** \"Get Rows\", then call **Close CRM** \"Create Lead\" for each to bulk-import them, and notify the team with **Slack** \"Send Message To Channel\".",
+    "When a **Close CRM** \"On Opportunity Created\" trigger fires, use **Slack** \"Send Message To Channel\" to alert the sales team and **Google Sheets** \"Add Row\" to log the opportunity in a pipeline tracker."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/closecrm/public/icon.png",
+  "sourcePaths": {
+    "service": "services/closecrm",
+    "readme": "services/closecrm/README.md",
+    "index": "services/closecrm/src/index.js"
+  }
+}

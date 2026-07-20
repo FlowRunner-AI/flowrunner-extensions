@@ -1,0 +1,378 @@
+{
+  "slug": "stripe",
+  "name": "Stripe",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Complete payment processing integration with Stripe API for handling payments, subscriptions, customers, and financial operations. Supports comprehensive payment workflows, webhook handling, and full CRUD operations for all major Stripe objects.",
+  "actionCount": 66,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Account Management",
+    "Customer Management",
+    "Payment Processing",
+    "Subscription Management",
+    "Product Management",
+    "Payment Links",
+    "Money Movement",
+    "Invoicing",
+    "Checkout Sessions",
+    "Developer Tools"
+  ],
+  "actions": [
+    {
+      "name": "Get Balance",
+      "category": "Account Management",
+      "description": "Retrieves the current account balance"
+    },
+    {
+      "name": "Get Connected accounts",
+      "category": "Account Management",
+      "description": "Get a list of all connected accounts"
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customer Management",
+      "description": "Creates a new customer."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customer Management",
+      "description": "Updates the specified customer by setting the values of the parameters passed. Most parameters can be changed, including `default_source`, `email`, and `payment_method`."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customer Management",
+      "description": "Retrieves the details of an existing customer. You need to supply the unique customer ID from either a customer creation request or the Stripe dashboard."
+    },
+    {
+      "name": "Get Customers List",
+      "category": "Customer Management",
+      "description": "Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first."
+    },
+    {
+      "name": "Delete Customer",
+      "category": "Customer Management",
+      "description": "Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer."
+    },
+    {
+      "name": "Create Payment Intent",
+      "category": "Payment Processing",
+      "description": "Creates a Payment Intent, which is an object representing your intent to collect payment from a customer."
+    },
+    {
+      "name": "Get Payment Intent",
+      "category": "Payment Processing",
+      "description": "Retrieves a Payment Intent by its ID."
+    },
+    {
+      "name": "Confirm Payment Intent",
+      "category": "Payment Processing",
+      "description": "Confirms a Payment Intent, indicating that the customer intends to pay with a specific payment method."
+    },
+    {
+      "name": "Cancel Payment Intent",
+      "category": "Payment Processing",
+      "description": "Cancels a Payment Intent, if it is in a state that allows cancellation."
+    },
+    {
+      "name": "Get Payment Intents List",
+      "category": "Payment Processing",
+      "description": "Lists all Payment Intents. You can provide various options to filter the list."
+    },
+    {
+      "name": "Create Subscription",
+      "category": "Subscription Management",
+      "description": "Creates a new subscription on an existing customer."
+    },
+    {
+      "name": "Get Subscription",
+      "category": "Subscription Management",
+      "description": "Retrieves the subscription with the given ID."
+    },
+    {
+      "name": "Update Subscription",
+      "category": "Subscription Management",
+      "description": "Updates the specified subscription."
+    },
+    {
+      "name": "Cancel Subscription",
+      "category": "Subscription Management",
+      "description": "Cancels a subscription and, by default, immediately finalizes the current period and sends a final invoice. Optional prorate behavior can be set."
+    },
+    {
+      "name": "Get Subscriptions List",
+      "category": "Subscription Management",
+      "description": "Lists all subscriptions. You can provide various options to filter the list, such as filtering by customer or subscription status."
+    },
+    {
+      "name": "Create Product",
+      "category": "Product Management",
+      "description": "Creates a new product object, which can then be used in subscriptions or as part of the Stripe checkout process."
+    },
+    {
+      "name": "Get Product",
+      "category": "Product Management",
+      "description": "Retrieves the details of a specific product by its ID."
+    },
+    {
+      "name": "Update Product",
+      "category": "Product Management",
+      "description": "Updates the details of an existing product by its ID."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Product Management",
+      "description": "Deletes a product. Deleting a product also deletes its associated prices."
+    },
+    {
+      "name": "Get Products List",
+      "category": "Product Management",
+      "description": "Lists all products. You can provide options to filter the list, such as by `active` status or `limit`."
+    },
+    {
+      "name": "Create Price",
+      "category": "Product Management",
+      "description": "Creates a new price object. A price is used to define a recurring or one-time charge for a product."
+    },
+    {
+      "name": "Get Price",
+      "category": "Product Management",
+      "description": "Retrieves the details of a specific price by its ID."
+    },
+    {
+      "name": "Update Price",
+      "category": "Product Management",
+      "description": "Updates the details of an existing price."
+    },
+    {
+      "name": "Get Prices List",
+      "category": "Product Management",
+      "description": "Lists all prices, optionally filtered by parameters such as `active` status or `product`."
+    },
+    {
+      "name": "Create Payment Link",
+      "category": "Payment Links",
+      "description": "Creates a new Payment Link object, allowing you to generate shareable URLs to collect payment."
+    },
+    {
+      "name": "Deactivate Payment Link",
+      "category": "Payment Links",
+      "description": "Deactivate a Payment Link"
+    },
+    {
+      "name": "Update Payment Link",
+      "category": "Payment Links",
+      "description": "Updates an existing Payment Link, including its status(deactivating)."
+    },
+    {
+      "name": "Get Payment Link",
+      "category": "Payment Links",
+      "description": "Retrieves the details of a specific Payment Link by its ID."
+    },
+    {
+      "name": "Get Payment Links List",
+      "category": "Payment Links",
+      "description": "Lists all Payment Links. You can filter the results using various parameters, such as `limit`."
+    },
+    {
+      "name": "Get Payment Link Line Items",
+      "category": "Payment Links",
+      "description": "Retrieves line items of a specific Payment Link."
+    },
+    {
+      "name": "Create Transfer",
+      "category": "Money Movement",
+      "description": "Creates a transfer to move funds between accounts."
+    },
+    {
+      "name": "Update Transfer",
+      "category": "Money Movement",
+      "description": "Updates the specified transfer by setting the values of the parameters passed."
+    },
+    {
+      "name": "Get Transfer",
+      "category": "Money Movement",
+      "description": "Retrieves the details of a specific transfer by its ID."
+    },
+    {
+      "name": "Get Transfers List",
+      "category": "Money Movement",
+      "description": "Lists all transfers, with optional filters such as `created`, `limit`, or `starting_after`."
+    },
+    {
+      "name": "Create Refund",
+      "category": "Money Movement",
+      "description": "Creates a refund for a previously created charge or payment intent."
+    },
+    {
+      "name": "Update Refund",
+      "category": "Money Movement",
+      "description": "Updates the specified refund by setting the values of the parameters passed."
+    },
+    {
+      "name": "Retrieve Refund",
+      "category": "Money Movement",
+      "description": "Retrieves the details of a specific refund by its ID."
+    },
+    {
+      "name": "Get Refunds List",
+      "category": "Money Movement",
+      "description": "Lists all refunds, with optional filters such as `charge`, `payment_intent`, or `limit`."
+    },
+    {
+      "name": "Cancel Refund",
+      "category": "Money Movement",
+      "description": "Cancels a refund if it has not yet been submitted to the bank or card network."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoicing",
+      "description": "Creates a new invoice for a customer."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoicing",
+      "description": "Updates an existing invoice by its ID."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoicing",
+      "description": "Retrieves the details of a specific invoice by its ID."
+    },
+    {
+      "name": "Get Invoices List",
+      "category": "Invoicing",
+      "description": "Lists all invoices, with optional filters such as `customer`, `limit`, or `starting_after`."
+    },
+    {
+      "name": "Finalize Invoice",
+      "category": "Invoicing",
+      "description": "Finalizes the invoice, which locks it for any further changes and attempts to charge the customer."
+    },
+    {
+      "name": "Send Invoice",
+      "category": "Invoicing",
+      "description": "Sends the invoice."
+    },
+    {
+      "name": "Void Invoice",
+      "category": "Invoicing",
+      "description": "Mark a finalized invoice as void. This cannot be undone. Voiding an invoice is similar to deletion, however it only applies to finalized invoices and maintains a papertrail where the invoice can still be found."
+    },
+    {
+      "name": "Mark Invoice as Uncollectible",
+      "category": "Invoicing",
+      "description": "Marking an invoice as uncollectible is useful for keeping track of bad debts that can be written off for accounting purposes."
+    },
+    {
+      "name": "Pay Invoice",
+      "category": "Invoicing",
+      "description": "Stripe automatically creates and then attempts to collect payment on invoices for customers on subscriptions according to your subscriptions settings. However, if you’d like to attempt payment on an invoice out of the normal collection schedule or for some other reason, you can do so."
+    },
+    {
+      "name": "Create Payout",
+      "category": "Money Movement",
+      "description": "Creates a new payout to your bank account or debit card."
+    },
+    {
+      "name": "Update Payout",
+      "category": "Money Movement",
+      "description": "Updates the specified payout by setting the values of the parameters passed."
+    },
+    {
+      "name": "Get Payout",
+      "category": "Money Movement",
+      "description": "Retrieves the details of a specific payout by its ID."
+    },
+    {
+      "name": "Get Payouts List",
+      "category": "Money Movement",
+      "description": "Lists all payouts, with optional filters such as `created`, `destination`, or `status`."
+    },
+    {
+      "name": "Cancel Payout",
+      "category": "Money Movement",
+      "description": "You can cancel a previously created payout if its status is pending. Stripe refunds the funds to your available balance. You can’t cancel automatic Stripe payouts."
+    },
+    {
+      "name": "Create Checkout Session",
+      "category": "Checkout Sessions",
+      "description": "Creates a new Checkout Session object, allowing customers to make a payment through Stripe's hosted checkout page."
+    },
+    {
+      "name": "Get Checkout Session",
+      "category": "Checkout Sessions",
+      "description": "Retrieves an existing Checkout Session by its ID."
+    },
+    {
+      "name": "Get Checkout Sessions List",
+      "category": "Checkout Sessions",
+      "description": "Lists all Checkout Sessions, with optional filters such as `customer` or `limit`."
+    },
+    {
+      "name": "Update Checkout Session",
+      "category": "Checkout Sessions",
+      "description": "Updates a Checkout Session, allowing modifications to certain properties such as `metadata` and `payment_method_options`."
+    },
+    {
+      "name": "Expire Checkout Session",
+      "category": "Checkout Sessions",
+      "description": "Expires a Checkout Session, preventing any further interactions or payments."
+    },
+    {
+      "name": "Create Webhook Endpoint",
+      "category": "Developer Tools",
+      "description": "Creates a new Webhook Endpoint object to receive events from Stripe."
+    },
+    {
+      "name": "Get Webhook Endpoint",
+      "category": "Developer Tools",
+      "description": "Retrieves the details of a specific Webhook Endpoint by its ID."
+    },
+    {
+      "name": "Update Webhook Endpoint",
+      "category": "Developer Tools",
+      "description": "Updates an existing Webhook Endpoint, including changes to its `url` or `enabled_events`."
+    },
+    {
+      "name": "Get Webhook Endpoints List",
+      "category": "Developer Tools",
+      "description": "Lists all Webhook Endpoints."
+    },
+    {
+      "name": "Delete Webhook Endpoint",
+      "category": "Developer Tools",
+      "description": "Deletes a Webhook Endpoint by its ID."
+    },
+    {
+      "name": "Run Custom Request",
+      "category": "Developer Tools",
+      "description": "Allows to run any of Stripe methods with attached auth credentials"
+    }
+  ],
+  "triggers": [
+    "Parse Webhook Event (handles all Stripe webhook events)"
+  ],
+  "idealUseCases": [
+    "Process online payments and handle payment intents",
+    "Manage customer subscriptions and recurring billing",
+    "Create and manage products, prices, and payment links",
+    "Handle refunds, transfers, and payouts",
+    "Manage customer data and payment methods",
+    "Process webhook events for real-time payment updates",
+    "Create checkout sessions for seamless payment experiences",
+    "Manage invoices and billing operations"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/stripe/public/icon.png",
+  "sourcePaths": {
+    "service": "services/stripe",
+    "readme": "services/stripe/README.md",
+    "index": "services/stripe/src/index.js"
+  }
+}

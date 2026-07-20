@@ -1,0 +1,103 @@
+{
+  "slug": "unleashed",
+  "name": "Unleashed Software",
+  "marketingCategory": "ERP & Operations",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connects FlowRunner to the Unleashed Software cloud inventory management platform. Requests are authenticated with an API ID plus an HMAC-SHA256 signature computed over the request query string (no OAuth flow), sent via the `api-auth-id` and `api-auth-signature` headers. The extension reads products, stock on hand, customers, suppliers, warehouses, sales orders, and purchase orders, and can create new sales orders. Paginated endpoints use Unleashed's page-in-path pagination and unwrap the response `Items` array into a flat list alongside `Pagination` metadata.",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Products",
+    "Stock",
+    "Customers",
+    "Suppliers",
+    "Sales Orders",
+    "Purchase Orders",
+    "Warehouses"
+  ],
+  "actions": [
+    {
+      "name": "Get Products",
+      "category": "Products",
+      "description": "Retrieves a paginated list of products from the Unleashed inventory catalog. Supports filtering by product code and product description. The page number is supplied via the Page parameter and results are returned as a flat list of product objects (the response envelope's Items array is unwrapped), alongside pagination metadata. Default page size is 200 unless overridden."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves a single product by its Unleashed GUID, returning the full product record including code, description, units, pricing, dimensions, and supplier details."
+    },
+    {
+      "name": "Get Stock On Hand",
+      "category": "Stock",
+      "description": "Retrieves a paginated list of stock-on-hand records across all warehouses, showing available, allocated, and on-hand quantities per product. Supports filtering by product code. The Items array is unwrapped into a flat list with pagination metadata."
+    },
+    {
+      "name": "Get Stock On Hand by Product",
+      "category": "Stock",
+      "description": "Retrieves the stock-on-hand record for a single product identified by its GUID, returning on-hand, allocated, and available quantities together with warehouse-level breakdowns."
+    },
+    {
+      "name": "Get Customers",
+      "category": "Customers",
+      "description": "Retrieves a paginated list of customers, optionally filtered by customer code. Returns customer records including codes, names, contact details, and addresses. The Items array is unwrapped into a flat list with pagination metadata."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer by its Unleashed GUID, returning the full customer record including code, name, contacts, addresses, currency, and tax settings."
+    },
+    {
+      "name": "Get Suppliers",
+      "category": "Suppliers",
+      "description": "Retrieves a paginated list of suppliers, returning supplier records including codes, names, contact details, and payment terms. The Items array is unwrapped into a flat list with pagination metadata."
+    },
+    {
+      "name": "Get Sales Orders",
+      "category": "Sales Orders",
+      "description": "Retrieves a paginated list of sales orders, optionally filtered by order status and start date. Order status accepts one of the standard Unleashed lifecycle states. Returns order records including customer, lines, totals, and status. The Items array is unwrapped into a flat list with pagination metadata."
+    },
+    {
+      "name": "Get Sales Order",
+      "category": "Sales Orders",
+      "description": "Retrieves a single sales order by its Unleashed GUID, returning the full order record including customer, warehouse, currency, sales order lines, taxes, and totals."
+    },
+    {
+      "name": "Create Sales Order",
+      "category": "Sales Orders",
+      "description": "Creates a new sales order in Unleashed for the given customer and line items. The customer is identified by GUID (Customer object) and each line references a product by GUID with an order quantity and optional unit price. Optionally set the initial order status, warehouse GUID, and comments. Line and order totals are calculated by Unleashed when not supplied."
+    },
+    {
+      "name": "Get Purchase Orders",
+      "category": "Purchase Orders",
+      "description": "Retrieves a paginated list of purchase orders, returning order records including supplier, lines, totals, and status. The Items array is unwrapped into a flat list with pagination metadata."
+    },
+    {
+      "name": "Get Warehouses",
+      "category": "Warehouses",
+      "description": "Retrieves the full list of warehouses configured in the Unleashed account, returning each warehouse's GUID, code, name, address, and default flag. The Items array is unwrapped into a flat list."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync the product catalog and warehouse-level stock levels into other systems or dashboards",
+    "Look up customers, suppliers, and stock availability before fulfilling an order",
+    "Automatically create Unleashed sales orders from incoming orders in a store or CRM",
+    "Monitor sales and purchase order status as part of an order-fulfillment workflow"
+  ],
+  "agentIdeas": [
+    "Use **Unleashed Software** \"Get Stock On Hand by Product\" to confirm availability, then call **ShipBob** \"Create Order\" to fulfill the order only when sufficient inventory exists.",
+    "After **ShipBob** \"On Order Shipped\" fires, call **Unleashed Software** \"Create Sales Order\" to record the fulfilled order against the customer in the inventory system.",
+    "Use **Unleashed Software** \"Get Customers\" to retrieve a customer record, then call **QuickBooks Online** \"Create Customer\" to sync the account into accounting before invoicing."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/unleashed/public/icon.png",
+  "sourcePaths": {
+    "service": "services/unleashed",
+    "readme": "services/unleashed/README.md",
+    "index": "services/unleashed/src/index.js"
+  }
+}

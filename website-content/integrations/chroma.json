@@ -1,0 +1,98 @@
+{
+  "slug": "chroma",
+  "name": "Chroma",
+  "marketingCategory": "Vector Stores & AI Infra",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner service for [Chroma](https://www.trychroma.com/), the open-source AI-native vector database. Manage collections and their records (embeddings, documents and metadata), and run nearest-neighbor similarity search — against **Chroma Cloud** or a **self-hosted** Chroma server — using Chroma's v2 REST API.",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Collections",
+    "Records"
+  ],
+  "actions": [
+    {
+      "name": "Create Collection",
+      "category": "Collections",
+      "description": "Creates a new collection in the configured tenant and database. Optionally attach arbitrary metadata and an advanced configuration object (e.g. HNSW index settings or an embedding function descriptor). Returns the created collection, including its UUID \"id\" which is required by all record/data operations (Add, Query, Get, etc.)."
+    },
+    {
+      "name": "List Collections",
+      "category": "Collections",
+      "description": "Lists the collections in the configured tenant and database. Each entry includes the collection UUID \"id\", \"name\", \"metadata\" and \"configuration\". Supports limit/offset pagination."
+    },
+    {
+      "name": "Get Collection",
+      "category": "Collections",
+      "description": "Retrieves a single collection by its name or UUID, returning its UUID \"id\", \"name\", \"metadata\" and \"configuration\". The Chroma v2 endpoint resolves either a name or an id. Use this to obtain a collection's id before running record/data operations."
+    },
+    {
+      "name": "Delete Collection",
+      "category": "Collections",
+      "description": "Permanently deletes a collection and all records stored in it, identified by name. This action cannot be undone."
+    },
+    {
+      "name": "Count Collections",
+      "category": "Collections",
+      "description": "Returns the total number of collections in the configured tenant and database."
+    },
+    {
+      "name": "Add Records",
+      "category": "Records",
+      "description": "Adds records (embeddings) to a collection. Provide record IDs plus at least one of: embeddings (arrays of numbers), documents (raw text, embedded by the collection's embedding function) and metadatas (per-record metadata objects). All provided arrays must align by index. The collection is looked up by name or UUID."
+    },
+    {
+      "name": "Upsert Records",
+      "category": "Records",
+      "description": "Inserts new records or updates existing ones (matched by ID) in a collection. Provide record IDs plus embeddings, documents and/or metadatas, positionally aligned. The collection is looked up by name or UUID."
+    },
+    {
+      "name": "Update Records",
+      "category": "Records",
+      "description": "Updates existing records in a collection (matched by ID). Only the provided fields (embeddings, documents, metadatas) are changed; omitted fields are left as-is. IDs that do not exist are ignored. The collection is looked up by name or UUID."
+    },
+    {
+      "name": "Query Records",
+      "category": "Records",
+      "description": "Runs a nearest-neighbor similarity search against a collection using one or more query embeddings. Returns the closest records per query, optionally with their documents, metadatas and distances. Supports metadata filtering (\"where\"), document content filtering (\"where_document\") and control over which fields are returned (\"include\"). The collection is looked up by name or UUID."
+    },
+    {
+      "name": "Get Records",
+      "category": "Records",
+      "description": "Retrieves records from a collection by explicit IDs and/or by metadata and document filters, without similarity scoring. Supports pagination (limit/offset) and control over which fields are returned (\"include\"). The collection is looked up by name or UUID."
+    },
+    {
+      "name": "Count Records",
+      "category": "Records",
+      "description": "Returns the total number of records stored in a collection. The collection is looked up by name or UUID."
+    },
+    {
+      "name": "Delete Records",
+      "category": "Records",
+      "description": "Deletes records from a collection by explicit IDs and/or by metadata and document filters. Provide at least one selector. The collection is looked up by name or UUID."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Store document embeddings and run semantic / nearest-neighbor search over them",
+    "Build a RAG knowledge base: add documents, then query the most relevant chunks for an LLM prompt",
+    "Keep an embedding store in sync by upserting records as source content changes",
+    "Filter retrieval by metadata (`where`) or document content (`where_document`)"
+  ],
+  "agentIdeas": [
+    "Use **OpenAI** \"Create Embeddings\" (or **Cohere** \"Create Embeddings\") to vectorize source text, then call **Chroma** \"Add Records\" to store the embeddings, documents and metadata for later retrieval.",
+    "On a user question, embed it with **OpenAI** \"Create Embeddings\" and pass the vector to **Chroma** \"Query Records\" to fetch the most relevant documents for a RAG prompt.",
+    "Retrieve top matches with **Chroma** \"Query Records\", then write a summary of the results into **Notion** \"Create Page\" to build a searchable knowledge base entry."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/chroma/public/icon.png",
+  "sourcePaths": {
+    "service": "services/chroma",
+    "readme": "services/chroma/README.md",
+    "index": "services/chroma/src/index.js"
+  }
+}

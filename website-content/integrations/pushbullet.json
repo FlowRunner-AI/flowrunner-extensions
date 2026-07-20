@@ -1,0 +1,112 @@
+{
+  "slug": "pushbullet",
+  "name": "Pushbullet",
+  "marketingCategory": "SMS, Voice & Push",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Send notes, links, and files to your devices, share pushes with other people, manage devices, and send SMS through Pushbullet from FlowRunner. Authenticates with a Pushbullet access token sent as the `Access-Token` header.",
+  "actionCount": 14,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Pushes",
+    "Devices",
+    "Chats",
+    "Account",
+    "SMS"
+  ],
+  "actions": [
+    {
+      "name": "Push Note",
+      "category": "Pushes",
+      "description": "Sends a note push (a simple text notification with a title and body) to your own devices or to another user. Leave all targeting fields empty to push to every device on your account, or set exactly one of Device, Email, or Channel Tag to target a specific destination. The note appears instantly on connected Pushbullet apps."
+    },
+    {
+      "name": "Push Link",
+      "category": "Pushes",
+      "description": "Sends a link push (a clickable URL with an optional title and body) to your own devices or to another user. Leave all targeting fields empty to push to every device on your account, or set exactly one of Device, Email, or Channel Tag to target a specific destination."
+    },
+    {
+      "name": "Push File from URL",
+      "category": "Pushes",
+      "description": "Pushes a file that is already hosted at a publicly accessible URL. Provide the file's URL, name, and MIME type; Pushbullet delivers it as a file push to your devices or to a target recipient. For uploading a local file, first request an upload URL, upload the bytes, then use the returned file URL here (see the README)."
+    },
+    {
+      "name": "List Pushes",
+      "category": "Pushes",
+      "description": "Lists pushes on your account, most recent first. Use Modified After to fetch only pushes changed since a given time (for incremental sync), Active to exclude deleted pushes, Limit to cap page size, and Cursor to page through large result sets. Returns the pushes and a cursor for the next page when more results exist."
+    },
+    {
+      "name": "Get Push",
+      "category": "Pushes",
+      "description": "Retrieves a single push by its identifier. Pushbullet has no direct get-by-id endpoint, so this fetches the push list and returns the matching push. Returns null when no push with the given iden exists."
+    },
+    {
+      "name": "Dismiss Push",
+      "category": "Pushes",
+      "description": "Marks a push as dismissed so it stops appearing as an active notification, without deleting it. Useful for clearing a notification programmatically after it has been handled."
+    },
+    {
+      "name": "Delete Push",
+      "category": "Pushes",
+      "description": "Permanently deletes a single push by its identifier. This cannot be undone. Returns an empty object on success."
+    },
+    {
+      "name": "Delete All Pushes",
+      "category": "Pushes",
+      "description": "Permanently deletes every push on your account. This is irreversible and removes all push history. Use with caution. Returns an empty object on success."
+    },
+    {
+      "name": "List Devices",
+      "category": "Devices",
+      "description": "Lists all devices registered on your Pushbullet account, including phones, browsers, and virtual devices. Each device includes its iden, nickname, type, and whether it can send SMS. Use a device's iden to target pushes or send SMS."
+    },
+    {
+      "name": "Create Device",
+      "category": "Devices",
+      "description": "Creates a new virtual device on your account. Virtual devices are useful as a stable push target (for example, a \"Server Alerts\" device) that pushes can be addressed to. Returns the created device including its iden."
+    },
+    {
+      "name": "Delete Device",
+      "category": "Devices",
+      "description": "Permanently deletes a device from your account by its identifier. Pushes can no longer be addressed to a deleted device. Returns an empty object on success."
+    },
+    {
+      "name": "List Chats",
+      "category": "Chats",
+      "description": "Lists your active chats (conversations with other Pushbullet users you have pushed to or received pushes from). Each chat includes the other party's email, name, and image. Useful for discovering recipients you can push to."
+    },
+    {
+      "name": "Get User Info",
+      "category": "Account",
+      "description": "Retrieves the current authenticated user's profile, including email, name, and account limits such as the maximum upload size. Also serves as a connection check to verify the access token is valid."
+    },
+    {
+      "name": "Send SMS",
+      "category": "SMS",
+      "description": "Sends an SMS text message through one of your connected phones that has SMS enabled. The sending device must have has_sms set to true (list your devices to check). Provide the source device iden, one or more recipient phone numbers, and the message text."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Push instant note, link, or file notifications to your phones, browsers, and virtual devices when a workflow event occurs.",
+    "Notify another person by email or broadcast to channel subscribers without needing their device details.",
+    "Send SMS text messages through a connected phone as part of an alerting or reminder flow.",
+    "Programmatically dismiss, list, or clean up push history, and manage the devices pushes are addressed to."
+  ],
+  "agentIdeas": [
+    "When a workflow needs to reach a person both on their devices and in chat, call **Pushbullet** \"Push Note\" to hit their Pushbullet apps and **Slack** \"Send Message To Channel\" to post the same alert to a team channel.",
+    "On a **Slack** \"On Channel Message\" trigger matching an urgent keyword, use **Pushbullet** \"Send SMS\" to text an on-call phone through a connected device.",
+    "When a **Gmail** \"On New Email\" trigger fires for a priority sender, use **Pushbullet** \"Push Link\" to push a clickable link to the message to all of your devices.",
+    "Pair **Pushbullet** \"Push Note\" with **Pushover** \"Send Notification\" to fan an alert out across both push platforms for redundancy."
+  ],
+  "icon": "/logo.png",
+  "iconFile": "services/pushbullet/public/logo.png",
+  "sourcePaths": {
+    "service": "services/pushbullet",
+    "readme": "services/pushbullet/README.md",
+    "index": "services/pushbullet/src/index.js"
+  }
+}

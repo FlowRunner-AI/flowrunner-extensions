@@ -1,0 +1,79 @@
+{
+  "slug": "aws-transcribe",
+  "name": "AWS Transcribe",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Convert speech in audio and video files into text using [Amazon Transcribe](https://docs.aws.amazon.com/transcribe/). Start and manage asynchronous, S3-based transcription jobs and custom vocabularies directly from your FlowRunner flows. Authenticates to AWS with native SigV4 request signing (no SDK dependency).",
+  "actionCount": 8,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Transcription Jobs",
+    "Custom Vocabularies"
+  ],
+  "actions": [
+    {
+      "name": "Start Transcription Job",
+      "category": "Transcription Jobs",
+      "description": "Starts an asynchronous transcription job for an audio or video file already stored in Amazon S3. Provide the S3 URI of the media file (e.g. s3://my-bucket/audio.mp3); Transcribe processes it in the background. Specify a single language code, or enable Identify Language to auto-detect the spoken language. When Output Bucket Name is omitted, the transcript is written to a Transcribe-managed S3 location and a TranscriptFileUri is returned. Poll the job with Get Transcription Job until its status is COMPLETED, then read the transcript from TranscriptFileUri."
+    },
+    {
+      "name": "Get Transcription Job",
+      "category": "Transcription Jobs",
+      "description": "Retrieves the current status and details of a transcription job. When the job status is COMPLETED, the result includes the TranscriptFileUri where the transcript JSON is stored. If the transcript is at a Transcribe-managed (presigned) URI and Fetch Transcript Text is enabled, this operation also downloads the transcript JSON and returns the plain transcript text. For jobs written to your own Output Bucket, the URI points into your S3 bucket and typically requires S3 access to read, so text fetching may not succeed without a publicly reachable URI."
+    },
+    {
+      "name": "List Transcription Jobs",
+      "category": "Transcription Jobs",
+      "description": "Lists transcription jobs in your account, most recent first. Optionally filter by status or by a substring of the job name, and page through results using the returned cursor."
+    },
+    {
+      "name": "Delete Transcription Job",
+      "category": "Transcription Jobs",
+      "description": "Permanently deletes a transcription job and its metadata. This does not delete any transcript file already written to your own S3 output bucket. This action cannot be undone."
+    },
+    {
+      "name": "Create Vocabulary",
+      "category": "Custom Vocabularies",
+      "description": "Creates a custom vocabulary to improve transcription accuracy for domain-specific terms, names, and acronyms. Provide the terms as a list of phrases. Vocabulary creation is asynchronous; the returned state is typically PENDING and becomes READY (or FAILED) once processed. Use Get Vocabulary to check the state before applying it to a transcription job."
+    },
+    {
+      "name": "Get Vocabulary",
+      "category": "Custom Vocabularies",
+      "description": "Retrieves information about a custom vocabulary, including its processing state (PENDING, READY, or FAILED) and a temporary download URI for the vocabulary contents when available."
+    },
+    {
+      "name": "List Vocabularies",
+      "category": "Custom Vocabularies",
+      "description": "Lists the custom vocabularies in your account. Optionally filter by processing state or by a substring of the vocabulary name, and page through results using the returned cursor."
+    },
+    {
+      "name": "Delete Vocabulary",
+      "category": "Custom Vocabularies",
+      "description": "Permanently deletes a custom vocabulary. Any in-progress transcription jobs already using it are unaffected, but it can no longer be applied to new jobs. This action cannot be undone."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Transcribe recorded calls, meetings, podcasts, or voicemails stored in Amazon S3 into searchable text.",
+    "Auto-detect the spoken language of uploaded media, or transcribe a known language.",
+    "Partition transcripts by speaker (diarization) or by audio channel for stereo call recordings.",
+    "Improve accuracy for domain-specific terms, product names, and acronyms with custom vocabularies.",
+    "Generate subtitle files (WebVTT / SubRip) from media as part of a media-processing pipeline."
+  ],
+  "agentIdeas": [
+    "Use **S3 Storage** \"Upload Object from URL\" to land a recording in S3, then call **AWS Transcribe** \"Start Transcription Job\" against its S3 URI to kick off transcription.",
+    "After **AWS Transcribe** \"Get Transcription Job\" returns `COMPLETED` with `transcriptFileUri`, use **S3 Storage** \"Get Presigned URL\" to produce a shareable link to the transcript stored in your output bucket.",
+    "When an **AWS Transcribe** \"Get Transcription Job\" poll shows a completed transcript, use **Amazon SES** \"Send Email\" to deliver the plain transcript text to stakeholders by email."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/aws-transcribe/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/aws-transcribe",
+    "readme": "services/aws-transcribe/README.md",
+    "index": "services/aws-transcribe/src/index.js"
+  }
+}

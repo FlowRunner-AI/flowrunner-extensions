@@ -1,0 +1,52 @@
+{
+  "slug": "dropcontact",
+  "name": "Dropcontact",
+  "marketingCategory": "Sales Intelligence & Enrichment",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Enrich contacts with verified professional emails and company data using [Dropcontact](https://www.dropcontact.com), a GDPR-compliant, EU-focused B2B enrichment service. Dropcontact finds and verifies professional email addresses, appends company and legal data (including French SIREN/NAF/VAT), and never buys or resells personal data. It authenticates with a Dropcontact API key sent as the `X-Access-Token` header and uses an asynchronous batch-then-poll enrichment flow.",
+  "actionCount": 3,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Enrichment"
+  ],
+  "actions": [
+    {
+      "name": "Enrich Contacts (Batch)",
+      "category": "Enrichment",
+      "description": "Submits one or more contacts to Dropcontact for enrichment (verified professional email finding plus company data, GDPR/EU-focused). This call is asynchronous: it queues the batch and immediately returns a request_id — it does NOT return enriched data. Poll \"Get Enrichment Result\" with that request_id until success is true and data is present. Provide either the single-contact convenience fields (at least an email, or first/last name + company, or a LinkedIn URL) OR a full Contacts array for batch enrichment (up to 250 records). If a non-empty Contacts array is supplied it takes precedence over the single-contact fields. Enable SIREN to also retrieve French legal/company data (SIREN, NAF code, VAT, registered address)."
+    },
+    {
+      "name": "Get Enrichment Result",
+      "category": "Enrichment",
+      "description": "Retrieves the result of a previously submitted enrichment batch using its request_id. Because enrichment is asynchronous, this may return success:false with a reason like \"Request not ready yet\" while processing is in progress — in that case wait a few seconds and call again. Poll pattern: call Enrich Contacts (Batch) to get a request_id, then poll this operation until success is true and the data array is populated. When ready, data contains one enriched record per submitted contact (email with qualification, phone, company, and optional SIREN/legal fields)."
+    },
+    {
+      "name": "Enrich and Wait",
+      "category": "Enrichment",
+      "description": "Convenience operation that submits a contact for enrichment and then polls internally for the result, so callers get the enriched data back in a single step without managing the request_id themselves. Polling is bounded (roughly 90 seconds) to stay within the execution timeout. If the result is ready in time it returns status \"completed\" with the enriched data; if Dropcontact is still processing when polling ends it returns status \"pending\" together with the request_id so you can retry later with Get Enrichment Result. Accepts the same single-contact convenience fields as Enrich Contacts (Batch), or a full Contacts array."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Enrich newly captured leads with verified professional emails, phone numbers, and company details before adding them to your CRM.",
+    "Clean and complete large contact lists in batches (up to 250 records per request) while staying GDPR/EU-compliant.",
+    "Retrieve French legal/company data (SIREN, NAF code, VAT, registered address) for B2B records based in France.",
+    "Resolve a single contact synchronously in one step using the built-in wait-and-poll convenience operation."
+  ],
+  "agentIdeas": [
+    "Use **Hunter.io** \"Domain Search\" to discover contacts at a target company, then call **Dropcontact** \"Enrich and Wait\" to verify each professional email and attach company details before outreach.",
+    "When a lead is missing data, run **Dropcontact** \"Enrich Contacts (Batch)\" and \"Get Enrichment Result\", then push the enriched record into **HubSpot** with \"Create Contact\" or \"Update Contact\".",
+    "Pull prospects from **Apollo.io** \"People Search\", enrich them with **Dropcontact** \"Enrich and Wait\" for GDPR-compliant verified emails, and sync the completed records back into your CRM."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/dropcontact/public/icon.png",
+  "sourcePaths": {
+    "service": "services/dropcontact",
+    "readme": "services/dropcontact/README.md",
+    "index": "services/dropcontact/src/index.js"
+  }
+}

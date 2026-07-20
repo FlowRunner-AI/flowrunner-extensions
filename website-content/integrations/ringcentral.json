@@ -1,0 +1,196 @@
+{
+  "slug": "ringcentral",
+  "name": "RingCentral",
+  "marketingCategory": "SMS, Voice & Push",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Connect to a RingCentral account via OAuth2 to send SMS and faxes, place RingOut (click-to-call) calls, read the message store and call log (including voicemail audio, fax pages, MMS media, and call recordings saved to FlowRunner file storage), manage personal address book contacts, inspect account extensions and phone numbers, and work with team messaging chats and teams.",
+  "actionCount": 30,
+  "triggerCount": 0,
+  "operationCategories": [
+    "SMS",
+    "Messages",
+    "Fax",
+    "RingOut",
+    "Call Log",
+    "Contacts",
+    "Account",
+    "Team Messaging"
+  ],
+  "actions": [
+    {
+      "name": "Send SMS",
+      "category": "SMS",
+      "description": "Sends an SMS text message from one of the connected extension's SMS-enabled phone numbers to one or more recipients. The sender number must be owned by the extension and have the SmsSender feature (pick it from the dictionary). Message text is limited to 1000 characters; longer texts are rejected by RingCentral. Requires the SMS permission on the RingCentral app."
+    },
+    {
+      "name": "List Messages",
+      "category": "Messages",
+      "description": "Retrieves messages from the connected extension's message store, paginated. Filter by message type (SMS, Fax, Voicemail, Pager), direction, read status, and a creation date range. Without a date filter RingCentral returns messages from the last 7 days. Each record includes the message status, sender/recipients, and attachment metadata (attachment ids can be passed to \"Get Message Attachment Content\")."
+    },
+    {
+      "name": "Get Message",
+      "category": "Messages",
+      "description": "Retrieves a single message from the connected extension's message store by its id, including sender/recipients, status, read status, and attachment metadata. Use the attachment ids with \"Get Message Attachment Content\" to download voicemail audio, fax pages, or MMS media."
+    },
+    {
+      "name": "Delete Message",
+      "category": "Messages",
+      "description": "Deletes a single message from the connected extension's message store by its id. The message is moved to the Deleted state (RingCentral purges deleted messages later). Returns a success status."
+    },
+    {
+      "name": "Get Message Attachment Content",
+      "category": "Messages",
+      "description": "Downloads the binary content of a message attachment — voicemail audio, fax pages, or MMS media — and saves it to FlowRunner file storage, returning the saved file's URL. The attachment's content type is resolved from the message metadata to give the saved file a proper extension (e.g. .mp3 for voicemail, .pdf/.tif for fax, .jpg for MMS)."
+    },
+    {
+      "name": "Send Fax",
+      "category": "Fax",
+      "description": "Sends a fax with a document from FlowRunner file storage to one or more recipients. The file (e.g. PDF, TIFF, DOCX, or image) is streamed to RingCentral as a multipart request. Optionally adds a cover page with custom text and controls the fax resolution. Requires the Faxes permission on the RingCentral app. Returns the created fax message record; poll it with \"Get Message\" to track the send status."
+    },
+    {
+      "name": "Make RingOut Call",
+      "category": "RingOut",
+      "description": "Initiates a two-legged RingOut (click-to-call) call: RingCentral first rings the \"From\" number (typically the connected user's phone), then connects it to the \"To\" number. Optionally plays a \"press 1 to connect\" prompt on the first leg and sets the caller id shown to the callee. Returns the RingOut session with its id and initial status — poll \"Get RingOut Status\" to track progress."
+    },
+    {
+      "name": "Get RingOut Status",
+      "category": "RingOut",
+      "description": "Retrieves the status of an active RingOut call session by its id, including the overall call status and the individual caller/callee leg statuses (InProgress, Success, NoAnswer, Busy, CannotReach, etc.)."
+    },
+    {
+      "name": "Cancel RingOut",
+      "category": "RingOut",
+      "description": "Cancels an in-progress RingOut call session by its id. Only calls that have not yet completed can be canceled. Returns a success status."
+    },
+    {
+      "name": "List Call Log Records",
+      "category": "Call Log",
+      "description": "Retrieves the connected extension's call log records, paginated. Filter by date range, call type (Voice or Fax), direction, and whether the call has a recording. The 'Detailed' view includes call legs; 'Simple' returns flat records. Recording ids from records with a recording can be passed to \"Get Call Recording Content\". Without a date filter RingCentral returns records from the last 24 hours."
+    },
+    {
+      "name": "Get Call Log Record",
+      "category": "Call Log",
+      "description": "Retrieves a single call log record of the connected extension by its id, including caller/callee, result, duration, and recording metadata when present. The 'Detailed' view includes the individual call legs."
+    },
+    {
+      "name": "List Account Call Log",
+      "category": "Call Log",
+      "description": "Retrieves the call log of the entire RingCentral account (all extensions), paginated. Requires admin-level permissions (ReadCallLog for the account). Supports the same filters as the extension call log: date range, call type, direction, view, and recording presence."
+    },
+    {
+      "name": "Get Call Recording Content",
+      "category": "Call Log",
+      "description": "Downloads the audio content of a call recording and saves it to FlowRunner file storage, returning the saved file's URL. The recording's content type (WAV or MP3) is resolved from its metadata to give the saved file the proper extension. Recording ids come from call log records that include a \"recording\" object. Requires call recording to be enabled on the account."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves the connected extension's personal address book contacts, paginated. Optionally filter by a name/company prefix and sort by first name, last name, or company. Returns contact records with names, phone numbers, emails, and addresses."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single personal address book contact of the connected extension by its id, including all names, phone numbers, emails, addresses, and notes."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact in the connected extension's personal address book with names, company, job title, email, phone numbers, business address, and notes. At least one field should be provided. Returns the created contact including its id."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing personal address book contact. Only the provided fields are changed — the current contact is fetched first and merged, so omitted fields keep their existing values (RingCentral's PUT would otherwise clear them). Returns the updated contact."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Deletes a contact from the connected extension's personal address book by its id. This cannot be undone. Returns a success status."
+    },
+    {
+      "name": "Get Account Info",
+      "category": "Account",
+      "description": "Retrieves the connected RingCentral account's information, including the main company number, operator extension, service plan, status, and setup state. Useful as a connection check."
+    },
+    {
+      "name": "List Extensions",
+      "category": "Account",
+      "description": "Retrieves the extensions of the connected RingCentral account, paginated. Filter by extension status (Enabled, Disabled, Not Activated, Unassigned) and type (User, Department, IVR Menu, etc.). Returns each extension's id, number, name, type, and status."
+    },
+    {
+      "name": "Get Extension",
+      "category": "Account",
+      "description": "Retrieves a single extension of the connected account by its id, including the extension number, name, type, status, contact details, and regional settings."
+    },
+    {
+      "name": "Get Current Extension",
+      "category": "Account",
+      "description": "Retrieves the extension of the connected (authorized) user, including the extension number, name, type, status, contact details, and permissions. Useful for identifying who the connection acts as."
+    },
+    {
+      "name": "List Phone Numbers",
+      "category": "Account",
+      "description": "Retrieves the phone numbers assigned to the connected extension, paginated. Optionally filter by usage type. Each record includes the number's features array (e.g. SmsSender, MmsSender, CallerId), which indicates what the number can be used for — numbers with SmsSender can be used as the \"Send SMS\" sender."
+    },
+    {
+      "name": "Get Presence",
+      "category": "Account",
+      "description": "Retrieves the presence status of the connected extension — availability (Available, Busy, Offline), user-set status, DND status, and optionally the detailed telephony state of ongoing calls."
+    },
+    {
+      "name": "List Chats",
+      "category": "Team Messaging",
+      "description": "Retrieves the connected user's team messaging (RingCentral app) chats, paginated with a page token. Optionally filter by one or more chat types: Everyone (the company-wide chat), Team, Group, Direct, or Personal. Returns chat records with id, type, name (for teams), and member ids."
+    },
+    {
+      "name": "List Teams",
+      "category": "Team Messaging",
+      "description": "Retrieves the team messaging teams the connected user is a member of, paginated with a page token. Returns team records with id, name, description, public flag, and status."
+    },
+    {
+      "name": "Get Chat",
+      "category": "Team Messaging",
+      "description": "Retrieves a single team messaging chat by its id, including its type, name (for teams), status, and member ids."
+    },
+    {
+      "name": "Post Message to Chat",
+      "category": "Team Messaging",
+      "description": "Posts a text message to a team messaging chat (team, group, direct, or personal chat) on behalf of the connected user. Supports RingCentral's markdown-style formatting and @-mentions (e.g. '![:Person](personId)'). Returns the created post."
+    },
+    {
+      "name": "List Chat Posts",
+      "category": "Team Messaging",
+      "description": "Retrieves the posts (messages) of a team messaging chat, newest first, paginated with a page token. Returns post records with text, creator id, attachments, and mentions."
+    },
+    {
+      "name": "Create Team",
+      "category": "Team Messaging",
+      "description": "Creates a new team messaging team with a name, optional member list (by email), and public/private visibility. The connected user becomes the team's creator and admin. Returns the created team including its id, which can be used with \"Post Message to Chat\"."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send SMS confirmations, alerts, or two-way notifications from a business phone number as part of a workflow.",
+    "Fax documents (PDF, TIFF, DOCX, images) stored in FlowRunner file storage to one or more recipients.",
+    "Place click-to-call (RingOut) calls between two numbers and track their status programmatically.",
+    "Archive voicemail audio, fax pages, MMS media, and call recordings into FlowRunner file storage for downstream processing.",
+    "Sync personal address book contacts and audit account extensions, phone numbers, and presence.",
+    "Post to and create team messaging chats and teams for internal collaboration automations."
+  ],
+  "agentIdeas": [
+    "When a **HubSpot** \"Search Contacts\" call finds a lead due for follow-up, use **RingCentral** \"Send SMS\" to text the contact and \"Make RingOut Call\" to connect a sales rep, then record the outcome with **HubSpot** \"Update Contact\".",
+    "Use **RingCentral** \"List Call Log Records\" to pull the day's calls, download each recording with \"Get Call Recording Content\", and append the call details to a spreadsheet via **Google Sheets** \"Add Row\".",
+    "After a **Google Calendar** \"List Events\" call surfaces upcoming appointments, use **RingCentral** \"Send SMS\" to send reminder texts to attendees and \"Send Fax\" to deliver any required paperwork from FlowRunner file storage."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/ringcentral/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/ringcentral",
+    "readme": "services/ringcentral/README.md",
+    "index": "services/ringcentral/src/index.js"
+  }
+}

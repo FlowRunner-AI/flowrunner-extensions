@@ -1,0 +1,158 @@
+{
+  "slug": "syncromsp",
+  "name": "SyncroMSP",
+  "marketingCategory": "Helpdesk & ITSM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [SyncroMSP](https://syncromsp.com/), the all-in-one PSA, RMM, and remote-access platform for managed service providers. Manage tickets, customers, contacts, assets, invoices, and RMM alerts directly from your flows.",
+  "actionCount": 24,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Tickets",
+    "Customers",
+    "Contacts",
+    "Assets",
+    "Invoices",
+    "RMM Alerts",
+    "Products"
+  ],
+  "actions": [
+    {
+      "name": "List Tickets",
+      "category": "Tickets",
+      "description": "Retrieves a paginated list of tickets (25 per page). Filter by search text, customer, or status. Returns each ticket with its number, subject, status, priority, customer, and timestamps, plus a meta object with pagination details (page, total_pages, total_entries)."
+    },
+    {
+      "name": "Get Ticket",
+      "category": "Tickets",
+      "description": "Retrieves a single ticket by its ID, including full details such as subject, description, status, priority, problem type, assigned tech, associated customer and asset, comments, and timestamps."
+    },
+    {
+      "name": "Create Ticket",
+      "category": "Tickets",
+      "description": "Creates a new ticket for a customer. Requires a subject and customer ID. Optionally set the problem type, status, priority, and initial description. Returns the created ticket including its number and ID."
+    },
+    {
+      "name": "Update Ticket",
+      "category": "Tickets",
+      "description": "Updates an existing ticket's fields. Provide the ticket ID and only the fields you want to change; omitted fields are left unchanged. Returns the updated ticket."
+    },
+    {
+      "name": "Delete Ticket",
+      "category": "Tickets",
+      "description": "Permanently deletes a ticket by its ID. This action cannot be undone."
+    },
+    {
+      "name": "Create Ticket Comment",
+      "category": "Tickets",
+      "description": "Adds a comment to an existing ticket. Set 'Hidden' to make the comment private (visible only to technicians) and 'Do Not Email' to suppress the customer notification email. Returns the created comment."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Retrieves a paginated list of customers (25 per page). Filter by search text across name, email, and phone. Returns each customer with contact details and a meta object with pagination information."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer by ID, including business name, contact name, email, phone, address, and associated contacts."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a new customer. Provide a business name and/or first and last name, plus optional contact details. Returns the created customer with its ID."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates an existing customer's details. Provide the customer ID and only the fields to change; omitted fields are left unchanged. Returns the updated customer."
+    },
+    {
+      "name": "Delete Customer",
+      "category": "Customers",
+      "description": "Permanently deletes a customer by ID. This action cannot be undone and may fail if the customer has associated records."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves a paginated list of contacts, optionally scoped to a single customer. Returns each contact with name, email, phone, and the customer they belong to, plus a meta object with pagination details."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by ID, including name, email, phone, notes, and the customer they belong to."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact under a customer. Requires the customer ID. Provide the contact's name and optional email, phone, and notes. Returns the created contact."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact. Provide the contact ID and only the fields to change; omitted fields are left unchanged. Returns the updated contact."
+    },
+    {
+      "name": "List Assets",
+      "category": "Assets",
+      "description": "Retrieves a paginated list of customer assets (devices, equipment). Filter by customer or search text. Returns each asset with name, type, serial, and the customer it belongs to, plus a meta object with pagination details."
+    },
+    {
+      "name": "Get Asset",
+      "category": "Assets",
+      "description": "Retrieves a single customer asset by ID, including its name, type, serial number, properties, RMM data, and the customer it belongs to."
+    },
+    {
+      "name": "Create Asset",
+      "category": "Assets",
+      "description": "Creates a new customer asset. Requires a name and the customer ID. Provide an asset type (label as configured in Syncro) to categorize the asset. Returns the created asset."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Retrieves a paginated list of invoices, optionally scoped to a single customer. Returns each invoice with number, total, balance due, status, and the customer, plus a meta object with pagination details."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves a single invoice by ID, including its number, line items, totals, balance due, payment status, and the customer it belongs to."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates a new invoice for a customer. Requires the customer ID and an array of line items. Each line item is an object with fields such as name, quantity, and price. Returns the created invoice."
+    },
+    {
+      "name": "List RMM Alerts",
+      "category": "RMM Alerts",
+      "description": "Retrieves a paginated list of RMM (remote monitoring) alerts. Filter by resolved status to see only open or only resolved alerts. Returns each alert with its description, severity, asset, and status, plus a meta object with pagination details."
+    },
+    {
+      "name": "Update RMM Alert",
+      "category": "RMM Alerts",
+      "description": "Updates an RMM alert to resolve or mute it. Set 'Resolved' to mark the alert as handled, and/or 'Muted' to silence further notifications. Returns the updated alert."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Retrieves a paginated list of products and services from your catalog. Filter by search text. Returns each product with name, price, SKU, and description, plus a meta object with pagination details."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [],
+  "agentIdeas": [
+    "When a high-priority issue is reported, use **SyncroMSP** \"Get Customers Dictionary\" and \"Create Ticket\" to log it, then **Slack** \"Send Message To Channel\" to alert the on-call technician channel with the new ticket number.",
+    "Use **SyncroMSP** \"List RMM Alerts\" to pull open alerts, \"Update RMM Alert\" to resolve handled ones, and **Google Sheets** \"Add Row\" to append each alert's description, severity, and asset into a monitoring log for reporting.",
+    "After **SyncroMSP** \"Create Invoice\" generates a customer invoice, use **Gmail** \"Send Message\" to email the customer their invoice number, total, and balance due."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/syncromsp/public/icon.png",
+  "sourcePaths": {
+    "service": "services/syncromsp",
+    "readme": "services/syncromsp/README.md",
+    "index": "services/syncromsp/src/index.js"
+  }
+}

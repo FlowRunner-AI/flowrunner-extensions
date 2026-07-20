@@ -1,0 +1,165 @@
+{
+  "slug": "keap",
+  "name": "Keap",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Keap](https://keap.com) (formerly Infusionsoft) CRM, e-commerce and marketing automation into FlowRunner. This service wraps the Keap REST v1 API for contacts, tags, companies, opportunities, orders, products, notes, tasks and campaigns, plus a realtime trigger driven by Keap REST Hooks.",
+  "actionCount": 24,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Contacts",
+    "Tags",
+    "Companies",
+    "Opportunities",
+    "Orders & Products",
+    "Notes & Tasks",
+    "Campaigns"
+  ],
+  "actions": [
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact in Keap. Supply names, one or more email addresses (each with a field slot such as EMAIL1), phone numbers, company, addresses and custom field values. Use Duplicate Option to instead upsert (merge into an existing contact) when an email or name matches."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by ID, including names, email addresses, phone numbers, company, addresses, tags and custom fields."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists contacts with optional email and given-name filters. Supports paging with limit (max 1000) and offset. Returns a `contacts` array plus a `count` of total matches."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact by ID. Only the fields you supply are changed. Names, primary email/phone, company, address and custom fields can all be updated."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact by ID. This cannot be undone."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists tags defined in the Keap account. Supports paging with limit and offset. Returns a `tags` array and a total `count`."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new tag. Optionally place it in a tag category by ID."
+    },
+    {
+      "name": "Apply Tag to Contact",
+      "category": "Tags",
+      "description": "Applies one or more tags to a contact. Pass the contact ID and a list of tag IDs."
+    },
+    {
+      "name": "Remove Tag from Contact",
+      "category": "Tags",
+      "description": "Removes a single tag from a contact."
+    },
+    {
+      "name": "Create Company",
+      "category": "Companies",
+      "description": "Creates a new company record. The company name is required; email, phone, website and address are optional."
+    },
+    {
+      "name": "Get Company",
+      "category": "Companies",
+      "description": "Retrieves a single company by ID."
+    },
+    {
+      "name": "List Companies",
+      "category": "Companies",
+      "description": "Lists companies with an optional company-name filter and paging via limit and offset."
+    },
+    {
+      "name": "Update Company",
+      "category": "Companies",
+      "description": "Updates an existing company by ID. Only supplied fields are changed."
+    },
+    {
+      "name": "Create Opportunity",
+      "category": "Opportunities",
+      "description": "Creates a sales opportunity linked to a contact and placed in a pipeline stage. Title, contact ID and stage ID are required; user (owner) and projected revenue are optional."
+    },
+    {
+      "name": "Get Opportunity",
+      "category": "Opportunities",
+      "description": "Retrieves a single opportunity by ID, including its contact, stage and projected revenue."
+    },
+    {
+      "name": "List Opportunities",
+      "category": "Opportunities",
+      "description": "Lists opportunities with optional stage-ID and user-ID filters and paging via limit and offset."
+    },
+    {
+      "name": "Update Opportunity",
+      "category": "Opportunities",
+      "description": "Updates an existing opportunity by ID. Only supplied fields are changed; commonly used to move an opportunity to a new stage."
+    },
+    {
+      "name": "List Orders",
+      "category": "Orders & Products",
+      "description": "Lists e-commerce orders with optional contact-ID filter, paid/unpaid filter, and paging via limit and offset."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders & Products",
+      "description": "Retrieves a single order by ID, including line items, totals and payment status."
+    },
+    {
+      "name": "List Products",
+      "category": "Orders & Products",
+      "description": "Lists products in the Keap store. Optionally include inactive products. Supports paging via limit and offset."
+    },
+    {
+      "name": "Create Note",
+      "category": "Notes & Tasks",
+      "description": "Creates a note attached to a contact. Provide a title, body and note type (Call, Email, Fax, Letter, Other)."
+    },
+    {
+      "name": "Create Task",
+      "category": "Notes & Tasks",
+      "description": "Creates a task, optionally linked to a contact and given a due date. Provide a title and optional description."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Notes & Tasks",
+      "description": "Lists tasks with optional contact-ID filter, completion status filter, and paging via limit and offset."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Lists marketing campaigns in the Keap account. Supports paging via limit and offset. Returns a `campaigns` array and total `count`."
+    }
+  ],
+  "triggers": [
+    "On Keap Event"
+  ],
+  "idealUseCases": [
+    "Sync new contacts and companies into Keap from web forms, spreadsheets or other CRMs.",
+    "Automate tagging to drive Keap campaigns and follow-up sequences.",
+    "Track a sales pipeline by creating opportunities and advancing them through stages.",
+    "React in real time when a contact, opportunity, order or task changes in Keap."
+  ],
+  "agentIdeas": [
+    "When an **On Keap Event** \"Contact Added\" trigger fires, use **Gmail** \"Send Message\" to send the new contact a personalized welcome email.",
+    "Use **Google Sheets** \"Get Rows\" to read a lead list, then call **Keap** \"Create Contact\" and \"Apply Tag to Contact\" to import and segment each lead into the right campaign.",
+    "When an **On Keap Event** \"Order Added\" trigger fires, use **Slack** \"Send Message To Channel\" to notify the sales team with the order and contact details."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/keap/public/icon.png",
+  "sourcePaths": {
+    "service": "services/keap",
+    "readme": "services/keap/README.md",
+    "index": "services/keap/src/index.js"
+  }
+}

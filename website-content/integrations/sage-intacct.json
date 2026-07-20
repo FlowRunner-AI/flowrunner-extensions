@@ -1,0 +1,266 @@
+{
+  "slug": "sage-intacct",
+  "name": "Sage Intacct",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to [Sage Intacct](https://www.sage.com/en-us/sage-business-cloud/intacct/), the cloud financial management and ERP accounting platform, via OAuth2. This extension wraps the Sage Intacct REST API to provide generic CRUD over 400+ object types plus dedicated operations across Accounts Payable, Accounts Receivable, Cash Management, Contracts and Revenue Management, and Purchasing. Object types, records, bank accounts, customers, and credit card accounts are surfaced through searchable dictionaries, and record forms are generated dynamically from Sage Intacct's schema.",
+  "actionCount": 44,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Records",
+    "Accounts Payable",
+    "Accounts Receivable",
+    "Cash Management",
+    "Contracts and Revenue Management",
+    "Purchasing"
+  ],
+  "actions": [
+    {
+      "name": "Create Record",
+      "category": "Records",
+      "description": "Creates a new record of any supported type in Sage Intacct. Select the object type first, then fill in the dynamically generated fields. Supports 400+ object types across all Sage Intacct modules."
+    },
+    {
+      "name": "Get Record",
+      "category": "Records",
+      "description": "Retrieves a single record by key from Sage Intacct. Returns the full record details for the selected object type."
+    },
+    {
+      "name": "Update Record",
+      "category": "Records",
+      "description": "Updates an existing record in Sage Intacct. Only the fields you provide will be changed; all other fields remain unchanged."
+    },
+    {
+      "name": "Delete Record",
+      "category": "Records",
+      "description": "Deletes a record from Sage Intacct. This action cannot be undone. Some record types may not support deletion if they have dependent records."
+    },
+    {
+      "name": "List Records",
+      "category": "Records",
+      "description": "Queries and lists records of any supported type in Sage Intacct. Supports filtering, field selection, ordering, and pagination."
+    },
+    {
+      "name": "Approve a vendor",
+      "category": "Accounts Payable",
+      "description": "Approve a vendor."
+    },
+    {
+      "name": "Decline a vendor",
+      "category": "Accounts Payable",
+      "description": "Decline a vendor."
+    },
+    {
+      "name": "Reclassify an adjustment",
+      "category": "Accounts Receivable",
+      "description": "Reclassify an adjustment."
+    },
+    {
+      "name": "Reverse an adjustment",
+      "category": "Accounts Receivable",
+      "description": "Reverse an adjustment."
+    },
+    {
+      "name": "Submit an adjustment",
+      "category": "Accounts Receivable",
+      "description": "Submit an adjustment."
+    },
+    {
+      "name": "Reverse an advance",
+      "category": "Accounts Receivable",
+      "description": "Reverse an advance."
+    },
+    {
+      "name": "Submit an advance",
+      "category": "Accounts Receivable",
+      "description": "Submit an advance."
+    },
+    {
+      "name": "Reverse a customer refund",
+      "category": "Accounts Receivable",
+      "description": "Reverse a customer refund."
+    },
+    {
+      "name": "Submit a customer refund",
+      "category": "Accounts Receivable",
+      "description": "Submit a customer refund."
+    },
+    {
+      "name": "Generate a PDF of an invoice",
+      "category": "Accounts Receivable",
+      "description": "Generate a PDF of an invoice."
+    },
+    {
+      "name": "Reclassify an invoice",
+      "category": "Accounts Receivable",
+      "description": "Reclassify an invoice."
+    },
+    {
+      "name": "Reverse an invoice",
+      "category": "Accounts Receivable",
+      "description": "Reverse an invoice."
+    },
+    {
+      "name": "Submit an invoice",
+      "category": "Accounts Receivable",
+      "description": "Submit an invoice."
+    },
+    {
+      "name": "Reverse a payment",
+      "category": "Accounts Receivable",
+      "description": "Reverse a payment."
+    },
+    {
+      "name": "Submit an AR payment",
+      "category": "Accounts Receivable",
+      "description": "Submit an AR payment."
+    },
+    {
+      "name": "Reverse a bank fee",
+      "category": "Cash Management",
+      "description": "Reverse a bank fee."
+    },
+    {
+      "name": "Reopen a bank reconciliation",
+      "category": "Cash Management",
+      "description": "Reopen a bank reconciliation."
+    },
+    {
+      "name": "Assign customer to a bank transaction",
+      "category": "Cash Management",
+      "description": "Assign customer to a bank transaction."
+    },
+    {
+      "name": "Ignore a bank transaction",
+      "category": "Cash Management",
+      "description": "Ignore a bank transaction."
+    },
+    {
+      "name": "Stop ignoring a bank transaction",
+      "category": "Cash Management",
+      "description": "Stop ignoring a bank transaction."
+    },
+    {
+      "name": "Reverse a credit card fee",
+      "category": "Cash Management",
+      "description": "Reverse a credit card fee."
+    },
+    {
+      "name": "Reopen a credit card reconciliation",
+      "category": "Cash Management",
+      "description": "Reopen a credit card reconciliation."
+    },
+    {
+      "name": "Reverse a credit card transaction",
+      "category": "Cash Management",
+      "description": "Reverse a credit card transaction."
+    },
+    {
+      "name": "Reverse a deposit",
+      "category": "Cash Management",
+      "description": "Reverse a deposit."
+    },
+    {
+      "name": "Reverse a funds transfer",
+      "category": "Cash Management",
+      "description": "Reverse a funds transfer."
+    },
+    {
+      "name": "Reverse an other receipt",
+      "category": "Cash Management",
+      "description": "Reverse an other receipt."
+    },
+    {
+      "name": "Clear all MEA allocations",
+      "category": "Contracts and Revenue Management",
+      "description": "Clear all MEA allocations."
+    },
+    {
+      "name": "Clear last active MEA allocation",
+      "category": "Contracts and Revenue Management",
+      "description": "Clear last active MEA allocation."
+    },
+    {
+      "name": "Expire a contract",
+      "category": "Contracts and Revenue Management",
+      "description": "Expire a contract."
+    },
+    {
+      "name": "Hold contract schedules",
+      "category": "Contracts and Revenue Management",
+      "description": "Hold contract schedules."
+    },
+    {
+      "name": "Post a contract",
+      "category": "Contracts and Revenue Management",
+      "description": "Post a contract."
+    },
+    {
+      "name": "Renew a contract",
+      "category": "Contracts and Revenue Management",
+      "description": "Renew a contract."
+    },
+    {
+      "name": "Resume contract schedules",
+      "category": "Contracts and Revenue Management",
+      "description": "Resume contract schedules."
+    },
+    {
+      "name": "Uncancel a contract",
+      "category": "Contracts and Revenue Management",
+      "description": "Uncancel a contract."
+    },
+    {
+      "name": "Post a revenue schedule line",
+      "category": "Contracts and Revenue Management",
+      "description": "Post a revenue schedule line."
+    },
+    {
+      "name": "Unpost a revenue schedule line",
+      "category": "Contracts and Revenue Management",
+      "description": "Unpost a revenue schedule line."
+    },
+    {
+      "name": "Approve a purchasing document",
+      "category": "Purchasing",
+      "description": "Approve a purchasing document."
+    },
+    {
+      "name": "Decline a purchasing document",
+      "category": "Purchasing",
+      "description": "Decline a purchasing document."
+    },
+    {
+      "name": "Submit a purchasing document",
+      "category": "Purchasing",
+      "description": "Submit a purchasing document."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Create, read, update, delete, and list records of any Sage Intacct object type from a single set of generic operations.",
+    "Automate Accounts Receivable workflows: submit, reverse, reclassify, and generate PDFs for invoices, adjustments, advances, payments, and customer refunds.",
+    "Manage Accounts Payable approvals by approving or declining vendors.",
+    "Reconcile and correct Cash Management activity: reverse fees, deposits, receipts, and transfers, reopen reconciliations, and triage bank transactions.",
+    "Drive Contracts and Revenue Management lifecycles: post, renew, expire, hold, resume, and uncancel contracts and revenue schedule lines.",
+    "Route Purchasing documents through approval by submitting, approving, or declining them.",
+    "Manage employee Expenses end to end: create and list expense reports, lines, summaries, adjustments, and electronic receipts, then submit, approve, or decline them by updating the report's `state` field.",
+    "Attach scanned or digital receipts (PDFs and other files) by uploading Base64-encoded file content into an attachment container, then link it to an expense report, adjustment, or electronic receipt."
+  ],
+  "agentIdeas": [
+    "After **Sage Intacct** \"Generate a PDF of an invoice\", use **Gmail** \"Send Message\" to email the invoice PDF to the customer.",
+    "Use **Google Sheets** \"Get Rows\" to read a batch of new vendor bills, then call **Sage Intacct** \"Create Record\" for each to sync them into the ledger.",
+    "When an approval is needed, use **Sage Intacct** \"List Records\" to find pending purchasing documents and **Slack** \"Send Message To Channel\" to alert the finance team before calling \"Approve a purchasing document\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/sage-intacct/public/icon.png",
+  "sourcePaths": {
+    "service": "services/sage-intacct",
+    "readme": "services/sage-intacct/README.md",
+    "index": "services/sage-intacct/src/index.js"
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "slug": "azure-devops",
+  "name": "Azure DevOps",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect to Azure DevOps Services to manage projects, teams, work items, WIQL queries, Git repositories, pull requests, pipelines, builds and team iterations across a single organization. Authenticates with a Personal Access Token (PAT) over HTTP Basic auth.",
+  "actionCount": 28,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Projects",
+    "Teams",
+    "Work Items",
+    "Queries",
+    "Repositories",
+    "Pull Requests",
+    "Pipelines",
+    "Boards"
+  ],
+  "actions": [
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Lists all team projects in the connected Azure DevOps organization that the token can access. Supports paging via a continuation token and an optional state filter. Returns each project's id, name, description, state, visibility and last update time."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves a single team project by its ID or name, including its description, state, visibility, revision and capabilities. Use List Projects to discover available project identifiers."
+    },
+    {
+      "name": "List Teams",
+      "category": "Teams",
+      "description": "Lists all teams in a project. Returns each team's id, name and description. Use the team identifier with List Team Iterations to read a team's sprints."
+    },
+    {
+      "name": "Get Work Item",
+      "category": "Work Items",
+      "description": "Retrieves a single work item by ID, expanding all fields, relations and links. Returns the work item's numeric id, revision and its System.* / Microsoft.VSTS.* field map (title, state, assigned-to, area/iteration path, etc.)."
+    },
+    {
+      "name": "Get Work Items Batch",
+      "category": "Work Items",
+      "description": "Retrieves multiple work items at once by a list of IDs (up to 200 per call). Returns the unwrapped array of work items with their expanded fields. Faster than fetching items individually — useful after running a WIQL query that returns only IDs."
+    },
+    {
+      "name": "Create Work Item",
+      "category": "Work Items",
+      "description": "Creates a work item of a chosen type (Bug, Task, User Story, Feature, Epic, Issue) in a project. Set common fields directly via the title, description, assigned-to, state, tags, priority, area-path and iteration-path parameters, or supply raw JSON-Patch operations for any other field. Returns the created work item with its new numeric id."
+    },
+    {
+      "name": "Update Work Item",
+      "category": "Work Items",
+      "description": "Updates fields on an existing work item using replace operations. Set any of the convenience fields (title, description, assigned-to, state, tags, priority, area/iteration path) or supply raw JSON-Patch operations for other fields. Returns the updated work item with its incremented revision."
+    },
+    {
+      "name": "Delete Work Item",
+      "category": "Work Items",
+      "description": "Deletes a work item, sending it to the project's recycle bin (or permanently deleting it when Destroy is enabled). Returns the deleted work item's id and details."
+    },
+    {
+      "name": "Add Comment to Work Item",
+      "category": "Work Items",
+      "description": "Adds a comment to a work item's discussion. Returns the created comment with its id, text, author and created date."
+    },
+    {
+      "name": "List Work Item Comments",
+      "category": "Work Items",
+      "description": "Lists the comments on a work item, most recent first. Returns each comment's id, text, author and created/modified dates plus the total count."
+    },
+    {
+      "name": "Run WIQL Query",
+      "category": "Queries",
+      "description": "Runs a Work Item Query Language (WIQL) statement and returns the matching work item references (IDs and URLs). WIQL selects only fields you name; to get full field values, pass the returned IDs to Get Work Items Batch. Scope the query to a project for project-relative asOf and macro support."
+    },
+    {
+      "name": "List Repositories",
+      "category": "Repositories",
+      "description": "Lists the Git repositories in a project. Returns each repository's id, name, default branch, size, remote/web URLs and disabled/fork flags."
+    },
+    {
+      "name": "Get Repository",
+      "category": "Repositories",
+      "description": "Retrieves a single Git repository by its ID or name, including default branch, size, project reference and clone URLs."
+    },
+    {
+      "name": "List Branches",
+      "category": "Repositories",
+      "description": "Lists the branches (heads) of a Git repository. Returns each branch's full ref name (e.g. refs/heads/main), object ID and the identity that last updated it."
+    },
+    {
+      "name": "List Commits",
+      "category": "Repositories",
+      "description": "Lists commits in a Git repository, newest first. Optionally filter by branch/version, author and limit the count. Returns each commit's id (SHA-1), comment, author, committer and change counts."
+    },
+    {
+      "name": "Get File Content",
+      "category": "Repositories",
+      "description": "Retrieves the text content of a file at a path in a Git repository, optionally at a specific branch. Returns the raw file text. Binary files are not decoded — use the repository's web/remote URL to download binary blobs."
+    },
+    {
+      "name": "List Pull Requests",
+      "category": "Pull Requests",
+      "description": "Lists pull requests in a repository, filtered by status (Active, Completed, Abandoned or All), target branch and creator. Returns each pull request's id, title, status, source/target branches and creator."
+    },
+    {
+      "name": "Get Pull Request",
+      "category": "Pull Requests",
+      "description": "Retrieves a single pull request by its ID, including title, description, status, reviewers with their votes, merge status and source/target branches."
+    },
+    {
+      "name": "Create Pull Request",
+      "category": "Pull Requests",
+      "description": "Creates a pull request from a source branch into a target branch. Provide branches as full refs (e.g. refs/heads/feature). Optionally set a description, mark it as a draft and add reviewers by identity ID. Returns the created pull request with its new id."
+    },
+    {
+      "name": "Update Pull Request",
+      "category": "Pull Requests",
+      "description": "Updates a pull request: change its title or description, complete it, abandon it or reactivate it, and set completion options (e.g. delete source branch, merge strategy) when completing. Returns the updated pull request."
+    },
+    {
+      "name": "Add Pull Request Comment",
+      "category": "Pull Requests",
+      "description": "Adds a new comment thread to a pull request. Returns the created thread with its id and the contained comment. To reply within an existing thread, target that thread in the Azure DevOps UI or a dedicated threads endpoint."
+    },
+    {
+      "name": "List Pipelines",
+      "category": "Pipelines",
+      "description": "Lists the pipelines defined in a project. Returns each pipeline's id, name, folder and revision. Use a pipeline id with Run Pipeline or Get Pipeline Run."
+    },
+    {
+      "name": "Run Pipeline",
+      "category": "Pipelines",
+      "description": "Queues a run of a pipeline, optionally overriding the branch it runs on, passing template parameters and defining variables. Returns the new run with its id, state and result. Poll Get Pipeline Run to track completion."
+    },
+    {
+      "name": "Get Pipeline Run",
+      "category": "Pipelines",
+      "description": "Retrieves a specific pipeline run, including its state (inProgress, completed), result (succeeded, failed, canceled), created/finished dates and resolved resources."
+    },
+    {
+      "name": "List Builds",
+      "category": "Pipelines",
+      "description": "Lists builds in a project, optionally filtered by build definition IDs, status and result. Returns each build's id, build number, status, result, queue/start/finish times and requested-for identity."
+    },
+    {
+      "name": "Get Build",
+      "category": "Pipelines",
+      "description": "Retrieves a single build by its ID, including status, result, build number, source branch/version, definition reference and timing."
+    },
+    {
+      "name": "Queue Build",
+      "category": "Pipelines",
+      "description": "Queues a new build for a build definition, optionally on a specific source branch. Returns the queued build with its id, status and build number. This uses the classic Build API; for YAML pipelines prefer Run Pipeline."
+    },
+    {
+      "name": "List Team Iterations",
+      "category": "Boards",
+      "description": "Lists the iterations (sprints) configured for a team, optionally filtered to the current sprint. Returns each iteration's id, name, path and start/finish dates."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create Bug or Task work items from incoming alerts, forms or support tickets",
+    "Run WIQL queries on a schedule and batch-fetch matching work items for reporting",
+    "Open, review, complete or comment on pull requests as part of a release workflow",
+    "Trigger a YAML pipeline run or queue a classic build, then poll for its result",
+    "Track sprint progress by listing a team's iterations and their assigned work items"
+  ],
+  "agentIdeas": [
+    "When a **GitHub** \"On Pull Request Opened\" trigger fires, use Azure DevOps \"Create Work Item\" to open a tracking Task and \"Add Comment to Work Item\" with the PR link for cross-repo traceability.",
+    "After Azure DevOps \"Run Pipeline\" and \"Get Pipeline Run\" report a failed result, use **Slack** \"Send Message To Channel\" to alert the team with the run state and result.",
+    "When a **Jira** \"Create Issue\" is raised for a code defect, use Azure DevOps \"Create Pull Request\" and \"Add Pull Request Comment\" to open and annotate the fix branch back in Azure Repos."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/azure-devops/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/azure-devops",
+    "readme": "services/azure-devops/README.md",
+    "index": "services/azure-devops/src/index.js"
+  }
+}

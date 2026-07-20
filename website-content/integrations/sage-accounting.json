@@ -1,0 +1,295 @@
+{
+  "slug": "sage-accounting",
+  "name": "Sage Accounting",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to Sage Business Cloud Accounting (Sage Accounting) — the SMB bookkeeping SaaS — over the Sage Accounting API v3.1. Manage businesses, contacts (customers and vendors), sales invoices, sales credit notes, sales quotes, purchase invoices, products, services, ledger accounts, bank accounts, contact payments, tax rates, and manual journals. This is distinct from the separate Sage Intacct service in this repository.",
+  "actionCount": 49,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Businesses",
+    "Contacts",
+    "Sales Invoices",
+    "Sales Credit Notes",
+    "Sales Quotes",
+    "Purchase Invoices",
+    "Products",
+    "Services",
+    "Ledger Accounts",
+    "Bank Accounts",
+    "Contact Payments",
+    "Tax Rates",
+    "Journals"
+  ],
+  "actions": [
+    {
+      "name": "List Businesses",
+      "category": "Businesses",
+      "description": "Retrieves the Sage businesses accessible to the connected user. Most accounts contain a single business; multi-business subscriptions return one entry per business. Useful as a connection check and for looking up business ids."
+    },
+    {
+      "name": "Get Business",
+      "category": "Businesses",
+      "description": "Retrieves full details of a single Sage business by id, including its name, address, country, and subscription details."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves contacts (customers and vendors) of the connected business, paginated (up to 200 per page). Supports filtering by free-text search, contact type, exact email address, and last-modified timestamp. Returns summary contact objects with id and display name."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves the full record of a single contact by id, including contact types, addresses, contact persons, bank account details, default ledger accounts, currency, credit terms, and balance information."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact (customer, vendor, or both) in the connected business. Requires a name and at least one contact type. Optionally sets a reference, email, phone numbers, main address, main contact person, default sales ledger account, currency, credit limit, and tax number. Returns the created contact."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact. Only the provided fields are changed; omitted fields keep their current values. Returns the updated contact."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Deletes a contact from the business. Sage only allows deleting contacts that have no associated transactions (invoices, payments, etc.). Returns a success status."
+    },
+    {
+      "name": "List Sales Invoices",
+      "category": "Sales Invoices",
+      "description": "Retrieves sales invoices of the connected business, paginated (up to 200 per page). Supports filtering by status, customer, issue date range, free-text search, and last-modified timestamp. Returns summary invoice objects with id and display reference."
+    },
+    {
+      "name": "Get Sales Invoice",
+      "category": "Sales Invoices",
+      "description": "Retrieves the full record of a single sales invoice by id, including all invoice lines, tax analysis, totals, outstanding amount, status, and payment allocations."
+    },
+    {
+      "name": "Create Sales Invoice",
+      "category": "Sales Invoices",
+      "description": "Creates a sales invoice for a customer with one or more invoice lines. Each line requires a description, ledger account, quantity, and unit price, and may reference a product or service, a tax rate, and a discount. Optionally sets a due date, reference, notes, terms and conditions, currency, and exchange rate. Returns the created invoice with its assigned invoice number and calculated totals."
+    },
+    {
+      "name": "Update Sales Invoice",
+      "category": "Sales Invoices",
+      "description": "Updates an existing sales invoice. Only the provided fields are changed. When Invoice Lines are provided, they replace ALL existing lines. Invoices that already have payments allocated cannot be edited. Returns the updated invoice."
+    },
+    {
+      "name": "Delete Sales Invoice",
+      "category": "Sales Invoices",
+      "description": "Deletes a sales invoice. Sage only allows deleting invoices with no payments or allocations against them (typically drafts); paid or partially paid invoices must be voided in Sage instead. Returns a success status."
+    },
+    {
+      "name": "List Sales Credit Notes",
+      "category": "Sales Credit Notes",
+      "description": "Retrieves sales credit notes of the connected business, paginated (up to 200 per page). Supports filtering by status, customer, date range, free-text search, and last-modified timestamp."
+    },
+    {
+      "name": "Get Sales Credit Note",
+      "category": "Sales Credit Notes",
+      "description": "Retrieves the full record of a single sales credit note by id, including all credit note lines, tax analysis, totals, and allocation details."
+    },
+    {
+      "name": "Create Sales Credit Note",
+      "category": "Sales Credit Notes",
+      "description": "Creates a sales credit note for a customer with one or more credit note lines (same line structure as sales invoice lines). Optionally sets a reference and notes. Returns the created credit note with calculated totals."
+    },
+    {
+      "name": "Update Sales Credit Note",
+      "category": "Sales Credit Notes",
+      "description": "Updates an existing sales credit note. Only the provided fields are changed. When Credit Note Lines are provided, they replace ALL existing lines. Credit notes that are already allocated cannot be edited. Returns the updated credit note."
+    },
+    {
+      "name": "Delete Sales Credit Note",
+      "category": "Sales Credit Notes",
+      "description": "Deletes a sales credit note. Sage only allows deleting credit notes that are not allocated to any invoice or payment. Returns a success status."
+    },
+    {
+      "name": "List Sales Quotes",
+      "category": "Sales Quotes",
+      "description": "Retrieves sales quotes (estimates) of the connected business, paginated (up to 200 per page). Supports filtering by customer, date range, free-text search, and last-modified timestamp."
+    },
+    {
+      "name": "Get Sales Quote",
+      "category": "Sales Quotes",
+      "description": "Retrieves the full record of a single sales quote by id, including all quote lines, tax analysis, totals, expiry date, and status."
+    },
+    {
+      "name": "Create Sales Quote",
+      "category": "Sales Quotes",
+      "description": "Creates a sales quote (estimate) for a customer with one or more quote lines (same line structure as sales invoice lines). Optionally sets an expiry date, reference, and notes. Returns the created quote with calculated totals."
+    },
+    {
+      "name": "Update Sales Quote",
+      "category": "Sales Quotes",
+      "description": "Updates an existing sales quote. Only the provided fields are changed. When Quote Lines are provided, they replace ALL existing lines. Returns the updated quote."
+    },
+    {
+      "name": "Delete Sales Quote",
+      "category": "Sales Quotes",
+      "description": "Deletes a sales quote. Quotes that have been converted to an invoice cannot be deleted. Returns a success status."
+    },
+    {
+      "name": "List Purchase Invoices",
+      "category": "Purchase Invoices",
+      "description": "Retrieves purchase invoices (vendor bills) of the connected business, paginated (up to 200 per page). Supports filtering by vendor, status, issue date range, free-text search, and last-modified timestamp."
+    },
+    {
+      "name": "Get Purchase Invoice",
+      "category": "Purchase Invoices",
+      "description": "Retrieves the full record of a single purchase invoice (vendor bill) by id, including all invoice lines, tax analysis, totals, outstanding amount, and payment allocations."
+    },
+    {
+      "name": "Create Purchase Invoice",
+      "category": "Purchase Invoices",
+      "description": "Records a purchase invoice (vendor bill) with one or more invoice lines. Each line requires a description, ledger account, quantity, and unit price, and may reference a product and a tax rate. Optionally sets a due date, the vendor's invoice reference, and notes. Returns the created invoice with calculated totals."
+    },
+    {
+      "name": "Update Purchase Invoice",
+      "category": "Purchase Invoices",
+      "description": "Updates an existing purchase invoice. Only the provided fields are changed. When Invoice Lines are provided, they replace ALL existing lines. Invoices with payments allocated cannot be edited. Returns the updated invoice."
+    },
+    {
+      "name": "Delete Purchase Invoice",
+      "category": "Purchase Invoices",
+      "description": "Deletes a purchase invoice. Sage only allows deleting invoices with no payments or allocations against them; paid invoices must be voided in Sage instead. Returns a success status."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Retrieves the business's products, paginated (up to 200 per page). Supports free-text search on description and item code, and a last-modified timestamp filter."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves the full record of a single product by id, including item code, ledger accounts, cost price, sales prices, and notes."
+    },
+    {
+      "name": "Create Product",
+      "category": "Products",
+      "description": "Creates a product in the business's catalog. Requires a description; optionally sets an item code, default sales and purchase ledger accounts, cost price, a standard sales price, and notes. Returns the created product."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates an existing product. Only the provided fields are changed. When Sales Price is provided, it replaces the product's sales price entries. Returns the updated product."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Products",
+      "description": "Deletes a product from the catalog. Products already used on invoices or other artefacts may not be deletable. Returns a success status."
+    },
+    {
+      "name": "List Services",
+      "category": "Services",
+      "description": "Retrieves the business's service items, paginated (up to 200 per page). Supports free-text search on description and item code, and a last-modified timestamp filter."
+    },
+    {
+      "name": "Get Service",
+      "category": "Services",
+      "description": "Retrieves the full record of a single service item by id, including item code, sales ledger account, sales prices, and notes."
+    },
+    {
+      "name": "Create Service",
+      "category": "Services",
+      "description": "Creates a service item in the business's catalog. Requires a description; optionally sets an item code, a default sales ledger account, a standard sales price, and notes. Returns the created service item."
+    },
+    {
+      "name": "Update Service",
+      "category": "Services",
+      "description": "Updates an existing service item. Only the provided fields are changed. When Sales Price is provided, it replaces the service's sales price entries. Returns the updated service item."
+    },
+    {
+      "name": "Delete Service",
+      "category": "Services",
+      "description": "Deletes a service item from the catalog. Services already used on invoices or other artefacts may not be deletable. Returns a success status."
+    },
+    {
+      "name": "List Ledger Accounts",
+      "category": "Ledger Accounts",
+      "description": "Retrieves ledger accounts from the business's chart of accounts, paginated (up to 200 per page). Supports visibility toggles to only return accounts usable in banking, sales, expenses, or journals, and a local-page free-text search."
+    },
+    {
+      "name": "Get Ledger Account",
+      "category": "Ledger Accounts",
+      "description": "Retrieves the full record of a single ledger account by id, including its name, nominal code, ledger account type, tax rate, and visibility settings."
+    },
+    {
+      "name": "Create Ledger Account",
+      "category": "Ledger Accounts",
+      "description": "Creates a new ledger account in the business's chart of accounts. Requires a display name, a nominal code, and a ledger account type. Returns the created ledger account."
+    },
+    {
+      "name": "List Bank Accounts",
+      "category": "Bank Accounts",
+      "description": "Retrieves the business's bank accounts, paginated. Returns summary bank account objects with id and display name."
+    },
+    {
+      "name": "Get Bank Account",
+      "category": "Bank Accounts",
+      "description": "Retrieves the full record of a single bank account by id, including account details, sort code/IBAN where set, associated ledger account, and current balance."
+    },
+    {
+      "name": "Create Contact Payment",
+      "category": "Contact Payments",
+      "description": "Records a payment or receipt against a contact from a bank account — this is how invoice payments are recorded in Sage. Choose the transaction type (Customer Receipt, Customer Refund, Vendor Payment, or Vendor Refund), then optionally allocate the total across one or more invoices/credit notes via Allocated Artefacts. Unallocated amounts are recorded as a payment on account. Returns the created contact payment."
+    },
+    {
+      "name": "List Contact Payments",
+      "category": "Contact Payments",
+      "description": "Retrieves contact payments (customer receipts/refunds and vendor payments/refunds), paginated (up to 200 per page). Supports filtering by contact, bank account, transaction type, and date range."
+    },
+    {
+      "name": "Get Contact Payment",
+      "category": "Contact Payments",
+      "description": "Retrieves the full record of a single contact payment by id, including the transaction type, contact, bank account, total amount, and allocations against invoices or credit notes."
+    },
+    {
+      "name": "List Tax Rates",
+      "category": "Tax Rates",
+      "description": "Retrieves the tax rates available to the business (e.g. standard, reduced, zero-rated), paginated. Enable Full Details to include the current percentage and historical rate breakdown for each tax rate."
+    },
+    {
+      "name": "Create Journal",
+      "category": "Journals",
+      "description": "Creates a manual journal entry with two or more journal lines. The total debits must equal the total credits across all lines. Each line posts a debit or credit to a ledger account with a details description. Returns the created journal."
+    },
+    {
+      "name": "List Journals",
+      "category": "Journals",
+      "description": "Retrieves manual journal entries of the connected business, paginated (up to 200 per page). Supports filtering by posting date range and last-modified timestamp."
+    },
+    {
+      "name": "Get Journal",
+      "category": "Journals",
+      "description": "Retrieves the full record of a single journal entry by id, including all journal lines with their ledger accounts, debit/credit amounts, and details."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create Sage sales invoices from orders, subscriptions, or form submissions captured elsewhere",
+    "Sync customer and vendor records between a CRM and Sage's contact list",
+    "Record customer receipts and vendor payments against outstanding invoices when payments settle",
+    "Push products and services into Sage's catalog and keep prices up to date",
+    "Post manual journal entries and export ledger, invoice, or payment data for reporting"
+  ],
+  "agentIdeas": [
+    "Use **Stripe** \"Get Invoices List\" to pull settled payments, then call Sage Accounting \"Create Sales Invoice\" and \"Create Contact Payment\" to mirror the revenue and mark it paid in the ledger.",
+    "When a **HubSpot** deal closes via \"Create Deal\", use Sage Accounting \"Create Contact\" for the customer and \"Create Sales Invoice\" to bill the agreed amount automatically.",
+    "On a schedule, call Sage Accounting \"List Sales Invoices\" and \"List Contact Payments\", then use **Google Sheets** \"Add Rows\" to append the results into an accounts-receivable tracking sheet for reporting."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/sage-accounting/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/sage-accounting",
+    "readme": "services/sage-accounting/README.md",
+    "index": "services/sage-accounting/src/index.js"
+  }
+}

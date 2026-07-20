@@ -1,0 +1,637 @@
+{
+  "slug": "deel",
+  "name": "Deel",
+  "marketingCategory": "HR & Recruiting",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integration with Deel's global HR, payroll, and contracting platform. Manage people and HRIS data, contractor (IC) and EOR contracts, time off, adjustments, off-cycle payments, global payroll, applicant tracking (ATS), immigration, screenings, IT assets, and invoices through a single OAuth2-connected service. Connects to either the Production or Sandbox (demo) environment.",
+  "actionCount": 116,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Setup",
+    "People",
+    "Organization",
+    "HRIS",
+    "Contracts",
+    "EOR",
+    "Time Off",
+    "Adjustments",
+    "Global Payroll",
+    "ATS",
+    "Immigration",
+    "Screenings",
+    "IT",
+    "Knowledge Hub",
+    "Access",
+    "Invoices"
+  ],
+  "actions": [
+    {
+      "name": "Test Connection",
+      "category": "Setup",
+      "description": "Confirms that the service can reach Deel with the connected account. Run this once after connecting to verify the setup. Returns your name, email, and organization so you can confirm the right account is linked."
+    },
+    {
+      "name": "Get My Profile",
+      "category": "People",
+      "description": "Returns the Deel profile of the currently connected user. Useful to verify identity, fetch your worker ID, or display your name in flows."
+    },
+    {
+      "name": "Get Organization",
+      "category": "Organization",
+      "description": "Returns details about your Deel organization. Use this to fetch your org name, ID, and the country it operates from for use in other flows."
+    },
+    {
+      "name": "List People",
+      "category": "People",
+      "description": "Returns the list of people (workers, employees, contractors) in your Deel organization. Filter by status, country, or type, or search by name/email."
+    },
+    {
+      "name": "Get Person",
+      "category": "People",
+      "description": "Returns the full profile of one person in your Deel organization. Pick by their Deel ID or by an external ID from your own system."
+    },
+    {
+      "name": "Update Person",
+      "category": "People",
+      "description": "Updates a person's profile information (name, email, phone, etc.). Only fields you fill in will be updated."
+    },
+    {
+      "name": "Update Working Location",
+      "category": "People",
+      "description": "Updates the country and city where the person is currently working. Used for tax, compliance, and benefits calculations."
+    },
+    {
+      "name": "Create Person Without Contract",
+      "category": "People",
+      "description": "Adds a new person to Deel without immediately creating a contract. Useful for pre-onboarding workflows where you collect data before signing."
+    },
+    {
+      "name": "Create Direct Employee",
+      "category": "People",
+      "description": "Creates a direct employee record (you employ them, not Deel). For EOR-managed employees use Create EOR Worker."
+    },
+    {
+      "name": "List Org Structure",
+      "category": "HRIS",
+      "description": "Returns your organization's structure (teams, departments, hierarchies) configured in Deel."
+    },
+    {
+      "name": "Get Org Structure Node",
+      "category": "HRIS",
+      "description": "Returns one node (team or department) from your org structure."
+    },
+    {
+      "name": "Create Org Structure Node",
+      "category": "HRIS",
+      "description": "Creates a new team or department in your org structure."
+    },
+    {
+      "name": "Update Org Structure Node",
+      "category": "HRIS",
+      "description": "Updates a team or department's name or parent."
+    },
+    {
+      "name": "Delete Org Structure Node",
+      "category": "HRIS",
+      "description": "Removes a team or department from your org structure. Children will be reassigned to the parent."
+    },
+    {
+      "name": "Get Custom Fields",
+      "category": "HRIS",
+      "description": "Returns the custom fields defined on a person, contract, or organization. Use this to discover what data is being tracked."
+    },
+    {
+      "name": "Set Custom Field",
+      "category": "HRIS",
+      "description": "Sets the value of a custom field on a person or contract. Creates the value if it doesn't exist, updates it if it does."
+    },
+    {
+      "name": "Delete Custom Field Value",
+      "category": "HRIS",
+      "description": "Clears a custom field's value on a person or contract."
+    },
+    {
+      "name": "List Worker Relations",
+      "category": "HRIS",
+      "description": "Returns the management and reporting relationships for a person (manager, direct reports, mentors, etc.)."
+    },
+    {
+      "name": "List Contracts",
+      "category": "Contracts",
+      "description": "Returns the list of contracts in your Deel organization. Filter by status, country, or type to narrow the list, or look up by external ID."
+    },
+    {
+      "name": "Get Contract",
+      "category": "Contracts",
+      "description": "Returns the full details of one contract."
+    },
+    {
+      "name": "Create Contractor Contract",
+      "category": "Contracts",
+      "description": "Creates a new contractor (IC) agreement in Deel. The worker will receive an invitation to review and sign."
+    },
+    {
+      "name": "Send Contract to Worker",
+      "category": "Contracts",
+      "description": "Sends the contract to the worker for review and signature. Required step before the contract becomes active."
+    },
+    {
+      "name": "Sign Contract",
+      "category": "Contracts",
+      "description": "Signs a contract on behalf of the client (your organization). Confirms the agreement and triggers worker invitation."
+    },
+    {
+      "name": "Preview Contract Agreement",
+      "category": "Contracts",
+      "description": "Returns a preview of the contract PDF as a URL or base64 string. Useful for letting workers review before sending."
+    },
+    {
+      "name": "Get Worker Invite Link",
+      "category": "Contracts",
+      "description": "Returns the URL the worker can use to access their Deel onboarding/signing page. Useful for re-sending invitations."
+    },
+    {
+      "name": "Remove Worker Invite",
+      "category": "Contracts",
+      "description": "Revokes the worker invitation. Useful if the wrong person was invited or details need correcting."
+    },
+    {
+      "name": "Terminate Contract",
+      "category": "Contracts",
+      "description": "Initiates termination of a contract. Specify the reason and last working day."
+    },
+    {
+      "name": "Amend Contract",
+      "category": "Contracts",
+      "description": "Creates a contract amendment (e.g., pay raise, role change, scope update). Worker may need to sign depending on the field changed."
+    },
+    {
+      "name": "List Amendments",
+      "category": "Contracts",
+      "description": "Returns all amendments for a contract."
+    },
+    {
+      "name": "List Milestones",
+      "category": "Contracts",
+      "description": "Returns all milestones for a milestone-based contract."
+    },
+    {
+      "name": "Create Milestone",
+      "category": "Contracts",
+      "description": "Adds a new milestone to a milestone-based contract."
+    },
+    {
+      "name": "Delete Milestone",
+      "category": "Contracts",
+      "description": "Removes a milestone (only if it hasn't been approved yet)."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Contracts",
+      "description": "Returns tasks (pay-as-you-go items) submitted on a contract."
+    },
+    {
+      "name": "Create Task",
+      "category": "Contracts",
+      "description": "Adds a billable task to a pay-as-you-go contract."
+    },
+    {
+      "name": "Review Task",
+      "category": "Contracts",
+      "description": "Approves or rejects a contractor task before payment."
+    },
+    {
+      "name": "List Timesheets",
+      "category": "Contracts",
+      "description": "Returns timesheet entries. Filter by contract or date range."
+    },
+    {
+      "name": "Create Timesheet Entry",
+      "category": "Contracts",
+      "description": "Logs an hourly/daily timesheet entry on a contract."
+    },
+    {
+      "name": "Update Timesheet Entry",
+      "category": "Contracts",
+      "description": "Updates the quantity, date, or description of a timesheet entry."
+    },
+    {
+      "name": "Delete Timesheet Entry",
+      "category": "Contracts",
+      "description": "Removes a timesheet entry."
+    },
+    {
+      "name": "Review Timesheet",
+      "category": "Contracts",
+      "description": "Approves or rejects a timesheet entry before payment."
+    },
+    {
+      "name": "List Invoice Adjustments",
+      "category": "Contracts",
+      "description": "Returns bonuses, deductions, and reimbursements queued for a contractor's next invoice."
+    },
+    {
+      "name": "Create Invoice Adjustment",
+      "category": "Contracts",
+      "description": "Adds a bonus, deduction, or reimbursement to a contractor's upcoming invoice."
+    },
+    {
+      "name": "Delete Invoice Adjustment",
+      "category": "Contracts",
+      "description": "Removes a pending invoice adjustment before it's billed."
+    },
+    {
+      "name": "Review Invoice Adjustment",
+      "category": "Contracts",
+      "description": "Approves or rejects a pending invoice adjustment."
+    },
+    {
+      "name": "List Off-Cycle Payments",
+      "category": "Contracts",
+      "description": "Returns one-off payments made to a contractor outside their normal schedule."
+    },
+    {
+      "name": "Create Off-Cycle Payment",
+      "category": "Contracts",
+      "description": "Sends a one-off payment to a contractor outside their normal pay schedule."
+    },
+    {
+      "name": "Calculate Employee Cost",
+      "category": "EOR",
+      "description": "Estimates the total cost (salary + employer taxes + Deel fees + benefits) of hiring an employee through Deel EOR in a given country."
+    },
+    {
+      "name": "Get Hiring Guide",
+      "category": "EOR",
+      "description": "Returns Deel's detailed hiring guide for a country — including required benefits, notice periods, leave, and typical compensation."
+    },
+    {
+      "name": "Get EOR Start Date",
+      "category": "EOR",
+      "description": "Returns the earliest possible start date for a new EOR employee in a country — accounting for visa, background check, and onboarding lead times."
+    },
+    {
+      "name": "List EOR Benefits",
+      "category": "EOR",
+      "description": "Returns the benefits enrolled on an EOR contract (health, retirement, etc.)."
+    },
+    {
+      "name": "List Job Scope Templates",
+      "category": "EOR",
+      "description": "Returns Deel's predefined and custom job-scope templates for EOR contracts."
+    },
+    {
+      "name": "Validate Job Scope",
+      "category": "EOR",
+      "description": "Checks whether a draft job scope meets Deel's compliance standards for a country before creating the contract."
+    },
+    {
+      "name": "Create EOR Contract",
+      "category": "EOR",
+      "description": "Creates a new EOR (Employer of Record) employment contract. Deel hires the worker on your behalf in the destination country."
+    },
+    {
+      "name": "Accept EOR Quote",
+      "category": "EOR",
+      "description": "Accepts the cost quote for an EOR contract, moving it to the signing phase."
+    },
+    {
+      "name": "Sign EOR Contract",
+      "category": "EOR",
+      "description": "Signs the EOR employment contract as the client. After signing, Deel begins onboarding the employee."
+    },
+    {
+      "name": "Cancel EOR Contract",
+      "category": "EOR",
+      "description": "Cancels an EOR contract that hasn't started yet (e.g., before the employee starts)."
+    },
+    {
+      "name": "Delay EOR Onboarding",
+      "category": "EOR",
+      "description": "Pushes the EOR employee's start date later. Useful when the employee isn't ready to start as originally planned."
+    },
+    {
+      "name": "Fetch EOR Contract Document",
+      "category": "EOR",
+      "description": "Returns the EOR contract's signed PDF document as a download URL."
+    },
+    {
+      "name": "Request EOR Termination",
+      "category": "EOR",
+      "description": "Initiates the offboarding process for an EOR employee. Deel handles the legal termination steps for the country."
+    },
+    {
+      "name": "Get Termination Details",
+      "category": "EOR",
+      "description": "Returns details of an in-progress EOR termination request."
+    },
+    {
+      "name": "List EOR Payslips",
+      "category": "EOR",
+      "description": "Returns the payslip records for an EOR employee."
+    },
+    {
+      "name": "Download Payslip PDF",
+      "category": "EOR",
+      "description": "Returns a download URL for a single EOR payslip PDF."
+    },
+    {
+      "name": "List Employee Compliance Documents",
+      "category": "EOR",
+      "description": "Returns the compliance documents (NDAs, IP assignments, country-required forms) requested from an EOR employee."
+    },
+    {
+      "name": "List Time Off Requests",
+      "category": "Time Off",
+      "description": "Returns time-off requests across your org. Filter by person, status, or date range."
+    },
+    {
+      "name": "Create Time Off Request",
+      "category": "Time Off",
+      "description": "Submits a new time-off request on behalf of a person."
+    },
+    {
+      "name": "Update Time Off Request",
+      "category": "Time Off",
+      "description": "Edits a pending time-off request — change dates, type, or reason."
+    },
+    {
+      "name": "Cancel Time Off Request",
+      "category": "Time Off",
+      "description": "Cancels a pending or approved time-off request."
+    },
+    {
+      "name": "Review Time Off Request",
+      "category": "Time Off",
+      "description": "Approves or rejects a pending time-off request."
+    },
+    {
+      "name": "Validate Time Off Request",
+      "category": "Time Off",
+      "description": "Checks whether a time-off request would be valid (within policy, no conflicts, sufficient balance) WITHOUT actually submitting it."
+    },
+    {
+      "name": "List Time Off Policies",
+      "category": "Time Off",
+      "description": "Returns the time-off policies assigned to a person (allowed types, accrual rules, balances)."
+    },
+    {
+      "name": "Get Entitlements",
+      "category": "Time Off",
+      "description": "Returns the time-off balances and entitlements for a person — how many days they've used and how many remain."
+    },
+    {
+      "name": "Get Work Schedule and Holidays",
+      "category": "Time Off",
+      "description": "Returns the person's working hours, weekly schedule, and applicable public holidays for their country."
+    },
+    {
+      "name": "List Adjustments",
+      "category": "Adjustments",
+      "description": "Returns adjustments (bonuses, deductions, reimbursements) applied to a contract's payroll."
+    },
+    {
+      "name": "Get Adjustment",
+      "category": "Adjustments",
+      "description": "Returns the full details of one adjustment."
+    },
+    {
+      "name": "Create Adjustment",
+      "category": "Adjustments",
+      "description": "Adds a one-off bonus, deduction, or reimbursement to an employee's payroll. Deel requires a supporting file (receipt, approval, etc.) on every adjustment."
+    },
+    {
+      "name": "Update Adjustment",
+      "category": "Adjustments",
+      "description": "Edits a pending adjustment before it's applied to payroll."
+    },
+    {
+      "name": "Delete Adjustment",
+      "category": "Adjustments",
+      "description": "Removes a pending adjustment before it's applied."
+    },
+    {
+      "name": "List GP Employees",
+      "category": "Global Payroll",
+      "description": "Returns the list of Global Payroll employees in your organization, optionally filtered by legal entity."
+    },
+    {
+      "name": "Update GP Employee Information",
+      "category": "Global Payroll",
+      "description": "Updates the GP employee's profile data (name, contact info, identifiers)."
+    },
+    {
+      "name": "Update GP Compensation",
+      "category": "Global Payroll",
+      "description": "Updates the compensation (salary, bonus structure) for a Global Payroll employee."
+    },
+    {
+      "name": "Update GP Address",
+      "category": "Global Payroll",
+      "description": "Updates the home address of a Global Payroll employee."
+    },
+    {
+      "name": "Request GP Termination",
+      "category": "Global Payroll",
+      "description": "Initiates the offboarding process for a Global Payroll employee."
+    },
+    {
+      "name": "List Payroll Cycles",
+      "category": "Global Payroll",
+      "description": "Returns the payroll cycles (monthly pay runs) for a legal entity."
+    },
+    {
+      "name": "Get Gross to Net Report",
+      "category": "Global Payroll",
+      "description": "Returns the gross-to-net breakdown for a payroll cycle (salary, taxes, deductions, net pay per employee)."
+    },
+    {
+      "name": "List Shifts",
+      "category": "Global Payroll",
+      "description": "Returns time-tracking shifts for a contract or globally."
+    },
+    {
+      "name": "Create Shifts",
+      "category": "Global Payroll",
+      "description": "Creates one or more time-tracking shifts in a single call. Provide a JSON array of shift objects. The contract must have a configured shift rate (its external ID goes in each shift's summary)."
+    },
+    {
+      "name": "Delete Shift",
+      "category": "Global Payroll",
+      "description": "Removes a single time-tracking shift."
+    },
+    {
+      "name": "List GP Payslips",
+      "category": "Global Payroll",
+      "description": "Returns payslip records for a Global Payroll worker."
+    },
+    {
+      "name": "List Jobs",
+      "category": "ATS",
+      "description": "Returns the jobs (open positions) in your Deel Applicant Tracking System."
+    },
+    {
+      "name": "Get Job",
+      "category": "ATS",
+      "description": "Returns details of one job posting."
+    },
+    {
+      "name": "Create Job",
+      "category": "ATS",
+      "description": "Creates a new job opening in your ATS."
+    },
+    {
+      "name": "List Candidates",
+      "category": "ATS",
+      "description": "Returns candidates in your ATS. Filter by stage, job, or search by name/email."
+    },
+    {
+      "name": "Create Candidate",
+      "category": "ATS",
+      "description": "Adds a new candidate to your ATS database."
+    },
+    {
+      "name": "Add Candidate Tags",
+      "category": "ATS",
+      "description": "Adds one or more tags to a candidate for filtering and organization."
+    },
+    {
+      "name": "List Applications",
+      "category": "ATS",
+      "description": "Returns applications (candidate-to-job submissions). Filter by job, candidate, or stage."
+    },
+    {
+      "name": "Get Application",
+      "category": "ATS",
+      "description": "Returns the full details of one application, including stage history and notes."
+    },
+    {
+      "name": "Create Application",
+      "category": "ATS",
+      "description": "Submits a candidate to a job, creating a new application."
+    },
+    {
+      "name": "Add Application Note",
+      "category": "ATS",
+      "description": "Adds a private note (interview feedback, comment) to an application."
+    },
+    {
+      "name": "Move Application to Stage",
+      "category": "ATS",
+      "description": "Moves an application to a new interview stage (e.g., Phone Screen → Onsite → Offer)."
+    },
+    {
+      "name": "List Offers",
+      "category": "ATS",
+      "description": "Returns job offers extended to candidates."
+    },
+    {
+      "name": "Check Visa Requirements",
+      "category": "Immigration",
+      "description": "Returns whether a business traveler needs a visa to enter a destination country, and any business-visa options available."
+    },
+    {
+      "name": "Get Visa Types",
+      "category": "Immigration",
+      "description": "Returns the visa types supported for working in a country."
+    },
+    {
+      "name": "List Immigration Cases",
+      "category": "Immigration",
+      "description": "Returns the immigration cases (visa applications, right-to-work checks) tracked by Deel."
+    },
+    {
+      "name": "Get Immigration Case",
+      "category": "Immigration",
+      "description": "Returns the full details of one immigration case, including required documents and status."
+    },
+    {
+      "name": "Get Worker KYC",
+      "category": "Screenings",
+      "description": "Returns Know-Your-Customer (identity verification) details for a worker."
+    },
+    {
+      "name": "Create Veriff Session",
+      "category": "Screenings",
+      "description": "Starts a Veriff video-based identity verification session for a worker. Returns a URL to send to the worker."
+    },
+    {
+      "name": "List IT Orders",
+      "category": "IT",
+      "description": "Returns the IT equipment orders (laptops, monitors, etc.) provisioned through Deel."
+    },
+    {
+      "name": "List IT Assets",
+      "category": "IT",
+      "description": "Returns IT assets (devices) currently issued to your workers."
+    },
+    {
+      "name": "List IT Hardware Policies",
+      "category": "IT",
+      "description": "Returns the IT hardware policies (allowed device types, budgets) for your organization."
+    },
+    {
+      "name": "Get Country Hiring Guide",
+      "category": "Knowledge Hub",
+      "description": "Returns Deel's Knowledge Hub country guide — covering taxes, benefits, mandatory leave, and compliance basics."
+    },
+    {
+      "name": "Create Magic Link",
+      "category": "Access",
+      "description": "Generates a single-use login link a manager can use to access Deel without a password."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Returns the invoices (paid and unpaid) for your Deel account."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Returns the full details of one invoice."
+    },
+    {
+      "name": "Download Invoice PDF",
+      "category": "Invoices",
+      "description": "Returns a download URL for the invoice PDF."
+    },
+    {
+      "name": "List Refund Statements",
+      "category": "Invoices",
+      "description": "Returns refund statements for invoices that have been credited back."
+    },
+    {
+      "name": "List Managers",
+      "category": "Organization",
+      "description": "Returns the managers configured in your Deel organization."
+    }
+  ],
+  "triggers": [
+    "On Deel Event"
+  ],
+  "idealUseCases": [
+    "Onboarding and offboarding workers across contractor, EOR, and direct-employee models",
+    "Syncing people, departments, and org-structure data between Deel and your HRIS or database",
+    "Automating time-off requests, approvals, validation, and balance checks",
+    "Adding bonuses, deductions, and reimbursements before payroll cycles close",
+    "Running global-payroll and EOR workflows (compensation, payslips, gross-to-net reports)",
+    "Driving recruiting flows through Deel's ATS (jobs, candidates, applications, offers)",
+    "Reacting in real time to Deel events such as signed contracts or available payslips"
+  ],
+  "agentIdeas": [
+    "When a **Deel** \"On Deel Event\" trigger fires for `eor.payslips.available`, use **Deel** \"Download Payslip PDF\" to fetch the document, then **Gmail** \"Send Message\" to email it to the employee.",
+    "When a **Recruitee** \"On Status Change\" trigger marks a candidate as hired, call **Deel** \"Create Direct Employee\" (or \"Create EOR Contract\") to provision the worker, then **Slack** \"Send Message To Channel\" to notify the People Ops channel.",
+    "When a **Deel** \"On Deel Event\" trigger fires for `contract.signed`, use **Google Sheets** \"Add Row\" to log the new hire in an onboarding tracker and **Slack** \"Send Message To Channel\" to announce it."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/deel/public/icon.png",
+  "sourcePaths": {
+    "service": "services/deel",
+    "readme": "services/deel/README.md",
+    "index": "services/deel/src/index.js"
+  }
+}

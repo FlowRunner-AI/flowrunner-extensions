@@ -1,0 +1,118 @@
+{
+  "slug": "marketstack",
+  "name": "Marketstack",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Access real-time, intraday, and historical stock market data from the [Marketstack](https://marketstack.com) API (v2). Retrieve end-of-day and intraday prices, stock splits and dividends, and reference data for tickers, exchanges, currencies, and timezones. Symbol parameters accept one or more comma-separated ticker symbols (e.g. `AAPL,MSFT,TSLA`).",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "End-of-Day",
+    "Intraday",
+    "Splits & Dividends",
+    "Tickers",
+    "Exchanges",
+    "Currencies & Timezones"
+  ],
+  "actions": [
+    {
+      "name": "Get End-of-Day Data",
+      "category": "End-of-Day",
+      "description": "Retrieves historical end-of-day (EOD) stock prices for one or more symbols. Each data point includes open, high, low, close, volume, adjusted values, split factor, and dividend. Supports date range filtering, sorting, and pagination. Returns a pagination block alongside the data array."
+    },
+    {
+      "name": "Get Latest End-of-Day Data",
+      "category": "End-of-Day",
+      "description": "Retrieves the most recent available end-of-day (EOD) stock prices for one or more symbols. Returns a single latest record per symbol with open, high, low, close, volume, and adjusted values."
+    },
+    {
+      "name": "Get End-of-Day for Date",
+      "category": "End-of-Day",
+      "description": "Retrieves end-of-day (EOD) stock prices for one or more symbols on a specific date. Useful for pulling a single trading day's open/high/low/close and volume."
+    },
+    {
+      "name": "Get Intraday Data",
+      "category": "Intraday",
+      "description": "Retrieves intraday stock prices for one or more symbols at a selected time interval (from 1 minute up to 24 hours). Each data point includes open, high, low, close, last price, and volume. Supports date range filtering. Intraday coverage depends on your subscription plan."
+    },
+    {
+      "name": "Get Latest Intraday Data",
+      "category": "Intraday",
+      "description": "Retrieves the most recent intraday stock prices for one or more symbols. Returns the latest available intraday record per symbol with open, high, low, close, last price, and volume."
+    },
+    {
+      "name": "Get Stock Splits",
+      "category": "Splits & Dividends",
+      "description": "Retrieves historical stock split events for one or more symbols. Each record includes the split date and the split factor. Supports date range filtering and pagination."
+    },
+    {
+      "name": "Get Dividends",
+      "category": "Splits & Dividends",
+      "description": "Retrieves historical dividend distributions for one or more symbols. Each record includes the dividend date and the dividend amount. Supports date range filtering and pagination."
+    },
+    {
+      "name": "List Tickers",
+      "category": "Tickers",
+      "description": "Searches and lists available stock tickers. Filter by free-text search (name or symbol) and/or a specific exchange MIC code. Each result includes the ticker symbol, company name, and its stock exchange. Supports pagination."
+    },
+    {
+      "name": "Get Ticker",
+      "category": "Tickers",
+      "description": "Retrieves detailed information about a single stock ticker by its symbol, including the company name and the stock exchange it trades on."
+    },
+    {
+      "name": "Get Ticker End-of-Day",
+      "category": "Tickers",
+      "description": "Retrieves end-of-day (EOD) price history for a single ticker symbol. Supports date range filtering, sorting, and pagination. Returns ticker metadata together with an EOD data array."
+    },
+    {
+      "name": "List Exchanges",
+      "category": "Exchanges",
+      "description": "Lists supported stock exchanges. Optionally filter by a free-text search on exchange name, MIC, or country. Each result includes the exchange name, acronym, MIC code, and country. Supports pagination."
+    },
+    {
+      "name": "Get Exchange",
+      "category": "Exchanges",
+      "description": "Retrieves detailed information about a single stock exchange identified by its MIC code, including its name, acronym, country, and website."
+    },
+    {
+      "name": "Get Exchange Tickers",
+      "category": "Exchanges",
+      "description": "Lists the stock tickers available on a specific exchange identified by its MIC code. Optionally filter by free-text search. Supports pagination."
+    },
+    {
+      "name": "List Currencies",
+      "category": "Currencies & Timezones",
+      "description": "Lists all currencies supported by the Marketstack API. Each record includes the ISO currency code, symbol, and name. Supports pagination."
+    },
+    {
+      "name": "List Timezones",
+      "category": "Currencies & Timezones",
+      "description": "Lists all timezones supported by the Marketstack API. Each record includes the timezone name, its abbreviation, and UTC offset. Supports pagination."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Build automated daily reports of end-of-day stock prices for a watchlist of symbols",
+    "Monitor intraday price movements at custom intervals for trading dashboards",
+    "Track corporate actions by pulling stock split and dividend history",
+    "Enrich CRM or spreadsheet records with company and exchange reference data by ticker symbol",
+    "Sync market data into spreadsheets or databases for analysis and alerting"
+  ],
+  "agentIdeas": [
+    "Use Marketstack **Get Latest End-of-Day Data** for a watchlist of symbols, then **Google Sheets** \"Add Row\" to append each day's closing prices into a tracking spreadsheet.",
+    "Use Marketstack **Get Dividends** to pull upcoming distributions, then **Slack** \"Send Message To Channel\" to alert an investing channel with the dividend dates and amounts.",
+    "Use Marketstack **Get Ticker** to enrich a company record with its name and exchange, then **HubSpot** \"Create Contact\" to store the reference data alongside your CRM entries."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/marketstack/public/icon.png",
+  "sourcePaths": {
+    "service": "services/marketstack",
+    "readme": "services/marketstack/README.md",
+    "index": "services/marketstack/src/index.js"
+  }
+}

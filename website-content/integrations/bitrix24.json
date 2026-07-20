@@ -1,0 +1,248 @@
+{
+  "slug": "bitrix24",
+  "name": "Bitrix24",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate a Bitrix24 portal's CRM and collaboration tools from FlowRunner: manage leads, contacts, companies, and deals with full CRUD plus field-schema discovery, read CRM reference data, post timeline comments and activities, run tasks, look up users, and send in-app notifications. A generic **Call REST Method** action reaches any of Bitrix24's 600+ REST methods not covered by a dedicated action. Authentication uses a single-portal inbound webhook URL.",
+  "actionCount": 40,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Leads",
+    "Contacts",
+    "Companies",
+    "Deals",
+    "CRM Reference Data",
+    "Activities",
+    "Tasks",
+    "Users",
+    "Messaging",
+    "Advanced"
+  ],
+  "actions": [
+    {
+      "name": "List Leads",
+      "category": "Leads",
+      "description": "Retrieves a page of CRM leads (crm.lead.list) with optional filtering, sorting, and field selection. Returns up to 50 leads per page; pass the returned next value as Start Offset to fetch the following page. Filter keys are UPPERCASE Bitrix24 field names and support comparison prefixes such as >=, <=, > and % for substring matching."
+    },
+    {
+      "name": "Get Lead",
+      "category": "Leads",
+      "description": "Retrieves a single CRM lead by ID (crm.lead.get), including standard fields plus multi-value PHONE and EMAIL arrays and any custom UF_* fields."
+    },
+    {
+      "name": "Create Lead",
+      "category": "Leads",
+      "description": "Creates a new CRM lead (crm.lead.add) and returns its ID. Convenience parameters cover the most common fields; single email and phone values are stored as WORK-type contact data. Use Additional Fields to set any other standard or custom UF_* field - values there override the convenience parameters. The change is registered in the activity stream."
+    },
+    {
+      "name": "Update Lead",
+      "category": "Leads",
+      "description": "Updates an existing CRM lead (crm.lead.update). Provide only the fields to change, using UPPERCASE Bitrix24 field names, e.g. TITLE, STATUS_ID, OPPORTUNITY, or custom UF_* keys. Multi-value fields such as PHONE and EMAIL replace existing entries unless an existing entry ID is included."
+    },
+    {
+      "name": "Delete Lead",
+      "category": "Leads",
+      "description": "Permanently deletes a CRM lead by ID (crm.lead.delete), including its timeline records. This cannot be undone."
+    },
+    {
+      "name": "Get Lead Fields",
+      "category": "Leads",
+      "description": "Returns the schema of all lead fields (crm.lead.fields), including custom UF_* fields, with each field's type, title, and whether it is required or read-only. Use it to discover the exact field names accepted by Create Lead and Update Lead on this portal."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves a page of CRM contacts (crm.contact.list) with optional filtering, sorting, and field selection. Returns up to 50 contacts per page; pass the returned next value as Start Offset for the following page. Filter keys are UPPERCASE Bitrix24 field names with optional comparison prefixes such as >=, <= and % for substring matching."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single CRM contact by ID (crm.contact.get), including standard fields plus multi-value PHONE and EMAIL arrays and any custom UF_* fields."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new CRM contact (crm.contact.add) and returns its ID. Single email and phone values are stored as WORK-type contact data. Use Additional Fields to set any other standard or custom UF_* field - values there override the convenience parameters. The change is registered in the activity stream."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing CRM contact (crm.contact.update). Provide only the fields to change, using UPPERCASE Bitrix24 field names, e.g. NAME, COMPANY_ID, or custom UF_* keys. Multi-value fields such as PHONE and EMAIL replace existing entries unless an existing entry ID is included."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a CRM contact by ID (crm.contact.delete). This cannot be undone."
+    },
+    {
+      "name": "Get Contact Fields",
+      "category": "Contacts",
+      "description": "Returns the schema of all contact fields (crm.contact.fields), including custom UF_* fields, with each field's type, title, and whether it is required or read-only. Use it to discover the exact field names accepted by Create Contact and Update Contact on this portal."
+    },
+    {
+      "name": "List Companies",
+      "category": "Companies",
+      "description": "Retrieves a page of CRM companies (crm.company.list) with optional filtering, sorting, and field selection. Returns up to 50 companies per page; pass the returned next value as Start Offset for the following page. Filter keys are UPPERCASE Bitrix24 field names with optional comparison prefixes such as >=, <= and % for substring matching."
+    },
+    {
+      "name": "Get Company",
+      "category": "Companies",
+      "description": "Retrieves a single CRM company by ID (crm.company.get), including standard fields plus multi-value PHONE and EMAIL arrays and any custom UF_* fields."
+    },
+    {
+      "name": "Create Company",
+      "category": "Companies",
+      "description": "Creates a new CRM company (crm.company.add) and returns its ID. Single email and phone values are stored as WORK-type contact data. Company Type and Industry accept the portal's reference values - use Get Status List with Company Types or Industries to see them. Use Additional Fields for any other standard or custom UF_* field."
+    },
+    {
+      "name": "Update Company",
+      "category": "Companies",
+      "description": "Updates an existing CRM company (crm.company.update). Provide only the fields to change, using UPPERCASE Bitrix24 field names, e.g. TITLE, COMPANY_TYPE, or custom UF_* keys. Multi-value fields such as PHONE and EMAIL replace existing entries unless an existing entry ID is included."
+    },
+    {
+      "name": "Delete Company",
+      "category": "Companies",
+      "description": "Permanently deletes a CRM company by ID (crm.company.delete). Linked contacts and deals are kept but lose the company reference. This cannot be undone."
+    },
+    {
+      "name": "Get Company Fields",
+      "category": "Companies",
+      "description": "Returns the schema of all company fields (crm.company.fields), including custom UF_* fields, with each field's type, title, and whether it is required or read-only. Use it to discover the exact field names accepted by Create Company and Update Company on this portal."
+    },
+    {
+      "name": "List Deals",
+      "category": "Deals",
+      "description": "Retrieves a page of CRM deals (crm.deal.list) with optional filtering, sorting, and field selection. Returns up to 50 deals per page; pass the returned next value as Start Offset for the following page. Filter keys are UPPERCASE Bitrix24 field names with optional comparison prefixes such as >=OPPORTUNITY or %TITLE for substring matching."
+    },
+    {
+      "name": "Get Deal",
+      "category": "Deals",
+      "description": "Retrieves a single CRM deal by ID (crm.deal.get), including standard fields and any custom UF_* fields."
+    },
+    {
+      "name": "Create Deal",
+      "category": "Deals",
+      "description": "Creates a new CRM deal (crm.deal.add) and returns its ID. Choose a pipeline and stage, link a contact and company, and set the amount and expected close date. Use Additional Fields to set any other standard or custom UF_* field - values there override the convenience parameters. The change is registered in the activity stream."
+    },
+    {
+      "name": "Update Deal",
+      "category": "Deals",
+      "description": "Updates an existing CRM deal (crm.deal.update). Provide only the fields to change, using UPPERCASE Bitrix24 field names, e.g. STAGE_ID to move the deal along the pipeline, OPPORTUNITY, or custom UF_* keys."
+    },
+    {
+      "name": "Delete Deal",
+      "category": "Deals",
+      "description": "Permanently deletes a CRM deal by ID (crm.deal.delete), including its timeline records. This cannot be undone."
+    },
+    {
+      "name": "Get Deal Fields",
+      "category": "Deals",
+      "description": "Returns the schema of all deal fields (crm.deal.fields), including custom UF_* fields, with each field's type, title, and whether it is required or read-only. Use it to discover the exact field names accepted by Create Deal and Update Deal on this portal."
+    },
+    {
+      "name": "Get Status List",
+      "category": "CRM Reference Data",
+      "description": "Retrieves CRM reference values (crm.status.list) such as lead statuses, lead sources, deal stages, deal types, industries, contact types, and company types configured on the portal. For deal stages of a non-default pipeline, also provide the Pipeline ID. Use the returned STATUS_ID values in create, update, and filter operations."
+    },
+    {
+      "name": "Get Deal Categories",
+      "category": "CRM Reference Data",
+      "description": "Retrieves all deal pipelines (crm.category.list with entityTypeId 2), including the default pipeline. Use a pipeline's id as CATEGORY_ID when creating, updating, or filtering deals, and to fetch its stages via Get Status List."
+    },
+    {
+      "name": "Add Timeline Comment",
+      "category": "Activities",
+      "description": "Adds a comment to the timeline of a lead, deal, contact, or company (crm.timeline.comment.add). The comment appears in the entity's timeline feed and supports BB-code formatting."
+    },
+    {
+      "name": "Create Activity",
+      "category": "Activities",
+      "description": "Creates a CRM activity - a meeting, call, or email - attached to a lead, deal, contact, or company (crm.activity.add). Call and email activities require at least one communication entry (a phone number or email address, optionally linked to a CRM entity). Returns the new activity ID."
+    },
+    {
+      "name": "List Activities",
+      "category": "Activities",
+      "description": "Retrieves a page of CRM activities (crm.activity.list) such as meetings, calls, and emails, with optional filtering by owner record, sorting, and field selection. Returns up to 50 activities per page; pass the returned next value as Start Offset for the following page."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Retrieves a page of tasks (tasks.task.list) with optional filtering, sorting, and field selection. Returns up to 50 tasks per page; pass the returned next value as Start Offset for the following page. Filter keys use UPPERCASE task field names with optional comparison prefixes, e.g. RESPONSIBLE_ID, STATUS, or >=CREATED_DATE. Note that task objects are returned with camelCase property names."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single task by ID (tasks.task.get), returning the task object with camelCase property names including title, description, status, priority, deadline, and responsible user."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a new task (tasks.task.add) and returns the created task object. Assign a responsible user, set a deadline and priority, and optionally attach the task to a workgroup or project. Use Additional Fields for any other task field with UPPERCASE keys, e.g. ACCOMPLICES, AUDITORS, or UF_CRM_TASK to link CRM records."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates an existing task (tasks.task.update). Provide only the fields to change, using UPPERCASE task field names, e.g. TITLE, DEADLINE, RESPONSIBLE_ID, or PRIORITY (0 low, 1 medium, 2 high). Returns the updated task when the portal provides it."
+    },
+    {
+      "name": "Complete Task",
+      "category": "Tasks",
+      "description": "Marks a task as completed (tasks.task.complete). If the task has a result requirement or unfinished checklist configured on the portal, Bitrix24 may reject the completion."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task by ID (tasks.task.delete), including its checklist and comments. This cannot be undone."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Retrieves a page of portal users (user.get). By default only active users are returned; turn off Active Only to include dismissed and invited users. Returns up to 50 users per page; pass the returned next value as Start Offset for the following page."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users",
+      "description": "Returns the profile of the user who created the inbound webhook (profile method), including their ID, name, admin flag, and time zone. All webhook API calls are executed with this user's permissions."
+    },
+    {
+      "name": "Search Users",
+      "category": "Users",
+      "description": "Searches portal users by a free-text query (user.search with FIND) matching name, last name, email, position, and department. Returns up to 50 users per page; pass the returned next value as Start Offset for the following page."
+    },
+    {
+      "name": "Send Notification",
+      "category": "Messaging",
+      "description": "Sends a system notification to a portal user's Bitrix24 notification center (im.notify.system.add, falling back to im.notify on portals where the newer method is unavailable). Requires the im permission scope on the inbound webhook. Notification text supports BB-code formatting."
+    },
+    {
+      "name": "Call REST Method",
+      "category": "Advanced",
+      "description": "Calls any of the 600+ Bitrix24 REST API methods not covered by the dedicated actions, e.g. crm.product.list, crm.quote.add, department.get, or disk.folder.getchildren. Provide the REST method name and its parameters exactly as documented at apidocs.bitrix24.com; the webhook must have the permission scope required by that method. Returns the raw Bitrix24 response envelope including result and, for list methods, total and next pagination values."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new leads, contacts, and companies into Bitrix24 CRM from web forms, spreadsheets, or other apps",
+    "Advance deals through pipeline stages and log timeline comments as automated workflows progress",
+    "Create and complete tasks, assign responsible users, and notify them via the Bitrix24 notification center",
+    "Enrich or reconcile CRM records by looking up statuses, deal pipelines, and portal users",
+    "Reach any uncovered Bitrix24 REST method (products, quotes, disk, telephony, etc.) through Call REST Method"
+  ],
+  "agentIdeas": [
+    "After **Bitrix24** \"Create Deal\" moves a prospect into the pipeline, use **Gmail** \"Send Message\" to email the contact a proposal, then call **Bitrix24** \"Add Timeline Comment\" to log that the proposal was sent.",
+    "When a **Gmail** \"On New Email\" trigger fires from a prospect, call **Bitrix24** \"Create Lead\" to capture them in CRM and **Bitrix24** \"Send Notification\" to alert the assigned sales rep.",
+    "Use **Google Sheets** \"Get Rows\" to read a batch of prospects and call **Bitrix24** \"Create Contact\" for each, or reverse it with **Bitrix24** \"List Deals\" feeding **Google Sheets** \"Add Row\" to build a pipeline report.",
+    "When a **Slack** \"On Channel Message\" trigger flags a support request, call **Bitrix24** \"Create Task\" to assign follow-up work to the responsible user."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/bitrix24/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/bitrix24",
+    "readme": "services/bitrix24/README.md",
+    "index": "services/bitrix24/src/index.js"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "slug": "xai-grok",
+  "name": "xAI Grok",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for the [xAI API](https://docs.x.ai) — frontier Grok models (Grok 4.5, Grok 4.3 and more) with chat completion, real-time answers via Live Search across web/X/news/RSS, image understanding, Grok Imagine image and video generation, tokenization, and full model/pricing metadata.",
+  "actionCount": 18,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Chat",
+    "Live Search",
+    "Vision",
+    "Image Generation",
+    "Video Generation",
+    "Utilities",
+    "Account",
+    "Models"
+  ],
+  "actions": [
+    {
+      "name": "Chat Completion",
+      "category": "Chat",
+      "description": "Generates a text response for a single prompt using an xAI Grok model (Grok 4.5, Grok 4.3 and more). Supports an optional system prompt, JSON mode for structured output, deterministic sampling via seed, and reasoning effort control on supported models (currently grok-4.3). Returns the generated text, reasoning content (when the model exposes it), finish reason and token usage."
+    },
+    {
+      "name": "Chat Completion (Advanced)",
+      "category": "Chat",
+      "description": "Sends a fully custom chat completion request to xAI with a complete messages array (multi-turn conversations, multimodal image_url content parts), tool/function calling passthrough, structured outputs via a response format object (json_object or json_schema), Live Search parameters, reasoning effort, penalties and sampling controls. Set Deferred to run the request asynchronously and receive a request ID for later retrieval with Get Deferred Completion. Returns the raw xAI API response including choices, tool calls, citations and usage."
+    },
+    {
+      "name": "Get Deferred Completion",
+      "category": "Chat",
+      "description": "Retrieves the result of a deferred chat completion by its request ID (obtained from 'Chat Completion (Advanced)' with Deferred enabled). Returns the full chat completion response when ready, or a pending status while the request is still processing. Deferred results are available for retrieval for 24 hours."
+    },
+    {
+      "name": "Ask with Live Search",
+      "category": "Live Search",
+      "description": "Answers a prompt with real-time information using xAI's Live Search: the Grok model searches live data sources (web, X posts, news, RSS feeds) and grounds its answer in what it finds. Supports source selection, date-range filters, country targeting, allowed/excluded websites, X handle filters and a result limit. Returns the answer text together with the citations (source URLs) the model used."
+    },
+    {
+      "name": "Analyze Image",
+      "category": "Vision",
+      "description": "Analyzes one or more images with a vision-capable Grok model and answers a prompt about them — describe content, extract text, compare images or answer visual questions. Accepts public image URLs or base64 data URLs (jpg/jpeg and png, up to 20MiB per image). Supports JSON mode for structured extraction."
+    },
+    {
+      "name": "Generate Image",
+      "category": "Image Generation",
+      "description": "Generates one or more images from a text prompt using xAI's Grok Imagine image models. Supports aspect ratio and resolution control. By default returns xAI-hosted image URLs; optionally saves the generated images to FlowRunner file storage instead for permanent access. Also returns the revised prompt the model actually used for each image."
+    },
+    {
+      "name": "Edit Image",
+      "category": "Image Generation",
+      "description": "Edits an existing image (or combines multiple reference images) with natural-language instructions using xAI's Grok Imagine models — change styles, add or remove objects, or merge content from several references. By default returns xAI-hosted image URLs; optionally saves the results to FlowRunner file storage for permanent access."
+    },
+    {
+      "name": "Generate Video",
+      "category": "Video Generation",
+      "description": "Starts an asynchronous video generation with xAI's Grok Imagine video models from a text prompt and an optional starting image (image-to-video). Video generation runs in the background — this operation returns a request ID immediately; poll 'Get Video Result' with that ID until the video is ready. Duration ranges from 1 to 15 seconds (default 8)."
+    },
+    {
+      "name": "Edit Video",
+      "category": "Video Generation",
+      "description": "Starts an asynchronous edit of an existing video using natural-language instructions with xAI's Grok Imagine video models — restyle scenes, change elements or adjust the mood. Returns a request ID immediately; poll 'Get Video Result' with that ID until the edited video is ready."
+    },
+    {
+      "name": "Extend Video",
+      "category": "Video Generation",
+      "description": "Starts an asynchronous extension of an existing video, generating a continuation described by the prompt with xAI's Grok Imagine video models. The extension can add 2 to 10 seconds (default 6). Returns a request ID immediately; poll 'Get Video Result' with that ID until the extended video is ready."
+    },
+    {
+      "name": "Get Video Result",
+      "category": "Video Generation",
+      "description": "Retrieves the result of an asynchronous video generation, edit or extension request by its request ID. Returns the status and, once complete, the generated video's URL, duration and moderation flag along with usage cost data. Poll this operation until the status indicates completion."
+    },
+    {
+      "name": "Tokenize Text",
+      "category": "Utilities",
+      "description": "Tokenizes text with a specified Grok model's tokenizer and returns the token list and token count. Useful for estimating prompt cost and checking context window fit before sending a request."
+    },
+    {
+      "name": "Get API Key Info",
+      "category": "Account",
+      "description": "Retrieves information about the configured xAI API key, including its name, redacted value, access control list (permitted endpoints and models), and whether the key or team is blocked or disabled. Useful for verifying connectivity and permissions."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists all xAI models available to the configured API key across every modality (chat, image understanding, image generation and video generation) with basic information. Use the dedicated language/image/video model listings for full metadata including pricing."
+    },
+    {
+      "name": "Get Model",
+      "category": "Models",
+      "description": "Retrieves basic information about a specific xAI model by its ID, including its owner, creation date and pricing basics."
+    },
+    {
+      "name": "List Language Models",
+      "category": "Models",
+      "description": "Lists all xAI Grok language models (chat and image understanding) with full metadata: context window, aliases, input/output modalities, per-token prompt/completion/cached pricing and Live Search pricing."
+    },
+    {
+      "name": "List Image Generation Models",
+      "category": "Models",
+      "description": "Lists all xAI image generation models (Grok Imagine) with full metadata: aliases, modalities, per-image pricing and maximum prompt length."
+    },
+    {
+      "name": "List Video Generation Models",
+      "category": "Models",
+      "description": "Lists all xAI video generation models (Grok Imagine video) with full metadata: aliases, modalities and pricing."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generating text responses, summaries, classifications or structured JSON from a single prompt",
+    "Answering questions grounded in real-time web, X, news and RSS data with source citations (Live Search)",
+    "Building multi-turn chatbots with tool/function calling and structured outputs (json_schema)",
+    "Running long tasks asynchronously with deferred completions and polling for results",
+    "Extracting text or answering questions about images with vision-capable Grok models",
+    "Generating and editing images with Grok Imagine, optionally saved to FlowRunner file storage",
+    "Generating, editing and extending short videos with Grok Imagine video models",
+    "Estimating prompt cost and context fit via tokenization, and inspecting model pricing metadata"
+  ],
+  "agentIdeas": [
+    "When a **Dropbox** \"On New File\" trigger fires for a new image, call **Dropbox** \"Get Temporary Link\" and pass the URL to **xAI Grok** \"Analyze Image\" to extract text or a description, then log it with **Google Sheets** \"Add Row\".",
+    "Use **xAI Grok** \"Ask with Live Search\" to gather real-time web/X/news context on a topic, then send the answer with its citations to a team via **Slack** \"Send Message To Channel\".",
+    "Use **xAI Grok** \"Generate Image\" (saved to file storage) to create a hero image from a prompt, then publish it into a **Notion** \"Create Page\" as part of a content-drafting workflow."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/xai-grok/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/xai-grok",
+    "readme": "services/xai-grok/README.md",
+    "index": "services/xai-grok/src/index.js"
+  }
+}

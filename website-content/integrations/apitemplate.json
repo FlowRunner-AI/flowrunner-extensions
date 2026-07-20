@@ -1,0 +1,77 @@
+{
+  "slug": "apitemplate",
+  "name": "APITemplate.io",
+  "marketingCategory": "Documents & E-signature",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Generate PDFs and images from reusable templates using the [APITemplate.io](https://apitemplate.io/) REST API. Merge your data into saved PDF/image templates or render a PDF straight from raw HTML, then get a hosted download URL back. Also lists and deletes generated objects and checks account credits. Authenticates with an API key (`X-API-KEY` header) and supports the Default, Europe (DE), and Australia (AU) regional hosts.",
+  "actionCount": 7,
+  "triggerCount": 0,
+  "operationCategories": [
+    "PDF Generation",
+    "Image Generation",
+    "Templates",
+    "Objects",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Create PDF",
+      "category": "PDF Generation",
+      "description": "Generates a PDF from a saved APITemplate.io template by merging your data into it. Provide the template ID (from List Templates or the dashboard) and a data object whose keys match the placeholders/expressions in the template. Optionally choose the delivery method, override the output filename, or set a link expiration. Returns the hosted download URL for the generated PDF."
+    },
+    {
+      "name": "Create PDF from HTML",
+      "category": "PDF Generation",
+      "description": "Generates a PDF directly from raw HTML and CSS you supply, without a saved template. Provide the HTML body, optional CSS, and optional rendering settings (page size, margins, orientation, etc.). Returns the hosted download URL for the generated PDF."
+    },
+    {
+      "name": "Create Image",
+      "category": "Image Generation",
+      "description": "Generates a JPEG/PNG image from a saved APITemplate.io image template. Provide the template ID (from List Templates or the dashboard) and an overrides object that replaces the text, images, and other layer properties defined in the template. Returns hosted download URLs for both the JPEG and PNG outputs."
+    },
+    {
+      "name": "List Templates",
+      "category": "Templates",
+      "description": "Lists all PDF and image templates available in your APITemplate.io account, including each template's ID, name, and format. Use a returned template_id with Create PDF or Create Image."
+    },
+    {
+      "name": "List Generated Objects",
+      "category": "Objects",
+      "description": "Lists previously generated PDFs and images in your account, most recent first. Each object includes its transaction reference, template ID, download URL, and creation time. Supports pagination via limit and offset."
+    },
+    {
+      "name": "Delete Object",
+      "category": "Objects",
+      "description": "Deletes a previously generated PDF or image and its hosted file, identified by its transaction reference (returned by Create PDF/Create Image or List Generated Objects). This action cannot be undone."
+    },
+    {
+      "name": "Get Account Information",
+      "category": "Account",
+      "description": "Retrieves your APITemplate.io account information, including the remaining API credits and plan details. Useful as a connection check to confirm the API key and region are configured correctly."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Produce invoices, receipts, contracts, or certificates from a saved template by merging record data into it",
+    "Render a PDF on the fly from raw HTML and CSS when no template exists",
+    "Generate social/marketing images (JPEG and PNG) from an image template with per-layer overrides",
+    "Manage generated files: list, retrieve download URLs, and delete old objects",
+    "Confirm the API key and region are configured correctly by checking remaining credits"
+  ],
+  "agentIdeas": [
+    "Use **Airtable** \"Get Records\" to pull invoice rows, then call **APITemplate.io** \"Create PDF\" to render each invoice from a saved template.",
+    "After **APITemplate.io** \"Create PDF\" returns a download URL, use **Gmail** \"Send Message\" to email the generated document to the customer.",
+    "Generate marketing assets with **APITemplate.io** \"Create Image\", then use **Google Drive** \"Upload File\" to archive the JPEG/PNG outputs into a shared folder."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/apitemplate/public/icon.png",
+  "sourcePaths": {
+    "service": "services/apitemplate",
+    "readme": "services/apitemplate/README.md",
+    "index": "services/apitemplate/src/index.js"
+  }
+}

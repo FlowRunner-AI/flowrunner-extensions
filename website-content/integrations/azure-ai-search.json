@@ -1,0 +1,110 @@
+{
+  "slug": "azure-ai-search",
+  "name": "Azure AI Search",
+  "marketingCategory": "Vector Stores & AI Infra",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Azure AI Search](https://learn.microsoft.com/en-us/azure/search/) (formerly Azure Cognitive Search) — a fully managed cloud search service for information retrieval over your content. This service exposes index management, document ingestion, and keyword / vector / hybrid search against the Azure AI Search data-plane REST API.",
+  "actionCount": 14,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Indexes",
+    "Documents",
+    "Indexers"
+  ],
+  "actions": [
+    {
+      "name": "Create Index",
+      "category": "Indexes",
+      "description": "Creates or updates a search index by name (PUT is idempotent - it creates the index if absent or updates it if present). Provide the field definitions (name, type, and attributes such as key, searchable, filterable, sortable, facetable, retrievable). Vector fields additionally require dimensions and a vectorSearchProfile. Optionally pass a vectorSearch configuration (algorithms and profiles) and a semantic configuration. Field and configuration objects are passed through to the Azure REST API unchanged, so any supported property is accepted."
+    },
+    {
+      "name": "List Indexes",
+      "category": "Indexes",
+      "description": "Lists all search indexes defined on the search service, including their fields and configuration. Use the optional select parameter to return only specific index properties (e.g. just names)."
+    },
+    {
+      "name": "Get Index",
+      "category": "Indexes",
+      "description": "Retrieves the full definition of a single search index by name, including its fields, analyzers, scoring profiles, vector search, and semantic configuration."
+    },
+    {
+      "name": "Delete Index",
+      "category": "Indexes",
+      "description": "Permanently deletes a search index and all of its documents by name. This action cannot be undone. Returns an empty confirmation object on success."
+    },
+    {
+      "name": "Get Index Statistics",
+      "category": "Indexes",
+      "description": "Returns storage and document statistics for an index, including the current document count and total storage size in bytes. Counts can lag recent indexing operations by a few seconds."
+    },
+    {
+      "name": "Search Documents",
+      "category": "Documents",
+      "description": "The flagship query operation. Runs keyword, vector, or hybrid search against an index and returns matching documents ranked by an @search.score. Supports full-text search (simple or Lucene full syntax), OData filtering, field selection, sorting, faceting, hit highlighting, and paging. For vector or hybrid search, pass vectorQueries (each with a vector or text, k, and target vector fields). For semantic ranking, set Query Type to semantic and provide a semantic configuration name."
+    },
+    {
+      "name": "Index Documents",
+      "category": "Documents",
+      "description": "Uploads, merges, or deletes documents in an index in a single batch (up to 1000 documents or 16 MB per request). Each entry combines a @search.action verb with the document fields. Use upload to add or fully replace a document, merge to update specific fields of an existing document, mergeOrUpload to update if present or insert if not, and delete (only the key field is required) to remove a document."
+    },
+    {
+      "name": "Get Document",
+      "category": "Documents",
+      "description": "Retrieves a single document from an index by its key value. Optionally restrict the returned fields with select. Returns 404 if no document with the given key exists."
+    },
+    {
+      "name": "Count Documents",
+      "category": "Documents",
+      "description": "Returns the current number of documents in an index as a number. This count can lag recent indexing operations by a few seconds."
+    },
+    {
+      "name": "Suggest",
+      "category": "Documents",
+      "description": "Returns type-ahead suggestions matching a partial query against a configured suggester on the index. Ideal for search-as-you-type experiences. Requires a suggester to be defined on the index. Optionally filter, scope search fields, limit results, and enable fuzzy matching."
+    },
+    {
+      "name": "Autocomplete",
+      "category": "Documents",
+      "description": "Returns completed terms (auto-completions) for a partial query against a configured suggester on the index. Unlike Suggest, it returns completed query terms rather than matching documents. Requires a suggester on the index. The auto-complete mode controls whether one or two terms are completed."
+    },
+    {
+      "name": "List Indexers",
+      "category": "Indexers",
+      "description": "Lists all indexers defined on the search service. Indexers automate the pull-model ingestion of documents from a data source into a target index. Use the optional select parameter to return only specific properties."
+    },
+    {
+      "name": "Run Indexer",
+      "category": "Indexers",
+      "description": "Triggers an on-demand run of an indexer, which reads from its data source and updates the target index. Returns an empty confirmation object on success (HTTP 202 Accepted). Use Get Indexer Status to monitor progress and results."
+    },
+    {
+      "name": "Get Indexer Status",
+      "category": "Indexers",
+      "description": "Returns the current status and execution history of an indexer, including whether it is running, the last run's result (success, items processed, failures), and any error messages. Use this to monitor an indexer triggered with Run Indexer."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Build retrieval-augmented generation (RAG) pipelines that ground an LLM in your own content via keyword, vector, or hybrid search.",
+    "Power search-as-you-type experiences with type-ahead suggestions and query auto-completion.",
+    "Manage search indexes and their field schemas (including vector and semantic configurations) from an automation.",
+    "Batch-ingest, update, or delete documents in an index as content changes elsewhere in your stack.",
+    "Automate pull-model ingestion by triggering indexers on demand and monitoring their run status."
+  ],
+  "agentIdeas": [
+    "Use **Azure OpenAI** \"Create Embeddings\" to vectorize new content, then call **Azure AI Search** \"Index Documents\" with a `mergeOrUpload` action to keep a vector index in sync.",
+    "Answer a user question by calling **OpenAI** \"Create Embeddings\" on the query, passing the vector into **Azure AI Search** \"Search Documents\" as a hybrid query, then feeding the retrieved documents to **Azure OpenAI** \"Ask AI\" for a grounded RAG response.",
+    "After **Azure AI Search** \"Search Documents\" returns candidate documents, call **Cohere** \"Rerank Documents\" to reorder them by relevance before presenting the top results."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/azure-ai-search/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/azure-ai-search",
+    "readme": "services/azure-ai-search/README.md",
+    "index": "services/azure-ai-search/src/index.js"
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "slug": "shipbob",
+  "name": "ShipBob",
+  "marketingCategory": "ERP & Operations",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate e-commerce fulfillment workflows with ShipBob's order management, inventory tracking, and shipping platform. Create orders, manage products, track shipments, process returns, and manage warehouse receiving orders through automated workflows.",
+  "actionCount": 20,
+  "triggerCount": 5,
+  "operationCategories": [
+    "Order Management",
+    "Product Management",
+    "Inventory Management",
+    "Shipment Tracking",
+    "Returns",
+    "Warehouse Receiving"
+  ],
+  "actions": [
+    {
+      "name": "Create Order",
+      "category": "Order Management",
+      "description": "Creates a new fulfillment order in ShipBob. Supports DTC (direct-to-consumer), DropShip, and B2B order types. Products can be referenced by SKU using the products JSON array. The order is queued for fulfillment upon creation."
+    },
+    {
+      "name": "Get Order",
+      "category": "Order Management",
+      "description": "Retrieves details of a specific order by its ShipBob order ID, including current status, shipments with tracking information, products, and recipient details. Useful for checking order fulfillment progress."
+    },
+    {
+      "name": "Get Orders",
+      "category": "Order Management",
+      "description": "Lists orders with optional filtering by date range, tracking status, and pagination. Returns an array of orders with current status, shipment details, and tracking information. Supports up to 250 orders per page."
+    },
+    {
+      "name": "Cancel Order",
+      "category": "Order Management",
+      "description": "Cancels an existing order and its associated shipments in ShipBob. Returns the cancellation result including which shipments were successfully cancelled. Orders already fulfilled cannot be cancelled."
+    },
+    {
+      "name": "Estimate Fulfillment Cost",
+      "category": "Order Management",
+      "description": "Estimates the fulfillment cost for an order before creating it. Returns cost estimates per shipping method and fulfillment center, including shipping price and package weight. Useful for displaying shipping costs to customers or selecting optimal fulfillment options."
+    },
+    {
+      "name": "Batch Cancel Shipments",
+      "category": "Order Management",
+      "description": "Cancels multiple shipments in a single batch request. Returns per-shipment results indicating success or failure with reasons. Shipments can only be cancelled if they have not yet been picked, packed, or shipped."
+    },
+    {
+      "name": "Mark Tracking Uploaded",
+      "category": "Order Management",
+      "description": "Marks tracking information as uploaded to an external system for multiple shipments. After marking, these shipments will no longer appear when filtering by IsTrackingUploaded=false. Typical workflow: retrieve orders with tracking, sync to your system, then call this to mark them as synced."
+    },
+    {
+      "name": "Create Product",
+      "category": "Product Management",
+      "description": "Creates a new product in ShipBob with one variant. Each variant requires a unique SKU. Supports physical dimensions, weight, and barcode data. The product is created in the channel associated with your authentication."
+    },
+    {
+      "name": "Get Products",
+      "category": "Product Management",
+      "description": "Searches and lists products in your ShipBob account with comprehensive filtering options. Returns variant details including SKU, inventory levels, dimensions, and status. Supports filtering by name, SKU, barcode, category, taxonomy, channel, platform, product type, variant status, inventory sync, and more. Results are paginated with cursor-based navigation."
+    },
+    {
+      "name": "Get Inventory",
+      "category": "Inventory Management",
+      "description": "Retrieves inventory items with stock levels, SKU details, and warehouse information. Supports filtering by active status and searching. Useful for monitoring stock levels and inventory health across fulfillment centers."
+    },
+    {
+      "name": "Get Shipment",
+      "category": "Shipment Tracking",
+      "description": "Retrieves detailed shipment information including carrier tracking data, fulfillment status, delivery dates, package dimensions, and contents. Essential for providing customers with shipping updates and monitoring fulfillment progress."
+    },
+    {
+      "name": "Create Return",
+      "category": "Returns",
+      "description": "Creates a return order (RMA) in ShipBob for processing returned inventory. Specify the fulfillment center, inventory items with quantities, and the requested action for each item (Restock, Quarantine, or Dispose). Optionally link to the original shipment for tracking."
+    },
+    {
+      "name": "Create WRO",
+      "category": "Warehouse Receiving",
+      "description": "Creates a new Warehouse Receiving Order (WRO) to send inventory to a ShipBob fulfillment center. Specify the target fulfillment center, package type, box packaging configuration, expected arrival date, and boxes with their inventory items and quantities. Maximum 50 boxes per request for Package type."
+    },
+    {
+      "name": "Get WROs",
+      "category": "Warehouse Receiving",
+      "description": "Retrieves a list of Warehouse Receiving Orders with optional filtering by status, date range, fulfillment center, and external sync flag. Supports pagination. Useful for monitoring inbound shipments and inventory receiving progress."
+    },
+    {
+      "name": "Get WRO",
+      "category": "Warehouse Receiving",
+      "description": "Retrieves details of a specific Warehouse Receiving Order by its ID, including current status, fulfillment center, inventory quantities with expected/received/stowed counts, and status history. Essential for tracking inbound shipment progress."
+    },
+    {
+      "name": "Get Fulfillment Centers",
+      "category": "Warehouse Receiving",
+      "description": "Retrieves all available ShipBob fulfillment centers with their addresses, contact information, and timezone details. Use this to identify valid fulfillment center IDs for creating Warehouse Receiving Orders."
+    },
+    {
+      "name": "Get WRO Boxes",
+      "category": "Warehouse Receiving",
+      "description": "Retrieves all boxes and their contents for a specific Warehouse Receiving Order. Each box includes its status, tracking number, arrival/receiving dates, and a detailed list of items with expected, received, and stowed quantities."
+    },
+    {
+      "name": "Get WRO Box Labels",
+      "category": "Warehouse Receiving",
+      "description": "Downloads the box labels PDF for a specific Warehouse Receiving Order. Labels should be printed and attached to each box before shipping to the fulfillment center to help warehouse staff identify your shipment. Returns base64-encoded PDF content."
+    },
+    {
+      "name": "Cancel WRO",
+      "category": "Warehouse Receiving",
+      "description": "Cancels a Warehouse Receiving Order. Only WROs in \"Awaiting\" status can be cancelled. Once a WRO has arrived at or is being processed by the fulfillment center, it cannot be cancelled."
+    },
+    {
+      "name": "Set WRO External Sync",
+      "category": "Warehouse Receiving",
+      "description": "Sets or clears the external sync flag on one or more Warehouse Receiving Orders. Use this to mark WROs as synced after processing them in your system, allowing you to filter for unsynced WROs on subsequent polling requests."
+    }
+  ],
+  "triggers": [
+    "On Order Shipped",
+    "On Shipment Delivered",
+    "On Shipment Exception",
+    "On Shipment On Hold",
+    "On Return Completed"
+  ],
+  "idealUseCases": [
+    "Automating order creation from external sales channels or custom storefronts",
+    "Estimating shipping costs before placing orders",
+    "Tracking shipment status and sending delivery notifications to customers",
+    "Monitoring inventory levels and triggering restocking workflows",
+    "Processing returns and issuing refunds based on return completion",
+    "Syncing order and product data between ShipBob and other platforms",
+    "Alerting support teams when shipments encounter exceptions or holds",
+    "Building custom fulfillment dashboards with real-time order data",
+    "Managing warehouse receiving orders (WROs) for inbound inventory",
+    "Batch cancelling shipments and marking tracking as uploaded"
+  ],
+  "agentIdeas": [
+    "When ShipBob's \"On Order Shipped\" trigger fires, use Gmail's \"Send Message\" to email the customer with tracking details and an estimated delivery date",
+    "Use Google Sheets' \"Get Rows\" to fetch a batch of new product entries, then call ShipBob's \"Create Product\" for each row to sync your product catalog into ShipBob's fulfillment system",
+    "When ShipBob's \"On Shipment Exception\" trigger fires, use Slack's \"Send Message To Channel\" to alert your operations team with the shipment ID and exception details so they can take immediate action"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/shipbob/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/shipbob",
+    "readme": "services/shipbob/README.md",
+    "index": "services/shipbob/src/index.js"
+  }
+}

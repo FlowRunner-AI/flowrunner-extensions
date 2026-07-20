@@ -1,0 +1,144 @@
+{
+  "slug": "mailgun",
+  "name": "Mailgun",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [Mailgun](https://www.mailgun.com), the transactional email service by Sinch. Send plain, HTML, and templated email with FlowRunner file attachments, query the event log, validate email addresses, manage mailing lists and members, maintain per-domain suppression lists (bounces, unsubscribes, complaints), pull aggregated sending statistics, and inspect sending domains.",
+  "actionCount": 20,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messages",
+    "Events",
+    "Email Validation",
+    "Mailing Lists",
+    "Suppressions",
+    "Statistics",
+    "Domains"
+  ],
+  "actions": [
+    {
+      "name": "Send Email",
+      "category": "Messages",
+      "description": "Sends an email through a Mailgun sending domain. Supports plain text and/or HTML bodies, CC/BCC, Reply-To, file attachments from FlowRunner storage, tags for analytics, scheduled delivery (up to 3 days ahead on most plans), Mailgun test mode, and per-message click/open tracking overrides. Provide at least one of Text Body or HTML Body. Returns the queued Mailgun message ID."
+    },
+    {
+      "name": "Send Templated Email",
+      "category": "Messages",
+      "description": "Sends an email using a stored Mailgun template. Template variables are passed as a JSON object via the X-Mailgun-Variables header and substituted into the template's handlebars placeholders. Supports CC/BCC, Reply-To, tags, scheduled delivery, and test mode."
+    },
+    {
+      "name": "Get Events",
+      "category": "Events",
+      "description": "Retrieves message events (accepted, delivered, failed, opened, clicked, unsubscribed, complained, stored) for a domain from the Mailgun event log. Supports filtering by event type, recipient, and time range. Mailgun retains events for a limited window (typically 1-30 days depending on plan). Returns event items plus paging URLs for retrieving further pages."
+    },
+    {
+      "name": "Validate Email Address",
+      "category": "Email Validation",
+      "description": "Validates a single email address using Mailgun's email validation service (v4). Returns a deliverability result (deliverable, undeliverable, do_not_send, catch_all, unknown), a risk rating (low, medium, high, unknown), the reasons behind the assessment, and flags for disposable and role-based addresses. Requires a Mailgun plan that includes email validations."
+    },
+    {
+      "name": "Create Mailing List",
+      "category": "Mailing Lists",
+      "description": "Creates a new Mailgun mailing list. A mailing list is identified by its own email address (e.g. news@mg.example.com); sending a message to that address distributes it to all subscribed members. Access level controls who may post to the list."
+    },
+    {
+      "name": "List Mailing Lists",
+      "category": "Mailing Lists",
+      "description": "Retrieves the mailing lists in your Mailgun account, including each list's address, name, description, access level, and member count. Returns items plus paging URLs for retrieving further pages."
+    },
+    {
+      "name": "Get Mailing List",
+      "category": "Mailing Lists",
+      "description": "Retrieves a single mailing list's details by its address, including name, description, access level, and current member count."
+    },
+    {
+      "name": "Delete Mailing List",
+      "category": "Mailing Lists",
+      "description": "Permanently deletes a mailing list and all of its members. This cannot be undone."
+    },
+    {
+      "name": "Add List Member",
+      "category": "Mailing Lists",
+      "description": "Adds a member to a mailing list, optionally with a display name, custom JSON variables (usable for template personalization), and an initial subscription state. Enable Upsert to update the member instead of failing if the address already exists on the list."
+    },
+    {
+      "name": "List Members",
+      "category": "Mailing Lists",
+      "description": "Retrieves the members of a mailing list, including each member's address, name, subscription state, and custom variables. Optionally filter by subscription status. Returns items plus paging URLs for retrieving further pages."
+    },
+    {
+      "name": "Delete List Member",
+      "category": "Mailing Lists",
+      "description": "Removes a member from a mailing list by email address. The member's data (name, variables) is deleted along with the membership."
+    },
+    {
+      "name": "List Bounces",
+      "category": "Suppressions",
+      "description": "Retrieves the bounce suppression list for a domain — addresses that hard-bounced and are automatically blocked from future sending. Each entry includes the address, SMTP error code, error text, and when the bounce was recorded."
+    },
+    {
+      "name": "Delete Bounce",
+      "category": "Suppressions",
+      "description": "Removes an address from a domain's bounce suppression list so Mailgun will attempt delivery to it again. Use this after a previously bouncing mailbox has been fixed."
+    },
+    {
+      "name": "List Unsubscribes",
+      "category": "Suppressions",
+      "description": "Retrieves the unsubscribe suppression list for a domain — addresses that opted out and are blocked from future sending (optionally per tag). Each entry includes the address, tags it unsubscribed from, and when it was recorded."
+    },
+    {
+      "name": "Add Unsubscribe",
+      "category": "Suppressions",
+      "description": "Adds an address to a domain's unsubscribe suppression list, blocking future messages to it. Optionally scope the unsubscribe to a single tag; leave the tag empty (or use *) to unsubscribe from all messages."
+    },
+    {
+      "name": "Delete Unsubscribe",
+      "category": "Suppressions",
+      "description": "Removes an address from a domain's unsubscribe suppression list so it can receive messages again. Use with care — re-mailing users who opted out may violate anti-spam regulations."
+    },
+    {
+      "name": "List Complaints",
+      "category": "Suppressions",
+      "description": "Retrieves the complaint suppression list for a domain — addresses that marked your messages as spam and are blocked from future sending. Each entry includes the address and when the complaint was recorded."
+    },
+    {
+      "name": "Get Stats",
+      "category": "Statistics",
+      "description": "Retrieves aggregated sending statistics for a domain from Mailgun's stats API. Select one or more event types to aggregate (accepted, delivered, failed, opened, clicked, unsubscribed, complained, stored) and either a duration (e.g. 30d, 24h, 2m) or an explicit start/end time range. Returns per-interval counts plus the overall time window."
+    },
+    {
+      "name": "List Domains",
+      "category": "Domains",
+      "description": "Retrieves the sending domains registered in your Mailgun account, including each domain's name, state (active/unverified/disabled), type (sandbox/custom), and creation date."
+    },
+    {
+      "name": "Get Domain",
+      "category": "Domains",
+      "description": "Retrieves a single domain's details, including its verification state, sending and receiving DNS records (with per-record validity), and SMTP credentials login. Useful for checking whether a domain's DNS is fully verified."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send transactional or templated emails (receipts, notifications, password resets) from an automated workflow",
+    "Validate email addresses before adding them to a mailing list or CRM",
+    "Sync signups into a Mailgun mailing list and manage members over time",
+    "Keep suppression lists tidy by adding/removing bounces and unsubscribes",
+    "Poll the event log or pull statistics to monitor deliverability"
+  ],
+  "agentIdeas": [
+    "When a **Calendly** \"On Invitee Created\" trigger fires, use Mailgun \"Send Templated Email\" to send the invitee a branded confirmation with meeting details.",
+    "Use **Typeform** \"Get Form Responses\" to pull new signups, call Mailgun \"Validate Email Address\" to filter out invalid addresses, then Mailgun \"Add List Member\" to enroll the valid ones into a mailing list.",
+    "After **HubSpot** \"Create Contact\" adds a new lead, use Mailgun \"Send Email\" to deliver a welcome message and Mailgun \"Get Events\" to confirm it was delivered."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/mailgun/public/icon.png",
+  "sourcePaths": {
+    "service": "services/mailgun",
+    "readme": "services/mailgun/README.md",
+    "index": "services/mailgun/src/index.js"
+  }
+}

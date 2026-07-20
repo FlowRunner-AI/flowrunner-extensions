@@ -1,0 +1,46 @@
+{
+  "slug": "cratedb",
+  "name": "CrateDB",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Run SQL against a CrateDB cluster over its SQL-over-HTTP endpoint (`POST /_sql`). Supports single parameterized statements as well as high-throughput batched writes via `bulk_args`, returning column names, rows, affected row counts, and query duration. Optional HTTP Basic authentication is applied when a username and password are configured.",
+  "actionCount": 2,
+  "triggerCount": 0,
+  "operationCategories": [
+    "SQL"
+  ],
+  "actions": [
+    {
+      "name": "Execute SQL",
+      "category": "SQL",
+      "description": "Runs a single SQL statement against CrateDB over the HTTP endpoint (POST /_sql). Use it for any operation — SELECT, INSERT, UPDATE, DELETE, or DDL such as CREATE/ALTER/DROP TABLE. Optionally pass positional parameters (bound to `?` or `$1`, `$2` placeholders in the statement) to safely inject values without string concatenation. Enable \"Include Column Types\" to also return the CrateDB data type IDs for each column. Returns the column names, result rows, affected row count, and query duration."
+    },
+    {
+      "name": "Execute Bulk SQL",
+      "category": "SQL",
+      "description": "Executes one parameterized SQL statement repeatedly against CrateDB in a single batched request (POST /_sql with bulk_args). Ideal for high-throughput INSERT, UPDATE, or DELETE operations — each inner array supplies one set of positional parameters for the `?` or `$1`, `$2` placeholders in the statement. CrateDB returns a `results` array with one entry per parameter set, each carrying its own rowcount (a rowcount of -2 indicates that row failed at runtime). Note: bulk operations do not return rows, so SELECT is not supported here."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Query time-series or IoT data stored in CrateDB and feed the resulting rows into downstream automation steps.",
+    "Run INSERT/UPDATE/DELETE or DDL (CREATE/ALTER/DROP TABLE) as part of a workflow, using positional parameters to safely inject values without string concatenation.",
+    "Bulk-load many records in a single batched request for efficient, high-throughput ingestion."
+  ],
+  "agentIdeas": [
+    "Use **CrateDB** \"Execute SQL\" to query recent records, then **Google Sheets** \"Add Rows\" to append the returned rows into a reporting spreadsheet.",
+    "When a **Dropbox** \"On New File\" trigger fires, parse the file's records and call **CrateDB** \"Execute Bulk SQL\" to batch-insert them into a CrateDB table.",
+    "After a **CrateDB** \"Execute SQL\" query detects an anomaly (e.g. rows above a threshold), use **Slack** \"Send Message To Channel\" to alert the team with the result summary."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/cratedb/public/icon.png",
+  "sourcePaths": {
+    "service": "services/cratedb",
+    "readme": "services/cratedb/README.md",
+    "index": "services/cratedb/src/index.js"
+  }
+}

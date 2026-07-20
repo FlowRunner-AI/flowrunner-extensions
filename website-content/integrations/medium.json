@@ -1,0 +1,69 @@
+{
+  "slug": "medium",
+  "name": "Medium",
+  "marketingCategory": "CMS & Content",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Publish and manage content on [Medium](https://medium.com) from FlowRunner: read the current user, create posts on a profile or under a publication, list publications and contributors, and upload images. Authenticates with a Medium integration token sent as a Bearer token.",
+  "actionCount": 6,
+  "triggerCount": 0,
+  "operationCategories": [
+    "User",
+    "Posts",
+    "Publications",
+    "Images"
+  ],
+  "actions": [
+    {
+      "name": "Get Current User",
+      "category": "User",
+      "description": "Returns details about the user associated with the integration token: their id, username, name, and profile URL. Use the returned id as the Author ID for Create Post, and as the User ID for List User's Publications. Also serves as a connection check to confirm the token is valid."
+    },
+    {
+      "name": "Create Post",
+      "category": "Posts",
+      "description": "IMPORTANT: The Medium API is deprecated and frozen — Medium no longer issues new integration tokens, and content publishing to Medium via API is effectively legacy. This operation only works for accounts that already hold a valid integration token. Creates a post on the authenticated user's Medium profile. The Author ID is the \"id\" returned by Get Current User. Content must be HTML or Markdown (set Content Format accordingly). Up to 3 tags (max 25 chars each) are allowed; extra tags are ignored by Medium. Set Publish Status to draft, public, or unlisted. Once published as public, a post cannot be reverted to draft via the API."
+    },
+    {
+      "name": "Create Post Under Publication",
+      "category": "Posts",
+      "description": "Creates a post under a Medium publication instead of a user's personal profile. The Medium API is deprecated (no new tokens issued); this only works for accounts with an existing integration token. The user must be a contributor to the publication: editors can publish with any status (public/unlisted appear immediately), while writers can only create drafts pending editor approval. Use List User's Publications to find a Publication ID."
+    },
+    {
+      "name": "List User's Publications",
+      "category": "Publications",
+      "description": "Lists the publications the given user is related to as an editor or writer. Provide the user id from Get Current User. Each entry includes the publication id, name, description, and URL; use a publication id with Create Post Under Publication or List Publication Contributors."
+    },
+    {
+      "name": "List Publication Contributors",
+      "category": "Publications",
+      "description": "Lists the contributors of a publication along with their role (editor or writer). Provide a publication id (from List User's Publications). Only useful for publications the authenticated user has access to."
+    },
+    {
+      "name": "Upload Image",
+      "category": "Images",
+      "description": "Uploads an image to Medium from a publicly accessible image URL and returns a Medium-hosted URL you can reference from post HTML. Most integrations do not need this: Medium automatically imports images referenced by src attributes in post content. Supported types: JPEG, PNG, GIF (including animated), and TIFF. Note: the Medium API is deprecated and requires an existing integration token."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Cross-post articles from a CMS, database, or spreadsheet into a Medium profile or publication (for accounts with an existing token).",
+    "Programmatically create Medium drafts for later editorial review.",
+    "Look up the authenticated user's publications and contributors to route content to the right destination."
+  ],
+  "agentIdeas": [
+    "When a **WordPress** \"On New Published Post\" trigger fires, use **Medium** \"Create Post\" to cross-post the same article to the author's Medium profile with the source URL as a canonical reference.",
+    "Use **Notion** \"Get Page\" to pull a drafted article, then call **Medium** \"Create Post Under Publication\" (with a Publication ID from **Medium** \"List User's Publications\") to publish it under the team's Medium publication.",
+    "After **Ghost** \"Publish Post\", use **Medium** \"Create Post\" to mirror the content to Medium, first calling **Medium** \"Get Current User\" to obtain the required Author ID."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/medium/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/medium",
+    "readme": "services/medium/README.md",
+    "index": "services/medium/src/index.js"
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "slug": "notion",
+  "name": "Notion",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Comprehensive workspace and database management platform for creating, updating, and organizing pages, databases, and collaborative content workflows.",
+  "actionCount": 23,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Page Management",
+    "Database Management",
+    "Block Management",
+    "User Management",
+    "Comments",
+    "Search And Query"
+  ],
+  "actions": [
+    {
+      "name": "Create Page",
+      "category": "Page Management",
+      "description": "Creates a new page in Notion as a child of an existing page. Supports rich content blocks including text, headings, lists, and embeds. The page properties and content can be formatted with Notion's rich text capabilities for comprehensive page creation."
+    },
+    {
+      "name": "Get Page",
+      "category": "Page Management",
+      "description": "Retrieves complete page information including all properties, metadata, and parent relationships. Returns the full page object with creation time, last edited time, and all associated data for comprehensive page access."
+    },
+    {
+      "name": "Get Page Property Item",
+      "category": "Page Management",
+      "description": "Retrieves the value of a specific property from a page, including paginated values for properties with multiple items. Useful for accessing large property values like relation lists or rich text content that may be truncated in the main page object."
+    },
+    {
+      "name": "Add Content To Page",
+      "category": "Page Management",
+      "description": "Appends new content blocks to an existing page, supporting all Notion block types including paragraphs, headings, lists, images, and embeds. Content is added at the end of the page and maintains proper formatting and structure."
+    },
+    {
+      "name": "Update Page Properties",
+      "category": "Page Management",
+      "description": "Updates specific properties of an existing page such as title, status, tags, or custom database fields. Only the provided properties are modified while others remain unchanged, allowing for precise updates."
+    },
+    {
+      "name": "Delete Page",
+      "category": "Page Management",
+      "description": "Moves a page to the trash by setting its archived status to true. The page becomes inaccessible through normal API calls but can be restored from the trash through the Notion interface if needed."
+    },
+    {
+      "name": "Create Database",
+      "category": "Database Management",
+      "description": "Creates a new database within a parent page with custom properties and schema. Define columns with various types like text, number, select, date, and relations to structure your data collection effectively."
+    },
+    {
+      "name": "Get Database",
+      "category": "Database Management",
+      "description": "Retrieves complete database schema including all property definitions, views, and filters. Use this to understand database structure before creating or updating items. Returns property types, formulas, and relation configurations."
+    },
+    {
+      "name": "Create Database Item",
+      "category": "Database Management",
+      "description": "Creates a new item (page) within a database with specified property values and optional content blocks. The properties must match the database schema, and content can include rich text, headings, lists, and other block types."
+    },
+    {
+      "name": "Update Database",
+      "category": "Database Management",
+      "description": "Updates database metadata including title, description, or property schema. Use this to modify database structure, add new properties, or change existing property configurations while preserving existing data."
+    },
+    {
+      "name": "Update Database Item",
+      "category": "Database Management",
+      "description": "Updates specific properties of an existing database item while preserving other values. Only the provided properties are modified, making it ideal for status updates, field corrections, or adding new information to existing records."
+    },
+    {
+      "name": "Get Block",
+      "category": "Block Management",
+      "description": "Retrieves detailed information about a specific content block including its type, content, formatting, and hierarchical relationships. Useful for accessing individual text paragraphs, headings, lists, or embedded content within pages."
+    },
+    {
+      "name": "Get Block Children",
+      "category": "Block Management",
+      "description": "Retrieves all child blocks contained within a parent block, supporting pagination for large content structures. Essential for accessing nested content like bulleted lists, toggle blocks, or column layouts with their sub-elements."
+    },
+    {
+      "name": "Append Block Children",
+      "category": "Block Management",
+      "description": "Adds new child blocks to an existing container block, perfect for extending lists, adding items to toggle blocks, or inserting content into column layouts. Maintains the hierarchical structure and formatting of nested content."
+    },
+    {
+      "name": "Update Block",
+      "category": "Block Management",
+      "description": "Modifies the content and properties of an existing block such as changing text content, updating formatting, or altering block-specific settings. Supports all block types with their respective editable properties."
+    },
+    {
+      "name": "Delete Block",
+      "category": "Block Management",
+      "description": "Permanently removes a block and all its child content from a page. Use with caution as deleted blocks cannot be recovered through the API, though they may be restored through Notion's interface immediately after deletion."
+    },
+    {
+      "name": "Get User",
+      "category": "User Management",
+      "description": "Retrieves detailed information about a specific Notion user including name, avatar, and user type. Useful for displaying user information in workflows or for user-based filtering and assignments."
+    },
+    {
+      "name": "Get Users List",
+      "category": "User Management",
+      "description": "Retrieves a paginated list of all users in the Notion workspace who have access to the pages your integration can see. Essential for user selection in assignments, mentions, or access control workflows."
+    },
+    {
+      "name": "Create Comment",
+      "category": "Comments",
+      "description": "Adds a new comment to a page or continues an existing discussion thread. Comments support rich text formatting and are visible to all users with access to the page, making them ideal for collaboration and feedback workflows."
+    },
+    {
+      "name": "Get Comments",
+      "category": "Comments",
+      "description": "Retrieves all unresolved comments from a specific page or block with pagination support. Only returns active comments that haven't been marked as resolved, enabling comment monitoring and response workflows."
+    },
+    {
+      "name": "Find Database Item",
+      "category": "Search And Query",
+      "description": "Searches database items using complex filter conditions and custom sorting options. Supports filtering by any property type including text, numbers, dates, and relations with operators like equals, contains, greater than, and more."
+    },
+    {
+      "name": "Find Page By Title",
+      "category": "Search And Query",
+      "description": "Searches for database items that match a specific title exactly. This is a convenient shortcut for finding items by their title property without constructing complex filter objects, ideal for quick lookups and validation."
+    },
+    {
+      "name": "Find or Create Database Item",
+      "category": "Search And Query",
+      "description": "Searches for an existing database item by filter criteria and creates a new one if not found. Useful for maintaining unique records and preventing duplicates while ensuring data consistency in automated workflows."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Project management and task tracking automation",
+    "Knowledge base creation and content management",
+    "CRM database management and customer tracking",
+    "Document collaboration and team communication",
+    "Automated content publication and updates",
+    "Database-driven workflow automation",
+    "Team productivity tracking and reporting",
+    "Meeting notes and documentation organization"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/notion/public/icon.png",
+  "sourcePaths": {
+    "service": "services/notion",
+    "readme": "services/notion/README.md",
+    "index": "services/notion/src/index.js"
+  }
+}

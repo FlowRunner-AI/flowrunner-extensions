@@ -1,0 +1,106 @@
+{
+  "slug": "seatable",
+  "name": "SeaTable",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to a [SeaTable](https://seatable.io) base to read, write, link, and query rows. SeaTable is a no-code, Airtable-style collaborative database with a REST API and a genuine SQL query engine over your base data. Works with both SeaTable Cloud and self-hosted servers. You configure a long-lived Base API Token, which the extension transparently exchanges for the short-lived base access token used against the API gateway (cached and re-exchanged automatically on expiry).",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Metadata",
+    "Rows",
+    "SQL",
+    "Links"
+  ],
+  "actions": [
+    {
+      "name": "Get Base Metadata",
+      "category": "Metadata",
+      "description": "Retrieves the full schema of the connected SeaTable base, including every table with its columns, column types, and views. Use this to discover table names (which identify tables in the row API) and column names (which key the values inside row objects) before performing data operations."
+    },
+    {
+      "name": "List Rows",
+      "category": "Rows",
+      "description": "Retrieves rows from a table in the connected SeaTable base via the API gateway. Supports selecting a specific view, pagination via start offset and limit (max 1000 per request), and optionally returning column keys instead of readable column names. Returns the matching rows keyed by column name."
+    },
+    {
+      "name": "Get Row",
+      "category": "Rows",
+      "description": "Retrieves a single row by its ID from a table in the connected SeaTable base. Returns the row keyed by column name."
+    },
+    {
+      "name": "Append Row",
+      "category": "Rows",
+      "description": "Appends a single new row to a table in the connected SeaTable base. The row object must be keyed by column NAME (not column key). Returns the created row including its generated ID."
+    },
+    {
+      "name": "Update Row",
+      "category": "Rows",
+      "description": "Updates an existing row in a table in the connected SeaTable base. Only the columns supplied in the row object are modified; other column values are preserved. The row object must be keyed by column NAME."
+    },
+    {
+      "name": "Delete Row",
+      "category": "Rows",
+      "description": "Deletes a single row by its ID from a table in the connected SeaTable base."
+    },
+    {
+      "name": "Append Rows",
+      "category": "Rows",
+      "description": "Appends multiple rows to a table in a single request (up to 1000 rows). Each row object must be keyed by column NAME. Far more efficient than appending rows one at a time."
+    },
+    {
+      "name": "Update Rows",
+      "category": "Rows",
+      "description": "Updates multiple rows in a single request. Each update must specify the target row_id and an object of column values (keyed by column NAME). Far more efficient than updating rows one at a time."
+    },
+    {
+      "name": "Delete Rows",
+      "category": "Rows",
+      "description": "Deletes multiple rows in a single request by supplying an array of row IDs. Far more efficient than deleting rows one at a time."
+    },
+    {
+      "name": "Query with SQL",
+      "category": "SQL",
+      "description": "Runs a read-only SQL SELECT statement against the connected SeaTable base and returns the matching rows plus column metadata. SeaTable supports a rich SQL dialect over base tables (WHERE, ORDER BY, GROUP BY, JOIN, LIMIT). Column keys in results are converted to human-readable column names. This is a powerful way to query and aggregate data without paging through rows manually."
+    },
+    {
+      "name": "List Row Links",
+      "category": "Links",
+      "description": "Lists the linked rows for a specific link column of a given row in the connected SeaTable base. Use Get Base Metadata to find the link column's key. Returns the IDs of the rows linked through that column."
+    },
+    {
+      "name": "Add Link",
+      "category": "Links",
+      "description": "Creates a link between a row in one table and a row in a linked table through a link column. Use Get Base Metadata to obtain the table IDs and link column key."
+    },
+    {
+      "name": "Remove Link",
+      "category": "Links",
+      "description": "Removes an existing link between a source row and a target row through a link column. Use Get Base Metadata to obtain the link column key and table names."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync records between SeaTable and other apps by appending or updating rows in bulk (up to 1000 per request)",
+    "Log form submissions, events, or webhook payloads as new rows in a base",
+    "Query and aggregate base data on demand with read-only SQL (`WHERE`, `ORDER BY`, `GROUP BY`, `JOIN`, `LIMIT`)",
+    "Maintain relationships between tables by adding and removing row links",
+    "Discover table and column names dynamically before performing data operations"
+  ],
+  "agentIdeas": [
+    "Use **SeaTable** \"Query with SQL\" to pull rows matching a condition, then send a digest via **Gmail** \"Send Message\" or post it with **Slack** \"Send Message To Channel\".",
+    "When new records arrive in **Google Sheets**, use \"Get Rows\" to read them and **SeaTable** \"Append Rows\" to bulk-sync them into a base table.",
+    "Use **Notion** \"Create Page\" for items flagged in a **SeaTable** \"List Rows\" result, then call **SeaTable** \"Update Row\" to record the created Notion page reference back on each row."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/seatable/public/icon.png",
+  "sourcePaths": {
+    "service": "services/seatable",
+    "readme": "services/seatable/README.md",
+    "index": "services/seatable/src/index.js"
+  }
+}

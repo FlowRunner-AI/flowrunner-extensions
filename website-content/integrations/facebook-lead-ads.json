@@ -1,0 +1,166 @@
+{
+  "slug": "facebook-lead-ads",
+  "name": "Facebook Lead Ads",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Complete Facebook advertising platform integration for creating, managing, and optimizing lead generation campaigns. Build comprehensive ad workflows from campaign creation to lead form management.",
+  "actionCount": 25,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Account Management",
+    "Campaign Management",
+    "Ad Set Management",
+    "Ad Management",
+    "Lead Forms"
+  ],
+  "actions": [
+    {
+      "name": "Get Ad Account Info",
+      "category": "Account Management",
+      "description": "Retrieves information about a Facebook Ad Account including ID, name, account status, balance, and currency"
+    },
+    {
+      "name": "Get Ad Account Insights",
+      "category": "Account Management",
+      "description": "Retrieves insights data for a Facebook Ad Account including campaign performance metrics"
+    },
+    {
+      "name": "Create Ad Campaign",
+      "category": "Campaign Management",
+      "description": "Creates a new Facebook Ad Campaign with specified parameters and targeting options"
+    },
+    {
+      "name": "Get Campaign Insights",
+      "category": "Campaign Management",
+      "description": "Retrieves performance insights and metrics for a specific Facebook Ad Campaign"
+    },
+    {
+      "name": "Get All Ad Campaigns",
+      "category": "Campaign Management",
+      "description": "Retrieves all campaigns associated with a Facebook Ad Account"
+    },
+    {
+      "name": "Update Ad Campaign",
+      "category": "Campaign Management",
+      "description": "Updates an existing Facebook Ad Campaign with new parameters and settings"
+    },
+    {
+      "name": "Delete Ad Campaign",
+      "category": "Campaign Management",
+      "description": "Deletes a Facebook Ad Campaign permanently from the account"
+    },
+    {
+      "name": "Create Ad Set",
+      "category": "Ad Set Management",
+      "description": "Creates a new Facebook Ad Set within a campaign with targeting and budget parameters"
+    },
+    {
+      "name": "Update Ad Set",
+      "category": "Ad Set Management",
+      "description": "Updates an existing Facebook Ad Set with new budget, targeting, or scheduling parameters"
+    },
+    {
+      "name": "Get All Ad Sets",
+      "category": "Ad Set Management",
+      "description": "Retrieves all ad sets associated with a specific Facebook Ad Campaign"
+    },
+    {
+      "name": "Delete Ad Set",
+      "category": "Ad Set Management",
+      "description": "Deletes a Facebook Ad Set permanently from the campaign"
+    },
+    {
+      "name": "Get Ad Set Insights",
+      "category": "Ad Set Management",
+      "description": "Retrieves performance insights and metrics for a specific Facebook Ad Set"
+    },
+    {
+      "name": "Create Ad",
+      "category": "Ad Management",
+      "description": "Creates a new Facebook Ad within an ad set using a specified creative"
+    },
+    {
+      "name": "Update Ad",
+      "category": "Ad Management",
+      "description": "Updates an existing Facebook Ad with new creative, name, or status settings"
+    },
+    {
+      "name": "Delete Ad",
+      "category": "Ad Management",
+      "description": "Deletes a Facebook Ad permanently from the ad set"
+    },
+    {
+      "name": "Create Lead Form",
+      "category": "Lead Forms",
+      "description": "Creates a new Facebook Lead Generation form with custom questions and privacy settings"
+    },
+    {
+      "name": "Get Lead Forms",
+      "category": "Lead Forms",
+      "description": "Retrieves all lead generation forms associated with a Facebook page"
+    },
+    {
+      "name": "Get Lead Form Info",
+      "category": "Lead Forms",
+      "description": "Retrieves detailed information about a specific lead generation form including questions and settings"
+    },
+    {
+      "name": "Archive Lead Form",
+      "category": "Lead Forms",
+      "description": "Archives a Facebook Lead Generation form making it inactive but preserving data"
+    },
+    {
+      "name": "Activate Lead Form",
+      "category": "Lead Forms",
+      "description": "Activates a Facebook Lead Generation form making it available for lead collection"
+    },
+    {
+      "name": "Create Ad Creative",
+      "category": "Ad Management",
+      "description": "Creates a new Facebook Ad Creative with lead generation form integration and visual elements"
+    },
+    {
+      "name": "Update Ad Creative",
+      "category": "Ad Management",
+      "description": "Updates an existing Facebook Ad Creative with new content, labels, or status"
+    },
+    {
+      "name": "Delete Ad Creative",
+      "category": "Ad Management",
+      "description": "Deletes a Facebook Ad Creative permanently from the account"
+    },
+    {
+      "name": "Publish Ad",
+      "category": "Ad Management",
+      "description": "Publishes a Facebook Ad by setting its status to active and making it live"
+    },
+    {
+      "name": "Get Messenger Lead Forms",
+      "category": "Lead Forms",
+      "description": "Retrieves Facebook Lead Generation forms eligible for Messenger integration"
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Creating and managing comprehensive Facebook ad campaigns for lead generation",
+    "Building automated lead capture workflows with custom forms and follow-up sequences",
+    "Managing ad account performance tracking and campaign optimization",
+    "Developing targeted advertising campaigns with detailed audience segmentation",
+    "Creating dynamic ad creatives with lead generation forms integration",
+    "Automating campaign budget management and performance monitoring",
+    "Building multi-stage advertising funnels with ad sets and creative variations",
+    "Integrating Facebook lead ads with CRM systems and marketing automation"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.svg",
+  "iconFile": "services/facebook-lead-ads/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/facebook-lead-ads",
+    "readme": "services/facebook-lead-ads/README.md",
+    "index": "services/facebook-lead-ads/src/index.js"
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "slug": "revolut-business",
+  "name": "Revolut Business",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integration with the Revolut Business banking API for moving money and reading account data. Look up accounts and balances, manage saved recipients (counterparties), read and cancel transactions, transfer between your own accounts, make payments, prepare payment drafts, exchange currencies, create payout links, and manage webhook subscriptions — all through a single OAuth2-connected service. Connects to either the Production or Sandbox environment.",
+  "actionCount": 34,
+  "triggerCount": 4,
+  "operationCategories": [
+    "Accounts",
+    "Counterparties",
+    "Transactions",
+    "Transfers",
+    "Payment Drafts",
+    "Foreign Exchange",
+    "Payout Links",
+    "Sandbox Simulations",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "List Accounts",
+      "category": "Accounts",
+      "description": "Returns every Revolut Business account on the connected profile, with the current balance, currency, and whether the account is active. Use this to look up your accounts, check balances across currencies, or feed downstream cash-flow workflows."
+    },
+    {
+      "name": "Get Account",
+      "category": "Accounts",
+      "description": "Looks up one of your Revolut Business accounts and returns its current balance, currency, and status. Use this when you need an up-to-date balance before sending a payment, or when checking the state of a specific account."
+    },
+    {
+      "name": "Get Account Bank Details",
+      "category": "Accounts",
+      "description": "Returns the receiving bank details for one of your Revolut Business accounts — account number, sort code, IBAN, BIC, and the supported payment networks. Use this when you need to share your details with someone who is paying you, attach them to an invoice, or onboard a new payer."
+    },
+    {
+      "name": "List Counterparties",
+      "category": "Counterparties",
+      "description": "Returns saved counterparties (payment recipients) on the connected profile. Use to review your recipient list, find a counterparty before sending a payment, or copy recipients into a CRM. Older results are read by passing the creation date of the last item you saw into Created Before."
+    },
+    {
+      "name": "Get Counterparty",
+      "category": "Counterparties",
+      "description": "Looks up one saved counterparty (recipient), including every bank account or card linked to them. Use this to double-check payment details before sending money, or to show the recipient's details inside your own app."
+    },
+    {
+      "name": "Create Counterparty",
+      "category": "Counterparties",
+      "description": "Saves a new payment recipient so future payments can reference it by ID instead of re-entering bank details. There are three pathways — pick the one that matches your recipient and leave the other fields empty: (1) Revolut-to-Revolut: set Revolut Username, Email, or Phone (no bank fields). (2) UK bank: set Profile Type, Name (or Company Name), Bank Country = GB, Currency, Account Number, Sort Code. (3) International bank: set Profile Type, Name (or Company Name), Bank Country, Currency, plus either IBAN+BIC (SEPA/SWIFT) or Account Number+Routing Number (US ABA). US and some SWIFT destinations also require the address fields."
+    },
+    {
+      "name": "Delete Counterparty",
+      "category": "Counterparties",
+      "description": "Removes a saved counterparty (recipient) from your Revolut Business profile. Payments already in flight to this recipient are not affected. Use this to keep your recipient list tidy, or to stop someone from being paid in future."
+    },
+    {
+      "name": "Validate Account Name (UK Confirmation of Payee)",
+      "category": "Counterparties",
+      "description": "Asks the recipient's UK bank to confirm that the account number and sort code really belong to the person or business you expect — without saving a counterparty. Use this before sending a UK payment to reduce the risk of paying the wrong account or being tricked into paying a scammer. UK only."
+    },
+    {
+      "name": "List Transactions",
+      "category": "Transactions",
+      "description": "Returns transactions, newest first, with filters for date range, counterparty, account, and type. Use this to build finance dashboards, generate statements, reconcile invoices, or copy transactions into accounting tools. Pick a Period preset (for example \"last30Days\") to filter by date in one click, or fill in From and To for a custom window. Turn on Fetch All to read every page automatically up to the safety cap."
+    },
+    {
+      "name": "Get Transaction",
+      "category": "Transactions",
+      "description": "Looks up one transaction by its Revolut ID and returns its current status, amount, currency, counterparty, and every side of the movement (called \"legs\" by Revolut, for example a debit leg and a credit leg in a currency exchange). Use this to check a payment's status, reconcile a specific transaction, or follow up after a trigger fires."
+    },
+    {
+      "name": "Get Transaction By Request ID",
+      "category": "Transactions",
+      "description": "Looks up a transaction by the Request ID you supplied when sending the payment (the safe-retry tag, not Revolut's transaction ID). Use this when a payment call timed out and you need to check whether the payment actually went through."
+    },
+    {
+      "name": "Cancel Transaction",
+      "category": "Transactions",
+      "description": "Cancels a transaction that hasn't gone through yet — for example a payment scheduled for a future date, or one waiting for someone to approve it in the Revolut Business app. Already-completed transactions cannot be cancelled (use Make Payment in reverse if you need to refund money)."
+    },
+    {
+      "name": "Transfer Between Own Accounts",
+      "category": "Transfers",
+      "description": "Moves money between two accounts on the same Revolut Business profile (for example between your \"Main GBP\" and \"Holding GBP\" accounts). Both accounts must be in the same currency — to swap currencies use Exchange Money instead. Safe to retry: pass the same Request ID and the transfer will not be duplicated."
+    },
+    {
+      "name": "Make Payment",
+      "category": "Transfers",
+      "description": "Sends money from one of your accounts to a saved counterparty (recipient). Safe to retry: pass the same Request ID and the payment will not be sent twice. Available on Revolut Business Company plans only — Freelancer plans must use Create Payment Draft, which sends the payment for approval in the Revolut Business app instead of releasing money immediately. Larger or unusual payments may need you to approve them in the Revolut Business mobile app before they leave the account."
+    },
+    {
+      "name": "List Payment Drafts",
+      "category": "Payment Drafts",
+      "description": "Returns every payment draft on the connected profile. Drafts are payments lined up for someone to approve inside the Revolut Business mobile app — used by Freelancer plan accounts (which cannot use Make Payment directly) and by Company accounts that need approval before any money moves."
+    },
+    {
+      "name": "Get Payment Draft",
+      "category": "Payment Drafts",
+      "description": "Looks up one payment draft, with every payment inside it, the scheduled date, and the current status of each payment. Use this to show the draft to someone for approval, or to track what happened to each payment after the draft was approved."
+    },
+    {
+      "name": "Create Payment Draft",
+      "category": "Payment Drafts",
+      "description": "Prepares one or more payments and saves them as a draft that has to be approved inside the Revolut Business mobile app before any money moves. Use this for: Freelancer plan accounts (which cannot use Make Payment directly), batch runs like payroll, and any workflow where a person needs to sign off before the payment goes out. You can also schedule the payments for a future date."
+    },
+    {
+      "name": "Delete Payment Draft",
+      "category": "Payment Drafts",
+      "description": "Cancels a payment draft before anyone approves it, so the payments inside never go out. Use this when payment details change, or to pull back an approval request that should no longer be acted on."
+    },
+    {
+      "name": "Get Exchange Rate",
+      "category": "Foreign Exchange",
+      "description": "Returns the current exchange rate Revolut Business will use to convert between two currencies, plus any fee. Use this to show a quote to someone before actually moving money with Exchange Money, or to compare rates."
+    },
+    {
+      "name": "Exchange Money",
+      "category": "Foreign Exchange",
+      "description": "Converts money between two of your Revolut Business accounts that are in different currencies, using the current Revolut rate. Fill in either Source Amount (how much to convert out of the source account) or Target Amount (how much you want to land in the target account) — Revolut works out the other side. Safe to retry: pass the same Request ID and the conversion will not happen twice."
+    },
+    {
+      "name": "List Payout Links",
+      "category": "Payout Links",
+      "description": "Returns the payout links on the connected profile. A payout link is a one-time web link you send to someone so they can collect the money themselves — by Revolut, bank transfer, or card — on a Revolut-hosted page, without you needing their bank details first. Useful for one-off refunds, contractor payments, or paying suppliers when you don't have their account number."
+    },
+    {
+      "name": "Get Payout Link",
+      "category": "Payout Links",
+      "description": "Looks up one payout link, with its current status, the web link the recipient uses to collect the money, and which payment methods they can choose from."
+    },
+    {
+      "name": "Create Payout Link",
+      "category": "Payout Links",
+      "description": "Creates a one-time web link you can send to someone so they can collect the money themselves — by Revolut, bank transfer, or card — on a Revolut-hosted page. Use this for refunds, paying contractors, or any case where you don't have the recipient's bank details on file (or where you'd rather let them pick how to get paid)."
+    },
+    {
+      "name": "Cancel Payout Link",
+      "category": "Payout Links",
+      "description": "Cancels an active payout link before the recipient collects the money, so the link can no longer be used. Use this when payment terms change, the link was sent to the wrong person, or the payment is no longer needed."
+    },
+    {
+      "name": "Simulate Top-Up",
+      "category": "Sandbox Simulations",
+      "description": "Sandbox only. Adds fake money to one of your Sandbox accounts so you can test flows that need a funded balance, or fire the On Transaction Created and On Transaction State Changed triggers on demand. Only works when the service is connected with Environment set to Sandbox; connected to any other environment it returns a clear error asking you to switch. The maximum amount is 10000 in any currency; a larger amount is rejected."
+    },
+    {
+      "name": "Simulate Transfer State",
+      "category": "Sandbox Simulations",
+      "description": "Sandbox only. Pushes one of your Sandbox transfers into a chosen final state so you can test what happens when a payment clears, is reverted, is declined, or fails — and fire the On Transaction State Changed trigger on demand. The transfer must still be in progress (created or pending); the resulting state is final and cannot be changed again. Only works when the service is connected with Environment set to Sandbox; connected to any other environment it returns a clear error asking you to switch."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Returns every webhook on the connected Revolut Business profile — the URL Revolut sends events to, which events it sends, and whether the webhook is turned on. Use this to check what is hooked up, or to spot stale URLs that should be removed."
+    },
+    {
+      "name": "Get Webhook",
+      "category": "Webhooks",
+      "description": "Looks up one webhook by ID. Use this to confirm where events are being sent, which events the webhook is signed up for, and whether it is currently turned on."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Tells Revolut to send event notifications (transaction created, payment state changed, and so on) to a web address you control. Only use this if you are building your own receiver — if you want events to flow into a FlowRunner flow, use the On Transaction Created, On Transaction State Changed, or On Payout Link triggers instead, which set up the webhook for you."
+    },
+    {
+      "name": "Update Webhook",
+      "category": "Webhooks",
+      "description": "Changes an existing webhook — point it at a new web address, or change which events it listens for. Use this when moving your receiver to a new server, or when you want to start or stop receiving certain events."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Removes a webhook so Revolut stops sending events to its address. Use this when the receiver is being shut down or you no longer need the events."
+    },
+    {
+      "name": "Rotate Webhook Signing Secret",
+      "category": "Webhooks",
+      "description": "Issues a new signing secret for a webhook (the value used to prove that incoming events really came from Revolut). After rotating, check incoming events against the new secret. Use this if you think the old secret may have leaked."
+    },
+    {
+      "name": "List Failed Webhook Events",
+      "category": "Webhooks",
+      "description": "Returns events Revolut tried to send to your webhook but never managed to deliver (because the receiver was down, slow, or returned an error). Use this after an outage to find dropped events that need to be replayed by hand."
+    },
+    {
+      "name": "Check Webhook Is Genuine",
+      "category": "Webhooks",
+      "description": "Confirms that an incoming webhook message really came from Revolut and was not tampered with on the way. Use this only if you are building your own webhook receiver — if you are using the On Transaction / On Payout Link triggers, this service already verifies the signature for you before firing them. Returns valid: true when the message matches the signing secret you received from Create Webhook, valid: false otherwise."
+    }
+  ],
+  "triggers": [
+    "On Transaction Created",
+    "On Transaction State Changed",
+    "On Payout Link Created",
+    "On Payout Link State Changed"
+  ],
+  "idealUseCases": [
+    "Automating outgoing payments and payroll runs to saved recipients",
+    "Reconciling transactions and multi-currency balances into accounting tools or spreadsheets",
+    "Verifying a UK recipient's account details (Confirmation of Payee) before paying",
+    "Running treasury and foreign-exchange workflows across currencies",
+    "Sending payout links to people you cannot reach by bank transfer",
+    "Reacting in real time to incoming transactions or payout-link status changes"
+  ],
+  "agentIdeas": [
+    "When a **Revolut Business** \"On Transaction Created\" trigger fires, use **Google Sheets** \"Add Row\" to log the payment into a reconciliation sheet, then **Gmail** \"Send Message\" to alert the finance team.",
+    "Use **Xero** \"Get Invoices\" to pull unpaid supplier bills, then call **Revolut Business** \"Create Counterparty\" and \"Make Payment\" to pay each one.",
+    "When a **Revolut Business** \"On Payout Link State Changed\" trigger reports a link as processed, use **Slack** \"Send Message To Channel\" to notify the operations channel."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/revolut-business/public/icon.png",
+  "sourcePaths": {
+    "service": "services/revolut-business",
+    "readme": "services/revolut-business/README.md",
+    "index": "services/revolut-business/src/index.js"
+  }
+}

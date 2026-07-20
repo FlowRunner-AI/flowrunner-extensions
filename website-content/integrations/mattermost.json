@@ -1,0 +1,193 @@
+{
+  "slug": "mattermost",
+  "name": "Mattermost",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Integrate a self-hosted (or Cloud) [Mattermost](https://mattermost.com/) instance with FlowRunner. Create and manage posts, channels, teams, users, files, and reactions through the Mattermost REST API v4, using a Personal Access Token or bot token.",
+  "actionCount": 30,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Posts",
+    "Channels",
+    "Teams",
+    "Users",
+    "Files",
+    "Reactions"
+  ],
+  "actions": [
+    {
+      "name": "Create Post",
+      "category": "Posts",
+      "description": "Creates a new post (message) in a Mattermost channel. Supports threaded replies via the root post ID, custom props (for attachments/metadata), and attaching previously uploaded files by their file IDs. Use Upload File first to obtain file IDs."
+    },
+    {
+      "name": "Get Post",
+      "category": "Posts",
+      "description": "Retrieves a single post by its ID, including its message, author, channel, timestamps, and thread metadata."
+    },
+    {
+      "name": "Update Post",
+      "category": "Posts",
+      "description": "Updates the message text and/or props of an existing post. This replaces the post content; fields left empty are not changed."
+    },
+    {
+      "name": "Delete Post",
+      "category": "Posts",
+      "description": "Soft-deletes a post by its ID. The post is removed from the channel for all users."
+    },
+    {
+      "name": "Get Channel Posts",
+      "category": "Posts",
+      "description": "Retrieves a paginated list of posts for a channel, ordered newest-first. Returns an order array of post IDs plus a keyed posts map. Use page and per-page for pagination."
+    },
+    {
+      "name": "Search Posts",
+      "category": "Posts",
+      "description": "Searches posts across a team using Mattermost search terms. Supports modifiers such as \"from:\", \"in:\", \"before:\", and \"after:\". Set OR search to match any term instead of all terms."
+    },
+    {
+      "name": "Pin Post",
+      "category": "Posts",
+      "description": "Pins a post to its channel so it appears in the channel's pinned posts list."
+    },
+    {
+      "name": "Unpin Post",
+      "category": "Posts",
+      "description": "Unpins a previously pinned post from its channel."
+    },
+    {
+      "name": "Create Channel",
+      "category": "Channels",
+      "description": "Creates a new public or private channel within a team. The name is the URL-safe handle (lowercase, no spaces) and the display name is the human-readable label shown in the UI."
+    },
+    {
+      "name": "Get Channel",
+      "category": "Channels",
+      "description": "Retrieves a channel by its ID, including name, display name, type, team, and metadata."
+    },
+    {
+      "name": "Get Channel by Name",
+      "category": "Channels",
+      "description": "Retrieves a channel within a team by its URL-safe name (handle) rather than its ID."
+    },
+    {
+      "name": "List Channels for Team",
+      "category": "Channels",
+      "description": "Retrieves a paginated list of public channels for a team. Use page and per-page to iterate through all channels."
+    },
+    {
+      "name": "Delete Channel",
+      "category": "Channels",
+      "description": "Archives (soft-deletes) a channel by its ID. The channel is removed from active lists but its history is retained."
+    },
+    {
+      "name": "Add User to Channel",
+      "category": "Channels",
+      "description": "Adds a user as a member of a channel."
+    },
+    {
+      "name": "Remove User from Channel",
+      "category": "Channels",
+      "description": "Removes a user from a channel's membership."
+    },
+    {
+      "name": "Create Direct Channel",
+      "category": "Channels",
+      "description": "Creates (or returns the existing) direct message channel between two users."
+    },
+    {
+      "name": "Create Group Channel",
+      "category": "Channels",
+      "description": "Creates (or returns the existing) group message channel among three or more users."
+    },
+    {
+      "name": "List Teams",
+      "category": "Teams",
+      "description": "Retrieves a paginated list of teams on the server that are visible to the authenticated account."
+    },
+    {
+      "name": "Get Team",
+      "category": "Teams",
+      "description": "Retrieves a team by its ID, including name, display name, type, and metadata."
+    },
+    {
+      "name": "Get Team by Name",
+      "category": "Teams",
+      "description": "Retrieves a team by its URL-safe name (handle) rather than its ID."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a user by their ID, including username, email, nickname, roles, and profile metadata."
+    },
+    {
+      "name": "Get User by Username",
+      "category": "Users",
+      "description": "Retrieves a user by their username rather than their ID."
+    },
+    {
+      "name": "Get Me",
+      "category": "Users",
+      "description": "Retrieves the profile of the account associated with the configured access token. Useful as a connection check to verify the server URL and token are valid."
+    },
+    {
+      "name": "Search Users",
+      "category": "Users",
+      "description": "Searches for users by a term matched against username, full name, nickname, and (when permitted) email. Optionally scope the search to a specific team."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a new user account on the server. Requires the configured token to have user-management permissions. Provide either a password (for a standard account) or rely on the server's auth service."
+    },
+    {
+      "name": "Update User Status",
+      "category": "Users",
+      "description": "Sets the presence status of a user (online, away, offline, or do not disturb)."
+    },
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a file to a channel and returns its file info, including the file ID. Provide a publicly reachable file URL; the file is downloaded and forwarded to Mattermost as multipart form data. Use the returned file ID in the File IDs parameter of Create Post to attach the file to a message."
+    },
+    {
+      "name": "Get File",
+      "category": "Files",
+      "description": "Downloads a file from Mattermost by its file ID and stores it in FlowRunner file storage, returning a URL to the stored copy for use in later steps."
+    },
+    {
+      "name": "Add Reaction",
+      "category": "Reactions",
+      "description": "Adds an emoji reaction to a post on behalf of a user. Use the emoji short name without colons (e.g. thumbsup)."
+    },
+    {
+      "name": "Remove Reaction",
+      "category": "Reactions",
+      "description": "Removes an emoji reaction previously added by a user from a post."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Post automated notifications, alerts, or reports to a Mattermost channel or thread.",
+    "Provision channels and manage membership as part of onboarding or project workflows.",
+    "Search and archive channel history for auditing or reporting.",
+    "Sync files into Mattermost or pull attachments back into FlowRunner file storage.",
+    "React to posts or manage user presence status programmatically."
+  ],
+  "agentIdeas": [
+    "Use **Mattermost** \"Search Posts\" to gather a team's discussion on a topic, then **Notion**",
+    "When a **Slack** \"On Channel Message\" trigger fires, cross-post the message with **Mattermost**",
+    "After **Google Sheets** \"Get Rows\" returns a list of stakeholders, call **Mattermost**"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/mattermost/public/icon.png",
+  "sourcePaths": {
+    "service": "services/mattermost",
+    "readme": "services/mattermost/README.md",
+    "index": "services/mattermost/src/index.js"
+  }
+}

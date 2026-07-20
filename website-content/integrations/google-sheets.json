@@ -1,0 +1,205 @@
+{
+  "slug": "google-sheets",
+  "name": "Google Sheets",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Comprehensive Google Sheets integration via OAuth2 for reading, writing, and managing spreadsheet data. Supports real-time and polling triggers for new rows, updated rows, and document changes — plus CSV import and file export to FlowRunner storage.",
+  "actionCount": 31,
+  "triggerCount": 5,
+  "operationCategories": [
+    "Document Management",
+    "Sheet Management",
+    "Formatting",
+    "Row Operations",
+    "Data Export",
+    "Cell Operations",
+    "Data Import"
+  ],
+  "actions": [
+    {
+      "name": "Add Document",
+      "category": "Document Management",
+      "description": "Allows to create a new Spreadsheet Document (sheets collection)."
+    },
+    {
+      "name": "Rename Document",
+      "category": "Document Management",
+      "description": "Renames an existing Google Spreadsheet document."
+    },
+    {
+      "name": "Delete Document",
+      "category": "Document Management",
+      "description": "Delete an existing Google Spreadsheet document."
+    },
+    {
+      "name": "Add Sheet",
+      "category": "Sheet Management",
+      "description": "Adds a new sheet to an existing Google Spreadsheet document. This method allows you to specify a custom sheet ID and header values for the new sheet."
+    },
+    {
+      "name": "Format Row",
+      "category": "Formatting",
+      "description": "Formats a specified row in an existing Google Spreadsheet."
+    },
+    {
+      "name": "Delete Sheet",
+      "category": "Sheet Management",
+      "description": "Deletes a specified sheet from an existing Google Spreadsheet document."
+    },
+    {
+      "name": "Rename Sheet",
+      "category": "Sheet Management",
+      "description": "Renames a specific sheet within a Google Spreadsheet document. This method requires the spreadsheet ID, the sheet ID, and the new name for the sheet."
+    },
+    {
+      "name": "Load Header Row",
+      "category": "Row Operations",
+      "description": "Loads the header row from a specified sheet within a Google Spreadsheet document. You can specify the header row index (starting at 1) if it differs from the default first row."
+    },
+    {
+      "name": "Set Header Row",
+      "category": "Row Operations",
+      "description": "Sets the header row for a given Google Spreadsheet sheet."
+    },
+    {
+      "name": "Add Rows",
+      "category": "Row Operations",
+      "description": "Adds multiple data rows to Google Sheets in bulk for AI agents to efficiently store large datasets, batch process results, or import data from external sources. Essential for high-volume data operations and bulk data migration workflows."
+    },
+    {
+      "name": "Add Row",
+      "category": "Row Operations",
+      "description": "Adds new data rows to Google Sheets for AI agents to store processed results, log user interactions, or collect data from automated workflows. Perfect for building databases, tracking metrics, saving form submissions, or creating data collection pipelines."
+    },
+    {
+      "name": "Get Rows",
+      "category": "Row Operations",
+      "description": "Retrieves data from Google Sheets for AI agents to analyze spreadsheet content, process existing data, or extract information for automated workflows. Perfect for reading user submissions, analyzing data trends, or importing data for further processing."
+    },
+    {
+      "name": "Get Last Row",
+      "category": "Row Operations",
+      "description": "Retrieves the last data row from a Google Sheet. Useful for getting the most recent entry, checking the latest submission, or determining where new data begins."
+    },
+    {
+      "name": "Clear Rows or Cells Area",
+      "category": "Row Operations",
+      "description": "Clears rows when passing \"from\" and \"to\" as numbers (from: 3; to: 8) or cells area when passing A1 style (from: A4; to C16) from a specified sheet in a spreadsheet."
+    },
+    {
+      "name": "Clear Row",
+      "category": "Row Operations",
+      "description": "Clears a row by its number from a specified sheet in a spreadsheet."
+    },
+    {
+      "name": "Find Row",
+      "category": "Row Operations",
+      "description": "Finds a specific row in a specified sheet within a spreadsheet based on a column and value."
+    },
+    {
+      "name": "Find Rows",
+      "category": "Row Operations",
+      "description": "Finds a specific row in a specified sheet within a spreadsheet based on a column and value."
+    },
+    {
+      "name": "Update Rows",
+      "category": "Row Operations",
+      "description": "Updates multiple rows in a specified sheet."
+    },
+    {
+      "name": "Update Row",
+      "category": "Row Operations",
+      "description": "Updates existing data in Google Sheets for AI agents to modify records, correct information, or maintain data accuracy in automated workflows. Perfect for updating user profiles, adjusting scores, or maintaining dynamic data that changes over time."
+    },
+    {
+      "name": "Export Sheet",
+      "category": "Data Export",
+      "description": "Exports the specified sheet from a Google Spreadsheet as a file in CSV, TSV, or PDF format."
+    },
+    {
+      "name": "Export Document",
+      "category": "Data Export",
+      "description": "Exports the entire Google Spreadsheet document in a specified format (XLSX, ODS, or HTML)."
+    },
+    {
+      "name": "Get Cell",
+      "category": "Cell Operations",
+      "description": "Retrieves the value of a specific cell in a Spreadsheet."
+    },
+    {
+      "name": "Update Cell",
+      "category": "Cell Operations",
+      "description": "Updates a specific cell in a Google Spreadsheet with a new value."
+    },
+    {
+      "name": "Clear Cell",
+      "category": "Cell Operations",
+      "description": "Clears the content of a specific cell in a Google Spreadsheet."
+    },
+    {
+      "name": "Get Cell by A1",
+      "category": "Cell Operations",
+      "description": "Fetches the value of a cell in a Google Spreadsheet using A1 notation."
+    },
+    {
+      "name": "Update Cell by A1",
+      "category": "Cell Operations",
+      "description": "Updates the value of a specific cell in a Google Spreadsheet using A1 notation."
+    },
+    {
+      "name": "Clear Cell by A1",
+      "category": "Cell Operations",
+      "description": "Clears the value of a specific cell in a Google Spreadsheet using A1 notation."
+    },
+    {
+      "name": "Copy Sheet to Document",
+      "category": "Sheet Management",
+      "description": "Copies a sheet from one spreadsheet to another and optionally deletes the original sheet."
+    },
+    {
+      "name": "Find Sheet",
+      "category": "Sheet Management",
+      "description": "Searches for a sheet by title in a spreadsheet, optionally creating it if not found."
+    },
+    {
+      "name": "Get Sheets List",
+      "category": "Sheet Management",
+      "description": "Retrieves a list of sheets (tabs) from a specified Google Spreadsheet by its ID."
+    },
+    {
+      "name": "Import from CSV",
+      "category": "Data Import",
+      "description": "Imports data from a CSV file into a Google Spreadsheet. It can either create a new sheet or append to an existing one."
+    }
+  ],
+  "triggers": [
+    "On Document Changed",
+    "On New Row",
+    "On New or Updated Row",
+    "On New Document",
+    "On New Sheet"
+  ],
+  "idealUseCases": [
+    "Capturing form submissions or webhook data as new rows in a spreadsheet",
+    "Monitoring a sheet for new or updated rows and triggering downstream automation",
+    "Exporting spreadsheets as Excel, CSV, or PDF files and storing the download URL",
+    "Syncing CRM or database records to a Google Sheet as a reporting layer",
+    "Building data pipelines that read, transform, and write rows across multiple sheets"
+  ],
+  "agentIdeas": [
+    "When a **Google Sheets** \"On New Row\" trigger fires with a new lead, use **Brevo** \"Create Contact\" to add the lead to the CRM and **Slack** \"Send Message To Channel\" to notify the sales team",
+    "Use **Google Sheets** \"Export Sheet\" to generate an Excel file on a schedule and pass the URL to **Gmail** \"Send Message\" as a daily report attachment",
+    "When a **Typeform** submission arrives, use **Google Sheets** \"Add Row\" to log the response and **ElevenLabs** \"Text to Speech\" to generate a personalised audio confirmation"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/google-sheets/public/icon.png",
+  "sourcePaths": {
+    "service": "services/google-sheets",
+    "readme": "services/google-sheets/README.md",
+    "index": "services/google-sheets/src/index.js"
+  }
+}

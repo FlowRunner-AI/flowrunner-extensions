@@ -1,0 +1,53 @@
+{
+  "slug": "questdb",
+  "name": "QuestDB",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Run SQL against a [QuestDB](https://questdb.io) high-performance, column-oriented time-series SQL database from FlowRunner using its HTTP REST API. Execute queries and DDL/DML statements returning a JSON dataset, export full result sets as CSV, and validate connectivity. Authenticates via optional HTTP Basic auth.",
+  "actionCount": 3,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Query",
+    "System"
+  ],
+  "actions": [
+    {
+      "name": "Execute Query",
+      "category": "Query",
+      "description": "Runs a SQL statement against QuestDB via the REST /exec endpoint and returns the result as JSON. Use this for SELECT queries (returns a column definition list and a row dataset), as well as DDL (CREATE/DROP/ALTER TABLE) and DML (INSERT/UPDATE) statements. QuestDB is a high-performance time-series SQL database. The response includes the executed query, a columns array of {name, type}, a dataset of row arrays, a row count, and server-side timings. Optionally cap the number of returned rows with the limit parameter (either a single count like \"100\" or a 1-based inclusive range like \"10,20\")."
+    },
+    {
+      "name": "Export Query as CSV",
+      "category": "Query",
+      "description": "Runs a SQL query against QuestDB via the REST /exp endpoint and returns the full result set as CSV text (with a header row). Use this when you need the raw tabular data for a file, spreadsheet, or downstream CSV processing rather than a JSON dataset. Optionally cap rows with the limit parameter (a single count like \"1000\" or a range like \"10,20\")."
+    },
+    {
+      "name": "Check Health",
+      "category": "System",
+      "description": "Verifies connectivity and authentication to the QuestDB REST endpoint by executing a trivial query (SELECT 1) through /exec. Returns an object indicating whether the instance is reachable, the configured endpoint URL, and the round-trip latency in milliseconds. Use this to validate configuration before running real queries."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Query time-series metrics, events, or IoT sensor data and feed the results into downstream automation",
+    "Insert or update rows and run DDL (CREATE/DROP/ALTER TABLE) as part of a workflow",
+    "Export query results as CSV for spreadsheets, files, or downstream CSV processing",
+    "Validate connectivity and authentication before running production queries"
+  ],
+  "agentIdeas": [
+    "Use **QuestDB** \"Execute Query\" to pull the latest aggregated time-series metrics, then post a summary to a channel with **Slack** \"Send Message To Channel\"",
+    "Use **QuestDB** \"Export Query as CSV\" to dump a result set, then load it into a spreadsheet with **Google Sheets** \"Import from CSV\" for reporting",
+    "Read source records with **CrateDB** \"Execute SQL\", then persist them into a time-series store with **QuestDB** \"Execute Query\" to sync data across databases"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/questdb/public/icon.png",
+  "sourcePaths": {
+    "service": "services/questdb",
+    "readme": "services/questdb/README.md",
+    "index": "services/questdb/src/index.js"
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "slug": "google-workspace-admin",
+  "name": "Google Workspace Admin",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage a Google Workspace account through the [Admin SDK Directory API](https://developers.google.com/admin-sdk/directory/reference/rest/v1): create and manage users, groups, group members, organizational units, domains, admin roles, and mobile devices. Authenticates via OAuth 2.0 with a Google Workspace administrator account.",
+  "actionCount": 31,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Users",
+    "Groups",
+    "Group Members",
+    "Org Units",
+    "Domains & Roles",
+    "Devices"
+  ],
+  "actions": [
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Retrieves users from the Google Workspace account. Supports domain filtering, a search query, sorting, and result limiting. The customer is fixed to the authenticated administrator's own account (my_customer). Returns a paginated list; follow the nextPageToken value using the Page Token parameter to retrieve additional pages."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single user by their primary email address or unique user id (the userKey). Returns the full user resource including name, organizational unit, aliases, and administrative status."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a new user in the Google Workspace account. Requires a primary email (whose domain must be a verified domain in the account), given and family names, and an initial password. Optionally place the user in an organizational unit and require a password change at first sign-in."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates writable properties of an existing user, such as their name, primary email, organizational unit, or password. Only the fields you provide are changed. Returns the updated user resource."
+    },
+    {
+      "name": "Delete User",
+      "category": "Users",
+      "description": "Deletes a user from the account. The user is retained in a recoverable state for 20 days, during which they can be restored with Undelete User; after that they are permanently removed. Returns a confirmation message."
+    },
+    {
+      "name": "Suspend User",
+      "category": "Users",
+      "description": "Suspends a user, immediately blocking their ability to sign in while preserving their data and account. Useful when an employee is on leave or an account is compromised. Returns the updated user resource."
+    },
+    {
+      "name": "Unsuspend User",
+      "category": "Users",
+      "description": "Restores sign-in access for a previously suspended user by clearing the suspended flag. Returns the updated user resource."
+    },
+    {
+      "name": "Undelete User",
+      "category": "Users",
+      "description": "Restores a user that was deleted within the last 20 days. Because a deleted user has no primary email, you must provide the user's unique id (obtained from List Users with Show Deleted enabled). Optionally place the restored user in an organizational unit. Returns a confirmation message."
+    },
+    {
+      "name": "Make User Admin",
+      "category": "Users",
+      "description": "Grants or revokes super administrator privileges for a user. Enable to make the user a super administrator with full control of the account; disable to remove those privileges. Returns a confirmation message."
+    },
+    {
+      "name": "List User Aliases",
+      "category": "Users",
+      "description": "Retrieves all email aliases configured for a user. Aliases are alternative addresses that deliver to the same mailbox."
+    },
+    {
+      "name": "Add User Alias",
+      "category": "Users",
+      "description": "Adds an email alias to a user. The alias must use a verified domain in the account, and mail sent to it is delivered to the user's mailbox. Returns the created alias resource."
+    },
+    {
+      "name": "List Groups",
+      "category": "Groups",
+      "description": "Retrieves groups from the Google Workspace account. Optionally filter by domain, by a search query, or by a user to list only the groups that user belongs to. The customer is fixed to the authenticated administrator's own account (my_customer). Returns a paginated list; follow the nextPageToken value using the Page Token parameter to retrieve additional pages."
+    },
+    {
+      "name": "Get Group",
+      "category": "Groups",
+      "description": "Retrieves a single group by its email address or unique id (the groupKey). Returns the full group resource including name, description, and direct member count."
+    },
+    {
+      "name": "Create Group",
+      "category": "Groups",
+      "description": "Creates a new group in the account. Requires a group email whose domain is a verified domain in the account. Optionally set a display name and description. Returns the created group resource."
+    },
+    {
+      "name": "Update Group",
+      "category": "Groups",
+      "description": "Updates writable properties of an existing group, such as its email, name, or description. Only the fields you provide are changed. Returns the updated group resource."
+    },
+    {
+      "name": "Delete Group",
+      "category": "Groups",
+      "description": "Permanently deletes a group from the account. This removes the group and its membership; the action cannot be undone. Returns a confirmation message."
+    },
+    {
+      "name": "List Group Members",
+      "category": "Group Members",
+      "description": "Retrieves the members of a group, which may include users, other groups, and service accounts. Optionally filter by role. Returns a paginated list; follow the nextPageToken value using the Page Token parameter to retrieve additional pages."
+    },
+    {
+      "name": "Get Group Member",
+      "category": "Group Members",
+      "description": "Retrieves a single membership record, including the member's role and status within the group."
+    },
+    {
+      "name": "Add Group Member",
+      "category": "Group Members",
+      "description": "Adds a user, group, or service account to a group with a chosen role. Members can be regular Members, Managers, or Owners. Returns the created membership resource."
+    },
+    {
+      "name": "Update Group Member",
+      "category": "Group Members",
+      "description": "Updates a member's role within a group, for example promoting a Member to a Manager or Owner. Returns the updated membership resource."
+    },
+    {
+      "name": "Remove Group Member",
+      "category": "Group Members",
+      "description": "Removes a member from a group. This does not delete the underlying user or group; it only ends the membership. Returns a confirmation message."
+    },
+    {
+      "name": "Check Has Member",
+      "category": "Group Members",
+      "description": "Checks whether a user is a member of a group, including through nested group membership. Returns a boolean result."
+    },
+    {
+      "name": "List Org Units",
+      "category": "Org Units",
+      "description": "Retrieves the organizational units in the account. Optionally restrict the scope to immediate children, all descendants, or all descendants including a starting unit. The customer is fixed to the authenticated administrator's own account (my_customer)."
+    },
+    {
+      "name": "Get Org Unit",
+      "category": "Org Units",
+      "description": "Retrieves a single organizational unit by its path. The path must be provided WITHOUT a leading slash, for example: Sales/Marketing (not /Sales/Marketing). Returns the org unit resource."
+    },
+    {
+      "name": "Create Org Unit",
+      "category": "Org Units",
+      "description": "Creates a new organizational unit under a parent org unit. Provide the unit name and the parent's path (use / for the root). Optionally add a description. Returns the created org unit resource."
+    },
+    {
+      "name": "Update Org Unit",
+      "category": "Org Units",
+      "description": "Updates an organizational unit's name, description, or parent (moving it in the hierarchy). Identify the unit by its path WITHOUT a leading slash. Only the fields you provide are changed. Returns the updated org unit resource."
+    },
+    {
+      "name": "Delete Org Unit",
+      "category": "Org Units",
+      "description": "Deletes an organizational unit. The unit must have no child org units and no users assigned to it. Identify the unit by its path WITHOUT a leading slash. Returns a confirmation message."
+    },
+    {
+      "name": "List Domains",
+      "category": "Domains & Roles",
+      "description": "Retrieves the domains and domain aliases registered for the account, including which domain is the primary and whether each is verified. The customer is fixed to the authenticated administrator's own account (my_customer)."
+    },
+    {
+      "name": "List Roles",
+      "category": "Domains & Roles",
+      "description": "Retrieves the administrator roles defined for the account, including built-in system roles and custom roles, with their ids and privileges. The customer is fixed to the authenticated administrator's own account (my_customer)."
+    },
+    {
+      "name": "List Role Assignments",
+      "category": "Domains & Roles",
+      "description": "Retrieves administrator role assignments for the account, showing which users hold which roles and their scope. Optionally filter to a single user. Returns a paginated list; follow the nextPageToken value using the Page Token parameter to retrieve additional pages."
+    },
+    {
+      "name": "List Mobile Devices",
+      "category": "Devices",
+      "description": "Retrieves the mobile devices synchronized with the account, including device model, operating system, owner, and management status. Optionally filter with a search query. The customer is fixed to the authenticated administrator's own account (my_customer). Returns a paginated list; follow the nextPageToken value using the Page Token parameter to retrieve additional pages."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automate employee onboarding by creating a user, placing them in an organizational unit, and adding them to the right groups.",
+    "Automate offboarding by suspending, deleting, or reassigning a departing employee's account and group memberships.",
+    "Keep group membership in sync with an external system of record (HR, directory, or spreadsheet).",
+    "Audit administrator role assignments, domains, and synchronized mobile devices for compliance reporting.",
+    "Grant or revoke super administrator privileges and manage user aliases programmatically."
+  ],
+  "agentIdeas": [
+    "After **Create User** provisions a new employee, use **Gmail** \"Send Message\" to send their manager the temporary password and first-sign-in instructions.",
+    "When onboarding, **Add Group Member** to add the new user to a team mailing list, then use **Google Chat** \"Add Member\" to place them in the team's chat space.",
+    "Use **List Users** (with *Show Deleted* enabled) and **List Role Assignments** to build an access-audit report, then write each record with **Google Sheets** \"Add Row\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/google-workspace-admin/public/icon.png",
+  "sourcePaths": {
+    "service": "services/google-workspace-admin",
+    "readme": "services/google-workspace-admin/README.md",
+    "index": "services/google-workspace-admin/src/index.js"
+  }
+}

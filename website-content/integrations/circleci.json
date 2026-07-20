@@ -1,0 +1,147 @@
+{
+  "slug": "circleci",
+  "name": "CircleCI",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [CircleCI](https://circleci.com) CI/CD with FlowRunner. Trigger and inspect pipelines, workflows, and jobs, and manage project environment variables using the CircleCI API v2. Authenticates with a Personal API Token sent as the `Circle-Token` header.",
+  "actionCount": 21,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Pipelines",
+    "Workflows",
+    "Jobs",
+    "Project",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Trigger Pipeline",
+      "category": "Pipelines",
+      "description": "Triggers a new pipeline on a CircleCI project. Provide the project slug in the form vcs-slug/org-name/repo-name (e.g. gh/acme/app) or circleci/{orgId}/{projectId}. You may target a specific branch OR tag (not both), and pass pipeline parameters as a JSON object to override config parameters. Returns the created pipeline's id, number, state, and creation time."
+    },
+    {
+      "name": "Get Pipeline",
+      "category": "Pipelines",
+      "description": "Retrieves a single pipeline by its unique CircleCI pipeline ID (UUID). Returns full pipeline details including state, number, trigger information, and the VCS commit that triggered it."
+    },
+    {
+      "name": "Get Pipeline by Number",
+      "category": "Pipelines",
+      "description": "Retrieves a pipeline by its sequential pipeline number within a specific project. Provide the project slug and the pipeline number. Returns the same detailed pipeline object as Get Pipeline."
+    },
+    {
+      "name": "List Project Pipelines",
+      "category": "Pipelines",
+      "description": "Lists all pipelines for a project, most recent first. Optionally filter by branch. Results are paginated: pass the next_page_token from a previous response as Page Token to fetch the next page."
+    },
+    {
+      "name": "List My Pipelines",
+      "category": "Pipelines",
+      "description": "Lists the pipelines in a project that were triggered by the current user (owner of the API token). Results are paginated via the Page Token parameter."
+    },
+    {
+      "name": "Get Pipeline Config",
+      "category": "Pipelines",
+      "description": "Retrieves the configuration for a pipeline by its ID, including the original source config and the compiled config that CircleCI actually ran (with any setup-workflow configs)."
+    },
+    {
+      "name": "Get Pipeline Workflows",
+      "category": "Pipelines",
+      "description": "Lists the workflows belonging to a pipeline, identified by pipeline ID. Each workflow includes its id, name, status, and timing. Results are paginated via the Page Token parameter."
+    },
+    {
+      "name": "Get Workflow",
+      "category": "Workflows",
+      "description": "Retrieves a single workflow by its unique ID (UUID). Returns the workflow's name, status, associated pipeline, and timing details."
+    },
+    {
+      "name": "Get Workflow Jobs",
+      "category": "Workflows",
+      "description": "Lists all jobs in a workflow, identified by workflow ID. Each job includes its id, name, job_number, type, status, and dependencies. Results are paginated via the Page Token parameter."
+    },
+    {
+      "name": "Cancel Workflow",
+      "category": "Workflows",
+      "description": "Cancels a running workflow by its unique ID. Returns a confirmation message. Only workflows that are still running can be cancelled."
+    },
+    {
+      "name": "Rerun Workflow",
+      "category": "Workflows",
+      "description": "Reruns a workflow by its unique ID. Set \"From Failed\" to true to rerun only the failed jobs (and everything downstream); leave false to rerun the entire workflow from the start. Returns the ID of the newly created workflow."
+    },
+    {
+      "name": "Get Job Details",
+      "category": "Jobs",
+      "description": "Retrieves details of a single job within a project by its job number. Returns the job's name, status, timing, executor, and the workflow/pipeline it belongs to."
+    },
+    {
+      "name": "Cancel Job",
+      "category": "Jobs",
+      "description": "Cancels a running job within a project by its job number. Returns a confirmation message. Only jobs that are still running can be cancelled."
+    },
+    {
+      "name": "Get Job Artifacts",
+      "category": "Jobs",
+      "description": "Lists the artifacts produced by a job within a project, identified by job number. Each artifact includes its relative path, parallel-run node index, and a download URL (append the API token when fetching)."
+    },
+    {
+      "name": "Get Test Metadata",
+      "category": "Jobs",
+      "description": "Retrieves test metadata for a job within a project, identified by job number. Returns each test's name, class, file, result, run time, and any failure message. Requires the job to upload test results via the store_test_results step."
+    },
+    {
+      "name": "Get Project",
+      "category": "Project",
+      "description": "Retrieves details of a project by its slug, including the project name, organization, VCS information, and default branch."
+    },
+    {
+      "name": "List Env Vars",
+      "category": "Project",
+      "description": "Lists the environment variables for a project. Values are masked by CircleCI (only the last four characters are shown). Results are paginated via the Page Token parameter."
+    },
+    {
+      "name": "Create Env Var",
+      "category": "Project",
+      "description": "Creates (or overwrites) an environment variable on a project. Provide the variable name and its plaintext value; CircleCI stores it encrypted and returns the value masked. Overwrites any existing variable with the same name."
+    },
+    {
+      "name": "Delete Env Var",
+      "category": "Project",
+      "description": "Deletes an environment variable from a project by name. Returns a confirmation message."
+    },
+    {
+      "name": "List Checkout Keys",
+      "category": "Project",
+      "description": "Lists the checkout keys (deploy keys / user keys) configured for a project. Each key includes its type, public key, fingerprint, whether it is preferred, and creation time. Private keys are never returned."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Account",
+      "description": "Retrieves information about the user whose API token is configured. Useful as a connection/authentication check. Returns the user id, login, and name."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Kick off a deployment or test pipeline from an automation when code is merged or a form is submitted",
+    "Poll pipeline, workflow, and job status to gate downstream steps on a green build",
+    "Cancel or rerun stuck or failed workflows without opening the CircleCI dashboard",
+    "Collect job artifacts and test metadata for reporting or notifications",
+    "Manage project environment variables and inspect checkout keys programmatically"
+  ],
+  "agentIdeas": [
+    "After a **CircleCI** \"Trigger Pipeline\" run reaches a failed state via \"Get Pipeline Workflows\", use **PagerDuty** \"Create Incident\" to page the on-call engineer with the failing workflow details.",
+    "When a **CircleCI** \"Get Job Artifacts\" call returns build output, use **Slack** \"Send Message To Channel\" to post the artifact download links to the team's deploys channel.",
+    "Combine **CircleCI** \"Get Test Metadata\" with **Slack** \"Send Message To Channel\" to broadcast a summary of failing tests to the team after each pipeline finishes."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/circleci/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/circleci",
+    "readme": "services/circleci/README.md",
+    "index": "services/circleci/src/index.js"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "slug": "postmark",
+  "name": "Postmark",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [Postmark](https://postmarkapp.com), the transactional email delivery service. Send single, templated, and batch emails; browse templates and message streams; search outbound messages and bounces; manage suppression lists; and read delivery statistics. Authenticates with a Postmark Server API Token sent as the `X-Postmark-Server-Token` header.",
+  "actionCount": 16,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Email Sending",
+    "Templates",
+    "Outbound Messages",
+    "Statistics",
+    "Bounces",
+    "Suppressions",
+    "Message Streams"
+  ],
+  "actions": [
+    {
+      "name": "Send Email",
+      "category": "Email Sending",
+      "description": "Sends a single email through Postmark. Supports HTML and/or plain-text bodies, up to 50 comma-separated recipients per address field (To, Cc, Bcc combined limit is 50), open and link tracking, a categorization tag, custom metadata, and file attachments downloaded from FlowRunner file URLs. Provide at least one of HTML Body or Text Body. Returns the Postmark Message ID and submission timestamp."
+    },
+    {
+      "name": "Send Email with Template",
+      "category": "Email Sending",
+      "description": "Sends an email using a Postmark template. Identify the template by Template ID (select from the dictionary) or by Template Alias — provide exactly one. The Template Model supplies the variables rendered into the template's subject and body. Supports the same envelope options as Send Email: multiple recipients, tracking, tag, metadata, message stream, and attachments from FlowRunner file URLs."
+    },
+    {
+      "name": "Send Batch Emails",
+      "category": "Email Sending",
+      "description": "Sends up to 500 emails in a single API call (total payload limit 50 MB). Each item in Messages is a raw Postmark message object with the fields From, To, Subject, and HtmlBody and/or TextBody (all required), plus optional Cc, Bcc, ReplyTo, Tag, TrackOpens, TrackLinks, Metadata, MessageStream, Headers, and Attachments. Returns one result object per message in the same order; check each item's ErrorCode (0 = accepted) because individual messages can fail while the batch call itself succeeds."
+    },
+    {
+      "name": "List Templates",
+      "category": "Templates",
+      "description": "Lists the templates on your Postmark server with pagination. Optionally filter by template type (Standard templates or Layouts). Returns each template's ID, name, alias, type, and active state; use Get Template to fetch a template's full content."
+    },
+    {
+      "name": "Get Template",
+      "category": "Templates",
+      "description": "Retrieves a single template's full details, including its subject line, HTML body, text body, alias, type, and associated layout. Identify the template by its numeric ID or its alias."
+    },
+    {
+      "name": "Search Outbound Messages",
+      "category": "Outbound Messages",
+      "description": "Searches sent and queued messages on your server with pagination and filtering by recipient, sender, tag, status, subject, message stream, and date range. Returns message summaries (without full bodies); use Get Message Details for a specific message's content and delivery events. Message history retention depends on your Postmark plan (45 days by default)."
+    },
+    {
+      "name": "Get Message Details",
+      "category": "Outbound Messages",
+      "description": "Retrieves full details of a sent message by its Message ID, including the HTML and text bodies, recipients, tag, metadata, tracking settings, and the MessageEvents timeline (delivery, bounce, open, click, and subscription-change events with per-event details)."
+    },
+    {
+      "name": "Get Outbound Overview",
+      "category": "Statistics",
+      "description": "Returns aggregate sending statistics for your server: sent, bounced, and spam-complaint counts and rates, plus open and link-tracking totals. Optionally filter by tag, message stream, and date range."
+    },
+    {
+      "name": "Get Delivery Stats",
+      "category": "Statistics",
+      "description": "Returns the number of inactive (suppressed) email addresses on your server and a breakdown of bounce counts by bounce type (hard bounce, soft bounce, spam complaint, etc.)."
+    },
+    {
+      "name": "Search Bounces",
+      "category": "Bounces",
+      "description": "Searches bounces on your server with pagination and filtering by bounce type, active/inactive state, recipient email, tag, Message ID, message stream, and date range. Each bounce includes its ID (used by Get Bounce and Activate Bounce), type, description, and whether the recipient address was deactivated."
+    },
+    {
+      "name": "Get Bounce",
+      "category": "Bounces",
+      "description": "Retrieves full details of a single bounce by its bounce ID, including the bounce type, SMTP details, the original message's ID and subject, whether the recipient address was deactivated, and whether it can be reactivated."
+    },
+    {
+      "name": "Activate Bounce",
+      "category": "Bounces",
+      "description": "Reactivates a bounced (deactivated) email address so Postmark will attempt delivery to it again. Only bounces whose CanActivate flag is true can be reactivated. Returns a confirmation message and the updated bounce object."
+    },
+    {
+      "name": "List Suppressions",
+      "category": "Suppressions",
+      "description": "Lists the suppressed (inactive) email addresses on a message stream — addresses Postmark will not deliver to. Optionally filter by suppression reason, origin, a specific email address, and date range. Each entry shows why and when the address was suppressed."
+    },
+    {
+      "name": "Create Suppression",
+      "category": "Suppressions",
+      "description": "Adds one or more email addresses to a message stream's suppression list, preventing Postmark from delivering to them on that stream. Suppressions created this way have reason ManualSuppression and origin Customer. Returns a per-address status; check each entry because individual addresses can fail while the call succeeds."
+    },
+    {
+      "name": "Delete Suppression",
+      "category": "Suppressions",
+      "description": "Removes one or more email addresses from a message stream's suppression list so Postmark can deliver to them again. Only suppressions with reason ManualSuppression or SpamComplaint can be deleted this way (hard-bounce suppressions must be reactivated via Activate Bounce). Returns a per-address status."
+    },
+    {
+      "name": "List Message Streams",
+      "category": "Message Streams",
+      "description": "Lists the message streams on your Postmark server (transactional, inbound, and broadcast streams). Optionally filter by stream type and include archived streams. Stream IDs are used by the send, search, statistics, and suppression operations."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send transactional emails (receipts, password resets, notifications) with open and link tracking, tags, and file attachments from FlowRunner file URLs.",
+    "Deliver templated emails driven by a variable model, or dispatch up to 500 messages in a single batch call.",
+    "Search and inspect sent messages, including the full delivery/open/click event timeline for a given message.",
+    "Monitor deliverability via outbound overview and delivery statistics, and triage bounces.",
+    "Manage message-stream suppression lists and reactivate bounced recipient addresses."
+  ],
+  "agentIdeas": [
+    "When an **Airtable** \"On New Record\" trigger fires for a new customer, use **Postmark** \"Send Email with Template\" to deliver a personalized welcome email rendered from the record's fields.",
+    "On a new order in **Stripe**, call **Stripe** \"Get Invoice\" and then **Postmark** \"Send Email\" to email the customer their receipt with the invoice PDF attached.",
+    "Periodically call **Postmark** \"Search Bounces\", then use **Google Sheets** \"Add Rows\" to log each bounced recipient into a deliverability tracking sheet for follow-up.",
+    "When **Postmark** \"Get Delivery Stats\" shows a spike in inactive addresses, post an alert to a team channel with **Slack** \"Send Message To Channel\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/postmark/public/icon.png",
+  "sourcePaths": {
+    "service": "services/postmark",
+    "readme": "services/postmark/README.md",
+    "index": "services/postmark/src/index.js"
+  }
+}

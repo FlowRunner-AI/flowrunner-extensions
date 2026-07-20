@@ -1,0 +1,202 @@
+{
+  "slug": "affinity",
+  "name": "Affinity",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to [Affinity](https://www.affinity.co/), the relationship intelligence CRM, to manage lists, people, organizations, opportunities (deals), custom fields, field values, and notes — and to react to Affinity events in real time.",
+  "actionCount": 31,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Account",
+    "Lists",
+    "Persons",
+    "Organizations",
+    "Opportunities",
+    "Fields",
+    "Notes",
+    "Interactions"
+  ],
+  "actions": [
+    {
+      "name": "Get Current User",
+      "category": "Account",
+      "description": "Returns the authenticated user and tenant behind the API key by calling Affinity's whoami endpoint. Use this to validate the API key connection and to read the account's plan tier and API rate-limit allowances. Returns the user (id, email, name), the tenant, and the granted API scopes."
+    },
+    {
+      "name": "Get Lists",
+      "category": "Lists",
+      "description": "Retrieves all Lists visible to the API key's user, including saved views for people, organizations, and opportunities. Each list includes its id, name, type, public flag, and size. Use this to discover which lists exist before reading or writing their entries."
+    },
+    {
+      "name": "Get List",
+      "category": "Lists",
+      "description": "Retrieves a single List by id, including the full definition of its fields (columns). The fields array describes each custom field's id, name, value_type, and whether it allows multiple values — essential for reading and writing field values on that list's entries."
+    },
+    {
+      "name": "Get List Entries",
+      "category": "Lists",
+      "description": "Retrieves the entries (rows) of a List, one per person, organization, or opportunity on it. Results are paginated: pass a page size and, to continue, the page_token returned by the previous call. Each entry includes its id, the entity id and type, and the underlying entity object."
+    },
+    {
+      "name": "Create List Entry",
+      "category": "Lists",
+      "description": "Adds an existing person, organization, or opportunity to a List by its entity id, creating a new list entry (row). The list's type must match the entity being added. Optionally attribute the addition to a specific creator. Returns the created list entry."
+    },
+    {
+      "name": "Delete List Entry",
+      "category": "Lists",
+      "description": "Removes an entry (row) from a List by the list id and list entry id. This detaches the person, organization, or opportunity from the list; it does not delete the underlying entity. Returns a success flag."
+    },
+    {
+      "name": "Get Persons",
+      "category": "Persons",
+      "description": "Retrieves people from Affinity, optionally filtered by a free-text search term matching name or email. Results are paginated via page size and page token, and can optionally include each person's first/last interaction dates and opportunity ids. Returns the person list plus the next page token."
+    },
+    {
+      "name": "Search Persons",
+      "category": "Persons",
+      "description": "Searches Affinity people by a free-text term matching name or email address and returns matching person records. This is a focused wrapper over the persons endpoint for lookups; use Get Persons when you also need pagination controls or interaction dates."
+    },
+    {
+      "name": "Get Person",
+      "category": "Persons",
+      "description": "Retrieves a single person by id, including their emails, associated organization ids, and list entries. Optionally include interaction dates (first/last email and meeting) and the person's opportunity ids. Returns the full person record."
+    },
+    {
+      "name": "Create Person",
+      "category": "Persons",
+      "description": "Creates a new person in Affinity with a first name, last name, and one or more email addresses, optionally linking them to existing organizations. Emails may be provided as a comma/newline separated list or an array. Returns the created person record including its new id."
+    },
+    {
+      "name": "Update Person",
+      "category": "Persons",
+      "description": "Updates an existing person by id. Any provided field (first name, last name, emails, or organization associations) replaces the current value; omitted fields are left unchanged. Note that Affinity replaces the full emails and organization_ids arrays when supplied. Returns the updated person record."
+    },
+    {
+      "name": "Delete Person",
+      "category": "Persons",
+      "description": "Permanently deletes a person from Affinity by id. This removes the person and their list entries; it cannot be undone. Returns a success flag."
+    },
+    {
+      "name": "Get Organizations",
+      "category": "Organizations",
+      "description": "Retrieves organizations (companies) from Affinity, optionally filtered by a free-text term matching name or domain. Results are paginated via page size and page token. Optionally include each organization's first/last interaction dates. Returns the organization list plus the next page token."
+    },
+    {
+      "name": "Search Organizations",
+      "category": "Organizations",
+      "description": "Searches Affinity organizations by a free-text term matching name or domain and returns matching company records. A focused wrapper over the organizations endpoint for lookups; use Get Organizations when you also need pagination or interaction dates."
+    },
+    {
+      "name": "Get Organization",
+      "category": "Organizations",
+      "description": "Retrieves a single organization (company) by id, including its domains, associated person ids, opportunity ids, and list entries. Optionally include interaction dates. Returns the full organization record."
+    },
+    {
+      "name": "Create Organization",
+      "category": "Organizations",
+      "description": "Creates a new organization (company) in Affinity with a name and primary domain, optionally associating existing people. Person ids may be provided as a comma/newline separated list or an array. Returns the created organization record including its new id."
+    },
+    {
+      "name": "Update Organization",
+      "category": "Organizations",
+      "description": "Updates an existing organization by id. Any provided field (name, domain, or person associations) replaces the current value; omitted fields are left unchanged. Affinity replaces the full person_ids array when supplied. Returns the updated organization record."
+    },
+    {
+      "name": "Delete Organization",
+      "category": "Organizations",
+      "description": "Permanently deletes an organization from Affinity by id. This removes the organization and its list entries; it cannot be undone. Returns a success flag."
+    },
+    {
+      "name": "Get Opportunities",
+      "category": "Opportunities",
+      "description": "Retrieves opportunities (deals) from Affinity, optionally filtered by a free-text term. Results are paginated via page size and page token. Each opportunity includes its id, name, the list it belongs to, and associated person and organization ids. Returns the opportunity list plus the next page token."
+    },
+    {
+      "name": "Get Opportunity",
+      "category": "Opportunities",
+      "description": "Retrieves a single opportunity (deal) by id, including its name, the list it belongs to, and its associated person and organization ids. Returns the full opportunity record."
+    },
+    {
+      "name": "Create Opportunity",
+      "category": "Opportunities",
+      "description": "Creates a new opportunity (deal) in Affinity on a specified opportunity-type list, linking it to existing people and organizations by their ids. Person and organization ids may be provided as comma/newline separated lists or arrays. Returns the created opportunity record including its new id."
+    },
+    {
+      "name": "Update Opportunity",
+      "category": "Opportunities",
+      "description": "Updates an existing opportunity (deal) by id. Any provided field (name, person associations, or organization associations) replaces the current value; omitted fields are left unchanged. Affinity replaces the full person_ids and organization_ids arrays when supplied. Returns the updated opportunity record."
+    },
+    {
+      "name": "Delete Opportunity",
+      "category": "Opportunities",
+      "description": "Permanently deletes an opportunity (deal) from Affinity by id. This cannot be undone. Returns a success flag."
+    },
+    {
+      "name": "Get Fields",
+      "category": "Fields",
+      "description": "Retrieves the definitions of custom fields (columns) in Affinity, optionally scoped to a single list. Each field includes its id, name, entity type, value type, and whether it allows multiple values. Optionally filter by entity type or value type. Field ids returned here are used when reading or writing field values."
+    },
+    {
+      "name": "Get Field Values",
+      "category": "Fields",
+      "description": "Retrieves the values stored in custom fields for a single entity. Provide exactly one of a person id, organization id, opportunity id, or list entry id. Each returned value includes its id, the field id, the entity, and the stored value (which varies by field value type). Use these ids to update or delete specific values."
+    },
+    {
+      "name": "Create Field Value",
+      "category": "Fields",
+      "description": "Sets a custom field value on an entity by supplying the field id, the target entity id, and the value. The value's shape depends on the field's value type (e.g. text/number, a dropdown option id, an ISO date, or a person/organization id). Optionally scope the value to a specific list entry. Returns the created field value."
+    },
+    {
+      "name": "Update Field Value",
+      "category": "Fields",
+      "description": "Updates an existing custom field value by its field value id, replacing the stored value. The value's shape must match the field's value type. Returns the updated field value."
+    },
+    {
+      "name": "Delete Field Value",
+      "category": "Fields",
+      "description": "Deletes a custom field value by its field value id, clearing that value from the entity. Returns a success flag."
+    },
+    {
+      "name": "Get Notes",
+      "category": "Notes",
+      "description": "Retrieves notes from Affinity, optionally filtered to those associated with a specific person, organization, or opportunity. Results are paginated via page size and page token. Each note includes its content, author, associations, and timestamps. Returns the note list plus the next page token."
+    },
+    {
+      "name": "Create Note",
+      "category": "Notes",
+      "description": "Creates a note in Affinity with text content, associating it with any combination of people, organizations, and opportunities by their ids. Association ids may be provided as comma/newline separated lists or arrays. Returns the created note including its new id."
+    },
+    {
+      "name": "Get Interactions",
+      "category": "Interactions",
+      "description": "Retrieves interactions (emails and meetings) recorded in Affinity for a given date range and entity. Specify the interaction type and a start/end date window, plus one of a person, organization, or opportunity id. Returns the matching interactions with their participants and timestamps."
+    }
+  ],
+  "triggers": [
+    "On Affinity Event"
+  ],
+  "idealUseCases": [
+    "Add people, organizations, and opportunities to Affinity lists and keep their custom fields up to date.",
+    "Search people and organizations by name, email, or domain before acting on them.",
+    "Log notes against contacts and deals from your automated workflows.",
+    "Validate the API key connection and read plan/rate-limit context via `Get Current User`.",
+    "React to Affinity events (new people, deal updates, list-entry changes, field-value edits, notes) in real time."
+  ],
+  "agentIdeas": [
+    "When **Affinity** \"On Affinity Event\" fires for `opportunity.updated`, notify a channel with **Slack** \"Send Message To Channel\".",
+    "Use **Affinity** \"Search Persons\" to look up a contact, then \"Create Note\" to log an interaction.",
+    "After a new signup in another system, use **Affinity** \"Create Person\" and \"Create List Entry\" to add them to a pipeline list."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/affinity/public/icon.png",
+  "sourcePaths": {
+    "service": "services/affinity",
+    "readme": "services/affinity/README.md",
+    "index": "services/affinity/src/index.js"
+  }
+}

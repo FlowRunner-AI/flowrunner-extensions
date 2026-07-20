@@ -1,0 +1,168 @@
+{
+  "slug": "cohere",
+  "name": "Cohere",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to the [Cohere](https://cohere.com) platform for enterprise-grade language AI: chat and reasoning with the Command model family, best-in-class Retrieval-Augmented Generation with verifiable fine-grained citations, multimodal embeddings, semantic reranking, text classification, tokenization, audio transcription, and asynchronous batch and embed jobs over large datasets. Authenticates with a single Cohere API key.",
+  "actionCount": 24,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Chat",
+    "Embeddings",
+    "Rerank",
+    "Classification",
+    "Tokenization",
+    "Audio",
+    "Batches",
+    "Datasets",
+    "Embed Jobs",
+    "Models"
+  ],
+  "actions": [
+    {
+      "name": "Chat",
+      "category": "Chat",
+      "description": "Generates a text response to a single prompt using a Cohere Command model via the v2 Chat API. Supports an optional system prompt, JSON mode for structured output, safety modes, deterministic seeding and reasoning ('thinking') controls for reasoning-capable models such as Command A Plus and Command A Reasoning. Returns the generated text, extracted reasoning (when produced), finish reason and token usage."
+    },
+    {
+      "name": "Chat (Advanced)",
+      "category": "Chat",
+      "description": "Sends a fully custom request to the Cohere v2 Chat API with a complete messages array (multi-turn conversations, multimodal image content for vision models), tool/function calling passthrough with strict tools, grounded documents, structured outputs via a response format object with JSON schema, citation options, safety modes, reasoning ('thinking') configuration, penalties and full sampling controls. Returns the raw Cohere API response including the assistant message content blocks, tool calls, citations and usage."
+    },
+    {
+      "name": "Chat with Documents",
+      "category": "Chat",
+      "description": "Generates a grounded answer to a question using the provided documents as context (Retrieval-Augmented Generation) via the Cohere v2 Chat API — Cohere's signature RAG capability. The model answers strictly from the supplied documents and returns fine-grained citations that map each answer span to the source documents, so every claim is verifiable. Returns the answer text, the citations array (prominently), finish reason and token usage."
+    },
+    {
+      "name": "Create Embeddings",
+      "category": "Embeddings",
+      "description": "Generates embeddings for texts and/or images using the Cohere v2 Embed API. Supports Embed v4.0 (multimodal, adjustable 256-1536 output dimensions) and the Embed v3 family, multiple embedding types (float, quantized int8/uint8, binary, base64) and input-type optimization for search, classification or clustering use cases. Up to 96 texts per call; images are passed as base64 data URIs. Returns the embeddings keyed by embedding type, plus billing metadata."
+    },
+    {
+      "name": "Rerank Documents",
+      "category": "Rerank",
+      "description": "Ranks a list of documents by semantic relevance to a query using the Cohere v2 Rerank API — ideal for improving search quality and RAG retrieval. Returns results ordered by relevance, each with the original index, a normalized relevance score between 0 and 1, and the original document text for convenience. Long documents are automatically truncated to the per-document token limit."
+    },
+    {
+      "name": "Classify Text",
+      "category": "Classification",
+      "description": "Classifies up to 96 texts using the Cohere Classify API, either few-shot with inline labeled examples (at least 2 examples per label recommended) or with a fine-tuned classification model that needs no examples. Returns a prediction, confidence score and per-label confidences for every input. Note: Cohere lists this v1 endpoint under its legacy APIs; it remains fully operational but is no longer actively evolved."
+    },
+    {
+      "name": "Tokenize Text",
+      "category": "Tokenization",
+      "description": "Splits a text (1 to 65,536 characters) into tokens using the tokenizer of the specified Cohere model. Returns the token IDs and the corresponding token strings — useful for counting tokens before a chat or embed call."
+    },
+    {
+      "name": "Detokenize Text",
+      "category": "Tokenization",
+      "description": "Converts a list of token IDs back into the original text using the tokenizer of the specified Cohere model — the inverse of Tokenize Text."
+    },
+    {
+      "name": "Transcribe Audio",
+      "category": "Audio",
+      "description": "Transcribes an audio file into text using Cohere Transcribe (state-of-the-art speech recognition across 14 languages including English, German, French, Spanish, Chinese, Arabic, Japanese and Korean) via the v2 Audio Transcriptions API. Downloads the audio from the provided URL (FlowRunner file URL or any public URL; flac, mp3, mpeg, mpga, ogg or wav, max 25MB) and returns the transcribed text."
+    },
+    {
+      "name": "Create Batch",
+      "category": "Batches",
+      "description": "Creates and starts an asynchronous batch job that processes a previously uploaded and validated dataset of requests (dataset type 'batch-chat-v2-input', 'batch-embed-v2-input', 'batch-openai-chat-input' or 'batch-chat-input') with the chosen model. Poll the batch with Get Batch; once completed, the results are available as a new dataset referenced by output_dataset_id."
+    },
+    {
+      "name": "List Batches",
+      "category": "Batches",
+      "description": "Lists the batch jobs of the authenticated user with their statuses, models, record counts and input/output dataset IDs. Supports pagination via page size (up to 1000, default 50) and page token."
+    },
+    {
+      "name": "Get Batch",
+      "category": "Batches",
+      "description": "Retrieves the current state of a batch job by its ID, including status (queued, in progress, completed, failed, canceled), record counts, token totals and the output_dataset_id for downloading results once completed."
+    },
+    {
+      "name": "Cancel Batch",
+      "category": "Batches",
+      "description": "Cancels an in-progress batch job by its ID. The batch moves to the canceling and then canceled status; records already processed are billed."
+    },
+    {
+      "name": "Create Dataset",
+      "category": "Datasets",
+      "description": "Uploads a file to Cohere as a dataset for use with the Batch API or Embed Jobs API. Provide either the URL of an existing file (FlowRunner file URL or any public URL) or raw content as text (JSONL, CSV or TXT depending on the dataset type). The dataset is validated asynchronously — check its validation status with Get Dataset before using it. Returns the new dataset ID."
+    },
+    {
+      "name": "List Datasets",
+      "category": "Datasets",
+      "description": "Lists datasets in the Cohere account with their types, validation statuses and download URLs. Supports filtering by dataset type, validation status and creation date range, plus limit/offset pagination."
+    },
+    {
+      "name": "Get Dataset",
+      "category": "Datasets",
+      "description": "Retrieves a dataset by its ID, including its type, validation status, any validation error/warnings, and the dataset parts with download URLs for retrieving the data (e.g. batch job results or embed job outputs)."
+    },
+    {
+      "name": "Delete Dataset",
+      "category": "Datasets",
+      "description": "Permanently deletes a dataset from the Cohere account by its ID. Datasets are also automatically deleted 30 days after creation."
+    },
+    {
+      "name": "Get Dataset Usage",
+      "category": "Datasets",
+      "description": "Retrieves the total dataset storage usage for the organization in bytes. Each organization can store up to 10GB of datasets across all users."
+    },
+    {
+      "name": "Create Embed Job",
+      "category": "Embed Jobs",
+      "description": "Starts an asynchronous embed job that embeds an entire validated dataset of type 'embed-input' — the way to embed large corpora beyond the 96-text limit of Create Embeddings. Supports input-type optimization, multiple embedding types and truncation control. Poll the job with Get Embed Job; results are delivered as a new dataset referenced by output_dataset_id."
+    },
+    {
+      "name": "List Embed Jobs",
+      "category": "Embed Jobs",
+      "description": "Lists all embed jobs of the authenticated user with their statuses, models and input/output dataset IDs."
+    },
+    {
+      "name": "Get Embed Job",
+      "category": "Embed Jobs",
+      "description": "Retrieves the details of an embed job by its ID, including status, model, input dataset and — once complete — the output_dataset_id containing the generated embeddings (downloadable via Get Dataset)."
+    },
+    {
+      "name": "Cancel Embed Job",
+      "category": "Embed Jobs",
+      "description": "Cancels an active embed job by its ID. The embedding process is terminated; embeddings processed before cancellation are billed but partial results are not made available."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists the models available through the Cohere API with their compatible endpoints, context lengths, deprecation status and supported features. Supports filtering by endpoint (chat, embed, rerank, classify), returning only the default model for an endpoint, and page-based pagination."
+    },
+    {
+      "name": "Get Model",
+      "category": "Models",
+      "description": "Retrieves the details of a specific Cohere model by its name, including compatible endpoints, context length, deprecation status, tokenizer URL, supported features and default sampling parameters."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Build grounded RAG assistants that answer strictly from your documents and return citations mapping every claim to its source.",
+    "Improve search and retrieval quality by reranking candidate documents by semantic relevance to a query.",
+    "Generate multimodal embeddings for texts and images to power semantic search, clustering, and classification.",
+    "Classify support tickets, content, or feedback few-shot or with a fine-tuned model.",
+    "Transcribe audio files into text across 14 languages.",
+    "Process large corpora asynchronously with batch chat jobs and embed jobs over uploaded datasets."
+  ],
+  "agentIdeas": [
+    "When a **Dropbox** \"On New File\" trigger fires for an audio file, call **Dropbox** \"Get Temporary Link\" then Cohere \"Transcribe Audio\" to convert the recording to text, and Cohere \"Chat\" to summarize it.",
+    "Use **Google Sheets** \"Get Rows\" to pull a set of documents, call Cohere \"Rerank Documents\" against a query to surface the most relevant ones, then answer with Cohere \"Chat with Documents\" for a fully cited response.",
+    "After Cohere \"Classify Text\" categorizes an incoming message, use **Notion** \"Create Page\" to file it into the matching database, or **Google Sheets** \"Add Row\" to log the prediction and confidence score."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/cohere/public/icon.png",
+  "sourcePaths": {
+    "service": "services/cohere",
+    "readme": "services/cohere/README.md",
+    "index": "services/cohere/src/index.js"
+  }
+}

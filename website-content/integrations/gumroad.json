@@ -1,0 +1,146 @@
+{
+  "slug": "gumroad",
+  "name": "Gumroad",
+  "marketingCategory": "E-commerce",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to [Gumroad](https://gumroad.com), the platform for selling digital products, memberships and licenses. This integration wraps the Gumroad API v2 to manage products, track sales and subscribers, verify license keys, run discount offer codes, and register webhook resource subscriptions. Authenticates with a Gumroad access token sent as a Bearer credential.",
+  "actionCount": 20,
+  "triggerCount": 0,
+  "operationCategories": [
+    "User",
+    "Products",
+    "Sales",
+    "Subscribers",
+    "Licenses",
+    "Offer Codes",
+    "Variants",
+    "Resource Subscriptions"
+  ],
+  "actions": [
+    {
+      "name": "Get Current User",
+      "category": "User",
+      "description": "Retrieves the profile of the authenticated Gumroad user, including id, name, email, bio, profile URL and currency. Useful as a connection/health check to confirm the access token is valid."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Retrieves all products for the authenticated Gumroad account. Each product includes its id, name, price (in the currency's smallest unit), formatted price, permalink/short_url, published state, sales count and total revenue."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves a single product by its Gumroad id, including price, description, published state, variant/tier information and sales metrics."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Products",
+      "description": "Permanently deletes a product from the authenticated Gumroad account. This action cannot be undone. Returns a confirmation message on success."
+    },
+    {
+      "name": "Enable or Disable Product",
+      "category": "Products",
+      "description": "Publishes (enables) or unpublishes (disables) a product. When enabled the product is available for sale; when disabled it is hidden from customers. Returns the updated product."
+    },
+    {
+      "name": "List Sales",
+      "category": "Sales",
+      "description": "Retrieves successful sales for the authenticated account, most recent first. Supports filtering by date range, product and buyer email. Results are paginated — use the returned next_page_key with the Page Key parameter to fetch subsequent pages."
+    },
+    {
+      "name": "Get Sale",
+      "category": "Sales",
+      "description": "Retrieves the details of a single sale by its id, including buyer email, product, price, order number, refund state and any custom fields captured at checkout."
+    },
+    {
+      "name": "List Subscribers",
+      "category": "Subscribers",
+      "description": "Retrieves the subscribers of a membership/subscription product for the authenticated account. Optionally filter by email. Each subscriber includes its status (alive, cancelled, failed_payment, etc.), subscription dates and recurrence."
+    },
+    {
+      "name": "Get Subscriber",
+      "category": "Subscribers",
+      "description": "Retrieves a single subscriber by its id, including status, recurrence, subscription start date and cancellation/charge information."
+    },
+    {
+      "name": "Verify License",
+      "category": "Licenses",
+      "description": "Verifies a license key issued for a product and returns the associated purchase details plus the current uses count. Optionally increments the uses count on each successful verification (default true), which is useful for enforcing seat/activation limits."
+    },
+    {
+      "name": "Enable or Disable License",
+      "category": "Licenses",
+      "description": "Enables or disables a license key. A disabled license fails verification (useful for revoking access on refund/chargeback), and an enabled license passes again."
+    },
+    {
+      "name": "List Offer Codes",
+      "category": "Offer Codes",
+      "description": "Retrieves all offer codes (discount codes) for a product, including their code, discount amount or percentage, max purchase count and remaining uses."
+    },
+    {
+      "name": "Get Offer Code",
+      "category": "Offer Codes",
+      "description": "Retrieves a single offer code for a product by its id, including its code, discount value, usage limits and times used."
+    },
+    {
+      "name": "Create Offer Code",
+      "category": "Offer Codes",
+      "description": "Creates a new offer code (discount) for a product. Provide the code name (the string buyers enter) and a discount as either a flat amount in the currency's smallest unit (cents) or a percentage. Optionally limit total redemptions with a max purchase count."
+    },
+    {
+      "name": "Update Offer Code",
+      "category": "Offer Codes",
+      "description": "Updates the maximum purchase count of an existing offer code. Only the redemption limit can be changed via the API; other attributes are fixed at creation."
+    },
+    {
+      "name": "Delete Offer Code",
+      "category": "Offer Codes",
+      "description": "Permanently deletes an offer code from a product. Existing purchases that used the code are unaffected, but the code can no longer be redeemed."
+    },
+    {
+      "name": "List Variant Categories",
+      "category": "Variants",
+      "description": "Retrieves the variant categories of a product. Variant categories group the purchase options (versions/tiers) a buyer can choose, such as \"Color\" or \"Plan\". Each category contains its own set of variants."
+    },
+    {
+      "name": "List Resource Subscriptions",
+      "category": "Resource Subscriptions",
+      "description": "Lists the resource subscriptions (webhooks) of a given type for the authenticated account. Gumroad calls the registered post_url whenever the resource event occurs (e.g. a new sale). Filter by resource type."
+    },
+    {
+      "name": "Create Resource Subscription",
+      "category": "Resource Subscriptions",
+      "description": "Registers a resource subscription (webhook). Gumroad sends an HTTP POST to the given URL each time the selected resource event occurs for the authenticated account."
+    },
+    {
+      "name": "Delete Resource Subscription",
+      "category": "Resource Subscriptions",
+      "description": "Deletes a resource subscription (webhook) by its id, stopping future POST callbacks for that subscription."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync your Gumroad product catalog, prices and published state into other systems",
+    "React to new sales by notifying your team, logging orders, or triggering fulfillment",
+    "Enforce seat/activation limits by verifying and revoking software license keys",
+    "Manage membership subscribers and monitor cancellations or failed payments",
+    "Automate discount campaigns by creating and updating offer codes",
+    "Register webhook subscriptions so external systems are notified of Gumroad events"
+  ],
+  "agentIdeas": [
+    "Use **Gumroad** \"List Sales\" to pull recent orders, then call **Google Sheets** \"Add Row\" to log each sale into a revenue tracking spreadsheet.",
+    "After **Gumroad** \"Get Sale\" captures a new order, use **Gmail** \"Send Message\" to send the buyer a personalized thank-you or delivery email.",
+    "When a **Gumroad** \"List Subscribers\" check surfaces a cancelled or failed-payment subscriber, use **Slack** \"Send Message To Channel\" to alert your customer-success channel."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/gumroad/public/icon.png",
+  "sourcePaths": {
+    "service": "services/gumroad",
+    "readme": "services/gumroad/README.md",
+    "index": "services/gumroad/src/index.js"
+  }
+}

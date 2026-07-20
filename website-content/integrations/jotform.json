@@ -1,0 +1,68 @@
+{
+  "slug": "jotform",
+  "name": "Jotform",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "A comprehensive form management integration that enables automated form creation, question management, and submission data collection. This extension provides seamless integration with Jotform's API for building dynamic surveys, collecting responses, and managing form workflows through automated processes.",
+  "actionCount": 6,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Form Management",
+    "Submission Management",
+    "User Account"
+  ],
+  "actions": [
+    {
+      "name": "Create New Form",
+      "category": "Form Management",
+      "description": "Creates a new form with questions, properties, and email settings. Each question must include required fields: type, text, order, and name."
+    },
+    {
+      "name": "Get Form Questions",
+      "category": "Form Management",
+      "description": "Gets a list of all questions on a form. Returns detailed question configuration including field types, validation rules, and display properties."
+    },
+    {
+      "name": "Add Questions to Form",
+      "category": "Form Management",
+      "description": "Adds new questions to a specified form. Each question must include required fields: type, text, order, and name."
+    },
+    {
+      "name": "Get Form Submissions",
+      "category": "Submission Management",
+      "description": "Gets a list of form responses with pagination and filtering options. Includes detailed submission data, answers, and metadata."
+    },
+    {
+      "name": "Get User Submissions",
+      "category": "Submission Management",
+      "description": "Gets a list of all submissions for all forms on this account with filtering and pagination options. Supports advanced filtering by date ranges, form IDs, and full text search."
+    },
+    {
+      "name": "Get Monthly User Usage",
+      "category": "User Account",
+      "description": "Gets detailed account usage statistics including form submissions, API usage, storage, and AI features usage for the current month."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Building AI agents that create dynamic forms based on user requirements",
+    "Automating survey creation and distribution for customer feedback systems",
+    "Creating event registration workflows with automated form generation",
+    "Implementing data collection systems with automated response processing",
+    "Building analytics dashboards that pull form submission data automatically",
+    "Managing multi-step form workflows with conditional question logic",
+    "Developing customer onboarding processes with automated form sequences"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.svg",
+  "iconFile": "services/jotform/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/jotform",
+    "readme": "services/jotform/README.md",
+    "index": "services/jotform/src/index.js"
+  }
+}

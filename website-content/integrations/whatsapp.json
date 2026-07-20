@@ -1,0 +1,72 @@
+{
+  "slug": "whatsapp",
+  "name": "WhatsApp Business API",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Enables seamless integration with the WhatsApp Business API for automating customer communications. Send messages, share media, use templates, and manage business conversations at scale. Supports text, images, documents, locations, and pre-approved message templates.",
+  "actionCount": 7,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messaging",
+    "Business Management"
+  ],
+  "actions": [
+    {
+      "name": "Send Text Message",
+      "category": "Messaging",
+      "description": "Sends a text message to a WhatsApp user. Supports Unicode characters, emojis, and formatting. Messages are delivered through the WhatsApp Business API."
+    },
+    {
+      "name": "Send Image Message",
+      "category": "Messaging",
+      "description": "Sends an image message to a WhatsApp user. Supports JPEG, PNG, and WebP formats. Images can be sent by URL or media ID with optional caption text."
+    },
+    {
+      "name": "Send Document",
+      "category": "Messaging",
+      "description": "Sends a document file to a WhatsApp user. Supports various file formats including PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, and TXT. Files are sent by URL with optional filename and caption."
+    },
+    {
+      "name": "Send Template Message",
+      "category": "Messaging",
+      "description": "Sends a pre-approved message template to a WhatsApp user. Templates must be approved by Meta and can include variables, headers, and call-to-action buttons for structured communication."
+    },
+    {
+      "name": "Send Location",
+      "category": "Messaging",
+      "description": "Sends a location message to a WhatsApp user. Includes latitude, longitude coordinates with optional name and address information for sharing geographic locations."
+    },
+    {
+      "name": "Mark Message as Read",
+      "category": "Messaging",
+      "description": "Marks a received WhatsApp message as read. This sends a read receipt to the sender and helps maintain conversation status in your business communications."
+    },
+    {
+      "name": "Get Business Profile",
+      "category": "Business Management",
+      "description": "Retrieves the WhatsApp Business profile information including business name, description, contact details, and verification status for the connected business account."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send automated notifications and alerts to customers",
+    "Share order confirmations and shipping updates",
+    "Distribute marketing messages using approved templates",
+    "Send documents, invoices, and receipts",
+    "Share location information for deliveries or meetings",
+    "Build conversational customer support workflows",
+    "Manage high-volume business communications"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/whatsapp/public/icon.png",
+  "sourcePaths": {
+    "service": "services/whatsapp",
+    "readme": "services/whatsapp/README.md",
+    "index": "services/whatsapp/src/index.js"
+  }
+}

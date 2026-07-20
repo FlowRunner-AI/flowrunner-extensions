@@ -1,0 +1,195 @@
+{
+  "slug": "webex",
+  "name": "Cisco Webex",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrate [Cisco Webex](https://developer.webex.com) messaging, spaces, memberships, people, teams, meetings, and webhooks into FlowRunner. Post messages to spaces or people, manage spaces and their members, look up people, schedule meetings, and manage Webex-side webhooks.",
+  "actionCount": 30,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messages",
+    "Rooms",
+    "Memberships",
+    "People",
+    "Teams",
+    "Meetings",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "Create Message",
+      "category": "Messages",
+      "description": "Posts a new message to a Webex space (room) or directly to a person. Provide exactly one destination: a Room ID, a recipient email (toPersonEmail), or a recipient person ID (toPersonId). Supply text and/or markdown (markdown renders formatting; text is the plain-text fallback). Optionally attach up to one publicly reachable file URL and/or Adaptive Card attachments. Returns the created message object including its ID."
+    },
+    {
+      "name": "Create Direct Message",
+      "category": "Messages",
+      "description": "Sends a 1:1 direct message to a person by email address. A convenience over Create Message for the common case of messaging one user with plain text. Returns the created message object."
+    },
+    {
+      "name": "List Messages",
+      "category": "Messages",
+      "description": "Lists messages in a Webex space (room), newest first. Requires a Room ID. Optionally filter by parent message (for threaded replies) or by messages sent before a timestamp, and limit the page size. Returns an object with an items array of message objects."
+    },
+    {
+      "name": "Get Message",
+      "category": "Messages",
+      "description": "Retrieves the full details of a single message by its ID, including body text/markdown, sender, room, attachments, and file references."
+    },
+    {
+      "name": "Delete Message",
+      "category": "Messages",
+      "description": "Permanently deletes a message by its ID. Only the message author (or a space moderator) can delete a message. Returns an empty object on success."
+    },
+    {
+      "name": "Get Message Attachment",
+      "category": "Messages",
+      "description": "Downloads a file attached to a message and stores it in FlowRunner file storage, returning a URL. Provide a Webex file content URL (from a message's files array, e.g. https://webexapis.com/v1/contents/...). The file is fetched with your token, uploaded to storage, and a shareable URL is returned. Use the File Settings parameter to choose the storage scope."
+    },
+    {
+      "name": "List Rooms",
+      "category": "Rooms",
+      "description": "Lists Webex spaces (rooms) the authenticated user or bot is a member of, sorted by most recent activity. Optionally filter by room type (direct 1:1 conversations or group spaces) or restrict to spaces within a specific team, and limit the page size. Returns an object with an items array of room objects."
+    },
+    {
+      "name": "Create Room",
+      "category": "Rooms",
+      "description": "Creates a new Webex group space (room) with the given title. Optionally attach the space to a team by providing a Team ID. The authenticated user or bot becomes a member of the new space. Returns the created room object."
+    },
+    {
+      "name": "Get Room",
+      "category": "Rooms",
+      "description": "Retrieves the details of a single space (room) by its ID, including title, type, team association, lock status, and timestamps."
+    },
+    {
+      "name": "Update Room",
+      "category": "Rooms",
+      "description": "Updates a space (room) by its ID. Currently the title can be changed. Returns the updated room object."
+    },
+    {
+      "name": "Delete Room",
+      "category": "Rooms",
+      "description": "Permanently deletes a space (room) by its ID. This removes the space and its content for all members. Returns an empty object on success."
+    },
+    {
+      "name": "Get Room Meeting Details",
+      "category": "Rooms",
+      "description": "Retrieves the meeting details associated with a space (room), including the meeting link, SIP address, dial-in numbers, and passwords used to start or join the space's meeting."
+    },
+    {
+      "name": "List Memberships",
+      "category": "Memberships",
+      "description": "Lists the memberships of a space (room), showing who belongs to it and whether each member is a moderator. Requires a Room ID. Returns an object with an items array of membership objects."
+    },
+    {
+      "name": "Create Membership",
+      "category": "Memberships",
+      "description": "Adds a person to a space (room). Identify the person by email (personEmail) or person ID (personId). Optionally grant them moderator privileges. Returns the created membership object."
+    },
+    {
+      "name": "Delete Membership",
+      "category": "Memberships",
+      "description": "Removes a person from a space by deleting their membership. Provide the membership ID (obtainable via List Memberships). Returns an empty object on success."
+    },
+    {
+      "name": "Get My Own Details",
+      "category": "People",
+      "description": "Returns the profile of the person or bot associated with the current access token. Useful as a connection/authentication check and to obtain your own person ID, emails, and display name."
+    },
+    {
+      "name": "List People",
+      "category": "People",
+      "description": "Searches for people in your Webex organization. Filter by email address or by display name (at least one filter is required by the Webex API). Returns an object with an items array of person objects."
+    },
+    {
+      "name": "Get Person",
+      "category": "People",
+      "description": "Retrieves the profile of a single person by their person ID, including emails, display name, avatar, org, and status."
+    },
+    {
+      "name": "List Teams",
+      "category": "Teams",
+      "description": "Lists the teams the authenticated user or bot belongs to. Teams group related spaces. Returns an object with an items array of team objects."
+    },
+    {
+      "name": "Create Team",
+      "category": "Teams",
+      "description": "Creates a new team with the given name. The authenticated user or bot becomes a member. Teams are containers for related spaces. Returns the created team object."
+    },
+    {
+      "name": "Get Team",
+      "category": "Teams",
+      "description": "Retrieves the details of a single team by its ID, including its name and creation time."
+    },
+    {
+      "name": "List Team Memberships",
+      "category": "Teams",
+      "description": "Lists the members of a team, showing each person and whether they are a team moderator. Requires a Team ID. Returns an object with an items array of team membership objects."
+    },
+    {
+      "name": "List Meetings",
+      "category": "Meetings",
+      "description": "Lists scheduled meetings visible to the authenticated user. Optionally filter by meeting state and time window (from/to as ISO 8601), and limit the page size. Returns an object with an items array of meeting objects."
+    },
+    {
+      "name": "Create Meeting",
+      "category": "Meetings",
+      "description": "Schedules a new Webex meeting. Provide a title and ISO 8601 start and end times (with an optional timezone). Optionally add an agenda, a join password, and a list of invitee email addresses. Returns the created meeting object including its meeting number, web link, and SIP address."
+    },
+    {
+      "name": "Get Meeting",
+      "category": "Meetings",
+      "description": "Retrieves the details of a single meeting by its ID, including title, agenda, start/end times, web link, SIP address, host, and state."
+    },
+    {
+      "name": "Update Meeting",
+      "category": "Meetings",
+      "description": "Updates a scheduled meeting by its ID. Provide the fields to change (title, start, end, timezone, agenda, or password). Webex requires the title and start/end times to be present on update, so supply the current values for any you are not changing. Returns the updated meeting object."
+    },
+    {
+      "name": "Delete Meeting",
+      "category": "Meetings",
+      "description": "Cancels and deletes a scheduled meeting by its ID. Returns an empty object on success."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Lists the Webex webhooks registered under the current token. These are Webex-side webhooks you manage directly (not FlowRunner triggers). Returns an object with an items array of webhook objects."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Registers a Webex webhook that POSTs to your target URL when the chosen resource fires the chosen event. Provide a name, the target URL, the resource (e.g. messages, memberships, rooms), and the event (created, updated, deleted). Optionally add a filter (e.g. roomId=...) to scope notifications. This creates a Webex-side webhook; it is not wired to a FlowRunner trigger. Returns the created webhook object."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Deletes a Webex webhook by its ID, stopping further event notifications to its target URL. Returns an empty object on success."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Post automated notifications, alerts, or reports into a Webex space or as a direct message to a person",
+    "Provision and manage spaces — create rooms, add or remove members, and archive spaces as projects start and end",
+    "Schedule, update, and cancel Webex meetings from a workflow and share the join link with invitees",
+    "Look up people in your organization by email or name to route messages and memberships correctly",
+    "Download files attached to messages into FlowRunner storage for further processing",
+    "Register and manage Webex-side webhooks that push events to an endpoint you host"
+  ],
+  "agentIdeas": [
+    "When a **Google Calendar** \"On Event Starting Soon\" trigger fires, use **Cisco Webex** \"Create Meeting\" to spin up a Webex session and \"Create Direct Message\" to send each attendee the `webLink`.",
+    "Use **Cisco Webex** \"List People\" to resolve a coworker's email to a person ID, then \"Create Membership\" to add them to a project space created with \"Create Room\".",
+    "Use **Cisco Webex** \"List Messages\" and \"Get Message Attachment\" to pull files posted in a space, then relay a summary into a **Microsoft Teams** channel via \"Send Channel Message\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/webex/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/webex",
+    "readme": "services/webex/README.md",
+    "index": "services/webex/src/index.js"
+  }
+}

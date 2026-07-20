@@ -1,0 +1,134 @@
+{
+  "slug": "sendgrid",
+  "name": "SendGrid",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Send transactional and marketing email and manage contacts, lists, suppressions, and templates through the Twilio SendGrid v3 REST API. Authenticates with a single SendGrid API key (Bearer against `https://api.sendgrid.com/v3`); zero npm dependencies.",
+  "actionCount": 18,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Email",
+    "Contacts",
+    "Lists",
+    "Templates",
+    "Suppressions",
+    "Statistics",
+    "Validation",
+    "Senders"
+  ],
+  "actions": [
+    {
+      "name": "Send Email",
+      "category": "Email",
+      "description": "Sends an email through the SendGrid v3 Mail Send API. Supports multiple To/CC/BCC recipients, plain-text and/or HTML bodies, a Reply-To address, file attachments downloaded from URLs (max total message size 30 MB), scheduled sending up to 72 hours ahead, categories for analytics, and custom arguments attached to event webhooks. At least one of Text Content or HTML Content is required. SendGrid queues the message asynchronously, so a successful call returns {\"queued\":true} rather than a delivery confirmation."
+    },
+    {
+      "name": "Send Templated Email",
+      "category": "Email",
+      "description": "Sends an email using a SendGrid dynamic transactional template. The template controls the subject and body; Dynamic Template Data supplies the Handlebars substitution values (e.g. {{firstName}}). Supports multiple To/CC/BCC recipients, Reply-To, URL attachments, scheduled sending up to 72 hours ahead, categories, and custom arguments. SendGrid queues the message asynchronously, so a successful call returns {\"queued\":true}."
+    },
+    {
+      "name": "Upsert Contacts",
+      "category": "Contacts",
+      "description": "Adds new contacts or updates existing ones (matched by email) in SendGrid Marketing Campaigns, optionally adding them to one or more lists. Each contact object must include an \"email\" property and may include \"first_name\", \"last_name\", \"phone_number_id\", \"address_line_1\", \"city\", \"country\", \"postal_code\" and a \"custom_fields\" object keyed by custom field ID. Up to 30,000 contacts (max 6 MB payload) per call. Processing is asynchronous: the returned job_id can be used to track import status in SendGrid."
+    },
+    {
+      "name": "Search Contacts",
+      "category": "Contacts",
+      "description": "Searches Marketing Campaigns contacts using SendGrid's SGQL query language, e.g. email LIKE '%@example.com' or first_name = 'Jane' AND CONTAINS(list_ids, 'list-id'). Returns up to 50 matching contacts with their full field data plus the total match count. Recently added contacts may take a few minutes to become searchable."
+    },
+    {
+      "name": "Get Contact By Email",
+      "category": "Contacts",
+      "description": "Retrieves a single Marketing Campaigns contact by exact email address, including standard fields, list memberships, and custom field values. Fails with a not-found error if no contact has that email. Recently added contacts may take a few minutes to become available."
+    },
+    {
+      "name": "Delete Contacts",
+      "category": "Contacts",
+      "description": "Deletes Marketing Campaigns contacts either by a list of contact IDs or all contacts in the account when Delete All is enabled. Deletion is asynchronous and irreversible; the returned job_id can be used to track progress. Provide contact IDs (from Search Contacts) or enable Delete All, but not both."
+    },
+    {
+      "name": "Create List",
+      "category": "Lists",
+      "description": "Creates a new Marketing Campaigns contact list. List names must be unique within the account (max 100 characters). Returns the new list's ID, name, and contact count."
+    },
+    {
+      "name": "Get Lists",
+      "category": "Lists",
+      "description": "Retrieves Marketing Campaigns contact lists with their IDs, names, and contact counts. Supports cursor pagination: pass the page token extracted from the previous response's _metadata.next URL to fetch the next page (up to 1000 lists per page)."
+    },
+    {
+      "name": "Delete List",
+      "category": "Lists",
+      "description": "Deletes a Marketing Campaigns contact list by ID. By default the contacts on the list are kept in your account and only the list itself is removed; enable Delete Contacts to also delete every contact on the list (asynchronous, returns a job_id)."
+    },
+    {
+      "name": "List Dynamic Templates",
+      "category": "Templates",
+      "description": "Retrieves the dynamic (Handlebars) transactional templates in your SendGrid account, including each template's ID, name, and versions with their subjects and active status. Supports cursor pagination via a page token from the previous response's _metadata.next URL."
+    },
+    {
+      "name": "List Global Unsubscribes",
+      "category": "Suppressions",
+      "description": "Retrieves email addresses on the global unsubscribe (global suppression) list — recipients who will not receive any email from your account. Supports an optional Unix timestamp window and offset-based pagination."
+    },
+    {
+      "name": "Add Global Unsubscribes",
+      "category": "Suppressions",
+      "description": "Adds one or more email addresses to the global unsubscribe (global suppression) list, preventing them from receiving any email sent through your SendGrid account. Returns the list of addresses that were added."
+    },
+    {
+      "name": "Delete Global Unsubscribe",
+      "category": "Suppressions",
+      "description": "Removes a single email address from the global unsubscribe (global suppression) list so it can receive email from your account again. Succeeds even if the address was not on the list."
+    },
+    {
+      "name": "List Bounces",
+      "category": "Suppressions",
+      "description": "Retrieves the bounce suppression list — addresses that hard-bounced and are blocked from receiving further email. Each record includes the email, bounce reason, SMTP status code, and creation timestamp. Supports an optional Unix timestamp window."
+    },
+    {
+      "name": "Delete Bounces",
+      "category": "Suppressions",
+      "description": "Removes addresses from the bounce suppression list so SendGrid will attempt delivery to them again. Provide specific email addresses, or enable Delete All to clear the entire bounce list. Provide one or the other, not both."
+    },
+    {
+      "name": "Get Email Stats",
+      "category": "Statistics",
+      "description": "Retrieves global email statistics (requests, delivered, opens, clicks, bounces, spam reports, unsubscribes, and more) for a date range, optionally aggregated by day, week, or month. Dates use YYYY-MM-DD format; End Date defaults to today."
+    },
+    {
+      "name": "Validate Email",
+      "category": "Validation",
+      "description": "Validates a single email address in real time using SendGrid Email Address Validation. Returns a validity verdict (Valid/Risky/Invalid), a 0-1 score, and detailed checks for domain validity, known bounces, suspected role addresses, and disposable domains. NOTE: this endpoint requires a SendGrid plan that includes Email Address Validation (Pro and above or a dedicated Email Validation plan) and its own Email Validation API key may be required by your account setup."
+    },
+    {
+      "name": "Get Verified Senders",
+      "category": "Senders",
+      "description": "Retrieves the verified sender identities configured in your SendGrid account, including each sender's from/reply-to addresses, nickname, and verification status. Only verified senders (or authenticated domains) can be used as the From address when sending email."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send transactional emails (receipts, password resets, notifications) with plain-text/HTML bodies or dynamic templates, URL attachments, and scheduled delivery",
+    "Sync CRM or spreadsheet contacts into SendGrid Marketing Campaigns lists and search them with SGQL",
+    "Maintain deliverability by managing global unsubscribes and bounce suppressions",
+    "Validate email addresses before sending and report on delivery/open/click statistics"
+  ],
+  "agentIdeas": [
+    "When **HubSpot** \"Create Contact\" adds a new lead, use SendGrid \"Upsert Contacts\" to add them to a Marketing Campaigns list, then \"Send Templated Email\" to deliver a welcome message.",
+    "Read a mailing list with **Google Sheets** \"Get Rows\", call SendGrid \"Validate Email\" on each address, and \"Upsert Contacts\" only for the valid ones.",
+    "After SendGrid \"Get Email Stats\" retrieves a campaign's performance, use **Slack** \"Send Message To Channel\" to post the delivered/open/click summary to your team."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/sendgrid/public/icon.png",
+  "sourcePaths": {
+    "service": "services/sendgrid",
+    "readme": "services/sendgrid/README.md",
+    "index": "services/sendgrid/src/index.js"
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "slug": "mautic",
+  "name": "Mautic",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Mautic](https://www.mautic.org/), the open-source marketing automation platform, with FlowRunner over HTTP Basic authentication. Manage contacts, segments, campaigns, companies, emails, tags, notes, forms, and stages on your self-hosted or cloud Mautic instance.",
+  "actionCount": 28,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Contacts",
+    "Segments",
+    "Campaigns",
+    "Companies",
+    "Emails",
+    "Tags",
+    "Notes",
+    "Forms & Stages"
+  ],
+  "actions": [
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new Mautic contact (lead). Supports the standard core fields (first name, last name, email, phone, company) plus tags and any custom contact fields via the Custom Fields object, whose keys must match your Mautic custom field aliases. Returns the created contact wrapped under the \"contact\" key."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single Mautic contact by its numeric ID, including its field values, tags, and segment/company associations. Returns the contact wrapped under the \"contact\" key."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists Mautic contacts with optional full-text search, pagination, and ordering. Mautic returns the matching contacts as an object keyed by ID; this operation normalizes them into a \"contacts\" array and includes the \"total\" match count."
+    },
+    {
+      "name": "Edit Contact",
+      "category": "Contacts",
+      "description": "Updates an existing Mautic contact by ID using a PATCH, which only modifies the fields you supply and leaves all others untouched. Supports the core fields plus tags and arbitrary custom fields. Returns the updated contact wrapped under the \"contact\" key."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a Mautic contact by ID. Returns the deleted contact record wrapped under the \"contact\" key. This action cannot be undone."
+    },
+    {
+      "name": "List Segments",
+      "category": "Segments",
+      "description": "Lists Mautic segments (contact lists) with optional search and pagination. Mautic returns the segments as an object keyed by ID; this operation normalizes them into a \"lists\" array and includes the \"total\" count."
+    },
+    {
+      "name": "Create Segment",
+      "category": "Segments",
+      "description": "Creates a new Mautic segment (contact list) with a display name and optional alias and description. Returns the created segment wrapped under the \"list\" key."
+    },
+    {
+      "name": "Add Contact to Segment",
+      "category": "Segments",
+      "description": "Adds a contact to a Mautic segment (contact list). Returns a success flag. If the contact is already a member, Mautic still reports success."
+    },
+    {
+      "name": "Remove Contact from Segment",
+      "category": "Segments",
+      "description": "Removes a contact from a Mautic segment (contact list). Returns a success flag."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Lists Mautic campaigns with optional search and pagination. Mautic returns the campaigns as an object keyed by ID; this operation normalizes them into a \"campaigns\" array and includes the \"total\" count."
+    },
+    {
+      "name": "Get Campaign",
+      "category": "Campaigns",
+      "description": "Retrieves a single Mautic campaign by ID, including its events and associated segments. Returns the campaign wrapped under the \"campaign\" key."
+    },
+    {
+      "name": "Add Contact to Campaign",
+      "category": "Campaigns",
+      "description": "Adds a contact to a Mautic campaign, enrolling them so campaign events begin evaluating for that contact. Returns a success flag."
+    },
+    {
+      "name": "Remove Contact from Campaign",
+      "category": "Campaigns",
+      "description": "Removes a contact from a Mautic campaign, un-enrolling them so campaign events no longer fire for that contact. Returns a success flag."
+    },
+    {
+      "name": "Create Company",
+      "category": "Companies",
+      "description": "Creates a new Mautic company with core fields plus any custom company fields. Returns the created company wrapped under the \"company\" key."
+    },
+    {
+      "name": "List Companies",
+      "category": "Companies",
+      "description": "Lists Mautic companies with optional search and pagination. Mautic returns the companies as an object keyed by ID; this operation normalizes them into a \"companies\" array and includes the \"total\" count."
+    },
+    {
+      "name": "Get Company",
+      "category": "Companies",
+      "description": "Retrieves a single Mautic company by ID, including its field values. Returns the company wrapped under the \"company\" key."
+    },
+    {
+      "name": "Edit Company",
+      "category": "Companies",
+      "description": "Updates an existing Mautic company by ID using a PATCH, modifying only the fields you supply. Returns the updated company wrapped under the \"company\" key."
+    },
+    {
+      "name": "Delete Company",
+      "category": "Companies",
+      "description": "Permanently deletes a Mautic company by ID. Returns the deleted company record wrapped under the \"company\" key. This action cannot be undone."
+    },
+    {
+      "name": "Add Contact to Company",
+      "category": "Companies",
+      "description": "Associates a contact with a Mautic company. Returns a success flag."
+    },
+    {
+      "name": "List Emails",
+      "category": "Emails",
+      "description": "Lists Mautic emails with optional search and pagination. Mautic returns the emails as an object keyed by ID; this operation normalizes them into an \"emails\" array and includes the \"total\" count."
+    },
+    {
+      "name": "Send Email to Contact",
+      "category": "Emails",
+      "description": "Sends an existing Mautic email to a single contact by their IDs. The email must be a template email that is published. Returns a success flag."
+    },
+    {
+      "name": "Send Email to Segment",
+      "category": "Emails",
+      "description": "Sends an existing Mautic segment email to all contacts in one of its associated segments. The email must be a segment/list email assigned to the given segment. Returns counts of successfully sent, failed, and pending messages."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists all Mautic tags with optional search and pagination. Mautic returns the tags as an object keyed by ID; this operation normalizes them into a \"tags\" array and includes the \"total\" count. To apply or remove tags, use Create Contact or Edit Contact with the Tags field (prefix a tag with a minus sign to remove it)."
+    },
+    {
+      "name": "Create Note",
+      "category": "Notes",
+      "description": "Creates a note attached to a Mautic contact. Notes are timeline entries used for internal record-keeping. Returns the created note wrapped under the \"note\" key."
+    },
+    {
+      "name": "List Notes",
+      "category": "Notes",
+      "description": "Lists Mautic contact notes with optional search and pagination. Mautic returns the notes as an object keyed by ID; this operation normalizes them into a \"notes\" array and includes the \"total\" count."
+    },
+    {
+      "name": "List Forms",
+      "category": "Forms & Stages",
+      "description": "Lists Mautic forms with optional search and pagination. Mautic returns the forms as an object keyed by ID; this operation normalizes them into a \"forms\" array and includes the \"total\" count."
+    },
+    {
+      "name": "List Stages",
+      "category": "Forms & Stages",
+      "description": "Lists Mautic stages with optional search and pagination. Stages represent a contact's position in your marketing/sales funnel. Mautic returns the stages as an object keyed by ID; this operation normalizes them into a \"stages\" array and includes the \"total\" count."
+    },
+    {
+      "name": "Add Contact to Stage",
+      "category": "Forms & Stages",
+      "description": "Moves a contact into a Mautic stage by their IDs, setting the contact's funnel position. Returns a success flag."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new leads from forms, CRMs, or spreadsheets into Mautic as contacts and enroll them in nurture campaigns",
+    "Segment contacts and trigger targeted email sends to individuals or entire segments",
+    "Keep company records and contact associations up to date across systems",
+    "Log timeline notes and move contacts through funnel stages as they progress",
+    "Apply and remove tags to drive Mautic automation rules"
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires from a prospect, use Mautic \"Create Contact\" to add them and \"Add Contact to Campaign\" to enroll them in a nurture sequence.",
+    "Use **Google Sheets** \"Get Rows\" to pull a lead list, then call Mautic \"Create Contact\" for each row and \"Add Contact to Segment\" to build a targeted audience.",
+    "After Mautic \"Send Email to Segment\" completes, use **Slack** \"Send Message To Channel\" to post the sent/failed/pending counts to your marketing channel."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/mautic/public/icon.png",
+  "sourcePaths": {
+    "service": "services/mautic",
+    "readme": "services/mautic/README.md",
+    "index": "services/mautic/src/index.js"
+  }
+}

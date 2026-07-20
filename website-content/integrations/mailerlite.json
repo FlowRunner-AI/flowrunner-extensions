@@ -1,0 +1,128 @@
+{
+  "slug": "mailerlite",
+  "name": "MailerLite",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage MailerLite email marketing directly from FlowRunner: sync subscribers, organize groups, inspect subscriber fields, and build, schedule, and send email campaigns. Authenticates with a MailerLite API key sent as a Bearer token.",
+  "actionCount": 17,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Subscribers",
+    "Groups",
+    "Fields",
+    "Campaigns"
+  ],
+  "actions": [
+    {
+      "name": "Upsert Subscriber",
+      "category": "Subscribers",
+      "description": "Creates a new subscriber or updates the existing one with the same email address (MailerLite upserts on email). Optionally sets profile fields (name, last_name, and any custom fields by key), assigns the subscriber to groups, and sets the subscription status."
+    },
+    {
+      "name": "Get Subscriber",
+      "category": "Subscribers",
+      "description": "Fetches a single subscriber by ID or email address. Returns the full subscriber profile including status, engagement counters (sent, opens, clicks), profile fields, and group memberships."
+    },
+    {
+      "name": "List Subscribers",
+      "category": "Subscribers",
+      "description": "Lists subscribers in the account with optional status filtering and cursor-based pagination. Returns the subscribers of the requested page plus cursors for fetching the next and previous pages."
+    },
+    {
+      "name": "Update Subscriber",
+      "category": "Subscribers",
+      "description": "Updates an existing subscriber by ID. Can change profile fields (name, last_name, custom fields), replace group assignments, and change the subscription status. Only the provided properties are changed."
+    },
+    {
+      "name": "Delete Subscriber",
+      "category": "Subscribers",
+      "description": "Deletes a subscriber from the account by ID. The subscriber is removed from all groups and no longer receives campaigns. Use Forget Subscriber instead if you need GDPR-compliant erasure."
+    },
+    {
+      "name": "Forget Subscriber",
+      "category": "Subscribers",
+      "description": "Permanently and irreversibly erases a subscriber's personal data for GDPR compliance (\"right to be forgotten\"). DESTRUCTIVE: the data is completely deleted after a 30-day grace period and cannot be recovered — use Delete Subscriber for a regular removal."
+    },
+    {
+      "name": "Create Group",
+      "category": "Groups",
+      "description": "Creates a new subscriber group with the given name. Groups organize subscribers for targeted campaigns and automations."
+    },
+    {
+      "name": "List Groups",
+      "category": "Groups",
+      "description": "Lists subscriber groups with optional name filtering and page-based pagination. Each group includes subscriber counts and engagement statistics."
+    },
+    {
+      "name": "Delete Group",
+      "category": "Groups",
+      "description": "Deletes a subscriber group by ID. Subscribers in the group are not deleted — they only lose this group membership."
+    },
+    {
+      "name": "Assign Subscriber To Group",
+      "category": "Groups",
+      "description": "Adds an existing subscriber to a group. The subscriber keeps all other group memberships. Returns the group the subscriber was added to."
+    },
+    {
+      "name": "Remove Subscriber From Group",
+      "category": "Groups",
+      "description": "Removes a subscriber from a group. The subscriber itself is not deleted and keeps all other group memberships."
+    },
+    {
+      "name": "List Fields",
+      "category": "Fields",
+      "description": "Lists all subscriber fields in the account, including default fields (email, name, last_name) and custom fields. Use the returned field keys when setting the Fields parameter of Upsert Subscriber or Update Subscriber."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Lists campaigns in the account filtered by status (Sent, Draft, or Ready) with page-based pagination. Note: MailerLite defaults to Ready campaigns when no status is selected."
+    },
+    {
+      "name": "Get Campaign",
+      "category": "Campaigns",
+      "description": "Fetches a single campaign by ID, including its settings, content emails, and delivery statistics (sent, opens, clicks, unsubscribes, bounces) for sent campaigns."
+    },
+    {
+      "name": "Create Campaign",
+      "category": "Campaigns",
+      "description": "Creates a regular email campaign as a draft with the given subject, sender, and HTML content, optionally targeted at specific groups (all active subscribers when no groups are given). The sender email must already be verified in MailerLite. Creating a campaign does NOT send it — use Schedule Campaign to send instantly or at a specific time."
+    },
+    {
+      "name": "Schedule Campaign",
+      "category": "Campaigns",
+      "description": "Schedules a draft campaign for delivery — this is the step that actually sends a campaign. Choose Instant to send immediately, or Scheduled to send at a specific future date and time (account timezone by default)."
+    },
+    {
+      "name": "Delete Campaign",
+      "category": "Campaigns",
+      "description": "Deletes a campaign by ID. Deleted campaigns and their statistics cannot be recovered."
+    }
+  ],
+  "triggers": [
+    "On Subscriber Event"
+  ],
+  "idealUseCases": [
+    "Syncing contacts from a CRM, form, or spreadsheet into MailerLite as subscribers",
+    "Adding or removing subscribers from groups to power targeted campaigns and automations",
+    "Creating and scheduling email campaigns from generated HTML content",
+    "Reacting in real time when subscribers are created, updated, unsubscribed, or bounced",
+    "Keeping subscriber data GDPR-compliant with delete and forget operations"
+  ],
+  "agentIdeas": [
+    "When a **MailerLite** \"On Subscriber Event\" trigger fires for a new subscriber, use **Slack** \"Send Message To Channel\" to notify the marketing team with the subscriber's email and status.",
+    "Use **Google Sheets** \"Get Rows\" to read a list of contacts, then call **MailerLite** \"Upsert Subscriber\" for each row to sync them into MailerLite and \"Assign Subscriber To Group\" to segment them.",
+    "When a **Gmail** \"On New Email\" trigger captures a signup request, use **MailerLite** \"Upsert Subscriber\" to add the sender, then \"Schedule Campaign\" to deliver a welcome campaign."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/mailerlite/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/mailerlite",
+    "readme": "services/mailerlite/README.md",
+    "index": "services/mailerlite/src/index.js"
+  }
+}

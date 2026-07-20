@@ -1,0 +1,78 @@
+{
+  "slug": "vero",
+  "name": "Vero",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Customer engagement and behavioral email automation with Vero via the Vero Track REST API (v2). Vero follows an identify-then-track model: first identify a user (create/update their profile) with a stable unique id, then track events they perform to power behavioral email campaigns. This extension manages user profiles, tags, and email subscription state, and tracks events.",
+  "actionCount": 8,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Users",
+    "Events"
+  ],
+  "actions": [
+    {
+      "name": "Identify User",
+      "category": "Users",
+      "description": "Creates or updates a user profile in Vero (the \"identify\" half of Vero's identify-then-track model). A user must be identified before events can be tracked against them. Provide a stable, unique user identifier and optionally an email address and a data object of custom profile properties (name, plan, signup date, etc.). Calling this again for the same id updates the stored profile."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates properties on an existing Vero user profile. Provide the user's id and a changes object containing only the properties to add or update; existing properties not included are left unchanged. Use Identify User to create a new profile."
+    },
+    {
+      "name": "Edit User Tags",
+      "category": "Users",
+      "description": "Adds and/or removes tags on a Vero user, used for segmenting and targeting customers. Provide the user's id and a list of tags to add and/or a list of tags to remove. Tags that are added and already present, or removed and not present, are ignored."
+    },
+    {
+      "name": "Unsubscribe User",
+      "category": "Users",
+      "description": "Unsubscribes a user from all email communications in Vero. The user profile is retained but no further campaign or transactional email is sent to them until they are resubscribed. Provide the user's id."
+    },
+    {
+      "name": "Resubscribe User",
+      "category": "Users",
+      "description": "Resubscribes a previously unsubscribed user, re-enabling email communications in Vero. Provide the user's id."
+    },
+    {
+      "name": "Delete User",
+      "category": "Users",
+      "description": "Permanently deletes a user profile and its associated data from Vero. This cannot be undone. Provide the user's id."
+    },
+    {
+      "name": "Reidentify User",
+      "category": "Users",
+      "description": "Changes the identifier of an existing Vero user from their current id to a new id, preserving the profile, events, and history. Commonly used to migrate a user from a temporary/anonymous id to a permanent one after signup. Provide the current id and the new id."
+    },
+    {
+      "name": "Track Event",
+      "category": "Events",
+      "description": "Tracks an event performed by a user (the \"track\" half of Vero's identify-then-track model), which can trigger behavioral email campaigns. Identify the user with an id and/or email in the identity object; if the user does not yet exist they are created from that identity. Provide an event name and optionally a data object of event properties and an extras object of Vero-specific options."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync users into Vero as they sign up, then track their in-app activity to trigger behavioral email campaigns",
+    "Keep profile properties (plan, signup date, name) current so campaigns can segment and personalize",
+    "Tag and segment customers, and manage email subscription state for compliance and preferences",
+    "Migrate anonymous/temporary user ids to permanent ids after signup while preserving history"
+  ],
+  "agentIdeas": [
+    "After a **Stripe** \"Create Subscription\" succeeds, call **Vero** \"Track Event\" with the plan details to enroll the customer in an onboarding email campaign, and \"Update User\" to store their plan on the profile.",
+    "When **Segment** \"Identify User\" captures a new signup, mirror it into **Vero** \"Identify User\" and \"Edit User Tags\" so behavioral campaigns can target the right segment.",
+    "When **Vero** \"Track Event\" records a churn-risk signal, use **Slack** \"Send Message To Channel\" to alert the customer success team with the user id and event details."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/vero/public/icon.png",
+  "sourcePaths": {
+    "service": "services/vero",
+    "readme": "services/vero/README.md",
+    "index": "services/vero/src/index.js"
+  }
+}

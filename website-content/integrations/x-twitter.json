@@ -1,0 +1,47 @@
+{
+  "slug": "x-twitter",
+  "name": "X / Twitter",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Social media automation platform for programmatic posting, content distribution, and automated social media management on X (formerly Twitter).",
+  "actionCount": 2,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Tweet Management"
+  ],
+  "actions": [
+    {
+      "name": "Create Post",
+      "category": "Tweet Management",
+      "description": "Posts tweets to X/Twitter for AI agents to share automated updates, broadcast notifications, or distribute content. Perfect for automated social media management, posting generated insights, or sharing processed results with followers."
+    },
+    {
+      "name": "Create Post with Image",
+      "category": "Tweet Management",
+      "description": "Posts tweets with images to X/Twitter for AI agents to share visual content, charts, or generated graphics. Perfect for automated posting of data visualizations, reports, or AI-generated images with accompanying text."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automated social media content publishing and scheduling",
+    "Real-time notification and update broadcasting",
+    "Social media bot development and management",
+    "Content distribution from automated workflows",
+    "Social media campaign automation",
+    "Brand awareness and engagement automation",
+    "News and announcement distribution",
+    "Community management and interaction automation"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/x-twitter/public/icon.png",
+  "sourcePaths": {
+    "service": "services/x-twitter",
+    "readme": "services/x-twitter/README.md",
+    "index": "services/x-twitter/src/index.js"
+  }
+}

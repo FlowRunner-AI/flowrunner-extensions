@@ -1,0 +1,104 @@
+{
+  "slug": "bannerbear",
+  "name": "Bannerbear",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Generate images, videos, collections, animated GIFs, and website screenshots from [Bannerbear](https://www.bannerbear.com/) templates via the Bannerbear API v2. Authenticate with your Project API Key (sent as `Authorization: Bearer`). Renders are asynchronous by default: create operations return a pending object with a `uid`, then poll the matching Get operation (or supply a `webhook_url`) until `status` is `\"completed\"` and the asset URL is populated.",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Images",
+    "Templates",
+    "Videos",
+    "Collections",
+    "Screenshots",
+    "Animated GIFs",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Create Image",
+      "category": "Images",
+      "description": "Renders an image from a Bannerbear template by supplying a list of modifications (text, images, colors) for named layers. By default Bannerbear renders asynchronously and returns a pending object with a uid and status \"pending\"; call Get Image to poll for completion or provide a webhook_url to be notified. Set Wait For Completion to true to poll here (up to ~30 seconds) and return the finished object with a populated image_url. Optionally output a transparent PNG, render a PDF (costs extra quota), and attach metadata."
+    },
+    {
+      "name": "Get Image",
+      "category": "Images",
+      "description": "Retrieves a single rendered image by its uid, including its current status (\"pending\", \"completed\", or \"failed\") and, once completed, the image_url (and pdf_url when a PDF was requested). Use this to poll for completion after Create Image when not waiting inline."
+    },
+    {
+      "name": "List Images",
+      "category": "Images",
+      "description": "Lists images previously rendered in the current project, most recent first, in pages of 25 (up to 100 per page). Supports pagination via page and limit."
+    },
+    {
+      "name": "List Templates",
+      "category": "Templates",
+      "description": "Lists templates available in the current project, in pages of 25 (up to 100 per page). Optionally filter by partial name or tag. Each template exposes its uid and available modification layer names for use with Create Image."
+    },
+    {
+      "name": "Get Template",
+      "category": "Templates",
+      "description": "Retrieves a single template by its uid, including its dimensions and the available_modifications array that lists every editable layer name. Use these layer names to build the modifications for Create Image."
+    },
+    {
+      "name": "Create Video",
+      "category": "Videos",
+      "description": "Renders a video from a Bannerbear video template. Depending on the template's build pack, supply an input media URL (a source video/audio/image) and/or per-frame modifications. Rendering is asynchronous: the response is a pending object with a uid; poll Get Video for the video_url and percent_rendered, or supply a webhook_url. Optionally apply a zoom pan effect and trim the source clip."
+    },
+    {
+      "name": "Get Video",
+      "category": "Videos",
+      "description": "Retrieves a single video by its uid, including its status, percent_rendered progress, and, once completed, the video_url (and transcription when applicable). Use this to poll for completion after Create Video."
+    },
+    {
+      "name": "Create Collection",
+      "category": "Collections",
+      "description": "Renders a set of images in one call from a Bannerbear template set, applying the same modifications across every template in the set. Rendering is asynchronous: the response is a pending object with a uid; poll Get Collection for the per-template image_urls, or supply a webhook_url. Optionally output transparent PNGs and attach metadata."
+    },
+    {
+      "name": "Get Collection",
+      "category": "Collections",
+      "description": "Retrieves a single collection by its uid, including its status and, once completed, the image_urls object mapping each template in the set to its rendered image URL. Use this to poll for completion after Create Collection."
+    },
+    {
+      "name": "Create Screenshot",
+      "category": "Screenshots",
+      "description": "Captures a screenshot of a public website URL. Rendering is asynchronous: the response is a pending object with a uid; poll Get Image is not used here — provide a webhook_url to be notified when the screenshot completes and returns its image_url. Optionally set viewport width/height and a mobile user agent."
+    },
+    {
+      "name": "Create Animated GIF",
+      "category": "Animated GIFs",
+      "description": "Renders an animated GIF from a Bannerbear template by supplying up to 30 frames, where each frame is an array of layer modifications. Rendering is asynchronous: the response is a pending object with a uid; poll or supply a webhook_url to be notified when the GIF completes and returns its image_url. Optionally set the frame rate, per-frame durations, and looping."
+    },
+    {
+      "name": "Get Account",
+      "category": "Account",
+      "description": "Retrieves the current project's account details, including quota usage, API calls consumed, plan, and paid status. Useful as a connection check to verify the API key is valid."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Auto-generate branded marketing images from a template when new content, products, or leads arrive.",
+    "Produce personalized videos or animated GIFs at scale from per-frame modifications.",
+    "Batch-render a set of images in one call from a template set (collection) with shared modifications.",
+    "Capture screenshots of public web pages for previews, monitoring, or reports.",
+    "Verify API-key validity and check remaining render quota before running a batch."
+  ],
+  "agentIdeas": [
+    "Use **Airtable** \"Get Records\" to pull new product rows, then call **Bannerbear** \"Create Image\"",
+    "After **Bannerbear** \"Create Image\" completes, use **Slack** \"Send Message To Channel\" to post the",
+    "When a **Shopify** \"On New Product\" trigger fires, call **Bannerbear** \"Create Image\" to generate a"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/bannerbear/public/icon.png",
+  "sourcePaths": {
+    "service": "services/bannerbear",
+    "readme": "services/bannerbear/README.md",
+    "index": "services/bannerbear/src/index.js"
+  }
+}

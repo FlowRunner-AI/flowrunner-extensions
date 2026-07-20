@@ -1,0 +1,74 @@
+{
+  "slug": "salesforce-essentials",
+  "name": "Salesforce Essentials",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Essential CRM integration platform for Salesforce automation focused on core contact, lead, and campaign management workflows.",
+  "actionCount": 7,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Campaign Management",
+    "Document Management",
+    "Record Management"
+  ],
+  "actions": [
+    {
+      "name": "Add Contact to Campaign",
+      "category": "Campaign Management",
+      "description": "Adds an existing contact to an existing campaign."
+    },
+    {
+      "name": "Add Lead to Campaign",
+      "category": "Campaign Management",
+      "description": "Adds an existing lead to an existing campaign."
+    },
+    {
+      "name": "Create Attachment",
+      "category": "Document Management",
+      "description": "Creates a new attachment (max 25MB)."
+    },
+    {
+      "name": "Create Record",
+      "category": "Record Management",
+      "description": "Creates a new record of a specified Salesforce object (e.g., Contact, Lead, Opportunity)."
+    },
+    {
+      "name": "Update Record",
+      "category": "Record Management",
+      "description": "Updates an existing record for a specified Salesforce object."
+    },
+    {
+      "name": "Find Record",
+      "category": "Record Management",
+      "description": "Finds a record of a specified Salesforce object by a field and value you choose. Optionally, creates a record if none is found."
+    },
+    {
+      "name": "Find Record by Query",
+      "category": "Record Management",
+      "description": "Finds a record of a Salesforce object using a Salesforce Object Query (SOQL) WHERE clause."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Lead generation and qualification automation",
+    "Contact management and database maintenance",
+    "Campaign tracking and marketing automation",
+    "Sales pipeline management and reporting",
+    "Customer data synchronization workflows",
+    "File attachment and document management",
+    "Basic CRM record creation and updates",
+    "Simple query-based data retrieval"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/salesforce-essentials/public/icon.png",
+  "sourcePaths": {
+    "service": "services/salesforce-essentials",
+    "readme": "services/salesforce-essentials/README.md",
+    "index": "services/salesforce-essentials/src/index.js"
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "slug": "entra-id",
+  "name": "Microsoft Entra ID",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage your Microsoft Entra ID (formerly Azure Active Directory) tenant from FlowRunner over the [Microsoft Graph API](https://learn.microsoft.com/en-us/graph/api/overview). Create and manage users and groups, control group membership and ownership, inspect directory roles, invite external guests, and list application registrations and service principals. Authentication uses OAuth 2.0 with delegated permissions.",
+  "actionCount": 23,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Directory",
+    "Users",
+    "Groups",
+    "Directory Roles",
+    "Invitations",
+    "Applications"
+  ],
+  "actions": [
+    {
+      "name": "Get My Profile",
+      "category": "Directory",
+      "description": "Retrieves the profile of the signed-in user including display name, email, user principal name, and object ID. Useful for verifying that the connection to Microsoft Entra ID is working."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Retrieves users from the directory. Supports OData filtering, full-text search on display name and email, field selection, and result limiting. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single user by object ID or user principal name (email). Optionally limit the returned properties with a field selection."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a new member user in the directory. Requires a display name, mail nickname, user principal name (which must use a verified domain), and an initial password. By default the account is enabled and the user is required to change their password at first sign-in."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates writable properties of an existing user, such as display name, job title, department, or account enabled state. Only the fields you provide are changed. Returns a confirmation message; Microsoft Graph returns no content on a successful update."
+    },
+    {
+      "name": "Delete User",
+      "category": "Users",
+      "description": "Deletes a user from the directory. The user is moved to the deleted items container and can be restored within 30 days before being permanently removed."
+    },
+    {
+      "name": "Reset User Password",
+      "category": "Users",
+      "description": "Resets a user's password by updating their password profile. Optionally require the user to change the password at their next sign-in. The new password must meet the tenant's password complexity policy."
+    },
+    {
+      "name": "Revoke Sign-In Sessions",
+      "category": "Users",
+      "description": "Invalidates all refresh tokens and browser sessions for a user by resetting their sign-in session validity time. This forces the user to reauthenticate on all devices and applications. Useful when an account is compromised or an employee leaves."
+    },
+    {
+      "name": "List User's Groups",
+      "category": "Users",
+      "description": "Retrieves the groups and directory roles that a user is a direct member of. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "List Groups",
+      "category": "Groups",
+      "description": "Retrieves groups from the directory. Supports OData filtering, full-text search on display name and email, field selection, and result limiting. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "Get Group",
+      "category": "Groups",
+      "description": "Retrieves a single group by its object ID. Optionally limit the returned properties with a field selection."
+    },
+    {
+      "name": "Create Group",
+      "category": "Groups",
+      "description": "Creates a new group in the directory. Choose the group type: a Microsoft 365 group for collaboration or a Security group for access control. The calling user is automatically added as the group owner."
+    },
+    {
+      "name": "Update Group",
+      "category": "Groups",
+      "description": "Updates writable properties of an existing group, such as display name or description. Only the fields you provide are changed. Returns a confirmation message; Microsoft Graph returns no content on a successful update."
+    },
+    {
+      "name": "Delete Group",
+      "category": "Groups",
+      "description": "Deletes a group from the directory. Microsoft 365 groups are moved to the deleted items container and can be restored within 30 days; security groups are deleted permanently."
+    },
+    {
+      "name": "List Group Members",
+      "category": "Groups",
+      "description": "Retrieves the direct members of a group, which may include users, other groups, service principals, and devices. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "Add Group Member",
+      "category": "Groups",
+      "description": "Adds a user as a member of a group. Returns a confirmation message; Microsoft Graph returns no content on success."
+    },
+    {
+      "name": "Remove Group Member",
+      "category": "Groups",
+      "description": "Removes a user from a group's membership. This does not delete the user. Returns a confirmation message; Microsoft Graph returns no content on success."
+    },
+    {
+      "name": "Add Group Owner",
+      "category": "Groups",
+      "description": "Adds a user as an owner of a group. Owners can manage the group's membership and settings. Returns a confirmation message; Microsoft Graph returns no content on success."
+    },
+    {
+      "name": "List Directory Roles",
+      "category": "Directory Roles",
+      "description": "Retrieves the directory roles that are activated in the tenant, such as Global Administrator or User Administrator, including each role's ID, display name, and role template ID."
+    },
+    {
+      "name": "List Directory Role Members",
+      "category": "Directory Roles",
+      "description": "Retrieves the members (principals) assigned to a directory role. Provide the role's object ID, obtained from List Directory Roles. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "Invite Guest User",
+      "category": "Invitations",
+      "description": "Invites an external user to the directory as a B2B guest. Optionally send them the standard invitation email. Returns the invitation, including a redeem URL the guest can use to accept if no email is sent."
+    },
+    {
+      "name": "List Applications",
+      "category": "Applications",
+      "description": "Retrieves the application registrations in the directory, including each application's ID, app ID, and display name. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    },
+    {
+      "name": "List Service Principals",
+      "category": "Applications",
+      "description": "Retrieves the service principals (enterprise applications) in the directory, including each service principal's ID, app ID, and display name. Returns a paginated list; follow the @odata.nextLink value using the Next Page Link parameter to retrieve additional pages."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automate employee onboarding by creating a user, setting an initial password, and adding them to the right groups.",
+    "Offboard departing employees by revoking sign-in sessions and deleting or updating their accounts.",
+    "Sync group membership and ownership from an HR system or spreadsheet.",
+    "Invite external partners as B2B guest users.",
+    "Audit directory roles, group members, applications, and service principals."
+  ],
+  "agentIdeas": [
+    "When onboarding a new hire, use **Microsoft Entra ID** \"Create User\" and \"Add Group Member\", then use **Microsoft Teams** \"Send Channel Message\" to announce them in the team channel.",
+    "After **Microsoft Entra ID** \"Invite Guest User\" completes, use **Outlook** \"Send Message\" to email the guest a personalized welcome with next steps.",
+    "Use **Microsoft Entra ID** \"List Group Members\" to enumerate a team, then create a **Microsoft To Do** \"Create Task\" for each member as part of a compliance or training checklist."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/entra-id/public/icon.png",
+  "sourcePaths": {
+    "service": "services/entra-id",
+    "readme": "services/entra-id/README.md",
+    "index": "services/entra-id/src/index.js"
+  }
+}

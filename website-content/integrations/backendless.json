@@ -1,0 +1,127 @@
+{
+  "slug": "backendless",
+  "name": "Backendless",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Unified Backendless platform integration combining database operations, file management, messaging, PDF generation, and real-time event triggers across your Backendless applications. Connects via OAuth2.",
+  "actionCount": 13,
+  "triggerCount": 20,
+  "operationCategories": [
+    "Database",
+    "Files",
+    "Messaging",
+    "PDF"
+  ],
+  "actions": [
+    {
+      "name": "Delete Record In Database",
+      "category": "Database",
+      "description": "Removes records from a Backendless database table."
+    },
+    {
+      "name": "Delete Records In Database",
+      "category": "Database",
+      "description": "Removes records from a Backendless database table."
+    },
+    {
+      "name": "Find Record(s) in Database",
+      "category": "Database",
+      "description": "Fetches records from a Backendless table based on specified criteria."
+    },
+    {
+      "name": "Save Record In Database",
+      "category": "Database",
+      "description": "Creates new records or updates existing ones in Backendless database tables."
+    },
+    {
+      "name": "Update Records With Query",
+      "category": "Database",
+      "description": "Updates records in Backendless database tables."
+    },
+    {
+      "name": "Create Directory",
+      "category": "Files",
+      "description": "Creates directories in Backendless file storage for AI agents to organize generated content, user uploads, or data exports. Perfect for creating dynamic folder structures based on user IDs, project names, or automated workflows that need organized file storage."
+    },
+    {
+      "name": "Delete File",
+      "category": "Files",
+      "description": "Removes files from Backendless storage, enabling AI agents to clean up temporary files, delete outdated content, or manage storage quotas automatically. Essential for maintaining organized file systems and preventing storage bloat in automated workflows."
+    },
+    {
+      "name": "Add To File",
+      "category": "Files",
+      "description": "Appends content to files, enabling AI agents to build logs, accumulate data, or create progressive reports. Perfect for adding new entries to CSV files, appending chat logs, building audit trails, or collecting data from multiple sources into single files."
+    },
+    {
+      "name": "Create File",
+      "category": "Files",
+      "description": "Creates new files in Backendless storage, enabling AI agents to generate reports, save processed data, create configuration files, or store user-generated content. Perfect for exporting data, saving AI outputs, or creating dynamic content files."
+    },
+    {
+      "name": "List Directory",
+      "category": "Files",
+      "description": "Lists files and directories in a Backendless file storage directory with optional filtering, sorting, and pagination. Enables AI agents to explore file structures, search for specific files, or paginate through large directories."
+    },
+    {
+      "name": "Send Email",
+      "category": "Messaging",
+      "description": "Sends email messages using Backendless email templates with support for multiple recipients, CC/BCC, and file attachments."
+    },
+    {
+      "name": "Send Push Notification",
+      "category": "Messaging",
+      "description": "Sends push notifications using Backendless push templates with customizable parameters for dynamic content."
+    },
+    {
+      "name": "Generate PDF",
+      "category": "PDF",
+      "description": "Generates PDF documents from HTML templates using Backendless template system."
+    }
+  ],
+  "triggers": [
+    "Timer: Execute",
+    "Counter: Reset",
+    "Counter: Get And Increment",
+    "Counter: Increment And Get",
+    "Counter: Get And Decrement",
+    "Counter: Decrement And Get",
+    "Counter: Add And Get",
+    "Counter: Get And Add",
+    "Counter: Compare And Set",
+    "On Record Created",
+    "On Record Updated",
+    "On Record Deleted",
+    "File Copied",
+    "File Deleted",
+    "File Moved",
+    "File Renamed",
+    "File Uploaded",
+    "On Push Notification Published",
+    "On Push Notification Sent From Template",
+    "On New User Registered"
+  ],
+  "idealUseCases": [
+    "Automating database CRUD operations across Backendless apps with dynamic table schemas",
+    "Reacting to record changes, file uploads, counter updates, and user registrations in real time",
+    "Sending templated emails and push notifications from automated workflows",
+    "Managing files and directories in Backendless storage programmatically",
+    "Generating PDF documents from HTML templates with dynamic field substitution"
+  ],
+  "agentIdeas": [
+    "When a Backendless \"On Record Created\" trigger fires, use **Google Sheets** \"Add Row\" to log details and **Slack** \"Send Message To Channel\" to notify the team",
+    "When a Backendless \"File Uploaded\" trigger fires, use **Gemini AI** \"Generate Content\" to analyze the document and Backendless \"Save Record In Database\" to store extracted metadata",
+    "Use Backendless \"Find Record(s) in Database\" to fetch pending customers, then **Gmail** \"Send Message\" to deliver personalized onboarding emails"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/backendless/public/icon.png",
+  "sourcePaths": {
+    "service": "services/backendless",
+    "readme": "services/backendless/README.md",
+    "index": "services/backendless/src/index.js"
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "slug": "google-cloud-storage",
+  "name": "Google Cloud Storage",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [Google Cloud Storage](https://cloud.google.com/storage) — Google's object storage service. Manage buckets and objects, move file data between Cloud Storage and FlowRunner file storage, and generate V4 signed URLs for time-limited sharing and direct uploads.",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Buckets",
+    "Objects",
+    "Signed URLs"
+  ],
+  "actions": [
+    {
+      "name": "List Buckets",
+      "category": "Buckets",
+      "description": "Lists the buckets in the project, returning each bucket's name, location, storage class, and timestamps. Supports filtering by name prefix and pagination for projects with many buckets."
+    },
+    {
+      "name": "Get Bucket",
+      "category": "Buckets",
+      "description": "Retrieves a bucket's metadata: location, storage class, versioning state, labels, and timestamps. Does not list the bucket's objects — use 'List Objects' for that."
+    },
+    {
+      "name": "Create Bucket",
+      "category": "Buckets",
+      "description": "Creates a new bucket in the project. Bucket names are GLOBALLY unique across all of Google Cloud, must be 3-63 characters of lowercase letters, numbers, hyphens, and underscores, and cannot be changed later. The location (e.g. 'US', 'EU', or a region like 'us-central1') is fixed at creation time. The default storage class applies to objects that do not specify their own."
+    },
+    {
+      "name": "Delete Bucket",
+      "category": "Buckets",
+      "description": "Permanently deletes an EMPTY bucket. THIS CANNOT BE UNDONE. The request fails if the bucket still contains objects — delete them first with 'Delete Object' or 'List Objects' + iteration."
+    },
+    {
+      "name": "List Objects",
+      "category": "Objects",
+      "description": "Lists the objects in a bucket, returning each object's name, size, content type, and timestamps. Supports filtering by name prefix and folder-style browsing: set Delimiter to '/' to list only the objects and 'subfolders' (returned in prefixes) directly under the given prefix. Paginated via pageToken."
+    },
+    {
+      "name": "Get Object Metadata",
+      "category": "Objects",
+      "description": "Retrieves an object's metadata: size, content type, storage class, MD5/CRC32C checksums, cache control, custom metadata, and timestamps. Does not download the object's data — use 'Download Object' for that."
+    },
+    {
+      "name": "Download Object",
+      "category": "Objects",
+      "description": "Downloads an object's data from Cloud Storage and saves it to FlowRunner file storage, returning a URL for use in subsequent flow steps. The file name defaults to the last path segment of the object name. Best suited for files up to a few hundred MB."
+    },
+    {
+      "name": "Upload Object",
+      "category": "Objects",
+      "description": "Uploads a file to a Cloud Storage bucket. The file is fetched from the given URL (a FlowRunner file URL from a previous step, or any publicly accessible external URL) and written to the bucket under the given object name; an existing object with the same name is overwritten. The content type is inferred from the object name's extension unless specified explicitly. Best suited for files up to a few hundred MB."
+    },
+    {
+      "name": "Delete Object",
+      "category": "Objects",
+      "description": "Permanently deletes an object from a bucket. THIS CANNOT BE UNDONE unless the bucket has object versioning enabled (in which case a noncurrent version is retained per the bucket's lifecycle rules)."
+    },
+    {
+      "name": "Copy Object",
+      "category": "Objects",
+      "description": "Copies an object to another name and/or bucket within Cloud Storage — the data never leaves Google's servers, so copies are fast regardless of size (objects over ~5 GB may require multiple internal rewrite steps and can fail via this simple copy; they are rare in automation flows). An existing object at the destination is overwritten. The source object is left untouched; combine with 'Delete Object' to implement a move/rename."
+    },
+    {
+      "name": "Update Object Metadata",
+      "category": "Objects",
+      "description": "Updates an object's mutable metadata without touching its data: the content type, the Cache-Control header served with downloads, and custom key/value metadata. Only the fields you provide are changed (PATCH semantics); note that the custom metadata object replaces the existing custom metadata as a whole."
+    },
+    {
+      "name": "Generate Signed URL",
+      "category": "Signed URLs",
+      "description": "Generates a V4 signed URL that grants time-limited access to a single object without requiring Google credentials — ideal for sharing private files or letting external systems upload directly. The URL is signed locally with the service account's private key (no API call is made, and the object does not need to exist yet for PUT). Choose GET to allow downloading the object or PUT to allow uploading/overwriting it. Maximum expiration is 604800 seconds (7 days). The signing service account must itself have permission on the object (e.g. Storage Object Admin) for the URL to work when used."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Archive files produced by a flow (reports, exports, generated media) into a Cloud Storage bucket for durable, long-term storage.",
+    "Fetch objects from Cloud Storage into FlowRunner file storage so later steps can process, convert, or attach them.",
+    "Generate time-limited V4 signed URLs to let customers or partners download (or upload) a single object without granting broader access.",
+    "Provision buckets on demand and manage object lifecycle (copy, move/rename, delete) as part of an automated pipeline.",
+    "Read and update object metadata (content type, cache control, custom key/value pairs) to keep served assets correctly configured."
+  ],
+  "agentIdeas": [
+    "When a **Dropbox** \"On New File\" trigger fires, call **Google Cloud Storage** \"Upload Object\" (passing the Dropbox \"Get Temporary Link\" URL) to mirror incoming files into a Cloud Storage bucket for durable archival.",
+    "Use **Google Cloud Storage** \"Download Object\" to pull a raw PDF into FlowRunner file storage, then run **PDF.co** \"Parse Invoice with AI\" to extract structured data from it.",
+    "After an export step writes a report, use **Google Cloud Storage** \"Upload Object\" followed by \"Generate Signed URL\", then **Gmail** \"Send Message\" to email the recipient a time-limited download link.",
+    "Use **Google Sheets** \"Get Rows\" to read a list of object names, then call **Google Cloud Storage** \"Copy Object\" or \"Delete Object\" to reorganize or clean up a bucket in bulk."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/google-cloud-storage/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/google-cloud-storage",
+    "readme": "services/google-cloud-storage/README.md",
+    "index": "services/google-cloud-storage/src/index.js"
+  }
+}

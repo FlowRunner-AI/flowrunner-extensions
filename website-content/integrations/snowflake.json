@@ -1,0 +1,80 @@
+{
+  "slug": "snowflake",
+  "name": "Snowflake",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Snowflake](https://www.snowflake.com/), the cloud data platform. Talks directly to the [Snowflake SQL API v2](https://docs.snowflake.com/en/developer-guide/sql-api/intro) over HTTPS — no drivers and no npm dependencies. Authentication uses a **programmatic access token (PAT)**; results are automatically converted from Snowflake's columnar wire format into plain row objects keyed by column name.",
+  "actionCount": 8,
+  "triggerCount": 0,
+  "operationCategories": [
+    "SQL",
+    "Metadata"
+  ],
+  "actions": [
+    {
+      "name": "Execute SQL",
+      "category": "SQL",
+      "description": "Executes a SQL statement (SELECT, INSERT, UPDATE, DELETE, MERGE, DDL, CALL, SHOW, etc.) via the Snowflake SQL API. Use ? positional placeholders together with the Parameters array to safely bind values - never interpolate user input into the SQL string (binding is not supported in multi-statement requests). Results are converted from Snowflake's columnar wire format into plain row objects keyed by column name, with numbers and booleans coerced to native types. If the statement does not finish within the API's synchronous window (~45 seconds), the action returns {\"inProgress\": true} with a statementHandle - poll Get Statement Results with that handle to retrieve the rows. Result sets larger than one partition include partition info; fetch the remaining partitions with Get Statement Results."
+    },
+    {
+      "name": "Get Statement Results",
+      "category": "SQL",
+      "description": "Retrieves the status and results of a previously submitted statement by its handle. Returns {\"inProgress\": true} while the statement is still executing. For large result sets Snowflake splits the data into partitions: partition 0 is returned by default, and each additional partition can be fetched by passing its number. Rows are converted into plain objects keyed by column name."
+    },
+    {
+      "name": "Cancel Statement",
+      "category": "SQL",
+      "description": "Cancels a running statement by its handle. Useful for stopping long-running queries submitted with Execute SQL that returned an inProgress response. Returns Snowflake's confirmation message."
+    },
+    {
+      "name": "List Databases",
+      "category": "Metadata",
+      "description": "Lists all databases visible to the configured role using SHOW DATABASES, including each database's name, owner, origin, comment and creation time."
+    },
+    {
+      "name": "List Schemas",
+      "category": "Metadata",
+      "description": "Lists all schemas in a database using SHOW SCHEMAS IN DATABASE, including each schema's name, owner and comment. Uses the configured default database when none is provided."
+    },
+    {
+      "name": "List Tables",
+      "category": "Metadata",
+      "description": "Lists all tables in a schema using SHOW TABLES IN SCHEMA, including each table's name, kind, row count, size in bytes, owner and comment. Uses the configured default database/schema when not provided."
+    },
+    {
+      "name": "List Warehouses",
+      "category": "Metadata",
+      "description": "Lists all virtual warehouses visible to the configured role using SHOW WAREHOUSES, including each warehouse's name, state (STARTED/SUSPENDED), size and owner. Useful for choosing the compute to run statements on."
+    },
+    {
+      "name": "Get Table Schema",
+      "category": "Metadata",
+      "description": "Returns the column definitions of a table using DESCRIBE TABLE: column name, Snowflake data type, nullability, default expression, and primary/unique key flags. Useful for discovering a table's structure before reading or writing. Uses the configured default database/schema when not provided."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Run parameterized SQL queries against a Snowflake warehouse from within a workflow.",
+    "Load records produced by other workflow steps into Snowflake tables (INSERT/MERGE via Execute SQL).",
+    "Pull analytics results out of Snowflake and feed them to spreadsheets, CRMs, or messaging tools.",
+    "Discover databases, schemas, tables, and table structures before reading or writing.",
+    "Kick off long-running statements, then poll for their results or cancel them."
+  ],
+  "agentIdeas": [
+    "Use **Snowflake** \"Execute SQL\" to run an analytics query, then push each returned row into a spreadsheet with **Google Sheets** \"Add Rows\" for reporting.",
+    "Read new records with **Airtable** \"Get Records\", then load them into a warehouse table via **Snowflake** \"Execute SQL\" (INSERT/MERGE) to keep your data warehouse in sync.",
+    "After a **Snowflake** \"Execute SQL\" query surfaces an anomaly, post a summary to a channel using **Slack** \"Send Message To Channel\" to alert the team.",
+    "Export data with **BigQuery** \"Run Query\", then stage it into Snowflake with **Snowflake** \"Execute SQL\" for cross-cloud analytics."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/snowflake/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/snowflake",
+    "readme": "services/snowflake/README.md",
+    "index": "services/snowflake/src/index.js"
+  }
+}

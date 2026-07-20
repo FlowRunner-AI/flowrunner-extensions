@@ -1,0 +1,134 @@
+{
+  "slug": "asana",
+  "name": "Asana",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "A comprehensive project management integration that enables automated task creation, project management, and team collaboration workflows. This extension provides full control over Asana workspaces, projects, tasks, and team communication through automated processes.",
+  "actionCount": 19,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Task Management",
+    "Templates",
+    "Project Management",
+    "Organization"
+  ],
+  "actions": [
+    {
+      "name": "Create Task",
+      "category": "Task Management",
+      "description": "Creates a new task in an Asana project with customizable properties like due dates, assignees, and tags. Perfect for automating task creation workflows and project management processes."
+    },
+    {
+      "name": "Update Task",
+      "category": "Task Management",
+      "description": "Updates an existing Asana task with new information such as due dates, assignees, status, or content. Perfect for automating task management and progress tracking workflows."
+    },
+    {
+      "name": "Get Task by ID",
+      "category": "Task Management",
+      "description": "Retrieves detailed information about a specific task including its title, description, assignee, due date, and current status."
+    },
+    {
+      "name": "Find Task in Project",
+      "category": "Task Management",
+      "description": "Searches for a task within a specific project by name. Returns the first exact match or a task with similar name."
+    },
+    {
+      "name": "Add Task to Section",
+      "category": "Task Management",
+      "description": "Adds a task to a specific section of a project. This method is used to move tasks into sections."
+    },
+    {
+      "name": "Attach File",
+      "category": "Task Management",
+      "description": "Attaches a file to an Asana task for easy access and collaboration. Supports documents, images, and other file types up to 100MB."
+    },
+    {
+      "name": "Add Comment",
+      "category": "Task Management",
+      "description": "Adds a comment to a task for communication and updates. Comments help team members collaborate and track progress on tasks."
+    },
+    {
+      "name": "Duplicate Task",
+      "category": "Task Management",
+      "description": "Creates a copy of an existing task with customizable properties. Useful for creating similar tasks or templates without starting from scratch."
+    },
+    {
+      "name": "Create Subtask",
+      "category": "Task Management",
+      "description": "Creates a smaller task within a parent task to break down complex work into manageable pieces."
+    },
+    {
+      "name": "Get Task Templates",
+      "category": "Templates",
+      "description": "Retrieves the compact task template records for certain project."
+    },
+    {
+      "name": "Create Task from Template",
+      "category": "Templates",
+      "description": "Creates a new task from a selected template."
+    },
+    {
+      "name": "Create Project",
+      "category": "Project Management",
+      "description": "Creates a new Asana project to organize tasks and collaborate with team members. Projects help structure work and track progress toward goals."
+    },
+    {
+      "name": "Get Project by ID",
+      "category": "Project Management",
+      "description": "Retrieves a project by ID."
+    },
+    {
+      "name": "Find Project by Name",
+      "category": "Project Management",
+      "description": "Searches for a project within a workspace by name. Returns the first exact match or a project with similar name."
+    },
+    {
+      "name": "Create Project from Template",
+      "category": "Templates",
+      "description": "Creates a new project from a custom template."
+    },
+    {
+      "name": "Create Section",
+      "category": "Project Management",
+      "description": "Creates a new section within a project."
+    },
+    {
+      "name": "Find Section by Name",
+      "category": "Project Management",
+      "description": "Finds a section by name."
+    },
+    {
+      "name": "Get Section by ID",
+      "category": "Project Management",
+      "description": "Retrieves full section record by its ID."
+    },
+    {
+      "name": "Find User by email or ID",
+      "category": "Organization",
+      "description": "Retrieves a User by email or ID."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automating task creation and assignment based on external triggers",
+    "Building AI agents for project management and workflow optimization",
+    "Creating automated project templates and task standardization systems",
+    "Managing team collaboration with automated comment and file attachment workflows",
+    "Implementing custom task tracking and progress monitoring systems",
+    "Building integrated project management dashboards and reporting tools",
+    "Automating project planning and resource allocation processes"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.svg",
+  "iconFile": "services/asana/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/asana",
+    "readme": "services/asana/README.md",
+    "index": "services/asana/src/index.js"
+  }
+}

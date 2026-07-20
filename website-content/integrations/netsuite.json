@@ -1,0 +1,180 @@
+{
+  "slug": "netsuite",
+  "name": "NetSuite",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Full NetSuite ERP integration for managing customers, vendors, invoices, sales orders, items, and payments via the SuiteTalk REST API. Supports custom SuiteQL queries for advanced data retrieval. Connects through OAuth2 authentication.",
+  "actionCount": 27,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Customers",
+    "Vendors",
+    "Invoices",
+    "Sales Orders",
+    "Items",
+    "Payments",
+    "Utilities"
+  ],
+  "actions": [
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a new customer record in NetSuite. Customers represent the people or companies you sell products and services to. You can optionally assign a subsidiary and currency."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer record by ID from NetSuite. Returns the full customer details including contact information, subsidiary, currency, and metadata."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates an existing customer record in NetSuite. Only the fields you provide will be changed; all other fields remain unchanged. Uses PATCH for partial updates."
+    },
+    {
+      "name": "Delete Customer",
+      "category": "Customers",
+      "description": "Deletes a customer record from NetSuite. This action cannot be undone. The customer must not have any associated transactions."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Queries customers in NetSuite using SuiteQL. Supports optional search filtering by company name or entity ID. Results are paginated using limit and offset."
+    },
+    {
+      "name": "Create Vendor",
+      "category": "Vendors",
+      "description": "Creates a new vendor record in NetSuite. Vendors represent the people or companies you purchase products and services from. You can optionally assign a subsidiary and currency."
+    },
+    {
+      "name": "Get Vendor",
+      "category": "Vendors",
+      "description": "Retrieves a single vendor record by ID from NetSuite. Returns the full vendor details including contact information, subsidiary, currency, and metadata."
+    },
+    {
+      "name": "Update Vendor",
+      "category": "Vendors",
+      "description": "Updates an existing vendor record in NetSuite. Only the fields you provide will be changed; all other fields remain unchanged. Uses PATCH for partial updates."
+    },
+    {
+      "name": "Delete Vendor",
+      "category": "Vendors",
+      "description": "Deletes a vendor record from NetSuite. This action cannot be undone. The vendor must not have any associated transactions."
+    },
+    {
+      "name": "List Vendors",
+      "category": "Vendors",
+      "description": "Queries vendors in NetSuite using SuiteQL. Supports optional search filtering by company name or entity ID. Results are paginated using limit and offset."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates a new invoice in NetSuite for a specified customer. Line items define the products or services being invoiced. Each line item should include an item reference with quantity and amount."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves a single invoice by ID from NetSuite. Returns the full invoice record including line items, customer reference, amounts, dates, and status."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Updates an existing invoice in NetSuite. Only the fields you provide will be changed. You can update line items, due date, and memo. Uses PATCH for partial updates."
+    },
+    {
+      "name": "Delete Invoice",
+      "category": "Invoices",
+      "description": "Permanently deletes an invoice from NetSuite. This action cannot be undone. The invoice must not have any payments applied to it."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Queries invoices in NetSuite using SuiteQL. Supports optional search filtering by transaction ID. Results include transaction date, customer, total, and status. Paginated using limit and offset."
+    },
+    {
+      "name": "Create Sales Order",
+      "category": "Sales Orders",
+      "description": "Creates a new sales order in NetSuite for a specified customer. Sales orders represent confirmed orders from customers and can be fulfilled and invoiced later."
+    },
+    {
+      "name": "Get Sales Order",
+      "category": "Sales Orders",
+      "description": "Retrieves a single sales order by ID from NetSuite. Returns the full sales order record including line items, customer reference, amounts, shipping details, and status."
+    },
+    {
+      "name": "Update Sales Order",
+      "category": "Sales Orders",
+      "description": "Updates an existing sales order in NetSuite. Only the fields you provide will be changed. You can update line items, ship date, and memo. Uses PATCH for partial updates."
+    },
+    {
+      "name": "Delete Sales Order",
+      "category": "Sales Orders",
+      "description": "Permanently deletes a sales order from NetSuite. This action cannot be undone. The sales order must not have any fulfillments or invoices linked to it."
+    },
+    {
+      "name": "List Sales Orders",
+      "category": "Sales Orders",
+      "description": "Queries sales orders in NetSuite using SuiteQL. Supports optional search filtering by transaction ID. Results include transaction date, customer, total, and status. Paginated using limit and offset."
+    },
+    {
+      "name": "Get Item",
+      "category": "Items",
+      "description": "Retrieves a single item by ID from NetSuite. Attempts to fetch the item as an inventory item first. Returns the full item record including pricing, type, and metadata."
+    },
+    {
+      "name": "List Items",
+      "category": "Items",
+      "description": "Queries items in NetSuite using SuiteQL. Returns all item types including inventory, non-inventory, and service items. Supports optional search filtering by item ID or display name. Paginated using limit and offset."
+    },
+    {
+      "name": "Create Payment",
+      "category": "Payments",
+      "description": "Creates a new customer payment in NetSuite to record a payment received from a customer. The payment amount and customer are required."
+    },
+    {
+      "name": "Get Payment",
+      "category": "Payments",
+      "description": "Retrieves a single customer payment by ID from NetSuite. Returns the full payment record including customer reference, amount, date, and status."
+    },
+    {
+      "name": "Delete Payment",
+      "category": "Payments",
+      "description": "Permanently deletes a customer payment from NetSuite. This action cannot be undone and will reverse any invoice applications associated with this payment."
+    },
+    {
+      "name": "List Payments",
+      "category": "Payments",
+      "description": "Queries customer payments in NetSuite using SuiteQL. Supports optional filtering by customer. Results include transaction date, customer, total, and status. Paginated using limit and offset."
+    },
+    {
+      "name": "Run SuiteQL Query",
+      "category": "Utilities",
+      "description": "Executes a custom SuiteQL query against the NetSuite database. SuiteQL is a SQL-like query language for querying NetSuite records. Use this for advanced queries not covered by other methods."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automating customer and vendor record management across your ERP",
+    "Creating and tracking invoices and customer payments",
+    "Managing sales order lifecycles from creation through fulfillment",
+    "Synchronizing product and item catalogs with external systems",
+    "Running custom SuiteQL queries for reporting and data analysis",
+    "Coordinating multi-subsidiary and multi-currency financial workflows"
+  ],
+  "agentIdeas": [
+    "Use **Stripe** \"Create Payment Intent\" to collect a payment online, then call **NetSuite** \"Create Payment\" and \"Create Invoice\" to record the transaction and invoice in the ERP automatically",
+    "Use **NetSuite** \"List Customers\" to export the full customer roster, then call **Google Sheets** \"Add Rows\" to build a live customer directory spreadsheet for the team",
+    "When a **NetSuite** \"Run SuiteQL Query\" finds overdue invoices, use **Gmail** \"Send Message\" to notify each customer with their outstanding balance and payment instructions"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/netsuite/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/netsuite",
+    "readme": "services/netsuite/README.md",
+    "index": "services/netsuite/src/index.js"
+  }
+}

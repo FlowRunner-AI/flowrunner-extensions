@@ -1,0 +1,116 @@
+{
+  "slug": "nocodb",
+  "name": "NocoDB",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to [NocoDB](https://nocodb.com), the open-source no-code database platform. This service reads and writes table records, manages linked (relational) records, and inspects base, table, field, and view metadata through the NocoDB **API v2**. It authenticates with an API token sent as the `xc-token` header and works with both NocoDB Cloud and self-hosted instances.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Records",
+    "Linked Records",
+    "Bases & Tables",
+    "Views"
+  ],
+  "actions": [
+    {
+      "name": "List Records",
+      "category": "Records",
+      "description": "Retrieves records from a NocoDB table with support for field selection, sorting, filtering, and pagination. The \"where\" parameter uses NocoDB filter syntax: each condition is written as (field,operator,value) and conditions are joined with ~and or ~or, for example (Status,eq,Active)~and(Age,gt,21). Common operators include eq, neq, gt, ge (>=), lt, le (<=), like, nlike, in, isnull, notnull, isblank, notblank. Returns the matching records along with pagination metadata (pageInfo)."
+    },
+    {
+      "name": "Get Record",
+      "category": "Records",
+      "description": "Retrieves a single record from a NocoDB table by its primary key value. Optionally limits the returned fields."
+    },
+    {
+      "name": "Create Records",
+      "category": "Records",
+      "description": "Inserts one or more records into a NocoDB table. Accepts either a single record object or an array of record objects, where each object maps field titles to values. Returns the identifiers of the created records."
+    },
+    {
+      "name": "Update Records",
+      "category": "Records",
+      "description": "Updates one or more existing records in a NocoDB table. Each record object must include the primary key field (typically \"Id\") together with the field values to change. Accepts a single object or an array of objects. Returns the identifiers of the updated records."
+    },
+    {
+      "name": "Delete Records",
+      "category": "Records",
+      "description": "Deletes one or more records from a NocoDB table by primary key. Accepts a single Id value, a single object containing an Id (e.g. {\"Id\":1}), or an array of either. Returns the identifiers of the deleted records."
+    },
+    {
+      "name": "Count Records",
+      "category": "Records",
+      "description": "Returns the number of records in a NocoDB table, optionally constrained by a \"where\" filter expression using NocoDB filter syntax, for example (Status,eq,Active)~and(Age,gt,21)."
+    },
+    {
+      "name": "List Linked Records",
+      "category": "Linked Records",
+      "description": "Lists the records linked to a given record through a specific link (relation) field. Useful for reading the related rows on the far side of a linked-to-another-table relationship."
+    },
+    {
+      "name": "Link Records",
+      "category": "Linked Records",
+      "description": "Creates links between a source record and one or more target records through a link (relation) field. Accepts a single target Id, a single {\"Id\":value} object, or an array of either. Returns true on success."
+    },
+    {
+      "name": "Unlink Records",
+      "category": "Linked Records",
+      "description": "Removes links between a source record and one or more target records through a link (relation) field. Accepts a single target Id, a single {\"Id\":value} object, or an array of either. Returns true on success."
+    },
+    {
+      "name": "List Bases",
+      "category": "Bases & Tables",
+      "description": "Returns all NocoDB bases (projects) accessible with the configured API token, including their identifiers and titles."
+    },
+    {
+      "name": "Get Base",
+      "category": "Bases & Tables",
+      "description": "Retrieves the metadata of a single NocoDB base by its identifier."
+    },
+    {
+      "name": "List Tables",
+      "category": "Bases & Tables",
+      "description": "Returns all tables belonging to a NocoDB base, including their identifiers and titles. Table identifiers are used by the Records API."
+    },
+    {
+      "name": "Get Table",
+      "category": "Bases & Tables",
+      "description": "Retrieves the full metadata of a NocoDB table, including its columns (fields) with their titles, identifiers, and data types. Useful for understanding table structure before reading or writing records."
+    },
+    {
+      "name": "Create Table",
+      "category": "Bases & Tables",
+      "description": "Creates a new table within a NocoDB base. Provide the table name and an array of column definitions. Each column object follows NocoDB's schema, for example {\"title\":\"Name\",\"uidt\":\"SingleLineText\"}. Common uidt values include SingleLineText, LongText, Number, Decimal, Checkbox, Date, DateTime, Email, PhoneNumber and SingleSelect."
+    },
+    {
+      "name": "List Views",
+      "category": "Views",
+      "description": "Returns all views defined on a NocoDB table, including their identifiers, titles, and types (grid, gallery, form, kanban, calendar). View identifiers can be supplied to the List Records and Count Records operations."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync records between NocoDB and other apps by listing, creating, updating, or deleting rows in a table.",
+    "Look up a single record by primary key, or filter and page through large tables using NocoDB `where` filter syntax.",
+    "Maintain relationships by listing, linking, and unlinking related records across tables.",
+    "Provision structure programmatically by creating tables with typed columns.",
+    "Inspect base, table, field, and view metadata to drive dynamic automations."
+  ],
+  "agentIdeas": [
+    "Use **Airtable** \"Get Records\" to pull rows from an Airtable base, then call **NocoDB** \"Create Records\" to migrate or mirror them into a NocoDB table.",
+    "On a schedule, call **NocoDB** \"List Records\" with a `where` filter for new or changed rows, then use **Slack** \"Send Message To Channel\" to notify the team of matching records.",
+    "Use **Google Sheets** \"Get Rows\" to read spreadsheet data, then call **NocoDB** \"Create Records\" (or \"Update Records\" by primary key) to keep a NocoDB table in sync with the sheet."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/nocodb/public/icon.png",
+  "sourcePaths": {
+    "service": "services/nocodb",
+    "readme": "services/nocodb/README.md",
+    "index": "services/nocodb/src/index.js"
+  }
+}

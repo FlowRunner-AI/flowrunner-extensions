@@ -1,0 +1,85 @@
+{
+  "slug": "tiktok",
+  "name": "TikTok",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Connect to a TikTok account via OAuth2 (TikTok Login Kit) to read the connected user's profile and video analytics through the Display API and to publish videos and photo carousels through the Content Posting API. Supports posting from a public URL or an uploaded FlowRunner file, plus a wait-for-completion convenience that polls until the post is live.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "User",
+    "Videos",
+    "Content Posting"
+  ],
+  "actions": [
+    {
+      "name": "Get User Info",
+      "category": "User",
+      "description": "Retrieves the connected TikTok user's profile and statistics. Select which fields to return; by default all available fields are requested, including profile details (display name, username, avatar, bio, verification, profile link) and public stats (follower, following, likes and video counts). Requires the user.info.basic scope for identity fields and user.info.profile / user.info.stats for the extended profile and counts. Useful as a connection check."
+    },
+    {
+      "name": "List Videos",
+      "category": "Videos",
+      "description": "Lists the connected user's public videos in reverse-chronological order using the Display API. Returns each video's id, caption/title, description, duration, cover image, share URL and engagement counts (views, likes, comments, shares) plus create time. Supports paging via a max count (up to 20 per page) and an opaque cursor returned as has_more/cursor. Requires the video.list scope."
+    },
+    {
+      "name": "Query Videos",
+      "category": "Videos",
+      "description": "Retrieves details for specific videos of the connected user by their ids using the Display API. Provide up to 20 video ids; returns each video's id, caption/title, description, duration, cover image, share URL and engagement counts (views, likes, comments, shares) plus create time. Only videos owned by the connected user can be queried. Requires the video.list scope."
+    },
+    {
+      "name": "Query Creator Info",
+      "category": "Content Posting",
+      "description": "Queries the connected creator's posting eligibility and defaults. TikTok guidelines REQUIRE calling this before every post: it returns the creator's avatar, username and nickname, the privacy levels their account is allowed to use (privacy_level_options), whether comment/duet/stitch are disabled for their account, and the maximum video duration they may post (max_video_post_duration_sec). Use the returned privacy_level_options to constrain the privacy level you pass to the post actions. Requires the video.publish scope."
+    },
+    {
+      "name": "Post Video from URL",
+      "category": "Content Posting",
+      "description": "Publishes a video to the connected user's TikTok account by pulling it from a public URL (PULL_FROM_URL). Returns a publish_id you can pass to \"Get Post Status\" to track processing. IMPORTANT: unaudited apps may only post with the \"Private\" privacy level; public visibility requires TikTok's app audit. Direct Post via PULL_FROM_URL also requires the source domain to be verified in the TikTok developer portal, or TikTok will reject the URL. Call \"Query Creator Info\" first to confirm the allowed privacy levels. Requires the video.publish scope."
+    },
+    {
+      "name": "Post Video from File",
+      "category": "Content Posting",
+      "description": "Publishes a video to the connected user's TikTok account by uploading a FlowRunner file (FILE_UPLOAD). The file is uploaded in a single chunk, so it must be 64 MB or smaller; for larger videos, host the file publicly and use \"Post Video from URL\" instead. Returns a publish_id you can pass to \"Get Post Status\" to track processing. IMPORTANT: unaudited apps may only post with the \"Private\" privacy level; public visibility requires TikTok's app audit. Call \"Query Creator Info\" first to confirm the allowed privacy levels. Requires the video.publish scope."
+    },
+    {
+      "name": "Post Photos",
+      "category": "Content Posting",
+      "description": "Publishes a photo carousel post to the connected user's TikTok account by pulling one or more images from public URLs (PULL_FROM_URL). Returns a publish_id you can pass to \"Get Post Status\" to track processing. IMPORTANT: unaudited apps may only post with the \"Private\" privacy level; public visibility requires TikTok's app audit, and the source image domains must be verified in your TikTok developer portal. Call \"Query Creator Info\" first to confirm the allowed privacy levels. Requires the video.publish scope."
+    },
+    {
+      "name": "Get Post Status",
+      "category": "Content Posting",
+      "description": "Fetches the current processing status of a post previously created with \"Post Video from URL\", \"Post Video from File\" or \"Post Photos\", using its publish_id. Returns the status (PROCESSING_UPLOAD, PROCESSING_DOWNLOAD, SEND_TO_USER_INBOX, PUBLISH_COMPLETE or FAILED), a fail_reason when applicable, and the public post id once the post is live. Requires the video.publish scope."
+    },
+    {
+      "name": "Post Video and Wait",
+      "category": "Content Posting",
+      "description": "Publishes a video from a public URL and then polls its status until it completes or fails, returning the final status in one call. Initiates the post (PULL_FROM_URL) and checks status every 5 seconds for up to ~10 minutes. Returns the publish_id together with the terminal status and, when live, the public post id; throws if TikTok reports FAILED. IMPORTANT: unaudited apps may only post with the \"Private\" privacy level and the source domain must be verified in your TikTok developer portal. Call \"Query Creator Info\" first to confirm the allowed privacy levels. Requires the video.publish scope."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Auto-publish videos to TikTok when new content is produced elsewhere in a flow (from a public URL or a stored FlowRunner file)",
+    "Cross-post the same video or image set to TikTok alongside other social channels",
+    "Publish a photo carousel and track its processing status until it goes live",
+    "Pull a creator's video list and engagement counts (views, likes, comments, shares) for reporting or content analysis",
+    "Verify a connection and fetch profile stats (follower/following/likes/video counts) as a health check"
+  ],
+  "agentIdeas": [
+    "Use **AI Image Generator** \"Generate Image\" to create carousel visuals, then call **TikTok** \"Post Photos\" (after \"Query Creator Info\") to publish them as a photo post",
+    "After **YouTube** \"Upload Video\" completes, cross-post the same clip with **TikTok** \"Post Video from URL\" and track it via \"Get Post Status\"",
+    "Store a rendered video in **Dropbox**, get a fetchable link with \"Get Temporary Link\", then hand it to **TikTok** \"Post Video and Wait\" to publish and confirm the post is live in one call"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/tiktok/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/tiktok",
+    "readme": "services/tiktok/README.md",
+    "index": "services/tiktok/src/index.js"
+  }
+}

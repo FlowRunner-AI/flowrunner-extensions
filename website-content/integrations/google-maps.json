@@ -1,0 +1,114 @@
+{
+  "slug": "google-maps",
+  "name": "Google Maps",
+  "marketingCategory": "Utilities & Personal",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrates the Google Maps Platform for geocoding, place search, routing, address validation, and map imagery. Covers forward/reverse/place-ID geocoding, Places API (New) text search, nearby search, place details, autocomplete, and photo download, Routes API route and route-matrix computation, address validation, elevation, time zone lookup, and Static Maps image generation (photos and static maps are saved to FlowRunner file storage). Authenticates with a Google Cloud API key.",
+  "actionCount": 14,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Geocoding",
+    "Places",
+    "Routes",
+    "Address Validation",
+    "Geo Data",
+    "Static Maps"
+  ],
+  "actions": [
+    {
+      "name": "Geocode Address",
+      "category": "Geocoding",
+      "description": "Converts a street address or place name into geographic coordinates and structured address data using the Google Geocoding API. Returns latitude/longitude, a formatted address, address components (street, city, state, country, postal code), the place ID, and location precision (ROOFTOP, RANGE_INTERPOLATED, GEOMETRIC_CENTER, or APPROXIMATE). Use the components filter (e.g. \"country:US|postal_code:94043\") to restrict matches. Requires the Geocoding API to be enabled for your key."
+    },
+    {
+      "name": "Reverse Geocode",
+      "category": "Geocoding",
+      "description": "Converts geographic coordinates into human-readable addresses using the Google Geocoding API. Returns all matching addresses ordered from most to least specific (street address, neighborhood, city, state, country), each with address components and a place ID. Optionally filter by result type (e.g. street_address, locality) or location precision. Requires the Geocoding API to be enabled for your key."
+    },
+    {
+      "name": "Geocode by Place ID",
+      "category": "Geocoding",
+      "description": "Retrieves the full geocoding result (coordinates, formatted address, and address components) for a known Google place ID using the Geocoding API. Useful for turning a place ID from Places search or Autocomplete into a structured postal address. Requires the Geocoding API to be enabled for your key."
+    },
+    {
+      "name": "Search Places by Text",
+      "category": "Places",
+      "description": "Searches for places using a free-text query (e.g. \"vegan restaurants in Austin\") via the Places API (New) Text Search. Returns up to 20 places per page (60 max across pages via the page token) with the fields selected in the field mask. Supports filtering by place type, open-now status, minimum rating, and price levels, plus an optional circular location bias. Requires the Places API (New) to be enabled for your key."
+    },
+    {
+      "name": "Search Nearby Places",
+      "category": "Places",
+      "description": "Finds places within a circular area around a coordinate using the Places API (New) Nearby Search. Returns up to 20 places with the fields selected in the field mask, optionally filtered by included/excluded place types and ranked by popularity or distance. Requires the Places API (New) to be enabled for your key."
+    },
+    {
+      "name": "Get Place Details",
+      "category": "Places",
+      "description": "Retrieves detailed information about a single place by its place ID using the Places API (New). The field mask controls which fields are returned - request contact data (internationalPhoneNumber, websiteUri), opening hours (currentOpeningHours, regularOpeningHours), ratings, reviews, photos, priceLevel, and more. Requires the Places API (New) to be enabled for your key."
+    },
+    {
+      "name": "Autocomplete Places",
+      "category": "Places",
+      "description": "Returns up to five place and query predictions for a partial text input using the Places API (New) Autocomplete - ideal for resolving user-typed place names into place IDs. Supports restricting predictions by primary place types and country codes, plus a circular location bias. Requires the Places API (New) to be enabled for your key."
+    },
+    {
+      "name": "Get Place Photo",
+      "category": "Places",
+      "description": "Downloads a place photo by its photo resource name (from the photos field of Place Details or a Places search with \\\"places.photos\\\" in the field mask) and saves it to FlowRunner file storage. Returns the stored file URL plus the source photo URI. Photos are scaled to fit the requested max dimensions while keeping aspect ratio. Requires the Places API (New) to be enabled for your key."
+    },
+    {
+      "name": "Compute Route",
+      "category": "Routes",
+      "description": "Calculates a route between an origin and destination using the Google Routes API, with optional intermediate stops. Returns duration, distance, and an encoded polyline by default - extend the field mask for turn-by-turn steps (routes.legs), toll info, or traffic-aware durations. Origins, destinations, and stops accept a street address, a \\\"latitude,longitude\\\" pair, or a place ID (auto-detected). Requires the Routes API to be enabled for your key."
+    },
+    {
+      "name": "Compute Route Matrix",
+      "category": "Routes",
+      "description": "Calculates travel duration and distance for every origin-destination combination using the Google Routes API route matrix (up to 625 elements per request, 100 for Transit or Traffic Aware Optimal, and max 50 address/place-ID waypoints). Each origin and destination accepts an address, a \\\"latitude,longitude\\\" pair, or a place ID (auto-detected). Returns one element per pair with origin/destination indexes, duration, distance, and route condition. Requires the Routes API to be enabled for your key."
+    },
+    {
+      "name": "Validate Address",
+      "category": "Address Validation",
+      "description": "Validates and standardizes a postal address using the Google Address Validation API. Returns a verdict (completeness, inferred/replaced components), the standardized address with per-component confirmation levels, and a geocode for the address. For US and Puerto Rico addresses, optional USPS CASS processing adds delivery-point validation. Requires the Address Validation API to be enabled for your key (available in supported countries only)."
+    },
+    {
+      "name": "Get Elevation",
+      "category": "Geo Data",
+      "description": "Returns the elevation above sea level in meters for one or more coordinates using the Google Elevation API, including a resolution value indicating sample accuracy. Negative elevations indicate locations below sea level (e.g. ocean floor). Requires the Elevation API to be enabled for your key."
+    },
+    {
+      "name": "Get Time Zone",
+      "category": "Geo Data",
+      "description": "Returns the time zone for a coordinate using the Google Time Zone API: the IANA time zone ID (e.g. America/New_York), localized name, raw UTC offset, and daylight-saving offset in effect at the given time. Requires the Time Zone API to be enabled for your key."
+    },
+    {
+      "name": "Generate Static Map",
+      "category": "Static Maps",
+      "description": "Renders a map image (PNG) using the Google Maps Static API and saves it to FlowRunner file storage, returning the file URL. Supports center/zoom framing, roadmap/satellite/terrain/hybrid map types, multiple marker definitions, and an encoded or pipe-delimited path overlay. If only markers or a path are provided, the map auto-frames to fit them. Requires the Maps Static API to be enabled for your key."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Turn user-entered addresses into coordinates (and back) to enrich CRM, order, or lead records",
+    "Resolve partial user input into place IDs with autocomplete, then pull full place details (phone, website, hours, ratings)",
+    "Compute driving/walking/transit ETAs and distances, or build a distance matrix across many origin-destination pairs",
+    "Validate and standardize shipping/billing addresses (with optional USPS CASS) before saving them",
+    "Look up elevation and local time zone for a coordinate to support scheduling or geospatial logic",
+    "Generate a labeled static map image or download a place photo and store it for use in reports and notifications"
+  ],
+  "agentIdeas": [
+    "Use **Google Maps** \"Autocomplete Places\" then \"Get Place Details\" to resolve a user-typed business name into a phone number and website, and log the result with **Google Sheets** \"Add Row\"",
+    "When a new lead arrives, use **Google Maps** \"Validate Address\" to standardize the shipping address and \"Compute Route Matrix\" to find the nearest store, then post the summary with **Slack** \"Send Message To Channel\"",
+    "Use **Google Maps** \"Search Places by Text\" to find candidate venues, \"Generate Static Map\" to render a labeled map image, and **Gmail** \"Send Message\" to email the shortlist with the map attached"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/google-maps/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/google-maps",
+    "readme": "services/google-maps/README.md",
+    "index": "services/google-maps/src/index.js"
+  }
+}

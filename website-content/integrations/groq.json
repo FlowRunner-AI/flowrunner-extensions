@@ -1,0 +1,129 @@
+{
+  "slug": "groq",
+  "name": "Groq",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for the [Groq API](https://console.groq.com/docs) — ultra-fast AI inference for open models (Llama, GPT-OSS, Qwen, Whisper, Orpheus and Groq's agentic Compound systems). Provides chat completion, image analysis, audio transcription/translation, text-to-speech, and asynchronous batch processing.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Chat",
+    "Vision",
+    "Audio",
+    "Files",
+    "Batches",
+    "Models"
+  ],
+  "actions": [
+    {
+      "name": "Chat Completion",
+      "category": "Chat",
+      "description": "Generates a text response for a single prompt using a Groq-hosted model (Llama, GPT-OSS, Qwen, Compound and more) with industry-leading inference speed. Supports an optional system prompt, JSON mode for structured output, and reasoning controls for reasoning-capable models. Returns the generated text, extracted reasoning (when available), finish reason and token usage."
+    },
+    {
+      "name": "Chat Completion (Advanced)",
+      "category": "Chat",
+      "description": "Sends a fully custom chat completion request to Groq with a complete messages array (multi-turn conversations, multimodal content parts), tool/function calling passthrough, structured outputs via a response format object (json_object or json_schema), reasoning controls, penalties and sampling parameters. Returns the raw Groq API response including choices, tool calls and usage."
+    },
+    {
+      "name": "Analyze Image",
+      "category": "Vision",
+      "description": "Analyzes up to 5 images with a Groq multimodal vision model (e.g. Llama 4 Scout) and answers a prompt about them — describe content, extract text, compare images or answer visual questions. Accepts public image URLs or base64 data URLs (max 20MB per URL image, 4MB per base64 image). Supports JSON mode for structured extraction."
+    },
+    {
+      "name": "Transcribe Audio",
+      "category": "Audio",
+      "description": "Transcribes an audio file into text in its original language using Groq's ultra-fast Whisper models. Downloads the audio from the provided URL (FlowRunner file URL or any public URL; flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm). Supports plain text, JSON and verbose JSON output with optional word/segment timestamps."
+    },
+    {
+      "name": "Translate Audio",
+      "category": "Audio",
+      "description": "Translates speech from an audio file in any supported language into English text using Groq's Whisper models. Downloads the audio from the provided URL (FlowRunner file URL or any public URL; flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm). Supports plain text, JSON and verbose JSON output."
+    },
+    {
+      "name": "Text to Speech",
+      "category": "Audio",
+      "description": "Converts text into natural-sounding speech audio using Groq's Orpheus text-to-speech models (English and Arabic voices). The English model supports expressive vocal directions via bracketed tags in the input, e.g. '[cheerful]' or '[whisper]'. Saves the generated audio to FlowRunner file storage and returns its URL."
+    },
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a JSONL file to Groq for batch processing. Provide either the URL of an existing JSONL file (FlowRunner file URL or any public URL) or raw JSONL content as text. Batch input files support up to 50,000 lines and 200MB. Returns the created file object with its ID for use in Create Batch."
+    },
+    {
+      "name": "List Files",
+      "category": "Files",
+      "description": "Lists all files uploaded to Groq, including batch input files and generated batch output/error files, with their IDs, names, sizes and purposes."
+    },
+    {
+      "name": "Get File",
+      "category": "Files",
+      "description": "Retrieves the metadata of a file stored in Groq by its ID, including filename, size, purpose and creation time."
+    },
+    {
+      "name": "Delete File",
+      "category": "Files",
+      "description": "Permanently deletes a file stored in Groq by its ID. Returns a deletion confirmation object."
+    },
+    {
+      "name": "Download File Content",
+      "category": "Files",
+      "description": "Downloads the content of a file stored in Groq (typically JSONL batch results from a batch's output_file_id or error_file_id), saves it to FlowRunner file storage and returns its URL. Optionally also returns the raw JSONL text for direct parsing in the flow."
+    },
+    {
+      "name": "Create Batch",
+      "category": "Batches",
+      "description": "Creates an asynchronous batch job that processes a previously uploaded JSONL file of API requests at a 50% cost discount. Supports chat completions (including vision), audio transcriptions and audio translations. The batch completes within the chosen completion window; poll it with Get Batch and download results with Download File Content."
+    },
+    {
+      "name": "Get Batch",
+      "category": "Batches",
+      "description": "Retrieves the current state of a batch job by its ID, including status (validating, in_progress, finalizing, completed, failed, expired, cancelled), request counts, and the output_file_id / error_file_id for downloading results once finished."
+    },
+    {
+      "name": "List Batches",
+      "category": "Batches",
+      "description": "Lists batch jobs in the Groq account with their statuses, endpoints and request counts. Supports pagination via the limit and after parameters."
+    },
+    {
+      "name": "Cancel Batch",
+      "category": "Batches",
+      "description": "Cancels an in-progress batch job by its ID. The batch moves to 'cancelling' and then 'cancelled'; any completed requests are still available in the output file."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists all currently active models available through the Groq API, including chat, vision, reasoning, speech-to-text, text-to-speech, guard and agentic models, with their owners and context window sizes."
+    },
+    {
+      "name": "Get Model",
+      "category": "Models",
+      "description": "Retrieves the details of a specific Groq model by its ID, including owner, active status and context window size."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generating fast, low-latency text responses, summaries, or classifications from a single prompt",
+    "Building multi-turn chatbots with tool/function calling and structured JSON outputs",
+    "Extracting text or answering questions about images with multimodal vision models",
+    "Transcribing or translating audio files (meeting recordings, voice notes) into text",
+    "Converting text into natural-sounding speech for voice notifications or content",
+    "Running large volumes of requests asynchronously at a 50% cost discount via batch jobs"
+  ],
+  "agentIdeas": [
+    "Use **Groq** \"Transcribe Audio\" to convert a meeting recording into text, then call **Notion** \"Create Page\" to save the transcript and **Slack** \"Send Message To Channel\" to post a short summary produced by **Groq** \"Chat Completion\".",
+    "When a **Dropbox** \"On New File\" trigger fires for an uploaded image, call **Dropbox** \"Get Temporary Link\" and pass the URL to **Groq** \"Analyze Image\" to extract text or describe the content for downstream processing.",
+    "Use **Groq** \"Chat Completion\" to draft a reply or notification, send it with **Gmail** \"Send Message\", and log the outcome with **Google Sheets** \"Add Row\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/groq/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/groq",
+    "readme": "services/groq/README.md",
+    "index": "services/groq/src/index.js"
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "slug": "servicenow",
+  "name": "ServiceNow",
+  "marketingCategory": "Helpdesk & ITSM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Automate ServiceNow's Now Platform from your flows. This extension wraps the Table API as first-class, CRUD-complete actions over the ITSM tables a business user actually works with — Incidents, Change Requests, Problems, Requested Items, and Users — plus a generic \"any table\" escape hatch for everything else. Assignees, groups, callers, and catalog items are pickable from dropdowns, and enum fields (impact, urgency, state, risk, type) show plain-English labels instead of raw codes.",
+  "actionCount": 30,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Incidents",
+    "Change Requests",
+    "Problems",
+    "Requested Items",
+    "Users",
+    "Generic Table"
+  ],
+  "actions": [
+    {
+      "name": "Create Incident",
+      "category": "Incidents",
+      "description": "Create a ServiceNow incident (an outage, ticket, or break/fix record). Use when a flow needs to open a new incident; returns the new INC number and sys_id."
+    },
+    {
+      "name": "Get Incident",
+      "category": "Incidents",
+      "description": "Fetch one incident by its sys_id. Feed the sys_id from List Incidents or Create Incident."
+    },
+    {
+      "name": "List Incidents",
+      "category": "Incidents",
+      "description": "List or search incidents. Filter with a ServiceNow encoded query (e.g. active=true^priority=1) and page with limit/offset."
+    },
+    {
+      "name": "Update Incident",
+      "category": "Incidents",
+      "description": "Update fields on an incident by sys_id (PATCH — only the fields you set are changed). Common uses: change state, reassign, or add comments."
+    },
+    {
+      "name": "Delete Incident",
+      "category": "Incidents",
+      "description": "Delete an incident by sys_id. Permanent — the record cannot be recovered."
+    },
+    {
+      "name": "Create Change Request",
+      "category": "Change Requests",
+      "description": "Create a ServiceNow change request for change management. Use when a flow needs to propose a standard, normal, or emergency change; returns the new CHG number and sys_id."
+    },
+    {
+      "name": "Get Change Request",
+      "category": "Change Requests",
+      "description": "Fetch one change request by its sys_id. Feed the sys_id from List Change Requests or Create Change Request."
+    },
+    {
+      "name": "List Change Requests",
+      "category": "Change Requests",
+      "description": "List or search change requests. Filter with a ServiceNow encoded query (e.g. active=true^type=emergency) and page with limit/offset."
+    },
+    {
+      "name": "Update Change Request",
+      "category": "Change Requests",
+      "description": "Update fields on a change request by sys_id (PATCH — only the fields you set are changed). Common uses: advance the state, set risk, or reassign."
+    },
+    {
+      "name": "Delete Change Request",
+      "category": "Change Requests",
+      "description": "Delete a change request by sys_id. Permanent — the record cannot be recovered."
+    },
+    {
+      "name": "Create Problem",
+      "category": "Problems",
+      "description": "Create a ServiceNow problem record for root-cause analysis behind recurring incidents. Returns the new PRB number and sys_id."
+    },
+    {
+      "name": "Get Problem",
+      "category": "Problems",
+      "description": "Fetch one problem by its sys_id. Feed the sys_id from List Problems or Create Problem."
+    },
+    {
+      "name": "List Problems",
+      "category": "Problems",
+      "description": "List or search problems. Filter with a ServiceNow encoded query (e.g. state=1) and page with limit/offset."
+    },
+    {
+      "name": "Update Problem",
+      "category": "Problems",
+      "description": "Update fields on a problem by sys_id (PATCH — only the fields you set are changed). Common uses: advance the state through root-cause analysis or reassign."
+    },
+    {
+      "name": "Delete Problem",
+      "category": "Problems",
+      "description": "Delete a problem by sys_id. Permanent — the record cannot be recovered."
+    },
+    {
+      "name": "Create Requested Item",
+      "category": "Requested Items",
+      "description": "Create a service catalog requested item (RITM) — a fulfillment line item for a catalog request. Returns the new RITM number and sys_id."
+    },
+    {
+      "name": "Get Requested Item",
+      "category": "Requested Items",
+      "description": "Fetch one requested item by its sys_id. Feed the sys_id from List Requested Items or Create Requested Item."
+    },
+    {
+      "name": "List Requested Items",
+      "category": "Requested Items",
+      "description": "List or search requested items (RITMs). Filter with a ServiceNow encoded query (e.g. state=1) and page with limit/offset."
+    },
+    {
+      "name": "Update Requested Item",
+      "category": "Requested Items",
+      "description": "Update fields on a requested item by sys_id (PATCH — only the fields you set are changed). Common uses: advance the state or assign a fulfiller."
+    },
+    {
+      "name": "Delete Requested Item",
+      "category": "Requested Items",
+      "description": "Delete a requested item by sys_id. Permanent — the record cannot be recovered."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Fetch one user (sys_user) by sys_id. Use to resolve a person record for assignment or requestor lookups. Feed the sys_id from List Users."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "List or search users (sys_user). Filter with a ServiceNow encoded query (e.g. active=true^emailLIKEacme.com) and page with limit/offset."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Create a user (sys_user) record (requires user admin rights on the connected account). Returns the new user sys_id."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Update a user (sys_user) record by sys_id (PATCH — only the fields you set are changed; requires user admin rights on the connected account)."
+    },
+    {
+      "name": "Delete User",
+      "category": "Users",
+      "description": "Delete a user (sys_user) record by sys_id (requires user admin rights on the connected account). Permanent — the record cannot be recovered."
+    },
+    {
+      "name": "Create Table Record",
+      "category": "Generic Table",
+      "description": "Create a record in any ServiceNow table not covered by the named actions (the Table API escape hatch). Pick the table, then fill the field values; returns the created record including its sys_id."
+    },
+    {
+      "name": "Get Table Record",
+      "category": "Generic Table",
+      "description": "Fetch one record from any ServiceNow table by sys_id (the Table API escape hatch). Feed the sys_id from List Table Records."
+    },
+    {
+      "name": "List Table Records",
+      "category": "Generic Table",
+      "description": "List or search records in any ServiceNow table (the Table API escape hatch). Filter with a ServiceNow encoded query and page with limit/offset."
+    },
+    {
+      "name": "Update Table Record",
+      "category": "Generic Table",
+      "description": "Update a record in any ServiceNow table by sys_id (PATCH — only the fields you set are changed; the Table API escape hatch). Feed the sys_id from List Table Records."
+    },
+    {
+      "name": "Delete Table Record",
+      "category": "Generic Table",
+      "description": "Delete a record from any ServiceNow table by sys_id (the Table API escape hatch). Permanent — the record cannot be recovered."
+    }
+  ],
+  "triggers": [
+    "None"
+  ],
+  "idealUseCases": [
+    "Open, update, reassign, and close incidents automatically from alerts, forms, or chat.",
+    "Create and advance change requests as part of a release or approval workflow.",
+    "File problem records for root-cause tracking behind recurring incidents.",
+    "Submit and fulfill Service Catalog requested items (RITMs) for onboarding or procurement.",
+    "Look up users and groups to route work to the right owner.",
+    "Read or write any other ServiceNow table via the generic Table Record actions."
+  ],
+  "agentIdeas": [
+    "When a **Slack** \"On Channel Message\" trigger reports an outage in an incidents channel, call **ServiceNow** \"Create Incident\" to open a ticket and reply with **Slack** \"Send Message To Channel\" containing the new incident number.",
+    "Mirror a **ServiceNow** \"Get Incident\" record into engineering tracking by calling **Jira** \"Create Issue\", keeping the ServiceNow incident as the customer-facing source of truth.",
+    "Use **ServiceNow** \"List Incidents\" on a schedule and append each record to a reporting spreadsheet with **Google Sheets** \"Add Row\" for SLA and trend analysis."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/servicenow/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/servicenow",
+    "readme": "services/servicenow/README.md",
+    "index": "services/servicenow/src/index.js"
+  }
+}

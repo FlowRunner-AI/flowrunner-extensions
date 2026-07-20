@@ -1,0 +1,116 @@
+{
+  "slug": "securityscorecard",
+  "name": "SecurityScorecard",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Assess and monitor the cybersecurity posture of any company by its primary domain using the SecurityScorecard API. Retrieve overall grades (A–F) and scores (0–100), per-factor scores, detailed issue findings, and historical trends; benchmark against industry peers; organize companies into portfolios; and generate reports. Authenticates with a SecurityScorecard API token sent as `Authorization: Token {token}`.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Companies",
+    "Portfolios",
+    "Industries",
+    "Reports"
+  ],
+  "actions": [
+    {
+      "name": "Get Company Score",
+      "category": "Companies",
+      "description": "Retrieves the overall Scorecard summary for a company identified by its primary domain. Returns the letter grade (A-F), the numeric score (0-100), company metadata (name, industry, size), and a breakdown of the ten risk factor grades. Use this as the entry point for assessing a company's security posture."
+    },
+    {
+      "name": "Get Company Factor Scores",
+      "category": "Companies",
+      "description": "Returns the per-factor scores for a company across the ten risk factors (e.g. network_security, dns_health, patching_cadence, application_security). Each factor includes its letter grade, numeric score, and a summary of contributing issue types. Optionally provide a date to retrieve factor scores as they were on that day."
+    },
+    {
+      "name": "Get Company Historical Scores",
+      "category": "Companies",
+      "description": "Returns the historical overall security score for a company over a date range. Each entry contains a date and the numeric score (0-100) on that date, enabling trend analysis of a company's security posture over time."
+    },
+    {
+      "name": "Get Company Historical Factor Scores",
+      "category": "Companies",
+      "description": "Returns the historical per-factor scores for a company over a date range. Each entry lists the factors with their numeric scores on a given date, enabling trend analysis for individual risk factors (e.g. tracking how patching_cadence changed over time)."
+    },
+    {
+      "name": "Get Company Issues by Type",
+      "category": "Companies",
+      "description": "Returns the detailed findings for a company for a specific issue type (e.g. patching_cadence_high, tlscert_expired, malware_events). Each finding includes the affected asset, severity, first/last seen timestamps, and issue-specific details. Use Get Company Factor Scores first to discover which issue types apply."
+    },
+    {
+      "name": "Get Company Information",
+      "category": "Companies",
+      "description": "Returns descriptive information about a company such as its legal name, industry, size band, primary domain, description, and location. Useful for enriching a scorecard result with company profile metadata."
+    },
+    {
+      "name": "List Portfolios",
+      "category": "Portfolios",
+      "description": "Returns all portfolios the authenticated user has access to. Each portfolio includes its ID, name, description, privacy setting, and the number of companies it contains. Portfolios group companies for monitoring and reporting."
+    },
+    {
+      "name": "Create Portfolio",
+      "category": "Portfolios",
+      "description": "Creates a new portfolio to group companies for monitoring. Requires a name and privacy setting (Private, Shared, or Team). Returns the created portfolio including its generated ID, which can be used to add companies and pull portfolio scores."
+    },
+    {
+      "name": "Get Portfolio Companies",
+      "category": "Portfolios",
+      "description": "Returns the companies in a portfolio along with each company's current grade and score. Use List Portfolios (or the Portfolios dictionary) to obtain a portfolio ID."
+    },
+    {
+      "name": "Add Company to Portfolio",
+      "category": "Portfolios",
+      "description": "Adds a company (by domain) to a portfolio so it is included in that portfolio's monitoring and scoring. Returns confirmation of the added company."
+    },
+    {
+      "name": "Remove Company from Portfolio",
+      "category": "Portfolios",
+      "description": "Removes a company (by domain) from a portfolio. The company is no longer included in that portfolio's monitoring and scoring."
+    },
+    {
+      "name": "Get Industry Score",
+      "category": "Industries",
+      "description": "Returns the aggregate security score and grade for an entire industry (e.g. technology, healthcare, financial_services). Useful for benchmarking a company's score against its industry peers."
+    },
+    {
+      "name": "Get Industry Factor Scores",
+      "category": "Industries",
+      "description": "Returns the aggregate per-factor scores for an entire industry across the ten risk factors. Useful for benchmarking a company's individual factor scores against its industry peers."
+    },
+    {
+      "name": "Generate Report",
+      "category": "Reports",
+      "description": "Queues generation of a report of the given type (e.g. detailed, summary, issues, portfolio, events-json). Reports are generated asynchronously; the response includes a report ID/status that can be used to download the report once ready. Provide the report parameters (such as domain or portfolio_id) required by the chosen report type."
+    },
+    {
+      "name": "Get Score Plan",
+      "category": "Reports",
+      "description": "Returns a prioritized plan of recommended actions for a company to reach a target overall score. Each recommendation describes the issue to fix and its expected score impact. Provide the company domain and the target score to aim for."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Continuously monitor a vendor's or partner's security grade and alert your team when it drops.",
+    "Enrich a new-vendor onboarding flow with an automated third-party risk assessment.",
+    "Benchmark a company's factor scores (patching cadence, network security, DNS health) against its industry.",
+    "Build and maintain portfolios of monitored companies for ongoing supply-chain risk reporting.",
+    "Generate detailed or summary security reports and prioritized remediation plans on a schedule."
+  ],
+  "agentIdeas": [
+    "Run **SecurityScorecard** \"Get Company Score\", and if the grade falls below a threshold, use **Slack** \"Send Message To Channel\" to alert the security team with the domain and current grade.",
+    "On a schedule, call **SecurityScorecard** \"Get Portfolio Companies\" and use **Google Sheets** \"Add Row\" to log each company's current grade and score into a vendor-risk tracking sheet.",
+    "When **SecurityScorecard** \"Get Company Issues by Type\" surfaces critical findings for a monitored vendor, use **PagerDuty** \"Create Incident\" to page the on-call responder with the affected assets and severity."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/securityscorecard/public/icon.png",
+  "sourcePaths": {
+    "service": "services/securityscorecard",
+    "readme": "services/securityscorecard/README.md",
+    "index": "services/securityscorecard/src/index.js"
+  }
+}

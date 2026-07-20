@@ -1,0 +1,284 @@
+{
+  "slug": "vapi",
+  "name": "Vapi",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Vapi is a voice AI platform for building and running phone-call agents. This extension manages the full Vapi lifecycle — placing and analyzing calls, configuring assistants, tools, and squads, provisioning phone numbers, running text chats and sessions, uploading knowledge files, and driving outbound campaigns and analytics. Authenticates with a Vapi private API key.",
+  "actionCount": 47,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Calls",
+    "Assistants",
+    "Phone Numbers",
+    "Tools",
+    "Squads",
+    "Chat",
+    "Sessions",
+    "Files",
+    "Campaigns",
+    "Analytics"
+  ],
+  "actions": [
+    {
+      "name": "Create Call",
+      "category": "Calls",
+      "description": "Starts an outbound phone call (or schedules one for later) from a Vapi phone number to a customer. Provide a saved assistant via Assistant ID, a transient assistant configuration, or a Squad ID for multi-assistant calls. Pass a single customer via Customer Number, or an array of customers to fan out one call per customer. Set Earliest At / Latest At to schedule the call instead of dialing immediately. Returns the call object with its id and initial status ('queued' or 'scheduled') — fetch it later with Get Call to read the transcript, recording, and analysis."
+    },
+    {
+      "name": "List Calls",
+      "category": "Calls",
+      "description": "Lists calls in your Vapi organization, newest first, with optional filtering by assistant, phone number, and creation time window. Each call includes its status, cost, endedReason, and (for completed calls) the artifact with transcript and recording URLs. Returns up to Limit calls (default 100, max 1000); page older results by setting Created Before to the createdAt of the last returned call."
+    },
+    {
+      "name": "Get Call",
+      "category": "Calls",
+      "description": "Retrieves a single call with its full details: status, timestamps, cost breakdown, ended reason, and — once the call has ended — the artifact (transcript, messages, recording URLs) and analysis (summary, structured data, success evaluation). Use this after Create Call to collect the outcome of a conversation."
+    },
+    {
+      "name": "Update Call",
+      "category": "Calls",
+      "description": "Updates the mutable metadata of a call. Currently the Vapi API only allows changing the call's name label. Returns the updated call object."
+    },
+    {
+      "name": "Delete Call",
+      "category": "Calls",
+      "description": "Deletes a call record and its data from your Vapi organization. This cannot be undone. Returns the deleted call object."
+    },
+    {
+      "name": "Get Call Recording",
+      "category": "Calls",
+      "description": "Downloads a call's recording (stereo, mono, per-channel audio, video, or packet capture) and saves it to FlowRunner file storage, returning the stored file URL. Recordings are only available after the call has ended and if recording was enabled on the assistant (it is by default). Stereo puts the customer and assistant on separate channels of one file; Customer/Assistant Channel return each side individually."
+    },
+    {
+      "name": "Get Call Logs",
+      "category": "Calls",
+      "description": "Downloads the raw log file of a call and returns its text content. Call logs contain the detailed line-by-line runtime trace of the call (model requests, tool invocations, transport events) and are useful for debugging assistant behavior. Only available after the call has ended."
+    },
+    {
+      "name": "Create Assistant",
+      "category": "Assistants",
+      "description": "Creates a saved voice assistant. Use the convenience fields (System Prompt, Model Provider, Model, Voice Provider, Voice ID, First Message) for the common setup, or pass full Model Config / Voice Config / Transcriber objects for complete control over any provider option. Set Server URL to receive Vapi webhooks (end-of-call reports, tool calls, status updates) for this assistant. Returns the created assistant with its id, ready to use in Create Call, phone number routing, or squads."
+    },
+    {
+      "name": "List Assistants",
+      "category": "Assistants",
+      "description": "Lists the saved assistants in your Vapi organization, newest first, with their model, voice, transcriber, and webhook configuration. Returns up to Limit assistants (max 1000); page older results by setting Created Before to the createdAt of the last returned assistant."
+    },
+    {
+      "name": "Get Assistant",
+      "category": "Assistants",
+      "description": "Retrieves a single saved assistant with its complete configuration: model (provider, model, system messages, tools), voice, transcriber, first message, webhook server, and all plans."
+    },
+    {
+      "name": "Update Assistant",
+      "category": "Assistants",
+      "description": "Updates a saved assistant. Only the fields you provide are changed. Note: Model Config / System Prompt / Model Provider / Model replace the assistant's entire model object, so include the provider and model when updating the system prompt. Returns the updated assistant."
+    },
+    {
+      "name": "Delete Assistant",
+      "category": "Assistants",
+      "description": "Permanently deletes a saved assistant. Phone numbers and squads referencing it must be re-pointed. This cannot be undone. Returns the deleted assistant object."
+    },
+    {
+      "name": "Create Phone Number",
+      "category": "Phone Numbers",
+      "description": "Adds a phone number to your Vapi organization for inbound and outbound calls. Choose 'Vapi (Free US Number)' to provision a free US number by desired area code, or import your own number from Twilio (account SID + auth token), Vonage/Telnyx (credential ID), or a BYO SIP trunk (credential ID). Optionally route inbound calls to an assistant, squad, or workflow, and set a Server URL for number-level webhooks. Returns the created phone number with its id."
+    },
+    {
+      "name": "List Phone Numbers",
+      "category": "Phone Numbers",
+      "description": "Lists the phone numbers in your Vapi organization, newest first, with their provider, E.164 number, inbound routing (assistant/squad/workflow), and status. Returns up to Limit numbers (max 1000)."
+    },
+    {
+      "name": "Get Phone Number",
+      "category": "Phone Numbers",
+      "description": "Retrieves a single phone number with its full configuration: provider, E.164 number or SIP URI, inbound routing, fallback destination, and webhook server."
+    },
+    {
+      "name": "Update Phone Number",
+      "category": "Phone Numbers",
+      "description": "Updates a phone number's label, inbound routing (assistant, squad, or workflow), or webhook server. Only the fields you provide are changed. Returns the updated phone number."
+    },
+    {
+      "name": "Delete Phone Number",
+      "category": "Phone Numbers",
+      "description": "Removes a phone number from your Vapi organization. Vapi free numbers are released; imported numbers remain with their original carrier. This cannot be undone. Returns the deleted phone number object."
+    },
+    {
+      "name": "Create Tool",
+      "category": "Tools",
+      "description": "Creates a reusable tool that assistants can call mid-conversation. 'Function' tools send the call to your Server URL (or the assistant's server) for custom logic; 'API Request' tools call an HTTP endpoint directly with the given URL, method, headers, and body schema. Other types (Transfer Call, End Call, DTMF, SMS, MCP, Query, Handoff) are configured via their type plus Advanced Config. Attach the returned tool id to an assistant via its model.toolIds. Returns the created tool."
+    },
+    {
+      "name": "List Tools",
+      "category": "Tools",
+      "description": "Lists the tools in your Vapi organization, newest first, with each tool's type and configuration. Returns up to Limit tools (max 1000)."
+    },
+    {
+      "name": "Get Tool",
+      "category": "Tools",
+      "description": "Retrieves a single tool with its full configuration: type, function schema or API request details, server webhook, and messages."
+    },
+    {
+      "name": "Update Tool",
+      "category": "Tools",
+      "description": "Updates an existing tool. The tool's type cannot be changed. Use the convenience fields for common edits, or Advanced Config to patch any tool field (e.g. a Function tool's function object or an API Request tool's url/method/headers/body). Returns the updated tool."
+    },
+    {
+      "name": "Delete Tool",
+      "category": "Tools",
+      "description": "Permanently deletes a tool. Assistants referencing it via model.toolIds will no longer be able to call it. This cannot be undone. Returns the deleted tool object."
+    },
+    {
+      "name": "Create Squad",
+      "category": "Squads",
+      "description": "Creates a squad — an ordered group of assistants that can hand a live call off to each other (e.g. a triage assistant that transfers to billing or technical support). Each member references a saved assistant (assistantId) or embeds a transient assistant, and may define assistantDestinations describing where it can transfer. Use the squad's id in Create Call or as a phone number's inbound handler. Returns the created squad."
+    },
+    {
+      "name": "List Squads",
+      "category": "Squads",
+      "description": "Lists the squads in your Vapi organization, newest first, with their member assistants and hand-off destinations. Returns up to Limit squads (max 1000)."
+    },
+    {
+      "name": "Get Squad",
+      "category": "Squads",
+      "description": "Retrieves a single squad with its full member list, hand-off destinations, and member overrides."
+    },
+    {
+      "name": "Update Squad",
+      "category": "Squads",
+      "description": "Updates a squad's name, members, or member overrides. Members, when provided, replace the entire member list. Returns the updated squad."
+    },
+    {
+      "name": "Delete Squad",
+      "category": "Squads",
+      "description": "Permanently deletes a squad. Phone numbers routing inbound calls to it must be re-pointed. This cannot be undone. Returns the deleted squad object."
+    },
+    {
+      "name": "Create Chat",
+      "category": "Chat",
+      "description": "Sends a text message to an assistant and returns its reply — the same assistant configuration used for voice calls, over text. Continue a conversation by passing the previous chat's id as Previous Chat ID, or group related chats under a Session ID. The response's output array contains the assistant's reply messages. Streaming is disabled; the full response is returned in one shot."
+    },
+    {
+      "name": "List Chats",
+      "category": "Chat",
+      "description": "Lists text chats in your Vapi organization with optional filtering by assistant, squad, or session. Returns a paginated response: results (the chat objects) plus metadata with currentPage, totalItems, and nextCursor."
+    },
+    {
+      "name": "Get Chat",
+      "category": "Chat",
+      "description": "Retrieves a single text chat with its input, the assistant's output messages, full message history, cost, and session linkage."
+    },
+    {
+      "name": "Delete Chat",
+      "category": "Chat",
+      "description": "Deletes a text chat and its message history. This cannot be undone. Returns the deleted chat object."
+    },
+    {
+      "name": "Create Session",
+      "category": "Sessions",
+      "description": "Creates a session — a persistent conversation context that multiple chats (and calls) can share. Attach chats to it via Session ID in Create Chat so the assistant remembers the whole conversation. Sessions expire after Expiration Seconds of inactivity (default 24 hours). Returns the created session with its id."
+    },
+    {
+      "name": "List Sessions",
+      "category": "Sessions",
+      "description": "Lists conversation sessions in your Vapi organization with optional filtering by assistant or squad. Returns a paginated response: results (the session objects) plus metadata with currentPage, totalItems, and nextCursor."
+    },
+    {
+      "name": "Get Session",
+      "category": "Sessions",
+      "description": "Retrieves a single session with its status, assistant or squad, accumulated messages, and expiration settings."
+    },
+    {
+      "name": "Update Session",
+      "category": "Sessions",
+      "description": "Updates a session's name, status, or expiration. Set Status to Completed to close the session so no further chats can be attached. Returns the updated session."
+    },
+    {
+      "name": "Delete Session",
+      "category": "Sessions",
+      "description": "Deletes a session and its stored conversation context. Chats previously attached to it remain but lose the shared context. This cannot be undone. Returns the deleted session object."
+    },
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a file from FlowRunner file storage (or any accessible URL) to Vapi for use in knowledge bases and Query tools. Supported formats include PDF, TXT, Markdown, DOCX, and CSV; Vapi parses the text automatically after upload. Returns the created file object with its id — reference it from a knowledge base or Query tool."
+    },
+    {
+      "name": "List Files",
+      "category": "Files",
+      "description": "Lists the files uploaded to your Vapi organization with their parse status, size, MIME type, and storage URLs."
+    },
+    {
+      "name": "Get File",
+      "category": "Files",
+      "description": "Retrieves a single uploaded file with its parse status, size, MIME type, storage URL, and parsed-text URL."
+    },
+    {
+      "name": "Rename File",
+      "category": "Files",
+      "description": "Renames an uploaded file. The file's content and id are unchanged. Returns the updated file object."
+    },
+    {
+      "name": "Delete File",
+      "category": "Files",
+      "description": "Permanently deletes an uploaded file. Knowledge bases and Query tools referencing it will no longer find it. This cannot be undone. Returns the deleted file object."
+    },
+    {
+      "name": "Create Campaign",
+      "category": "Campaigns",
+      "description": "Creates an outbound calling campaign that dials a list of customers at scale with an assistant, squad, or workflow. Provide the customer list, the phone number to dial from, and optionally a schedule window (Earliest At / Latest At) to control when dialing happens. Track progress with Get Campaign (per-status call counters) and stop it early via Update Campaign with Status = Ended. Returns the created campaign."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Lists outbound campaigns in your Vapi organization with their status and per-status call counters (scheduled, queued, in progress, ended, voicemail). Returns a paginated response: results plus metadata with currentPage and totalItems."
+    },
+    {
+      "name": "Get Campaign",
+      "category": "Campaigns",
+      "description": "Retrieves a single campaign with its status, ended reason, customer list, schedule, and live call counters (scheduled, queued, in progress, ended, voicemail). Use this to track campaign progress."
+    },
+    {
+      "name": "Update Campaign",
+      "category": "Campaigns",
+      "description": "Updates a campaign. Set Status to Ended or Cancelled to stop dialing (this is how you end a running campaign early). Other fields — name, handler, phone number, schedule — can only be changed while the campaign has not started calling. Returns the updated campaign."
+    },
+    {
+      "name": "Delete Campaign",
+      "category": "Campaigns",
+      "description": "Permanently deletes a campaign and its configuration. Calls already placed by the campaign remain in call history. This cannot be undone. Returns the deleted campaign object."
+    },
+    {
+      "name": "Run Analytics Query",
+      "category": "Analytics",
+      "description": "Runs an aggregation query over your Vapi call (or subscription) data and returns the computed results — e.g. total call count, summed cost, or average duration, optionally grouped by assistant, status, or ended reason and bucketed over a time range. Operations are objects like {\"operation\":\"count\",\"column\":\"id\"} or {\"operation\":\"sum\",\"column\":\"cost\"}; supported operations are sum, avg, count, min, max, and history, over columns such as id, cost, duration, and costBreakdown.* fields."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Place outbound AI phone calls (single or fan-out) and later collect the transcript, recording, and structured analysis",
+    "Build and maintain saved voice assistants with custom models, voices, transcribers, tools, and webhooks",
+    "Provision or import phone numbers and route inbound calls to an assistant, squad, or workflow",
+    "Run multi-assistant squads that hand live calls off between triage, billing, and support",
+    "Talk to the same assistant over text via chats and persistent sessions",
+    "Launch outbound calling campaigns at scale and track per-status progress",
+    "Aggregate call cost, count, and duration analytics for reporting"
+  ],
+  "agentIdeas": [
+    "After a **Vapi** \"Get Call\" returns a completed call's analysis, use **HubSpot** \"Update Deal\" to log the summary and success evaluation onto the associated deal",
+    "When a **Google Sheets** \"On New Row\" trigger fires with a lead list, call **Vapi** \"Create Call\" to dial each customer with your assistant and record the outcome",
+    "After a **Vapi** \"Get Call\" retrieves a call transcript and summary, use **Slack** \"Send Message To Channel\" to post the recap and recording link to the sales team"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/vapi/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/vapi",
+    "readme": "services/vapi/README.md",
+    "index": "services/vapi/src/index.js"
+  }
+}

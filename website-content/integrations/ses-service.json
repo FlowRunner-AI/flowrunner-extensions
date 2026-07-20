@@ -1,0 +1,56 @@
+{
+  "slug": "ses-service",
+  "name": "Amazon SES",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Zero-dependency integration with Amazon Simple Email Service (SES v2) using native AWS Signature V4 signing (Node crypto). Send transactional and templated email at scale, dispatch bulk templated emails in a single batch, and manage reusable email templates with Handlebars-style variable substitution. Supports two authentication methods: direct API Key credentials or IAM Role via STS AssumeRole for cross-account access.",
+  "actionCount": 4,
+  "triggerCount": 0,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Send Email",
+      "category": null,
+      "description": "Sends a plain text or HTML email to one or more recipients via a verified sender address. Supports optional CC, BCC, and reply-to addresses."
+    },
+    {
+      "name": "Send Templated Email",
+      "category": null,
+      "description": "Sends an email using a pre-created email template, with optional template data for variable substitution."
+    },
+    {
+      "name": "Send Bulk Templated Email",
+      "category": null,
+      "description": "Sends a templated email to multiple recipients in a single batch operation, with optional per-recipient variable substitution."
+    },
+    {
+      "name": "Create Email Template",
+      "category": null,
+      "description": "Creates a reusable email template with a name, subject, and optional text and HTML body parts. Templates support Handlebars-style variable substitution."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sending transactional plain-text or HTML emails (confirmations, receipts, notifications) from automated flows",
+    "Delivering personalized email using pre-built templates with per-message variable substitution",
+    "Broadcasting a templated email to many recipients in one batch with per-recipient customization",
+    "Creating and reusing branded email templates managed entirely from your workflows",
+    "Selecting verified sender identities and existing templates dynamically inside the FlowRunner UI"
+  ],
+  "agentIdeas": [
+    "Use **Airtable** \"Find Many Records\" to fetch a list of contacts, then call **Amazon SES** \"Send Bulk Templated Email\" to deliver a personalized campaign to all of them in a single batch.",
+    "When a **Stripe** \"Get Invoice\" returns a finalized invoice, use **Amazon SES** \"Send Templated Email\" to email the customer a branded receipt with the invoice details substituted into the template.",
+    "Use **Amazon SES** \"Create Email Template\" to define a reusable welcome message, then log each send by appending recipient and status details with **Google Sheets** \"Add Row\" after calling \"Send Templated Email\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/ses-service/public/icon.png",
+  "sourcePaths": {
+    "service": "services/ses-service",
+    "readme": "services/ses-service/README.md",
+    "index": "services/ses-service/src/index.js"
+  }
+}

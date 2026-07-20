@@ -1,0 +1,375 @@
+{
+  "slug": "trello",
+  "name": "Trello",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Comprehensive project management and team collaboration platform for automating board, card, and task management workflows.",
+  "actionCount": 66,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Board Management",
+    "List Management",
+    "Member Management",
+    "Label Management",
+    "Card Management",
+    "Checklist Management",
+    "Card Content",
+    "Notification Management",
+    "Organization Management"
+  ],
+  "actions": [
+    {
+      "name": "Get Board by ID",
+      "category": "Board Management",
+      "description": "Requests a single board."
+    },
+    {
+      "name": "Find Board by Name",
+      "category": "Board Management",
+      "description": "Finds a board by name."
+    },
+    {
+      "name": "Find or Create Board",
+      "category": "Board Management",
+      "description": "Finds a board by name, or creates it if it doesn't exist."
+    },
+    {
+      "name": "Create Board",
+      "category": "Board Management",
+      "description": "Creates a new board."
+    },
+    {
+      "name": "Get Board Lists",
+      "category": "List Management",
+      "description": "Get the lists on a board."
+    },
+    {
+      "name": "Create Board List",
+      "category": "List Management",
+      "description": "Creates a new list on a board."
+    },
+    {
+      "name": "Find Board List by Name",
+      "category": "List Management",
+      "description": "Finds a list on a board by name."
+    },
+    {
+      "name": "Find or Create Board List",
+      "category": "List Management",
+      "description": "Finds a list on a board by name, or creates it if it doesn't exist."
+    },
+    {
+      "name": "Get Board Members",
+      "category": "Member Management",
+      "description": "Gets the members for a board."
+    },
+    {
+      "name": "Get Board Actions",
+      "category": "Board Management",
+      "description": "Gets all the actions of a board."
+    },
+    {
+      "name": "Get Enabled Power-Ups on Board",
+      "category": "Board Management",
+      "description": "Gets the enabled power-ups on a board."
+    },
+    {
+      "name": "Get Board Labels",
+      "category": "Label Management",
+      "description": "Gets all the labels on a board."
+    },
+    {
+      "name": "Create Board Label",
+      "category": "Label Management",
+      "description": "Creates a new label on a board."
+    },
+    {
+      "name": "Update Board Label",
+      "category": "Label Management",
+      "description": "Updates a label on a board."
+    },
+    {
+      "name": "Delete Board Label",
+      "category": "Label Management",
+      "description": "Deletes a label from a board."
+    },
+    {
+      "name": "Find Board Label by Name",
+      "category": "Label Management",
+      "description": "Finds a label on a board by name."
+    },
+    {
+      "name": "Find or Create Board Label",
+      "category": "Label Management",
+      "description": "Finds a label on a board by name, or creates it if it doesn't exist."
+    },
+    {
+      "name": "Copy Board",
+      "category": "Board Management",
+      "description": "Copies an existing board."
+    },
+    {
+      "name": "Close Board",
+      "category": "Board Management",
+      "description": "Closes a board."
+    },
+    {
+      "name": "Create Card",
+      "category": "Card Management",
+      "description": "Creates a new card."
+    },
+    {
+      "name": "Update Card",
+      "category": "Card Management",
+      "description": "Updates a card."
+    },
+    {
+      "name": "Archive Card",
+      "category": "Card Management",
+      "description": "Archives a card."
+    },
+    {
+      "name": "Unarchive Card",
+      "category": "Card Management",
+      "description": "Unarchives a card."
+    },
+    {
+      "name": "Delete Card",
+      "category": "Card Management",
+      "description": "Deletes a card."
+    },
+    {
+      "name": "Get Card by ID",
+      "category": "Card Management",
+      "description": "Gets a card by its ID."
+    },
+    {
+      "name": "Find Card by Name",
+      "category": "Card Management",
+      "description": "Finds a card by name."
+    },
+    {
+      "name": "Find or Create Card",
+      "category": "Card Management",
+      "description": "Finds a card by name, or creates it if it doesn't exist."
+    },
+    {
+      "name": "Get Card Actions",
+      "category": "Card Management",
+      "description": "Gets a list of actions on a card."
+    },
+    {
+      "name": "Get Card Checklists",
+      "category": "Checklist Management",
+      "description": "Gets the checklists on a card."
+    },
+    {
+      "name": "Get Card Checklist by ID",
+      "category": "Checklist Management",
+      "description": "Gets information about a single checklist."
+    },
+    {
+      "name": "Add Checklist to Card",
+      "category": "Checklist Management",
+      "description": "Creates a new checklist on a card."
+    },
+    {
+      "name": "Delete Card Checklist",
+      "category": "Checklist Management",
+      "description": "Deletes a checklist from a card."
+    },
+    {
+      "name": "Get Card Stickers",
+      "category": "Card Content",
+      "description": "Gets the stickers on a card."
+    },
+    {
+      "name": "Add Sticker to Card",
+      "category": "Card Content",
+      "description": "Add a sticker to a card."
+    },
+    {
+      "name": "Delete Sticker from Card",
+      "category": "Card Content",
+      "description": "Deletes a sticker from a card."
+    },
+    {
+      "name": "Get Card Members",
+      "category": "Member Management",
+      "description": "Gets the members on a card."
+    },
+    {
+      "name": "Add Member to Card",
+      "category": "Member Management",
+      "description": "Adds a member to a card."
+    },
+    {
+      "name": "Delete Member from Card",
+      "category": "Member Management",
+      "description": "Deletes a member from a card."
+    },
+    {
+      "name": "Add Label to Card",
+      "category": "Label Management",
+      "description": "Adds a label to a card."
+    },
+    {
+      "name": "Delete Label from Card",
+      "category": "Label Management",
+      "description": "Deletes a label from a card."
+    },
+    {
+      "name": "Get Card Attachments",
+      "category": "Card Content",
+      "description": "Gets a list of attachments on a card."
+    },
+    {
+      "name": "Add Attachment to Card",
+      "category": "Card Content",
+      "description": "Adds a new attachment to a card."
+    },
+    {
+      "name": "Delete Attachment from Card",
+      "category": "Card Content",
+      "description": "Deletes an attachment."
+    },
+    {
+      "name": "Add Comment to Card",
+      "category": "Card Content",
+      "description": "Adds a new comment to a card."
+    },
+    {
+      "name": "Move Card to List",
+      "category": "Card Management",
+      "description": "Moves a card to a new list."
+    },
+    {
+      "name": "Get List by ID",
+      "category": "List Management",
+      "description": "Gets information about a list."
+    },
+    {
+      "name": "Get List Cards",
+      "category": "List Management",
+      "description": "Gets a list of cards in a list."
+    },
+    {
+      "name": "Update List",
+      "category": "List Management",
+      "description": "Updates the properties of a list."
+    },
+    {
+      "name": "Archive List",
+      "category": "List Management",
+      "description": "Archives a list."
+    },
+    {
+      "name": "Get Member by ID",
+      "category": "Member Management",
+      "description": "Gets a member by its ID."
+    },
+    {
+      "name": "Find Member by Name",
+      "category": "Member Management",
+      "description": "Finds a member by name."
+    },
+    {
+      "name": "Add Member to Board",
+      "category": "Member Management",
+      "description": "Adds a member to the board."
+    },
+    {
+      "name": "Delete Member from Board",
+      "category": "Member Management",
+      "description": "Deletes member from a board."
+    },
+    {
+      "name": "Get Member's Cards",
+      "category": "Member Management",
+      "description": "Gets the cards a member is on."
+    },
+    {
+      "name": "Get Member's Notifications",
+      "category": "Notification Management",
+      "description": "Gets a member's notifications."
+    },
+    {
+      "name": "Mark Notification as Read",
+      "category": "Notification Management",
+      "description": "Marks a notification as read."
+    },
+    {
+      "name": "Create Checklist",
+      "category": "Checklist Management",
+      "description": "Creates a new checklist on a card."
+    },
+    {
+      "name": "Find Checklist by Name",
+      "category": "Checklist Management",
+      "description": "Finds a checklist by name on a card."
+    },
+    {
+      "name": "Find or Create Checklist",
+      "category": "Checklist Management",
+      "description": "Finds a checklist by name, or creates it if it doesn't exist."
+    },
+    {
+      "name": "Add Checklist Item",
+      "category": "Checklist Management",
+      "description": "Creates a new check item on a checklist."
+    },
+    {
+      "name": "Update Checklist Item",
+      "category": "Checklist Management",
+      "description": "Updates an item in a checklist on a card."
+    },
+    {
+      "name": "Mark Checklist Item as Complete",
+      "category": "Checklist Management",
+      "description": "Marks a checklist item as complete on a card."
+    },
+    {
+      "name": "Find Checklist Item by Name",
+      "category": "Checklist Management",
+      "description": "Finds a check item on a checklist by name."
+    },
+    {
+      "name": "Delete Checklist Item",
+      "category": "Checklist Management",
+      "description": "Deletes a checklist item."
+    },
+    {
+      "name": "Get Organization by ID",
+      "category": "Organization Management",
+      "description": "Gets an organization by its ID."
+    },
+    {
+      "name": "Get Organization Boards",
+      "category": "Organization Management",
+      "description": "Gets a list of the boards in a Workspace."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Project management and task tracking automation",
+    "Team collaboration and workflow organization",
+    "Agile development board management",
+    "Task assignment and progress monitoring",
+    "Checklist and milestone tracking",
+    "File attachment and document sharing",
+    "Team member management and notifications",
+    "Board template creation and duplication"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/trello/public/icon.png",
+  "sourcePaths": {
+    "service": "services/trello",
+    "readme": "services/trello/README.md",
+    "index": "services/trello/src/index.js"
+  }
+}

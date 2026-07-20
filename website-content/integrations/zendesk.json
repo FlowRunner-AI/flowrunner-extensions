@@ -1,0 +1,122 @@
+{
+  "slug": "zendesk",
+  "name": "Zendesk",
+  "marketingCategory": "Helpdesk & ITSM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Automate your Zendesk support desk: create, update, search, and comment on tickets, manage end users and organizations, look up agents and groups, and react to tickets being created or updated in real time - all from a no-code flow.",
+  "actionCount": 16,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Tickets",
+    "Users",
+    "Organizations"
+  ],
+  "actions": [
+    {
+      "name": "Create Ticket",
+      "category": "Tickets",
+      "description": "Creates a new Zendesk ticket with a first comment. Supports setting priority, type, status, requester (by email — the user is created if it does not exist), assignee, group, tags, and custom fields. Returns the created ticket."
+    },
+    {
+      "name": "Get Ticket",
+      "category": "Tickets",
+      "description": "Retrieves a single Zendesk ticket by ID, including subject, description, status, priority, requester, assignee, group, tags, and custom fields."
+    },
+    {
+      "name": "List Tickets",
+      "category": "Tickets",
+      "description": "Lists tickets in the Zendesk account with sorting and page-based pagination (up to 100 per page). Returns the tickets plus the total count and next page number when more results exist."
+    },
+    {
+      "name": "Update Ticket",
+      "category": "Tickets",
+      "description": "Updates an existing ticket's subject, status, priority, type, assignee, group, or tags. Only the fields you provide are changed; tags, when provided, replace the ticket's existing tags. Returns the updated ticket."
+    },
+    {
+      "name": "Add Comment To Ticket",
+      "category": "Tickets",
+      "description": "Adds a comment (public reply or private internal note) to an existing ticket, optionally changing the ticket status in the same update. Returns the updated ticket."
+    },
+    {
+      "name": "Delete Ticket",
+      "category": "Tickets",
+      "description": "Deletes a ticket by ID, moving it to the account's deleted tickets (recoverable for 30 days by an admin). Requires admin permission or an agent with delete rights."
+    },
+    {
+      "name": "Search Tickets",
+      "category": "Tickets",
+      "description": "Searches tickets using the Zendesk search syntax. \"type:ticket\" is added automatically so results are always tickets. Combine keywords and filters like \"status:open\", \"priority>=high\", \"assignee:jane@example.com\", \"tags:vip\", \"created>2026-01-01\", e.g. \"printer status:open priority:urgent\". Returns up to 100 results per page."
+    },
+    {
+      "name": "List Ticket Comments",
+      "category": "Tickets",
+      "description": "Lists all comments on a ticket in chronological order, including each comment's author, plain-text and HTML bodies, public/private flag, and attachments."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a new Zendesk user (end user, agent, or admin) with an optional phone number and organization. Fails with a duplicate error if a user with the same email already exists."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single Zendesk user by ID, including name, email, role, phone, organization, and tags."
+    },
+    {
+      "name": "Search Users",
+      "category": "Users",
+      "description": "Searches users by name, email, phone, or other identity. Also supports Zendesk search filters like \"role:agent\" or \"organization:57542\" combined with keywords. Returns up to 100 users per page."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates an existing user's name, email, role, phone, or organization. Only the fields you provide are changed. Note that a new email is added as a secondary, unverified identity. Returns the updated user."
+    },
+    {
+      "name": "List Agents",
+      "category": "Users",
+      "description": "Lists the agents in the Zendesk account (users with the agent role) with page-based pagination. Useful for finding assignee IDs."
+    },
+    {
+      "name": "Create Organization",
+      "category": "Organizations",
+      "description": "Creates a new Zendesk organization. Users whose email domain matches one of the organization's domain names are automatically added to it."
+    },
+    {
+      "name": "List Organizations",
+      "category": "Organizations",
+      "description": "Lists the organizations in the Zendesk account with page-based pagination (up to 100 per page)."
+    },
+    {
+      "name": "Get Organization",
+      "category": "Organizations",
+      "description": "Retrieves a single Zendesk organization by ID, including its name, domain names, details, notes, and tags."
+    }
+  ],
+  "triggers": [
+    "On Ticket Event"
+  ],
+  "idealUseCases": [
+    "Open tickets from other systems (forms, chat, e-commerce orders) with the right priority, assignee, group, tags, and custom fields.",
+    "Triage support: search tickets with Zendesk's query syntax, reassign them, change status, and post public replies or internal notes.",
+    "Keep customer data in sync by creating and updating end users and organizations from your CRM or billing system.",
+    "Escalate urgent tickets to Slack, email, or an on-call tool the moment they are created or updated.",
+    "Log ticket activity into spreadsheets or databases for reporting."
+  ],
+  "agentIdeas": [
+    "When a **Zendesk** \"On Ticket Event\" trigger fires for an urgent ticket, use **Slack** \"Send Message To Channel\" to alert the on-call channel with the subject, requester, and ticket link.",
+    "When a **Zendesk** \"On Ticket Event\" trigger fires, use **Google Sheets** \"Add Row\" to log the ticket's ID, subject, status, priority, and assignee into a reporting spreadsheet.",
+    "Use **Zendesk** \"Search Users\" to find a customer by email, then call **Zendesk** \"Create Ticket\" and **Gmail** \"Send Message\" to open a support ticket and email the customer a confirmation with the ticket number."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/zendesk/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/zendesk",
+    "readme": "services/zendesk/README.md",
+    "index": "services/zendesk/src/index.js"
+  }
+}

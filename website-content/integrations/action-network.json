@@ -1,0 +1,133 @@
+{
+  "slug": "action-network",
+  "name": "Action Network",
+  "marketingCategory": "HR & Recruiting",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connects FlowRunner to [Action Network](https://actionnetwork.org/), the organizing platform for progressive campaigns, via its OSDI-compliant REST API. Authenticate with your group's API key (sent as the `OSDI-API-Token` header) to manage activists, events, tags, and action pages. Responses follow the HAL hypermedia model, with collections under `_embedded` and pagination/related resources under `_links`.",
+  "actionCount": 18,
+  "triggerCount": 0,
+  "operationCategories": [
+    "People",
+    "Events",
+    "Action Pages",
+    "Tags",
+    "Messages",
+    "Responses"
+  ],
+  "actions": [
+    {
+      "name": "List People",
+      "category": "People",
+      "description": "Lists activists (people) in your Action Network group, newest first. Results are returned under `_embedded['osdi:people']` following the HAL hypermedia format, with pagination `_links` (next/previous). Use `page` to page through results (25 per page) and an optional OData `filter` expression (e.g. `email_address eq 'user@example.com'` or `modified_date gt '2023-01-01'`) to narrow the list."
+    },
+    {
+      "name": "Get Person",
+      "category": "People",
+      "description": "Retrieves a single person by their Action Network UUID. Returns the full person record including names, email addresses, phone numbers, postal addresses, custom fields, and HAL `_links` to related collections (taggings, submissions, donations, attendances, signatures)."
+    },
+    {
+      "name": "Add or Upsert Person",
+      "category": "People",
+      "description": "Adds a new activist or updates an existing one using Action Network's person_signup_helper (POST /people). Matching is by email address: if the email already exists, the record is merged/updated rather than duplicated; otherwise a new person is created. Either an email address or a phone number is required. Tags in Add Tags are applied and tags in Remove Tags are removed, matched to existing group tags by name (unknown tag names are ignored). Postal Addresses, Phone Numbers, and Custom Fields accept JSON matching the OSDI schema."
+    },
+    {
+      "name": "Update Person",
+      "category": "People",
+      "description": "Updates an existing person by UUID (PUT /people/{id}). Only include the fields you want to change; supply a JSON object matching the OSDI person schema (e.g. given_name, family_name, email_addresses, phone_numbers, postal_addresses, custom_fields). Note that to add or remove tags you should use Add or Upsert Person or Add Tagging instead."
+    },
+    {
+      "name": "List Events",
+      "category": "Events",
+      "description": "Lists events in your Action Network group. Results are returned under `_embedded['osdi:events']` in HAL format with pagination `_links`. Use `page` to page through results (25 per page) and an optional OData `filter` expression to narrow the list."
+    },
+    {
+      "name": "Get Event",
+      "category": "Events",
+      "description": "Retrieves a single event by its Action Network UUID, including title, description, start date, location, browser URL, and HAL `_links` to related collections such as attendances."
+    },
+    {
+      "name": "Create Event",
+      "category": "Events",
+      "description": "Creates a new event in your Action Network group (POST /events). Provide a title and optionally a description, start date, and location. The location is an OSDI address object (venue, address_lines, locality, region, postal_code, country). Returns the created event with its UUID and browser URL."
+    },
+    {
+      "name": "List Forms",
+      "category": "Action Pages",
+      "description": "Lists forms in your Action Network group. Results are returned under `_embedded['osdi:forms']` in HAL format with pagination `_links`. Use `page` to page through results (25 per page)."
+    },
+    {
+      "name": "List Petitions",
+      "category": "Action Pages",
+      "description": "Lists petitions in your Action Network group. Results are returned under `_embedded['osdi:petitions']` in HAL format with pagination `_links`. Use `page` to page through results (25 per page)."
+    },
+    {
+      "name": "List Fundraising Pages",
+      "category": "Action Pages",
+      "description": "Lists fundraising pages in your Action Network group. Results are returned under `_embedded['osdi:fundraising_pages']` in HAL format with pagination `_links`. Use `page` to page through results (25 per page)."
+    },
+    {
+      "name": "List Advocacy Campaigns",
+      "category": "Action Pages",
+      "description": "Lists advocacy campaigns (letter/email-to-target campaigns) in your Action Network group. Results are returned under `_embedded['osdi:advocacy_campaigns']` in HAL format with pagination `_links`. Use `page` to page through results (25 per page)."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists all tags in your Action Network group. Results are returned under `_embedded['osdi:tags']` in HAL format with pagination `_links`. Tags are used to categorize people; use Add Tagging to apply a tag to a person."
+    },
+    {
+      "name": "Get Tag",
+      "category": "Tags",
+      "description": "Retrieves a single tag by its Action Network UUID, including its name and HAL `_links` to its taggings collection."
+    },
+    {
+      "name": "Add Tagging",
+      "category": "Tags",
+      "description": "Applies a tag to a person by creating a tagging (POST /tags/{tagId}/taggings). Provide the tag UUID and the person UUID; the person is linked via the OSDI `_links['osdi:person']` reference. Returns the created tagging record."
+    },
+    {
+      "name": "List Messages",
+      "category": "Messages",
+      "description": "Lists email messages in your Action Network group. Results are returned under `_embedded['osdi:messages']` in HAL format with pagination `_links`. Includes subject, status, and (for sent messages) statistics such as total_targeted, sent, opened, and clicked."
+    },
+    {
+      "name": "Get Message",
+      "category": "Messages",
+      "description": "Retrieves a single email message by its Action Network UUID, including subject, body, status, targets, and delivery statistics."
+    },
+    {
+      "name": "List Form Submissions",
+      "category": "Responses",
+      "description": "Lists submissions for a given form (GET /forms/{formId}/submissions). Results are returned under `_embedded['osdi:submissions']` in HAL format with pagination `_links`. Each submission links to the person who submitted via `_links['osdi:person']`."
+    },
+    {
+      "name": "List Petition Signatures",
+      "category": "Responses",
+      "description": "Lists signatures for a given petition (GET /petitions/{petitionId}/signatures). Results are returned under `_embedded['osdi:signatures']` in HAL format with pagination `_links`. Each signature links to the signer via `_links['osdi:person']` and may include a comment."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new sign-ups, donors, or event RSVPs from external forms and CRMs into your Action Network activist list.",
+    "Upsert people by email so contacts are merged rather than duplicated, applying or removing tags in the same call.",
+    "Automate event creation and pull attendance, submissions, and petition signatures for reporting.",
+    "Track email message performance (sent, opened, clicked) and export it to a spreadsheet or dashboard.",
+    "Segment activists by applying tags in response to activity in other tools."
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to read a list of new supporters, then call **Action Network** \"Add or Upsert Person\" for each row to sync them into your activist list with the right tags applied.",
+    "After **Action Network** \"List Petition Signatures\" returns signers of a petition, use **Mailchimp** \"Add Or Update List Member\" to add each signer to a follow-up email audience.",
+    "When you create an event with **Action Network** \"Create Event\", use **Slack** \"Send Message To Channel\" to announce it to your organizing team with the browser URL."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/action-network/public/icon.png",
+  "sourcePaths": {
+    "service": "services/action-network",
+    "readme": "services/action-network/README.md",
+    "index": "services/action-network/src/index.js"
+  }
+}

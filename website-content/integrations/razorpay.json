@@ -1,0 +1,399 @@
+{
+  "slug": "razorpay",
+  "name": "Razorpay",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrates the Razorpay Payment Gateway API (v1) for accepting and managing payments in India. Covers orders, payments (with capture, card details, and downtimes), refunds, shareable payment links, invoices, reusable items, customers, plans, recurring subscriptions with add-ons, UPI QR codes, settlements, and virtual accounts. Authenticates with HTTP Basic using your Key ID and Key Secret.",
+  "actionCount": 70,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Orders",
+    "Payments",
+    "Refunds",
+    "Payment Links",
+    "Invoices",
+    "Items",
+    "Customers",
+    "Plans",
+    "Subscriptions",
+    "QR Codes",
+    "Settlements",
+    "Virtual Accounts"
+  ],
+  "actions": [
+    {
+      "name": "Create Order",
+      "category": "Orders",
+      "description": "Creates a new order that a payment can be made against. Orders are the recommended first step of the Razorpay payment flow: create the order, then collect the payment referencing its ID. Supports partial payments with a minimum first-payment amount and custom key-value notes."
+    },
+    {
+      "name": "List Orders",
+      "category": "Orders",
+      "description": "Retrieves orders created on your account, newest first. Supports filtering by creation time range, receipt number, and whether the order has at least one authorized payment, plus count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves a single order by its ID, including its amount, amount paid/due, status (created, attempted, or paid), attempts, and notes."
+    },
+    {
+      "name": "Update Order",
+      "category": "Orders",
+      "description": "Updates the notes of an existing order. Notes are the only order attribute that can be modified after creation; the provided object fully replaces the existing notes."
+    },
+    {
+      "name": "List Order Payments",
+      "category": "Orders",
+      "description": "Retrieves all payments made against a specific order, including failed, authorized, and captured attempts. Useful for checking how an order was (or was not) paid."
+    },
+    {
+      "name": "List Payments",
+      "category": "Payments",
+      "description": "Retrieves payments received on your account, newest first. Supports filtering by creation time range and count/skip pagination (up to 100 records per call). Amounts are in the smallest currency unit (paise for INR)."
+    },
+    {
+      "name": "Get Payment",
+      "category": "Payments",
+      "description": "Retrieves a single payment by its ID with full details: amount, status (created, authorized, captured, refunded, or failed), method, fees, and customer contact. Optionally expands nested card, EMI, or offer details in the same response."
+    },
+    {
+      "name": "Capture Payment",
+      "category": "Payments",
+      "description": "Captures an authorized payment, moving the funds to your account. The capture amount must equal the authorized amount. Payments left uncaptured are auto-refunded after Razorpay's authorization window expires."
+    },
+    {
+      "name": "Update Payment",
+      "category": "Payments",
+      "description": "Updates the notes of an existing payment. Notes are the only payment attribute that can be modified; the provided object fully replaces the existing notes."
+    },
+    {
+      "name": "Get Card of Payment",
+      "category": "Payments",
+      "description": "Retrieves the card details used for a card payment: masked number (last 4 digits), network, type (credit/debit), issuer, and whether it is an international or EMI-capable card. Only works for payments made with a card."
+    },
+    {
+      "name": "List Downtimes",
+      "category": "Payments",
+      "description": "Retrieves current and scheduled payment downtimes across methods (cards, UPI, netbanking, wallets), including severity, status, and the affected instrument. Use this to detect bank or network outages that may impact payment success rates."
+    },
+    {
+      "name": "Get Downtime",
+      "category": "Payments",
+      "description": "Retrieves a single payment downtime record by its ID, including method, severity, begin/end times, and current status (scheduled, started, or resolved)."
+    },
+    {
+      "name": "Create Refund",
+      "category": "Refunds",
+      "description": "Refunds a captured payment, either in full (omit the amount) or partially. Supports normal refund speed (5-7 working days) or optimum speed, which attempts an instant refund where supported and falls back to normal otherwise (instant refunds carry a fee)."
+    },
+    {
+      "name": "List Payment Refunds",
+      "category": "Refunds",
+      "description": "Retrieves all refunds issued against a specific payment, with optional creation time range filtering and count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "Get Payment Refund",
+      "category": "Refunds",
+      "description": "Retrieves a specific refund of a specific payment by both IDs. Returns the refund amount, status (pending, processed, or failed), speed, and notes."
+    },
+    {
+      "name": "List All Refunds",
+      "category": "Refunds",
+      "description": "Retrieves refunds across all payments on your account, newest first, with optional creation time range filtering and count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "Get Refund",
+      "category": "Refunds",
+      "description": "Retrieves a single refund by its ID (without needing the payment ID). Returns the refund amount, associated payment, status, speed, and notes."
+    },
+    {
+      "name": "Update Refund",
+      "category": "Refunds",
+      "description": "Updates the notes of an existing refund. Notes are the only refund attribute that can be modified; the provided object fully replaces the existing notes."
+    },
+    {
+      "name": "Create Payment Link",
+      "category": "Payment Links",
+      "description": "Creates a shareable payment link (short URL) that a customer can use to pay. Supports partial payments, expiry, customer prefill, SMS/email delivery, payment reminders, and a callback URL invoked after payment. Returns the link with its short_url."
+    },
+    {
+      "name": "List Payment Links",
+      "category": "Payment Links",
+      "description": "Retrieves payment links created on your account. Optionally filter by the payment ID that settled a link or by your reference ID to find a specific link."
+    },
+    {
+      "name": "Get Payment Link",
+      "category": "Payment Links",
+      "description": "Retrieves a single payment link by its ID, including its status (created, partially_paid, paid, expired, or cancelled), amounts, customer details, and the payments made against it."
+    },
+    {
+      "name": "Update Payment Link",
+      "category": "Payment Links",
+      "description": "Updates an existing payment link. You can change the reference ID, expiry time, notes, and whether reminders are enabled. Only links that are not paid, cancelled, or expired can be updated."
+    },
+    {
+      "name": "Cancel Payment Link",
+      "category": "Payment Links",
+      "description": "Cancels a payment link so it can no longer be paid. Only links in created or partially_paid status can be cancelled; the link's status becomes cancelled."
+    },
+    {
+      "name": "Send Payment Link Notification",
+      "category": "Payment Links",
+      "description": "Sends or resends the payment link to the customer via SMS or email. The customer's contact number (for SMS) or email address must be set on the link."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates an invoice for a customer with one or more line items (referencing existing items by ID or defined inline with name, amount, and currency). Identify the customer by ID or an inline customer object. The invoice is created in draft status unless issued, and can be delivered by SMS and/or email."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Retrieves invoices on your account with optional filters by type, the payment that settled them, receipt number, or customer, plus count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves a single invoice by its ID, including line items, amounts, status (draft, issued, partially_paid, paid, cancelled, expired, or deleted), and the short URL customers use to pay."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Updates an invoice. Draft invoices accept changes to line items, description, receipt, expiry, notification settings, and partial payment; issued invoices only allow notes updates. Provided line items fully replace the existing ones."
+    },
+    {
+      "name": "Issue Invoice",
+      "category": "Invoices",
+      "description": "Issues a draft invoice, changing its status to issued, generating the payable short URL, and triggering configured SMS/email notifications. Once issued, an invoice can be paid by the customer."
+    },
+    {
+      "name": "Cancel Invoice",
+      "category": "Invoices",
+      "description": "Cancels an issued invoice so it can no longer be paid. Only invoices in issued or partially_paid status can be cancelled; the status becomes cancelled."
+    },
+    {
+      "name": "Delete Invoice",
+      "category": "Invoices",
+      "description": "Permanently deletes an invoice. Only draft invoices can be deleted; issued invoices must be cancelled instead. Returns an empty array on success."
+    },
+    {
+      "name": "Send Invoice Notification",
+      "category": "Invoices",
+      "description": "Sends or resends an issued invoice to the customer via SMS or email. The customer's contact number (for SMS) or email address must be present on the invoice."
+    },
+    {
+      "name": "Create Item",
+      "category": "Items",
+      "description": "Creates a reusable billing item (product or service) with a name, unit price, and currency. Items can then be referenced by ID in invoice line items instead of redefining them each time."
+    },
+    {
+      "name": "List Items",
+      "category": "Items",
+      "description": "Retrieves billing items on your account with optional filtering by creation time range and active state, plus count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "Get Item",
+      "category": "Items",
+      "description": "Retrieves a single billing item by its ID, including its name, description, unit price, currency, and active state."
+    },
+    {
+      "name": "Update Item",
+      "category": "Items",
+      "description": "Updates an existing billing item's name, description, unit price, currency, or active state. Only the provided fields are changed."
+    },
+    {
+      "name": "Delete Item",
+      "category": "Items",
+      "description": "Permanently deletes a billing item. Items already referenced by invoices cannot be deleted. Returns an empty array on success."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a customer record with name, contact details, and optional GSTIN. Customers can be referenced when creating invoices, QR codes, and virtual accounts. Choose whether to fail or silently fetch the existing record when a customer with the same details already exists."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Retrieves customer records on your account, newest first, with count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer record by its ID, including name, email, contact number, GSTIN, and notes."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates an existing customer's name, email, or contact number. Only the provided fields are changed."
+    },
+    {
+      "name": "Create Plan",
+      "category": "Plans",
+      "description": "Creates a subscription plan defining the billing cycle (period and interval) and the item charged each cycle. For example, period Monthly with interval 1 bills every month; period Weekly with interval 2 bills every two weeks. Plans are immutable once created."
+    },
+    {
+      "name": "List Plans",
+      "category": "Plans",
+      "description": "Retrieves subscription plans on your account with optional creation time range filtering and count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "Get Plan",
+      "category": "Plans",
+      "description": "Retrieves a single subscription plan by its ID, including its billing period, interval, and the item charged each cycle."
+    },
+    {
+      "name": "Create Subscription",
+      "category": "Subscriptions",
+      "description": "Creates a recurring subscription on a plan. Set the total number of billing cycles, optional future start time, expiry for the first authorization payment, upfront add-ons, and an offer. Returns the subscription with a short_url the customer uses to authorize recurring payments."
+    },
+    {
+      "name": "List Subscriptions",
+      "category": "Subscriptions",
+      "description": "Retrieves subscriptions on your account, optionally filtered by plan, with count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "Get Subscription",
+      "category": "Subscriptions",
+      "description": "Retrieves a single subscription by its ID, including its status (created, authenticated, active, pending, halted, paused, cancelled, completed, or expired), billing progress, and current cycle window."
+    },
+    {
+      "name": "Update Subscription",
+      "category": "Subscriptions",
+      "description": "Updates an existing subscription: switch it to a different plan, change quantity or remaining billing cycles, and choose whether the change applies immediately or at the end of the current cycle."
+    },
+    {
+      "name": "Cancel Subscription",
+      "category": "Subscriptions",
+      "description": "Cancels an active subscription either immediately or at the end of the current billing cycle. Cancelled subscriptions cannot be reactivated."
+    },
+    {
+      "name": "Pause Subscription",
+      "category": "Subscriptions",
+      "description": "Pauses an active subscription immediately, stopping all future charges until it is resumed. Only subscriptions in active status can be paused."
+    },
+    {
+      "name": "Resume Subscription",
+      "category": "Subscriptions",
+      "description": "Resumes a paused subscription immediately, restoring its billing schedule. Only subscriptions in paused status can be resumed."
+    },
+    {
+      "name": "Create Subscription Add-on",
+      "category": "Subscriptions",
+      "description": "Adds a one-time charge (add-on) to a subscription, billed on the next invoice. Define the add-on item inline with a name, amount, and currency, plus the quantity to charge."
+    },
+    {
+      "name": "Get Add-on",
+      "category": "Subscriptions",
+      "description": "Retrieves a single subscription add-on by its ID, including the charged item, quantity, and the invoice it was billed on (null until billed)."
+    },
+    {
+      "name": "Delete Add-on",
+      "category": "Subscriptions",
+      "description": "Deletes a subscription add-on that has not yet been billed on an invoice. Returns an empty array on success."
+    },
+    {
+      "name": "Create QR Code",
+      "category": "QR Codes",
+      "description": "Creates a UPI QR code that customers can scan to pay. Supports single-use codes (closed after one payment) or multiple-use codes, fixed or open payment amounts, an automatic close time, and linking payments to a customer."
+    },
+    {
+      "name": "List QR Codes",
+      "category": "QR Codes",
+      "description": "Retrieves QR codes created on your account with optional creation time range filtering and count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "Get QR Code",
+      "category": "QR Codes",
+      "description": "Retrieves a single QR code by its ID, including its image URL, status (active or closed), usage type, and totals for payments received."
+    },
+    {
+      "name": "Close QR Code",
+      "category": "QR Codes",
+      "description": "Closes an active QR code so it can no longer accept payments. The close reason is recorded as 'on_demand'. Closed QR codes cannot be reactivated."
+    },
+    {
+      "name": "List QR Code Payments",
+      "category": "QR Codes",
+      "description": "Retrieves payments made through a specific QR code, with optional creation time range filtering and count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "List Settlements",
+      "category": "Settlements",
+      "description": "Retrieves settlements of your Razorpay balance to your bank account, with optional creation time range filtering and count/skip pagination (up to 100 records per call). Amounts are in the smallest currency unit (paise)."
+    },
+    {
+      "name": "Get Settlement",
+      "category": "Settlements",
+      "description": "Retrieves a single settlement by its ID, including the settled amount, fees, tax, status, and the bank UTR reference for tracing the transfer."
+    },
+    {
+      "name": "Get Combined Settlement Recon",
+      "category": "Settlements",
+      "description": "Retrieves the combined settlement reconciliation report for a given day or month, breaking each settlement down into its component payments, refunds, transfers, and adjustments with fees and taxes. Omit the day to get the full month's report."
+    },
+    {
+      "name": "Create On-demand Settlement",
+      "category": "Settlements",
+      "description": "Requests an instant (on-demand) settlement of your available balance to your bank account, instead of waiting for the scheduled settlement cycle. Settle a specific amount or your full available balance. On-demand settlements carry additional fees."
+    },
+    {
+      "name": "List On-demand Settlements",
+      "category": "Settlements",
+      "description": "Retrieves on-demand (instant) settlement requests on your account, with optional creation time range filtering and count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "Get On-demand Settlement",
+      "category": "Settlements",
+      "description": "Retrieves a single on-demand settlement request by its ID, including requested, settled, pending, and reversed amounts, fees, and current status."
+    },
+    {
+      "name": "Create Virtual Account",
+      "category": "Virtual Accounts",
+      "description": "Creates a virtual account (smart collect) that customers can transfer money into via bank transfer (NEFT/RTGS/IMPS) or UPI. Choose the receiver types to provision, optionally link a customer, and set an automatic close time."
+    },
+    {
+      "name": "List Virtual Accounts",
+      "category": "Virtual Accounts",
+      "description": "Retrieves virtual accounts created on your account with optional creation time range filtering and count/skip pagination (up to 100 records per call)."
+    },
+    {
+      "name": "Get Virtual Account",
+      "category": "Virtual Accounts",
+      "description": "Retrieves a single virtual account by its ID, including its status (active or closed), receivers (bank account details and/or VPA), amount paid, and linked customer."
+    },
+    {
+      "name": "Close Virtual Account",
+      "category": "Virtual Accounts",
+      "description": "Closes an active virtual account so it can no longer receive payments. Closed virtual accounts cannot be reopened."
+    },
+    {
+      "name": "List Virtual Account Payments",
+      "category": "Virtual Accounts",
+      "description": "Retrieves payments received into a specific virtual account, with optional creation time range filtering and count/skip pagination (up to 100 records per call)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Create an order, then capture and reconcile the payment made against it in a checkout flow",
+    "Send a customer a shareable payment link or a UPI QR code and track when it is paid",
+    "Bill customers on a recurring schedule with subscription plans and one-off add-ons",
+    "Generate and issue invoices from reusable billing items and deliver them by SMS or email",
+    "Issue full or partial refunds and reconcile settlements, including on-demand payouts to your bank"
+  ],
+  "agentIdeas": [
+    "After a **Razorpay** \"Capture Payment\" or \"Get Payment\" confirms a successful charge, use **Gmail** \"Send Message\" to email the customer a payment receipt with the amount and payment ID.",
+    "Use **HubSpot** \"Create Contact\" for a new customer, then call **Razorpay** \"Create Payment Link\" to send them a checkout URL and record the returned short_url back on the contact.",
+    "When a **Razorpay** \"List Settlements\" run returns a new settlement, use **Google Sheets** \"Add Row\" to log the settlement amount, fees, and status into a finance reconciliation spreadsheet."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/razorpay/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/razorpay",
+    "readme": "services/razorpay/README.md",
+    "index": "services/razorpay/src/index.js"
+  }
+}

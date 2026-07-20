@@ -1,0 +1,114 @@
+{
+  "slug": "hackernews",
+  "name": "Hacker News",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Read-only access to [Hacker News](https://news.ycombinator.com/) through its two public, unauthenticated APIs: the **Official Firebase API** (`https://hacker-news.firebaseio.com/v0`) for canonical items, user profiles, live story-id lists, and change feeds, and the **Algolia HN Search API** (`https://hn.algolia.com/api/v1`) for full-text search plus hydrated items and users. No credentials required — this service defines no configuration items; add it and start calling operations.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Items & Users",
+    "Story Lists",
+    "Search"
+  ],
+  "actions": [
+    {
+      "name": "Get Item",
+      "category": "Items & Users",
+      "description": "Retrieves a single Hacker News item by its numeric id from the official Firebase API. An item may be a story, comment, job, poll, or poll option (pollopt); the returned fields vary by type (for example stories have title/url/score/descendants, comments have text/parent, polls have parts). The kids array lists direct child comment ids in display order - fetch each with another Get Item call to build a thread. Returns a not-found error if the id does not exist."
+    },
+    {
+      "name": "Get User",
+      "category": "Items & Users",
+      "description": "Retrieves a Hacker News user profile by case-sensitive username from the official Firebase API. Returns the user id, karma, account creation time (Unix seconds), optional HTML about text, and a submitted array of the ids of their stories, polls, and comments (newest first). Only users who have public activity are exposed. Returns a not-found error if the username does not exist."
+    },
+    {
+      "name": "Get Max Item ID",
+      "category": "Items & Users",
+      "description": "Returns the current largest item id on Hacker News from the official Firebase API. Item ids are assigned sequentially, so this is the id of the most recently created item. Walk backwards from this value to discover the newest items of any type, or use it to bound polling."
+    },
+    {
+      "name": "Get Top Stories",
+      "category": "Story Lists",
+      "description": "Returns up to 500 item ids for the current front-page ranking (top stories and jobs) from the official Firebase API, ordered by rank. The result is a bare array of numeric ids; call Get Item on each id to resolve the story details, or use Get Top Stories (Hydrated) to fetch the first N items in one call."
+    },
+    {
+      "name": "Get New Stories",
+      "category": "Story Lists",
+      "description": "Returns up to 500 item ids for the newest stories from the official Firebase API, ordered newest first. The result is a bare array of numeric ids; call Get Item on each id to resolve the story details."
+    },
+    {
+      "name": "Get Best Stories",
+      "category": "Story Lists",
+      "description": "Returns up to 500 item ids for the current best (highest scoring recent) stories from the official Firebase API. The result is a bare array of numeric ids; call Get Item on each id to resolve the story details."
+    },
+    {
+      "name": "Get Ask Stories",
+      "category": "Story Lists",
+      "description": "Returns up to 200 item ids for the latest Ask HN stories from the official Firebase API, ordered by rank. The result is a bare array of numeric ids; call Get Item on each id to resolve the story details."
+    },
+    {
+      "name": "Get Show Stories",
+      "category": "Story Lists",
+      "description": "Returns up to 200 item ids for the latest Show HN stories from the official Firebase API, ordered by rank. The result is a bare array of numeric ids; call Get Item on each id to resolve the story details."
+    },
+    {
+      "name": "Get Job Stories",
+      "category": "Story Lists",
+      "description": "Returns up to 200 item ids for the latest job postings from the official Firebase API, ordered by rank. The result is a bare array of numeric ids; call Get Item on each id to resolve the job details."
+    },
+    {
+      "name": "Get Updates",
+      "category": "Story Lists",
+      "description": "Returns the items and user profiles that have recently changed on Hacker News, from the official Firebase API. The response has two arrays: items (numeric ids of changed items) and profiles (usernames of changed users). Useful for detecting edits, new comments, or score changes since a previous poll."
+    },
+    {
+      "name": "Get Top Stories (Hydrated)",
+      "category": "Story Lists",
+      "description": "Convenience action that fetches the current top-story id list from the official Firebase API and then resolves the first N ids into full item objects in one call, so you do not have to loop Get Item yourself. Returns story objects in rank order plus the total number of ids available. Limit is capped at 50 to stay within a reasonable request budget."
+    },
+    {
+      "name": "Search",
+      "category": "Search",
+      "description": "Full-text search across Hacker News via the Algolia HN Search API, ranked by relevance (points, then recency). Filter by content type with the Tags parameter, restrict by numeric fields (created_at_i, points, num_comments) with Numeric Filters, and page through results. Returns hit objects with objectID, title, url, author, points, num_comments, story_text/comment_text, and _tags. Use Search by Date instead when you need strictly chronological ordering."
+    },
+    {
+      "name": "Search by Date",
+      "category": "Search",
+      "description": "Full-text search across Hacker News via the Algolia HN Search API, ordered strictly by date (most recent first) rather than relevance. Accepts the same Query, Tags, Numeric Filters, and paging parameters as Search. Use this for chronological feeds, monitoring, or \"everything since a timestamp\" queries (combine with a created_at_i numeric filter). Returns the same hit shape as Search."
+    },
+    {
+      "name": "Get Item (Algolia)",
+      "category": "Search",
+      "description": "Retrieves a single item and its full nested comment tree from the Algolia HN Search API in one call. Unlike the Firebase Get Item (which returns only child ids in kids), this returns each child comment inline under a children array, recursively, so you get the whole discussion thread without additional requests. Fields include id, title, url, author, points, text, created_at, and children."
+    },
+    {
+      "name": "Get User (Algolia)",
+      "category": "Search",
+      "description": "Retrieves a Hacker News user's aggregate stats from the Algolia HN Search API by username. Returns the username, karma, about text, and derived counts (submitted, comment_count, submission_count) as indexed by Algolia. For the raw Firebase profile including the full submitted-id list, use Get User instead."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Monitor the front page, newest, best, Ask HN, Show HN, or job feeds and act on new stories on a schedule.",
+    "Full-text search Hacker News by keyword, author, or content type and route matches into a spreadsheet or chat.",
+    "Fetch a story with its entire nested comment thread in one call for summarization or sentiment analysis.",
+    "Track edits and score changes with the change feed, or pull a user's karma and submission history."
+  ],
+  "agentIdeas": [
+    "On a schedule, call **Get Top Stories (Hydrated)** to pull the current front page, then use **Slack** \"Send Message To Channel\" to post the highest-scoring headlines with their links to a team channel.",
+    "Use **Search by Date** with a `created_at_i` numeric filter to collect every new story mentioning a keyword, then log each hit with **Google Sheets** \"Add Row\" into a monitoring spreadsheet.",
+    "When a discussion is trending, call **Get Item (Algolia)** to fetch the full nested comment tree in one call and use **Discord** \"Send Message\" to post a thread summary into a community channel."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/hackernews/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/hackernews",
+    "readme": "services/hackernews/README.md",
+    "index": "services/hackernews/src/index.js"
+  }
+}

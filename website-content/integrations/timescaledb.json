@@ -1,0 +1,128 @@
+{
+  "slug": "timescaledb",
+  "name": "TimescaleDB",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [TimescaleDB](https://www.timescale.com/) — the time-series database built as a PostgreSQL extension. TimescaleDB is fully wire-compatible with PostgreSQL, so this service connects directly to a TimescaleDB server (self-managed or **TimescaleDB Cloud / Tiger Cloud**) over TCP using the official [`pg`](https://node-postgres.com/) driver. On top of standard SQL and no-SQL row operations, it exposes TimescaleDB-specific actions: hypertables, `time_bucket` aggregation, columnar compression, continuous aggregates, and chunk-based retention.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "SQL",
+    "Rows",
+    "Schema",
+    "Hypertables",
+    "Time-Series Analytics",
+    "Compression & Retention"
+  ],
+  "actions": [
+    {
+      "name": "Execute Query",
+      "category": "SQL",
+      "description": "Executes an arbitrary SQL statement (SELECT, INSERT, UPDATE, DELETE, DDL, CTEs, TimescaleDB functions, etc.) and returns the resulting rows, the affected row count, and result field metadata. Use $1, $2, ... placeholders in the SQL together with the Parameters array to safely bind values — never interpolate user input into the SQL string. Statements are limited to 120 seconds of execution time."
+    },
+    {
+      "name": "Select Rows",
+      "category": "Rows",
+      "description": "Selects rows from a table without writing SQL. Supports choosing specific columns, equality-based filtering (null values match IS NULL, array values match any element), ordering, and limit/offset pagination. For joins, aggregations, or complex conditions use Execute Query instead."
+    },
+    {
+      "name": "Insert Row",
+      "category": "Rows",
+      "description": "Inserts a single row into a table from a JSON object of column/value pairs and returns the full inserted row (including database-generated values such as serial IDs and defaults) via RETURNING *. Works with both regular tables and hypertables."
+    },
+    {
+      "name": "Insert Rows",
+      "category": "Rows",
+      "description": "Bulk-inserts multiple rows into a table in a single statement. The column set is the union of keys across all row objects; rows missing a key insert NULL for that column. Returns the inserted rows (via RETURNING *) and the inserted count. Ideal for batch-ingesting time-series records into a hypertable."
+    },
+    {
+      "name": "Update Rows",
+      "category": "Rows",
+      "description": "Updates all rows matching the equality conditions in the Where object, setting the columns provided in the Data object. Returns the updated rows (via RETURNING *) and the updated count. A non-empty Where object is required to prevent accidental full-table updates; use Execute Query for unconditional updates."
+    },
+    {
+      "name": "Delete Rows",
+      "category": "Rows",
+      "description": "Deletes all rows matching the equality conditions in the Where object and returns the number of deleted rows. A non-empty Where object is required to prevent accidental full-table deletion; use Execute Query (e.g. TRUNCATE or DELETE without WHERE) for that. To efficiently drop old time-series data, prefer Drop Chunks over row-by-row deletion."
+    },
+    {
+      "name": "Upsert Row",
+      "category": "Rows",
+      "description": "Inserts a row, or updates the existing row when a unique constraint on the conflict columns is violated (INSERT ... ON CONFLICT ... DO UPDATE). All non-conflict columns from Data are updated on conflict; if Data contains only conflict columns, the conflict is ignored (DO NOTHING). The conflict columns must be covered by a unique index or primary key. Returns the resulting row via RETURNING *."
+    },
+    {
+      "name": "Get Table Schema",
+      "category": "Schema",
+      "description": "Returns the column definitions of a table from information_schema.columns: column name, data type, underlying type name, nullability, default expression, maximum character length, and ordinal position. Useful for discovering a table's structure before reading, writing, or creating a hypertable."
+    },
+    {
+      "name": "List Tables",
+      "category": "Schema",
+      "description": "Lists all tables and views in user schemas (system schemas pg_catalog and information_schema are excluded), including each object's schema, name and type. Useful for discovering what data is available in the database. To list only TimescaleDB hypertables, use List Hypertables."
+    },
+    {
+      "name": "Create Hypertable",
+      "category": "Hypertables",
+      "description": "Converts an existing PostgreSQL table into a TimescaleDB hypertable partitioned by a time column, using SELECT create_hypertable(...). The table must already exist and the time column must be a timestamp, timestamptz, date, or integer type. Optionally set the chunk time interval (e.g. \"7 days\") that controls how much time each underlying chunk spans; smaller intervals suit high-ingest workloads, larger intervals suit sparse data. Pass \"Migrate Existing Data\" when the table already contains rows so they are moved into the new chunk structure. Returns the create_hypertable result row."
+    },
+    {
+      "name": "List Hypertables",
+      "category": "Hypertables",
+      "description": "Lists all TimescaleDB hypertables in the database from timescaledb_information.hypertables, including the hypertable's schema and name, owner, number of dimensions, number of chunks, compression status, and tablespaces. Use this to discover which tables are time-partitioned before running time-series operations."
+    },
+    {
+      "name": "Get Hypertable Chunks",
+      "category": "Hypertables",
+      "description": "Lists the underlying chunks of a hypertable from timescaledb_information.chunks, including each chunk's schema and name, the time range it covers (range_start / range_end), whether it is compressed, and whether it is a dropped chunk. Chunks are the physical partitions TimescaleDB stores time-series data in. Useful for inspecting data distribution and compression state over time."
+    },
+    {
+      "name": "Time Bucket Query",
+      "category": "Time-Series Analytics",
+      "description": "Runs a TimescaleDB time_bucket aggregation without writing full SQL. Buckets rows of a hypertable (or any table) into fixed time intervals on the time column and computes the supplied aggregate expressions per bucket, e.g. bucket temperature readings into hourly averages. Builds and runs: SELECT time_bucket('{interval}', {timeColumn}) AS bucket, {aggregations} FROM {table} [WHERE {whereClause}] GROUP BY bucket ORDER BY bucket [LIMIT {limit}]. Provide the aggregations as a raw SQL expression list (e.g. \"avg(temperature) AS avg_temp, max(temperature) AS max_temp\") and, if needed, a raw SQL WHERE condition (bind-free). Returns one row per time bucket."
+    },
+    {
+      "name": "Enable Compression",
+      "category": "Compression & Retention",
+      "description": "Enables native columnar compression on a hypertable and optionally schedules an automatic compression policy. Runs ALTER TABLE {table} SET (timescaledb.compress, ...) to turn compression on — optionally segmenting by a column (segment-by, groups related rows for better compression and query performance) and ordering compressed data by a column (order-by, typically the time column descending). When \"Compress Chunks Older Than\" is supplied, also creates a policy (add_compression_policy) that automatically compresses chunks once their data ages past that interval. Returns whether the policy was scheduled."
+    },
+    {
+      "name": "Create Continuous Aggregate",
+      "category": "Compression & Retention",
+      "description": "Creates a TimescaleDB continuous aggregate: a materialized view that incrementally maintains a time_bucket-based rollup of a hypertable, so pre-aggregated results (e.g. hourly or daily summaries) are always fast to query. Runs CREATE MATERIALIZED VIEW {name} WITH (timescaledb.continuous) AS {selectBody} WITH NO DATA, where you supply the full SELECT body (which must include a time_bucket(...) and GROUP BY). The view is created WITH NO DATA and backfilled by its refresh policy; add a refresh policy separately (via Execute Query and add_continuous_aggregate_policy) to keep it current. Returns the created view name."
+    },
+    {
+      "name": "Show Chunks",
+      "category": "Compression & Retention",
+      "description": "Lists the chunks of a hypertable using the show_chunks() function, optionally restricted to chunks whose data is older than a given interval. Returns the fully-qualified chunk relation names, oldest first. Use this to preview which chunks Drop Chunks would remove before actually dropping them."
+    },
+    {
+      "name": "Drop Chunks",
+      "category": "Compression & Retention",
+      "description": "Permanently drops all chunks of a hypertable whose data is older than the given interval, using drop_chunks(). This is the efficient way to enforce data retention on time-series data — it removes whole physical partitions rather than deleting rows one by one, and cannot be undone. Returns the list of dropped chunk names. Preview first with Show Chunks."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Ingest sensor / metrics / event streams into a hypertable (single-row or batch).",
+    "Roll up raw time-series into hourly or daily summaries with `time_bucket`, or with continuous aggregates for always-fast reads.",
+    "Enforce data retention by dropping chunks older than a threshold.",
+    "Enable compression on historical data to reduce storage.",
+    "Run parameterized SQL and no-SQL row operations against any PostgreSQL/TimescaleDB table."
+  ],
+  "agentIdeas": [
+    "Use TimescaleDB \"Time Bucket Query\" to compute hourly averages from a metrics hypertable, then **Google Sheets** \"Add Rows\" to publish the rollup to a dashboard sheet.",
+    "On a schedule, use TimescaleDB \"Drop Chunks\" to enforce a 90-day retention policy on raw event data, then **Slack** \"Send Message To Channel\" to report how many chunks were dropped.",
+    "Ingest API or webhook payloads with TimescaleDB \"Insert Rows\" into a hypertable, and use \"Enable Compression\" once to keep historical storage small."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/timescaledb/public/icon.png",
+  "sourcePaths": {
+    "service": "services/timescaledb",
+    "readme": "services/timescaledb/README.md",
+    "index": "services/timescaledb/src/index.js"
+  }
+}

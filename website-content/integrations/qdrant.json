@@ -1,0 +1,120 @@
+{
+  "slug": "qdrant",
+  "name": "Qdrant",
+  "marketingCategory": "Vector Stores & AI Infra",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrates [Qdrant](https://qdrant.tech), the open-source vector database and similarity search engine, into FlowRunner workflows. Manage collections, upsert and retrieve points with their vectors and payloads, run similarity searches via the universal Query API, and maintain point metadata — working with both Qdrant Cloud and self-hosted instances over the Qdrant REST API.",
+  "actionCount": 16,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Collections",
+    "Points",
+    "Payload"
+  ],
+  "actions": [
+    {
+      "name": "Create Collection",
+      "category": "Collections",
+      "description": "Creates a new vector collection with the given vector size and distance metric. For advanced setups (named vectors, sparse vectors, quantization, HNSW tuning, sharding), provide an Advanced Configuration object that is merged into the request body and overrides the basic settings."
+    },
+    {
+      "name": "List Collections",
+      "category": "Collections",
+      "description": "Retrieves the names of all collections that exist in the Qdrant instance."
+    },
+    {
+      "name": "Get Collection",
+      "category": "Collections",
+      "description": "Retrieves detailed information about a collection, including its status, vector configuration, points count, indexed vectors count and optimizer state."
+    },
+    {
+      "name": "Delete Collection",
+      "category": "Collections",
+      "description": "Permanently deletes a collection and all points stored in it. This action cannot be undone."
+    },
+    {
+      "name": "Check Collection Exists",
+      "category": "Collections",
+      "description": "Checks whether a collection with the given name exists in the Qdrant instance. Returns an object with an \"exists\" boolean."
+    },
+    {
+      "name": "Upsert Points",
+      "category": "Points",
+      "description": "Inserts new points or updates existing ones (matched by ID) in a collection. Each point is an object with \"id\" (unsigned integer or UUID string), \"vector\" (array of numbers, or an object of named vectors) and an optional \"payload\" object with arbitrary metadata. The operation waits for changes to be applied before returning."
+    },
+    {
+      "name": "Get Points",
+      "category": "Points",
+      "description": "Retrieves specific points from a collection by their IDs, optionally including stored payloads and vectors."
+    },
+    {
+      "name": "Delete Points",
+      "category": "Points",
+      "description": "Deletes points from a collection either by an explicit list of point IDs or by a Qdrant filter that selects the points to remove. Provide exactly one of the two selectors. The operation waits for changes to be applied before returning."
+    },
+    {
+      "name": "Query Points",
+      "category": "Points",
+      "description": "Searches a collection using Qdrant's universal Query API — the primary similarity-search operation. Query by a raw embedding vector, or by an existing point ID to find its nearest neighbors. Supports payload filtering, score thresholds, pagination and named vectors. Returns scored points ordered by similarity."
+    },
+    {
+      "name": "Batch Query Points",
+      "category": "Points",
+      "description": "Executes multiple similarity-search queries against a collection in a single request. Each search is a full Qdrant query object (query, filter, limit, using, with_payload, etc.). Returns one result set per search, in the same order."
+    },
+    {
+      "name": "Scroll Points",
+      "category": "Points",
+      "description": "Iterates through all points in a collection that match an optional filter, without similarity scoring. Returns a page of points plus a \"next_page_offset\" point ID to pass as Offset for the next page (null when there are no more results)."
+    },
+    {
+      "name": "Count Points",
+      "category": "Points",
+      "description": "Counts the points in a collection, optionally restricted to those matching a filter. Exact counting is precise but slower; approximate counting uses indexed data for faster results on large collections."
+    },
+    {
+      "name": "Set Payload",
+      "category": "Payload",
+      "description": "Sets (merges) payload fields on selected points — existing keys not present in the new payload are kept. Select points by an explicit list of IDs or by a filter; provide exactly one selector. The operation waits for changes to be applied before returning."
+    },
+    {
+      "name": "Overwrite Payload",
+      "category": "Payload",
+      "description": "Replaces the entire payload of selected points with the provided object — all previously stored payload fields are removed. Select points by an explicit list of IDs or by a filter; provide exactly one selector. The operation waits for changes to be applied before returning."
+    },
+    {
+      "name": "Delete Payload Keys",
+      "category": "Payload",
+      "description": "Removes specific payload fields from selected points; other payload fields and the vectors are kept. Select points by an explicit list of IDs or by a filter; provide exactly one selector. The operation waits for changes to be applied before returning."
+    },
+    {
+      "name": "Clear Payload",
+      "category": "Payload",
+      "description": "Removes the entire payload from selected points; the vectors are kept. Select points by an explicit list of IDs or by a filter; provide exactly one selector. The operation waits for changes to be applied before returning."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Building semantic search and retrieval-augmented generation (RAG) pipelines",
+    "Storing embeddings produced by AI models alongside rich metadata payloads",
+    "Finding nearest-neighbor points to a query vector or an existing point",
+    "Filtering, counting, and paging through large sets of vector points",
+    "Provisioning and inspecting vector collections as part of a data pipeline"
+  ],
+  "agentIdeas": [
+    "Use **OpenAI** \"Create Embeddings\" (or **Gemini AI** \"Embed Content\") to embed a document, then **Qdrant** \"Upsert Points\" to store the vector with its source metadata as the payload.",
+    "Embed a user question with **OpenAI** \"Create Embeddings\", run **Qdrant** \"Query Points\" to retrieve the most similar passages, then feed them to **OpenAI** \"Create Chat Completion\" for a grounded, retrieval-augmented answer.",
+    "After **Qdrant** \"Query Points\" surfaces relevant records, use **Notion** \"Create Page\" to log the matched results or **Slack** \"Send Message To Channel\" to alert a team with the top hits."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/qdrant/public/icon.png",
+  "sourcePaths": {
+    "service": "services/qdrant",
+    "readme": "services/qdrant/README.md",
+    "index": "services/qdrant/src/index.js"
+  }
+}

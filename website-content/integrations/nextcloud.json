@@ -1,0 +1,115 @@
+{
+  "slug": "nextcloud",
+  "name": "Nextcloud",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Integrate [Nextcloud](https://nextcloud.com/) with FlowRunner to manage files, folders, shares, and users on your own Nextcloud server. The service talks to two Nextcloud APIs: the **WebDAV** file API for file operations and the **OCS** API for shares and user provisioning. It authenticates with HTTP Basic auth using your Nextcloud username and an app password.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Files",
+    "Shares",
+    "Users"
+  ],
+  "actions": [
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a file to Nextcloud via WebDAV. Fetches the binary contents from a publicly accessible source URL and stores them at the given remote path (e.g. \"Documents/report.pdf\"), overwriting any existing file. Parent folders are created automatically. Returns the stored path and metadata."
+    },
+    {
+      "name": "Download File",
+      "category": "Files",
+      "description": "Downloads a file from Nextcloud via WebDAV and saves it to FlowRunner file storage, returning a URL to the stored copy. Use this to bring Nextcloud files into a flow for further processing."
+    },
+    {
+      "name": "List Folder",
+      "category": "Files",
+      "description": "Lists the immediate contents of a Nextcloud folder via a WebDAV PROPFIND (Depth 1). Returns each child file and folder with its name, path, type, size, content type, and last-modified time. Leave the path empty to list the root of the user's files."
+    },
+    {
+      "name": "Create Folder",
+      "category": "Files",
+      "description": "Creates a new folder in Nextcloud via WebDAV (MKCOL). The immediate parent folder must already exist. Returns the created folder path."
+    },
+    {
+      "name": "Delete",
+      "category": "Files",
+      "description": "Deletes a file or folder in Nextcloud via WebDAV (DELETE). Deleting a folder removes all of its contents recursively. The item is moved to the trash bin per the account's retention settings."
+    },
+    {
+      "name": "Move",
+      "category": "Files",
+      "description": "Moves or renames a file or folder in Nextcloud via WebDAV (MOVE). Set the destination to the new full path, which also serves to rename the item. By default an existing item at the destination is overwritten."
+    },
+    {
+      "name": "Copy",
+      "category": "Files",
+      "description": "Copies a file or folder in Nextcloud via WebDAV (COPY) to a new full path. Copying a folder duplicates its contents recursively. By default an existing item at the destination is overwritten."
+    },
+    {
+      "name": "Create Share",
+      "category": "Shares",
+      "description": "Creates a share for a file or folder using the Nextcloud OCS Sharing API. Supports sharing with a user, group, by email, or as a public link. For public links a public URL and token are returned; you can optionally set a password and expiration. Permissions control what recipients may do."
+    },
+    {
+      "name": "List Shares",
+      "category": "Shares",
+      "description": "Lists shares created by the account using the OCS Sharing API. Optionally filter by a specific file or folder path. Returns each share with its id, type, recipient, permissions, and (for public links) URL and token."
+    },
+    {
+      "name": "Get Share",
+      "category": "Shares",
+      "description": "Retrieves the details of a single share by its numeric share id using the OCS Sharing API."
+    },
+    {
+      "name": "Update Share",
+      "category": "Shares",
+      "description": "Updates an existing share by id using the OCS Sharing API. You can change permissions, set or clear a password, set an expiration date, or update the note. Only the fields you provide are changed."
+    },
+    {
+      "name": "Delete Share",
+      "category": "Shares",
+      "description": "Removes a share by its numeric id using the OCS Sharing API. This revokes access for the recipient; the underlying file or folder is not deleted."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users",
+      "description": "Returns the profile of the authenticated account via the OCS provisioning API. Useful as a connection check to verify the server URL and app password are valid."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Returns the profile of a specific user by their user id via the OCS provisioning API. Requires the authenticated account to have permission to view the user (e.g. an admin or group subadmin)."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists user ids on the Nextcloud instance via the OCS provisioning API, optionally filtered by a search term. Requires the authenticated account to have permission to list users. Supports limit and offset for pagination."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Archiving flow-generated documents (invoices, reports, exports) into a Nextcloud folder for long-term storage.",
+    "Pulling files out of Nextcloud into a flow for parsing, conversion, or forwarding to another service.",
+    "Organizing storage programmatically by creating folders and moving, copying, or deleting files.",
+    "Generating public share links (with optional password and expiration) to distribute files externally.",
+    "Auditing or provisioning access by listing users and inspecting the authenticated account."
+  ],
+  "agentIdeas": [
+    "After a **Gmail** \"On New Attachment\" trigger fires, use **Nextcloud** \"Upload File\" to archive the attachment into a folder created with \"Create Folder\".",
+    "Use **Nextcloud** \"Create Share\" to generate a password-protected public link, then post it with **Slack** \"Send Message To Channel\" for the team to review.",
+    "Pull a document with **Nextcloud** \"Download File\", then log its details and share status into a knowledge base with **Notion** \"Create Page\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/nextcloud/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/nextcloud",
+    "readme": "services/nextcloud/README.md",
+    "index": "services/nextcloud/src/index.js"
+  }
+}

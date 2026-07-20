@@ -1,0 +1,98 @@
+{
+  "slug": "azure-table-storage",
+  "name": "Azure Table Storage",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Azure Table Storage](https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api), the NoSQL key/attribute store in Azure Storage. Manage tables and entities — keyed by a PartitionKey + RowKey pair — directly from your flows, with OData `$filter` queries and replace / merge / insert-or-* upsert semantics. Authenticates against the Table service REST API using hand-rolled SharedKeyLite HMAC-SHA256 signing (account name + account key), with no external dependencies.",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Tables",
+    "Entities"
+  ],
+  "actions": [
+    {
+      "name": "List Tables",
+      "category": "Tables",
+      "description": "Lists all tables in the storage account. Returns an array of table objects, each containing a TableName. Table Storage returns up to 1000 tables per page; when more exist, use the returned nextTableName as the continuation token to fetch the next page."
+    },
+    {
+      "name": "Create Table",
+      "category": "Tables",
+      "description": "Creates a new table in the storage account. Table names may contain only alphanumeric characters, must start with a letter, and be 3 to 63 characters long. Fails with a 409 conflict if a table with the same name already exists."
+    },
+    {
+      "name": "Delete Table",
+      "category": "Tables",
+      "description": "Permanently deletes a table and all entities it contains from the storage account. This action is irreversible. Fails with a 404 if the table does not exist."
+    },
+    {
+      "name": "Query Tables",
+      "category": "Tables",
+      "description": "Queries tables in the storage account using an optional OData $filter and $top limit. For example, use \"TableName eq 'Customers'\" to look up a specific table. Returns matching table objects plus a continuation token when more results are available."
+    },
+    {
+      "name": "Query Entities",
+      "category": "Entities",
+      "description": "Queries entities in a table using an optional OData $filter, $select, and $top. Entities are keyed by PartitionKey + RowKey; filters can target these or any custom property, e.g. \"PartitionKey eq 'us' and Age gt 30\". Returns matching entities plus continuation tokens (nextPartitionKey / nextRowKey) when the result set spans multiple pages (max 1000 entities per page)."
+    },
+    {
+      "name": "Get Entity",
+      "category": "Entities",
+      "description": "Retrieves a single entity from a table by its PartitionKey and RowKey. Optionally limit the returned properties with $select. Returns the entity object, or fails with a 404 if no matching entity exists."
+    },
+    {
+      "name": "Insert Entity",
+      "category": "Entities",
+      "description": "Inserts a new entity into a table. Supply PartitionKey and RowKey (which together form the unique primary key) plus any number of custom properties. Property values are typed automatically (strings, numbers, and booleans are inferred); to force an EDM type add a companion \"<Name>@odata.type\" property. Fails with a 409 conflict if an entity with the same keys already exists."
+    },
+    {
+      "name": "Update Entity (Replace)",
+      "category": "Entities",
+      "description": "Replaces an existing entity identified by PartitionKey and RowKey with the supplied properties. This is a full replace: any property not included in the request is removed from the stored entity. Uses an unconditional update (If-Match:*), overwriting regardless of the current ETag. Fails with a 404 if the entity does not exist. Use Insert-Or-Replace Entity to upsert instead."
+    },
+    {
+      "name": "Merge Entity",
+      "category": "Entities",
+      "description": "Partially updates an existing entity identified by PartitionKey and RowKey. Only the supplied properties are set or added; properties not included are retained. Uses an unconditional merge (If-Match:*). Fails with a 404 if the entity does not exist. Use Insert-Or-Merge Entity to upsert instead."
+    },
+    {
+      "name": "Insert-Or-Replace Entity",
+      "category": "Entities",
+      "description": "Upserts an entity: replaces it if PartitionKey + RowKey already exist, or inserts it otherwise. This is a full replace, so any property not included is removed from the stored entity. No If-Match header is sent, so the operation always succeeds regardless of the current ETag."
+    },
+    {
+      "name": "Insert-Or-Merge Entity",
+      "category": "Entities",
+      "description": "Upserts an entity: merges into it if PartitionKey + RowKey already exist, or inserts it otherwise. Only the supplied properties are set or added; existing properties not included are retained. No If-Match header is sent, so the operation always succeeds regardless of the current ETag."
+    },
+    {
+      "name": "Delete Entity",
+      "category": "Entities",
+      "description": "Permanently deletes a single entity identified by PartitionKey and RowKey. Uses an unconditional delete (If-Match:*), removing the entity regardless of its current ETag. Fails with a 404 if the entity does not exist."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Persisting high-volume, schemaless records (logs, telemetry, user profiles, IoT readings) in a low-cost NoSQL store",
+    "Looking up or filtering entities by PartitionKey/RowKey or custom properties with OData `$filter` and `$select`",
+    "Idempotent writes from automations using insert-or-replace / insert-or-merge upserts",
+    "Managing table lifecycle (create, list, query, delete) as part of a data pipeline"
+  ],
+  "agentIdeas": [
+    "Use **Azure Table Storage** \"Query Entities\" with a `$filter` to pull unprocessed records, then for each call **Slack** \"Send Message To Channel\" to alert the team and **Azure Table Storage** \"Merge Entity\" to mark the record as handled.",
+    "When a **Google Sheets** \"On New Row\" trigger fires, call **Azure Table Storage** \"Insert-Or-Replace Entity\" to sync the row idempotently into a table keyed by PartitionKey + RowKey.",
+    "On a **Google Calendar** \"On Event Ended\" trigger, use **Azure Table Storage** \"Insert Entity\" to append the meeting details as a durable audit record."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/azure-table-storage/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/azure-table-storage",
+    "readme": "services/azure-table-storage/README.md",
+    "index": "services/azure-table-storage/src/index.js"
+  }
+}

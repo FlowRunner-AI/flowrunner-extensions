@@ -1,0 +1,363 @@
+{
+  "slug": "gocardless",
+  "name": "GoCardless",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Collect and manage bank-to-bank payments through GoCardless: set up Direct Debit mandates, take one-off, recurring, and instalment payments, issue refunds, and reconcile payouts. Includes hosted and own-page authorisation flows, mandate migration, and polling triggers that react to account events.",
+  "actionCount": 61,
+  "triggerCount": 6,
+  "operationCategories": [
+    "Customers",
+    "Mandates",
+    "Mandate Imports",
+    "Creditors",
+    "Payments",
+    "Subscriptions",
+    "Instalment Schedules",
+    "Refunds",
+    "Payouts",
+    "Billing Requests",
+    "Events",
+    "Utility"
+  ],
+  "actions": [
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "List your GoCardless customers. Useful for reconciliation, exports, or paging through everyone with optional date filters. Use this when you need to browse or audit the customer base."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Fetch one customer's full profile - name, email, address, language, identity numbers. Use when you have a customer ID and need their details for display or downstream logic."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Create a new customer. Use this before collecting their bank details (createCustomerBankAccount) and authorising a mandate. For self-serve onboarding where the payer enters their own details, use createBillingRequest instead."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Update an existing customer's profile fields like name, email, address, phone or language. Country and identity numbers cannot be changed once set - to change those, create a new customer."
+    },
+    {
+      "name": "Remove Customer",
+      "category": "Customers",
+      "description": "Remove a customer. The record stays in GoCardless for your reference but becomes read-only - no new mandates or payments can be created. Use this when ending a customer relationship cleanly. Not reversible."
+    },
+    {
+      "name": "List Customer Bank Accounts",
+      "category": "Customers",
+      "description": "List bank accounts attached to your customers. Use to find an existing bank account before creating a mandate, or to audit which customers have active payment methods."
+    },
+    {
+      "name": "Get Customer Bank Account",
+      "category": "Customers",
+      "description": "Fetch one customer bank account - sort code, last few digits, scheme support, status."
+    },
+    {
+      "name": "Save Customer Bank Account",
+      "category": "Customers",
+      "description": "Save a customer's bank details so you can charge them. Either provide an IBAN (works for most European accounts) OR fill the account number + sort/bank/branch code for local schemes (UK, US, AU, etc.). For self-serve flows where the payer enters their own details, use createBillingRequestFlow instead."
+    },
+    {
+      "name": "Disable Customer Bank Account",
+      "category": "Customers",
+      "description": "Permanently turn off a customer bank account. Existing mandates on it stop working and you can no longer collect payments from it. Cannot be undone - to switch to a new account, save a new one first."
+    },
+    {
+      "name": "List Mandates",
+      "category": "Mandates",
+      "description": "List Direct Debit mandates (payer authorisations). Filter by customer, bank account, status, scheme, or date range. Use for reporting, finding active mandates to charge, or auditing cancelled ones."
+    },
+    {
+      "name": "Get Mandate",
+      "category": "Mandates",
+      "description": "Fetch one mandate - scheme, status, next earliest charge date, links to customer and bank account."
+    },
+    {
+      "name": "Create Mandate",
+      "category": "Mandates",
+      "description": "Create a Direct Debit mandate against an existing customer bank account. The mandate authorises you to take future payments. Use this when you already collected bank details out of band; for self-serve onboarding where the payer authorises themselves online, use createBillingRequestFlow instead."
+    },
+    {
+      "name": "Update Mandate Notes",
+      "category": "Mandates",
+      "description": "Update the notes attached to a mandate. Only the notes (metadata) field is editable - bank details and scheme are fixed once a mandate exists."
+    },
+    {
+      "name": "Cancel Mandate",
+      "category": "Mandates",
+      "description": "Cancel a mandate so you can no longer take payments from it. Use this when ending a subscription or after a customer asks to stop direct debits. UK Bacs mandates can be reinstated within a short window via Reinstate Mandate; other schemes need a fresh authorisation."
+    },
+    {
+      "name": "Reinstate Mandate (UK Bacs)",
+      "category": "Mandates",
+      "description": "Bring back a cancelled or failed UK Bacs mandate without asking the customer to sign up again. Only works for the Bacs scheme; other schemes need a fresh authorisation via createBillingRequestFlow."
+    },
+    {
+      "name": "Get Mandate PDF",
+      "category": "Mandates",
+      "description": "Generate a downloadable PDF copy of a signed mandate. Useful for audit trails and compliance records. The PDF URL expires after 30 minutes - download or store it right away."
+    },
+    {
+      "name": "Create Mandate Import",
+      "category": "Mandate Imports",
+      "description": "Start migrating existing Direct Debit mandates from another provider into GoCardless. This opens an empty import - add each mandate with Add Mandate Import Entry, then Submit Mandate Import when done. GoCardless reviews and processes the import (sandbox auto-processes in about 10 seconds). Requires the Mandate Imports feature on your GoCardless account."
+    },
+    {
+      "name": "Get Mandate Import",
+      "category": "Mandate Imports",
+      "description": "Check the status of a mandate import - created (still accepting entries), submitted (waiting for GoCardless to process), processing, processed (mandates created - reconcile with List Mandate Import Entries), or cancelled."
+    },
+    {
+      "name": "Submit Mandate Import",
+      "category": "Mandate Imports",
+      "description": "Finish adding entries and hand the import over to GoCardless for processing. After submitting you can no longer add entries. In sandbox the import is processed automatically about 10 seconds later; in live a GoCardless team member approves it."
+    },
+    {
+      "name": "Cancel Mandate Import",
+      "category": "Mandate Imports",
+      "description": "Abort a mandate import before it is submitted - none of its entries become mandates. Imports that were already submitted or processed cannot be cancelled."
+    },
+    {
+      "name": "Add Mandate Import Entry",
+      "category": "Mandate Imports",
+      "description": "Add one existing mandate to an open import - the customer's identity, their bank account, and (for SEPA moves) the original mandate reference. Each entry becomes a real mandate when the import is processed. Give every entry a Record Identifier so you can match the created mandate back to your system afterwards. Limit: 30,000 entries per import."
+    },
+    {
+      "name": "List Mandate Import Entries",
+      "category": "Mandate Imports",
+      "description": "See every entry in a mandate import and, once the import is processed, which customer, bank account, and mandate each entry created - plus any processing errors for entries that failed. Match rows back to your system with the Record Identifier you set when adding entries."
+    },
+    {
+      "name": "List Creditors",
+      "category": "Creditors",
+      "description": "List your GoCardless creditor accounts (the businesses payments are paid out to) with their verification status and payout bank links. Most merchants have exactly one. Companion to Get/Update Creditor for flows that need the full record rather than a dropdown pick."
+    },
+    {
+      "name": "Get Creditor",
+      "category": "Creditors",
+      "description": "Fetch one creditor account - trading name, address, verification status (whether it can receive payouts yet), refund permission, feature flags (e.g. whether Mandate Imports is enabled), and which bank accounts receive payouts per currency."
+    },
+    {
+      "name": "Update Creditor",
+      "category": "Creditors",
+      "description": "Change a creditor's trading name, address, payout bank-reference prefix, or which saved bank account receives payouts in each currency. Only the fields you fill are changed."
+    },
+    {
+      "name": "List Payments",
+      "category": "Payments",
+      "description": "List payments you've collected. Filter by customer, mandate, subscription, status, or date. Use for reconciliation against your accounting system, finding failed payments to follow up on, or pulling a settlement report."
+    },
+    {
+      "name": "Get Payment",
+      "category": "Payments",
+      "description": "Fetch one payment - amount, currency, status, charge date, links to mandate/customer."
+    },
+    {
+      "name": "Create Payment",
+      "category": "Payments",
+      "description": "Charge a one-off payment against an active mandate. The customer's bank will be debited on the charge date. Use for one-time invoices, top-ups, or anything not on a recurring subscription."
+    },
+    {
+      "name": "Update Payment",
+      "category": "Payments",
+      "description": "Update a payment's notes or auto-retry behaviour. Amount, currency, and charge date are fixed once a payment exists."
+    },
+    {
+      "name": "Cancel Payment",
+      "category": "Payments",
+      "description": "Cancel a payment before the money actually reaches you. Works until the payment is paid out - after that, use Create Refund instead. Useful for stopping a duplicate or wrong-amount charge in flight."
+    },
+    {
+      "name": "Retry Payment",
+      "category": "Payments",
+      "description": "Retry a failed payment. Only works for payments in 'failed' state and within the scheme's retry window (about 21 days). After that, you have to create a fresh payment."
+    },
+    {
+      "name": "List Subscriptions",
+      "category": "Subscriptions",
+      "description": "List recurring subscriptions. Filter by mandate, customer, or status. Use for active-customer reports, churn analysis, or finding paused subscriptions to resume."
+    },
+    {
+      "name": "Get Subscription",
+      "category": "Subscriptions",
+      "description": "Fetch one subscription - name, amount, interval, status, upcoming charge dates."
+    },
+    {
+      "name": "Create Subscription",
+      "category": "Subscriptions",
+      "description": "Set up a recurring subscription. Charges generate automatically on the schedule until cancelled, the count is reached, or the end date passes. Use for memberships, monthly invoices, instalment plans, anything billed on a regular cadence."
+    },
+    {
+      "name": "Update Subscription",
+      "category": "Subscriptions",
+      "description": "Update a subscription's name, payment reference, amount (active only), notes, or app fee. The cadence (interval, start/end, day-of-month) is fixed once created."
+    },
+    {
+      "name": "Pause Subscription",
+      "category": "Subscriptions",
+      "description": "Pause a subscription temporarily. Choose how many cycles to skip, or leave the count blank to pause indefinitely until you Resume."
+    },
+    {
+      "name": "Resume Subscription",
+      "category": "Subscriptions",
+      "description": "Resume a paused subscription. Charges start again from the next scheduled date."
+    },
+    {
+      "name": "Cancel Subscription",
+      "category": "Subscriptions",
+      "description": "Cancel a subscription so no more charges are generated. Cannot be undone - to start billing again, create a new subscription."
+    },
+    {
+      "name": "List Instalment Schedules",
+      "category": "Instalment Schedules",
+      "description": "List instalment schedules - fixed sets of payments collected on a schedule against one mandate. Filter by mandate, customer, or status. Use for reporting on payment plans."
+    },
+    {
+      "name": "Get Instalment Schedule",
+      "category": "Instalment Schedules",
+      "description": "Fetch one instalment schedule - name, total amount, status, and its generated payments."
+    },
+    {
+      "name": "Create Instalment Schedule",
+      "category": "Instalment Schedules",
+      "description": "Set up a payment plan - a fixed number of instalments charged against one mandate on a regular cadence. You supply the amount of each instalment plus the interval; GoCardless schedules them. Use for 'pay in 3', financed purchases, or any split-payment arrangement. For open-ended recurring billing use Create Subscription instead."
+    },
+    {
+      "name": "Cancel Instalment Schedule",
+      "category": "Instalment Schedules",
+      "description": "Cancel an instalment schedule so no further instalments are collected. Instalments already paid out are unaffected. Cannot be undone."
+    },
+    {
+      "name": "List Refunds",
+      "category": "Refunds",
+      "description": "List refunds you've issued. Filter by payment, mandate, or whether it's a per-payment refund vs whole-mandate refund."
+    },
+    {
+      "name": "Get Refund",
+      "category": "Refunds",
+      "description": "Fetch one refund."
+    },
+    {
+      "name": "Create Refund",
+      "category": "Refunds",
+      "description": "Refund a payment that's already been confirmed or paid out. Use for returns, billing errors, or goodwill. You must confirm the total amount you've ever refunded on this payment (Confirmation field below) - GoCardless rejects the call if it doesn't match, which prevents accidental double-refunds when two systems try at once."
+    },
+    {
+      "name": "List Payouts",
+      "category": "Payouts",
+      "description": "List payouts - bank transfers from GoCardless to your business bank account. GoCardless schedules these automatically; this is read-only. Use for reconciliation against bank statements."
+    },
+    {
+      "name": "Get Payout",
+      "category": "Payouts",
+      "description": "Fetch one payout - amount, fees deducted, arrival date, status."
+    },
+    {
+      "name": "List Payout Items",
+      "category": "Payouts",
+      "description": "List the line items inside a payout - every payment, refund, and fee that adds up to the total. Use for full reconciliation showing exactly which customer payments made up each bank deposit."
+    },
+    {
+      "name": "Create Billing Request",
+      "category": "Billing Requests",
+      "description": "Set up a hosted onboarding session. A Billing Request defines what you want to collect - a mandate, a one-off payment, or both. After creating it, generate a hosted URL with Create Billing Request Flow and send the payer there to enter their details. Use this for self-serve sign-ups where the customer enters their own bank details."
+    },
+    {
+      "name": "Get Billing Request",
+      "category": "Billing Requests",
+      "description": "Fetch one billing request to check its status (pending, completed, cancelled, etc.)."
+    },
+    {
+      "name": "Create Hosted Flow URL",
+      "category": "Billing Requests",
+      "description": "Generate a hosted GoCardless URL for a billing request. Send your customer to the returned 'authorisation_url' - they'll enter bank details and authorise the mandate (and/or pay) on a GoCardless-hosted page. After completion, GoCardless redirects them back to your Return URL."
+    },
+    {
+      "name": "Cancel Billing Request",
+      "category": "Billing Requests",
+      "description": "Cancel a billing request. The associated hosted page stops working immediately."
+    },
+    {
+      "name": "Finalise Billing Request",
+      "category": "Billing Requests",
+      "description": "Manually finalise a billing request - actually create the mandate and/or take the payment. Most hosted flows do this automatically (when Auto-Create On Completion is on). Use this only when you collected the customer's details elsewhere and need to commit them."
+    },
+    {
+      "name": "Collect Customer Details (Own Pages)",
+      "category": "Billing Requests",
+      "description": "Complete the customer-details step of a billing request from your own pages instead of the GoCardless-hosted flow - submit the payer's name/email and billing address you collected yourself. GoCardless checks the fields satisfy the billing request's scheme and updates the linked customer immediately. Next step: Collect Bank Account (Own Pages). Requires a GoCardless Pro or Enterprise account with the custom payment pages upgrade."
+    },
+    {
+      "name": "Collect Bank Account (Own Pages)",
+      "category": "Billing Requests",
+      "description": "Complete the bank-account step of a billing request from your own pages - submit the payer's bank details you collected yourself. Either provide an IBAN (most European accounts) OR account number + sort/branch/bank code for local schemes. GoCardless validates the account against the billing request's scheme (ACH accounts get a third-party validity check; UK accounts get Payer Name Verification) before attaching it. Next step: Confirm Payer Details. Requires a GoCardless Pro or Enterprise account with the custom payment pages upgrade."
+    },
+    {
+      "name": "Confirm Payer Details",
+      "category": "Billing Requests",
+      "description": "Record that the payer has reviewed and confirmed the details you collected - a Direct Debit scheme compliance step required for mandate requests. Only call this after the payer has actually seen and approved their details on your page. Once confirmed, the billing request becomes ready to finalise with Finalise Billing Request."
+    },
+    {
+      "name": "List Events",
+      "category": "Events",
+      "description": "List events - the timeline of state changes for everything (mandates, payments, subscriptions, payouts, refunds, billing requests). Use for audit history, finding what happened to a specific resource, or building custom dashboards."
+    },
+    {
+      "name": "Get Event",
+      "category": "Events",
+      "description": "Fetch one event by ID."
+    },
+    {
+      "name": "Test Connection",
+      "category": "Utility",
+      "description": "Check the connection is working. Returns your GoCardless creditor name and the active environment (sandbox or live). Use first when troubleshooting an integration."
+    },
+    {
+      "name": "Lookup Bank",
+      "category": "Utility",
+      "description": "Look up bank info from an IBAN or local account number. Returns the bank name, SWIFT/BIC code, and which Direct Debit schemes are supported. Use to show the bank name back to the customer for confirmation, or to pre-validate bank details before saving."
+    },
+    {
+      "name": "Run Test Scenario (Sandbox Only)",
+      "category": "Utility",
+      "description": "Sandbox-only helper that forces a resource into a specific state (e.g. mark a payment as confirmed, fail a mandate). Use during testing to exercise state-dependent code paths without waiting for real bank settlements. Fails on live with a 400 error."
+    }
+  ],
+  "triggers": [
+    "When a Payment Event Happens",
+    "When a Mandate Event Happens",
+    "When a Subscription Event Happens",
+    "When a Refund Event Happens",
+    "When a Payout Event Happens",
+    "When a Billing Request Event Happens"
+  ],
+  "idealUseCases": [
+    "Onboarding customers and setting up Direct Debit mandates",
+    "Taking one-off, subscription, and instalment-plan payments",
+    "Automating recurring billing and retrying failed payments",
+    "Issuing refunds and reconciling payouts to your bank account",
+    "Collecting bank details through a hosted or own-page flow",
+    "Migrating existing mandates from another provider in bulk",
+    "Reacting to payment, mandate, and payout events for automation"
+  ],
+  "agentIdeas": [
+    "When a GoCardless **\"When a Payment Event Happens\"** trigger fires, use Gmail **\"Send Message\"** to email the customer a receipt or a failed-payment notice, then log the outcome with Google Sheets **\"Add Row\"**.",
+    "Use Google Sheets **\"Get Rows\"** to read a list of new subscribers, then call GoCardless **\"Create Customer\"** and **\"Create Subscription\"** to set each up on recurring Direct Debit billing.",
+    "When a GoCardless **\"When a Payout Event Happens\"** trigger fires, call QuickBooks Online **\"Create Payment\"** to reconcile the bank transfer and post Slack **\"Send Message To Channel\"** to alert your finance channel."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/gocardless/public/icon.png",
+  "sourcePaths": {
+    "service": "services/gocardless",
+    "readme": "services/gocardless/README.md",
+    "index": "services/gocardless/src/index.js"
+  }
+}

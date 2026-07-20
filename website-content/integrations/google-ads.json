@@ -1,0 +1,64 @@
+{
+  "slug": "google-ads",
+  "name": "Google Ads",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for the [Google Ads API](https://developers.google.com/google-ads/api/docs/start) (REST, **v24**). Query campaign performance with GAQL, list accessible accounts and campaigns, retrieve aggregated campaign metrics, and enable or pause campaigns. Authenticates with OAuth 2.0 plus a Google Ads developer token.",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Reporting",
+    "Accounts",
+    "Campaigns"
+  ],
+  "actions": [
+    {
+      "name": "Search (GAQL)",
+      "category": "Reporting",
+      "description": "Runs a Google Ads Query Language (GAQL) query against a Google Ads account — the universal operation for reading any resource, report, or metric. Example: \"SELECT campaign.id, campaign.name, metrics.clicks FROM campaign WHERE segments.date DURING LAST_30_DAYS ORDER BY metrics.clicks DESC\". Other examples: \"SELECT ad_group.id, ad_group.name FROM ad_group WHERE campaign.id = 123\", \"SELECT search_term_view.search_term, metrics.impressions FROM search_term_view WHERE segments.date DURING LAST_7_DAYS\". Each result row contains only the selected resources (e.g. 'campaign', 'metrics', 'segments') in camelCase. Monetary metric fields such as metrics.cost_micros are returned in micros (divide by 1,000,000 for currency units). The API returns a fixed page size of 10,000 rows; use a LIMIT clause to cap results and Next Page Token for pagination."
+    },
+    {
+      "name": "List Accessible Customers",
+      "category": "Accounts",
+      "description": "Lists the Google Ads accounts directly accessible by the connected user (accounts where the user is listed, not client accounts hidden behind a manager). Returns both the raw resource names and the plain 10-digit customer IDs. To enumerate client accounts under a manager (MCC) account, set the Login Customer ID config item and use Search (GAQL) with the customer_client resource."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Lists campaigns of a Google Ads account with their status, advertising channel type, budget, and core performance metrics (clicks, impressions, cost, conversions) for the selected date range. Removed campaigns are excluded. Monetary values are converted from micros to currency units (e.g. dollars) in the account's currency. Returns up to 10,000 campaigns per page; use Page Token for pagination."
+    },
+    {
+      "name": "Get Campaign Metrics",
+      "category": "Campaigns",
+      "description": "Retrieves aggregated performance metrics for a single campaign over the selected date range: clicks, impressions, cost, conversions, click-through rate, and average cost per click. Monetary values are converted from micros to currency units in the account's currency. Returns zeroed metrics if the campaign had no activity in the range."
+    },
+    {
+      "name": "Update Campaign Status",
+      "category": "Campaigns",
+      "description": "Enables or pauses a Google Ads campaign using a partial mutate (updateMask=status), leaving all other campaign settings unchanged. Note: campaign and budget creation is out of scope for this integration due to the many required sub-resources (bidding strategy, budget, ad groups, ads); create campaigns in the Google Ads UI and manage their status here."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Pull daily or weekly campaign performance (clicks, impressions, cost, conversions) into a spreadsheet, database, or report.",
+    "Run arbitrary Google Ads Query Language (GAQL) reports to read any resource, metric, or segment the API exposes.",
+    "Automatically pause campaigns that exceed a spend or performance threshold, or resume them on a schedule.",
+    "Enumerate the accounts and campaigns available to a connected user or manager (MCC) account for downstream automation."
+  ],
+  "agentIdeas": [
+    "Run **Google Ads** \"List Campaigns\" (or \"Search (GAQL)\") to pull yesterday's campaign performance, then use **Google Sheets** \"Add Rows\" to append each campaign's clicks, cost, and conversions into a daily reporting spreadsheet.",
+    "Call **Google Ads** \"Get Campaign Metrics\" for a key campaign, and when spend or CPC crosses a threshold use **Slack** \"Send Message To Channel\" to alert the marketing team.",
+    "Detect an underperforming campaign via **Google Ads** \"Search (GAQL)\", automatically call **Google Ads** \"Update Campaign Status\" to pause it, then use **Gmail** \"Send Message\" to notify the account owner with the reason."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/google-ads/public/icon.png",
+  "sourcePaths": {
+    "service": "services/google-ads",
+    "readme": "services/google-ads/README.md",
+    "index": "services/google-ads/src/index.js"
+  }
+}

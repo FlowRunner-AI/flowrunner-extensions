@@ -1,0 +1,330 @@
+{
+  "slug": "zoho-recruit",
+  "name": "Zoho Recruit",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate Zoho Recruit applicant tracking — candidates, job openings, applications, and interviews. Move applicants through stages and attach notes, tags, tasks, and emails. Universal actions reach any module. OAuth2, all Zoho data centers.",
+  "actionCount": 54,
+  "triggerCount": 13,
+  "operationCategories": [
+    "Records",
+    "Candidates",
+    "Job Openings",
+    "Applications",
+    "Interviews",
+    "Notes",
+    "Attachments",
+    "Tags",
+    "Tasks",
+    "Email",
+    "Metadata"
+  ],
+  "actions": [
+    {
+      "name": "Get Record",
+      "category": "Records",
+      "description": "Fetches the current field values of one record by its Zoho ID, from any module (Candidates, Job Openings, Applications, custom modules, etc.). Use when you already have a record's ID — typically captured from a trigger or a previous Search/List call — and need its latest data. Prefer Get Candidate / Get Application / Get Interview when working specifically with those modules; this method exists for custom or less-common modules."
+    },
+    {
+      "name": "List Records",
+      "category": "Records",
+      "description": "Pages through records of a chosen module with optional sorting, a saved-view filter, or a \"changed since\" cutoff. Use this to enumerate records (e.g. \"all candidates modified in the last 24 hours\", \"all job openings in the Engineering custom view\") or to back a paginated UI. For free-text matching use Search Records; for a single ID use Get Record."
+    },
+    {
+      "name": "Create Record",
+      "category": "Records",
+      "description": "Inserts one new record in any module. Field Values is an object whose keys are field names and whose values are what to store (e.g. `{ Last_Name: \"Smith\", Email: \"smith@example.com\" }`). Use this for custom modules or when you need fine-grained control over the layout/workflow flags. For everyday use, prefer Create Candidate, Create Job Opening, or Schedule Interview — those methods validate required fields up front and are easier to read in flows."
+    },
+    {
+      "name": "Update Record",
+      "category": "Records",
+      "description": "Modifies an existing record by ID. Only fields you pass in Field Values are changed; everything else is left as-is. Use this for custom modules, or when patching a single field that isn't covered by a dedicated convenience method (Update Candidate, Change Application Status, etc.). The response includes a per-record success flag — branch your flow on it if downstream steps depend on the update having stuck."
+    },
+    {
+      "name": "Upsert Record",
+      "category": "Records",
+      "description": "Inserts a new record OR updates the existing one when a record with matching values on the duplicate-check fields (e.g. Email) is found. Use this for idempotent ingestion — re-running with the same payload won't create a duplicate. Typical scenario: syncing candidates from an external source where you don't know whether each person is new or already in Zoho."
+    },
+    {
+      "name": "Delete Record",
+      "category": "Records",
+      "description": "Removes one or more records (up to 100 at a time) from any module. Deletions are soft — Zoho keeps the data in its Recycle Bin for 60 days, so accidental deletes can be recovered from the UI. Use this when cleaning up test data, processing GDPR right-to-erasure requests, or batch-removing stale records. Prefer Delete Candidate / Delete Job Opening for those modules — same effect, friendlier flow readability."
+    },
+    {
+      "name": "Search Records",
+      "category": "Records",
+      "description": "Finds records in any module without knowing their IDs. Pass exactly ONE search input: an exact-match Email or Phone, a free-text Word that's matched starts-with against the module's primary fields, or a fully-formed Criteria expression for advanced multi-field filters. Use this for custom modules or when the search target isn't Candidates — for candidates specifically, prefer Search Candidates (same shape, presets module=Candidates)."
+    },
+    {
+      "name": "Build Search Criteria",
+      "category": "Records",
+      "description": "Helper that assembles a Zoho-compatible filter string from a list of simple field/operator/value clauses, handling all the escaping rules so you don't have to. Output goes into Search Records' Criteria parameter. Use this when an upstream step produces dynamic filter pieces (e.g. user-typed search terms) that you need to combine safely without worrying about parentheses, commas, or backslashes breaking the query."
+    },
+    {
+      "name": "Create Candidate",
+      "category": "Candidates",
+      "description": "Adds a new candidate to your Zoho Recruit talent pool. Use this to ingest applicants from external sources — job-board webhooks, referral forms, scraped LinkedIn profiles, or another ATS being migrated. Captures the most-common fields directly (name, email, phone, current employer, skills); any uncommon or custom fields can ride along in the optional Extra Fields object."
+    },
+    {
+      "name": "Get Candidate",
+      "category": "Candidates",
+      "description": "Returns the full profile of one candidate — name, contact info, skills, source, owner, every standard and custom field. Use when a trigger or earlier step gives you a candidate ID and you need their current details (e.g. to enrich an outbound email, check skill match before scheduling, or sync to another system)."
+    },
+    {
+      "name": "Update Candidate",
+      "category": "Candidates",
+      "description": "Modifies one or more fields on an existing candidate. Only the fields you supply are touched; everything else stays as-is. Use this to enrich a candidate after extra info arrives (e.g. resume parsed → skills filled in), correct a typo flagged downstream, or change ownership without re-creating the record."
+    },
+    {
+      "name": "Delete Candidate",
+      "category": "Candidates",
+      "description": "Removes a candidate from active records. The deletion is soft — Zoho keeps the candidate in its Recycle Bin for 60 days where it can be restored from the UI. Use when handling GDPR right-to-erasure requests, removing test data, or culling stale prospects. After 60 days the record is gone for good."
+    },
+    {
+      "name": "Search Candidates",
+      "category": "Candidates",
+      "description": "Looks up candidates without their IDs. Pass exactly ONE search input: an exact-match Email or Phone for dedupe checks, a free-text Word for partial-name lookups, or a Criteria expression for advanced multi-field filters. Use this to \"does Jane Smith already exist?\" before creating a new candidate, or to find everyone matching a recruiter's free-typed query."
+    },
+    {
+      "name": "List Candidates",
+      "category": "Candidates",
+      "description": "Pages through your candidate pool, newest-modified first by default, with optional saved-view filtering and a \"changed since\" cutoff. Use to enumerate candidates for a periodic export, surface everyone in a curated view (e.g. \"All Junior Engineers\"), or pick up records that changed since the last sync. For free-text matching use Search Candidates; for one specific person use Get Candidate."
+    },
+    {
+      "name": "Parse Resume Into New Candidate",
+      "category": "Candidates",
+      "description": "Uploads a resume file (PDF / DOC / DOCX / TXT / HTML, max 20MB), runs Zoho's built-in resume parser, and creates a brand-new Candidate record pre-filled with the extracted name, contact info, work history, and skills. Use this to onboard applicants from received resumes without manual data entry — e.g. an inbox-watching automation that turns each new attachment into a candidate. To attach a resume to an EXISTING candidate instead of creating one, use Upload Resume To Candidate."
+    },
+    {
+      "name": "Upload Resume To Existing Candidate",
+      "category": "Candidates",
+      "description": "Attaches a resume file to a candidate that already exists, tagged with category \"Resume\" so it shows up in the candidate's CV slot. Use this when the candidate record was created elsewhere (manual entry, partial import) and you're adding the file separately, or when refreshing a candidate's CV with an updated version. To CREATE a new candidate from a resume in one shot, use Parse Resume Into New Candidate instead."
+    },
+    {
+      "name": "Associate Candidate To Job Opening",
+      "category": "Candidates",
+      "description": "Links an existing candidate to a Job Opening — Zoho automatically creates the Application record that connects them. Use this when moving a sourced candidate into the hiring pipeline for a specific role (e.g. \"this engineer looks great for the Backend Lead opening\"). Once associated, you can drive the candidate through pipeline stages with Change Application Status."
+    },
+    {
+      "name": "Create Job Opening",
+      "category": "Job Openings",
+      "description": "Opens a new requisition for hiring — the role candidates will apply to and be associated with. Use when an external system (HR planning tool, hiring manager intake form) signals a new role is approved and needs to start sourcing. Captures the standard posting fields directly; uncommon or custom fields go in Extra Fields."
+    },
+    {
+      "name": "Get Job Opening",
+      "category": "Job Openings",
+      "description": "Returns the full details of one job requisition — title, status, headcount, location, salary, description, owner, every standard and custom field. Use when a trigger or earlier step gives you a Job Opening ID and you need its current values (e.g. to render the description in a job board, count remaining positions, or check status before associating a candidate)."
+    },
+    {
+      "name": "Update Job Opening",
+      "category": "Job Openings",
+      "description": "Modifies one or more fields on an existing Job Opening. Only fields you supply are changed. Use to revise the posting (e.g. headcount increased, salary band changed, description rewritten) without re-creating the requisition. For status-only changes prefer Change Job Opening Status; for closing prefer Close Job Opening."
+    },
+    {
+      "name": "Change Job Opening Status",
+      "category": "Job Openings",
+      "description": "Switches a job requisition's status in one step. Common values: In-progress (actively sourcing), Waiting for approval, On Hold (paused), Inactive, Cancelled, Filled. Use when downstream events should drive the requisition's lifecycle — e.g. \"auto-set to Filled when the offer is accepted\" or \"move to On Hold when the budget freeze starts\"."
+    },
+    {
+      "name": "Close Job Opening",
+      "category": "Job Openings",
+      "description": "Marks a job requisition as Filled — the canonical \"we're done hiring for this role\" status. Use when an offer is accepted and the headcount is satisfied. For other terminal states (Cancelled, Inactive) use Change Job Opening Status with that specific value."
+    },
+    {
+      "name": "Delete Job Opening",
+      "category": "Job Openings",
+      "description": "Removes a job requisition. Soft-delete: kept in Zoho's Recycle Bin for 60 days where it can be restored from the UI. Use for cleaning up duplicates or test requisitions. To retire a real-but-completed role prefer Close Job Opening (status=Filled) so the historical Application records still make sense."
+    },
+    {
+      "name": "List Job Openings",
+      "category": "Job Openings",
+      "description": "Pages through your active and historical requisitions, newest-modified first by default, with optional status filter and \"changed since\" cutoff. Use to render a dashboard of open roles, drive a periodic job-board sync, or audit how many requisitions are stuck in any given status."
+    },
+    {
+      "name": "List Applications",
+      "category": "Applications",
+      "description": "Pages through Applications — the records that link a candidate to a specific job and track that candidate's pipeline stage for that role. Filter by Job Opening to see \"everyone applied to this role\", by Candidate to see \"every role this person is being considered for\", and/or by Status to see \"everyone in stage X\". Use this to drive recruiter dashboards, send pipeline-stage reports, or fan out reminders."
+    },
+    {
+      "name": "Get Application",
+      "category": "Applications",
+      "description": "Returns the full record linking one candidate to one Job Opening — current pipeline stage, source, dates, owner, and any custom Application fields. Use when a trigger gives you an Application ID and you need to see \"where is this candidate in the process for this role?\" before deciding what to do next."
+    },
+    {
+      "name": "Change Application Status",
+      "category": "Applications",
+      "description": "Moves a candidate to a new pipeline stage for a specific Job Opening — the canonical way to advance, hold, or reject within Zoho's hiring workflow (e.g. \"In-process\" → \"Interview\" → \"Offer Made\" → \"Hired\"). Use this in stage-transition automations: when an interview is completed, when a take-home is submitted, when feedback is collected. The exact allowed values depend on your org's pipeline configuration; use List Picklist Values with field \"Status\" to discover them."
+    },
+    {
+      "name": "Update Application",
+      "category": "Applications",
+      "description": "Modifies one or more fields on an existing Application beyond just status — e.g. recording the source channel, attaching a referral note, updating a custom field. Use when you need broader changes than Change Application Status; that method is preferred when only the pipeline stage needs to move."
+    },
+    {
+      "name": "Schedule Interview",
+      "category": "Interviews",
+      "description": "Books an interview slot for a candidate — captures who, when, where, what type (in-person / online / phone / group), interviewers, and free-form remarks. Use this from a calendar-integration step or when an automation needs to create the next round after the previous one passed (e.g. \"phone screen succeeded → schedule technical interview\"). The Job Opening link is optional but recommended so the interview shows up in pipeline reports."
+    },
+    {
+      "name": "List Interviews",
+      "category": "Interviews",
+      "description": "Pages through scheduled and completed interviews, with optional Candidate or Job Opening filters. Use to render an interviewer's daily schedule, count interviews per role, or pull \"all upcoming interviews this week\" for a Slack digest."
+    },
+    {
+      "name": "Get Interview",
+      "category": "Interviews",
+      "description": "Returns the full details of one interview — candidate, job, time, type, venue, interviewers, status, feedback. Use when a trigger gives you an Interview ID and you need its current state (e.g. to sync to a calendar, send a reminder, or check whether feedback has been recorded yet)."
+    },
+    {
+      "name": "Update Interview",
+      "category": "Interviews",
+      "description": "Modifies one or more fields on an existing Interview — common uses are rescheduling (Start/End DateTime), changing the venue/video link, swapping interviewers, or recording feedback after the fact. Only fields you supply are touched. To cancel use Cancel Interview instead."
+    },
+    {
+      "name": "Cancel Interview",
+      "category": "Interviews",
+      "description": "Marks an interview as cancelled and records an optional reason in the Remarks field. Use when the candidate withdraws, the interviewer is unavailable, or the role is put on hold. By default the status is set to \"Cancelled\"; pass a custom value if your Zoho org uses a different label for the cancelled state."
+    },
+    {
+      "name": "Add Note To Record",
+      "category": "Notes",
+      "description": "Attaches a free-text note to any record — Candidate, Job Opening, Application, Interview, custom modules, etc. Notes appear in the record's Notes panel in the Zoho UI and are visible to recruiters reviewing the file. Use to capture interview feedback, recruiter observations, hiring-manager comments, or any context that doesn't fit a structured field."
+    },
+    {
+      "name": "List Notes For Record",
+      "category": "Notes",
+      "description": "Returns every note attached to a record, newest first. Use to gather all comments on a candidate or application before generating a hiring-committee summary, syncing notes to another system, or auditing recruiter activity."
+    },
+    {
+      "name": "Update Note",
+      "category": "Notes",
+      "description": "Edits the title or content of an existing note. Use to correct typos, append additional context, or rewrite an earlier draft note left by a previous step."
+    },
+    {
+      "name": "Delete Note",
+      "category": "Notes",
+      "description": "Permanently removes a note from a record. Unlike record deletion, note deletion is not soft — once gone, the note cannot be recovered. Use when removing notes that contain sensitive info posted in error, or cleaning up automated notes that are no longer relevant."
+    },
+    {
+      "name": "List Attachments",
+      "category": "Attachments",
+      "description": "Returns every file attached to a record — resumes, offer letters, cover letters, signed contracts, and miscellaneous documents — with their names, sizes, categories, and upload timestamps. Use to inventory what's already attached before deciding whether to upload a new version, or to drive a \"download all candidate documents\" automation."
+    },
+    {
+      "name": "Upload Attachment",
+      "category": "Attachments",
+      "description": "Attaches a file (PDF, DOC, DOCX, XLSX, PNG, JPG, etc., up to 20MB) to any record. Optionally tags it with a category like \"Cover Letter\", \"Offer Letter\", or \"Contract\". Use this to attach signed offers, reference documents, or screening artifacts to a candidate or application. For resumes specifically, prefer Upload Resume To Existing Candidate so the file lands in the dedicated Resume slot."
+    },
+    {
+      "name": "Attach Link As Attachment",
+      "category": "Attachments",
+      "description": "Saves a URL (LinkedIn profile, GitHub portfolio, Google Doc, video reel) as an attachment entry on a record without copying any bytes — Zoho stores the link itself. Use when you want the candidate's external resources discoverable from inside Zoho without duplicating the content."
+    },
+    {
+      "name": "Download Attachment",
+      "category": "Attachments",
+      "description": "Returns the bytes of an attachment file as base64, along with its filename, MIME type, and size. Use this to forward a candidate's resume or offer letter to another service (e-signature, parsing API, archival storage), or to mirror attachments into FlowRunner Files for in-app display."
+    },
+    {
+      "name": "Delete Attachment",
+      "category": "Attachments",
+      "description": "Permanently removes a single attachment from a record. Use when replacing an outdated document (delete old, upload new) or removing a file uploaded in error. Deletion is not soft — the file cannot be recovered."
+    },
+    {
+      "name": "Add Tags To Records",
+      "category": "Tags",
+      "description": "Tags one or more records with one or more labels in a single call — useful for batch-classifying candidates (\"Hot\", \"Reject\", \"Future Pool\") or marking applications (\"Needs Follow-up\"). Tags are per-module: a \"Hot\" tag on Candidates is a separate object from \"Hot\" on Job Openings. Tag names that don't exist yet are created automatically by default; turn off Create Missing Tags to skip unknown names instead."
+    },
+    {
+      "name": "Remove Tags From Records",
+      "category": "Tags",
+      "description": "Strips one or more tags off one or more records in a single call. Use to reclassify candidates (e.g. remove \"Cold\" once they engage), clean up automation-applied tags after they've served their purpose, or undo a misapplied bulk-tag."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a follow-up to-do for a recruiter, optionally linked to a Candidate, Job Opening, or other parent record so the task shows up on that record's timeline. Use to drive recruiter actions from automations — \"remind me to call this candidate in 3 days\", \"schedule reference checks after offer accepted\", \"review applications added today\"."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Pages through tasks, with optional status (Not Started / In Progress / Completed / etc.) and owner filters. Use to render a recruiter's daily to-do, surface overdue tasks for a manager dashboard, or flag tasks waiting on someone else."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Modifies one or more fields on an existing task. Most common uses: mark Status as \"Completed\" once an automation finishes the work, push the Due Date out when something gets rescheduled, or reassign the Owner when responsibilities shift. Only fields you supply are touched."
+    },
+    {
+      "name": "Send Email To Record",
+      "category": "Email",
+      "description": "Sends an email from the connected Zoho Recruit account and logs it on the record's email-history timeline so the conversation is visible to the recruiter team. Use to send candidate outreach, interview confirmations, offer letters, or rejection notices and have them tracked in Zoho automatically. Pass a Template ID to render a saved template (subject + content come from the template, merged with the record's fields); otherwise supply Subject + Content directly."
+    },
+    {
+      "name": "List All Modules",
+      "category": "Metadata",
+      "description": "Returns every record type (Candidates, Job Openings, Applications, plus any custom modules) defined in your Zoho Recruit org, including each one's internal name and human-friendly label. Use this to discover what modules exist before building actions that work generically across record types — for example, when an automation needs to enumerate all custom modules added by your administrators."
+    },
+    {
+      "name": "List Module Fields",
+      "category": "Metadata",
+      "description": "Returns every field on a chosen module — its internal name, display label, data type, whether it's mandatory, and (for dropdowns) the allowed values. Use this before building Create Record or Update Record actions to learn which fields exist, which are required, and what values picklists accept — especially when working with custom fields your Zoho admins added."
+    },
+    {
+      "name": "List Module Layouts",
+      "category": "Metadata",
+      "description": "Returns the form layouts (page-layout variants) configured for a module — useful when an org has multiple intake forms (e.g. \"Engineering Candidate\" vs \"Sales Candidate\") and you want to assign new records to a specific layout. Use this to discover layout IDs before passing one to Create Record."
+    },
+    {
+      "name": "List Module Custom Views",
+      "category": "Metadata",
+      "description": "Returns the saved filtered views configured for a module (e.g. \"All Open Candidates\", \"Hot Leads This Week\"), plus Zoho's built-in system views. Use this to discover view IDs before passing one to List Records, so the action returns only records matching a recruiter-curated filter instead of the entire module."
+    },
+    {
+      "name": "List Recruiters",
+      "category": "Metadata",
+      "description": "Returns the user accounts (recruiters, admins, hiring managers) in your Zoho Recruit org — names, emails, roles, and active/inactive status. Use this to discover user IDs for assigning record owners, scheduling interviews, or routing email-from addresses; or to audit who currently has access to the platform."
+    },
+    {
+      "name": "Get Org Info",
+      "category": "Metadata",
+      "description": "Returns the connected Zoho Recruit organization's profile — company name, primary email, license tier, and feature gates. Use this to confirm which org an automation is attached to, or to branch logic on edition (Free vs Standard vs Enterprise) when a feature is gated."
+    }
+  ],
+  "triggers": [
+    "On Candidate Created (Realtime)",
+    "On Candidate Updated (Realtime)",
+    "On Candidate Deleted (Realtime)",
+    "On Job Opening Created (Realtime)",
+    "On Job Opening Updated (Realtime)",
+    "On Application Created (Realtime)",
+    "On Application Updated (Realtime)",
+    "On Interview Created (Realtime)",
+    "On Interview Updated (Realtime)",
+    "On New Or Updated Candidate (Polling)",
+    "On New Or Updated Job Opening (Polling)",
+    "On New Or Updated Application (Polling)",
+    "On New Or Updated Interview (Polling)"
+  ],
+  "idealUseCases": [
+    "Sync new and changed records into other systems via triggers.",
+    "Parse resumes into candidates; advance applicants through stages.",
+    "Schedule interviews and log notes, tasks, and emails on records."
+  ],
+  "agentIdeas": [
+    "On **Zoho Recruit** \"On Interview Created (Realtime)\", use **Google Calendar** \"Create Event\" and **Gmail** \"Send Message\" to notify them.",
+    "On **Zoho Recruit** \"On New Or Updated Application (Polling)\", post to **Slack** \"Send Message To Channel\", then log it with **Zoho Recruit** \"Add Note To Record\".",
+    "Pair **Zoho Recruit** \"Get Candidate\" with **DocuSign** \"Send Envelope from Template\"; on **DocuSign** \"On Envelope Completed\", call **Zoho Recruit** \"Change Application Status\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/zoho-recruit/public/icon.png",
+  "sourcePaths": {
+    "service": "services/zoho-recruit",
+    "readme": "services/zoho-recruit/README.md",
+    "index": "services/zoho-recruit/src/index.js"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "slug": "seven",
+  "name": "seven",
+  "marketingCategory": "SMS, Voice & Push",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [seven.io](https://www.seven.io) (formerly sms77) — send SMS and voice calls, look up phone numbers, check delivery status, and manage your account and contacts through the seven.io gateway. Authenticates with an API key sent on every request as the `X-Api-Key` header.",
+  "actionCount": 8,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messaging",
+    "Lookup",
+    "Voice",
+    "Account",
+    "Contacts"
+  ],
+  "actions": [
+    {
+      "name": "Send SMS",
+      "category": "Messaging",
+      "description": "Sends an SMS message to one or more recipients through the seven.io gateway. Provide the recipient number(s) in international format (e.g. 491710000000), the message text, and an optional sender ID (alphanumeric up to 11 chars or numeric up to 16). Supports flash messages, unicode/special characters, scheduled delivery, and a foreign ID for delivery-report matching. Returns the gateway status code (100 = accepted), a per-message breakdown, the total price, and remaining account balance."
+    },
+    {
+      "name": "Get SMS Delivery Status",
+      "category": "Messaging",
+      "description": "Retrieves the delivery status of a previously sent SMS by its message ID (returned from Send SMS). Reports whether the message was delivered, is pending, was rejected, or failed, along with the status timestamp when available."
+    },
+    {
+      "name": "Number Lookup",
+      "category": "Lookup",
+      "description": "Looks up information about a phone number using the seven.io lookup service. Choose the lookup type: Format returns national/international formatting, country, carrier and network type; Carrier Name (CNAM) returns the registered caller ID name; Portability (MNP) returns the current network operator and whether the number was ported; HLR returns live reachability, roaming and porting status from the mobile network. Provide the number in international format."
+    },
+    {
+      "name": "Send Voice Call",
+      "category": "Voice",
+      "description": "Places an outbound voice call that reads the supplied text to the recipient using text-to-speech (TTS). Provide the recipient number in international format, the message text, and an optional caller ID. Enable XML mode when the text contains seven.io Voice XML for advanced call flows (menus, pauses, DTMF) instead of plain TTS."
+    },
+    {
+      "name": "Get Account Balance",
+      "category": "Account",
+      "description": "Returns the current credit balance of the seven.io account in the account currency. Use this to check remaining funds before sending messages."
+    },
+    {
+      "name": "Get Pricing",
+      "category": "Account",
+      "description": "Returns the SMS and network pricing for a country. Provide an ISO 3166-1 alpha-2 country code (e.g. DE, US, GB) to get per-message prices and network breakdown. Omit the country to return pricing for all supported countries."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Returns the contacts stored in your seven.io account, including their ID, name, mobile number and email. Contacts can be used as recipients in Send SMS by name or group."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact in your seven.io address book. Provide at least a name; the mobile number and email are optional but recommended so the contact can be used as an SMS recipient. Returns the created contact's ID."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send transactional or notification SMS (order updates, alerts, OTP codes) to recipients worldwide",
+    "Place automated text-to-speech voice calls for reminders or urgent notifications",
+    "Validate and enrich phone numbers with Format, CNAM, portability (MNP), or live HLR lookups",
+    "Track delivery of sent messages and react to failures in a workflow",
+    "Monitor account balance and per-country pricing before sending campaigns",
+    "Maintain a seven.io address book of contacts for reuse as SMS recipients"
+  ],
+  "agentIdeas": [
+    "After **Shopify** \"On New Order\" fires, use **seven** \"Send SMS\" to text the customer an order confirmation, then \"Get SMS Delivery Status\" to confirm the notification was delivered.",
+    "Validate a lead's phone number with **seven** \"Number Lookup\" (HLR/MNP), then create a **HubSpot** \"Create Contact\" record only when the number is reachable and valid.",
+    "Use **Google Sheets** \"Get Rows\" to pull a list of pending reminders, call **seven** \"Send Voice Call\" to deliver each as a text-to-speech message, and \"Get Account Balance\" to halt the run when credit runs low."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/seven/public/icon.png",
+  "sourcePaths": {
+    "service": "services/seven",
+    "readme": "services/seven/README.md",
+    "index": "services/seven/src/index.js"
+  }
+}

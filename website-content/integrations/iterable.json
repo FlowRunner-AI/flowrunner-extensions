@@ -1,0 +1,142 @@
+{
+  "slug": "iterable",
+  "name": "Iterable",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Iterable](https://iterable.com), a cross-channel marketing platform, with FlowRunner. Manage users, track events, work with lists and campaigns, send triggered email and push messages, and read email templates.",
+  "actionCount": 21,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Users",
+    "Events",
+    "Lists",
+    "Messaging",
+    "Campaigns",
+    "Templates"
+  ],
+  "actions": [
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Creates or updates a single user profile in Iterable. Identify the user by email or userId (at least one is required). Provide dataFields as an object of profile attributes to set. Enable Merge Nested Objects to deep-merge nested dataFields instead of overwriting them. Users are email-keyed by default; set Prefer User ID for userId-based projects."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single user profile with all of its data fields. Look the user up by email (default) or by userId. Returns the user object including email, userId, and dataFields."
+    },
+    {
+      "name": "Delete User",
+      "category": "Users",
+      "description": "Permanently deletes a user profile from Iterable by email address. This removes the user and their profile data; the action cannot be undone."
+    },
+    {
+      "name": "Bulk Update Users",
+      "category": "Users",
+      "description": "Creates or updates many user profiles in a single request. Provide an array of user objects, each with an email or userId and optional dataFields. Efficient for syncing large batches of profiles."
+    },
+    {
+      "name": "Update Subscriptions",
+      "category": "Users",
+      "description": "Overwrites a user's subscription state across email lists, message channels, and message types. Provide the arrays of IDs to set; omitted arrays are left unchanged. Use Update Subscriptions when you need to explicitly control unsubscribes rather than toggling a single list."
+    },
+    {
+      "name": "Get User Fields",
+      "category": "Users",
+      "description": "Returns the schema of all user profile fields defined in the Iterable project, mapping each field name to its data type. Useful for discovering which dataFields are available before updating users."
+    },
+    {
+      "name": "Track Event",
+      "category": "Events",
+      "description": "Tracks a single custom event for a user, identified by email or userId. Provide the event name and optional dataFields describing the event. Custom events power triggered campaigns and workflow entry criteria in Iterable."
+    },
+    {
+      "name": "Track Bulk Events",
+      "category": "Events",
+      "description": "Tracks many custom events in a single request. Provide an array of event objects, each with an eventName, an email or userId, and optional dataFields and createdAt. Efficient for ingesting batches of events."
+    },
+    {
+      "name": "Get Lists",
+      "category": "Lists",
+      "description": "Returns all lists in the Iterable project, including each list's ID, name, type, and creation time. Use a list's ID with the subscribe, unsubscribe, and get users operations."
+    },
+    {
+      "name": "Create List",
+      "category": "Lists",
+      "description": "Creates a new static list in Iterable with the given name. Returns the numeric ID of the created list, which you can use to subscribe or unsubscribe users."
+    },
+    {
+      "name": "Delete List",
+      "category": "Lists",
+      "description": "Permanently deletes a list from Iterable by its ID. This removes the list itself; user profiles are not deleted. The action cannot be undone."
+    },
+    {
+      "name": "Subscribe to List",
+      "category": "Lists",
+      "description": "Adds one or more users to a list. Provide the list ID and an array of subscriber objects, each identified by email or userId. New users can be created on subscribe. Returns counts of successful and failed subscriptions."
+    },
+    {
+      "name": "Unsubscribe from List",
+      "category": "Lists",
+      "description": "Removes one or more users from a list. Provide the list ID and an array of subscriber objects, each identified by email or userId. Returns counts of successful and failed unsubscriptions."
+    },
+    {
+      "name": "Get List Users",
+      "category": "Lists",
+      "description": "Returns the email addresses of all users on a list. Provide the list ID. The response is a newline-delimited list of emails, useful for auditing or exporting list membership."
+    },
+    {
+      "name": "Get List Size",
+      "category": "Lists",
+      "description": "Returns the number of users currently on a list. Provide the list ID."
+    },
+    {
+      "name": "Send Email",
+      "category": "Messaging",
+      "description": "Sends a triggered (transactional) email to a single recipient using an existing email campaign. Provide the campaign ID and recipient email, plus optional dataFields to populate template merge variables. The campaign must be a triggered/transactional email campaign."
+    },
+    {
+      "name": "Send Push",
+      "category": "Messaging",
+      "description": "Sends a triggered push notification to a single recipient using an existing push campaign. Provide the campaign ID and recipient (email or userId), plus optional dataFields for template merge variables. The campaign must be a triggered push campaign."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Returns all campaigns in the Iterable project, including each campaign's ID, name, type, medium, template ID, and status. Use a campaign's ID with Send Email, Send Push, or Get Campaign Metrics."
+    },
+    {
+      "name": "Get Campaign Metrics",
+      "category": "Campaigns",
+      "description": "Returns aggregate performance metrics (sends, opens, clicks, bounces, unsubscribes, and more) for one or more campaigns as CSV. Provide one or more campaign IDs and an optional date range."
+    },
+    {
+      "name": "List Email Templates",
+      "category": "Templates",
+      "description": "Returns email templates in the Iterable project, including each template's ID, name, creation time, and associated campaign. Optionally filter by template type and message medium."
+    },
+    {
+      "name": "Get Email Template",
+      "category": "Templates",
+      "description": "Retrieves a single email template by its ID, returning its metadata and content including subject, preheader, and HTML body."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [],
+  "agentIdeas": [
+    "When a **Segment** \"New Audit Event\" trigger fires, call **Iterable** \"Track Event\" to record the corresponding activity against a user profile so downstream campaigns can react to it.",
+    "Use **Customer.io** \"Search Customers\" to pull a cohort of people, then call **Iterable** \"Bulk Update Users\" to sync their profiles and \"Subscribe to List\" to add them to a targeted Iterable list.",
+    "When an **Iterable** \"Send Email\" send succeeds, use **Slack** \"Send Message To Channel\" to post a confirmation with the campaign details into a marketing operations channel."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/iterable/public/icon.png",
+  "sourcePaths": {
+    "service": "services/iterable",
+    "readme": "services/iterable/README.md",
+    "index": "services/iterable/src/index.js"
+  }
+}

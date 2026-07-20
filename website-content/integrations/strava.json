@@ -1,0 +1,154 @@
+{
+  "slug": "strava",
+  "name": "Strava",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Strava](https://www.strava.com), the social platform for athletes. Connects over OAuth2 to read athlete profiles and stats, manage activities, explore segments, browse clubs, and look up gear and routes via the Strava API v3.",
+  "actionCount": 22,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Athlete",
+    "Activities",
+    "Segments",
+    "Clubs",
+    "Gear",
+    "Routes"
+  ],
+  "actions": [
+    {
+      "name": "Get Authenticated Athlete",
+      "category": "Athlete",
+      "description": "Retrieves the profile of the currently authenticated athlete, including id, name, city, country, sex, premium status, measurement preference, and profile images. Useful as a connection check."
+    },
+    {
+      "name": "Get Athlete Stats",
+      "category": "Athlete",
+      "description": "Retrieves the activity stats of an athlete by id (only available for the authenticated athlete). Returns recent, year-to-date, and all-time totals for rides, runs, and swims, plus biggest ride distance and biggest climb elevation gain."
+    },
+    {
+      "name": "Update Athlete",
+      "category": "Athlete",
+      "description": "Updates the currently authenticated athlete's weight (in kilograms). Requires the profile:write scope on the connection."
+    },
+    {
+      "name": "List Athlete Clubs",
+      "category": "Athlete",
+      "description": "Lists the clubs of which the currently authenticated athlete is a member, with support for pagination."
+    },
+    {
+      "name": "List Athlete Zones",
+      "category": "Athlete",
+      "description": "Returns the authenticated athlete's heart rate and power zones. Requires the profile:read_all scope."
+    },
+    {
+      "name": "List Activities",
+      "category": "Activities",
+      "description": "Lists activities for the authenticated athlete, most recent first. Supports time-window filtering with before/after epoch timestamps and pagination. Requires the activity:read scope (and activity:read_all for private/hidden activities)."
+    },
+    {
+      "name": "Get Activity",
+      "category": "Activities",
+      "description": "Retrieves a detailed representation of a single activity by id. Optionally includes all segment efforts. The activity must be owned by the authenticated athlete or be public."
+    },
+    {
+      "name": "Create Activity",
+      "category": "Activities",
+      "description": "Creates a manual activity for the authenticated athlete. Requires the activity:write scope. Name, sport type, local start time, and elapsed time are required; distance, description, trainer, and commute are optional."
+    },
+    {
+      "name": "Update Activity",
+      "category": "Activities",
+      "description": "Updates an existing activity owned by the authenticated athlete. Requires the activity:write scope. Supports renaming, changing sport type, assigning gear, and toggling the commute flag."
+    },
+    {
+      "name": "Get Activity Comments",
+      "category": "Activities",
+      "description": "Retrieves the comments on a given activity. Supports cursor-based pagination and an optional page size."
+    },
+    {
+      "name": "Get Activity Kudoers",
+      "category": "Activities",
+      "description": "Retrieves the athletes who have given kudos on a given activity, with pagination support."
+    },
+    {
+      "name": "Get Activity Laps",
+      "category": "Activities",
+      "description": "Retrieves the laps of a given activity, including timing, distance, average speed, and lap index for each lap."
+    },
+    {
+      "name": "Explore Segments",
+      "category": "Segments",
+      "description": "Returns the top 10 segments matching a specified geographic bounding box. Bounds are given as south-west and north-east latitude/longitude corners. Optionally filter by activity type and climb category range."
+    },
+    {
+      "name": "Get Segment",
+      "category": "Segments",
+      "description": "Retrieves the detailed representation of a segment by id, including distance, elevation, grade, effort/athlete counts, and start/end coordinates."
+    },
+    {
+      "name": "List Starred Segments",
+      "category": "Segments",
+      "description": "Lists the segments starred by the authenticated athlete, most recently starred first, with pagination support."
+    },
+    {
+      "name": "Get Segment Efforts",
+      "category": "Segments",
+      "description": "Retrieves an athlete's efforts on a given segment. Optionally filter to a date range using ISO 8601 start/end dates. Requires a Strava subscription for the authenticated athlete."
+    },
+    {
+      "name": "Get Club",
+      "category": "Clubs",
+      "description": "Retrieves a club's detailed representation by id, including name, sport type, city/state/country, member count, and privacy settings."
+    },
+    {
+      "name": "Get Club Activities",
+      "category": "Clubs",
+      "description": "Retrieves recent activities for members of a specific club. The authenticated athlete must be a member of the club. Activities are returned in an anonymized summary form with pagination support."
+    },
+    {
+      "name": "Get Club Members",
+      "category": "Clubs",
+      "description": "Retrieves the members of a specific club. The authenticated athlete must be a member of the club. Supports pagination."
+    },
+    {
+      "name": "Get Gear",
+      "category": "Gear",
+      "description": "Retrieves a piece of gear (bike or shoes) by id, including name, brand, model, distance covered, and primary status. Gear must belong to the authenticated athlete."
+    },
+    {
+      "name": "List Athlete Routes",
+      "category": "Routes",
+      "description": "Lists a given athlete's routes. Private routes are only available for the authenticated athlete. Supports pagination."
+    },
+    {
+      "name": "Get Route",
+      "category": "Routes",
+      "description": "Retrieves the detailed representation of a route by id, including name, type, distance, elevation gain, estimated moving time, and segment count."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync completed activities into a spreadsheet, dashboard, or training log",
+    "Create or update manual activities (e.g. from a treadmill or non-GPS workout)",
+    "Track weekly, year-to-date, and all-time totals plus personal bests via athlete stats",
+    "Explore and star segments within a geographic area for route planning",
+    "Monitor a club's activity feed and membership",
+    "Report gear mileage to schedule maintenance or replacement"
+  ],
+  "agentIdeas": [
+    "After a workout, call **Strava** \"List Activities\" to fetch the newest activity, then use **Google Sheets** \"Add Row\" to append its distance, time, and pace into a training log spreadsheet.",
+    "Use **Strava** \"Get Athlete Stats\" to pull weekly and year-to-date totals, then use **Gmail** \"Send Message\" to email an athlete their progress summary.",
+    "When **Strava** \"Get Gear\" shows a bike or pair of shoes has crossed a mileage threshold, use **Slack** \"Send Message To Channel\" to post a maintenance-due reminder."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/strava/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/strava",
+    "readme": "services/strava/README.md",
+    "index": "services/strava/src/index.js"
+  }
+}

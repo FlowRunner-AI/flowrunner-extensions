@@ -1,0 +1,63 @@
+{
+  "slug": "google-books",
+  "name": "Google Books",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Search and browse books and magazines through the Google Books catalog. Look up volume metadata, run rich keyword searches, and read public users' bookshelves. Public search works with no credentials; an optional Google Cloud API key raises request quotas.",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Volumes",
+    "Bookshelves"
+  ],
+  "actions": [
+    {
+      "name": "Search Volumes",
+      "category": "Volumes",
+      "description": "Searches Google Books for volumes (books and magazines) matching a text query. The query supports Google's special search qualifiers: \"intitle:\" limits to the title, \"inauthor:\" to the author, \"inpublisher:\" to the publisher, \"subject:\" to the category/subject, and \"isbn:\" to a specific ISBN (e.g. \"isbn:9780134685991\"). Qualifiers can be combined with keywords, for example \"flowers inauthor:keyes intitle:garden\". Supports pagination (up to 40 results per page), sorting, print-type and content filtering, language restriction, and lite/full projection."
+    },
+    {
+      "name": "Get Volume",
+      "category": "Volumes",
+      "description": "Retrieves complete metadata for a single volume by its Google Books volume ID (as returned in the \"id\" field of Search Volumes). Returns volume info (title, authors, publisher, description, categories, page count, images), sale info, and access info."
+    },
+    {
+      "name": "List Public Bookshelves",
+      "category": "Bookshelves",
+      "description": "Lists the public bookshelves for a given Google user ID. Only bookshelves the user has made public are returned. Use a returned bookshelf's \"id\" as the Shelf ID for Get Public Bookshelf and List Bookshelf Volumes."
+    },
+    {
+      "name": "Get Public Bookshelf",
+      "category": "Bookshelves",
+      "description": "Retrieves metadata for a single public bookshelf belonging to a Google user, identified by user ID and shelf ID. Returns the bookshelf's title, access level, volume count, and timestamps."
+    },
+    {
+      "name": "List Bookshelf Volumes",
+      "category": "Bookshelves",
+      "description": "Lists the volumes contained in a specific public bookshelf, identified by user ID and shelf ID. Supports pagination via start index and max results. Each item is a full volume resource, the same shape returned by Get Volume."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Look up bibliographic details (title, authors, publisher, page count, cover image) by ISBN, title, or author",
+    "Enrich a book database or reading list with metadata pulled from a single volume ID",
+    "Build catalog search into an app with pagination, sorting, language, and print-type filters",
+    "Browse a Google user's public bookshelves and the volumes on each shelf"
+  ],
+  "agentIdeas": [
+    "Use **Google Books** \"Search Volumes\" with an `isbn:` qualifier to resolve a book's metadata, then **Google Sheets** \"Add Row\" to log the title, authors, and page count into a reading-list spreadsheet.",
+    "When a user shares a book title in Slack, call **Google Books** \"Search Volumes\" and reply with **Slack** \"Send Message To Channel\" containing the top match's author, publisher, and cover thumbnail.",
+    "Use **Google Books** \"Get Volume\" to fetch full details for a volume ID, then **Notion** \"Create Page\" to add a richly populated entry to a personal library database."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/google-books/public/icon.png",
+  "sourcePaths": {
+    "service": "services/google-books",
+    "readme": "services/google-books/README.md",
+    "index": "services/google-books/src/index.js"
+  }
+}

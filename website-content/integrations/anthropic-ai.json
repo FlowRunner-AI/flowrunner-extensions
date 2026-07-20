@@ -1,0 +1,248 @@
+{
+  "slug": "anthropic-ai",
+  "name": "Anthropic Claude",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for the [Anthropic Claude API](https://platform.claude.com/docs). Covers the full current API surface: the Messages API (text, vision, PDFs with citations, tool use, structured JSON output, thinking and effort controls), token counting, Message Batches, the Files API, model discovery, and Managed Agents (beta) - server-managed stateful agents with sandboxed tool execution, driven asynchronously via sessions, events, and an On Session Idle polling trigger. Authenticate with an Anthropic API key.",
+  "actionCount": 40,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Messages",
+    "Message Batches",
+    "Files",
+    "Models",
+    "Agents",
+    "Agent Environments",
+    "Agent Sessions",
+    "Agent Session Events"
+  ],
+  "actions": [
+    {
+      "name": "Ask Claude",
+      "category": "Messages",
+      "description": "Sends a single prompt to a Claude model and returns the generated text. This is the simplest way to use Claude: provide a prompt (and optionally a system instruction) and get the answer text plus token usage back. For multi-turn conversations, tool use, structured output, or thinking control, use Send Messages instead."
+    },
+    {
+      "name": "Send Messages",
+      "category": "Messages",
+      "description": "Sends a full conversation to a Claude model via the Messages API with access to every advanced option: multi-turn message history, system prompt, sampling controls, stop sequences, tool definitions (function calling), structured JSON output enforced by a schema, thinking configuration (adaptive or budgeted extended thinking), and the effort level. Returns the complete API response including all content blocks (text, tool_use, thinking), stop reason, and token usage, plus a convenience 'text' field with the concatenated text output."
+    },
+    {
+      "name": "Analyze Image",
+      "category": "Messages",
+      "description": "Analyzes an image with a Claude vision model and returns the text answer. Provide the image as a FlowRunner file, a publicly accessible URL, or an Anthropic Files API file ID (exactly one source is required). Supports JPEG, PNG, GIF, and WebP images up to 5 MB (base64) / 30 MB (URL)."
+    },
+    {
+      "name": "Analyze Document",
+      "category": "Messages",
+      "description": "Analyzes a PDF or plain-text document with a Claude model and returns the text answer. Provide the document as a FlowRunner file, a publicly accessible URL, or an Anthropic Files API file ID (exactly one source is required). Claude reads both the text and any charts, tables, or images inside PDFs. Optionally enables citations so the answer references the exact document passages it is based on. PDFs are limited to 100 pages / 32 MB per request."
+    },
+    {
+      "name": "Count Tokens",
+      "category": "Messages",
+      "description": "Counts how many input tokens a request would consume for a specific Claude model, without running it. Token counts are model-specific. Provide either a full messages array or a simple prompt string, plus optional system prompt and tool definitions. Useful for estimating cost or checking that content fits within the context window before sending."
+    },
+    {
+      "name": "Create Message Batch",
+      "category": "Message Batches",
+      "description": "Creates a Message Batch that processes up to 100,000 Messages API requests asynchronously at 50% of standard token prices. Each request needs a unique custom_id (1-64 alphanumeric/hyphen/underscore characters) and a params object with the standard Messages API fields (model, max_tokens, messages, etc.). Most batches finish within 1 hour; poll with Get Message Batch and fetch output with Get Message Batch Results once the processing status is 'ended'."
+    },
+    {
+      "name": "Get Message Batch",
+      "category": "Message Batches",
+      "description": "Retrieves the current state of a Message Batch, including its processing status ('in_progress', 'canceling', or 'ended'), per-request counts (processing, succeeded, errored, canceled, expired), and the results URL once processing has ended. Poll this action until processing_status is 'ended', then call Get Message Batch Results."
+    },
+    {
+      "name": "List Message Batches",
+      "category": "Message Batches",
+      "description": "Lists Message Batches in the workspace, most recently created first, with cursor-based pagination. Returns each batch's ID, processing status, request counts, and timestamps."
+    },
+    {
+      "name": "Cancel Message Batch",
+      "category": "Message Batches",
+      "description": "Cancels a Message Batch that is currently processing. The batch moves to 'canceling' and then ends; requests already processed before cancellation still produce results (and are billed), while unprocessed requests are marked canceled and not billed."
+    },
+    {
+      "name": "Get Message Batch Results",
+      "category": "Message Batches",
+      "description": "Downloads and parses the results of an ended Message Batch. Each result contains the original custom_id and a result object whose type is 'succeeded' (with the full Messages API response), 'errored', 'canceled', or 'expired'. Results may be in any order - match them to inputs by custom_id. Throws an error if the batch has not finished processing yet. Batch results are available for 29 days after creation."
+    },
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a file from FlowRunner file storage (or any accessible URL) to the Anthropic Files API and returns its file_id. Uploaded files can then be referenced in Analyze Image, Analyze Document, or Send Messages without re-sending the bytes each time. Supports PDFs and text files (document blocks), JPEG/PNG/GIF/WebP images (image blocks), and datasets for the code execution tool. Maximum file size is 500 MB."
+    },
+    {
+      "name": "List Files",
+      "category": "Files",
+      "description": "Lists files stored in the Anthropic Files API workspace with cursor-based pagination. Returns each file's ID, filename, MIME type, size, creation time, and whether it is downloadable (only files created by Claude's skills or code execution tool are downloadable)."
+    },
+    {
+      "name": "Get File Metadata",
+      "category": "Files",
+      "description": "Retrieves metadata for a file stored in the Anthropic Files API: filename, MIME type, size in bytes, creation time, and whether the file's content can be downloaded."
+    },
+    {
+      "name": "Download File",
+      "category": "Files",
+      "description": "Downloads a file's content from the Anthropic Files API and saves it to FlowRunner file storage, returning the stored file's URL. Only files created by Claude (via skills or the code execution tool, marked downloadable in their metadata) can be downloaded - the API rejects downloads of files you uploaded yourself."
+    },
+    {
+      "name": "Delete File",
+      "category": "Files",
+      "description": "Permanently deletes a file from the Anthropic Files API. Deleted files cannot be recovered and can no longer be referenced in Messages requests."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists Claude models currently available to the API key, most recent first, with cursor-based pagination. Each entry includes the model ID (used in Messages requests), display name, and creation date."
+    },
+    {
+      "name": "Get Model",
+      "category": "Models",
+      "description": "Retrieves details for a specific Claude model, including its ID, display name, creation date, context window and output limits, and capability flags (vision, thinking modes, effort levels, structured outputs) where exposed by the API. Accepts model aliases such as 'claude-opus-4-8'."
+    },
+    {
+      "name": "Create Agent",
+      "category": "Agents",
+      "description": "Creates a persisted, versioned Managed Agent (beta) that defines the agent's model, system prompt, and tools. Create the agent once and reference its ID in Create Session for every run - do not create a new agent per run. By default the agent gets the built-in agent toolset (bash, read, write, edit, glob, grep, web_fetch, web_search); disable it or add custom/MCP toolsets via the advanced parameters. Name must be 1-256 characters."
+    },
+    {
+      "name": "Get Agent",
+      "category": "Agents",
+      "description": "Retrieves a Managed Agent's full configuration: name, model, system prompt, tools, MCP servers, current version number, and timestamps."
+    },
+    {
+      "name": "List Agents",
+      "category": "Agents",
+      "description": "Lists Managed Agents in the workspace with cursor-based pagination. Each entry includes the agent's ID, name, model, current version, and timestamps."
+    },
+    {
+      "name": "Update Agent",
+      "category": "Agents",
+      "description": "Updates a Managed Agent's configuration. Agent versions are immutable, so every update creates a new version; sessions already running keep the version they were created with, and new sessions use the latest version unless pinned. The provided configuration replaces the agent's current one, so supply the complete desired configuration (same parameters as Create Agent), not just the changed fields."
+    },
+    {
+      "name": "Archive Agent",
+      "category": "Agents",
+      "description": "Archives a Managed Agent. WARNING: this is PERMANENT and cannot be undone - there is no unarchive and agents have no delete. The agent becomes read-only, new sessions can no longer reference it, and only sessions already running continue to completion. Do not archive an agent that production flows still create sessions from."
+    },
+    {
+      "name": "List Agent Versions",
+      "category": "Agents",
+      "description": "Lists the immutable versions of a Managed Agent, created each time the agent is updated. Use a version number with Create Session's Agent Version parameter to pin a session to a known-good configuration for reproducibility or rollback."
+    },
+    {
+      "name": "Create Environment",
+      "category": "Agent Environments",
+      "description": "Creates a reusable Managed Agents cloud environment - the template for the sandboxed containers where an agent's tools (bash, file operations, code) execute. Environments are created once and shared across many sessions. Environment names must be unique in the workspace; creating one with an existing name fails with a 409 conflict. Networking is either 'Unrestricted' (full egress) or 'Limited' (deny-by-default with an allowlist of hosts and opt-in flags for package managers and MCP servers)."
+    },
+    {
+      "name": "List Environments",
+      "category": "Agent Environments",
+      "description": "Lists Managed Agents environments in the workspace with cursor-based pagination. Each entry includes the environment's ID, name, and container configuration (type and networking policy)."
+    },
+    {
+      "name": "Get Environment",
+      "category": "Agent Environments",
+      "description": "Retrieves a Managed Agents environment's details: name, description, container configuration (type and networking policy), and timestamps."
+    },
+    {
+      "name": "Delete Environment",
+      "category": "Agent Environments",
+      "description": "Permanently deletes a Managed Agents environment. Deleted environments cannot be recovered, and new sessions can no longer reference them."
+    },
+    {
+      "name": "Create Session",
+      "category": "Agent Sessions",
+      "description": "Starts a Managed Agents session: a stateful run of a pre-created agent inside an environment's sandboxed container. Sessions run asynchronously - after creating one, use Send Message To Session (or Define Outcome) to kick off work, the On Session Idle trigger to detect completion, and Get Session Result to read the agent's answer. Optionally pin a specific agent version, mount file or GitHub repository resources into the container (session creation blocks until all resources are mounted), and attach vaults with MCP credentials."
+    },
+    {
+      "name": "Get Session",
+      "category": "Agent Sessions",
+      "description": "Retrieves a Managed Agents session's current state: status ('idle', 'running', 'rescheduling', or 'terminated'), title, agent reference, attached resources, token usage, and outcome evaluations when Define Outcome was used."
+    },
+    {
+      "name": "List Sessions",
+      "category": "Agent Sessions",
+      "description": "Lists Managed Agents sessions in the workspace with cursor-based pagination. Each entry includes the session's ID, title, status, agent reference, and timestamps."
+    },
+    {
+      "name": "Archive Session",
+      "category": "Agent Sessions",
+      "description": "Archives a Managed Agents session, making it read-only. Archiving is the routine cleanup step for finished sessions and is not reversible; the event history remains readable. To remove a session and its history entirely, use Delete Session instead. Archiving fails while the session is still 'running' - wait for it to go idle first."
+    },
+    {
+      "name": "Delete Session",
+      "category": "Agent Sessions",
+      "description": "Permanently deletes a Managed Agents session, including its event history, container, and checkpoints. Deleted sessions cannot be recovered. Deletion fails while the session is still 'running' - wait for it to go idle first."
+    },
+    {
+      "name": "Get Session Result",
+      "category": "Agent Sessions",
+      "description": "Convenience action that reads a Managed Agents session's answer: fetches the session and its events, concatenates the text of the agent's messages produced after the most recent user message (or outcome definition), and returns it together with the session status, the stop reason from the last idle transition, and token usage. Typically used after the On Session Idle trigger fires. A stop reason of 'end_turn' means the agent finished normally; 'requires_action' means it is waiting for a tool confirmation or custom tool result."
+    },
+    {
+      "name": "List Session Output Files",
+      "category": "Agent Sessions",
+      "description": "Lists the output files a Managed Agents session's agent wrote to /mnt/session/outputs/ in its container. Each entry includes the file's ID, filename, MIME type, and size; download the content with the Download File action. Note: there is a brief indexing lag (a few seconds) between the session going idle and output files appearing - retry once if the list is empty right after completion."
+    },
+    {
+      "name": "Send Message To Session",
+      "category": "Agent Session Events",
+      "description": "Sends a user text message to a Managed Agents session. This is how work is kicked off and steered: the agent transitions to 'running', processes the message, and goes back to 'idle' when done (detect that with the On Session Idle trigger, then read the answer with Get Session Result). Messages can be sent while the session is 'running' or 'idle' - they are queued and processed in order."
+    },
+    {
+      "name": "Send Custom Tool Result",
+      "category": "Agent Session Events",
+      "description": "Returns the result of a custom (client-side) tool call to a Managed Agents session. When an agent invokes a custom tool declared in its configuration, the session emits an 'agent.custom_tool_use' event and goes idle with stop reason 'requires_action' until this action supplies the result; the agent then resumes running. Use the event's ID as the Custom Tool Use ID."
+    },
+    {
+      "name": "Send Tool Confirmation",
+      "category": "Agent Session Events",
+      "description": "Approves or denies a pending tool call in a Managed Agents session. When an agent's tool is configured with an 'always_ask' permission policy, the session emits an 'agent.tool_use' event and goes idle with stop reason 'requires_action' until this action responds. Use the tool-use event's ID (a 'sevt_...' value) as the Tool Use ID. On deny, an optional message tells the agent why so it can adjust its approach."
+    },
+    {
+      "name": "Interrupt Session",
+      "category": "Agent Session Events",
+      "description": "Interrupts a running Managed Agents session. The interrupt jumps ahead of any queued messages; the agent stops at the next safe boundary and the session goes idle. The agent does not see the interrupt as a message - send a follow-up with Send Message To Session to explain what to do instead. If an outcome is active, the interrupt marks its evaluation as 'interrupted'."
+    },
+    {
+      "name": "Define Outcome",
+      "category": "Agent Session Events",
+      "description": "Starts a rubric-graded work loop in a Managed Agents session. Send this INSTEAD of a first message: the agent begins working on the described task immediately, and an independent grader scores each iteration against the rubric, feeding gaps back until the rubric is satisfied, Max Iterations is reached, or the session is interrupted. Write the rubric as explicit, independently checkable criteria (e.g. 'the CSV has a numeric price column'), not vague goals. Track progress via Get Session Events ('span.outcome_evaluation_end' events carry the result and explanation) or Get Session's outcome_evaluations field. Provide the rubric as text OR as a previously uploaded file ID (exactly one)."
+    },
+    {
+      "name": "Get Session Events",
+      "category": "Agent Session Events",
+      "description": "Lists a Managed Agents session's event history with pagination: agent messages, thinking, tool use and results, status transitions ('session.status_idle' carries the stop reason), errors, outcome evaluation spans, and the user events sent to the session. Optionally filters the returned page to a single event type (the filter is applied client-side to the fetched page)."
+    }
+  ],
+  "triggers": [
+    "On Session Idle"
+  ],
+  "idealUseCases": [
+    "Generating, summarizing, rewriting, or classifying text inside a flow with a single prompt",
+    "Building multi-turn assistants with tool use (function calling) and schema-enforced structured JSON output",
+    "Extracting information from images, PDFs, and documents, with optional citations to the source passages",
+    "Processing large workloads asynchronously and cheaply with Message Batches",
+    "Estimating cost or validating context-window fit by counting input tokens before sending",
+    "Running long, autonomous agent tasks (research, coding, document production) with Managed Agents: create a session, send the task or a rubric-graded outcome, let the On Session Idle trigger fire when the agent finishes, then read the answer and download output files"
+  ],
+  "agentIdeas": [
+    "Use **Gmail** \"On New Email\" to detect an incoming support request, then **Ask Claude** to draft a reply and **Gmail** \"Send Message\" to send it back to the customer.",
+    "Use **Google Drive** to fetch a PDF, pass it to **Analyze Document** with citations enabled, and record the extracted summary and source passages with **Notion** \"Create Page\".",
+    "When new form responses land in a spreadsheet via **Google Sheets** \"Get Rows\", run each through **Send Messages** with schema-enforced structured JSON output to classify sentiment, then post a digest to **Slack** \"Send Message To Channel\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/anthropic-ai/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/anthropic-ai",
+    "readme": "services/anthropic-ai/README.md",
+    "index": "services/anthropic-ai/src/index.js"
+  }
+}

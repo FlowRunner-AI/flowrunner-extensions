@@ -1,0 +1,85 @@
+{
+  "slug": "oracle-database",
+  "name": "Oracle Database",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Oracle Database](https://www.oracle.com/database/). Connects directly to an Oracle database over TCP using the official [`node-oracledb`](https://node-oracledb.readthedocs.io/) driver in **Thin mode** — a pure-JavaScript driver that needs **no Oracle Instant Client** and no native compilation. It exposes both raw SQL / PL/SQL execution and convenient no-SQL row operations. It uses a **connect-per-call** model: every operation opens a short-lived connection, runs its statement, and always closes the connection when the call finishes — no connections or pools are cached between invocations.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "SQL",
+    "Rows",
+    "Schema"
+  ],
+  "actions": [
+    {
+      "name": "Execute Query",
+      "category": "SQL",
+      "description": "Runs a single SELECT statement and returns the resulting rows as objects keyed by column name, the row count, and column metadata. Bind values with named placeholders (:name) or positional placeholders (:1, :2, ...) via the Binds parameter — never interpolate user input into the SQL string. Use the Max Rows parameter to cap large result sets. For INSERT/UPDATE/DELETE/DDL use Execute Statement instead. Statements are limited to 120 seconds of execution time."
+    },
+    {
+      "name": "Execute Statement",
+      "category": "SQL",
+      "description": "Runs a single write or DDL statement (INSERT, UPDATE, DELETE, CREATE, ALTER, DROP, etc.) with autoCommit enabled and returns the number of rows affected. Bind values with named placeholders (:name) or positional placeholders (:1, :2, ...) via the Binds parameter — never interpolate user input into the SQL string. For SELECT statements use Execute Query; for PL/SQL blocks use Execute PL/SQL Block. Statements are limited to 120 seconds of execution time."
+    },
+    {
+      "name": "Execute PL/SQL Block",
+      "category": "SQL",
+      "description": "Runs an anonymous PL/SQL block (BEGIN ... END;) with autoCommit enabled and returns any OUT bind values. Use named placeholders (:name) in the block. For OUT/IN OUT binds, describe each with a direction object in the Binds parameter: {\"result\":{\"dir\":\"out\",\"type\":\"number\"}}. Directions are \"in\" (default), \"out\", or \"inout\"; types are \"string\", \"number\", or \"date\". IN binds may be provided as plain values (e.g. {\"id\":42}). Blocks are limited to 120 seconds of execution time."
+    },
+    {
+      "name": "Select Rows",
+      "category": "Rows",
+      "description": "Selects rows from a table without writing SQL. Supports choosing specific columns, ordering, and a row limit (FETCH FIRST n ROWS ONLY). Filtering is done with a raw WHERE clause (bind its values with the Where Binds parameter). For joins, aggregations, or complex queries use Execute Query instead. Table and column names are usually UPPERCASE in Oracle."
+    },
+    {
+      "name": "Insert Row",
+      "category": "Rows",
+      "description": "Inserts a single row into a table from a JSON object of column/value pairs and returns the number of rows affected. Values are bound as parameters; column names are quoted. Oracle has no RETURNING-into-object shortcut here, so database-generated values (e.g. identity IDs, defaults) are not echoed back — use Select Rows afterwards to fetch them if needed. Column names are usually UPPERCASE."
+    },
+    {
+      "name": "Update Rows",
+      "category": "Rows",
+      "description": "Updates all rows matching a raw WHERE clause, setting the columns provided in the Data object (bound as parameters). Returns the number of rows affected. A non-empty Where Clause is required to prevent accidental full-table updates; use Execute Statement for unconditional updates. Column names are usually UPPERCASE."
+    },
+    {
+      "name": "Delete Rows",
+      "category": "Rows",
+      "description": "Deletes all rows matching a raw WHERE clause (bind its values with the Where Binds parameter) and returns the number of rows affected. A non-empty Where Clause is required to prevent accidental full-table deletion; use Execute Statement (e.g. TRUNCATE, or DELETE without WHERE) for that. Column names are usually UPPERCASE."
+    },
+    {
+      "name": "Describe Table",
+      "category": "Schema",
+      "description": "Returns the column definitions of a table from USER_TAB_COLUMNS in the connected user's schema: column name, data type, nullability, and length. The table name is matched case-insensitively (Oracle stores identifiers UPPERCASE by default). Useful for discovering a table's structure before reading or writing."
+    },
+    {
+      "name": "List Tables",
+      "category": "Schema",
+      "description": "Lists all tables owned by the connected user (from USER_TABLES), ordered by name. Table names are returned as stored (usually UPPERCASE). Useful for discovering what data is available in the schema."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Run parameterized SQL queries against an application or analytics database from within a workflow.",
+    "Read, insert, update, or delete rows without writing SQL.",
+    "Execute anonymous PL/SQL blocks (call procedures/functions, capture OUT binds).",
+    "Sync records between Oracle and other apps (spreadsheets, CRMs, messaging tools).",
+    "Discover a schema's structure by listing tables and describing table columns."
+  ],
+  "agentIdeas": [
+    "Use Oracle \"Execute Query\" to pull the latest figures, then use **Google Sheets** \"Add Rows\" to append them to a reporting spreadsheet.",
+    "Use **Google Sheets** \"Get Rows\" to read a batch of records and Oracle \"Insert Row\" to sync them into a table.",
+    "After an Oracle \"Select Rows\" query surfaces records needing attention, use **Gmail** \"Send Message\" or **Slack** \"Send Message To Channel\" to notify the responsible team."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/oracle-database/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/oracle-database",
+    "readme": "services/oracle-database/README.md",
+    "index": "services/oracle-database/src/index.js"
+  }
+}

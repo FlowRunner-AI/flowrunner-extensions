@@ -1,0 +1,100 @@
+{
+  "slug": "mailchimp-marketing",
+  "name": "Mailchimp Marketing",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Comprehensive email marketing automation platform for audience management, campaign creation, and subscriber engagement tracking.",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "List Management",
+    "Member Management",
+    "Tag Management",
+    "Campaign Management"
+  ],
+  "actions": [
+    {
+      "name": "Get Lists Info",
+      "category": "List Management",
+      "description": "Gets information about all lists in the account"
+    },
+    {
+      "name": "Add Member To List",
+      "category": "Member Management",
+      "description": "Adds a new member to the list"
+    },
+    {
+      "name": "Add Or Update List Member",
+      "category": "Member Management",
+      "description": "Adds or updates a list member"
+    },
+    {
+      "name": "Unsubscribe Or Delete List Member",
+      "category": "Member Management",
+      "description": "Unsubscribes or deletes a member from the list"
+    },
+    {
+      "name": "Search Member",
+      "category": "Member Management",
+      "description": "Searches for a member in your Mailchimp audience. Optionally creates a member if none is found"
+    },
+    {
+      "name": "Add Member Note",
+      "category": "Member Management",
+      "description": "Adds a new note for a specific subscriber"
+    },
+    {
+      "name": "Archive List Member",
+      "category": "Member Management",
+      "description": "Archives a list member. To permanently delete, use the delete-permanent action"
+    },
+    {
+      "name": "Add Member Tag",
+      "category": "Tag Management",
+      "description": "Adds a tag to a list member"
+    },
+    {
+      "name": "Remove Member Tag",
+      "category": "Tag Management",
+      "description": "Removes a tag from a list member"
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tag Management",
+      "description": "Creates a new tag in your Mailchimp account"
+    },
+    {
+      "name": "Search Tag",
+      "category": "Tag Management",
+      "description": "Searches for a tag. Optionally, creates a tag if none is found"
+    },
+    {
+      "name": "Get Campaign Info",
+      "category": "Campaign Management",
+      "description": "Gets information about a specific campaign"
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Email marketing campaign management and automation",
+    "Subscriber list building and audience segmentation",
+    "Newsletter distribution and subscriber engagement tracking",
+    "E-commerce customer lifecycle marketing",
+    "Event-based email automation and trigger campaigns",
+    "A/B testing for email campaign optimization",
+    "Customer behavior tracking and analytics",
+    "Multi-channel marketing automation workflows"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.jpeg",
+  "iconFile": "services/mailchimp-marketing/public/icon.jpeg",
+  "sourcePaths": {
+    "service": "services/mailchimp-marketing",
+    "readme": "services/mailchimp-marketing/README.md",
+    "index": "services/mailchimp-marketing/src/index.js"
+  }
+}

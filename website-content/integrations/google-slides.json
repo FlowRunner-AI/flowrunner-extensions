@@ -1,0 +1,102 @@
+{
+  "slug": "google-slides",
+  "name": "Google Slides",
+  "marketingCategory": "Documents & E-signature",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [Google Slides](https://slides.google.com) — create and manage presentations, add and fill slides, run template-based document generation, and export slides to PDF/PPTX or thumbnail images through the [Google Slides API](https://developers.google.com/workspace/slides/api/reference/rest) and the [Google Drive API](https://developers.google.com/workspace/drive/api/reference/rest/v3) using the connected user's Google account (OAuth 2.0).",
+  "actionCount": 12,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Presentations",
+    "Slides",
+    "Content",
+    "Advanced"
+  ],
+  "actions": [
+    {
+      "name": "Create Presentation",
+      "category": "Presentations",
+      "description": "Creates a new, blank Google Slides presentation with the given title in the connected user's Drive. The new presentation contains one default title slide. Returns the presentation ID, title, and a direct edit URL."
+    },
+    {
+      "name": "Get Presentation",
+      "category": "Presentations",
+      "description": "Retrieves a Google Slides presentation and returns a convenient summary: title, revision ID, page size, slide count, and a slides list with each slide's index, page object ID, and title (extracted from the slide's title placeholder). Optionally includes the full raw presentation resource with all page elements."
+    },
+    {
+      "name": "Create From Template",
+      "category": "Presentations",
+      "description": "Creates a new presentation by copying an existing Google Slides template (via the Drive API) and replacing text placeholders across all slides. Placeholders follow the {{placeholder}} convention: pass a Replacements object whose keys are placeholder names (with or without the surrounding braces) and whose values are the replacement text. Returns the new presentation's ID, edit URL, and the number of occurrences replaced per placeholder."
+    },
+    {
+      "name": "Export Presentation",
+      "category": "Presentations",
+      "description": "Exports a Google Slides presentation to PDF or PowerPoint (PPTX) via the Drive API, saves the exported file to FlowRunner file storage, and returns its hosted URL. Note: Drive export is limited to files of at most 10 MB of exported content."
+    },
+    {
+      "name": "Delete Presentation",
+      "category": "Presentations",
+      "description": "Permanently deletes a Google Slides presentation from Google Drive (via the Drive API), skipping the trash. This cannot be undone. The connected user must own the file or have permission to delete it."
+    },
+    {
+      "name": "Add Slide",
+      "category": "Slides",
+      "description": "Adds a new slide to a Google Slides presentation using one of the predefined layouts. Optionally inserts the slide at a specific zero-based position; by default the slide is appended at the end. Returns the object ID of the created slide for use in subsequent content operations."
+    },
+    {
+      "name": "Delete Slide",
+      "category": "Slides",
+      "description": "Deletes a slide (or any page element) from a Google Slides presentation by its object ID. Deleting a slide removes all of its content. A presentation must keep at least one slide."
+    },
+    {
+      "name": "Get Slide Thumbnail",
+      "category": "Slides",
+      "description": "Generates a thumbnail image of a single slide, downloads it, saves it as a PNG to FlowRunner file storage, and returns its hosted URL together with the image dimensions. Thumbnail generation counts as an expensive read request against the Slides API quota."
+    },
+    {
+      "name": "Insert Text Box",
+      "category": "Content",
+      "description": "Inserts a new text box with the given text onto a slide. Position and size are specified in points (PT); one point is 1/72 inch, and a default 10-inch-wide slide is 720 PT wide by 405 PT tall. Defaults place a 350x100 PT box near the top-left corner. Returns the object ID of the created text box for further styling via Batch Update."
+    },
+    {
+      "name": "Replace All Text",
+      "category": "Content",
+      "description": "Finds and replaces all occurrences of a text string across every slide of a presentation (in shapes and tables). Commonly used to fill {{placeholder}} tokens. Returns the number of occurrences changed."
+    },
+    {
+      "name": "Replace Text With Image",
+      "category": "Content",
+      "description": "Replaces all shapes containing the given text with an image fetched from a public URL, across every slide of the presentation. The image inherits the size and position of each replaced shape. The image URL must be publicly accessible, at most 50 MB, and in PNG, JPEG, or GIF format. Returns the number of shapes replaced."
+    },
+    {
+      "name": "Batch Update",
+      "category": "Advanced",
+      "description": "Applies a raw list of Google Slides batchUpdate requests to a presentation. Use this for advanced operations not covered by the dedicated actions (e.g. styling text, creating tables, duplicating slides, updating speaker notes). Each item must be a valid request object from the Slides API batchUpdate reference, e.g. {\"updateTextStyle\":{...}} or {\"duplicateObject\":{...}}. Requests are applied atomically: if any request fails, none are applied."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generate customer-ready decks from a template presentation by filling `{{placeholder}}` tokens",
+    "Build presentations programmatically: create a deck, add slides with predefined layouts, and",
+    "Personalize existing decks by replacing text or swapping placeholder shapes with images",
+    "Export finished presentations to PDF or PowerPoint and store them in FlowRunner file storage",
+    "Render slide thumbnails as hosted PNG images for previews, approvals, or reports.",
+    "Apply any advanced Slides API operation (styling, tables, duplication, speaker notes) via the"
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to pull per-customer data, call **Google Slides** \"Create From Template\" to generate a personalized deck for each row, then use **Gmail** \"Send Message\" to email the resulting edit link.",
+    "After **Google Slides** \"Export Presentation\" produces a hosted PDF, use **Google Drive** \"Upload File\" to archive it into a shared folder and **Slack** \"Send Message To Channel\" to notify the team it is ready for review.",
+    "When **Gmail** \"On New Email\" delivers a request with content to present, use **Google Slides** \"Create Presentation\" and \"Insert Text Box\" to build a starter deck, then \"Get Slide Thumbnail\" to attach a preview image back into a **Slack** \"Send Message To Channel\" approval message."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/google-slides/public/icon.png",
+  "sourcePaths": {
+    "service": "services/google-slides",
+    "readme": "services/google-slides/README.md",
+    "index": "services/google-slides/src/index.js"
+  }
+}

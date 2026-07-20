@@ -1,0 +1,121 @@
+{
+  "slug": "misp",
+  "name": "MISP",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner extension for [MISP](https://www.misp-project.org/) (Malware Information Sharing Platform), the open-source threat intelligence platform. Create and manage threat events, attach indicators of compromise (IOCs), tag and publish events, record sightings, and search your instance via the MISP REST API.",
+  "actionCount": 16,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Events",
+    "Attributes",
+    "Tags",
+    "Sightings"
+  ],
+  "actions": [
+    {
+      "name": "Get Event",
+      "category": "Events",
+      "description": "Retrieves a single MISP event by its numeric ID or UUID, including its metadata, attributes, tags, and related objects. Use this to inspect the full contents of a threat event."
+    },
+    {
+      "name": "Add Event",
+      "category": "Events",
+      "description": "Creates a new MISP event to group related threat indicators. Set the event summary, distribution level, threat level, and analysis stage. The event is created unpublished by default unless you set Published to true."
+    },
+    {
+      "name": "Update Event",
+      "category": "Events",
+      "description": "Updates an existing MISP event's metadata such as its summary, distribution, threat level, and analysis stage. Only provided fields are changed; empty fields are left untouched."
+    },
+    {
+      "name": "Delete Event",
+      "category": "Events",
+      "description": "Permanently deletes a MISP event and all of its attributes by ID or UUID. This action cannot be undone."
+    },
+    {
+      "name": "Publish Event",
+      "category": "Events",
+      "description": "Publishes a MISP event, making it visible to other organisations according to its distribution level and triggering configured export and notification workflows."
+    },
+    {
+      "name": "Search Events",
+      "category": "Events",
+      "description": "Searches MISP events using the REST search API. Filter by attribute value, attribute type/category, tags, date range, event summary text, and paginate results. Returns matching events with their attributes."
+    },
+    {
+      "name": "List Events",
+      "category": "Events",
+      "description": "Lists events from the MISP instance in index form, returning a lightweight summary for each event (ID, summary, org, threat level, attribute count). Use Search Events for filtered queries."
+    },
+    {
+      "name": "Add Attribute",
+      "category": "Attributes",
+      "description": "Adds an attribute (indicator of compromise) to an existing MISP event. Specify the attribute type and category, its value, whether it should be used for IDS detection, and its distribution level."
+    },
+    {
+      "name": "Get Attribute",
+      "category": "Attributes",
+      "description": "Retrieves a single attribute (indicator) by its numeric ID or UUID, including its type, category, value, IDS flag, and parent event."
+    },
+    {
+      "name": "Edit Attribute",
+      "category": "Attributes",
+      "description": "Updates an existing attribute's value, category, IDS flag, comment, or distribution by its ID or UUID. Only provided fields are changed."
+    },
+    {
+      "name": "Delete Attribute",
+      "category": "Attributes",
+      "description": "Deletes an attribute (indicator) from its event by ID or UUID. On a standard MISP instance this soft-deletes the attribute."
+    },
+    {
+      "name": "Search Attributes",
+      "category": "Attributes",
+      "description": "Searches attributes (indicators) across all events using the REST search API. Filter by value, type, category, tags, and IDS flag, and paginate results. Useful for hunting specific IOCs across the instance."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists all tags defined on the MISP instance, including their names, colours, and IDs. Use a tag's ID with Add Tag to Event, or its name with tag-based searches."
+    },
+    {
+      "name": "Add Tag to Event",
+      "category": "Tags",
+      "description": "Attaches an existing tag to an event by the event ID and tag ID. Tags classify events for filtering, sharing (e.g. TLP), and correlation."
+    },
+    {
+      "name": "Remove Tag from Event",
+      "category": "Tags",
+      "description": "Removes a tag from an event by the event ID and tag ID, reversing a previous Add Tag to Event."
+    },
+    {
+      "name": "Add Sighting",
+      "category": "Sightings",
+      "description": "Records a sighting for one or more attributes matching a given value, indicating that the indicator was observed. Sightings help track how frequently and where an indicator is seen."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create a MISP event and attach IOCs (IPs, domains, hashes, URLs) whenever a new threat is detected upstream.",
+    "Enrich or hunt across your instance by searching events and attributes for a specific indicator value.",
+    "Classify and share events by applying TLP or other tags, then publishing to your community.",
+    "Record sightings when an indicator is observed in your environment to track its prevalence.",
+    "Keep an external system in sync with your threat intel by listing and retrieving events on a schedule."
+  ],
+  "agentIdeas": [
+    "When a **urlscan.io** \"Scan and Wait\" verdict flags a malicious URL, call **MISP** \"Add Event\" then \"Add Attribute\" to record the URL and related IOCs as a new threat event.",
+    "Use **MISP** \"Search Attributes\" to check whether an observed indicator is already known, and if not, promote it into **TheHive** via \"Create Alert\" for analyst triage.",
+    "When a **MISP** \"Publish Event\" completes, use **Slack** \"Send Message To Channel\" to notify the security team with the event summary and threat level."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/misp/public/icon.png",
+  "sourcePaths": {
+    "service": "services/misp",
+    "readme": "services/misp/README.md",
+    "index": "services/misp/src/index.js"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "slug": "freshdesk",
+  "name": "Freshdesk",
+  "marketingCategory": "Helpdesk & ITSM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner extension for [Freshdesk](https://www.freshdesk.com/), the customer support and helpdesk platform by Freshworks. Manage tickets, ticket conversations, contacts, companies, agents, and groups through the Freshdesk REST API v2.",
+  "actionCount": 21,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Tickets",
+    "Contacts",
+    "Companies",
+    "Admin"
+  ],
+  "actions": [
+    {
+      "name": "Create Ticket",
+      "category": "Tickets",
+      "description": "Creates a new support ticket in Freshdesk. Provide either the requester Email or an existing Requester ID. The description supports HTML markup. Priority, status, and source accept friendly labels; group and agent can be selected from your Freshdesk account. Account-specific fields can be set via Custom Fields (keys must match the field names from List Ticket Fields, e.g. cf_order_id)."
+    },
+    {
+      "name": "Get Ticket",
+      "category": "Tickets",
+      "description": "Retrieves a single ticket by its ID, including subject, description, status, priority, requester, assignment, tags, and custom fields. Optionally embeds the ticket's conversations (up to the 10 most recent) in the response."
+    },
+    {
+      "name": "List Tickets",
+      "category": "Tickets",
+      "description": "Lists tickets in the Freshdesk account, sorted by creation date (newest first). Supports the predefined Freshdesk views (New & My Open, Watching, Spam, Deleted), an updated-since timestamp filter, and pagination. Note: without the Updated Since filter, Freshdesk only returns tickets created in the past 30 days. For arbitrary criteria use Search Tickets."
+    },
+    {
+      "name": "Update Ticket",
+      "category": "Tickets",
+      "description": "Updates an existing ticket. Only the provided fields are changed; all other fields keep their current values. Priority and status accept friendly labels, and group/agent assignment can be selected from your Freshdesk account."
+    },
+    {
+      "name": "Delete Ticket",
+      "category": "Tickets",
+      "description": "Deletes a ticket by its ID. The ticket is moved to the Freshdesk trash (Deleted view) and can be restored by an administrator from the Freshdesk UI within 30 days."
+    },
+    {
+      "name": "Add Reply",
+      "category": "Tickets",
+      "description": "Adds a public reply to a ticket. The reply is sent to the requester by email and appears in the ticket's conversation thread. The body supports HTML markup."
+    },
+    {
+      "name": "Add Note",
+      "category": "Tickets",
+      "description": "Adds a note to a ticket's conversation thread. Notes are private (visible only to agents) by default; set Private to false to create a public note visible to the requester. The body supports HTML markup."
+    },
+    {
+      "name": "Search Tickets",
+      "category": "Tickets",
+      "description": "Searches tickets using the Freshdesk query language. Combine field conditions with AND/OR and group them with parentheses, e.g. priority:4 AND status:2, or type:'Question' OR tag:'urgent'. Numeric field values: priority 1=Low 2=Medium 3=High 4=Urgent; status 2=Open 3=Pending 4=Resolved 5=Closed. Other searchable fields include agent_id, group_id, tag, created_at, updated_at, due_by, and custom fields. Returns up to 30 results per page, maximum 10 pages (300 results)."
+    },
+    {
+      "name": "List Ticket Conversations",
+      "category": "Tickets",
+      "description": "Lists all conversations (replies and notes) of a ticket in chronological order, with pagination. Each entry indicates whether it is private, incoming, and which user created it."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact (customer) in Freshdesk. At least one of Email or Phone is required. Custom contact fields can be set via Custom Fields using the field names configured in your account."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by its ID, including name, email, phone, company association, tags, and custom fields."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists contacts in the Freshdesk account with pagination. Optionally filters by an exact email address, which is the fastest way to look up a specific contact. For fuzzy matching use Search Contacts."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact. Only the provided fields are changed; all other fields keep their current values."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Soft-deletes a contact by its ID. The contact is marked as deleted and their open tickets remain in the account; a soft-deleted contact can be restored from the Freshdesk UI."
+    },
+    {
+      "name": "Search Contacts",
+      "category": "Contacts",
+      "description": "Searches contacts using the Freshdesk query language. Combine field conditions with AND/OR, e.g. name:'Jane' OR email:'jane.doe@example.com'. Searchable fields include name, email, mobile, phone, tag, company_id, and custom fields. Returns up to 30 results per page, maximum 10 pages (300 results)."
+    },
+    {
+      "name": "Create Company",
+      "category": "Companies",
+      "description": "Creates a new company in Freshdesk. Company names must be unique in the account. Domains associated with the company are used to automatically link contacts by their email domain."
+    },
+    {
+      "name": "List Companies",
+      "category": "Companies",
+      "description": "Lists companies in the Freshdesk account with pagination, including their names, domains, and custom fields."
+    },
+    {
+      "name": "Get Company",
+      "category": "Companies",
+      "description": "Retrieves a single company by its ID, including name, domains, description, and custom fields."
+    },
+    {
+      "name": "List Agents",
+      "category": "Admin",
+      "description": "Lists agents in the Freshdesk account with pagination, including their contact details, availability, and ticket scope. Optionally filters by an exact email address."
+    },
+    {
+      "name": "List Groups",
+      "category": "Admin",
+      "description": "Lists agent groups in the Freshdesk account with pagination, including their names, descriptions, and escalation settings."
+    },
+    {
+      "name": "List Ticket Fields",
+      "category": "Admin",
+      "description": "Lists all ticket fields configured in the Freshdesk account, including default and custom fields with their names, labels, types, choices, and whether they are required. Use this to discover the custom field names (e.g. cf_order_id) accepted by Create Ticket and Update Ticket."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create support tickets from inbound emails, form submissions, or chat messages.",
+    "Sync new or updated customers into Freshdesk as contacts and companies.",
+    "Post automated replies and internal notes on tickets as part of an escalation or triage workflow.",
+    "Search tickets and contacts on arbitrary criteria to drive reporting or follow-up automations.",
+    "Look up account metadata (agents, groups, ticket fields) to build dynamic support workflows."
+  ],
+  "agentIdeas": [
+    "When **Gmail** \"On New Email\" detects an inbound support request, call Freshdesk \"Search Contacts\" to find the sender, then \"Create Ticket\" with the email body as the HTML description and the contact as requester.",
+    "After Freshdesk \"Create Ticket\" runs, use **Slack** \"Send Message To Channel\" to notify the support team with the ticket subject, priority, and assigned agent.",
+    "On a schedule, use Freshdesk \"Search Tickets\" (e.g. `status:2 AND priority:4`) to pull urgent open tickets, then **Google Sheets** \"Add Row\" to log each into a triage dashboard."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/freshdesk/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/freshdesk",
+    "readme": "services/freshdesk/README.md",
+    "index": "services/freshdesk/src/index.js"
+  }
+}

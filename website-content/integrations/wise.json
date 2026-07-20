@@ -1,0 +1,124 @@
+{
+  "slug": "wise",
+  "name": "Wise",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Wise](https://wise.com) (formerly TransferWise) with FlowRunner to manage profiles, create quotes and recipients, send and fund international transfers, and read balances, exchange rates, and supported currencies via the Wise Platform API.",
+  "actionCount": 16,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Profiles",
+    "Quotes",
+    "Recipients",
+    "Transfers",
+    "Balances",
+    "Rates",
+    "Currencies"
+  ],
+  "actions": [
+    {
+      "name": "List Profiles",
+      "category": "Profiles",
+      "description": "Lists all Wise profiles (personal and business) available to the authenticated token. This is the first call to make: every scoped operation (quotes, transfers, balances, recipients) needs a profileId taken from here. Personal profiles hold your individual account; business profiles hold an organization's account."
+    },
+    {
+      "name": "Get Profile",
+      "category": "Profiles",
+      "description": "Retrieves a single Wise profile by its ID, returning its type (personal or business) and detail fields. Use List Profiles first to discover available profile IDs."
+    },
+    {
+      "name": "Create Quote",
+      "category": "Quotes",
+      "description": "Creates a quote for a currency conversion or cross-border transfer. Provide the source and target currencies plus exactly one of source amount (amount you will pay) or target amount (amount the recipient receives). Returns the exchange rate, fees, expiry, and available payment options; the returned quote id is required to create a transfer. Quotes expire, so create one shortly before creating the transfer."
+    },
+    {
+      "name": "Get Quote",
+      "category": "Quotes",
+      "description": "Retrieves a previously created quote by its ID, including the exchange rate, fees, payment options, and expiry status. Use this to re-read a quote before creating a transfer."
+    },
+    {
+      "name": "Create Recipient Account",
+      "category": "Recipients",
+      "description": "Creates a recipient (payee) account that transfers can be sent to. The required detail fields vary by currency and account type: a GBP sort-code account needs sortCode and accountNumber, an EUR IBAN account needs an iban, an email recipient needs email, and so on. Pass those fields as a raw Details object; consult the Wise Platform \"Recipient account requirements\" docs for the exact fields per currency/type. Returns the new recipient account with its numeric id, used as the targetAccount when creating a transfer."
+    },
+    {
+      "name": "List Recipient Accounts",
+      "category": "Recipients",
+      "description": "Lists recipient (payee) accounts belonging to a profile, optionally filtered by currency. Returns each recipient's id, holder name, currency, and type. Use a recipient's id as the targetAccount when creating a transfer."
+    },
+    {
+      "name": "Get Recipient Account",
+      "category": "Recipients",
+      "description": "Retrieves a single recipient (payee) account by its numeric ID, returning the holder name, currency, type, and bank details."
+    },
+    {
+      "name": "Delete Recipient Account",
+      "category": "Recipients",
+      "description": "Deletes (deactivates) a recipient (payee) account by its numeric ID so it can no longer receive transfers. This does not affect transfers already sent to it."
+    },
+    {
+      "name": "Create Transfer",
+      "category": "Transfers",
+      "description": "Creates a transfer from a quote to a recipient account. Requires the recipient account id (targetAccount) and the quote id (quoteUuid) from Create Quote. A customerTransactionId (UUID v4) acts as an idempotency key: pass your own to safely retry without creating duplicates, or leave it empty and one is generated for you. The transfer is created in an unfunded state; call Fund Transfer afterwards to actually move the money. Optionally attach a payment reference shown to the recipient."
+    },
+    {
+      "name": "Get Transfer",
+      "category": "Transfers",
+      "description": "Retrieves a single transfer by its numeric ID, including its current status, amounts, rate, recipient, and reference."
+    },
+    {
+      "name": "List Transfers",
+      "category": "Transfers",
+      "description": "Lists transfers for a profile, optionally filtered by status and paginated with limit and offset. Returns each transfer's id, status, amounts, and recipient. Use the status filter to find, for example, transfers still awaiting funding."
+    },
+    {
+      "name": "Cancel Transfer",
+      "category": "Transfers",
+      "description": "Cancels a transfer by its numeric ID. Only transfers that have not yet been fully processed (typically still awaiting incoming payment/funding) can be cancelled. Returns the transfer with its updated status."
+    },
+    {
+      "name": "Fund Transfer",
+      "category": "Transfers",
+      "description": "Funds a previously created transfer from your Wise multi-currency balance, which is what actually starts moving the money. The transfer's source currency balance must hold enough funds. This uses payment type BALANCE; other pay-in methods (e.g. bank debit) are not covered here. Returns the payment result and updated transfer status."
+    },
+    {
+      "name": "Get Account Balances",
+      "category": "Balances",
+      "description": "Retrieves the multi-currency account balances for a profile. By default returns STANDARD balances (spendable multi-currency account balances). Each balance includes its currency, available amount, and reserved amount."
+    },
+    {
+      "name": "Get Exchange Rate",
+      "category": "Rates",
+      "description": "Returns the current mid-market exchange rate for a currency pair. Provide source and target ISO currency codes. Useful for displaying an indicative rate before creating a quote; the actual transfer rate comes from Create Quote."
+    },
+    {
+      "name": "List Currencies",
+      "category": "Currencies",
+      "description": "Returns the list of currencies supported by Wise, each with its ISO code, name, and symbol. Use this to populate currency selectors or validate currency codes before creating quotes or recipients."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automate cross-border payouts to vendors, contractors, or employees at real mid-market rates.",
+    "Quote a currency conversion and send a funded transfer end to end from a workflow.",
+    "Sync new payees into Wise as recipient accounts before paying them.",
+    "Monitor multi-currency balances and current exchange rates for reporting or alerting.",
+    "Track transfer status and cancel transfers that have not yet been processed."
+  ],
+  "agentIdeas": [
+    "When a **Stripe** \"Create Refund\" or payout event needs to reach an external bank account, use **Wise** \"Create Quote\", \"Create Transfer\", and \"Fund Transfer\" to send the funds internationally at the mid-market rate.",
+    "Read new vendor bills with **Xero** \"Get Invoices\", create matching payees via **Wise** \"Create Recipient Account\", then quote and pay them with \"Create Quote\" and \"Create Transfer\".",
+    "After **Wise** \"Fund Transfer\" completes, use **Google Sheets** \"Add Row\" to log the transfer id, amount, and recipient, and **Slack** \"Send Message To Channel\" to notify the finance team."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/wise/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/wise",
+    "readme": "services/wise/README.md",
+    "index": "services/wise/src/index.js"
+  }
+}

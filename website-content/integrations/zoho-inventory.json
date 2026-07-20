@@ -1,0 +1,616 @@
+{
+  "slug": "zoho-inventory",
+  "name": "Zoho Inventory",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integration with Zoho Inventory's order and stock management platform. Manage contacts, items, composite items and bundles, inventory adjustments, sales orders, packages and shipments, sales returns, invoices, customer payments, credit notes, purchase orders, bills, vendor payments and credits, transfer orders, and multi-location warehouses through a single OAuth2-connected service. Auto-detects your Zoho regional data center and ships polling triggers for near-real-time event tracking.",
+  "actionCount": 110,
+  "triggerCount": 8,
+  "operationCategories": [
+    "Diagnostics",
+    "Contacts",
+    "Items",
+    "Item Groups",
+    "Composite Items",
+    "Inventory Adjustments",
+    "Sales Orders",
+    "Packages",
+    "Shipment Orders",
+    "Sales Returns",
+    "Invoices",
+    "Customer Payments",
+    "Credit Notes",
+    "Purchase Orders",
+    "Bills",
+    "Vendor Payments",
+    "Vendor Credits",
+    "Transfer Orders",
+    "Locations"
+  ],
+  "actions": [
+    {
+      "name": "Test Connection",
+      "category": "Diagnostics",
+      "description": "Verifies the OAuth connection is healthy by listing the organizations the connected account can access. Use to sanity-check setup before wiring downstream actions."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new customer or vendor contact. Supports primary contact details, billing address, shipping address, and contact persons."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves full details of a contact, including contact persons, addresses, and outstanding balances."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact by merging supplied fields into the saved record. Use to change a subset of fields (e.g. adjust price, swap email) without re-sending the full payload."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact. Use when removing a test record; for production records prefer mark-inactive so historical references stay valid. Contacts with linked transactions cannot be deleted."
+    },
+    {
+      "name": "Mark Contact Active",
+      "category": "Contacts",
+      "description": "Re-activates a contact previously marked inactive so it returns to pickers and reports. Use when restoring a customer or vendor relationship."
+    },
+    {
+      "name": "Mark Contact Inactive",
+      "category": "Contacts",
+      "description": "Marks a contact inactive so it stops appearing in pickers but historical transactions stay intact. Preferred over delete for retiring a customer or vendor."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists contacts in the organization with optional filtering by type, status, and name."
+    },
+    {
+      "name": "Create Item",
+      "category": "Items",
+      "description": "Creates a new inventory, service, or sales item. Inventory items track stock levels; service items don't."
+    },
+    {
+      "name": "Get Item",
+      "category": "Items",
+      "description": "Retrieves an item with full detail: stock-on-hand and available-stock per location, pricing tiers, and custom fields. Use after listing or a trigger event to inspect a single item."
+    },
+    {
+      "name": "Update Item",
+      "category": "Items",
+      "description": "Updates an existing item by merging supplied fields into the record. Use to change a subset (price, reorder level, description) without re-sending every field."
+    },
+    {
+      "name": "Delete Item",
+      "category": "Items",
+      "description": "Permanently deletes an item. Use for cleanup; for production items prefer mark-inactive so historical line items remain valid. Items tied to transactions cannot be deleted."
+    },
+    {
+      "name": "Mark Item Active",
+      "category": "Items",
+      "description": "Re-activates an item previously marked inactive so it returns to pickers and can be added to new transactions. Use when bringing a discontinued SKU back into rotation."
+    },
+    {
+      "name": "Mark Item Inactive",
+      "category": "Items",
+      "description": "Marks an item inactive so it stops appearing in pickers and cannot be added to new transactions. Existing transactions remain intact. Preferred over delete for retiring an SKU."
+    },
+    {
+      "name": "List Items",
+      "category": "Items",
+      "description": "Lists items in the organization, with optional filters for SKU, name, status, and stock level."
+    },
+    {
+      "name": "Create Item Group",
+      "category": "Item Groups",
+      "description": "Creates a parent item group (variant container) with one or more variant items underneath."
+    },
+    {
+      "name": "Get Item Group",
+      "category": "Item Groups",
+      "description": "Retrieves an item group with every variant item underneath. Use to enumerate variants of a parent SKU."
+    },
+    {
+      "name": "Update Item Group",
+      "category": "Item Groups",
+      "description": "Updates an item group by merging supplied fields. Use when correcting or amending without re-sending the whole record."
+    },
+    {
+      "name": "Delete Item Group",
+      "category": "Item Groups",
+      "description": "Permanently deletes an item group AND all its variant items in one shot. Use carefully — to retire a single variant, delete that item instead."
+    },
+    {
+      "name": "List Item Groups",
+      "category": "Item Groups",
+      "description": "Lists item groups. Use to enumerate parent SKUs and their variants for batch processing or finding a group ID."
+    },
+    {
+      "name": "Create Composite Item",
+      "category": "Composite Items",
+      "description": "Creates a composite item (kit/bundle) made up of one or more existing items at fixed quantities."
+    },
+    {
+      "name": "Get Composite Item",
+      "category": "Composite Items",
+      "description": "Retrieves a composite item (kit) with the component breakdown — every member item and its assembly quantity. Use to inspect kit composition before assembly."
+    },
+    {
+      "name": "Update Composite Item",
+      "category": "Composite Items",
+      "description": "Updates a composite item by merging supplied fields. Use when correcting or amending without re-sending the whole record."
+    },
+    {
+      "name": "Delete Composite Item",
+      "category": "Composite Items",
+      "description": "Permanently deletes a composite item (kit definition). Component items are unaffected. Use to retire a kit no longer offered for sale."
+    },
+    {
+      "name": "Create Bundle",
+      "category": "Composite Items",
+      "description": "Records an assembly event: consumes the components of a composite item and produces stock of the kit."
+    },
+    {
+      "name": "Delete Bundle",
+      "category": "Composite Items",
+      "description": "Reverses an assembly event by deleting the bundle record."
+    },
+    {
+      "name": "Create Inventory Adjustment",
+      "category": "Inventory Adjustments",
+      "description": "Records a stock adjustment (e.g. cycle count, write-off, damage) against one or more items. Use type=quantity for stock changes and type=value for cost-only revaluation."
+    },
+    {
+      "name": "Get Inventory Adjustment",
+      "category": "Inventory Adjustments",
+      "description": "Retrieves an inventory adjustment record by ID. Use after listing/picker selection or a trigger event to read full details."
+    },
+    {
+      "name": "Delete Inventory Adjustment",
+      "category": "Inventory Adjustments",
+      "description": "Permanently deletes an inventory adjustment record and reverses its stock impact. Use to undo a miscounted adjustment."
+    },
+    {
+      "name": "List Inventory Adjustments",
+      "category": "Inventory Adjustments",
+      "description": "Lists inventory adjustments in the organization with optional filters."
+    },
+    {
+      "name": "Create Sales Order",
+      "category": "Sales Orders",
+      "description": "Creates a sales order against an existing customer with one or more line items. Optionally specify a location, salesperson, discount, and shipping charge."
+    },
+    {
+      "name": "Get Sales Order",
+      "category": "Sales Orders",
+      "description": "Retrieves a sales order with its line items, status history, and totals. Use after listing or a polling-trigger event to read full detail."
+    },
+    {
+      "name": "Update Sales Order",
+      "category": "Sales Orders",
+      "description": "Updates an existing sales order by merging supplied fields. Use when partial-updating without re-sending the whole record. Cannot edit confirmed/voided orders without reopening."
+    },
+    {
+      "name": "Delete Sales Order",
+      "category": "Sales Orders",
+      "description": "Permanently deletes a sales order. Use to clean up drafts; confirmed orders should be voided first via Mark Sales Order Void so stock impact unwinds correctly."
+    },
+    {
+      "name": "Mark Sales Order Confirmed",
+      "category": "Sales Orders",
+      "description": "Confirms a draft sales order so it can be packaged and shipped. Use once line items, customer, and price are final — confirmation locks the order and reserves stock."
+    },
+    {
+      "name": "Mark Sales Order Void",
+      "category": "Sales Orders",
+      "description": "Voids a sales order so it no longer affects stock or reports. Use to cancel an order after confirmation without losing its audit trail."
+    },
+    {
+      "name": "List Sales Orders",
+      "category": "Sales Orders",
+      "description": "Lists sales orders in the organization with optional filters by status, customer, and date range."
+    },
+    {
+      "name": "Create Package",
+      "category": "Packages",
+      "description": "Creates a package from a sales order. Packages must reference an existing sales order — the API requires salesorder_id."
+    },
+    {
+      "name": "Get Package",
+      "category": "Packages",
+      "description": "Retrieves a package record by ID. Use after listing/picker selection or a trigger event to read full details."
+    },
+    {
+      "name": "Update Package",
+      "category": "Packages",
+      "description": "Updates a package record (e.g. tracking, line items, notes)."
+    },
+    {
+      "name": "Delete Package",
+      "category": "Packages",
+      "description": "Permanently deletes a package. Use to undo a packing mistake before the package is shipped; line items return to the sales order pool."
+    },
+    {
+      "name": "List Packages",
+      "category": "Packages",
+      "description": "Lists packages with optional status filter."
+    },
+    {
+      "name": "Create Shipment Order",
+      "category": "Shipment Orders",
+      "description": "Creates a shipment order from one or more packages of a sales order. Shipments are separate from packages — packages get bagged into a shipment that the carrier collects."
+    },
+    {
+      "name": "Get Shipment Order",
+      "category": "Shipment Orders",
+      "description": "Retrieves a shipment order with linked packages, tracking number, carrier, and delivery status. Use to follow shipment progress."
+    },
+    {
+      "name": "Mark Shipment Delivered",
+      "category": "Shipment Orders",
+      "description": "Marks a shipment order as delivered, completing the order lifecycle. Use when carrier confirmation arrives out-of-band and Zoho should reflect final state."
+    },
+    {
+      "name": "Delete Shipment Order",
+      "category": "Shipment Orders",
+      "description": "Permanently deletes a shipment order. Underlying packages remain intact and can be re-shipped. Use to fix carrier/tracking-number mistakes before delivery."
+    },
+    {
+      "name": "Create Sales Return",
+      "category": "Sales Returns",
+      "description": "Creates a sales return record. Optionally link it to the originating sales order; Zoho treats salesorder_id as optional."
+    },
+    {
+      "name": "Get Sales Return",
+      "category": "Sales Returns",
+      "description": "Retrieves a sales return record by ID. Use after listing/picker selection or a trigger event to read full details."
+    },
+    {
+      "name": "Update Sales Return",
+      "category": "Sales Returns",
+      "description": "Updates a sales return by merging supplied fields. Use when correcting or amending without re-sending the whole record."
+    },
+    {
+      "name": "Delete Sales Return",
+      "category": "Sales Returns",
+      "description": "Permanently deletes a sales return record. Use only before the return is processed; for received returns, unwind via inventory adjustment instead."
+    },
+    {
+      "name": "List Sales Returns",
+      "category": "Sales Returns",
+      "description": "Lists sales returns with optional date range."
+    },
+    {
+      "name": "Receive Sales Return",
+      "category": "Sales Returns",
+      "description": "Records the physical receipt of returned goods against a sales return."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates an invoice for a customer. Optionally associates the invoice with a sales order via `salesorder_id` in extraFields."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves an invoice with all fields, applied payments, and credit-note offsets. Use to inspect AR detail after listing or a payment trigger."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Updates an invoice by merging supplied fields. Use when correcting or amending without re-sending the whole record. Some fields are immutable once the invoice is sent."
+    },
+    {
+      "name": "Delete Invoice",
+      "category": "Invoices",
+      "description": "Permanently deletes an invoice. Use only for accidental drafts; for sent invoices use void instead so the audit trail is preserved."
+    },
+    {
+      "name": "Mark Invoice Sent",
+      "category": "Invoices",
+      "description": "Marks a draft invoice as sent without emailing it. Use when the invoice was delivered out-of-band (printed or exported) and you only need to advance status."
+    },
+    {
+      "name": "Mark Invoice Void",
+      "category": "Invoices",
+      "description": "Voids an invoice so it no longer counts toward AR. Audit-safe alternative to deletion — use whenever an issued invoice was a mistake or will not be paid."
+    },
+    {
+      "name": "Mark Invoice Draft",
+      "category": "Invoices",
+      "description": "Reverts an invoice back to draft status. Use to correct line items or details on an already-sent invoice before re-sending."
+    },
+    {
+      "name": "Email Invoice",
+      "category": "Invoices",
+      "description": "Emails the invoice to one or more recipients with optional subject and body."
+    },
+    {
+      "name": "Write Off Invoice",
+      "category": "Invoices",
+      "description": "Writes off an invoice's outstanding balance as bad debt."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Lists invoices with status, customer, and date filters."
+    },
+    {
+      "name": "Record Customer Payment",
+      "category": "Customer Payments",
+      "description": "Records a customer payment and optionally applies it to one or more invoices."
+    },
+    {
+      "name": "Get Customer Payment",
+      "category": "Customer Payments",
+      "description": "Retrieves a customer payment record by ID. Use after listing/picker selection or a trigger event to read full details."
+    },
+    {
+      "name": "Update Customer Payment",
+      "category": "Customer Payments",
+      "description": "Updates a customer payment."
+    },
+    {
+      "name": "Delete Customer Payment",
+      "category": "Customer Payments",
+      "description": "Permanently deletes a customer payment and releases any applied amounts back to the invoices. Use to correct mistakenly-recorded payments."
+    },
+    {
+      "name": "List Customer Payments",
+      "category": "Customer Payments",
+      "description": "Lists customer payments with optional customer and date filters."
+    },
+    {
+      "name": "Create Credit Note",
+      "category": "Credit Notes",
+      "description": "Creates a credit note for a customer (used for returns or goodwill)."
+    },
+    {
+      "name": "Get Credit Note",
+      "category": "Credit Notes",
+      "description": "Retrieves a credit note with line items, application history, and refunds. Use to inspect credit-note state."
+    },
+    {
+      "name": "Update Credit Note",
+      "category": "Credit Notes",
+      "description": "Updates a credit note by merging supplied fields. Use when correcting or amending without re-sending the whole record."
+    },
+    {
+      "name": "Delete Credit Note",
+      "category": "Credit Notes",
+      "description": "Permanently deletes a credit note. Cannot be undone; for applied credits, unapply or void so the audit trail survives. Cannot be undone; for applied credits, unapply or void instead so the audit trail survives."
+    },
+    {
+      "name": "Apply Credit Note To Invoices",
+      "category": "Credit Notes",
+      "description": "Applies all or part of a credit note to one or more invoices."
+    },
+    {
+      "name": "List Credit Notes",
+      "category": "Credit Notes",
+      "description": "Lists credit notes."
+    },
+    {
+      "name": "Create Purchase Order",
+      "category": "Purchase Orders",
+      "description": "Creates a purchase order against a vendor with one or more line items."
+    },
+    {
+      "name": "Get Purchase Order",
+      "category": "Purchase Orders",
+      "description": "Retrieves a purchase order with line items, vendor info, and status. Use after listing or a trigger event for full detail."
+    },
+    {
+      "name": "Update Purchase Order",
+      "category": "Purchase Orders",
+      "description": "Updates a purchase order by merging supplied fields. Use when correcting or amending without re-sending the whole record."
+    },
+    {
+      "name": "Delete Purchase Order",
+      "category": "Purchase Orders",
+      "description": "Permanently deletes a purchase order. Use for draft PO cleanup; for issued POs cancel via Mark PO Cancelled first."
+    },
+    {
+      "name": "Mark PO Issued",
+      "category": "Purchase Orders",
+      "description": "Issues a draft PO so it can receive goods against it. Use once the PO has been approved internally and the vendor delivery is expected."
+    },
+    {
+      "name": "Mark PO Cancelled",
+      "category": "Purchase Orders",
+      "description": "Cancels an issued PO so it no longer expects deliveries. Use when a vendor order falls through or the order is no longer needed."
+    },
+    {
+      "name": "List Purchase Orders",
+      "category": "Purchase Orders",
+      "description": "Lists purchase orders with optional filters."
+    },
+    {
+      "name": "Receive Purchase Order",
+      "category": "Purchase Orders",
+      "description": "Records the physical receipt of items against a purchase order. Receives are separate from bills (financial liability)."
+    },
+    {
+      "name": "Get Purchase Receive",
+      "category": "Purchase Orders",
+      "description": "Retrieves a purchase receive record by ID. Use after listing/picker selection or a trigger event to read full details."
+    },
+    {
+      "name": "Delete Purchase Receive",
+      "category": "Purchase Orders",
+      "description": "Permanently deletes a purchase receive record."
+    },
+    {
+      "name": "Create Bill",
+      "category": "Bills",
+      "description": "Creates a vendor bill recording purchases received. Optionally references a PO via extraFields.purchaseorder_ids."
+    },
+    {
+      "name": "Get Bill",
+      "category": "Bills",
+      "description": "Retrieves a vendor bill with line items, payment history, and status. Use after listing or a trigger event for full detail."
+    },
+    {
+      "name": "Update Bill",
+      "category": "Bills",
+      "description": "Updates a bill by merging supplied fields. Use when correcting or amending without re-sending the whole record."
+    },
+    {
+      "name": "Delete Bill",
+      "category": "Bills",
+      "description": "Permanently deletes a bill. Use for draft cleanup; for posted bills void via Mark Bill Void to preserve the audit trail."
+    },
+    {
+      "name": "Mark Bill Open",
+      "category": "Bills",
+      "description": "Marks a draft bill as open and ready to pay. Use when finalizing a vendor bill staged via createBill in draft mode."
+    },
+    {
+      "name": "Mark Bill Void",
+      "category": "Bills",
+      "description": "Voids a vendor bill so it no longer counts toward AP. Use as the audit-safe alternative to deletion when a posted bill will not be paid."
+    },
+    {
+      "name": "List Bills",
+      "category": "Bills",
+      "description": "Lists vendor bills with optional filters."
+    },
+    {
+      "name": "Record Vendor Payment",
+      "category": "Vendor Payments",
+      "description": "Records a vendor payment and optionally applies it to one or more bills."
+    },
+    {
+      "name": "Get Vendor Payment",
+      "category": "Vendor Payments",
+      "description": "Retrieves a vendor payment with applied bill breakdown. Use to inspect AP disbursement detail."
+    },
+    {
+      "name": "Delete Vendor Payment",
+      "category": "Vendor Payments",
+      "description": "Permanently deletes a vendor payment and releases any applied amounts back to the bills. Use to correct a mistakenly-recorded payment."
+    },
+    {
+      "name": "List Vendor Payments",
+      "category": "Vendor Payments",
+      "description": "Lists vendor payments with optional vendor and date filters."
+    },
+    {
+      "name": "Create Vendor Credit",
+      "category": "Vendor Credits",
+      "description": "Creates a vendor credit (credit memo from a vendor) used to offset future bills."
+    },
+    {
+      "name": "Get Vendor Credit",
+      "category": "Vendor Credits",
+      "description": "Retrieves a vendor credit with line items and application history. Use to inspect open credit available against future bills."
+    },
+    {
+      "name": "Delete Vendor Credit",
+      "category": "Vendor Credits",
+      "description": "Permanently deletes a vendor credit. Cannot be undone; use only for accidental drafts."
+    },
+    {
+      "name": "Apply Vendor Credit To Bills",
+      "category": "Vendor Credits",
+      "description": "Applies all or part of a vendor credit to one or more bills."
+    },
+    {
+      "name": "List Vendor Credits",
+      "category": "Vendor Credits",
+      "description": "Lists vendor credits."
+    },
+    {
+      "name": "Create Transfer Order",
+      "category": "Transfer Orders",
+      "description": "Creates a warehouse-to-warehouse transfer order. Uses location_id semantics (the modern Zoho term replacing warehouse_id)."
+    },
+    {
+      "name": "Get Transfer Order",
+      "category": "Transfer Orders",
+      "description": "Retrieves a transfer order with line items, from/to locations, and in-transit status. Use to track stock movements between warehouses."
+    },
+    {
+      "name": "Delete Transfer Order",
+      "category": "Transfer Orders",
+      "description": "Permanently deletes a transfer order. Use to undo a not-yet-transferred move; for completed transfers, create a reverse transfer order instead."
+    },
+    {
+      "name": "Mark Transfer Received",
+      "category": "Transfer Orders",
+      "description": "Marks an in-transit transfer order as received at the destination, releasing stock from in-transit into available inventory at the destination location."
+    },
+    {
+      "name": "List Transfer Orders",
+      "category": "Transfer Orders",
+      "description": "Lists transfer orders with optional filters."
+    },
+    {
+      "name": "Enable Multi-Location",
+      "category": "Locations",
+      "description": "One-time enables the multi-location (multi-warehouse) feature for the organization. Required before creating locations."
+    },
+    {
+      "name": "Create Location",
+      "category": "Locations",
+      "description": "Creates a new warehouse/location."
+    },
+    {
+      "name": "Get Location",
+      "category": "Locations",
+      "description": "Retrieves a location/warehouse with its users and address. Use to inspect warehouse configuration."
+    },
+    {
+      "name": "Update Location",
+      "category": "Locations",
+      "description": "Updates a location by merging supplied fields. Use when correcting or amending without re-sending the whole record."
+    },
+    {
+      "name": "Delete Location",
+      "category": "Locations",
+      "description": "Permanently deletes a location/warehouse. Inventory at the location must first be moved out via transfer order or adjusted to zero. Use to retire a closed warehouse."
+    },
+    {
+      "name": "Mark Location Primary",
+      "category": "Locations",
+      "description": "Sets a location as the organization's primary warehouse."
+    }
+  ],
+  "triggers": [
+    "On New Or Updated Sales Order (Polling)",
+    "On New Or Updated Purchase Order (Polling)",
+    "On New Or Updated Invoice (Polling)",
+    "On New Or Updated Bill (Polling)",
+    "On New Or Updated Item (Polling)",
+    "On New Or Updated Contact (Polling)",
+    "On New Or Updated Package (Polling)",
+    "On Low Stock Item (Polling)"
+  ],
+  "idealUseCases": [
+    "Syncing products, stock levels, and price lists between Zoho Inventory and external storefronts or databases",
+    "Automating order-to-cash: create sales orders, generate invoices, record customer payments, and email invoices",
+    "Driving procure-to-pay: raise purchase orders, receive stock, record bills, and pay vendors",
+    "Fulfilling orders through packages and shipment orders, and processing sales returns and credit notes",
+    "Monitoring low-stock items and new or updated records to trigger reorder and notification workflows",
+    "Managing inventory across multiple warehouse locations with transfer orders and stock adjustments"
+  ],
+  "agentIdeas": [
+    "When Zoho Inventory's \"On New Or Updated Sales Order (Polling)\" trigger fires, use **ShipBob** \"Create Order\" to fulfill it, then **Gmail** \"Send Message\" to email the customer their tracking details.",
+    "When Zoho Inventory's \"On Low Stock Item (Polling)\" trigger fires, use **Slack** \"Send Message To Channel\" to alert the purchasing team, then call Zoho Inventory's \"Create Purchase Order\" to reorder from the vendor.",
+    "When Zoho Inventory's \"On New Or Updated Invoice (Polling)\" trigger fires, use **QuickBooks Online** \"Create Invoice\" to mirror the sale into your books, and after payment call **QuickBooks Online** \"Create Payment\" to record it."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/zoho-inventory/public/icon.png",
+  "sourcePaths": {
+    "service": "services/zoho-inventory",
+    "readme": "services/zoho-inventory/README.md",
+    "index": "services/zoho-inventory/src/index.js"
+  }
+}

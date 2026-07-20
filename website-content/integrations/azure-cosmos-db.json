@@ -1,0 +1,115 @@
+{
+  "slug": "azure-cosmos-db",
+  "name": "Azure Cosmos DB",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for Azure Cosmos DB using the Core (SQL) API over the REST interface. Manage databases and containers, and create, read, query, replace, upsert, and delete documents. Zero external dependencies — master-key HMAC signing uses only Node's built-in `crypto` module.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Databases",
+    "Containers",
+    "Documents"
+  ],
+  "actions": [
+    {
+      "name": "List Databases",
+      "category": "Databases",
+      "description": "Lists all databases in the Cosmos DB account. Returns the Databases array along with a count. Uses the SQL (Core) API."
+    },
+    {
+      "name": "Get Database",
+      "category": "Databases",
+      "description": "Retrieves a single database resource by its id, including system-generated metadata (_rid, _self, _ts)."
+    },
+    {
+      "name": "Create Database",
+      "category": "Databases",
+      "description": "Creates a new database in the account. The database id must be unique; a 409 conflict is returned if it already exists."
+    },
+    {
+      "name": "Delete Database",
+      "category": "Databases",
+      "description": "Permanently deletes a database and all containers, documents, and other resources within it. This action cannot be undone."
+    },
+    {
+      "name": "List Containers",
+      "category": "Containers",
+      "description": "Lists all containers (collections) in a database, including their partition key definition and indexing policy."
+    },
+    {
+      "name": "Get Container",
+      "category": "Containers",
+      "description": "Retrieves a single container (collection) by id, including its partition key paths, indexing policy, and system metadata."
+    },
+    {
+      "name": "Create Container",
+      "category": "Containers",
+      "description": "Creates a new container (collection) in a database with a hash partition key. Provide the partition key path (e.g. /pk); the container id must be unique within the database."
+    },
+    {
+      "name": "Delete Container",
+      "category": "Containers",
+      "description": "Permanently deletes a container (collection) and all documents within it. This action cannot be undone."
+    },
+    {
+      "name": "Query Documents",
+      "category": "Documents",
+      "description": "Runs a parameterized SQL query against a container and returns matching documents. Supply parameters as an array of {name,value} objects (names begin with @). Cross-partition execution is enabled, so queries are not required to filter on the partition key. Note that gateway-served queries do not support ORDER BY, TOP, OFFSET/LIMIT, aggregates, DISTINCT, or GROUP BY."
+    },
+    {
+      "name": "List Documents",
+      "category": "Documents",
+      "description": "Reads documents from a container as a feed (no query). Supports paging via Max Item Count and the returned continuation token. To fetch the next page, pass the returned continuationToken back in."
+    },
+    {
+      "name": "Get Document",
+      "category": "Documents",
+      "description": "Retrieves a single document by its id. The partition key value of the document is required to route the read to the correct partition."
+    },
+    {
+      "name": "Create Document",
+      "category": "Documents",
+      "description": "Creates a new document in a container. The document must include an id and the partition key property. A 409 conflict is returned if a document with the same id already exists in that partition. Provide the partition key value so the write is routed correctly."
+    },
+    {
+      "name": "Upsert Document",
+      "category": "Documents",
+      "description": "Creates a document, or fully replaces it if a document with the same id already exists in the partition. Equivalent to Create Document but with upsert enabled, so it never returns a 409 conflict."
+    },
+    {
+      "name": "Replace Document",
+      "category": "Documents",
+      "description": "Replaces the entire contents of an existing document identified by its id. The replacement body must include the same id, and the partition key value must match the existing document."
+    },
+    {
+      "name": "Delete Document",
+      "category": "Documents",
+      "description": "Permanently deletes a single document by its id. The partition key value is required to route the delete to the correct partition. This action cannot be undone."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Persist and retrieve application state, events, or records in a globally distributed NoSQL store from a flow",
+    "Provision databases and containers with a defined partition key as part of environment setup",
+    "Run parameterized SQL queries to fetch documents matching filter criteria",
+    "Upsert or replace documents to keep a container in sync with an external source",
+    "Page through a container's documents using continuation tokens"
+  ],
+  "agentIdeas": [
+    "Use **Azure Cosmos DB** \"Query Documents\" to pull records matching a filter, then write each result to **Azure Table Storage** \"Insert Entity\" to mirror the data into a cheaper structured store.",
+    "Fetch a file with **Azure Blob Storage** \"Get Blob\", parse it in the flow, and call **Azure Cosmos DB** \"Upsert Document\" to load each parsed record into a container.",
+    "When onboarding a new tenant, use **Azure Cosmos DB** \"Create Database\" and \"Create Container\" to provision storage, then log the created resource ids to **Azure Table Storage** \"Insert Entity\" for tracking."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/azure-cosmos-db/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/azure-cosmos-db",
+    "readme": "services/azure-cosmos-db/README.md",
+    "index": "services/azure-cosmos-db/src/index.js"
+  }
+}

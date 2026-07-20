@@ -1,0 +1,173 @@
+{
+  "slug": "canva",
+  "name": "Canva",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrates the Canva Connect API with FlowRunner to manage designs, export them as PDF/PNG/JPG/PPTX/GIF/MP4 files, upload assets to the Canva media library, organize folders, and autofill brand templates. Authenticates via OAuth2 with PKCE. The async export, asset-upload, and autofill jobs each offer an \"and Wait\" variant that polls to completion; exported files are saved to FlowRunner file storage as durable URLs (Canva's own download URLs expire after 24 hours).",
+  "actionCount": 26,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Designs",
+    "Exports",
+    "Assets",
+    "Folders",
+    "Brand Templates",
+    "Autofill",
+    "Users"
+  ],
+  "actions": [
+    {
+      "name": "List Designs",
+      "category": "Designs",
+      "description": "Lists the Canva designs available to the connected user, optionally filtered by a search term and ownership, and sorted by relevance, modification date, or title. Results are paginated with a continuation token: pass the returned \"continuation\" value back to retrieve the next page. Each design includes its id, title, thumbnail, page count, owner, and edit/view URLs."
+    },
+    {
+      "name": "Get Design",
+      "category": "Designs",
+      "description": "Retrieves the metadata of a single Canva design by its id, including title, design type, owner, thumbnail, page count, timestamps, and edit/view URLs. Design contents cannot be read directly through the Connect API — use Export Design to obtain the design as a file."
+    },
+    {
+      "name": "Create Design",
+      "category": "Designs",
+      "description": "Creates a new Canva design from a preset type (Presentation, Whiteboard, or Doc) or with Custom pixel dimensions. Optionally seeds the design with a previously uploaded asset (e.g. an image) and sets a title. Returns the new design's metadata including its id and an edit URL the user can open in Canva. Requires the 'design:content:write' scope."
+    },
+    {
+      "name": "Export Design",
+      "category": "Exports",
+      "description": "Starts an asynchronous job that exports a Canva design as a file (PDF, PNG, JPG, PPTX, GIF, or MP4). Returns immediately with a job id and 'in_progress' status — poll it with Get Export Job, or use Export Design and Wait to do the polling and file storage automatically. 'Pro' export quality and premium-element exports may require a Canva subscription. Requires the 'design:content:read' scope."
+    },
+    {
+      "name": "Get Export Job",
+      "category": "Exports",
+      "description": "Retrieves the status and result of a design export job started with Export Design. While running, the status is 'in_progress'; on 'success' the job contains download URLs for the exported files (the URLs expire after 24 hours); on 'failed' it contains an error code and message."
+    },
+    {
+      "name": "Export Design and Wait",
+      "category": "Exports",
+      "description": "Exports a Canva design and waits for the result in a single action: starts the export job, polls it every 3 seconds until it completes (up to about 5 minutes), then downloads each exported file and saves it to FlowRunner file storage. Returns the completed job plus durable FlowRunner file URLs (Canva's own download URLs expire after 24 hours). Fails with a descriptive error if the export job fails or does not finish in time."
+    },
+    {
+      "name": "Upload Asset",
+      "category": "Assets",
+      "description": "Starts an asynchronous job that uploads a file from FlowRunner file storage to the connected user's Canva media library as an asset (image, video, or audio). Returns immediately with a job id — poll it with Get Asset Upload Job, or use Upload Asset and Wait to do the polling automatically. The resulting asset id can be used in Create Design or Autofill Design. Requires the 'asset:write' scope."
+    },
+    {
+      "name": "Get Asset Upload Job",
+      "category": "Assets",
+      "description": "Retrieves the status and result of an asset upload job started with Upload Asset. While running, the status is 'in_progress'; on 'success' the job contains the created asset (id, name, tags, thumbnail); on 'failed' it contains an error code and message."
+    },
+    {
+      "name": "Upload Asset and Wait",
+      "category": "Assets",
+      "description": "Uploads a file from FlowRunner file storage to Canva and waits for processing to finish in a single action: starts the upload job, then polls it every 3 seconds until it completes (up to about 5 minutes). Returns the completed job including the created asset and its id, ready to use in Create Design or Autofill Design. Fails with a descriptive error if the upload job fails or does not finish in time. Requires the 'asset:write' scope."
+    },
+    {
+      "name": "Get Asset",
+      "category": "Assets",
+      "description": "Retrieves the metadata of a single asset in the connected user's Canva media library: name, tags, timestamps, and thumbnail. Requires the 'asset:read' scope."
+    },
+    {
+      "name": "Update Asset",
+      "category": "Assets",
+      "description": "Updates the name and/or tags of an asset in the connected user's Canva media library. Only provided fields are changed, but note that providing Tags replaces the asset's entire tag list. Returns the updated asset. Requires the 'asset:write' scope."
+    },
+    {
+      "name": "Delete Asset",
+      "category": "Assets",
+      "description": "Permanently deletes an asset from the connected user's Canva media library (it is moved to the user's trash). Designs that already use the asset are not affected. Returns a success status. Requires the 'asset:write' scope."
+    },
+    {
+      "name": "Create Folder",
+      "category": "Folders",
+      "description": "Creates a new folder in the connected user's Canva projects, either at the top level (parent 'root') or inside another folder. Returns the new folder's id, name, and timestamps. Requires the 'folder:write' scope."
+    },
+    {
+      "name": "Get Folder",
+      "category": "Folders",
+      "description": "Retrieves the metadata of a single Canva folder: name, timestamps, and thumbnail. Use List Folder Items to see what the folder contains. Requires the 'folder:read' scope."
+    },
+    {
+      "name": "Update Folder",
+      "category": "Folders",
+      "description": "Renames an existing Canva folder. Returns the updated folder. Requires the 'folder:write' scope."
+    },
+    {
+      "name": "Delete Folder",
+      "category": "Folders",
+      "description": "Deletes a Canva folder, moving it and its contents to the user's trash. Returns a success status. Requires the 'folder:write' scope."
+    },
+    {
+      "name": "List Folder Items",
+      "category": "Folders",
+      "description": "Lists the items inside a Canva folder (use 'root' for the top level of the user's projects), optionally filtered to designs, folders, and/or images. Results are paginated with a continuation token. Each item is wrapped in an object whose 'type' indicates whether it holds a 'design', 'folder', or 'image' payload. Requires the 'folder:read' scope."
+    },
+    {
+      "name": "Move Folder Item",
+      "category": "Folders",
+      "description": "Moves an item (a design, folder, or image asset) into a different Canva folder. Provide the id of the item to move and the id of the destination folder (use 'root' for the top level of the user's projects). Returns a success status. Requires the 'folder:write' scope."
+    },
+    {
+      "name": "List Brand Templates",
+      "category": "Brand Templates",
+      "description": "Lists the brand templates available to the connected user, optionally filtered by a search term. Brand templates are a Canva Enterprise feature — this action fails for users on other Canva plans. Results are paginated with a continuation token. Requires the 'brandtemplate:meta:read' scope."
+    },
+    {
+      "name": "Get Brand Template",
+      "category": "Brand Templates",
+      "description": "Retrieves the metadata of a single brand template: title, view/create URLs, thumbnail, and timestamps. Brand templates are a Canva Enterprise feature — this action fails for users on other Canva plans. Requires the 'brandtemplate:meta:read' scope."
+    },
+    {
+      "name": "Get Brand Template Dataset",
+      "category": "Brand Templates",
+      "description": "Retrieves the dataset definition of a brand template — the named data fields (text, image, and chart) that can be filled with Autofill Design. Use this to discover the field names and types expected in the Autofill \"Data\" parameter. Brand templates are a Canva Enterprise feature — this action fails for users on other Canva plans. Requires the 'brandtemplate:content:read' scope."
+    },
+    {
+      "name": "Autofill Design",
+      "category": "Autofill",
+      "description": "Starts an asynchronous job that creates a new design by filling a brand template's data fields with your values. The Data object maps each dataset field name to a value object: {\"type\":\"text\",\"text\":\"...\"} for text fields, {\"type\":\"image\",\"asset_id\":\"...\"} for image fields, or {\"type\":\"chart\",\"chart_data\":{...}} for chart fields (discover the fields with Get Brand Template Dataset). Returns immediately with a job id — poll it with Get Autofill Job, or use Autofill Design and Wait. Autofill is a Canva Enterprise feature. Requires the 'design:content:write' scope."
+    },
+    {
+      "name": "Get Autofill Job",
+      "category": "Autofill",
+      "description": "Retrieves the status and result of an autofill job started with Autofill Design. While running, the status is 'in_progress'; on 'success' the job's result contains the newly created design (id, title, URL, thumbnail); on 'failed' it contains an error code and message."
+    },
+    {
+      "name": "Autofill Design and Wait",
+      "category": "Autofill",
+      "description": "Autofills a brand template and waits for the result in a single action: starts the autofill job, then polls it every 3 seconds until it completes (up to about 5 minutes). Returns the completed job whose result contains the newly created design (id, title, URL, thumbnail). Fails with a descriptive error if the autofill job fails or does not finish in time. Autofill is a Canva Enterprise feature. Requires the 'design:content:write' scope."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users",
+      "description": "Retrieves the ids of the connected Canva user and their team. Useful as a lightweight connection check and for correlating Canva webhooks or audit data."
+    },
+    {
+      "name": "Get User Profile",
+      "category": "Users",
+      "description": "Retrieves the profile of the connected Canva user, currently their display name. Requires the 'profile:read' scope."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Programmatically generate branded documents by autofilling Canva Enterprise brand templates with data from a spreadsheet, CRM, or form submission",
+    "Export finished Canva designs to PDF or image files and route them into email, storage, or downstream document workflows",
+    "Sync images and media into the Canva media library as reusable assets for design creation and autofill",
+    "Organize a team's designs and assets into Canva project folders as part of a content pipeline"
+  ],
+  "agentIdeas": [
+    "Use **Airtable** \"Get Records\" to pull row data, call **Canva** \"Autofill Design and Wait\" to render a branded design from a brand template for each row, then \"Export Design and Wait\" to produce a shareable PDF",
+    "After **Canva** \"Export Design and Wait\" saves an exported file to FlowRunner storage, use **Google Drive** \"Upload File\" to archive the finished design into a shared team folder",
+    "When a **Gmail** \"On New Attachment\" trigger fires, use **Canva** \"Upload Asset and Wait\" to add the image to the Canva media library, then \"Create Design\" seeded with that asset"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/canva/public/icon.png",
+  "sourcePaths": {
+    "service": "services/canva",
+    "readme": "services/canva/README.md",
+    "index": "services/canva/src/index.js"
+  }
+}

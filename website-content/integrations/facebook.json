@@ -1,0 +1,118 @@
+{
+  "slug": "facebook",
+  "name": "Facebook",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Integrate Facebook Pages with FlowRunner via the [Facebook Graph API](https://developers.facebook.com/docs/graph-api). Publish and manage Page posts and photos, read and moderate comments, like content, and pull Page and post insights.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Pages",
+    "Posts",
+    "Photos",
+    "Comments",
+    "Insights",
+    "Miscellaneous"
+  ],
+  "actions": [
+    {
+      "name": "List My Pages",
+      "category": "Pages",
+      "description": "Lists the Facebook Pages the authenticated user manages, via GET /me/accounts. Each entry includes the Page id, name, category, and — critically — the Page's own access_token, which you must use for page-scoped write operations (posting, photos, comments). Requires the pages_read_engagement permission. Copy a Page's access_token and pass it as the Page Access Token parameter on page operations."
+    },
+    {
+      "name": "Get Page",
+      "category": "Pages",
+      "description": "Retrieves details for a single Facebook Page by id. Returns the requested fields (defaults to a common set: name, about, fan_count, category, link, website, verification_status). Pass a comma-separated Fields value to fetch additional fields supported by the Page node."
+    },
+    {
+      "name": "Create Page Post",
+      "category": "Posts",
+      "description": "Publishes a post to a Facebook Page's feed via POST /{pageId}/feed. Supports a text message and/or a link. Set Published to false to create an unpublished (draft) post, or provide a Scheduled Publish Time (unix seconds, at least 10 minutes and at most 6 months out) with Published false to schedule it. Requires a Page access token with pages_manage_posts; pass the Page's access_token from List My Pages."
+    },
+    {
+      "name": "Get Post",
+      "category": "Posts",
+      "description": "Retrieves a single Page post by its id, including the message, creation time, permalink, and engagement summaries (like and comment counts, shares). Pass a comma-separated Fields value to customize the returned fields."
+    },
+    {
+      "name": "List Page Posts",
+      "category": "Posts",
+      "description": "Lists posts published on a Page's feed via GET /{pageId}/posts, newest first, with engagement summaries. Supports paging via limit and an after cursor. Use the Page's access token for full visibility of your own posts."
+    },
+    {
+      "name": "Update Post",
+      "category": "Posts",
+      "description": "Updates the message text of an existing Page post via POST /{postId}. Only the message can be edited; other attributes (link, attachments) cannot be changed after publishing. Requires a Page access token with pages_manage_posts."
+    },
+    {
+      "name": "Delete Post",
+      "category": "Posts",
+      "description": "Permanently deletes a Page post via DELETE /{postId}. This cannot be undone. Requires a Page access token with pages_manage_posts."
+    },
+    {
+      "name": "Upload Photo",
+      "category": "Photos",
+      "description": "Uploads a photo to a Page via POST /{pageId}/photos, either from an external image URL or from a Flowrunner file (uploaded as multipart bytes). Optionally attach a caption message and control whether the photo is published to the Page timeline. Returns the photo id and, when published, the associated post_id. Requires a Page access token with pages_manage_posts. Provide either Image URL or a File — the File takes precedence."
+    },
+    {
+      "name": "Get Comments",
+      "category": "Comments",
+      "description": "Lists comments on an object (a post, photo, or comment) via GET /{objectId}/comments. Returns each comment's id, message, author, creation time, and like count. Supports paging and ordering (chronological or ranked)."
+    },
+    {
+      "name": "Create Comment",
+      "category": "Comments",
+      "description": "Posts a comment on an object (a post, photo, or another comment) via POST /{objectId}/comments. Requires a Page access token with pages_manage_engagement / pages_manage_posts. Returns the new comment's id."
+    },
+    {
+      "name": "Delete Comment",
+      "category": "Comments",
+      "description": "Permanently deletes a comment via DELETE /{commentId}. This cannot be undone. Requires a Page access token with comment-management permissions."
+    },
+    {
+      "name": "Like Object",
+      "category": "Comments",
+      "description": "Adds a like from the Page to an object (a post, photo, or comment) via POST /{objectId}/likes. Requires a Page access token with engagement-management permissions."
+    },
+    {
+      "name": "Get Page Insights",
+      "category": "Insights",
+      "description": "Retrieves Page-level insights metrics via GET /{pageId}/insights. Provide one or more metric names (e.g. page_impressions, page_fans, page_post_engagements) and a period. Optionally bound the range with Since/Until unix timestamps. Requires a Page access token with read_insights / pages_read_engagement. See the Facebook Page Insights metrics reference for the full metric list."
+    },
+    {
+      "name": "Get Post Insights",
+      "category": "Insights",
+      "description": "Retrieves post-level insights metrics via GET /{postId}/insights. Provide one or more post metric names (e.g. post_impressions, post_engaged_users, post_clicks). Requires a Page access token with read_insights."
+    },
+    {
+      "name": "Get Object",
+      "category": "Miscellaneous",
+      "description": "Generic escape-hatch fetch of any Graph API node by id via GET /{id}. Provide the node id and an optional comma-separated Fields list to shape the response. Use this for nodes not covered by a dedicated action (users, events, albums, etc.)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Cross-post content from another system (blog, CMS, spreadsheet) to a Facebook Page automatically.",
+    "Schedule Page posts in advance and manage a content calendar.",
+    "Monitor and moderate comments on Page posts, replying or removing them programmatically.",
+    "Report on Page growth and post performance by pulling insights into a spreadsheet or dashboard.",
+    "Upload images to a Page from external URLs or FlowRunner file storage."
+  ],
+  "agentIdeas": [
+    "When a **Google Sheets** \"On New Row\" trigger fires with a piece of content, use **Facebook** \"Create Page Post\" to publish it (or schedule it) to your Page, then log the returned post id back with \"Add Row\".",
+    "When a **Gmail** \"On New Email\" trigger delivers an image attachment, use **Facebook** \"Upload Photo\" to publish it to the Page and **Slack** \"Send Message To Channel\" to confirm the post went live.",
+    "On a schedule, use **Facebook** \"Get Page Insights\" and \"Get Post Insights\" to pull performance metrics, then use **Google Sheets** \"Add Row\" to append them to a reporting spreadsheet."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/facebook/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/facebook",
+    "readme": "services/facebook/README.md",
+    "index": "services/facebook/src/index.js"
+  }
+}

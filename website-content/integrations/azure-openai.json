@@ -1,0 +1,81 @@
+{
+  "slug": "azure-openai",
+  "name": "Azure OpenAI",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [Azure OpenAI](https://learn.microsoft.com/en-us/azure/ai-services/openai/) — run OpenAI models (GPT-4o, o-series, DALL-E 3, gpt-image-1, Whisper, TTS, and embeddings) hosted in your own Azure subscription. Every action targets a **deployment** you created in Azure, so chat, vision, embeddings, image generation, transcription, translation, and speech synthesis all run under your resource's data residency and content-safety controls.",
+  "actionCount": 8,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Chat",
+    "Embeddings",
+    "Images",
+    "Audio"
+  ],
+  "actions": [
+    {
+      "name": "Ask AI",
+      "category": "Chat",
+      "description": "Sends a single prompt (with an optional system instruction) to a chat model deployment and returns the generated text along with token usage. Azure content filter results are included when the resource returns them. Use \"Chat Completion (Advanced)\" for multi-turn conversations, tool calling, or structured outputs."
+    },
+    {
+      "name": "Chat Completion (Advanced)",
+      "category": "Chat",
+      "description": "Full-control chat completion against a model deployment: multi-turn messages, tool/function calling, structured outputs via response_format (including json_schema), sampling controls, reasoning effort for reasoning deployments (o-series / gpt-5), and Azure \"On Your Data\" grounding via data_sources. Returns the raw API response, in which each choice carries Azure content_filter_results and the response includes prompt_filter_results describing content-safety evaluation of the input."
+    },
+    {
+      "name": "Analyze Image",
+      "category": "Chat",
+      "description": "Analyzes one or more images with a vision-capable chat deployment (e.g. gpt-4o) by sending the prompt together with image_url content parts. Images must be publicly reachable URLs or data URLs (data:image/...;base64,...). Returns the model's textual analysis and token usage."
+    },
+    {
+      "name": "Create Embeddings",
+      "category": "Embeddings",
+      "description": "Generates vector embeddings for one or more texts using an embeddings deployment (e.g. text-embedding-3-small / text-embedding-3-large). Optionally reduces the vector dimensionality (text-embedding-3 models only). Returns the raw API response with one embedding per input, in input order."
+    },
+    {
+      "name": "Generate Image",
+      "category": "Images",
+      "description": "Generates images from a text prompt using an image deployment (dall-e-3 or gpt-image-1). Handles both API response shapes: when Azure returns a hosted URL (dall-e-3) it is passed through; when it returns base64 data (gpt-image-1) the image is uploaded to FlowRunner file storage and a hosted URL is returned. Selecting 'Auto' for Size or Quality omits the parameter so each model applies its own default. Note: 'HD'/'Standard' quality and the Style parameter apply to dall-e-3 only; 'Low'/'Medium'/'High' quality applies to gpt-image-1 only."
+    },
+    {
+      "name": "Transcribe Audio",
+      "category": "Audio",
+      "description": "Transcribes an audio file into text in its original language using a speech-to-text deployment (whisper or gpt-4o-transcribe). Downloads the audio from the provided URL (a FlowRunner file URL or any public URL), then sends it as multipart form data. Supported formats include mp3, mp4, mpeg, mpga, m4a, wav, and webm; whisper files are limited to 25 MB."
+    },
+    {
+      "name": "Translate Audio",
+      "category": "Audio",
+      "description": "Translates speech from an audio file in any supported language into English text using a whisper deployment. Downloads the audio from the provided URL (a FlowRunner file URL or any public URL), then sends it as multipart form data. Supported formats include mp3, mp4, mpeg, mpga, m4a, wav, and webm; files are limited to 25 MB."
+    },
+    {
+      "name": "Text To Speech",
+      "category": "Audio",
+      "description": "Converts text into natural-sounding speech using a text-to-speech deployment (tts, tts-hd, or gpt-4o-mini-tts). Uploads the generated audio to FlowRunner file storage and returns its URL. The maximum input length is 4096 characters."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generate or summarize text with GPT-4o / o-series models governed by your organization's Azure compliance and content-filtering policies",
+    "Analyze images or scanned documents with a vision-capable deployment",
+    "Produce vector embeddings for semantic search or RAG pipelines using your own text-embedding deployment",
+    "Create marketing or product imagery from prompts with DALL-E 3 or gpt-image-1",
+    "Transcribe or translate audio (Whisper / gpt-4o-transcribe) and synthesize speech (TTS) for voice workflows"
+  ],
+  "agentIdeas": [
+    "Chain **Azure OpenAI** \"Transcribe Audio\" to turn a recording into text, then \"Ask AI\" to summarize it, and use **Notion** \"Create Page\" to file the summary as meeting notes.",
+    "Analyze a screenshot dropped into cloud storage — trigger on **Dropbox** \"On New File\", resolve it with \"Get Temporary Link\", run **Azure OpenAI** \"Analyze Image\", then post the result with **Slack** \"Send Message To Channel\".",
+    "Generate marketing copy with **Azure OpenAI** \"Ask AI\" and a matching visual with \"Generate Image\", then log the prompt, copy, and image URL to a spreadsheet via **Google Sheets** \"Add Row\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/azure-openai/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/azure-openai",
+    "readme": "services/azure-openai/README.md",
+    "index": "services/azure-openai/src/index.js"
+  }
+}

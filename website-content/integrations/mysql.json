@@ -1,0 +1,85 @@
+{
+  "slug": "mysql",
+  "name": "MySQL",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [MySQL](https://www.mysql.com/) databases (including MySQL-compatible servers such as MariaDB, PlanetScale and Aurora MySQL). Connects directly to a MySQL server over TCP using the [`mysql2`](https://sidorares.github.io/node-mysql2/docs) driver and exposes both raw SQL execution and convenient no-SQL row operations. It uses a **connect-per-call** model: every operation opens a short-lived connection, runs its query, and always closes the connection when the call finishes — no connections or pools are cached between invocations.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "SQL",
+    "Rows",
+    "Schema"
+  ],
+  "actions": [
+    {
+      "name": "Execute Query",
+      "category": "SQL",
+      "description": "Executes an arbitrary single SQL statement (SELECT, INSERT, UPDATE, DELETE, DDL, CTEs, etc.). Use ? placeholders in the SQL together with the Parameters array to safely bind values — never interpolate user input into the SQL string. Returns rows, the row count, and result field metadata for SELECT-like statements, or affectedRows/insertId/changedRows for write statements. Statements are limited to 120 seconds of execution time."
+    },
+    {
+      "name": "Select Rows",
+      "category": "Rows",
+      "description": "Selects rows from a table without writing SQL. Supports choosing specific columns, equality-based filtering (null values match IS NULL, array values match any element via IN), ordering, and limit/offset pagination. For joins, aggregations, or complex conditions use Execute Query instead."
+    },
+    {
+      "name": "Insert Row",
+      "category": "Rows",
+      "description": "Inserts a single row into a table from a JSON object of column/value pairs. Returns the auto-increment ID assigned to the new row (insertId, 0 when the table has no auto-increment column), the affected row count, and an echo of the inserted data. MySQL has no RETURNING clause, so database-generated defaults are not echoed back; use Select Rows with the insertId to fetch the full row if needed."
+    },
+    {
+      "name": "Insert Rows",
+      "category": "Rows",
+      "description": "Bulk-inserts multiple rows into a table in a single INSERT ... VALUES (...),(...) statement. The column set is the union of keys across all row objects; rows missing a key insert NULL for that column. Returns the inserted count and the auto-increment ID of the FIRST inserted row (subsequent rows receive consecutive IDs when the table has an auto-increment column)."
+    },
+    {
+      "name": "Update Rows",
+      "category": "Rows",
+      "description": "Updates all rows matching the equality conditions in the Where object, setting the columns provided in the Data object. Returns affectedRows (rows matched by the Where conditions) and changedRows (rows whose values actually changed). A non-empty Where object is required to prevent accidental full-table updates; use Execute Query for unconditional updates."
+    },
+    {
+      "name": "Delete Rows",
+      "category": "Rows",
+      "description": "Deletes all rows matching the equality conditions in the Where object and returns the number of deleted rows. A non-empty Where object is required to prevent accidental full-table deletion; use Execute Query (e.g. TRUNCATE or DELETE without WHERE) for that."
+    },
+    {
+      "name": "Upsert Row",
+      "category": "Rows",
+      "description": "Inserts a row, or updates the existing row when it would violate a PRIMARY KEY or UNIQUE index (INSERT ... ON DUPLICATE KEY UPDATE). MySQL keys the conflict off the table's unique indexes automatically; the Unique Columns parameter only excludes those columns from the update set. Returns the auto-increment ID and affectedRows (1 = inserted, 2 = existing row updated, 0 = existing row already had identical values)."
+    },
+    {
+      "name": "Get Table Schema",
+      "category": "Schema",
+      "description": "Returns the column definitions of a table from information_schema.columns: column name, full type (e.g. varchar(255)), base data type, nullability, default expression, key membership (PRI/UNI/MUL), extra attributes (e.g. auto_increment), maximum character length, and ordinal position. Useful for discovering a table's structure before reading or writing."
+    },
+    {
+      "name": "List Tables",
+      "category": "Schema",
+      "description": "Lists all tables and views in the current database (the one selected by the connection), including each object's name and type. Useful for discovering what data is available in the database."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Run parameterized SQL queries against an application or analytics database from within a workflow.",
+    "Read, insert, update, delete, or upsert rows without writing SQL.",
+    "Sync records between MySQL and other apps (spreadsheets, CRMs, messaging tools).",
+    "Discover a database's structure by listing tables/views and inspecting table schemas.",
+    "Bulk-load arrays of records fetched from an API or another service into a table."
+  ],
+  "agentIdeas": [
+    "Use MySQL \"Execute Query\" to pull the latest sales figures, then use **Google Sheets** \"Add Rows\" to append them to a reporting spreadsheet for stakeholders.",
+    "Use **Google Sheets** \"Get Rows\" to read a batch of records and MySQL \"Insert Rows\" (or \"Upsert Row\") to sync them into a database table.",
+    "After a MySQL \"Select Rows\" query surfaces records needing attention (e.g. overdue accounts), use **Gmail** \"Send Message\" or **Slack** \"Send Message To Channel\" to notify the responsible team."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/mysql/public/icon.png",
+  "sourcePaths": {
+    "service": "services/mysql",
+    "readme": "services/mysql/README.md",
+    "index": "services/mysql/src/index.js"
+  }
+}

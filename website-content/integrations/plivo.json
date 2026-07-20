@@ -1,0 +1,113 @@
+{
+  "slug": "plivo",
+  "name": "Plivo",
+  "marketingCategory": "SMS, Voice & Push",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Plivo](https://www.plivo.com/), a cloud communications platform for SMS/MMS messaging, outbound voice calls, and phone number management. Authenticate with your Plivo Auth ID and Auth Token; all calls target the account-scoped base URL `https://api.plivo.com/v1/Account/{authId}`.",
+  "actionCount": 14,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messaging",
+    "Voice",
+    "Numbers",
+    "Powerpacks",
+    "Applications",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Send SMS",
+      "category": "Messaging",
+      "description": "Sends an SMS or MMS message via Plivo. Send to a single recipient or to multiple recipients by joining destination numbers with the '<' delimiter (e.g. \"12025551111<12025552222\"). Numbers use E.164 format without the leading '+'. For MMS, set the type to MMS and provide one or more media URLs. Returns an api_id and an array of message_uuid values, one per recipient."
+    },
+    {
+      "name": "Get Message",
+      "category": "Messaging",
+      "description": "Retrieves the details of a single message by its message UUID, including delivery status, sender, recipient, and message body."
+    },
+    {
+      "name": "List Messages",
+      "category": "Messaging",
+      "description": "Retrieves a paginated list of messages sent from and received by your Plivo account, with optional filtering by message time and pagination controls."
+    },
+    {
+      "name": "Make Call",
+      "category": "Voice",
+      "description": "Initiates an outbound voice call from a Plivo number. When the call is answered, Plivo fetches XML call instructions from the provided answer URL. Numbers use E.164 format without the leading '+'."
+    },
+    {
+      "name": "Get Call",
+      "category": "Voice",
+      "description": "Retrieves details for a single call by its call UUID, including status, direction, duration, and cost. Works for live (in-progress) and completed calls."
+    },
+    {
+      "name": "List Calls",
+      "category": "Voice",
+      "description": "Retrieves a paginated list of completed calls (Call Detail Records) for your Plivo account, with optional filtering by call direction and pagination controls."
+    },
+    {
+      "name": "Hangup Call",
+      "category": "Voice",
+      "description": "Terminates a live (in-progress) call immediately by its call UUID."
+    },
+    {
+      "name": "List Numbers",
+      "category": "Numbers",
+      "description": "Retrieves a paginated list of phone numbers currently rented on your Plivo account, with optional filtering by number type and pagination controls."
+    },
+    {
+      "name": "Get Number",
+      "category": "Numbers",
+      "description": "Retrieves the details of a single rented phone number on your account, including its capabilities, application association, and alias."
+    },
+    {
+      "name": "Search Numbers",
+      "category": "Numbers",
+      "description": "Searches Plivo's inventory for available phone numbers to rent, filtered by country and number type. Returns numbers that can subsequently be purchased with the Buy Number operation."
+    },
+    {
+      "name": "Buy Number",
+      "category": "Numbers",
+      "description": "Rents (purchases) a specific available phone number found via Search Numbers and adds it to your Plivo account. Optionally associates the number with a Plivo application."
+    },
+    {
+      "name": "List Powerpacks",
+      "category": "Powerpacks",
+      "description": "Retrieves a paginated list of Powerpacks on your account. Powerpacks group sender numbers and sender IDs (including 10DLC campaigns) into a single sender pool that Plivo automatically selects from when sending messages."
+    },
+    {
+      "name": "List Applications",
+      "category": "Applications",
+      "description": "Retrieves a paginated list of Plivo applications on your account. Applications hold reusable voice and messaging configuration (answer URLs, message URLs) that can be associated with numbers."
+    },
+    {
+      "name": "Get Account Details",
+      "category": "Account",
+      "description": "Retrieves details about your Plivo account, including the account name, current balance, available cash credits, and account type."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send transactional or notification SMS/MMS to one or many recipients from an automated flow.",
+    "Place outbound voice calls driven by Plivo XML answer URLs.",
+    "Look up delivery status and Call Detail Records for messages and calls.",
+    "Search, buy, and manage rented phone numbers, applications, and Powerpack sender pools.",
+    "Monitor account balance and credits."
+  ],
+  "agentIdeas": [
+    "When a **PagerDuty** incident is escalated, call **Plivo** \"Send SMS\" to text the on-call engineer, or \"Make Call\" to trigger an automated voice alert.",
+    "Use **Google Sheets** \"Get Rows\" to pull a contact list, then **Plivo** \"Send SMS\" to broadcast a notification to each recipient (joined with the `<` delimiter for multi-recipient sends).",
+    "When **HubSpot** \"Create Deal\" fires for a high-value opportunity, use **Plivo** \"Make Call\" to instantly connect a sales rep to the prospect."
+  ],
+  "icon": "/logo.png",
+  "iconFile": "services/plivo/public/logo.png",
+  "sourcePaths": {
+    "service": "services/plivo",
+    "readme": "services/plivo/README.md",
+    "index": "services/plivo/src/index.js"
+  }
+}

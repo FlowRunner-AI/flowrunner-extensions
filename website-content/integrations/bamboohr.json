@@ -1,0 +1,374 @@
+{
+  "slug": "bamboohr",
+  "name": "BambooHR",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Connects to BambooHR over OAuth2 to automate the employee lifecycle: profiles, time off, time tracking, recruiting, training, goals, reports, files, and webhook-driven change events.",
+  "actionCount": 64,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Employee Management",
+    "Company",
+    "Employee Data",
+    "Employee Files",
+    "Employee Dependents",
+    "Time Off",
+    "Time Tracking",
+    "Recruiting",
+    "Training",
+    "Reports",
+    "Metadata",
+    "Goals",
+    "Company Files",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "Get Employee Directory",
+      "category": "Employee Management",
+      "description": "Retrieves the complete employee directory from BambooHR, including all listed employees with their basic contact and job information such as name, job title, department, work email, and phone number."
+    },
+    {
+      "name": "Get Employee By ID",
+      "category": "Employee Management",
+      "description": "Retrieves detailed information for a specific employee by their unique BambooHR employee ID, including personal details, job title, department, division, contact information, hire date, and employment status."
+    },
+    {
+      "name": "List Employees",
+      "category": "Employee Management",
+      "description": "Returns a paginated list of employees with basic information such as name, job title, status, and photo URL. Additional fields like email and phone can be requested via the fields parameter."
+    },
+    {
+      "name": "Create Employee",
+      "category": "Employee Management",
+      "description": "Creates a new employee in BambooHR. At minimum, first name and last name are required. Returns the new employee's ID so it can feed later actions."
+    },
+    {
+      "name": "Update Employee",
+      "category": "Employee Management",
+      "description": "Updates one or more fields for an existing employee. Provide a JSON object of field name/value pairs to update. Use the List Fields method to discover available field names."
+    },
+    {
+      "name": "Get Changed Employee IDs",
+      "category": "Employee Management",
+      "description": "Returns employee IDs that have changed since the given timestamp. Useful for incremental data synchronization. Any field change on an employee triggers their inclusion in the results."
+    },
+    {
+      "name": "Get Company Information",
+      "category": "Company",
+      "description": "Returns basic company profile information including legal name, display name, primary address, and contact phone number."
+    },
+    {
+      "name": "Get Employee Table Data",
+      "category": "Employee Data",
+      "description": "Returns all rows from a specific employee table such as jobInfo, compensation, or employmentStatus. Pick the table from the table list."
+    },
+    {
+      "name": "Create Table Row",
+      "category": "Employee Data",
+      "description": "Adds a new row to a specified employee table (e.g., jobInfo, compensation). Use the List Fields method to discover available fields for each table."
+    },
+    {
+      "name": "Update Table Row",
+      "category": "Employee Data",
+      "description": "Updates an existing row in an employee table. Only the provided fields will be changed; other fields remain unaffected."
+    },
+    {
+      "name": "Delete Table Row",
+      "category": "Employee Data",
+      "description": "Deletes a specific row from an employee table. This action is permanent and cannot be undone."
+    },
+    {
+      "name": "List Employee Files",
+      "category": "Employee Files",
+      "description": "Lists all file categories and files for an employee, including file metadata such as name, size, creation date, and sharing status."
+    },
+    {
+      "name": "Upload Employee File",
+      "category": "Employee Files",
+      "description": "Uploads a file to an employee's file section. The file must be under 20MB. Use List Employee Files to find available category IDs."
+    },
+    {
+      "name": "Delete Employee File",
+      "category": "Employee Files",
+      "description": "Deletes a specific file from an employee's file section. This action is permanent and cannot be undone."
+    },
+    {
+      "name": "Download Employee File",
+      "category": "Employee Files",
+      "description": "Downloads an employee file's contents, saves them to FlowRunner file storage, and returns the saved file's URL along with its name, content type, and size."
+    },
+    {
+      "name": "Update Employee File",
+      "category": "Employee Files",
+      "description": "Updates an employee file's name, category, or sharing setting. Only the fields provided are changed."
+    },
+    {
+      "name": "List Employee File Categories",
+      "category": "Employee Files",
+      "description": "Lists the employee file categories visible to the caller. BambooHR has no standalone endpoint for this, so the categories are read from an employee's file listing (the categories are the same for every employee)."
+    },
+    {
+      "name": "Create Employee File Category",
+      "category": "Employee Files",
+      "description": "Creates one or more employee file categories. Each name must be non-empty and unique among existing employee file categories. Requires admin permission."
+    },
+    {
+      "name": "List Employee Dependents",
+      "category": "Employee Dependents",
+      "description": "Returns employee dependents for the company or a specific employee. Requires Benefits Administration permissions."
+    },
+    {
+      "name": "Create Employee Dependent",
+      "category": "Employee Dependents",
+      "description": "Creates a new dependent record for an employee. Requires Benefits Administration permissions."
+    },
+    {
+      "name": "Update Employee Dependent",
+      "category": "Employee Dependents",
+      "description": "Updates an existing employee dependent record. All required fields must be provided as this performs a full replacement of the dependent data."
+    },
+    {
+      "name": "List Time Off Requests",
+      "category": "Time Off",
+      "description": "Returns time off requests within the specified date range. Results include request details, status, employee info, and daily amounts. Optionally filter by employee, status, or time off type."
+    },
+    {
+      "name": "Create Time Off Request",
+      "category": "Time Off",
+      "description": "Creates a time off request for an employee. Use status \"approved\" or \"denied\" to record directly without approval workflow. Use \"requested\" to submit for manager approval."
+    },
+    {
+      "name": "Update Time Off Request Status",
+      "category": "Time Off",
+      "description": "Updates the status of an existing time off request. Use this to approve, deny, or cancel a pending time off request."
+    },
+    {
+      "name": "Get Time Off Balance",
+      "category": "Time Off",
+      "description": "Returns time off balances for an employee across all assigned categories as of a given date. Shows balance, used year-to-date, and policy type for each time off category."
+    },
+    {
+      "name": "List Time Off Policies",
+      "category": "Time Off",
+      "description": "Returns all time off policies configured for the company, including policy ID, name, type (accruing, discretionary, manual), and the associated time off type."
+    },
+    {
+      "name": "List Time Off Types",
+      "category": "Time Off",
+      "description": "Returns all active time off types configured for the company along with the default hours-per-day schedule. Each type includes ID, name, units (hours/days), color, and icon."
+    },
+    {
+      "name": "List Who's Out",
+      "category": "Time Off",
+      "description": "Returns a list of employees who are out and company holidays for the specified period. Includes both time off entries and holidays. Defaults to the next 14 days if no dates are provided."
+    },
+    {
+      "name": "List Employee Time Off Policies",
+      "category": "Time Off",
+      "description": "Returns time off policies currently assigned to a specific employee, including policy ID, time off type, and accrual start date."
+    },
+    {
+      "name": "Adjust Time Off Balance",
+      "category": "Time Off",
+      "description": "Creates a balance adjustment for an employee's time off type. Use positive amounts to add balance and negative amounts to subtract. Cannot adjust discretionary (unlimited) time off types."
+    },
+    {
+      "name": "List Timesheet Entries",
+      "category": "Time Tracking",
+      "description": "Returns timesheet entries for all or specified employees within a date range. Dates must be within the last 365 days. Results include both clock-based and hour-based entry types."
+    },
+    {
+      "name": "Clock In Employee",
+      "category": "Time Tracking",
+      "description": "Clocks in an employee. Without date and time parameters, clocks in at the current server time. Provide date, startTime, and timezone for historical or timezone-specific entries."
+    },
+    {
+      "name": "Clock Out Employee",
+      "category": "Time Tracking",
+      "description": "Clocks out a currently clocked-in employee. Without parameters, clocks out at the current server time. Provide date, endTime, and timezone for historical or timezone-specific entries."
+    },
+    {
+      "name": "Create or Update Hour Entries",
+      "category": "Time Tracking",
+      "description": "Creates or updates timesheet hour entries in bulk. Include an ID in each entry object to update an existing entry; omit the ID to create a new one. Each entry requires employeeId, date, and hours at minimum."
+    },
+    {
+      "name": "Get Job Applications",
+      "category": "Recruiting",
+      "description": "Returns a list of job applications with applicant details, job info, status, and ratings. Can be filtered by job opening, application status, or a search term."
+    },
+    {
+      "name": "Get Job Application Details",
+      "category": "Recruiting",
+      "description": "Returns full details of a single job application including applicant info, status history, questions and answers, and attached documents."
+    },
+    {
+      "name": "Get Job Summaries",
+      "category": "Recruiting",
+      "description": "Returns a list of job opening summaries including title, status, hiring lead, location, and applicant counts."
+    },
+    {
+      "name": "Create Candidate Application",
+      "category": "Recruiting",
+      "description": "Creates a new candidate application for a job opening. At minimum requires the applicant's first name, last name, and a job opening ID."
+    },
+    {
+      "name": "Get Applicant Statuses",
+      "category": "Recruiting",
+      "description": "Returns all applicant statuses configured for the company, including both system-defined and custom statuses with their enabled or disabled state."
+    },
+    {
+      "name": "Update Applicant Status",
+      "category": "Recruiting",
+      "description": "Updates the status of a job application. Use the Get Applicant Statuses action to find valid status IDs."
+    },
+    {
+      "name": "Create Job Application Comment",
+      "category": "Recruiting",
+      "description": "Adds a comment to a job application. Comments are visible in the application's activity feed within BambooHR."
+    },
+    {
+      "name": "List Training Types",
+      "category": "Training",
+      "description": "Returns all training types configured for the company, including renewal settings, required status, category, and self-completion permissions."
+    },
+    {
+      "name": "List Employee Training Records",
+      "category": "Training",
+      "description": "Returns all training records for a specific employee, including completion date, training type, instructor, hours, and credits."
+    },
+    {
+      "name": "Create Employee Training Record",
+      "category": "Training",
+      "description": "Creates a new training record for an employee. Requires a valid training type ID and completion date at minimum."
+    },
+    {
+      "name": "Request Custom Report",
+      "category": "Reports",
+      "description": "Generates an ad-hoc employee report with specified fields. Returns data for all employees (active and inactive). Use the List Fields action to discover available field names."
+    },
+    {
+      "name": "List Fields",
+      "category": "Metadata",
+      "description": "Returns all available employee fields in the account, including field ID, display name, data type, and alias. Use this to discover valid field names for other endpoints like Request Custom Report."
+    },
+    {
+      "name": "List Users",
+      "category": "Metadata",
+      "description": "Returns all users for the company including user ID, associated employee ID, name, email, status, and last login time. Optionally filter by user status."
+    },
+    {
+      "name": "List Goals",
+      "category": "Goals",
+      "description": "Returns goals assigned to an employee. Optionally filter by goal status (in progress, completed, or closed). Results are capped at 50 goals."
+    },
+    {
+      "name": "Create Goal",
+      "category": "Goals",
+      "description": "Creates a new goal for an employee. The goal owner's employee ID is automatically included in the sharing list if no shared employee IDs are specified."
+    },
+    {
+      "name": "Update Goal Progress",
+      "category": "Goals",
+      "description": "Updates the completion percentage of an employee's goal. When progress reaches 100%, a completion date is required and the goal is marked complete."
+    },
+    {
+      "name": "Delete Goal",
+      "category": "Goals",
+      "description": "Permanently deletes a goal for an employee. This action cannot be undone."
+    },
+    {
+      "name": "List Company Files",
+      "category": "Company Files",
+      "description": "Lists all company file categories and the files within each that are visible to the caller."
+    },
+    {
+      "name": "Upload Company File",
+      "category": "Company Files",
+      "description": "Uploads a file into a company file category. The file must be under 20MB. Use List Company Files to find available category IDs."
+    },
+    {
+      "name": "Download Company File",
+      "category": "Company Files",
+      "description": "Downloads a company file's contents, saves them to FlowRunner file storage, and returns the saved file's URL along with its name, content type, and size."
+    },
+    {
+      "name": "Update Company File",
+      "category": "Company Files",
+      "description": "Updates a company file's name, category, or sharing setting. Only the fields provided are changed."
+    },
+    {
+      "name": "Delete Company File",
+      "category": "Company Files",
+      "description": "Permanently removes a company file. This action is permanent and cannot be undone. Requires the company's Files tool to be enabled."
+    },
+    {
+      "name": "Create Company File Category",
+      "category": "Company Files",
+      "description": "Creates one or more company file categories. Each name must be non-empty and unique among existing company file categories. Requires admin permission."
+    },
+    {
+      "name": "List Tables Metadata",
+      "category": "Metadata",
+      "description": "Returns all tabular (table-based) fields available in the account, including each table's alias and the fields it contains. Use this to discover valid table names for the employee table row methods."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Returns all webhooks owned by the authenticated API key. Each entry includes the webhook ID, name, URL, creation datetime, and last fired datetime."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Creates a new webhook subscription. When events includes \"employee.updated\", monitorFields is required. The response includes a privateKey for HMAC-SHA256 payload verification, which is only returned at creation time."
+    },
+    {
+      "name": "Get Webhook",
+      "category": "Webhooks",
+      "description": "Returns the full configuration of a single webhook including name, URL, format, monitored fields, post fields, events, and timestamps."
+    },
+    {
+      "name": "Update Webhook",
+      "category": "Webhooks",
+      "description": "Performs a full replacement update of a webhook configuration. All fields replace existing values. The monitorFields array is required when events includes \"employee.updated\"."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Deletes a webhook subscription. This action is permanent and the webhook will no longer receive events."
+    },
+    {
+      "name": "Get Webhook Logs",
+      "category": "Webhooks",
+      "description": "Returns recent delivery log entries for a webhook covering the last 14 days (up to 200 entries). Each entry includes the target URL, timestamps, HTTP status code, format, and affected employee IDs."
+    }
+  ],
+  "triggers": [
+    "On Employee Changed"
+  ],
+  "idealUseCases": [
+    "Automating onboarding and offboarding workflows",
+    "Syncing employee data to payroll and business systems",
+    "Building time off approval and notification flows",
+    "Reacting in real time when an employee record changes",
+    "Streamlining recruiting pipelines and candidate management",
+    "Managing employee and company documents and file categories"
+  ],
+  "agentIdeas": [
+    "When a **BambooHR** \"On Employee Changed\" trigger fires, use **Gmail** \"Send Message\" to alert HR and IT so onboarding or offboarding tasks start immediately.",
+    "Run **BambooHR** \"List Who's Out\" each morning and post the results with **Slack** \"Send Message To Channel\" as a team out-of-office summary.",
+    "Use **BambooHR** \"Get Employee Directory\" to pull the roster, then write each record into a headcount tracker with **Google Sheets** \"Add Row\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/bamboohr/public/icon.png",
+  "sourcePaths": {
+    "service": "services/bamboohr",
+    "readme": "services/bamboohr/README.md",
+    "index": "services/bamboohr/src/index.js"
+  }
+}

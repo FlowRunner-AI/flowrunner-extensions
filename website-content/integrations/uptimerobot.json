@@ -1,0 +1,117 @@
+{
+  "slug": "uptimerobot",
+  "name": "UptimeRobot",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Monitor uptime and manage alerting with the [UptimeRobot API v2](https://uptimerobot.com/api/). Create and edit HTTP(S), Keyword, Ping, Port, and Heartbeat monitors; manage alert contacts, maintenance windows, and public status pages; and read account details for connection checks.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Monitors",
+    "Alert Contacts",
+    "Maintenance Windows",
+    "Public Status Pages",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Get Monitors",
+      "category": "Monitors",
+      "description": "Retrieves monitors from the account, optionally filtered by specific monitor IDs, a keyword search, monitor types, or statuses. Can additionally include recent event logs and response-time data for each monitor. Supports pagination via offset and limit (max 50 per page)."
+    },
+    {
+      "name": "Create Monitor",
+      "category": "Monitors",
+      "description": "Creates a new monitor. Supports HTTP(S), Keyword, Ping, Port, and Heartbeat monitor types. For Keyword monitors, provide the keyword type and value. Optionally set the check interval and assign alert contacts so notifications are sent when the monitor goes up or down."
+    },
+    {
+      "name": "Edit Monitor",
+      "category": "Monitors",
+      "description": "Updates an existing monitor. Any provided field is changed; omitted fields are left untouched. Use the Status field to pause (0) or resume (1) a monitor. Note that the monitor type itself cannot be changed after creation."
+    },
+    {
+      "name": "Delete Monitor",
+      "category": "Monitors",
+      "description": "Permanently deletes a monitor and all of its associated logs and statistics. This action cannot be undone."
+    },
+    {
+      "name": "Reset Monitor",
+      "category": "Monitors",
+      "description": "Resets a monitor by deleting all of its accumulated statistics and logs while keeping the monitor itself in place. Useful for starting fresh uptime tracking without recreating the monitor."
+    },
+    {
+      "name": "Get Alert Contacts",
+      "category": "Alert Contacts",
+      "description": "Retrieves the alert contacts configured on the account (e-mail addresses, SMS numbers, webhooks, integrations, etc.). Optionally filter by specific contact IDs and paginate with offset and limit."
+    },
+    {
+      "name": "Create Alert Contact",
+      "category": "Alert Contacts",
+      "description": "Creates a new alert contact that monitors can notify when their status changes. Choose the contact type (e-mail, SMS, webhook, or a supported integration) and provide the destination value. Note that some contact types require activation before they become usable."
+    },
+    {
+      "name": "Delete Alert Contact",
+      "category": "Alert Contacts",
+      "description": "Permanently deletes an alert contact. Monitors that referenced this contact will no longer notify it."
+    },
+    {
+      "name": "Get Maintenance Windows",
+      "category": "Maintenance Windows",
+      "description": "Retrieves the maintenance windows configured on the account. During a maintenance window, alerts for the affected monitors are suppressed. Optionally filter by specific maintenance window IDs and paginate with offset and limit."
+    },
+    {
+      "name": "Create Maintenance Window",
+      "category": "Maintenance Windows",
+      "description": "Creates a maintenance window during which monitor alerts are suppressed. Choose how often it recurs (once, daily, weekly, or monthly). For weekly windows, Value is dash-separated weekday numbers (1=Monday ... 7=Sunday); for monthly windows, Value is dash-separated day-of-month numbers. Once windows use a full date-time start; recurring windows use a time-of-day start (HH:mm)."
+    },
+    {
+      "name": "Delete Maintenance Window",
+      "category": "Maintenance Windows",
+      "description": "Permanently deletes a maintenance window. Alerts will no longer be suppressed on its schedule."
+    },
+    {
+      "name": "Get Public Status Pages",
+      "category": "Public Status Pages",
+      "description": "Retrieves the public status pages (PSPs) configured on the account. Each PSP exposes the status of selected monitors on a shareable page. Optionally filter by specific PSP IDs and paginate with offset and limit."
+    },
+    {
+      "name": "Create Public Status Page",
+      "category": "Public Status Pages",
+      "description": "Creates a public status page (PSP) that displays the status of selected monitors on a shareable URL. Provide the monitors to include, an optional password to protect the page, and a sort order for how monitors are listed."
+    },
+    {
+      "name": "Delete Public Status Page",
+      "category": "Public Status Pages",
+      "description": "Permanently deletes a public status page. Its shareable URL will no longer be accessible."
+    },
+    {
+      "name": "Get Account Details",
+      "category": "Account",
+      "description": "Retrieves account details including the plan's monitor limit, the minimum monitoring interval, and counts of up, down, and paused monitors. Useful as a connection check to verify the API key is valid."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Programmatically create and configure monitors for new endpoints as they go live.",
+    "Pause or resume monitors and adjust check intervals during planned changes.",
+    "Manage alert contacts (e-mail, SMS, webhooks, integrations) and attach them to monitors.",
+    "Schedule maintenance windows to suppress alerts during known downtime.",
+    "Build and update shareable public status pages for selected monitors."
+  ],
+  "agentIdeas": [
+    "Use **UptimeRobot** \"Create Monitor\" whenever a new service is deployed, then **Slack** \"Send Message To Channel\" to post the monitor's status and share URL.",
+    "On a schedule, run **UptimeRobot** \"Get Monitors\" filtered to the *Down* status and use **PagerDuty** \"Create Incident\" to page the on-call responder for each outage.",
+    "Run **UptimeRobot** \"Get Monitors\" filtered to the *Down* status and use **Gmail** \"Send Message\" to escalate outages to a distribution list."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/uptimerobot/public/icon.png",
+  "sourcePaths": {
+    "service": "services/uptimerobot",
+    "readme": "services/uptimerobot/README.md",
+    "index": "services/uptimerobot/src/index.js"
+  }
+}

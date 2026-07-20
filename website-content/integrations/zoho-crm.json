@@ -1,0 +1,138 @@
+{
+  "slug": "zoho-crm",
+  "name": "Zoho CRM",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Full-featured Zoho CRM integration for managing records, notes, tags, related records, and lead conversion across all standard and custom modules. Connects via OAuth2 and supports dynamic module schemas, search with criteria expressions, and upsert deduplication.",
+  "actionCount": 19,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Records",
+    "Notes",
+    "Related Records",
+    "Lead Conversion",
+    "Tags"
+  ],
+  "actions": [
+    {
+      "name": "Get Records",
+      "category": "Records",
+      "description": "Retrieves a list of records from Zoho CRM. You can choose which record type to pull from, which fields to include, and how to sort the results."
+    },
+    {
+      "name": "Get Single Record",
+      "category": "Records",
+      "description": "Retrieves a single record from Zoho CRM using its record ID. Returns all available fields for that record."
+    },
+    {
+      "name": "Create Record",
+      "category": "Records",
+      "description": "Creates a new record in Zoho CRM. The available fields depend on the record type you choose. Some fields may be required (for example, Last Name for Contacts, or Deal Name for Deals)."
+    },
+    {
+      "name": "Update Record",
+      "category": "Records",
+      "description": "Updates an existing record in any Zoho CRM module. Only the specified fields are updated; unspecified fields remain unchanged."
+    },
+    {
+      "name": "Create or Update Record",
+      "category": "Records",
+      "description": "Creates a new record, or updates an existing one if a match is found. Use this to avoid creating duplicates, for example when importing data from another system."
+    },
+    {
+      "name": "Delete Record",
+      "category": "Records",
+      "description": "Permanently deletes a record from any Zoho CRM module by its unique ID. This action cannot be undone."
+    },
+    {
+      "name": "Search Records",
+      "category": "Records",
+      "description": "Searches for records in Zoho CRM by specific conditions, email, phone, or keyword. You can combine multiple conditions using \"and\" or \"or\" to narrow down results."
+    },
+    {
+      "name": "Get Note",
+      "category": "Notes",
+      "description": "Retrieves a specific note by its unique ID from Zoho CRM. Returns the note title, content, and parent record information."
+    },
+    {
+      "name": "Create Note",
+      "category": "Notes",
+      "description": "Creates a new note linked to a record in any Zoho CRM module. Notes can be used to add comments, follow-up reminders, or additional context to leads, contacts, deals, and other records."
+    },
+    {
+      "name": "Update Note",
+      "category": "Notes",
+      "description": "Updates the title or content of an existing note in Zoho CRM. Only the specified fields are modified."
+    },
+    {
+      "name": "Delete Note",
+      "category": "Notes",
+      "description": "Permanently deletes a note from Zoho CRM by its unique ID. This action cannot be undone."
+    },
+    {
+      "name": "Get Related Records",
+      "category": "Related Records",
+      "description": "Retrieves the records related to a specific record in Zoho CRM. For example, get all Contacts associated with an Account, or all Notes linked to a Deal."
+    },
+    {
+      "name": "Update Related Record",
+      "category": "Related Records",
+      "description": "Updates the association data for a record in a many-to-many related list, for example a contact's member status in a Campaign or a product's row in a Price Book. This works for multi-association related lists (Campaigns, Products, Price Books, and similar), not lookup relationships like Contacts under an Account."
+    },
+    {
+      "name": "Unlink Related Records",
+      "category": "Related Records",
+      "description": "Removes records from a many-to-many related list, for example removing contacts from a Campaign or products from a Price Book. The records themselves are not deleted, only their association with the parent is removed. This works for multi-association related lists (Campaigns, Products, Price Books, and similar), not lookup relationships like Contacts under an Account."
+    },
+    {
+      "name": "Convert Lead",
+      "category": "Lead Conversion",
+      "description": "Converts a lead into a contact, and optionally creates or links an account and a deal. This is the standard Zoho CRM lead conversion process."
+    },
+    {
+      "name": "Get Tags",
+      "category": "Tags",
+      "description": "Retrieves all tags available for a specific record type in Zoho CRM. Returns the tag name, color, and creation details."
+    },
+    {
+      "name": "Add Tags to Records",
+      "category": "Tags",
+      "description": "Adds one or more tags to one or more records in Zoho CRM. Tags help categorize records for filtering, segmentation, and reporting."
+    },
+    {
+      "name": "Remove Tags from Records",
+      "category": "Tags",
+      "description": "Removes one or more tags from one or more records in Zoho CRM. The tags themselves are not deleted; they are only removed from the specified records."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new tag for a specific record type in Zoho CRM. Once created, the tag can be added to any record of that type."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automating lead capture, conversion, and contact management across CRM modules",
+    "Syncing customer data between Zoho CRM and external systems with upsert deduplication",
+    "Building sales pipeline workflows with automated record creation and updates",
+    "Adding follow-up notes to leads, contacts, and deals based on workflow events",
+    "Tagging and categorizing records for segmentation and reporting",
+    "Navigating record relationships to enrich data across linked modules"
+  ],
+  "agentIdeas": [
+    "Use **Gmail** \"On New Email\" trigger to capture inbound leads, then call **Zoho CRM** \"Create or Update Record\" on the Leads module to create or update the lead without duplicates.",
+    "When **Zoho CRM** \"Convert Lead\" completes, use **Slack** \"Send Message To Channel\" to notify the sales team with the new contact, account, and deal details.",
+    "Use **Zoho CRM** \"Search Records\" to fetch recently closed deals, then call **Google Sheets** \"Add Row\" to append each deal to a monthly revenue tracking spreadsheet."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/zoho-crm/public/icon.png",
+  "sourcePaths": {
+    "service": "services/zoho-crm",
+    "readme": "services/zoho-crm/README.md",
+    "index": "services/zoho-crm/src/index.js"
+  }
+}

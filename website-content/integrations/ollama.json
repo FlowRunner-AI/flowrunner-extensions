@@ -1,0 +1,91 @@
+{
+  "slug": "ollama",
+  "name": "Ollama",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Ollama](https://ollama.com) — run open-source large language models (Llama, Qwen, DeepSeek, Gemma, Mistral and more) on your own hardware and use them directly in your flows. The service talks to Ollama's native REST API (`/api/*`) on a server you host, with support for text generation, multi-turn chat (tool calling and vision), embeddings, and full model management. All model parameters offer a dropdown populated from the models installed on your server.",
+  "actionCount": 10,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Generation",
+    "Embeddings",
+    "Model Management",
+    "Server"
+  ],
+  "actions": [
+    {
+      "name": "Generate Completion",
+      "category": "Generation",
+      "description": "Generates a single completion for a prompt using a local Ollama model. Supports JSON mode and structured outputs (JSON schema), thinking control for reasoning models (e.g. deepseek-r1, qwen3), and raw model options like temperature and context size. The response includes the generated text plus token counts and timings (prompt_eval_count, eval_count, total_duration in nanoseconds). If the model is not loaded yet, the first call also pays the model load time."
+    },
+    {
+      "name": "Chat",
+      "category": "Generation",
+      "description": "Sends a multi-turn conversation to a local Ollama model and returns the next assistant message. Supports tool/function calling (tool_calls are returned on the message), vision models via base64 images on messages or the convenience Image URLs parameter (downloaded and attached to the last user message), JSON mode and structured outputs (JSON schema), and thinking control for reasoning models. The response includes token counts and timings."
+    },
+    {
+      "name": "Create Embeddings",
+      "category": "Embeddings",
+      "description": "Generates embedding vectors for one or more input texts using a local embedding model (e.g. 'nomic-embed-text', 'mxbai-embed-large', 'all-minilm'). Returns one embedding per input, in order, in the 'embeddings' array. Inputs longer than the model's context window are truncated by default; disable truncation to get an error instead."
+    },
+    {
+      "name": "List Local Models",
+      "category": "Model Management",
+      "description": "Lists all models available locally on the Ollama server, including name, size in bytes, digest, last modified date and details such as family, parameter size and quantization level."
+    },
+    {
+      "name": "Show Model Info",
+      "category": "Model Management",
+      "description": "Retrieves detailed information about a local model: its Modelfile, default parameters, prompt template, details (family, parameter size, quantization) and capabilities (e.g. 'completion', 'vision', 'tools', 'thinking'). Enable Verbose to include full tokenizer and architecture metadata (large response)."
+    },
+    {
+      "name": "Pull Model",
+      "category": "Model Management",
+      "description": "Downloads a model from the Ollama library (https://ollama.com/library) to the server, e.g. 'llama3.2:3b' or 'nomic-embed-text'. Returns {\"status\":\"success\"} when the download completes. WARNING: large models can take many minutes to download and may exceed this action's 300-second timeout — the pull continues server-side even if the action times out; re-run this action to confirm completion (interrupted pulls resume where they left off) or check List Local Models."
+    },
+    {
+      "name": "Copy Model",
+      "category": "Model Management",
+      "description": "Copies an existing local model to a new name, e.g. to tag a custom variant before editing. Fails if the source model does not exist."
+    },
+    {
+      "name": "Delete Model",
+      "category": "Model Management",
+      "description": "Permanently deletes a model and its data from the Ollama server's local storage. Fails if the model does not exist."
+    },
+    {
+      "name": "List Running Models",
+      "category": "Model Management",
+      "description": "Lists the models currently loaded into memory on the Ollama server, including total size, VRAM usage (size_vram) and when each model is scheduled to be unloaded (expires_at)."
+    },
+    {
+      "name": "Get Version",
+      "category": "Server",
+      "description": "Retrieves the version of the Ollama server. Also useful as a connectivity check for the configured server URL."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Running private, self-hosted LLM inference for chat, completion, and reasoning without sending data to third-party APIs",
+    "Building retrieval-augmented generation (RAG) pipelines using local embedding models",
+    "Multi-turn conversational agents with tool/function calling and vision (image) support",
+    "Structured data extraction using JSON mode or JSON-schema-constrained outputs",
+    "Managing local model storage: pulling, copying, listing, and deleting models on your server"
+  ],
+  "agentIdeas": [
+    "Use **Ollama** \"Create Embeddings\" with a local embedding model to vectorize document chunks, then **Qdrant** \"Upsert Points\" (or **Pinecone** \"Upsert Vectors\") to store them for a private, self-hosted RAG knowledge base.",
+    "Embed a user question with **Ollama** \"Create Embeddings\", run **Qdrant** \"Query Points\" to retrieve the most relevant passages, then pass them to **Ollama** \"Chat\" for a grounded, fully on-premise answer.",
+    "After **Ollama** \"Chat\" extracts structured fields from an incoming message using JSON-schema output, use **Google Sheets** \"Add Row\" to log the result and **Slack** \"Send Message To Channel\" to alert the team."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/ollama/public/icon.png",
+  "sourcePaths": {
+    "service": "services/ollama",
+    "readme": "services/ollama/README.md",
+    "index": "services/ollama/src/index.js"
+  }
+}

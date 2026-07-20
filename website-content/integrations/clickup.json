@@ -1,0 +1,209 @@
+{
+  "slug": "clickup",
+  "name": "ClickUp",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Bring ClickUp workspace, space, folder, list, and task automation to FlowRunner. Covers the ClickUp v2 API surface most automations need: reads and writes across the hierarchy, task comments, checklists, time tracking, custom fields, attachments, tags, and both webhook and polling triggers that fire when tasks are created, updated, or deleted. Uses OAuth 2.0 and cascading dropdowns so operators pick workspaces, lists, and tasks instead of copying IDs.",
+  "actionCount": 30,
+  "triggerCount": 5,
+  "operationCategories": [
+    "Workspaces",
+    "Spaces",
+    "Folders",
+    "Lists",
+    "Tasks",
+    "Comments",
+    "Checklists",
+    "Time Tracking",
+    "Custom Fields",
+    "Attachments",
+    "Tags"
+  ],
+  "actions": [
+    {
+      "name": "Get Workspaces",
+      "category": "Workspaces",
+      "description": "Retrieves all ClickUp workspaces (teams) accessible by the authenticated user, including basic workspace metadata such as name, color, avatar, and members. Use this to discover the workspaces your integration can operate on."
+    },
+    {
+      "name": "Get Spaces",
+      "category": "Spaces",
+      "description": "Retrieves all spaces inside a given ClickUp workspace, optionally including archived spaces. Spaces are top-level containers used to organize folders and lists."
+    },
+    {
+      "name": "Get Space",
+      "category": "Spaces",
+      "description": "Retrieves the full configuration of a single ClickUp space including its statuses, features, and privacy settings. Use to inspect a space before performing operations on its folders or lists."
+    },
+    {
+      "name": "Get Folders",
+      "category": "Folders",
+      "description": "Retrieves all folders inside a given ClickUp space, optionally including archived folders. Folders group related lists within a space."
+    },
+    {
+      "name": "Create Folder",
+      "category": "Folders",
+      "description": "Creates a new folder inside the specified ClickUp space. Folders group related lists and help organize work within a space."
+    },
+    {
+      "name": "Delete Folder",
+      "category": "Folders",
+      "description": "Permanently deletes a folder from a ClickUp space. This action cannot be undone and will remove all lists and tasks contained within the folder."
+    },
+    {
+      "name": "Update Folder",
+      "category": "Folders",
+      "description": "Renames an existing folder in a ClickUp space. Use to keep folder names in sync with an external system or project template."
+    },
+    {
+      "name": "Get Lists",
+      "category": "Lists",
+      "description": "Retrieves all lists inside a folder, or all folderless lists in a space when no folder is specified. Lists are the containers that hold tasks in ClickUp."
+    },
+    {
+      "name": "Create List",
+      "category": "Lists",
+      "description": "Creates a new list inside either a folder or directly in a space (folderless). Lists hold tasks and define their available statuses."
+    },
+    {
+      "name": "Get List",
+      "category": "Lists",
+      "description": "Retrieves details of a single ClickUp list, including its name, content, statuses, and task count. Use to inspect list configuration before creating tasks."
+    },
+    {
+      "name": "Delete List",
+      "category": "Lists",
+      "description": "Permanently deletes a list and all of its tasks from ClickUp. This action cannot be undone."
+    },
+    {
+      "name": "Update List",
+      "category": "Lists",
+      "description": "Updates an existing ClickUp list's name and/or description. Only the fields you provide are changed. Use to keep list details in sync with an external system."
+    },
+    {
+      "name": "Get Tasks",
+      "category": "Tasks",
+      "description": "Retrieves a paginated set of tasks (up to 100 per page) from a ClickUp list, with optional filters for status, archived state, completion, ordering, and due-date range. Ideal for syncing or processing tasks in bulk."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves the full details of a single ClickUp task by its ID, optionally including subtasks and Markdown-formatted description. Use this to read up-to-date task state before acting on it."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a new task inside a ClickUp list with optional description, status, priority, due date, assignees, and tags. Set Parent Task ID to create this as a subtask of an existing task in the same list. Returns the full created task object including its generated ID and URL."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates editable fields of a ClickUp task such as name, description, status, priority, due date, time estimate, archive flag, and assignee additions/removals. Only provided fields are modified."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a ClickUp task by its ID. This action cannot be undone and removes all comments, attachments, and time tracking entries associated with the task."
+    },
+    {
+      "name": "Get Task Comments",
+      "category": "Comments",
+      "description": "Retrieves comments on a ClickUp task in reverse chronological order (newest first). Returns up to 25 comments per request; use the start parameter for pagination."
+    },
+    {
+      "name": "Create Task Comment",
+      "category": "Comments",
+      "description": "Creates a new comment on a ClickUp task with optional assignee and notification settings. Useful for AI agents to log progress, ask questions, or notify team members."
+    },
+    {
+      "name": "Create Checklist",
+      "category": "Checklists",
+      "description": "Adds a new checklist to a ClickUp task. Checklists let you track sub-steps within a task without creating full subtasks."
+    },
+    {
+      "name": "Create Checklist Item",
+      "category": "Checklists",
+      "description": "Adds an item to an existing checklist on a ClickUp task. Optionally assigns the item to a workspace member."
+    },
+    {
+      "name": "Get Time Entries",
+      "category": "Time Tracking",
+      "description": "Retrieves time entries for a ClickUp workspace within a given date range. By default returns the last 30 days for the authenticated user. Useful for time-reporting and analytics workflows."
+    },
+    {
+      "name": "Create Time Entry",
+      "category": "Time Tracking",
+      "description": "Logs a new time entry against a ClickUp task. Supports billable flag, custom description, and tags. Useful for AI agents that need to record time spent on automated work."
+    },
+    {
+      "name": "Get List Custom Fields",
+      "category": "Custom Fields",
+      "description": "Retrieves the custom fields configured on a ClickUp list, including each field's ID, name, type, and type-specific configuration (such as dropdown options). Use this to see which fields are available before setting a task's custom field value."
+    },
+    {
+      "name": "Set Task Custom Field Value",
+      "category": "Custom Fields",
+      "description": "Sets or replaces the value of a custom field on a ClickUp task. Pick a Field ID first - the Value form below adapts to that field's type (text, number, dropdown, date, and so on)."
+    },
+    {
+      "name": "Remove Task Custom Field Value",
+      "category": "Custom Fields",
+      "description": "Clears the value of a custom field on a ClickUp task. This does not delete the field itself, only the value stored on this task."
+    },
+    {
+      "name": "Create Task Attachment",
+      "category": "Attachments",
+      "description": "Uploads a file to a ClickUp task as an attachment. The file is downloaded from FlowRunner file storage and re-uploaded to ClickUp server-side, since ClickUp cannot fetch cloud-hosted files directly."
+    },
+    {
+      "name": "Get Space Tags",
+      "category": "Tags",
+      "description": "Retrieves the tags available in a ClickUp space. Use this to see which tag names can be attached to or removed from a task."
+    },
+    {
+      "name": "Add Task Tag",
+      "category": "Tags",
+      "description": "Attaches an existing space tag to a ClickUp task. The tag must already exist in the task's space; use Get Space Tags to see what's available."
+    },
+    {
+      "name": "Remove Task Tag",
+      "category": "Tags",
+      "description": "Removes a tag from a ClickUp task. This does not delete the tag from the space, only its attachment to this task."
+    }
+  ],
+  "triggers": [
+    "On Task Created",
+    "On Task Updated",
+    "On Task Deleted",
+    "On New Task",
+    "On Updated Task"
+  ],
+  "idealUseCases": [
+    "Automating task creation and assignment from external triggers (forms, AI agents, emails)",
+    "Syncing tasks between ClickUp and other tools by polling for new or updated tasks",
+    "Building AI agents that triage work, log progress comments, and track time",
+    "Generating folders, lists, and checklists on demand from project templates",
+    "Reading workspace, space, and list metadata for cross-tool dashboards and reports"
+  ],
+  "agentIdeas": [
+    "Watch a triage list and, on each new task, classify it and set priority or assignee.",
+    "When a task moves to \"in progress\", post a comment and start a time entry automatically.",
+    "Nightly, read a list's tasks and generate a status report in another tool.",
+    "On task creation, add a standard \"Definition of done\" checklist from a template.",
+    "React the instant a task is created, updated, or deleted via native webhooks, without waiting on a polling interval.",
+    "Set a custom field value (like a priority score or external ID) the moment a task is created.",
+    "Attach a generated report or exported file to a task automatically.",
+    "Tag tasks based on content analysis so they show up in the right saved views."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/clickup/public/icon.png",
+  "sourcePaths": {
+    "service": "services/clickup",
+    "readme": "services/clickup/README.md",
+    "index": "services/clickup/src/index.js"
+  }
+}

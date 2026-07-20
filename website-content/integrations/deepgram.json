@@ -1,0 +1,139 @@
+{
+  "slug": "deepgram",
+  "name": "Deepgram",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Deepgram is a Voice AI platform for speech-to-text, text-to-speech, and text intelligence. This extension transcribes pre-recorded audio, generates natural-sounding speech from text, analyzes written text, and manages Deepgram projects, API keys, usage, and billing. Authenticate with a Deepgram API key (sent as the `Authorization: Token` header), created in the Deepgram Console.",
+  "actionCount": 19,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Speech to Text",
+    "Text to Speech",
+    "Text Intelligence",
+    "Projects",
+    "API Keys",
+    "Usage",
+    "Billing",
+    "Models"
+  ],
+  "actions": [
+    {
+      "name": "Transcribe Audio from URL",
+      "category": "Speech to Text",
+      "description": "Transcribes pre-recorded audio hosted at a publicly accessible URL using Deepgram speech-to-text models (Nova-3, Nova-2, Enhanced, Base, Whisper Cloud). Supports smart formatting, punctuation, speaker diarization, utterances, paragraphs, summarization, topic/intent/sentiment/entity detection, redaction, keyterm prompting, word search and replacement. Returns the full transcription result with word-level timestamps and confidence scores. If a Callback URL is provided, Deepgram processes the audio asynchronously and only a request_id is returned; the full result is delivered to the callback URL."
+    },
+    {
+      "name": "Transcribe Audio File",
+      "category": "Speech to Text",
+      "description": "Transcribes a pre-recorded audio file from FlowRunner file storage using Deepgram speech-to-text models. The file's bytes are downloaded and streamed to Deepgram as the request body, so the file does not need to be publicly accessible. Supports the same feature set as Transcribe Audio from URL: smart formatting, diarization, summarization, topic/intent/sentiment/entity detection, redaction, keyterm prompting, and more. If a Callback URL is provided, only a request_id is returned and the full result is delivered to the callback URL."
+    },
+    {
+      "name": "Convert Text to Speech",
+      "category": "Text to Speech",
+      "description": "Converts text into natural-sounding speech using Deepgram Aura voices. The generated audio is saved to FlowRunner file storage and the file URL is returned along with the voice model used and the billed character count. Text is limited to 2000 characters per request. If a Callback URL is provided, Deepgram generates the audio asynchronously, returns a request_id, and delivers the audio to the callback URL instead of saving it to file storage."
+    },
+    {
+      "name": "Analyze Text",
+      "category": "Text Intelligence",
+      "description": "Analyzes written text with Deepgram Text Intelligence. Enable one or more analyses: summarization, topic detection (with optional custom topics), intent recognition (with optional custom intents), and sentiment analysis. Provide the text directly or as a URL to a hosted text file. Currently supports English text only. At least one analysis feature must be enabled. If a Callback URL is provided, the analysis runs asynchronously and only a request_id is returned."
+    },
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Retrieves all Deepgram projects that the configured API key has access to. Returns each project's ID and name. Project IDs are required by all key management, usage, and billing actions."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves details of a specific Deepgram project, including its ID, name, and organization information."
+    },
+    {
+      "name": "List API Keys",
+      "category": "API Keys",
+      "description": "Lists all API keys for a Deepgram project, including each key's ID, comment, scopes, tags, creation date, and the member it belongs to. The secret key values are not returned - they are only visible once, at creation time."
+    },
+    {
+      "name": "Create API Key",
+      "category": "API Keys",
+      "description": "Creates a new API key in a Deepgram project with the specified comment and scopes. The secret key value is returned only in this response and cannot be retrieved later - store it securely. Requires the configured API key to have the keys:write scope. Optionally set an expiration date or a time-to-live, but not both."
+    },
+    {
+      "name": "Delete API Key",
+      "category": "API Keys",
+      "description": "Permanently deletes an API key from a Deepgram project. Requests made with the deleted key stop working immediately. Requires the configured API key to have the keys:write scope. This action cannot be undone."
+    },
+    {
+      "name": "Get Usage Summary",
+      "category": "Usage",
+      "description": "Retrieves aggregated usage for a Deepgram project over a date range, resolved per day. Results include audio hours processed, request counts, and token/character counts where applicable. Optionally filter by API endpoint, processing method, deployment type, accessor (API key), tag, or model."
+    },
+    {
+      "name": "Get Usage Breakdown",
+      "category": "Usage",
+      "description": "Retrieves a usage breakdown for a Deepgram project over a date range, aggregated by a chosen grouping such as endpoint, model, method, tag, accessor, feature set, or deployment. Each result includes hours processed, request counts, and token/character totals. Optionally filter by endpoint, method, deployment, accessor, tag, or model."
+    },
+    {
+      "name": "List Usage Fields",
+      "category": "Usage",
+      "description": "Lists the features, models, tags, and processing methods used by requests in a Deepgram project during the specified time period. Useful for discovering which filter values are available for the usage summary and breakdown actions."
+    },
+    {
+      "name": "List Usage Requests",
+      "category": "Usage",
+      "description": "Lists individual API requests made in a Deepgram project, newest first, with pagination. Each entry includes the request ID, timestamp, request path, response code, and API key used. Optionally filter by date range, status, endpoint, processing method, deployment, or accessor."
+    },
+    {
+      "name": "Get Usage Request",
+      "category": "Usage",
+      "description": "Retrieves the details of a single API request made in a Deepgram project, including its path, response code, timing, API key used, and callback information if any. Use the request_id returned by transcription, speech, or analysis actions."
+    },
+    {
+      "name": "List Balances",
+      "category": "Billing",
+      "description": "Lists the outstanding prepaid credit balances for a Deepgram project, including each balance's ID, remaining amount, currency units, and associated purchase order. Requires a key with billing access."
+    },
+    {
+      "name": "Get Balance",
+      "category": "Billing",
+      "description": "Retrieves a specific prepaid credit balance for a Deepgram project by balance ID, including the remaining amount, currency units, and associated purchase order."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists all speech-to-text models and text-to-speech voices available on Deepgram, including each model's canonical name, architecture, supported languages, version, and UUID. TTS voices include metadata such as accent and voice characteristics. Optionally filter to STT or TTS models only, and optionally include outdated model versions."
+    },
+    {
+      "name": "Get Model",
+      "category": "Models",
+      "description": "Retrieves the details of a specific Deepgram model by its UUID, including its name, canonical name, architecture, supported languages, and version. Model UUIDs are returned by List Models and appear in transcription metadata."
+    },
+    {
+      "name": "List Project Models",
+      "category": "Models",
+      "description": "Lists the speech-to-text models and text-to-speech voices available to a specific Deepgram project, which may include private or custom models in addition to the public catalog."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Transcribe podcasts, meetings, or call recordings with diarization, summarization, and topic/sentiment detection",
+    "Generate voiceovers or audio prompts from text using Aura voices, saved to FlowRunner file storage",
+    "Summarize and classify written text by topic, intent, and sentiment",
+    "Monitor Deepgram usage and prepaid balances, and provision or revoke API keys programmatically"
+  ],
+  "agentIdeas": [
+    "Use **Google Drive** \"Download File\" to pull a meeting recording into file storage, then call **Deepgram** \"Transcribe Audio File\" with diarization and summarization to produce a speaker-labeled transcript with a summary.",
+    "After **Deepgram** \"Transcribe Audio from URL\" returns a transcript, use **Deepgram** \"Analyze Text\" for topic and sentiment, then post the results with **Slack** \"Send Message To Channel\" to alert the team on flagged calls.",
+    "Use **Deepgram** \"Analyze Text\" to summarize a long article, then save the summary and detected topics into a knowledge base with **Notion** \"Create Page\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/deepgram/public/icon.png",
+  "sourcePaths": {
+    "service": "services/deepgram",
+    "readme": "services/deepgram/README.md",
+    "index": "services/deepgram/src/index.js"
+  }
+}

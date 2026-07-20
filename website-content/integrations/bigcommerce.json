@@ -1,0 +1,438 @@
+{
+  "slug": "bigcommerce",
+  "name": "BigCommerce",
+  "marketingCategory": "E-commerce",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to [BigCommerce](https://www.bigcommerce.com/) to manage your store catalog, customers, orders, carts, and pricing. The extension authenticates with OAuth2 (single-click app flow) and covers the catalog (products, variants, images, custom fields, modifiers, categories, brands), inventory adjustments, customers and addresses, customer groups, orders and shipments, refunds, carts, and price lists — plus real-time webhook triggers on orders, products, inventory, and customers.",
+  "actionCount": 75,
+  "triggerCount": 6,
+  "operationCategories": [
+    "Products",
+    "Product Variants",
+    "Product Images",
+    "Product Custom Fields",
+    "Product Modifiers",
+    "Categories",
+    "Brands",
+    "Inventory",
+    "Customers",
+    "Customer Addresses",
+    "Customer Groups",
+    "Orders",
+    "Order Shipments",
+    "Order Refunds",
+    "Carts",
+    "Price Lists"
+  ],
+  "actions": [
+    {
+      "name": "Create Product",
+      "category": "Products",
+      "description": "Creates a new product in the store catalog. Use this to add an item shoppers can buy; assign it to categories and a brand, and decide how its stock is tracked."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves a single product by its ID, including price, type and current inventory. Use after picking a product to inspect its full detail."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Returns a page of products, optionally filtered by a search keyword. Use to browse the catalog or find a product before acting on it."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates an existing product's fields such as name, price or visibility. Note: setting Inventory Level here only takes effect when the product's tracking is \"Track by Product\"; otherwise it is silently ignored — use Set Inventory Level for reliable stock changes."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Products",
+      "description": "Permanently deletes a product from the catalog. Use with care — this cannot be undone."
+    },
+    {
+      "name": "Create Product Variant",
+      "category": "Product Variants",
+      "description": "Creates a single variant of a product (e.g. a specific size/color). Variants are created one at a time and are distinguished by their option values."
+    },
+    {
+      "name": "Get Product Variant",
+      "category": "Product Variants",
+      "description": "Retrieves a single variant of a product by its ID. Use to inspect a variant's SKU, price and inventory."
+    },
+    {
+      "name": "List Product Variants",
+      "category": "Product Variants",
+      "description": "Lists all variants of a product. Use to see the available sizes/colors before updating or pricing them."
+    },
+    {
+      "name": "Update Product Variant",
+      "category": "Product Variants",
+      "description": "Updates a variant's price override or inventory level. Use to adjust a specific size/color of a product."
+    },
+    {
+      "name": "Delete Product Variant",
+      "category": "Product Variants",
+      "description": "Deletes a single variant from a product. Use with care — this cannot be undone."
+    },
+    {
+      "name": "Create Product Image",
+      "category": "Product Images",
+      "description": "Adds an image to a product from a publicly accessible URL (GIF/JPEG/PNG, max 8MB). Use to set a product photo or its main thumbnail."
+    },
+    {
+      "name": "List Product Images",
+      "category": "Product Images",
+      "description": "Lists all images attached to a product. Use to find an image's ID before deleting it."
+    },
+    {
+      "name": "Delete Product Image",
+      "category": "Product Images",
+      "description": "Deletes an image from a product. Use List Product Images to find the image ID."
+    },
+    {
+      "name": "Create Product Custom Field",
+      "category": "Product Custom Fields",
+      "description": "Adds a custom name/value field to a product (e.g. Material = Ceramic). Use for extra product attributes shown on the storefront."
+    },
+    {
+      "name": "List Product Custom Fields",
+      "category": "Product Custom Fields",
+      "description": "Lists a product's custom fields. Use to find a custom field's ID before updating or deleting it."
+    },
+    {
+      "name": "Update Product Custom Field",
+      "category": "Product Custom Fields",
+      "description": "Updates a product's custom field name or value. Use List Product Custom Fields to find the field ID."
+    },
+    {
+      "name": "Delete Product Custom Field",
+      "category": "Product Custom Fields",
+      "description": "Deletes a custom field from a product. Use List Product Custom Fields to find the field ID."
+    },
+    {
+      "name": "Create Product Modifier",
+      "category": "Product Modifiers",
+      "description": "Adds a modifier (an extra purchase option such as engraving or gift wrap) to a product. Choose the input type shoppers use and whether it is required."
+    },
+    {
+      "name": "List Product Modifiers",
+      "category": "Product Modifiers",
+      "description": "Lists a product's modifiers. Use to find a modifier's ID before updating or deleting it."
+    },
+    {
+      "name": "Update Product Modifier",
+      "category": "Product Modifiers",
+      "description": "Updates a product modifier's display name or required flag. Use List Product Modifiers to find the modifier ID."
+    },
+    {
+      "name": "Delete Product Modifier",
+      "category": "Product Modifiers",
+      "description": "Deletes a modifier from a product. Use List Product Modifiers to find the modifier ID."
+    },
+    {
+      "name": "Create Category",
+      "category": "Categories",
+      "description": "Creates a storefront category. Use parent 0 for a top-level category or pick a parent to nest it. Categories organize products in navigation."
+    },
+    {
+      "name": "Get Category",
+      "category": "Categories",
+      "description": "Retrieves a single category by its ID. Use to inspect a category's details."
+    },
+    {
+      "name": "List Categories",
+      "category": "Categories",
+      "description": "Returns a page of categories. Use to browse the category tree or find a category before acting on it."
+    },
+    {
+      "name": "Update Category",
+      "category": "Categories",
+      "description": "Updates a category's name or visibility. Use Get Categories to pick the category."
+    },
+    {
+      "name": "Delete Category",
+      "category": "Categories",
+      "description": "Deletes a category from the catalog. Use with care — products in it lose this category assignment."
+    },
+    {
+      "name": "Create Brand",
+      "category": "Brands",
+      "description": "Creates a brand that products can be associated with. Brand names must be unique."
+    },
+    {
+      "name": "Get Brand",
+      "category": "Brands",
+      "description": "Retrieves a single brand by its ID. Use to inspect a brand's details."
+    },
+    {
+      "name": "List Brands",
+      "category": "Brands",
+      "description": "Returns a page of brands. Use to browse brands or find one before acting on it."
+    },
+    {
+      "name": "Update Brand",
+      "category": "Brands",
+      "description": "Updates a brand's name or logo. Use Get Brands to pick the brand."
+    },
+    {
+      "name": "Delete Brand",
+      "category": "Brands",
+      "description": "Deletes a brand. Use with care — products lose this brand association."
+    },
+    {
+      "name": "Set Inventory Level",
+      "category": "Inventory",
+      "description": "Set a variant's stock count to an exact number at a location. This is the RELIABLE way to set stock — it avoids the product-level inventory_tracking pitfall."
+    },
+    {
+      "name": "Adjust Inventory Level",
+      "category": "Inventory",
+      "description": "Add to or subtract from a variant's current stock count at a location (use a negative quantity to subtract). Use when you want a delta rather than an exact value."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a customer account in the store. Email must be unique. Optionally assign the customer to a customer group."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer by ID. Use to inspect a customer's profile."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Returns a page of customers, optionally filtered by email. Use to browse or find a customer before acting on them."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates a customer's name, email or group. Use Get Customers to pick the customer."
+    },
+    {
+      "name": "Delete Customer",
+      "category": "Customers",
+      "description": "Deletes a customer account. Use with care — this cannot be undone."
+    },
+    {
+      "name": "Create Customer Address",
+      "category": "Customer Addresses",
+      "description": "Adds an address to a customer. Use Get Customers to pick the customer; provide the full postal address."
+    },
+    {
+      "name": "List Customer Addresses",
+      "category": "Customer Addresses",
+      "description": "Lists a customer's saved addresses. Use to find an address ID before updating or deleting it."
+    },
+    {
+      "name": "Update Customer Address",
+      "category": "Customer Addresses",
+      "description": "Updates a customer address. Use List Customer Addresses to find the address ID; the customer ID is also required."
+    },
+    {
+      "name": "Delete Customer Address",
+      "category": "Customer Addresses",
+      "description": "Deletes a customer address. Use List Customer Addresses to find the address ID."
+    },
+    {
+      "name": "Create Customer Group",
+      "category": "Customer Groups",
+      "description": "Creates a customer group (e.g. Wholesale) used for pricing and access rules. Customer groups live on the V2 API."
+    },
+    {
+      "name": "Get Customer Group",
+      "category": "Customer Groups",
+      "description": "Retrieves a single customer group by ID. Use to inspect a group's details."
+    },
+    {
+      "name": "List Customer Groups",
+      "category": "Customer Groups",
+      "description": "Returns a page of customer groups. Use to browse groups or find one before acting on it."
+    },
+    {
+      "name": "Update Customer Group",
+      "category": "Customer Groups",
+      "description": "Updates a customer group's name or default flag. Use Get Customer Groups to pick the group."
+    },
+    {
+      "name": "Delete Customer Group",
+      "category": "Customer Groups",
+      "description": "Deletes a customer group. Use with care — members revert to no group."
+    },
+    {
+      "name": "Create Order",
+      "category": "Orders",
+      "description": "Create an order directly (e.g. phone/manual orders). Provide a billing address and at least one product line — either a catalog product (product_id) or a custom line (name + prices)."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves a single order by ID, including status and totals. Use to inspect an order."
+    },
+    {
+      "name": "List Orders",
+      "category": "Orders",
+      "description": "Returns a page of orders, optionally filtered by status or customer. Use to find orders to fulfill or refund."
+    },
+    {
+      "name": "Update Order",
+      "category": "Orders",
+      "description": "Update an existing order's fields (e.g. customer message, staff notes). To change only the order's status, use Update Order Status."
+    },
+    {
+      "name": "Update Order Status",
+      "category": "Orders",
+      "description": "Transition an order to a different status (e.g. Awaiting Fulfillment, Shipped, Completed). Use Get Order Statuses to pick the new status."
+    },
+    {
+      "name": "List Order Products",
+      "category": "Orders",
+      "description": "Lists the line items (products) of an order. Use to find order_product_id values for creating shipments or refunds."
+    },
+    {
+      "name": "List Order Coupons",
+      "category": "Orders",
+      "description": "Lists the coupons applied to an order. Use to see discounts on an order."
+    },
+    {
+      "name": "List Order Statuses",
+      "category": "Orders",
+      "description": "List all order statuses configured for the store (id + name). Use this to find the status_id for Update Order Status."
+    },
+    {
+      "name": "Create Order Shipment",
+      "category": "Order Shipments",
+      "description": "Creates a shipment for an order, marking items as shipped with optional tracking. The order must already have products and a shipping address."
+    },
+    {
+      "name": "Get Order Shipment",
+      "category": "Order Shipments",
+      "description": "Retrieves a single shipment of an order by ID. Use to inspect tracking and shipped items."
+    },
+    {
+      "name": "List Order Shipments",
+      "category": "Order Shipments",
+      "description": "Lists all shipments of an order. Use to find a shipment ID before updating or deleting it."
+    },
+    {
+      "name": "Update Order Shipment",
+      "category": "Order Shipments",
+      "description": "Updates a shipment's tracking number or carrier. Use List Order Shipments to find the shipment ID."
+    },
+    {
+      "name": "Delete Order Shipment",
+      "category": "Order Shipments",
+      "description": "Deletes a shipment from an order. Use List Order Shipments to find the shipment ID."
+    },
+    {
+      "name": "Create Refund Quote",
+      "category": "Order Refunds",
+      "description": "Calculate a refund quote for an order before issuing it — returns the refundable items and the payment providers that can be refunded. Run this first, then Create Refund."
+    },
+    {
+      "name": "Create Refund",
+      "category": "Order Refunds",
+      "description": "Issue a refund against an order with a settled payment. Use Create Refund Quote first to get valid payment providers and amounts."
+    },
+    {
+      "name": "List Refunds",
+      "category": "Order Refunds",
+      "description": "Lists the refunds issued against an order. Use to audit an order's refund history."
+    },
+    {
+      "name": "Create Cart",
+      "category": "Carts",
+      "description": "Creates a new cart with one or more line items. Use to start an order programmatically (e.g. a saved cart for a customer). Carts have no list endpoint — keep the returned cart ID."
+    },
+    {
+      "name": "Get Cart",
+      "category": "Carts",
+      "description": "Retrieves a cart by its ID (returned by Create Cart). Use to inspect a cart's line items and totals."
+    },
+    {
+      "name": "Add Cart Line Items",
+      "category": "Carts",
+      "description": "Adds one or more products to an existing cart. Use Create Cart first to get the cart ID."
+    },
+    {
+      "name": "Delete Cart",
+      "category": "Carts",
+      "description": "Deletes a cart by its ID. Use to discard an abandoned or completed cart."
+    },
+    {
+      "name": "Create Price List",
+      "category": "Price Lists",
+      "description": "Creates a price list — a named set of per-variant price overrides (e.g. wholesale pricing). Note: price lists are a Pro/Enterprise-plan feature on some BigCommerce plans."
+    },
+    {
+      "name": "Get Price List",
+      "category": "Price Lists",
+      "description": "Retrieves a single price list by ID. Use to inspect a price list's details."
+    },
+    {
+      "name": "List Price Lists",
+      "category": "Price Lists",
+      "description": "Returns a page of price lists. Use to browse price lists or find one before acting on it."
+    },
+    {
+      "name": "Update Price List",
+      "category": "Price Lists",
+      "description": "Updates a price list's name or active status. Use Get Price Lists to pick the list."
+    },
+    {
+      "name": "Delete Price List",
+      "category": "Price Lists",
+      "description": "Deletes a price list and all its price records. Use with care."
+    },
+    {
+      "name": "Set Price Record",
+      "category": "Price Lists",
+      "description": "Set the price override for a variant in a price list and currency (creates or updates). Use to apply wholesale or regional pricing to a specific variant."
+    },
+    {
+      "name": "List Price Records",
+      "category": "Price Lists",
+      "description": "Lists the price records (variant price overrides) in a price list. Use to audit a price list's overrides."
+    },
+    {
+      "name": "Delete Price Record",
+      "category": "Price Lists",
+      "description": "Removes a variant's price override in a given currency from a price list. Use to revert a variant to its default price."
+    }
+  ],
+  "triggers": [
+    "On Order Created",
+    "On Order Status Updated",
+    "On Product Created",
+    "On Product Updated",
+    "On Inventory Updated",
+    "On Customer Created"
+  ],
+  "idealUseCases": [
+    "Add and maintain products, variants, images, categories, and brands programmatically.",
+    "Reliably set or adjust stock levels per variant and location.",
+    "Create and manage customers, addresses, and customer groups.",
+    "Create orders, transition order statuses, and create shipments with tracking.",
+    "Quote and issue order refunds against settled payments.",
+    "Build carts and add line items for headless or assisted-selling flows.",
+    "Apply wholesale or regional pricing with price lists and per-variant price records.",
+    "React in real time to new orders, status changes, product/inventory updates, and new customers."
+  ],
+  "agentIdeas": [
+    "When a **BigCommerce** \"On Order Created\" trigger fires, use **Gmail** \"Send Message\" to email the customer an order confirmation and **Google Sheets** \"Add Row\" to log the order into a sales tracking spreadsheet.",
+    "When a **BigCommerce** \"On Inventory Updated\" trigger fires for a low-stock variant, use **Slack** \"Send Message To Channel\" to alert the operations channel so the team can reorder.",
+    "Use **Google Sheets** \"Get Rows\" to read a supplier price feed, then call **BigCommerce** \"Set Price Record\" for each variant to sync wholesale pricing into a price list."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/bigcommerce/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/bigcommerce",
+    "readme": "services/bigcommerce/README.md",
+    "index": "services/bigcommerce/src/index.js"
+  }
+}

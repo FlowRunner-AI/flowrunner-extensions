@@ -1,0 +1,121 @@
+{
+  "slug": "cloudflare",
+  "name": "Cloudflare",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage Cloudflare zones, DNS records, cache, security rulesets, and Workers KV storage using the [Cloudflare API v4](https://developers.cloudflare.com/api/). Automate DNS changes, purge cache after deploys, audit WAF rulesets, and read or write edge key-value data.",
+  "actionCount": 16,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Zones",
+    "DNS Records",
+    "Rulesets",
+    "Workers KV"
+  ],
+  "actions": [
+    {
+      "name": "List Zones",
+      "category": "Zones",
+      "description": "Lists the zones (domains) in your Cloudflare account. Supports filtering by domain name and status, and paginates through results. Returns each zone's id, name, status, plan, and name servers. Use a zone id with the DNS Records, Purge Cache, and Rulesets operations."
+    },
+    {
+      "name": "Get Zone",
+      "category": "Zones",
+      "description": "Retrieves the full details of a single zone by its id, including status, plan, owner, name servers, and configuration timestamps."
+    },
+    {
+      "name": "Purge Cache",
+      "category": "Zones",
+      "description": "Purges cached content for a zone. Choose ONE strategy: purge everything, or purge by specific file URLs, tags, hosts, or prefixes. If Purge Everything is enabled it takes precedence and all other targets are ignored. Tags, hosts, and prefixes require an Enterprise plan. Passing no targets returns an error from Cloudflare."
+    },
+    {
+      "name": "List DNS Records",
+      "category": "DNS Records",
+      "description": "Lists DNS records for a zone. Supports filtering by record type, name, and content, and paginates through results. Returns each record's id, type, name, content, ttl, and proxied status."
+    },
+    {
+      "name": "Create DNS Record",
+      "category": "DNS Records",
+      "description": "Creates a new DNS record in a zone. Supports A, AAAA, CNAME, TXT, MX, NS, SRV, and CAA record types. Set TTL to 1 for automatic, or 60-86400 seconds. Proxied is only valid for A, AAAA, and CNAME records. Priority is required for MX records."
+    },
+    {
+      "name": "Get DNS Record",
+      "category": "DNS Records",
+      "description": "Retrieves the full details of a single DNS record by its id within a zone."
+    },
+    {
+      "name": "Update DNS Record",
+      "category": "DNS Records",
+      "description": "Fully replaces a DNS record. All record fields are overwritten, so provide the complete desired state. To change only individual fields, use Patch DNS Record instead."
+    },
+    {
+      "name": "Patch DNS Record",
+      "category": "DNS Records",
+      "description": "Partially updates a DNS record. Only the fields you provide are changed; all others keep their current values. Use this to flip proxied on/off or update content without resending the whole record."
+    },
+    {
+      "name": "Delete DNS Record",
+      "category": "DNS Records",
+      "description": "Permanently deletes a DNS record from a zone. This action cannot be undone. Returns the id of the deleted record."
+    },
+    {
+      "name": "List Rulesets",
+      "category": "Rulesets",
+      "description": "Lists the rulesets configured for a zone, including managed WAF rulesets and custom rule phases (e.g. http_request_firewall_custom, http_ratelimit). Returns each ruleset's id, name, phase, and kind. Use a ruleset id with Get Ruleset to inspect its individual rules."
+    },
+    {
+      "name": "Get Ruleset",
+      "category": "Rulesets",
+      "description": "Retrieves a single ruleset by its id within a zone, including the full list of rules it contains with their expressions, actions, and descriptions."
+    },
+    {
+      "name": "List KV Namespaces",
+      "category": "Workers KV",
+      "description": "Lists the Workers KV namespaces in your account. Requires the Account ID configuration item. Returns each namespace's id and title. Use a namespace id with the KV key/value operations."
+    },
+    {
+      "name": "List KV Keys",
+      "category": "Workers KV",
+      "description": "Lists the keys stored in a Workers KV namespace. Requires the Account ID configuration item. Supports an optional prefix filter and cursor-based pagination via the returned cursor in result_info. Returns each key's name and metadata."
+    },
+    {
+      "name": "Get KV Value",
+      "category": "Workers KV",
+      "description": "Reads the raw stored value for a key in a Workers KV namespace. Requires the Account ID configuration item. Returns the value exactly as stored (string). Returns an error if the key does not exist."
+    },
+    {
+      "name": "Put KV Value",
+      "category": "Workers KV",
+      "description": "Writes a value to a key in a Workers KV namespace, creating the key or overwriting its existing value. Requires the Account ID configuration item. Optionally set an expiration TTL (in seconds) after which the key is automatically deleted. Changes may take up to 60 seconds to propagate globally."
+    },
+    {
+      "name": "Delete KV Value",
+      "category": "Workers KV",
+      "description": "Deletes a key and its value from a Workers KV namespace. Requires the Account ID configuration item. This action cannot be undone. Succeeds even if the key does not exist."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create, update, or delete DNS records when infrastructure changes.",
+    "Purge Cloudflare cache (everything, or specific files/tags/hosts/prefixes) after a deployment.",
+    "List and inspect a zone's rulesets to audit managed WAF and custom firewall rules.",
+    "Read and write Workers KV values to drive edge configuration or feature flags.",
+    "Look up zones and DNS records dynamically for use in other flow steps."
+  ],
+  "agentIdeas": [
+    "When a **GitHub** \"On Push\" trigger fires against your production branch, call **Netlify** \"Trigger Build\" to deploy, then use **Cloudflare** \"Purge Cache\" to clear the edge cache so visitors immediately see the new build.",
+    "After a **GitHub** \"Create Release\" action, use **Cloudflare** \"Put KV Value\" to update an edge feature flag or version key, then **Slack** \"Send Message To Channel\" to announce the release to the team.",
+    "When a **GitHub** \"On Pull Request Opened\" trigger fires for a preview environment, use **Cloudflare** \"Create DNS Record\" to point a preview subdomain at the deploy and **Slack** \"Send Message To Channel\" to share the preview URL with reviewers."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/cloudflare/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/cloudflare",
+    "readme": "services/cloudflare/README.md",
+    "index": "services/cloudflare/src/index.js"
+  }
+}

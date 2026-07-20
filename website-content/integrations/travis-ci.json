@@ -1,0 +1,153 @@
+{
+  "slug": "travis-ci",
+  "name": "Travis CI",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrates with the Travis CI REST API (v3) to manage repositories, trigger and control builds and jobs, inspect job logs, and configure environment variables, branches, and caches. Authenticates with an API token and supports both the `travis-ci.com` and legacy `travis-ci.org` platforms.",
+  "actionCount": 22,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Repositories",
+    "Builds",
+    "Jobs",
+    "Environment Variables",
+    "Branches & Caches",
+    "User"
+  ],
+  "actions": [
+    {
+      "name": "List Repositories",
+      "category": "Repositories",
+      "description": "Lists repositories accessible to the authenticated user. Use Active Only to return only repositories with builds enabled on Travis CI. Supports pagination via Limit and Offset, and sorting."
+    },
+    {
+      "name": "Get Repository",
+      "category": "Repositories",
+      "description": "Retrieves a single repository by its slug (owner/name), including its active state, privacy, default branch, and owner."
+    },
+    {
+      "name": "Activate Repository",
+      "category": "Repositories",
+      "description": "Activates a repository so Travis CI will run builds for it. Requires admin access to the repository."
+    },
+    {
+      "name": "Deactivate Repository",
+      "category": "Repositories",
+      "description": "Deactivates a repository so Travis CI will no longer run builds for it. Requires admin access to the repository."
+    },
+    {
+      "name": "Star Repository",
+      "category": "Repositories",
+      "description": "Stars a repository for the authenticated user so it is highlighted in the Travis CI dashboard."
+    },
+    {
+      "name": "Unstar Repository",
+      "category": "Repositories",
+      "description": "Removes the star from a repository for the authenticated user."
+    },
+    {
+      "name": "List Builds",
+      "category": "Builds",
+      "description": "Lists builds for a repository, most recent first by default. Supports sorting and a Limit to control how many builds are returned."
+    },
+    {
+      "name": "Get Build",
+      "category": "Builds",
+      "description": "Retrieves a single build by its numeric ID, including its state, event type, branch, commit, and jobs."
+    },
+    {
+      "name": "Cancel Build",
+      "category": "Builds",
+      "description": "Cancels a running or queued build by its numeric ID. All of the build's jobs are cancelled."
+    },
+    {
+      "name": "Restart Build",
+      "category": "Builds",
+      "description": "Restarts a build by its numeric ID, re-running all of its jobs."
+    },
+    {
+      "name": "Trigger Build",
+      "category": "Builds",
+      "description": "Triggers a new build for a repository on a given branch. Optionally include a commit message and a config object that overrides keys in the repository's .travis.yml for this build only."
+    },
+    {
+      "name": "List Build Jobs",
+      "category": "Jobs",
+      "description": "Lists all jobs belonging to a build, identified by the build's numeric ID."
+    },
+    {
+      "name": "Get Job",
+      "category": "Jobs",
+      "description": "Retrieves a single job by its numeric ID, including its state, timing, and the build it belongs to."
+    },
+    {
+      "name": "Restart Job",
+      "category": "Jobs",
+      "description": "Restarts a single job by its numeric ID, re-running only that job."
+    },
+    {
+      "name": "Cancel Job",
+      "category": "Jobs",
+      "description": "Cancels a single running or queued job by its numeric ID."
+    },
+    {
+      "name": "Get Job Log",
+      "category": "Jobs",
+      "description": "Retrieves the raw text log for a single job by its numeric ID. Returns the full accumulated build output for that job."
+    },
+    {
+      "name": "List Environment Variables",
+      "category": "Environment Variables",
+      "description": "Lists the environment variables configured for a repository. Values of private (non-public) variables are not returned."
+    },
+    {
+      "name": "Create Environment Variable",
+      "category": "Environment Variables",
+      "description": "Creates an environment variable for a repository. Mark it Public to expose the value in the build environment and logs; keep it private (default) to hide the value. Optionally scope the variable to a single branch."
+    },
+    {
+      "name": "Delete Environment Variable",
+      "category": "Environment Variables",
+      "description": "Deletes a single environment variable from a repository by its ID. Use List Environment Variables to find the ID."
+    },
+    {
+      "name": "List Branches",
+      "category": "Branches & Caches",
+      "description": "Lists the branches known to Travis CI for a repository, including each branch's most recent build."
+    },
+    {
+      "name": "List Caches",
+      "category": "Branches & Caches",
+      "description": "Lists the caches stored for a repository, including their branch, size, and last modified time."
+    },
+    {
+      "name": "Get Current User",
+      "category": "User",
+      "description": "Retrieves the authenticated user associated with the API token. Useful for verifying that the token and domain are configured correctly."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Trigger builds on specific branches as part of a deployment or release automation",
+    "Cancel, restart, or monitor builds and jobs in response to external events",
+    "Fetch raw job logs for failure analysis, alerting, or archival",
+    "Manage repository environment variables programmatically across projects",
+    "Activate or deactivate repositories to control which projects Travis CI builds"
+  ],
+  "agentIdeas": [
+    "When a **Travis CI** \"Get Build\" reports a failed state, use **Slack** \"Send Message To Channel\" to alert the team with the build's branch, commit, and a link to the job log.",
+    "After a **GitHub** \"Create Pull Request\", call **Travis CI** \"Trigger Build\" on the PR's branch to run CI and then **GitHub** \"Create Issue Comment\" to post the resulting build state back on the PR.",
+    "When a **Travis CI** \"Get Job Log\" surfaces a recurring failure, use **GitHub** \"Create Issue\" to open a tracked bug with the log excerpt and repository slug."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/travis-ci/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/travis-ci",
+    "readme": "services/travis-ci/README.md",
+    "index": "services/travis-ci/src/index.js"
+  }
+}

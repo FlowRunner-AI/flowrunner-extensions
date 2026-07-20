@@ -1,0 +1,105 @@
+{
+  "slug": "formio",
+  "name": "Form.io",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage Form.io forms, their field definitions, and the submissions collected against them directly from your FlowRunner flows. Authenticates with a project-scoped API key sent in the `x-token` header.",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Forms",
+    "Submissions",
+    "Roles",
+    "Connection"
+  ],
+  "actions": [
+    {
+      "name": "List Forms",
+      "category": "Forms",
+      "description": "Lists forms in the Form.io project. Returns an array of form objects, each with its _id, title, name, path, type, display and components. Use limit/skip to paginate; the total count is returned by Form.io in the Content-Range response header. Filter to a single form type (form or resource) via the Type parameter."
+    },
+    {
+      "name": "Get Form",
+      "category": "Forms",
+      "description": "Retrieves a single form definition by its id or path. The returned components array reveals each field's key, which is the property name used inside a submission's data object. Inspect this before creating or reading submissions so you know the exact data keys to populate or read."
+    },
+    {
+      "name": "Create Form",
+      "category": "Forms",
+      "description": "Creates a new form or resource in the project. Provide a human-readable title, a machine name, a unique URL path, the form type, and the components array that defines the fields. Each component's key becomes a property in submission data objects. Returns the created form including its generated _id."
+    },
+    {
+      "name": "Update Form",
+      "category": "Forms",
+      "description": "Updates an existing form identified by its id or path. Send only the fields you want to change (title, name, path, components, type, display); omitted fields are left as-is. Note that replacing the components array replaces the whole field definition. Returns the updated form."
+    },
+    {
+      "name": "Delete Form",
+      "category": "Forms",
+      "description": "Permanently deletes a form (or resource) identified by its id or path. This is irreversible and also removes access to the form's submissions endpoint. Returns an empty result on success."
+    },
+    {
+      "name": "List Submissions",
+      "category": "Submissions",
+      "description": "Lists submissions for a form. Each submission has an _id and a data object whose keys match the form's component keys (see Get Form to discover them). Supports pagination via limit/skip and sorting via a field name (prefix with - for descending). Optionally pass a raw filter query string in Form.io's query syntax (e.g. data.email=jane@example.com&created__gt=2020-01-01) to narrow results server-side."
+    },
+    {
+      "name": "Get Submission",
+      "category": "Submissions",
+      "description": "Retrieves a single submission by its id within a form. The returned data object holds the submitted values keyed by the form's component keys (use Get Form to discover those keys). Returns the full submission including owner, roles and timestamps."
+    },
+    {
+      "name": "Create Submission",
+      "category": "Submissions",
+      "description": "Creates a new submission against a form. Provide a data object whose keys match the form's component keys (use Get Form to discover them), e.g. {\"firstName\":\"Jane\",\"email\":\"jane@example.com\"}. Form.io validates the data against the form definition and returns the created submission with its generated _id."
+    },
+    {
+      "name": "Update Submission",
+      "category": "Submissions",
+      "description": "Updates an existing submission by id. Provide a data object with the full set of values keyed by component key (use Get Form to discover the keys); Form.io replaces the submission data with what you send. Returns the updated submission."
+    },
+    {
+      "name": "Delete Submission",
+      "category": "Submissions",
+      "description": "Permanently deletes a submission by id within a form. This is irreversible. Returns an empty result on success."
+    },
+    {
+      "name": "List Form Actions",
+      "category": "Forms",
+      "description": "Lists the actions configured on a form (e.g. save submission, email, webhook, role assignment). Each action defines behavior that runs when the form is submitted. Returns an array of action objects with their _id, name, title, handler and method."
+    },
+    {
+      "name": "List Roles",
+      "category": "Roles",
+      "description": "Lists the roles defined in the Form.io project (e.g. Administrator, Authenticated, Anonymous). Role ids are used when assigning permissions to submissions and forms. Returns an array of role objects with their _id, title and machineName."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Connection",
+      "description": "Returns the current authenticated user/token context for the project. Use this as a connection and credential check: a successful response confirms the project URL and API key (x-token) are valid. Returns the current submission/user object, or null when the token is a project-level API key with no bound user."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Programmatically create and update forms and resources, keeping field definitions in sync across environments.",
+    "Push external records into Form.io as submissions, or read submissions out into other systems.",
+    "Validate a project connection and inspect a form's component keys before automating submission workflows.",
+    "Audit a project's forms, form actions, and roles."
+  ],
+  "agentIdeas": [
+    "Use Form.io **List Submissions** to pull new form entries, then **Google Sheets** \"Add Row\" to append each submission's data into a tracking spreadsheet.",
+    "When a submission is retrieved via Form.io **Get Submission**, use **Gmail** \"Send Message\" to email a formatted confirmation or notification to the submitter.",
+    "After Form.io **Create Submission** captures a lead, post an alert to a team channel with **Slack** \"Send Message To Channel\" so staff can follow up immediately."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/formio/public/icon.png",
+  "sourcePaths": {
+    "service": "services/formio",
+    "readme": "services/formio/README.md",
+    "index": "services/formio/src/index.js"
+  }
+}

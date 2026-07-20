@@ -1,0 +1,137 @@
+{
+  "slug": "pinecone",
+  "name": "Pinecone",
+  "marketingCategory": "Vector Stores & AI Infra",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner extension for [Pinecone](https://www.pinecone.io), the managed vector database. Manage serverless indexes, upsert and query vectors, work with integrated-embedding text records, and call Pinecone's hosted inference models for embeddings and reranking — all from FlowRunner flows and AI agents.",
+  "actionCount": 19,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Indexes",
+    "Vectors",
+    "Records",
+    "Namespaces",
+    "Inference"
+  ],
+  "actions": [
+    {
+      "name": "Create Index",
+      "category": "Indexes",
+      "description": "Creates a new serverless index with an explicit vector dimension and similarity metric. The index is created in the specified cloud provider and region. Optionally enables deletion protection and attaches custom tags. Index creation is asynchronous — use Describe Index to check when the index status becomes ready."
+    },
+    {
+      "name": "Create Index for Model",
+      "category": "Indexes",
+      "description": "Creates a serverless index with integrated embedding. Records upserted as raw text are automatically embedded with the specified hosted model (e.g. multilingual-e5-large, llama-text-embed-v2), so no external embedding step is needed. The field map tells Pinecone which record field contains the text to embed. Use Upsert Records and Search Records with indexes created this way."
+    },
+    {
+      "name": "List Indexes",
+      "category": "Indexes",
+      "description": "Retrieves all indexes in the project, including each index's name, dimension, metric, data-plane host, status and spec."
+    },
+    {
+      "name": "Describe Index",
+      "category": "Indexes",
+      "description": "Retrieves the full configuration and current status of an index, including its data-plane host, dimension, metric, spec, deletion protection setting and tags. Check status.ready to determine whether a newly created index is available."
+    },
+    {
+      "name": "Configure Index",
+      "category": "Indexes",
+      "description": "Updates the configuration of an existing index. Supports toggling deletion protection and replacing custom tags. To remove a tag, set its value to an empty string."
+    },
+    {
+      "name": "Delete Index",
+      "category": "Indexes",
+      "description": "Permanently deletes an index and all of its data. This action cannot be undone. Fails if deletion protection is enabled on the index — disable it first via Configure Index."
+    },
+    {
+      "name": "Upsert Vectors",
+      "category": "Vectors",
+      "description": "Writes vectors into a namespace of an index. If a vector ID already exists, its values and metadata are overwritten. Up to 1000 vectors (2MB max) per request. Upserts are eventually consistent — use Describe Index Stats to confirm freshness."
+    },
+    {
+      "name": "Query Vectors",
+      "category": "Vectors",
+      "description": "Searches a namespace for the vectors most similar to a query vector or to an existing vector referenced by ID. Provide either Query Vector values or a Vector ID (not both). Supports metadata filtering and returns up to Top K matches with similarity scores."
+    },
+    {
+      "name": "Fetch Vectors",
+      "category": "Vectors",
+      "description": "Looks up vectors by ID from a namespace and returns their values and metadata. Up to 100 IDs per request."
+    },
+    {
+      "name": "Update Vector",
+      "category": "Vectors",
+      "description": "Updates an existing vector by ID in a namespace. Can replace the vector values and/or merge new metadata fields into the existing metadata (setMetadata performs a shallow merge; fields not mentioned are preserved)."
+    },
+    {
+      "name": "Delete Vectors",
+      "category": "Vectors",
+      "description": "Deletes vectors from a namespace by explicit IDs, by metadata filter, or all vectors in the namespace when Delete All is enabled. Exactly one selection method should be used per request. Deleting by filter is only supported on indexes that allow metadata-filtered deletes."
+    },
+    {
+      "name": "List Vector IDs",
+      "category": "Vectors",
+      "description": "Lists the IDs of vectors in a namespace of a serverless index, optionally filtered by an ID prefix. Results are paginated — pass the returned pagination token to fetch the next page. Useful for iterating over hierarchical IDs like \"doc1#chunk1\"."
+    },
+    {
+      "name": "Describe Index Stats",
+      "category": "Vectors",
+      "description": "Returns statistics about the contents of an index, including the total vector count, index fullness, dimension, and a per-namespace breakdown of vector counts. An optional metadata filter restricts the stats to matching vectors (not supported on serverless indexes)."
+    },
+    {
+      "name": "Upsert Records",
+      "category": "Records",
+      "description": "Writes text records into a namespace of an index with integrated embedding. Each record's text field (as configured in the index field map, e.g. \"text\" or \"chunk_text\") is automatically embedded by the index's hosted model — no separate embedding step required. Each record must include an \"_id\" (or \"id\") field; all other fields are stored as metadata. Only supported on indexes created via Create Index for Model."
+    },
+    {
+      "name": "Search Records",
+      "category": "Records",
+      "description": "Performs a semantic text search over a namespace of an index with integrated embedding. The query text is embedded automatically and matched against stored records. Optionally reranks the initial results with a hosted reranking model (e.g. bge-reranker-v2-m3, pinecone-rerank-v0) for higher relevance. Only supported on indexes created via Create Index for Model."
+    },
+    {
+      "name": "List Namespaces",
+      "category": "Namespaces",
+      "description": "Lists the namespaces in a serverless index along with each namespace's record count. Results are paginated in sorted order — pass the returned pagination token to fetch the next page."
+    },
+    {
+      "name": "Delete Namespace",
+      "category": "Namespaces",
+      "description": "Permanently deletes a namespace from a serverless index, including all vectors it contains. This action cannot be undone."
+    },
+    {
+      "name": "Create Embeddings",
+      "category": "Inference",
+      "description": "Generates vector embeddings for input texts using a Pinecone-hosted embedding model (e.g. multilingual-e5-large, llama-text-embed-v2). Set Input Type to Passage when embedding documents for storage and to Query when embedding search queries. Up to 96 inputs per request for most models."
+    },
+    {
+      "name": "Rerank Documents",
+      "category": "Inference",
+      "description": "Reranks a list of documents by relevance to a query using a Pinecone-hosted reranking model (e.g. bge-reranker-v2-m3, pinecone-rerank-v0, cohere-rerank-3.5). Returns documents ordered by relevance score. Accepts plain strings or objects with a text field (use Rank Fields to point at custom field names)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Build retrieval-augmented generation (RAG) knowledge bases by upserting document chunks and running semantic search over them.",
+    "Store and query embeddings produced by any model, or let Pinecone auto-embed raw text via integrated-embedding indexes.",
+    "Rerank search or LLM results with Pinecone's hosted reranking models for higher relevance.",
+    "Provision, configure, and clean up serverless indexes and namespaces programmatically from automations."
+  ],
+  "agentIdeas": [
+    "When a **Dropbox** \"On New File\" trigger fires for a document, call **Dropbox** \"Get Temporary Link\" and feed the text into Pinecone \"Upsert Records\" to keep a semantic knowledge base in sync as files arrive.",
+    "Answer a user question by embedding it with Pinecone \"Search Records\" (or \"Query Vectors\"), then use **Notion** \"Create Page\" to save the retrieved context and generated answer as a research note.",
+    "After Pinecone \"Query Vectors\" returns the top matches for a support query, use **Slack** \"Send Message To Channel\" to post the most relevant knowledge-base snippets to the support channel.",
+    "Log every Pinecone \"Rerank Documents\" run's top result into a spreadsheet with **Google Sheets** \"Add Row\" to track retrieval quality over time."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/pinecone/public/icon.png",
+  "sourcePaths": {
+    "service": "services/pinecone",
+    "readme": "services/pinecone/README.md",
+    "index": "services/pinecone/src/index.js"
+  }
+}

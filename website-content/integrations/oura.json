@@ -1,0 +1,123 @@
+{
+  "slug": "oura",
+  "name": "Oura",
+  "marketingCategory": "Utilities & Personal",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Reads sleep, readiness, activity, biometric, and account data from a user's Oura Ring via the [Oura API v2](https://cloud.ouraring.com/v2/docs). Authenticates with an Oura Personal Access Token (PAT) sent as an `Authorization: Bearer` header. Most endpoints query by calendar date range under the `usercollection` namespace; results are paginated via `next_token`.",
+  "actionCount": 16,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Daily Summaries",
+    "Sleep Detail",
+    "Time Series",
+    "Activity",
+    "Account",
+    "Documents"
+  ],
+  "actions": [
+    {
+      "name": "Get Daily Readiness",
+      "category": "Daily Summaries",
+      "description": "Retrieves daily readiness summaries for a date range. Each item reflects how recovered and prepared the body is for the day, including an overall readiness score and contributor breakdowns (resting heart rate, HRV balance, body temperature, recovery index, sleep balance). Results are paginated; pass the returned next_token to fetch the next page."
+    },
+    {
+      "name": "Get Daily Sleep",
+      "category": "Daily Summaries",
+      "description": "Retrieves daily sleep summaries for a date range. Each item is the aggregated sleep score for a day with contributor breakdowns (deep sleep, efficiency, latency, REM sleep, restfulness, timing, total sleep). For per-period sleep detail (multiple naps/main sleep with hypnogram), use Get Sleep Periods instead. Paginated via next_token."
+    },
+    {
+      "name": "Get Sleep Periods",
+      "category": "Sleep Detail",
+      "description": "Retrieves detailed sleep periods for a date range. Unlike Get Daily Sleep, each item is an individual sleep session (main sleep or nap) with granular metrics: sleep phase durations (deep/light/REM/awake), efficiency, latency, average heart rate and HRV, respiratory rate, hypnogram, and 5-minute time-series data. Paginated via next_token."
+    },
+    {
+      "name": "Get Daily Activity",
+      "category": "Daily Summaries",
+      "description": "Retrieves daily activity summaries for a date range. Each item includes the activity score, active/total calories, equivalent walking distance, steps, MET data, sedentary/inactive/active time, and contributor breakdowns. Paginated via next_token."
+    },
+    {
+      "name": "Get Daily SpO2",
+      "category": "Daily Summaries",
+      "description": "Retrieves daily blood oxygen saturation (SpO2) summaries for a date range. Each item includes the average overnight SpO2 percentage and a breathing disturbance index. SpO2 is only recorded on nights when the ring measured it, so some days may be absent. Paginated via next_token."
+    },
+    {
+      "name": "Get Daily Stress",
+      "category": "Daily Summaries",
+      "description": "Retrieves daily stress summaries for a date range. Each item reports total high-stress and recovery time in seconds for the day plus a day summary classification (restored, normal, or stressful). Paginated via next_token."
+    },
+    {
+      "name": "Get Daily Resilience",
+      "category": "Daily Summaries",
+      "description": "Retrieves daily resilience summaries for a date range. Each item includes a resilience level (limited, adequate, solid, strong, exceptional) and contributor breakdowns for sleep recovery, daytime recovery, and stress. Paginated via next_token."
+    },
+    {
+      "name": "Get Daily Cardiovascular Age",
+      "category": "Daily Summaries",
+      "description": "Retrieves daily cardiovascular age estimates for a date range. Each item reports the estimated vascular age (in years) derived from arterial stiffness and cardiovascular metrics. Values are only produced when sufficient data is available, so some days may be absent. Paginated via next_token."
+    },
+    {
+      "name": "Get Heart Rate",
+      "category": "Time Series",
+      "description": "Retrieves time-series heart rate samples between two ISO 8601 datetimes. Unlike the daily summary endpoints, this uses datetime bounds (not calendar dates) and returns individual bpm readings each tagged with the measurement source (awake, rest, sleep, session, workout, live). Provide full ISO 8601 timestamps, e.g. 2024-01-15T00:00:00+00:00. Paginated via next_token."
+    },
+    {
+      "name": "Get Workouts",
+      "category": "Activity",
+      "description": "Retrieves logged and auto-detected workouts for a date range. Each item includes the activity type, intensity (easy, moderate, hard), calories burned, distance, start and end datetimes, and the source (manual, autodetected, or confirmed). Paginated via next_token."
+    },
+    {
+      "name": "Get Sessions",
+      "category": "Activity",
+      "description": "Retrieves guided and unguided moment sessions (breathing, meditation, relaxation, rest) for a date range. Each item includes the session type, mood, start and end datetimes, and optional time-series data for heart rate, HRV, and motion count. Paginated via next_token."
+    },
+    {
+      "name": "Get Enhanced Tags",
+      "category": "Activity",
+      "description": "Retrieves enhanced tags for a date range. Enhanced tags are user-created annotations (e.g. caffeine, alcohol, sick, travel) with an optional custom comment and a start/end datetime describing when the tagged activity or state occurred. Paginated via next_token."
+    },
+    {
+      "name": "Get Rest Mode Periods",
+      "category": "Activity",
+      "description": "Retrieves Rest Mode periods for a date range. Rest Mode is enabled during illness or recovery; each item includes the start and end day of the period and a list of episodes describing tags and comments logged during rest mode. Paginated via next_token."
+    },
+    {
+      "name": "Get Ring Configuration",
+      "category": "Account",
+      "description": "Retrieves the user's ring configuration records. Each item describes a ring the user owns: color, design, hardware type, firmware version, and size. Not a daterange query — returns the full set of configured rings, paginated via next_token."
+    },
+    {
+      "name": "Get Personal Info",
+      "category": "Account",
+      "description": "Retrieves the authenticated user's personal information (age, weight, height, biological sex, and email where available). Returns a single object rather than a paginated list, making it the simplest call to verify that the access token is valid and connected."
+    },
+    {
+      "name": "Get Single Document",
+      "category": "Documents",
+      "description": "Retrieves a single document by its ID from a chosen Oura collection. Select the collection type and provide the document_id (the \"id\" field returned by the corresponding list operation). Returns the same object shape as one element of that collection's data array. Use this to re-fetch a specific record without a date range."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync daily readiness, sleep, and activity scores into a spreadsheet or dashboard for long-term trend tracking.",
+    "Send a morning notification with the day's readiness score and sleep summary.",
+    "Correlate workouts and sessions logged in Oura with training data from other fitness platforms.",
+    "Flag low-readiness or high-stress days to adjust workload or recovery plans.",
+    "Verify a connected account and pull personal info or ring configuration."
+  ],
+  "agentIdeas": [
+    "Use Oura **Get Daily Readiness** each morning, then **Slack** \"Send Message To Channel\" to post the readiness score and recovery status to a personal or team channel.",
+    "Pull Oura **Get Daily Sleep** and **Get Daily Activity**, then **Google Sheets** \"Add Row\" to append each day's scores into a long-term health-tracking spreadsheet.",
+    "Combine Oura **Get Workouts** with **Strava** \"List Activities\" to reconcile ring-detected workouts against logged training sessions, then **Google Sheets** \"Add Rows\" to store the merged dataset."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/oura/public/icon.png",
+  "sourcePaths": {
+    "service": "services/oura",
+    "readme": "services/oura/README.md",
+    "index": "services/oura/src/index.js"
+  }
+}

@@ -1,0 +1,396 @@
+{
+  "slug": "pagerduty",
+  "name": "PagerDuty",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate on-call incident response with PagerDuty. Create and manage incidents, run the full lifecycle (acknowledge, resolve, snooze, merge, note, status update, escalate), fire alerts and change events straight through the Events API v2, and administer the services, escalation policies, schedules, users, teams, maintenance windows, tags, and business services behind them. Connects over OAuth 2.0 using a shared Client ID and Client Secret from your PagerDuty app; dropdown pickers make every service, policy, schedule, user, team, and incident selectable from a list, with friendly labels (e.g. High/Low urgency, Triggered/Acknowledged/Resolved status, Admin/Responder/Observer roles) shown instead of raw API values.",
+  "actionCount": 69,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Incidents",
+    "Services",
+    "Escalation Policies",
+    "Schedules",
+    "Users",
+    "Teams",
+    "On-Call",
+    "Maintenance Windows",
+    "Tags",
+    "Business Services",
+    "Events"
+  ],
+  "actions": [
+    {
+      "name": "Create Incident",
+      "category": "Incidents",
+      "description": "Opens a new incident on a PagerDuty service, paging the on-call responders. Use this to raise an alert from a flow - e.g. when a downstream check fails or a customer reports an outage."
+    },
+    {
+      "name": "List Incidents",
+      "category": "Incidents",
+      "description": "Lists incidents, optionally filtered by status, urgency, service, team, or date range. Use this to find incidents to act on, or to report on recent activity."
+    },
+    {
+      "name": "Get Incident",
+      "category": "Incidents",
+      "description": "Retrieves the full details of one incident by ID, including its status, service, and assignments. Use this after listing or creating an incident."
+    },
+    {
+      "name": "Update Incident",
+      "category": "Incidents",
+      "description": "Acknowledges, resolves, re-prioritizes, re-assigns, or escalates a single incident. Use this to progress an incident through its lifecycle from a flow."
+    },
+    {
+      "name": "Merge Incidents",
+      "category": "Incidents",
+      "description": "Merges one or more source incidents into a target incident, so duplicate alerts collapse into a single timeline. Use this to clean up redundant incidents."
+    },
+    {
+      "name": "Snooze Incident",
+      "category": "Incidents",
+      "description": "Snoozes an acknowledged incident for a set duration, suppressing further escalation until it expires. Use this to silence an incident while someone works on it."
+    },
+    {
+      "name": "Create Incident Note",
+      "category": "Incidents",
+      "description": "Adds a note (a comment) to an incident's timeline. Use this to record context or hand-off information visible to responders."
+    },
+    {
+      "name": "List Incident Notes",
+      "category": "Incidents",
+      "description": "Lists the notes (comments) recorded on an incident's timeline. Use this to read the running commentary on an incident."
+    },
+    {
+      "name": "Create Status Update",
+      "category": "Incidents",
+      "description": "Posts a status update on an incident, broadcast to its subscribers (e.g. a status page or stakeholders). Use this to keep watchers informed during an incident."
+    },
+    {
+      "name": "Create Responder Request",
+      "category": "Incidents",
+      "description": "Requests an additional responder to join an incident, sending them a notification with a message. Use this to pull in extra help on a live incident."
+    },
+    {
+      "name": "List Incident Alerts",
+      "category": "Incidents",
+      "description": "Lists the alerts that make up an incident - the underlying monitoring signals grouped into it. Use this to inspect what triggered an incident."
+    },
+    {
+      "name": "Get Incident Alert",
+      "category": "Incidents",
+      "description": "Retrieves one alert within an incident by its ID, including the alert body and the service it came from. Use this to drill into a specific alert."
+    },
+    {
+      "name": "Update Alert",
+      "category": "Incidents",
+      "description": "Resolves an alert, or moves it to a different incident. Use this to clear a single alert independently of its incident, or to re-group alerts."
+    },
+    {
+      "name": "List Incident Log Entries",
+      "category": "Incidents",
+      "description": "Lists the log entries (the audit timeline) of an incident - triggers, acknowledgements, escalations, notes, and resolution events. Use this to reconstruct exactly what happened."
+    },
+    {
+      "name": "List Services",
+      "category": "Services",
+      "description": "Lists PagerDuty services (the monitored applications incidents are raised against), optionally filtered by name or team. Use this to find a service before creating an incident or maintenance window."
+    },
+    {
+      "name": "Get Service",
+      "category": "Services",
+      "description": "Retrieves the full configuration of one service by ID, including its escalation policy and integrations. Use this to inspect a service."
+    },
+    {
+      "name": "Create Service",
+      "category": "Services",
+      "description": "Creates a new PagerDuty service tied to an escalation policy, defining where incidents are raised and who is paged. Use this to onboard a new application into PagerDuty."
+    },
+    {
+      "name": "Update Service",
+      "category": "Services",
+      "description": "Updates a service's name, description, status, or escalation policy. Use this to reconfigure an existing service."
+    },
+    {
+      "name": "Delete Service",
+      "category": "Services",
+      "description": "Permanently deletes a service. Use this to remove a decommissioned application from PagerDuty. This cannot be undone."
+    },
+    {
+      "name": "List Escalation Policies",
+      "category": "Escalation Policies",
+      "description": "Lists escalation policies (the ordered chains of who gets paged and when), optionally filtered by name or team. Use this to find a policy before assigning it to a service."
+    },
+    {
+      "name": "Get Escalation Policy",
+      "category": "Escalation Policies",
+      "description": "Retrieves one escalation policy by ID, including its rules and targets. Use this to inspect the paging chain of a policy."
+    },
+    {
+      "name": "Create Escalation Policy",
+      "category": "Escalation Policies",
+      "description": "Creates an escalation policy with a first level of responders paged after a delay. Use this to define who is on the hook for incidents and how escalation flows."
+    },
+    {
+      "name": "Update Escalation Policy",
+      "category": "Escalation Policies",
+      "description": "Updates an escalation policy's name, description, or loop count while preserving its existing escalation rules and teams. Use this for the common edits; full rule changes are made via Create."
+    },
+    {
+      "name": "Delete Escalation Policy",
+      "category": "Escalation Policies",
+      "description": "Permanently deletes an escalation policy. Use this to remove an unused policy. A policy still attached to a service cannot be deleted."
+    },
+    {
+      "name": "List Schedules",
+      "category": "Schedules",
+      "description": "Lists on-call schedules (the rotations that define who is on call when), optionally filtered by name. Use this to find a schedule before reading its rotation or adding an override."
+    },
+    {
+      "name": "Get Schedule",
+      "category": "Schedules",
+      "description": "Retrieves one schedule by ID, including its rotation layers and the rendered final schedule. Use this to inspect a rotation."
+    },
+    {
+      "name": "Create Schedule",
+      "category": "Schedules",
+      "description": "Creates an on-call schedule with a single rotation layer of users taking turns. Use this to set up who is on call and how the rotation advances."
+    },
+    {
+      "name": "Update Schedule",
+      "category": "Schedules",
+      "description": "Updates a schedule's name, time zone, or description while preserving its existing rotation layers. Use this for the common metadata edits without rebuilding the rotation."
+    },
+    {
+      "name": "Delete Schedule",
+      "category": "Schedules",
+      "description": "Permanently deletes a schedule. Use this to remove an unused rotation. A schedule still referenced by an escalation policy cannot be deleted."
+    },
+    {
+      "name": "List Schedule Overrides",
+      "category": "Schedules",
+      "description": "Lists the overrides on a schedule within a date range - temporary substitutions of who is on call. Use this to see who is covering instead of the default rotation."
+    },
+    {
+      "name": "Create Schedule Override",
+      "category": "Schedules",
+      "description": "Adds an override to a schedule, putting a specific user on call for a time window in place of the normal rotation. Use this to arrange cover for planned absences."
+    },
+    {
+      "name": "List Schedule On-Calls",
+      "category": "Schedules",
+      "description": "Lists the users on call for a schedule, optionally within a time window. Use this to find out who to contact for a given rotation."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists the users in your PagerDuty account, optionally filtered by name, email, or team. Use this to find a user before assigning incidents or building schedules."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves one user by ID, including their role, time zone, and contact details. Use this to inspect a user."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Invites a new user into your PagerDuty account with a name, email, and role. Use this to onboard a responder. May require an available license on the account."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates a user's name, email, role, or job title. Use this to change a responder's details or permissions."
+    },
+    {
+      "name": "Delete User",
+      "category": "Users",
+      "description": "Permanently removes a user from your PagerDuty account. Use this during offboarding. A user who is the only responder on a policy cannot be deleted."
+    },
+    {
+      "name": "List User Contact Methods",
+      "category": "Users",
+      "description": "Lists a user's contact methods (email, phone, SMS, push). Use this to see how a responder can be reached."
+    },
+    {
+      "name": "List User Notification Rules",
+      "category": "Users",
+      "description": "Lists a user's notification rules - how and when they are notified for high- and low-urgency incidents. Use this to audit a responder's alerting setup."
+    },
+    {
+      "name": "List Teams",
+      "category": "Teams",
+      "description": "Lists the teams in your account, optionally filtered by name. Use this to find a team before scoping services, policies, or users to it."
+    },
+    {
+      "name": "Get Team",
+      "category": "Teams",
+      "description": "Retrieves one team by ID. Use this to inspect a team's details."
+    },
+    {
+      "name": "Create Team",
+      "category": "Teams",
+      "description": "Creates a new team to group users, services, and escalation policies. Use this to organize your account by squad or product area."
+    },
+    {
+      "name": "Update Team",
+      "category": "Teams",
+      "description": "Updates a team's name or description. Use this to rename or re-describe a team."
+    },
+    {
+      "name": "Delete Team",
+      "category": "Teams",
+      "description": "Permanently deletes a team. Use this to remove an obsolete team. Members, services, and policies are not deleted, just unlinked."
+    },
+    {
+      "name": "Add User To Team",
+      "category": "Teams",
+      "description": "Adds a user to a team, optionally with a team role (manager, responder, or observer). Use this to grow a team's membership."
+    },
+    {
+      "name": "Remove User From Team",
+      "category": "Teams",
+      "description": "Removes a user from a team. Use this when a member leaves a squad."
+    },
+    {
+      "name": "Add Escalation Policy To Team",
+      "category": "Teams",
+      "description": "Associates an escalation policy with a team, so the team owns it. Use this to organize policies under their owning team."
+    },
+    {
+      "name": "Remove Escalation Policy From Team",
+      "category": "Teams",
+      "description": "Removes the association between an escalation policy and a team. Use this to disown a policy from a team."
+    },
+    {
+      "name": "List On-Calls",
+      "category": "On-Call",
+      "description": "Lists who is currently (or within a window) on call, optionally filtered by user, schedule, or escalation policy. Use this to find the right person to page right now."
+    },
+    {
+      "name": "List Priorities",
+      "category": "On-Call",
+      "description": "Lists the account's incident priorities (e.g. P1-P5) with their names and descriptions. Use this to pick a priority ID when creating or updating an incident."
+    },
+    {
+      "name": "List Maintenance Windows",
+      "category": "Maintenance Windows",
+      "description": "Lists maintenance windows (periods when a service's alerting is suppressed), optionally filtered to past, future, or ongoing windows. Use this to see scheduled downtime."
+    },
+    {
+      "name": "Get Maintenance Window",
+      "category": "Maintenance Windows",
+      "description": "Retrieves one maintenance window by ID. Use this to inspect a scheduled downtime window."
+    },
+    {
+      "name": "Create Maintenance Window",
+      "category": "Maintenance Windows",
+      "description": "Schedules a maintenance window during which alerting for the given services is suppressed. Use this to silence expected noise during a planned deploy or maintenance."
+    },
+    {
+      "name": "Update Maintenance Window",
+      "category": "Maintenance Windows",
+      "description": "Updates a maintenance window's times, description, or affected services. Use this to reschedule or re-scope planned downtime."
+    },
+    {
+      "name": "Delete Maintenance Window",
+      "category": "Maintenance Windows",
+      "description": "Deletes a maintenance window, or ends it early if it is already running. Use this to cancel planned downtime or restore alerting sooner."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists the tags defined in your account, optionally filtered by label. Use this to find a tag ID before assigning or removing it."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new tag (a free-form label) that can be attached to users, teams, and escalation policies. Use this to introduce a new label before tagging entities with it."
+    },
+    {
+      "name": "Delete Tag",
+      "category": "Tags",
+      "description": "Permanently deletes a tag, removing it from every entity it was attached to. Use this to retire a label."
+    },
+    {
+      "name": "List Tagged Entities",
+      "category": "Tags",
+      "description": "Lists the users, teams, or escalation policies connected to a tag. Use this to find everything labelled with a given tag."
+    },
+    {
+      "name": "Change Entity Tags",
+      "category": "Tags",
+      "description": "Adds and/or removes tags on a user, team, or escalation policy in one call. New labels are created on the fly; existing tags are referenced by ID. Use this to label entities for filtering and reporting."
+    },
+    {
+      "name": "List Business Services",
+      "category": "Business Services",
+      "description": "Lists business services - the customer-facing capabilities (e.g. \"Checkout\") that technical services roll up into. Use this to find a business service before reading or updating it."
+    },
+    {
+      "name": "Get Business Service",
+      "category": "Business Services",
+      "description": "Retrieves one business service by ID, including its point of contact and owning team. Use this to inspect a business service."
+    },
+    {
+      "name": "Create Business Service",
+      "category": "Business Services",
+      "description": "Creates a business service to represent a customer-facing capability. Use this to model a product or capability for status and impact reporting."
+    },
+    {
+      "name": "Update Business Service",
+      "category": "Business Services",
+      "description": "Updates a business service's name, description, point of contact, or owning team. Use this to keep a business service's metadata current."
+    },
+    {
+      "name": "Delete Business Service",
+      "category": "Business Services",
+      "description": "Permanently deletes a business service. Use this to remove a retired customer-facing capability."
+    },
+    {
+      "name": "Trigger Alert",
+      "category": "Events",
+      "description": "Sends a trigger event to PagerDuty's Events API v2, raising a new alert on the service tied to the routing key (and, depending on the integration's alert-creation setting, opening or updating an incident). This is the primary automation path for paging from monitoring, scripts, or flows - much lower overhead than Create Incident. Provide a Deduplication Key to update an already-open alert instead of creating a new one; omit it to let PagerDuty generate one, which is returned as dedup_key in the response for later Acknowledge/Resolve calls."
+    },
+    {
+      "name": "Acknowledge Alert",
+      "category": "Events",
+      "description": "Sends an acknowledge event to PagerDuty's Events API v2 for an open alert, signaling that someone is working on it and pausing further escalation. Use this from automation that detects a human (or a bot) has taken ownership of a triggered alert."
+    },
+    {
+      "name": "Resolve Alert",
+      "category": "Events",
+      "description": "Sends a resolve event to PagerDuty's Events API v2 for an open alert, closing it out (and resolving the associated incident once all of its alerts are resolved). Use this to automatically clear an alert once the underlying condition recovers."
+    },
+    {
+      "name": "Send Change Event",
+      "category": "Events",
+      "description": "Records a change event (e.g. a deploy or configuration change) via PagerDuty's Events API v2 change endpoint, for context alongside incidents on the associated service's timeline. Change events do not page anyone and are not incidents - use this to give responders visibility into recent changes that may be related to an incident."
+    }
+  ],
+  "triggers": [
+    "On New Triggered Incident"
+  ],
+  "idealUseCases": [
+    "Open an incident automatically when a check or customer report signals an outage.",
+    "Acknowledge, resolve, snooze, or re-assign incidents and post status updates to subscribers.",
+    "Schedule maintenance windows around deploys to suppress expected alert noise.",
+    "Keep schedules, escalation policies, services, and team membership in sync from other systems.",
+    "Look up who is on call now and pull in extra responders during a live incident."
+  ],
+  "agentIdeas": [
+    "When a **PagerDuty** \"On New Triggered Incident\" trigger fires, use **Slack** \"Send Message To Channel\" to alert the on-call channel with the incident title and urgency.",
+    "Use **Google Sheets** \"Get Rows\" to read a list of degraded services, then call **PagerDuty** \"Create Incident\" for each row to page the responsible responders.",
+    "When a **PagerDuty** \"On New Triggered Incident\" trigger fires, use **Gmail** \"Send Message\" to email stakeholders and log the incident to a tracker with **Google Sheets** \"Add Row\".",
+    "Read a monitoring export with **Google Sheets** \"Get Rows\" and call **PagerDuty** \"Trigger Alert\" for each failing check, reusing a Deduplication Key so recoveries can later be cleared with **PagerDuty** \"Resolve Alert\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/pagerduty/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/pagerduty",
+    "readme": "services/pagerduty/README.md",
+    "index": "services/pagerduty/src/index.js"
+  }
+}

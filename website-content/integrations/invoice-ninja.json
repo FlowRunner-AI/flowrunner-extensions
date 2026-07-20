@@ -1,0 +1,153 @@
+{
+  "slug": "invoice-ninja",
+  "name": "Invoice Ninja",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to the [Invoice Ninja](https://www.invoiceninja.com/) v5 API to manage clients, invoices, payments, products, quotes and recurring invoices. Authenticates with an `X-Api-Token` header and works against both the hosted app (`https://invoicing.co`) and self-hosted installs. Invoices and quotes are built from `line_items` (product key, description, unit cost, quantity and optional per-line tax), and invoice/quote lifecycle changes run through Invoice Ninja's bulk-action endpoints.",
+  "actionCount": 22,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Clients",
+    "Invoices",
+    "Payments",
+    "Products",
+    "Quotes",
+    "Recurring Invoices"
+  ],
+  "actions": [
+    {
+      "name": "List Clients",
+      "category": "Clients",
+      "description": "Retrieves a paginated list of clients. Supports a free-text search filter (matches name, id number, email and contact fields), a status filter (active, archived or deleted), page size and page number, sorting, and an include parameter to embed related records such as contacts or documents."
+    },
+    {
+      "name": "Get Client",
+      "category": "Clients",
+      "description": "Retrieves a single client by its hashed id, including balance, contacts and settings. Use the include parameter to embed related records such as invoices or documents."
+    },
+    {
+      "name": "Create Client",
+      "category": "Clients",
+      "description": "Creates a new client. The name field is the display/company name. Contacts is an array of contact people, each with first name, last name, email and optional phone; the first contact becomes the primary contact. Address fields and website are optional. Country is provided as a numeric country id."
+    },
+    {
+      "name": "Update Client",
+      "category": "Clients",
+      "description": "Updates an existing client identified by its hashed id. Only the provided fields are changed. When contacts are supplied the full contact list is replaced, so include every contact you want to keep."
+    },
+    {
+      "name": "Delete Client",
+      "category": "Clients",
+      "description": "Deletes a client by its hashed id. This performs a soft delete; the client is removed from active lists but retained for audit purposes and can be restored from the Invoice Ninja UI."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Retrieves a paginated list of invoices. Filter by client, by lifecycle status, or by free-text search. Supports page size, page number and an include parameter to embed related records such as the client or line items."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves a single invoice by its hashed id, including line items, totals and status. Use the include parameter to embed related records such as the client or payments."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates a new invoice for a client. Line items each carry a product key, notes/description, unit cost and quantity, plus optional per-line tax name and rate. Optional header fields include issue date, due date, po number, a percentage or absolute discount and public/private notes."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Updates an existing invoice identified by its hashed id. Only the provided fields are changed. Supplying line items replaces the full set of line items on the invoice."
+    },
+    {
+      "name": "Delete Invoice",
+      "category": "Invoices",
+      "description": "Deletes an invoice by its hashed id. This is a soft delete; the invoice is removed from active lists but retained for audit purposes and can be restored from the Invoice Ninja UI."
+    },
+    {
+      "name": "Invoice Action",
+      "category": "Invoices",
+      "description": "Performs a bulk-style action on one invoice via the invoices bulk endpoint. Choose an action such as emailing the invoice to the client, marking it sent or paid, or archiving, restoring, cancelling or deleting it. The invoice id is passed to the endpoint as a single-element ids array."
+    },
+    {
+      "name": "List Payments",
+      "category": "Payments",
+      "description": "Retrieves a paginated list of payments. Filter by client or by free-text search, and use the include parameter to embed related records such as the client or applied invoices."
+    },
+    {
+      "name": "Get Payment",
+      "category": "Payments",
+      "description": "Retrieves a single payment by its hashed id, including the amount, applied amount and the invoices it is applied to. Use the include parameter to embed related records."
+    },
+    {
+      "name": "Create Payment",
+      "category": "Payments",
+      "description": "Records a payment for a client. The amount is the total payment received. The invoices array applies portions of the payment to specific invoices, each entry pairing an invoice id with the amount applied to it. Optional fields include the payment date, transaction reference and payment type."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Retrieves a paginated list of products from the product catalog. Supports a free-text search filter across product key and notes, page size, page number and an include parameter."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves a single product by its hashed id, including the product key, notes, price and default quantity."
+    },
+    {
+      "name": "Create Product",
+      "category": "Products",
+      "description": "Creates a new product in the catalog. The product key is the item identifier or name. Optional fields include a description (notes), unit price, default quantity and tax details."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates an existing product identified by its hashed id. Only the provided fields are changed."
+    },
+    {
+      "name": "List Quotes",
+      "category": "Quotes",
+      "description": "Retrieves a paginated list of quotes. Filter by client or by free-text search, and use the include parameter to embed related records such as the client or line items."
+    },
+    {
+      "name": "Create Quote",
+      "category": "Quotes",
+      "description": "Creates a new quote for a client. Line items each carry a product key, notes/description, unit cost and quantity. Optional header fields include issue date, valid-until date, po number and public notes. A quote can later be converted into an invoice once approved."
+    },
+    {
+      "name": "Approve Quote",
+      "category": "Quotes",
+      "description": "Approves a quote via the quotes bulk endpoint, marking it as accepted by the client. The quote id is passed to the endpoint as a single-element ids array."
+    },
+    {
+      "name": "List Recurring Invoices",
+      "category": "Recurring Invoices",
+      "description": "Retrieves a paginated list of recurring invoices. Filter by client or by free-text search, and use the include parameter to embed related records such as the client."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Create a client and issue an invoice automatically when a deal closes or an order is placed.",
+    "Record incoming payments and apply them to specific invoices from your billing workflow.",
+    "Email an invoice to a client, mark it sent or paid, or archive it as a follow-up step.",
+    "Generate quotes for new leads and approve them once the client accepts.",
+    "Sync a product catalog and keep recurring invoices in view for reporting."
+  ],
+  "agentIdeas": [
+    "When a **Stripe** \"Get Payment Intent\" confirms a charge, call **Invoice Ninja** \"Create Payment\" to record the amount and apply it against the matching invoice.",
+    "Use **Pipedrive** \"Get Deal By ID\" to pull a won deal, then chain **Invoice Ninja** \"Create Client\" and \"Create Invoice\" to bill the customer, and **Gmail** \"Send Message\" to notify them.",
+    "After **Invoice Ninja** \"Approve Quote\" marks a quote accepted, use **Slack** \"Send Message To Channel\" to alert the sales team and \"Create Invoice\" to bill the client."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/invoice-ninja/public/icon.png",
+  "sourcePaths": {
+    "service": "services/invoice-ninja",
+    "readme": "services/invoice-ninja/README.md",
+    "index": "services/invoice-ninja/src/index.js"
+  }
+}

@@ -1,0 +1,296 @@
+{
+  "slug": "outreach",
+  "name": "Outreach",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to [Outreach](https://www.outreach.io/) to automate sales engagement. The extension uses OAuth2 and covers prospects, accounts, sequence enrollment, tasks, calls, opportunities, templates, and snippets - plus real-time webhook triggers.",
+  "actionCount": 47,
+  "triggerCount": 9,
+  "operationCategories": [
+    "Prospects",
+    "Accounts",
+    "Sequences",
+    "Templates",
+    "Snippets",
+    "Tasks",
+    "Calls",
+    "Opportunities",
+    "Reference"
+  ],
+  "actions": [
+    {
+      "name": "Create Prospect",
+      "category": "Prospects",
+      "description": "Creates a new prospect (a person you sell to) in Outreach with their name, email, job title, and optional Account, owner, and tags. Use this to add a lead captured elsewhere into Outreach before enrolling them in a sequence."
+    },
+    {
+      "name": "Get Prospect",
+      "category": "Prospects",
+      "description": "Retrieves a single prospect by ID, returning their full profile - name, emails, title, tags, and relationships. Use this to inspect a prospect before updating or enrolling them."
+    },
+    {
+      "name": "List Prospects",
+      "category": "Prospects",
+      "description": "Returns a page of prospects, optionally filtered by an exact email match. Use this to browse prospects or to find one to feed into a later action; pass the returned cursor to page through results."
+    },
+    {
+      "name": "Update Prospect",
+      "category": "Prospects",
+      "description": "Updates a prospect's name, title, or owner. Leave a field blank to keep its current value. Use this to enrich or correct a prospect's details."
+    },
+    {
+      "name": "Delete Prospect",
+      "category": "Prospects",
+      "description": "Permanently deletes a prospect from Outreach. This cannot be undone. Use with care - it removes the person and their activity from your Outreach data."
+    },
+    {
+      "name": "Add Prospect Tags",
+      "category": "Prospects",
+      "description": "Adds one or more tags to a prospect, merging them with the prospect's existing tags. Use this to label prospects (for example \"vip\" or \"webinar-2026\") for segmentation."
+    },
+    {
+      "name": "Remove Prospect Tags",
+      "category": "Prospects",
+      "description": "Removes one or more tags from a prospect, keeping the rest. Use this to clean up labels - for example to take a prospect out of a tagged segment."
+    },
+    {
+      "name": "Create Account",
+      "category": "Accounts",
+      "description": "Creates a new account (a company you sell to) in Outreach with its name, domain, industry, and owner. Use this to add a target company so prospects and opportunities can be linked to it."
+    },
+    {
+      "name": "Get Account",
+      "category": "Accounts",
+      "description": "Retrieves a single account by ID, returning its company details. Use this to inspect an account before updating it or linking records to it."
+    },
+    {
+      "name": "List Accounts",
+      "category": "Accounts",
+      "description": "Returns a page of accounts, optionally filtered by name. Use this to browse target companies or to find an account ID for a later action; pass the cursor to page through results."
+    },
+    {
+      "name": "Update Account",
+      "category": "Accounts",
+      "description": "Updates an account's name, domain, or industry. Leave a field blank to keep its current value. Use this to correct or enrich company details."
+    },
+    {
+      "name": "Delete Account",
+      "category": "Accounts",
+      "description": "Permanently deletes an account from Outreach. This cannot be undone. Prospects and opportunities linked to it are unlinked, not deleted."
+    },
+    {
+      "name": "List Sequences",
+      "category": "Sequences",
+      "description": "Returns a page of sequences (the multi-step email/call cadences set up in Outreach), optionally filtered by name. Use this to find the sequence you want to enroll a prospect into."
+    },
+    {
+      "name": "Get Sequence",
+      "category": "Sequences",
+      "description": "Retrieves a single sequence by ID, returning its name, status, and prospect count. Use this to inspect a sequence before enrolling prospects."
+    },
+    {
+      "name": "List Sequence Steps",
+      "category": "Sequences",
+      "description": "Lists the steps that make up a sequence - their order, type (automatic email, call, task, etc.), and interval. Use this to inspect a cadence's structure."
+    },
+    {
+      "name": "Add Prospect to Sequence",
+      "category": "Sequences",
+      "description": "Enrolls a prospect into a sequence so Outreach starts sending them the cadence's steps from the chosen mailbox. This is the core \"start outreach to this person\" action. Outreach requires a sending mailbox to enroll."
+    },
+    {
+      "name": "Remove Prospect from Sequence",
+      "category": "Sequences",
+      "description": "Removes a prospect's enrollment from a sequence by deleting its sequence state, stopping further steps. Use this to unenroll someone who replied or opted out."
+    },
+    {
+      "name": "List Sequence Enrollments",
+      "category": "Sequences",
+      "description": "Lists sequence states (prospect enrollments), optionally filtered by prospect or sequence. Use this to see which sequences a prospect is in, or who is enrolled in a sequence, and to get an enrollment ID to remove."
+    },
+    {
+      "name": "Create Template",
+      "category": "Templates",
+      "description": "Creates a reusable email template in Outreach with a name, subject, and HTML body. Use this to standardize messaging that reps and sequences can drop into emails."
+    },
+    {
+      "name": "Get Template",
+      "category": "Templates",
+      "description": "Retrieves a single email template by ID, returning its name, subject, and body. Use this to inspect a template before editing or reusing it."
+    },
+    {
+      "name": "List Templates",
+      "category": "Templates",
+      "description": "Returns a page of email templates. Use this to browse available templates or to find a template ID for a later action; pass the cursor to page through results."
+    },
+    {
+      "name": "Update Template",
+      "category": "Templates",
+      "description": "Updates an email template's name, subject, or HTML body. Leave a field blank to keep its current value. Use this to revise standardized messaging."
+    },
+    {
+      "name": "Delete Template",
+      "category": "Templates",
+      "description": "Permanently deletes an email template from Outreach. This cannot be undone. Sequences that referenced it will lose that template."
+    },
+    {
+      "name": "Create Snippet",
+      "category": "Snippets",
+      "description": "Creates a reusable snippet (a saved block of content) in Outreach with a name and HTML body. Use this for boilerplate like a pricing blurb or legal footer that reps insert into emails."
+    },
+    {
+      "name": "Get Snippet",
+      "category": "Snippets",
+      "description": "Retrieves a single snippet by ID, returning its name and body. Use this to inspect a snippet before editing or reusing it."
+    },
+    {
+      "name": "List Snippets",
+      "category": "Snippets",
+      "description": "Returns a page of snippets. Use this to browse available snippets or to find a snippet ID for a later action; pass the cursor to page through results."
+    },
+    {
+      "name": "Update Snippet",
+      "category": "Snippets",
+      "description": "Updates a snippet's name or HTML body. Leave a field blank to keep its current value. Use this to revise saved boilerplate content."
+    },
+    {
+      "name": "Delete Snippet",
+      "category": "Snippets",
+      "description": "Permanently deletes a snippet from Outreach. This cannot be undone."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a task in Outreach about a prospect - a to-do/action item, call, email, or in-person meeting, with an optional due date and owner. Use this to queue a rep's follow-up work."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single task by ID, returning its type, state, due date, and note. Use this to inspect a task before updating or completing it."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Returns a page of tasks, optionally filtered by completion status and owner. Use this to find outstanding work for a rep or to locate a task ID for a later action."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates a task's note, due date, or owner. Leave a field blank to keep its current value. To mark a task done, use Complete Task instead."
+    },
+    {
+      "name": "Complete Task",
+      "category": "Tasks",
+      "description": "Marks a task complete by setting its state to \"completed\". Use this when the rep finishes the call, email, or to-do the task represents."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task from Outreach. This cannot be undone. Use this to remove a task that is no longer needed."
+    },
+    {
+      "name": "Log Call",
+      "category": "Calls",
+      "description": "Logs a call with a prospect in Outreach - its direction, outcome, note, and when it happened. Use this to record dial activity from an external dialer or after a manual call."
+    },
+    {
+      "name": "Get Call",
+      "category": "Calls",
+      "description": "Retrieves a single logged call by ID, returning its direction, outcome, and note. Use this to inspect a recorded call."
+    },
+    {
+      "name": "List Calls",
+      "category": "Calls",
+      "description": "Returns a page of logged calls, optionally filtered by prospect. Use this to review call history for a prospect or across the org; pass the cursor to page through results."
+    },
+    {
+      "name": "Create Opportunity",
+      "category": "Opportunities",
+      "description": "Creates an opportunity (a deal) in Outreach with a name, amount, account, stage, and owner. Use this to track a revenue opportunity tied to an account."
+    },
+    {
+      "name": "Get Opportunity",
+      "category": "Opportunities",
+      "description": "Retrieves a single opportunity by ID, returning its name, amount, and stage. Use this to inspect a deal before updating it."
+    },
+    {
+      "name": "List Opportunities",
+      "category": "Opportunities",
+      "description": "Returns a page of opportunities, optionally filtered by stage. Use this to review a pipeline or to find an opportunity ID for a later action; pass the cursor to page through results."
+    },
+    {
+      "name": "Update Opportunity",
+      "category": "Opportunities",
+      "description": "Updates an opportunity's name, stage, or amount. Leave a field blank to keep its current value. Use this to advance a deal through the pipeline or revise its value."
+    },
+    {
+      "name": "Delete Opportunity",
+      "category": "Opportunities",
+      "description": "Permanently deletes an opportunity from Outreach. This cannot be undone. Use this to remove a deal that was created in error."
+    },
+    {
+      "name": "List Mailboxes",
+      "category": "Reference",
+      "description": "Returns the mailboxes (sending email accounts) connected to Outreach. Use this to find the mailbox ID needed to enroll a prospect in a sequence."
+    },
+    {
+      "name": "List Mailings",
+      "category": "Reference",
+      "description": "Returns a page of mailings (outbound emails Outreach sent), optionally filtered by prospect, with open/click/reply counts. Use this to review email engagement for a prospect."
+    },
+    {
+      "name": "List Users",
+      "category": "Reference",
+      "description": "Returns the Outreach users (reps) in the org. Use this to find the user ID for an owner or assignee on a prospect, account, task, or opportunity."
+    },
+    {
+      "name": "List Stages",
+      "category": "Reference",
+      "description": "Returns the opportunity stages configured in Outreach (the pipeline steps). Use this to find the stage ID to set on an opportunity."
+    },
+    {
+      "name": "List Tags",
+      "category": "Reference",
+      "description": "Returns the distinct tags used across your Outreach data. Use this to discover existing labels before tagging prospects or accounts."
+    }
+  ],
+  "triggers": [
+    "On Prospect Created",
+    "On Prospect Updated",
+    "On Account Created",
+    "On Task Created",
+    "On Task Completed",
+    "On Opportunity Created",
+    "On Opportunity Updated",
+    "On Call Logged",
+    "On Mailing Created"
+  ],
+  "idealUseCases": [
+    "Add captured leads as prospects, then enroll them in a sequence.",
+    "Keep accounts and prospects in sync with your CRM or data sources.",
+    "Tag and segment prospects automatically as they move through your funnel.",
+    "Queue follow-up tasks for reps and mark them complete from a flow.",
+    "Log calls from an external dialer into a prospect's timeline.",
+    "Create and update opportunities to keep the pipeline current.",
+    "Manage reusable email templates and snippets for consistent messaging.",
+    "React in real time to prospect, account, task, opportunity, call, and mailing events."
+  ],
+  "agentIdeas": [
+    "On a new prospect, enrich it from another source, then enroll it in the right sequence and assign an owner.",
+    "When an inbound lead is captured, find-or-create its account and link the prospect before starting outreach.",
+    "On task completion, log the outcome elsewhere and queue the next follow-up task automatically.",
+    "When an opportunity changes stage, notify sales leadership and update a pipeline dashboard.",
+    "Nightly, list prospects filtered by email or tag and generate an engagement report from their mailings and calls."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/outreach/public/icon.png",
+  "sourcePaths": {
+    "service": "services/outreach",
+    "readme": "services/outreach/README.md",
+    "index": "services/outreach/src/index.js"
+  }
+}

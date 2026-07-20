@@ -1,0 +1,125 @@
+{
+  "slug": "home-assistant",
+  "name": "Home Assistant",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to your [Home Assistant](https://www.home-assistant.io/) instance to read entity states, control devices, fire and inspect events, render Jinja2 templates, and query history and calendars through the Home Assistant [REST API](https://developers.home-assistant.io/docs/api/rest/). Authentication uses your instance URL and a long-lived Bearer access token.",
+  "actionCount": 16,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Config & Info",
+    "States",
+    "Services",
+    "Events",
+    "History & Logbook",
+    "Templates",
+    "Calendars"
+  ],
+  "actions": [
+    {
+      "name": "Get API Status",
+      "category": "Config & Info",
+      "description": "Verifies that the Home Assistant API is reachable and that the configured server URL and long-lived access token are valid. Calls the API root and returns a simple running message. Use this to test connectivity before running other operations."
+    },
+    {
+      "name": "Get Config",
+      "category": "Config & Info",
+      "description": "Returns the current Home Assistant configuration, including location name, latitude/longitude, elevation, time zone, unit system, installed version, loaded components, and current config state. Useful for discovering server capabilities and metadata."
+    },
+    {
+      "name": "Check Config",
+      "category": "Config & Info",
+      "description": "Validates the current Home Assistant configuration.yaml files without restarting the server. Returns a result of \"valid\" or \"invalid\" along with any error details. Requires the config integration to be enabled on the Home Assistant instance."
+    },
+    {
+      "name": "Get States",
+      "category": "States",
+      "description": "Returns the current state and attributes of every entity in Home Assistant as an array of state objects. Each object includes the entity_id, state value, attributes (such as friendly_name and unit_of_measurement), and last-changed/last-updated timestamps."
+    },
+    {
+      "name": "Get Entity State",
+      "category": "States",
+      "description": "Returns the current state and attributes of a single entity by its entity_id (for example light.kitchen or sensor.outside_temperature). Returns an error if the entity does not exist."
+    },
+    {
+      "name": "Set State",
+      "category": "States",
+      "description": "Creates or updates the state of an entity in Home Assistant's state machine. Note this only changes the representation within Home Assistant and does not communicate with the actual device; to control a device, use Call Service instead. Returns the resulting state object."
+    },
+    {
+      "name": "List Services",
+      "category": "Services",
+      "description": "Returns all service domains available on the Home Assistant instance and the services each domain exposes, including their fields and descriptions. Use this to discover which domain/service pairs and parameters are valid for Call Service."
+    },
+    {
+      "name": "Call Service",
+      "category": "Services",
+      "description": "Calls a Home Assistant service to control devices or automations, e.g. domain \"light\" and service \"turn_on\". Provide the target and any parameters via Service Data, e.g. {\"entity_id\":\"light.kitchen\",\"brightness\":255}. Returns the list of entity states that changed as a result of the call."
+    },
+    {
+      "name": "List Events",
+      "category": "Events",
+      "description": "Returns all event types the Home Assistant instance is currently listening for, along with the number of listeners for each. Useful for discovering valid event types before firing a custom event."
+    },
+    {
+      "name": "Fire Event",
+      "category": "Events",
+      "description": "Fires a custom event on the Home Assistant event bus. Provide the event type and an optional event data object. Automations can be triggered by these events. Returns a confirmation message."
+    },
+    {
+      "name": "Get History",
+      "category": "History & Logbook",
+      "description": "Returns state-change history for one or more entities over a time period. The start timestamp defaults to one day before the request if omitted. Provide entity IDs to filter (strongly recommended for performance) and an optional end time. Returns an array of state-object arrays, one per entity."
+    },
+    {
+      "name": "Get Logbook",
+      "category": "History & Logbook",
+      "description": "Returns human-readable logbook entries describing what happened in Home Assistant over a time period, such as entities turning on/off and automations firing. The start timestamp defaults to one day before the request if omitted. Optionally filter by a single entity and provide an end time."
+    },
+    {
+      "name": "Get Error Log",
+      "category": "History & Logbook",
+      "description": "Returns all errors logged during the current Home Assistant session as plain text. Useful for diagnosing configuration or integration problems on the instance."
+    },
+    {
+      "name": "Render Template",
+      "category": "Templates",
+      "description": "Renders a Home Assistant Jinja2 template using the instance's live state and returns the resulting string. Useful for computing values from entity states, e.g. \"{{ states('sensor.outside_temperature') }}\" or \"The sun is {{ states('sun.sun') }}\"."
+    },
+    {
+      "name": "List Calendars",
+      "category": "Calendars",
+      "description": "Returns the list of calendar entities configured in Home Assistant, each with its entity_id and display name. Use an entity_id with Get Calendar Events to retrieve events."
+    },
+    {
+      "name": "Get Calendar Events",
+      "category": "Calendars",
+      "description": "Returns events from a calendar entity between a start and end time. Both timestamps are required. Each event includes a summary, start and end (as dateTime for timed events or date for all-day events), and optional description and location."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Turn devices on or off and adjust settings (lights, switches, thermostats) by calling Home Assistant services from an automation.",
+    "Read live sensor and entity states to drive conditional logic in a workflow.",
+    "Fire custom events on the Home Assistant event bus to trigger automations from an external system.",
+    "Render templates against live state to compute values or human-readable status messages.",
+    "Retrieve state history, logbook entries, or the error log for reporting and diagnostics.",
+    "List and read upcoming events from Home Assistant calendar entities."
+  ],
+  "agentIdeas": [
+    "Use Home Assistant **Get Entity State** to read a door or motion sensor and, when it changes, call **Slack** \"Send Message To Channel\" to alert a security channel with the current state.",
+    "On a schedule, use Home Assistant **Get History** for temperature and energy sensors and record each reading with **Google Sheets** \"Add Row\" for long-term trend tracking.",
+    "Have an AI Agent interpret a natural-language request, then use Home Assistant **Call Service** (e.g. domain `light`, service `turn_on`) to control devices and **Render Template** to report the resulting room status."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/home-assistant/public/icon.png",
+  "sourcePaths": {
+    "service": "services/home-assistant",
+    "readme": "services/home-assistant/README.md",
+    "index": "services/home-assistant/src/index.js"
+  }
+}

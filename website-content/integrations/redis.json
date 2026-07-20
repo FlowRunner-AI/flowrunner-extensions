@@ -1,0 +1,180 @@
+{
+  "slug": "redis",
+  "name": "Redis",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Redis](https://redis.io/). Connects directly to a Redis server over TCP using the official [`redis`](https://github.com/redis/node-redis) (node-redis) client and exposes operations for strings, keys, hashes, lists, sets, sorted sets, Pub/Sub publishing, server statistics, and a raw-command escape hatch. It uses a **connect-per-call** model: every operation opens a short-lived client, runs its command, and always closes the connection when the call finishes — no clients or connections are cached between invocations.",
+  "actionCount": 26,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Strings",
+    "Keys",
+    "Hashes",
+    "Lists",
+    "Sets",
+    "Sorted Sets",
+    "Pub/Sub",
+    "Server",
+    "Advanced"
+  ],
+  "actions": [
+    {
+      "name": "Set Value",
+      "category": "Strings",
+      "description": "Stores a string value under a key (SET). Optionally sets a time-to-live in seconds (EX) and/or writes only when the key does not already exist (NX). Non-string values are stored as JSON. Returns whether the value was actually written - with \"Only If Not Exists\" enabled, \"set\" is false when the key already existed."
+    },
+    {
+      "name": "Get Value",
+      "category": "Strings",
+      "description": "Reads the string value stored at a key (GET). Returns the value as a string, or null when the key does not exist, together with an \"exists\" flag."
+    },
+    {
+      "name": "Increment",
+      "category": "Strings",
+      "description": "Atomically increments the number stored at a key and returns the new value. Integer amounts use INCRBY; fractional amounts use INCRBYFLOAT. A missing key is treated as 0, so this also initializes counters. Fails if the key holds a non-numeric value."
+    },
+    {
+      "name": "Decrement",
+      "category": "Strings",
+      "description": "Atomically decrements the number stored at a key and returns the new value. Integer amounts use DECRBY; fractional amounts use INCRBYFLOAT with a negated amount. A missing key is treated as 0. Fails if the key holds a non-numeric value."
+    },
+    {
+      "name": "Delete Keys",
+      "category": "Keys",
+      "description": "Deletes one or more keys (DEL) of any data type and returns how many of them actually existed and were removed. Keys that do not exist are ignored."
+    },
+    {
+      "name": "Key Exists",
+      "category": "Keys",
+      "description": "Checks how many of the given keys exist (EXISTS). Returns the number that exist, the number checked, and whether all of them exist. Passing the same key twice counts it twice, matching Redis semantics."
+    },
+    {
+      "name": "Set Expiration",
+      "category": "Keys",
+      "description": "Sets a time-to-live in seconds on an existing key (EXPIRE), after which Redis deletes it automatically. Returns whether the expiration was applied - \"applied\" is false when the key does not exist. Use Remove Expiration to make a key persistent again."
+    },
+    {
+      "name": "Remove Expiration",
+      "category": "Keys",
+      "description": "Removes the time-to-live from a key (PERSIST) so it no longer expires. Returns whether an expiration was actually removed - \"removed\" is false when the key does not exist or had no expiration."
+    },
+    {
+      "name": "Get TTL",
+      "category": "Keys",
+      "description": "Returns the remaining time-to-live of a key in seconds (TTL). Raw Redis semantics are preserved in \"ttlSeconds\": -1 means the key exists but has no expiration, -2 means the key does not exist; convenience flags \"exists\" and \"hasExpiration\" are included."
+    },
+    {
+      "name": "Find Keys",
+      "category": "Keys",
+      "description": "Finds keys matching a glob-style pattern (e.g. user:*, cache:??) using incremental SCAN iteration, which is safe for production databases - unlike the blocking KEYS command, it never freezes the server. Results are capped at the given limit (default 100); \"limitReached\" indicates more matching keys may exist."
+    },
+    {
+      "name": "Set Hash Fields",
+      "category": "Hashes",
+      "description": "Sets one or more fields on a hash from a JSON object of field/value pairs (HSET), creating the hash if it does not exist. Existing fields are overwritten. Object and array values are stored as JSON strings. Returns the number of NEW fields added (overwritten fields do not count)."
+    },
+    {
+      "name": "Get Hash Field",
+      "category": "Hashes",
+      "description": "Reads a single field from a hash (HGET). Returns the field value as a string, or null when the hash or the field does not exist, together with an \"exists\" flag."
+    },
+    {
+      "name": "Get Hash",
+      "category": "Hashes",
+      "description": "Reads all fields and values of a hash (HGETALL) as a JSON object. A missing key returns an empty object with \"exists\" set to false."
+    },
+    {
+      "name": "Delete Hash Fields",
+      "category": "Hashes",
+      "description": "Removes one or more fields from a hash (HDEL) and returns how many were actually removed. Fields that do not exist are ignored; the hash itself is deleted when its last field is removed."
+    },
+    {
+      "name": "Push To List",
+      "category": "Lists",
+      "description": "Appends one or more values to a list (LPUSH for the left/head side, RPUSH for the right/tail side), creating the list if it does not exist. Object and array values are stored as JSON strings. Returns the new length of the list."
+    },
+    {
+      "name": "Pop From List",
+      "category": "Lists",
+      "description": "Removes and returns elements from one end of a list (LPOP for the left/head side, RPOP for the right/tail side). When Count is provided, up to that many elements are popped at once. Always returns a \"values\" array - empty when the list does not exist or is already empty."
+    },
+    {
+      "name": "Get List Range",
+      "category": "Lists",
+      "description": "Reads a range of elements from a list by index (LRANGE) without removing them. Indexes are zero-based; negative indexes count from the end (-1 is the last element). The defaults (0 to -1) return the entire list. A missing key returns an empty array."
+    },
+    {
+      "name": "List Length",
+      "category": "Lists",
+      "description": "Returns the number of elements in a list (LLEN). A missing key returns 0. Fails if the key holds a value of another type."
+    },
+    {
+      "name": "Add To Set",
+      "category": "Sets",
+      "description": "Adds one or more members to a set (SADD), creating the set if it does not exist. Duplicate members are ignored. Returns the number of members that were actually added (excluding those already present)."
+    },
+    {
+      "name": "Get Set Members",
+      "category": "Sets",
+      "description": "Returns all members of a set (SMEMBERS). Member order is not guaranteed. A missing key returns an empty array. For very large sets, consider that all members are returned in a single response."
+    },
+    {
+      "name": "Remove From Set",
+      "category": "Sets",
+      "description": "Removes one or more members from a set (SREM) and returns how many were actually removed. Members that are not in the set are ignored; the set itself is deleted when its last member is removed."
+    },
+    {
+      "name": "Add To Sorted Set",
+      "category": "Sorted Sets",
+      "description": "Adds one or more members with numeric scores to a sorted set (ZADD), creating the set if it does not exist. Members already present have their score updated instead. Returns the number of NEW members added (score updates do not count)."
+    },
+    {
+      "name": "Get Sorted Range",
+      "category": "Sorted Sets",
+      "description": "Reads a range of members from a sorted set by rank (ZRANGE). Ranks are zero-based in ascending score order; negative ranks count from the end, so the defaults (0 to -1) return the whole set. Enable \"With Scores\" to return [{value, score}] objects instead of plain strings, and \"Reverse\" to read in descending score order (requires Redis 6.2+)."
+    },
+    {
+      "name": "Publish Message",
+      "category": "Pub/Sub",
+      "description": "Publishes a message to a Pub/Sub channel (PUBLISH) and returns how many subscribers received it. Redis Pub/Sub is fire-and-forget: a receiver count of 0 means nothing was listening at that moment and the message is gone. Objects are sent as JSON strings. This operation only publishes - subscribing requires a long-lived connection and is not supported."
+    },
+    {
+      "name": "Get Server Info",
+      "category": "Server",
+      "description": "Retrieves server statistics via the INFO command, parsed into an object keyed by section (server, clients, memory, persistence, stats, replication, cpu, keyspace, ...). Keyspace entries are parsed further into {keys, expires, avgTtl} per database. Useful for health checks, memory monitoring and database sizing."
+    },
+    {
+      "name": "Execute Command",
+      "category": "Advanced",
+      "description": "Advanced escape hatch: executes any raw Redis command by name with string arguments (e.g. command \"GETRANGE\" with args [\"mykey\", \"0\", \"5\"], or \"JSON.GET\" for module commands). All arguments are sent as strings, exactly as on the redis-cli command line. Returns the raw reply, which may be a string, number, array, or null depending on the command. Prefer the dedicated operations when one exists; commands that block or subscribe (BLPOP, SUBSCRIBE, MONITOR) must not be used here."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Cache computed values, API responses, or session data with automatic expiration (TTL).",
+    "Maintain atomic counters (page views, rate limits, inventory) with Increment/Decrement.",
+    "Use `SET NX` as a lightweight lock or idempotency guard around workflow steps.",
+    "Queue work items with lists (push on one side, pop from the other).",
+    "Track unique members (online users, processed IDs) with sets, and leaderboards with sorted sets.",
+    "Broadcast fire-and-forget notifications to running subscribers via Pub/Sub.",
+    "Monitor server health, memory usage, and database sizes with parsed `INFO` output."
+  ],
+  "agentIdeas": [
+    "Cache an expensive API lookup with Redis \"Set Value\" (with a TTL) and check \"Get Value\" first on subsequent runs to skip redundant calls.",
+    "Use \"Set Value\" with **Only If Not Exists** as an idempotency lock so a webhook-triggered flow processes each event exactly once, and \"Increment\" to rate-limit outbound requests.",
+    "Push incoming work items onto a list with \"Push To List\" from one flow, and have another flow \"Pop From List\" to process them, using **Slack** \"Send Message To Channel\" to report failures.",
+    "Track leaderboard scores with \"Add To Sorted Set\" and post the weekly top 10 from \"Get Sorted Range\" to **Google Sheets** or **Slack**.",
+    "Run \"Get Server Info\" on a schedule and alert via **Gmail** when `used_memory` or connection counts cross a threshold."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/redis/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/redis",
+    "readme": "services/redis/README.md",
+    "index": "services/redis/src/index.js"
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "slug": "cloudinary",
+  "name": "Cloudinary",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Manage a Cloudinary media library from FlowRunner: perform signed uploads of images, videos, and raw files from a remote URL or a FlowRunner file, organize and search assets (Lucene-style queries, tags, folders), pre-generate or build on-the-fly transformation URLs, download derived assets to file storage, and monitor account usage. Authenticates with your cloud name plus API key and secret.",
+  "actionCount": 20,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Upload",
+    "Asset Management",
+    "Tags",
+    "Account",
+    "Folders",
+    "Delivery"
+  ],
+  "actions": [
+    {
+      "name": "Upload Asset",
+      "category": "Upload",
+      "description": "Uploads an image, video, or raw file to your Cloudinary media library. The source is either a publicly accessible remote URL or a FlowRunner file (its bytes are downloaded and sent to Cloudinary as a base64 data URI) - provide exactly one of the two. Supports setting the public ID, target folder, tags, an incoming transformation applied before storing, eager transformations that pre-generate derived versions, and contextual metadata. Returns the stored asset including its public_id, secure_url, format, and dimensions."
+    },
+    {
+      "name": "Upload from URL",
+      "category": "Upload",
+      "description": "Uploads a file to Cloudinary directly from a publicly accessible remote URL - Cloudinary fetches the file server-side, so nothing is transferred through FlowRunner. A convenience variant of Upload Asset for URL-only sources. Supports public ID, folder, tags, an incoming transformation, and overwrite control. Returns the stored asset including its public_id, secure_url, format, and dimensions."
+    },
+    {
+      "name": "Rename Asset",
+      "category": "Asset Management",
+      "description": "Renames an asset by changing its public ID, which also moves it when the new public ID contains a different folder path (e.g. drafts/img to products/img). Optionally overwrites an existing asset that already uses the target public ID. Returns the updated asset details."
+    },
+    {
+      "name": "Destroy Asset",
+      "category": "Asset Management",
+      "description": "Permanently deletes a single asset from your Cloudinary media library by its public ID. Optionally invalidates cached copies on the CDN so the deleted asset stops being served immediately (invalidation can take up to an hour to propagate). Returns a result of \"ok\" on success or \"not found\" when no asset matches."
+    },
+    {
+      "name": "Manage Tags",
+      "category": "Tags",
+      "description": "Adds, removes, or replaces tags on one or more assets in a single call, or removes all tags from the given assets. Add appends the tag(s), Remove deletes the given tag(s), Replace clears existing tags and assigns the given tag(s), and Remove All clears every tag. Returns the list of public IDs that were updated."
+    },
+    {
+      "name": "Apply Transformation",
+      "category": "Asset Management",
+      "description": "Eagerly generates derived (transformed) versions of an already-uploaded asset using Cloudinary's explicit method. Use this to pre-generate resized, cropped, or optimized variants so they are served instantly from the CDN instead of being created on the first request. Returns the asset details together with the generated eager versions and their URLs."
+    },
+    {
+      "name": "List Resources",
+      "category": "Asset Management",
+      "description": "Lists uploaded assets of a given resource type from your media library, newest or oldest first, optionally filtered by public ID prefix (which also matches folder paths, e.g. products/). Supports cursor-based pagination and can include each asset's tags and contextual metadata in the response."
+    },
+    {
+      "name": "Search Assets",
+      "category": "Asset Management",
+      "description": "Searches your entire media library with Cloudinary's expressive (Lucene-like) query language across all resource types. Expressions combine fields with AND/OR/NOT, e.g. \"folder:products AND tags:sale\", \"resource_type:image AND bytes>1000000\", \"public_id:banner*\", or \"created_at>1w\" for assets uploaded in the last week. Supports sorting, cursor-based pagination, and optionally including tags and context in results."
+    },
+    {
+      "name": "Get Asset Details",
+      "category": "Asset Management",
+      "description": "Retrieves full details of a single uploaded asset by its public ID, including size, format, dimensions, tags, context, and derived versions. Optionally includes predominant color analysis, detected face coordinates, and embedded image metadata (EXIF/IPTC) for image assets."
+    },
+    {
+      "name": "Update Asset",
+      "category": "Asset Management",
+      "description": "Updates stored properties of an uploaded asset via the Admin API: replaces its tags, sets contextual metadata, and/or moves it to a different asset folder (product environments with dynamic folders). Only the provided fields are changed. Returns the updated asset details."
+    },
+    {
+      "name": "Delete Assets",
+      "category": "Asset Management",
+      "description": "Deletes multiple uploaded assets in one Admin API call, either by an explicit list of public IDs (up to 100 per call) or by a public ID prefix (deletes up to 1000 matching assets, e.g. all assets in a folder). Provide exactly one of Public IDs or Prefix. Returns a per-asset deletion status map and a partial flag when more matching assets remain."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists the tags currently assigned to assets of a given resource type in your media library, optionally filtered by prefix. Supports cursor-based pagination for environments with many tags."
+    },
+    {
+      "name": "Get Usage",
+      "category": "Account",
+      "description": "Retrieves the current usage report for your Cloudinary product environment: plan name, credits, storage, bandwidth, transformations, object counts, and requests, together with plan limits and usage percentages. Useful for monitoring quota consumption from a flow."
+    },
+    {
+      "name": "Ping",
+      "category": "Account",
+      "description": "Verifies connectivity and credentials against the Cloudinary Admin API. Returns status \"ok\" when the cloud name, API key, and API secret are valid. Useful as a connection test step in flows."
+    },
+    {
+      "name": "List Root Folders",
+      "category": "Folders",
+      "description": "Lists the top-level folders in your Cloudinary media library with their names and full paths. Supports cursor-based pagination for environments with many root folders."
+    },
+    {
+      "name": "List Subfolders",
+      "category": "Folders",
+      "description": "Lists the direct subfolders of a given folder path in your Cloudinary media library with their names and full paths. Supports cursor-based pagination."
+    },
+    {
+      "name": "Create Folder",
+      "category": "Folders",
+      "description": "Creates a new folder at the given path in your Cloudinary media library, including any missing intermediate folders (e.g. products/summer/shoes creates all three levels as needed). Returns the created folder's name and path."
+    },
+    {
+      "name": "Delete Folder",
+      "category": "Folders",
+      "description": "Deletes an empty folder at the given path from your Cloudinary media library. The folder must contain no assets (in fixed-folder environments it must also have no subfolders); otherwise the API returns an error. Returns the list of deleted folder paths."
+    },
+    {
+      "name": "Generate Delivery URL",
+      "category": "Delivery",
+      "description": "Builds a Cloudinary CDN delivery URL for an asset without making any API call, in the form https://res.cloudinary.com/{cloud}/{resourceType}/upload/{transformation}/{version}/{publicId}.{format}. Apply on-the-fly transformations (e.g. w_400,h_300,c_fill,q_auto,f_auto) and format conversion simply by naming them in the URL - ideal for feeding resized, cropped, or optimized media into other services. Optionally adds a URL signature (s--...--) computed with your API secret for environments that restrict unsigned transformation URLs."
+    },
+    {
+      "name": "Download Asset",
+      "category": "Delivery",
+      "description": "Downloads an asset from the Cloudinary CDN - optionally transformed on the fly (e.g. resized with w_400,h_300,c_fill or converted with a target format) - and saves it to FlowRunner file storage. Returns the stored file's URL along with its name and size, ready to pass to other services in the flow."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Auto-upload files received in a flow (from a URL or FlowRunner file storage) into Cloudinary and get back an optimized secure delivery URL",
+    "Generate resized, cropped, or format-converted delivery URLs (e.g. `w_400,h_300,c_fill,q_auto,f_auto`) to feed optimized media into emails, sheets, or other services",
+    "Organize a media library at scale: tag, move, rename, and search assets, and create or clean up folders",
+    "Download a transformed variant of an asset into file storage to pass on to downstream steps",
+    "Monitor plan credits, storage, and bandwidth usage from an automated flow"
+  ],
+  "agentIdeas": [
+    "Use **AI Vision** \"Analyze Image\" to describe an incoming image, then call Cloudinary \"Upload Asset\" with the generated description as contextual metadata and tags for a searchable, auto-labeled media library",
+    "When a **Dropbox** \"On New File\" trigger fires, upload the file into Cloudinary with \"Upload from URL\" (via the Dropbox \"Get Temporary Link\"), then \"Generate Delivery URL\" to publish an optimized, resized CDN version",
+    "Use Cloudinary \"Search Assets\" with a Lucene-style query to find matching assets, \"Download Asset\" to pull a transformed variant into file storage, and **Google Sheets** \"Add Row\" to log each asset's public ID and secure URL"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/cloudinary/public/icon.png",
+  "sourcePaths": {
+    "service": "services/cloudinary",
+    "readme": "services/cloudinary/README.md",
+    "index": "services/cloudinary/src/index.js"
+  }
+}

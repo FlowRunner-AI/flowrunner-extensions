@@ -1,0 +1,226 @@
+{
+  "slug": "mixpanel",
+  "name": "Mixpanel",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrates Mixpanel product analytics across all three data-residency regions (US, EU, India). Ingests events and user/group profiles, manages identity stitching, runs analytics queries (segmentation, funnels, retention, Insights), exports raw event data, and syncs Lexicon data-dictionary schemas. Authentication is split per Mixpanel's model: a Project Token powers ingestion, while a Service Account powers query, import, export, identity merge and Lexicon operations.",
+  "actionCount": 36,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Event Ingestion",
+    "User Profiles",
+    "Group Profiles",
+    "Identity Management",
+    "Analytics Queries",
+    "Funnels & Retention",
+    "Profiles & Cohorts",
+    "Data Export",
+    "Lexicon"
+  ],
+  "actions": [
+    {
+      "name": "Track Event",
+      "category": "Event Ingestion",
+      "description": "Sends a single event to Mixpanel through the real-time /track ingestion endpoint using the Project Token. Intended for events from the last 5 days; use Import Events for older/historical data. Custom properties are merged into the event payload; reserved properties like $insert_id (deduplication key) and time can be set via dedicated parameters. Geolocation from the server IP is disabled (ip=0); include an $ip property to set a location explicitly."
+    },
+    {
+      "name": "Import Events",
+      "category": "Event Ingestion",
+      "description": "Imports a batch of historical events through the /import endpoint using Service Account authentication (Project ID required). Unlike Track Event, imported events may have any past timestamp. Sends up to 2,000 events per call with strict validation enabled: invalid events are reported with per-record error details. A unique $insert_id is auto-generated for events that do not provide one."
+    },
+    {
+      "name": "Set Profile Properties",
+      "category": "User Profiles",
+      "description": "Sets properties on a Mixpanel user profile via the /engage $set operation, overwriting existing values and creating the profile if it does not exist. Supports reserved properties such as $name, $email, $phone and $avatar alongside custom properties. Geolocation from the server IP is disabled; include an $ip property to set the profile location explicitly."
+    },
+    {
+      "name": "Set Profile Properties Once",
+      "category": "User Profiles",
+      "description": "Sets properties on a user profile via the /engage $set_once operation only if they are not already set. Existing values are never overwritten, which makes this ideal for first-touch attribution data such as initial referrer or signup source. Creates the profile if it does not exist."
+    },
+    {
+      "name": "Increment Profile Properties",
+      "category": "User Profiles",
+      "description": "Increments numeric user profile properties via the /engage $add operation. Each key is increased by the given amount; negative values decrement. Properties that do not exist yet are created with the increment as the initial value. Useful for counters such as total purchases or lifetime revenue."
+    },
+    {
+      "name": "Append To Profile List Properties",
+      "category": "User Profiles",
+      "description": "Appends values to list-type user profile properties via the /engage $append operation. Each key gets the given value added to the end of its list, even if the value already exists (duplicates allowed). Use Union Profile List Properties to add values without duplicates."
+    },
+    {
+      "name": "Union Profile List Properties",
+      "category": "User Profiles",
+      "description": "Merges values into list-type user profile properties via the /engage $union operation. Each key receives the given values with duplicates removed, so the list behaves like a set. Use Append To Profile List Properties when duplicates should be kept."
+    },
+    {
+      "name": "Remove From Profile List Properties",
+      "category": "User Profiles",
+      "description": "Removes a value from list-type user profile properties via the /engage $remove operation. Each key has the given value deleted from its list if present; other list entries are untouched."
+    },
+    {
+      "name": "Unset Profile Properties",
+      "category": "User Profiles",
+      "description": "Permanently removes properties from a user profile via the /engage $unset operation. The listed property names are deleted from the profile entirely; other properties are untouched."
+    },
+    {
+      "name": "Delete Profile",
+      "category": "User Profiles",
+      "description": "Permanently deletes a user profile from Mixpanel via the /engage $delete operation. Historical events for the user are NOT removed, only the profile record. Enable Ignore Alias when cleaning up duplicate profiles so the deletion does not follow the alias to the original profile."
+    },
+    {
+      "name": "Batch Update Profiles",
+      "category": "User Profiles",
+      "description": "Sends up to 2,000 raw user profile update objects to the /engage endpoint in a single request. Each update object uses the native Mixpanel engage format with a $distinct_id and exactly one operation key ($set, $set_once, $add, $append, $union, $remove, $unset or $delete). The $token is injected automatically when omitted. Use this for high-throughput profile synchronization."
+    },
+    {
+      "name": "Set Group Properties",
+      "category": "Group Profiles",
+      "description": "Sets properties on a Mixpanel group profile via the /groups $set operation, overwriting existing values and creating the group profile if it does not exist. Group Analytics must be enabled on the project and the group key defined in project settings."
+    },
+    {
+      "name": "Set Group Properties Once",
+      "category": "Group Profiles",
+      "description": "Sets properties on a group profile via the /groups $set_once operation only if they are not already set. Existing values are never overwritten. Creates the group profile if it does not exist."
+    },
+    {
+      "name": "Union Group List Properties",
+      "category": "Group Profiles",
+      "description": "Merges values into list-type group profile properties via the /groups $union operation. Each key receives the given values with duplicates removed, so the list behaves like a set."
+    },
+    {
+      "name": "Remove From Group List Properties",
+      "category": "Group Profiles",
+      "description": "Removes a value from list-type group profile properties via the /groups $remove operation. Each key has the given value deleted from its list if present; other list entries are untouched."
+    },
+    {
+      "name": "Unset Group Properties",
+      "category": "Group Profiles",
+      "description": "Permanently removes properties from a group profile via the /groups $unset operation. The listed property names are deleted from the group profile entirely; other properties are untouched."
+    },
+    {
+      "name": "Delete Group Profile",
+      "category": "Group Profiles",
+      "description": "Permanently deletes a group profile from Mixpanel via the /groups $delete operation. Events attributed to the group are NOT removed, only the group profile record."
+    },
+    {
+      "name": "Batch Update Group Profiles",
+      "category": "Group Profiles",
+      "description": "Sends up to 200 raw group profile update objects to the /groups endpoint in a single request. Each update object uses the native Mixpanel groups format with $group_key, $group_id and exactly one operation key ($set, $set_once, $union, $remove, $unset or $delete). The $token is injected automatically when omitted."
+    },
+    {
+      "name": "Create Alias",
+      "category": "Identity Management",
+      "description": "Creates a $create_alias event linking a new alias to an existing distinct ID. Only applies to projects on the Legacy ID Management or Original ID Merge systems; it has no effect on projects using Simplified ID Merge, where identities are stitched automatically via $device_id and $user_id event properties. Aliasing is irreversible."
+    },
+    {
+      "name": "Create Identity",
+      "category": "Identity Management",
+      "description": "Sends a $identify event connecting an anonymous ID to an identified user ID. Only applies to projects on the Original ID Merge system; it has no effect on Simplified ID Merge projects, where identities are stitched automatically via $device_id and $user_id event properties. The anonymous ID must be a UUID that has not previously been merged."
+    },
+    {
+      "name": "Merge Identities",
+      "category": "Identity Management",
+      "description": "Sends a $merge event through the /import endpoint to merge two distinct IDs into a single identity cluster. Requires Service Account credentials. Only applies to projects on the Original ID Merge system; it has no effect on Simplified ID Merge projects. Merging is irreversible and identity clusters are limited in size, so use with care."
+    },
+    {
+      "name": "Run Segmentation Query",
+      "category": "Analytics Queries",
+      "description": "Runs a Query API segmentation report for a single event over a date range, optionally segmented by a property expression and filtered by a where clause. Returns a time series of counts per segment. Requires Service Account credentials. Rate limited to 60 queries per hour and 5 concurrent queries."
+    },
+    {
+      "name": "Query Event Counts",
+      "category": "Analytics Queries",
+      "description": "Returns aggregated counts for one or more events over a date range, bucketed by the chosen time unit, via the Query API /events endpoint. Requires Service Account credentials. Rate limited to 60 queries per hour and 5 concurrent queries."
+    },
+    {
+      "name": "Get Today's Top Events",
+      "category": "Analytics Queries",
+      "description": "Returns today's top events with their counts and the normalized percent change from yesterday, via the Query API /events/top endpoint. Requires Service Account credentials."
+    },
+    {
+      "name": "List Top Event Names",
+      "category": "Analytics Queries",
+      "description": "Returns the names of the most common events over the last 31 days, via the Query API /events/names endpoint. Useful for discovering which events exist in a project. Requires Service Account credentials."
+    },
+    {
+      "name": "Query Insights Report",
+      "category": "Analytics Queries",
+      "description": "Returns the saved data of an existing Insights report by its bookmark ID via the Query API /insights endpoint. The bookmark ID is visible in the report URL in the Mixpanel UI. Requires Service Account credentials. Rate limited to 60 queries per hour and 5 concurrent queries."
+    },
+    {
+      "name": "Run Funnel Query",
+      "category": "Funnels & Retention",
+      "description": "Runs a saved funnel over a date range via the Query API /funnels endpoint and returns per-step counts and conversion ratios. Use List Saved Funnels or the funnel picker to find the funnel ID. Requires Service Account credentials. Rate limited to 60 queries per hour and 5 concurrent queries."
+    },
+    {
+      "name": "List Saved Funnels",
+      "category": "Funnels & Retention",
+      "description": "Lists all saved funnels of the project with their IDs and names via the Query API /funnels/list endpoint. Use the returned funnel_id with Run Funnel Query. Requires Service Account credentials."
+    },
+    {
+      "name": "Run Retention Query",
+      "category": "Funnels & Retention",
+      "description": "Runs a cohort retention analysis over a date range via the Query API /retention endpoint. Birth retention tracks how often users return after a first (born) event; Compounded retention measures rolling repeat usage. Returns per-cohort counts for each retention interval. Requires Service Account credentials. Rate limited to 60 queries per hour and 5 concurrent queries."
+    },
+    {
+      "name": "Query Profiles",
+      "category": "Profiles & Cohorts",
+      "description": "Queries user profiles via the Query API /engage endpoint. Supports filtering by an expression, by specific distinct IDs, or by a saved cohort, and selecting which properties to return. Results are paginated (1,000 profiles per page): pass the returned session_id and the next page number to fetch subsequent pages. Requires Service Account credentials."
+    },
+    {
+      "name": "List Cohorts",
+      "category": "Profiles & Cohorts",
+      "description": "Lists all saved cohorts of the project with their ID, name, member count, description and visibility via the Query API /cohorts/list endpoint. Use a cohort ID with Query Profiles to fetch cohort members. Requires Service Account credentials."
+    },
+    {
+      "name": "Get Activity Stream",
+      "category": "Profiles & Cohorts",
+      "description": "Returns the chronological event activity feed for specific users over a date range via the Query API /stream/query endpoint. Useful for inspecting an individual user's behavior. Requires Service Account credentials. Rate limited to 60 queries per hour and 5 concurrent queries."
+    },
+    {
+      "name": "Export Events",
+      "category": "Data Export",
+      "description": "Exports raw event data for a date range from the Raw Data Export API (data host, /api/2.0/export) with optional event and where filters. By default returns events inline as a parsed array capped at 1,000 rows (raise Limit up to 100,000 as needed). Enable Save To File for large exports: the raw JSONL output is stored via FlowRunner file storage and a download URL is returned instead of the inline events. Requires Service Account credentials. Rate limited to 60 queries per hour."
+    },
+    {
+      "name": "List Lexicon Schemas",
+      "category": "Lexicon",
+      "description": "Lists the Lexicon data dictionary schemas of the project via the Schemas API, optionally filtered to a single entity type (event or profile). Each schema entry describes an event or the user profile with a JSON Schema document including descriptions and property metadata. Requires Service Account credentials."
+    },
+    {
+      "name": "Get Lexicon Schema",
+      "category": "Lexicon",
+      "description": "Retrieves a single Lexicon schema by entity type and name via the Schemas API. For the user profile schema, use entity type Profile with the name $user. Requires Service Account credentials."
+    },
+    {
+      "name": "Upload Lexicon Schemas",
+      "category": "Lexicon",
+      "description": "Creates or replaces Lexicon data dictionary schemas via the Schemas API, syncing an internal tracking plan into Mixpanel. Existing metadata for properties not present in the new schemas is merged; set a value to null to remove it. Enable Truncate to wipe the entire existing data dictionary before inserting the new entries. Requires Service Account credentials."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Stream product events and user/group profile updates into Mixpanel from your own backend or third-party apps",
+    "Backfill historical events with strict per-record validation via Import Events",
+    "Run scheduled segmentation, funnel, retention and Insights reports and route the results into dashboards or alerts",
+    "Export raw event data for a date range into FlowRunner file storage for warehousing or downstream processing",
+    "Sync an internal tracking plan into Mixpanel's Lexicon data dictionary"
+  ],
+  "agentIdeas": [
+    "Use **Amplitude** \"Get Event Segmentation\" to pull product analytics from one platform, then call **Mixpanel** \"Import Events\" to backfill the same events into Mixpanel for side-by-side comparison",
+    "After **Segment** \"Track Event\" captures user activity, call **Mixpanel** \"Set Profile Properties\" to enrich the corresponding Mixpanel user profile with the latest attributes",
+    "Run **Mixpanel** \"Run Funnel Query\" on a schedule and, when conversion drops, use **Slack** \"Send Message To Channel\" to alert the growth team with the per-step counts"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/mixpanel/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/mixpanel",
+    "readme": "services/mixpanel/README.md",
+    "index": "services/mixpanel/src/index.js"
+  }
+}

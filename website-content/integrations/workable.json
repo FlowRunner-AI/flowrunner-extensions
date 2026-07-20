@@ -1,0 +1,145 @@
+{
+  "slug": "workable",
+  "name": "Workable",
+  "marketingCategory": "HR & Recruiting",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Automate recruiting and applicant tracking with the [Workable SPI v3 API](https://workable.readme.io/reference). List and read jobs, create and move candidates through hiring pipeline stages, post comments and ratings, read the account roster, and watch for new candidates.",
+  "actionCount": 20,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Jobs",
+    "Candidates",
+    "Comments & Ratings",
+    "Members & Recruiters",
+    "Stages",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "List Jobs",
+      "category": "Jobs",
+      "description": "Lists jobs in the Workable account with optional filtering by state and creation date. Returns paginated job objects including title, shortcode, department, location, and state. Use a job's shortcode with Get Job, Get Job Members, Get Job Stages, and Create Candidate."
+    },
+    {
+      "name": "Get Job",
+      "category": "Jobs",
+      "description": "Retrieves the full details of a single job by its shortcode, including title, description, requirements, department, location, salary, and current state."
+    },
+    {
+      "name": "Get Job Members",
+      "category": "Jobs",
+      "description": "Lists the hiring team members associated with a specific job, including recruiters, hiring managers, and reviewers with their roles. Use member ids for assignment and private comments."
+    },
+    {
+      "name": "Get Job Stages",
+      "category": "Jobs",
+      "description": "Lists the hiring pipeline stages configured for a specific job, in pipeline order. Each stage includes its name, slug, and kind (sourced, applied, interview, offer, hired). Use a stage slug with Move Candidate to Stage."
+    },
+    {
+      "name": "List Candidates",
+      "category": "Candidates",
+      "description": "Lists candidates across the account or within a specific job, with filtering by state and creation date. Supports pagination via since_id and time-window filtering via created_after. Returns candidate objects including name, email, current stage, and job."
+    },
+    {
+      "name": "Get Candidate",
+      "category": "Candidates",
+      "description": "Retrieves the full profile of a single candidate by id, including contact details, current stage, job, resume and cover letter, tags, and disqualification status."
+    },
+    {
+      "name": "Create Candidate",
+      "category": "Candidates",
+      "description": "Creates a candidate and adds them to a job (by shortcode). Provide the candidate's name plus optional contact details, resume URL, and cover letter. Sourced defaults to true (the candidate is uploaded to the sourced stage); set Sourced to false to treat them as an inbound applicant, which triggers Workable's applicant thank-you email."
+    },
+    {
+      "name": "Update Candidate",
+      "category": "Candidates",
+      "description": "Updates editable fields on an existing candidate, such as name, email, phone, headline, summary, address, and social profiles. Only the fields you provide are changed."
+    },
+    {
+      "name": "Move Candidate to Stage",
+      "category": "Candidates",
+      "description": "Moves a candidate to a different stage in their job's hiring pipeline by target stage slug. Retrieve valid slugs with Get Job Stages for the candidate's job. A member id (the person performing the move) is required by the Workable API."
+    },
+    {
+      "name": "Disqualify Candidate",
+      "category": "Candidates",
+      "description": "Disqualifies a candidate, removing them from active consideration, with an optional disqualification reason. A member id (the person performing the disqualification) is required by the Workable API. The candidate can later be brought back with Revert Candidate."
+    },
+    {
+      "name": "Revert Candidate",
+      "category": "Candidates",
+      "description": "Reverts a previously disqualified candidate back to active status in their current stage."
+    },
+    {
+      "name": "Copy Candidate to Job",
+      "category": "Candidates",
+      "description": "Copies an existing candidate into another job's pipeline, keeping the candidate on the original job. Optionally target a specific stage in the destination job. A member id (the person performing the copy) is required by the Workable API. To move the candidate off the original job instead, use Relocate Candidate to Job."
+    },
+    {
+      "name": "Relocate Candidate to Job",
+      "category": "Candidates",
+      "description": "Relocates an existing candidate into another job's pipeline, moving them off the original job. Optionally target a specific stage in the destination job. A member id (the person performing the relocation) is required by the Workable API. To keep the candidate on the original job instead, use Copy Candidate to Job."
+    },
+    {
+      "name": "Create Comment",
+      "category": "Comments & Ratings",
+      "description": "Adds a comment to a candidate's timeline. A member id (the comment's author) is required by the Workable API. By default the comment is visible to all admins and can be restricted to specific roles via the Visible To Roles list; comments are always visible to admins regardless."
+    },
+    {
+      "name": "Create Rating",
+      "category": "Comments & Ratings",
+      "description": "Adds a rating (evaluation) to a candidate using Workable's scale/grade model with an optional comment. Choose a rating scale (Thumbs, Stars, or Numbers) and a grade whose valid range depends on the scale: Thumbs 0-2 (negative/positive/definite), Stars 0-4 (one to five stars), Numbers 0-9 (1 to 10 out of 10). A member id (the person providing the rating) is required by the Workable API."
+    },
+    {
+      "name": "List Members",
+      "category": "Members & Recruiters",
+      "description": "Lists all members (users) of the Workable account, including their id, name, email, and role. Use member ids for assignment and private comments."
+    },
+    {
+      "name": "List Recruiters",
+      "category": "Members & Recruiters",
+      "description": "Lists the recruiters in the Workable account, including their id, name, and email. Recruiters are the subset of members who can be assigned candidates."
+    },
+    {
+      "name": "List Stages",
+      "category": "Stages",
+      "description": "Lists the account-wide hiring pipeline stages, in order, each with its name, slug, and kind (sourced, applied, interview, offer, hired). For job-specific stages, use Get Job Stages instead."
+    },
+    {
+      "name": "List Candidate Activities",
+      "category": "Candidates",
+      "description": "Lists the timeline activities for a candidate - stage moves, comments, ratings, emails, and disqualifications - in reverse chronological order. Use this as an audit trail of everything that has happened to a candidate."
+    },
+    {
+      "name": "Get Account",
+      "category": "Account",
+      "description": "Retrieves the Workable account details for the connected subdomain and token, including account name and subdomain. Use this as a connection check to verify credentials."
+    }
+  ],
+  "triggers": [
+    "On New Candidate"
+  ],
+  "idealUseCases": [
+    "Source a candidate from an external form or CRM and create them on the right job.",
+    "Advance candidates through pipeline stages and disqualify or revert them automatically.",
+    "Copy or relocate a strong candidate into another job's pipeline.",
+    "Log hiring-team feedback as comments and ratings from a review workflow.",
+    "Trigger downstream automations whenever a new candidate applies."
+  ],
+  "agentIdeas": [
+    "On a new form submission, use **Workable** \"Create Candidate\" to add the applicant, then **Slack** \"Send Message To Channel\" to notify the hiring channel.",
+    "Watch **Workable** \"On New Candidate\", then **OpenAI** to score the resume and **Workable** \"Create Rating\" to record the evaluation.",
+    "After an interview, use **Workable** \"Move Candidate to Stage\" and **Workable** \"Create Comment\" to advance and annotate the candidate in one flow."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/workable/public/icon.png",
+  "sourcePaths": {
+    "service": "services/workable",
+    "readme": "services/workable/README.md",
+    "index": "services/workable/src/index.js"
+  }
+}

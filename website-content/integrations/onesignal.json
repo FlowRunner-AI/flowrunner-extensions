@@ -1,0 +1,163 @@
+{
+  "slug": "onesignal",
+  "name": "OneSignal",
+  "marketingCategory": "SMS, Voice & Push",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Send push notifications, email, and SMS through the [OneSignal](https://onesignal.com) messaging platform, and manage the audience behind them: users (current User Model API), channel subscriptions, segments, and templates. Authenticates with your OneSignal App ID and REST API key. Also exposes message delivery statistics, message history CSV exports, and app-level outcome analytics.",
+  "actionCount": 24,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messages",
+    "Segments",
+    "Users",
+    "Subscriptions",
+    "Templates",
+    "App"
+  ],
+  "actions": [
+    {
+      "name": "Send Push Notification",
+      "category": "Messages",
+      "description": "Sends a push notification to your app's subscribers through OneSignal. Targeting priority: if External IDs are provided they are used (via include_aliases); otherwise Filters are used if provided; otherwise Segments are used, defaulting to the built-in \"Subscribed Users\" segment. Supports scheduling (Send After), intelligent delivery (timezone or last-active optimization), rich media, action buttons, custom data payloads, iOS badge control, Android channels, and throttling. Returns the created message id; a response without an id and with empty errors usually means no subscribers matched the targeting."
+    },
+    {
+      "name": "Send Email",
+      "category": "Messages",
+      "description": "Sends an email through OneSignal to email subscribers. If External IDs are provided they are targeted via include_aliases; otherwise Segments are used, defaulting to \"Subscribed Users\" (targeted users must have an email subscription). The body accepts full HTML. From name/address override your app's default email settings when provided. Requires email to be configured for your OneSignal app."
+    },
+    {
+      "name": "Send SMS",
+      "category": "Messages",
+      "description": "Sends an SMS through OneSignal to SMS subscribers using your configured Twilio integration. If External IDs are provided they are targeted via include_aliases; otherwise Segments are used, defaulting to \"Subscribed Users\" (targeted users must have an SMS subscription). The From number must be an SMS-capable number from your Twilio account connected to OneSignal."
+    },
+    {
+      "name": "Send Push with Template",
+      "category": "Messages",
+      "description": "Sends a push notification using a OneSignal template created in the dashboard. The template supplies the message content, media, and styling; this action supplies targeting and optional scheduling. Targeting priority: External IDs (include_aliases) if provided, otherwise Segments (defaulting to \"Subscribed Users\")."
+    },
+    {
+      "name": "List Messages",
+      "category": "Messages",
+      "description": "Lists messages (push, email, and SMS) sent or scheduled for your OneSignal app, newest first, with delivery statistics per message. Filter by creation source: Dashboard, API, or Automated. Returns up to 50 messages per page; use Offset with Total Count for pagination. Note: API-sent messages are retained for 30 days; dashboard-sent messages for the app's lifetime."
+    },
+    {
+      "name": "Get Message",
+      "category": "Messages",
+      "description": "Retrieves a single message by id with its full definition (content, targeting, scheduling) and delivery outcomes: successful, failed, errored, converted, remaining, and per-platform delivery stats. Works for push, email, and SMS messages."
+    },
+    {
+      "name": "Cancel Scheduled Message",
+      "category": "Messages",
+      "description": "Cancels a scheduled message (one created with Send After or delivery optimization) before delivery begins. Messages that have already started sending cannot be stopped."
+    },
+    {
+      "name": "Get Message History",
+      "category": "Messages",
+      "description": "Requests a CSV export of the devices a message was sent to or clicked by. This is asynchronous: OneSignal generates the CSV and emails a download link to the provided address; the returned destination_url may take time to become available and expires after a few days. Requires the paid Event Streams / message history feature on your OneSignal plan."
+    },
+    {
+      "name": "List Segments",
+      "category": "Segments",
+      "description": "Lists the segments defined for your OneSignal app, including built-in segments like \"Subscribed Users\". Each entry includes the segment id, name, activity status, and whether it is read-only. Use segment names for message targeting and segment ids for Delete Segment."
+    },
+    {
+      "name": "Create Segment",
+      "category": "Segments",
+      "description": "Creates a segment for your OneSignal app from filter conditions (tags, session count, last session, location, language, and more). The new segment can immediately be used by name for message targeting. Segment creation via API is available on paid OneSignal plans."
+    },
+    {
+      "name": "Delete Segment",
+      "category": "Segments",
+      "description": "Permanently deletes a segment from your OneSignal app by id. Users in the segment are not affected, only the segment definition is removed. Built-in read-only segments cannot be deleted."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a user in OneSignal's user model with an external_id identity, optional properties (tags, language, timezone), and optional channel subscriptions. If a user with the same external_id already exists, OneSignal returns the existing user. Subscriptions created here can immediately receive messages targeted by External ID."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a user by alias (external_id by default, or onesignal_id or any custom alias label), returning their full identity map, properties (tags, language, timezone, location, first/last active), and all channel subscriptions with ids, tokens, and enabled state."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates a user's properties by alias. Tags are merged with existing tags (set a tag to an empty string to remove it); language and timezone replace existing values. Deltas can adjust counted properties such as session_count and purchase amount. Only the fields you provide are changed."
+    },
+    {
+      "name": "Delete User",
+      "category": "Users",
+      "description": "Permanently deletes a user by alias, removing their identity, properties, and all channel subscriptions from OneSignal. This cannot be undone; the user will no longer receive any messages."
+    },
+    {
+      "name": "Create Alias",
+      "category": "Users",
+      "description": "Adds an alias (an alternative identifier such as a CRM id) to an existing user, located by their current alias. Each alias label can hold one value per user, and alias values must be unique within a label across your app. Returns the user's updated identity map."
+    },
+    {
+      "name": "Delete Alias",
+      "category": "Users",
+      "description": "Removes an alias label from a user, located by another of their aliases. The user and their subscriptions are unaffected; only the specified identifier is detached. The onesignal_id alias cannot be deleted."
+    },
+    {
+      "name": "Create Subscription",
+      "category": "Subscriptions",
+      "description": "Adds a channel subscription (email address, SMS number, or push token) to an existing user, located by alias. The token format depends on type: an email address for Email, an E.164 phone number for SMS, or a device push token for iOS/Android Push. Push subscriptions are normally created by the OneSignal SDK; use this action primarily for Email and SMS."
+    },
+    {
+      "name": "Update Subscription",
+      "category": "Subscriptions",
+      "description": "Updates an existing subscription by its subscription id, changing its token (e.g. a new email address or phone number) and/or its enabled state. Disabling a subscription opts it out of messages without deleting it."
+    },
+    {
+      "name": "Delete Subscription",
+      "category": "Subscriptions",
+      "description": "Permanently deletes a subscription by its subscription id, removing that channel address from the user. Other subscriptions and the user record are unaffected."
+    },
+    {
+      "name": "List Templates",
+      "category": "Templates",
+      "description": "Lists message templates created in your OneSignal dashboard, optionally filtered by channel (push, email, or SMS). Returns template ids, names, and timestamps (not full content — use Get Template for that). Up to 50 templates per page; use Offset with Total Count for pagination."
+    },
+    {
+      "name": "Get Template",
+      "category": "Templates",
+      "description": "Retrieves a single template by id, including its full content (headings, contents, and channel-specific fields) as configured in the OneSignal dashboard. Use the returned id with Send Push with Template."
+    },
+    {
+      "name": "View App Details",
+      "category": "App",
+      "description": "Retrieves your OneSignal app's configuration and audience counts, including total and messageable subscribers. Note: OneSignal restricts parts of this endpoint to the Organization API key; if your REST API key is not authorized, the API's 403 error is surfaced as-is."
+    },
+    {
+      "name": "View Outcomes",
+      "category": "App",
+      "description": "Retrieves aggregated outcome (conversion event) statistics for your app, such as click counts, session duration, or custom outcomes, over a selected time range. Optionally restrict by platform and attribution model. Outcome names use the format seen in the dashboard, e.g. os__click.count or custom names like Purchase.count and Purchase.sum."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Trigger transactional or marketing push notifications, emails, and SMS from any FlowRunner workflow, targeting users by segment, external ID, or advanced filters.",
+    "Schedule and later cancel time-sensitive campaigns using Send After and delivery optimization.",
+    "Keep your OneSignal audience in sync with a CRM or database by creating and updating users, aliases, and channel subscriptions.",
+    "Send branded, dashboard-designed campaigns via reusable push templates.",
+    "Report on delivery outcomes and conversion analytics for sent messages."
+  ],
+  "agentIdeas": [
+    "When a **HubSpot** \"Get Contact By ID\" returns a lead, call **OneSignal** \"Create User\" to register them with an external_id and email subscription, then use \"Send Email\" to deliver a personalized onboarding message.",
+    "Use **Airtable** \"Find Many Records\" to pull a list of high-value customers, then call **OneSignal** \"Update User\" to tag each one before running \"Send Push Notification\" with a tag-based filter for a targeted campaign.",
+    "Read a spreadsheet of scheduled announcements with **Google Sheets** \"Get Rows\", then call **OneSignal** \"Send Push with Template\" for each row with a Send After time to queue campaigns in advance."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/onesignal/public/icon.png",
+  "sourcePaths": {
+    "service": "services/onesignal",
+    "readme": "services/onesignal/README.md",
+    "index": "services/onesignal/src/index.js"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "slug": "filemaker",
+  "name": "FileMaker",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate FlowRunner with a database hosted by [FileMaker Server or FileMaker Cloud](https://www.claris.com/filemaker/) through the FileMaker Data API. Read, create, edit, find, and delete records, run scripts, inspect layout metadata, and set global fields. Records are always accessed through a layout using FileMaker's `fieldData` model, and the service authenticates with a session-token login flow (host/database/username/password → Bearer token).",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Records",
+    "Find",
+    "Scripts",
+    "Metadata",
+    "Globals"
+  ],
+  "actions": [
+    {
+      "name": "Get Records",
+      "category": "Records",
+      "description": "Retrieves a range of records from a FileMaker layout. Records are always accessed through a layout, which determines exactly which fields, portals and related data are returned. Supports pagination via offset and limit and multi-field sorting. Returns the record set with each record's fieldData, portalData, recordId and modId."
+    },
+    {
+      "name": "Get Record",
+      "category": "Records",
+      "description": "Retrieves a single record from a FileMaker layout by its internal record ID. The layout determines which fields, portals and related data are returned. Returns the record's fieldData, portalData, recordId and modId."
+    },
+    {
+      "name": "Create Record",
+      "category": "Records",
+      "description": "Creates a new record on the specified FileMaker layout. Provide the field values as a fieldData object keyed by field name; any field not supplied takes its default or empty value. The account must have create access to the layout's table. Returns the new record's recordId and modId."
+    },
+    {
+      "name": "Edit Record",
+      "category": "Records",
+      "description": "Updates an existing record on a FileMaker layout by its internal record ID. Provide only the fields you want to change in fieldData. Optionally pass the record's current modId to enforce optimistic locking — if the record was modified since that modId, the edit is rejected. Returns the updated modId."
+    },
+    {
+      "name": "Delete Record",
+      "category": "Records",
+      "description": "Permanently deletes a single record from a FileMaker layout by its internal record ID. The account must have delete access to the layout's table. This action cannot be undone."
+    },
+    {
+      "name": "Duplicate Record",
+      "category": "Records",
+      "description": "Duplicates an existing record on a FileMaker layout, creating a new record that copies the field values of the source record. Returns the new record's recordId and modId."
+    },
+    {
+      "name": "Find Records",
+      "category": "Find",
+      "description": "Runs a FileMaker find request against a layout and returns matching records. The query is an array of request objects, each mapping field names to search criteria; multiple objects are OR-ed together, and setting \"omit\":\"true\" on a request excludes its matches. Supports sorting, offset and limit. Returns the found set with each record's fieldData, portalData, recordId and modId."
+    },
+    {
+      "name": "Run Script",
+      "category": "Scripts",
+      "description": "Runs a FileMaker script in the context of a layout and returns the script's result and error code. An optional script parameter is passed to the script's Get(ScriptParameter). Returns scriptResult and scriptError from the executed script."
+    },
+    {
+      "name": "List Scripts",
+      "category": "Scripts",
+      "description": "Lists all FileMaker scripts in the hosted database that are available to the authenticated account, including script folders and their nested scripts. Useful for discovering script names to use with Run Script."
+    },
+    {
+      "name": "List Layouts",
+      "category": "Metadata",
+      "description": "Lists all layouts in the hosted FileMaker database that are available to the authenticated account, including layout folders and their nested layouts. Records are accessed through layouts, so this is the starting point for discovering which layouts to query."
+    },
+    {
+      "name": "Get Layout Metadata",
+      "category": "Metadata",
+      "description": "Retrieves the field and portal metadata for a specific FileMaker layout, including each field's name, type, display type, whether it is auto-entered or required, and any associated value lists. Use this to understand the fieldData shape before creating or editing records."
+    },
+    {
+      "name": "Get Product Info",
+      "category": "Metadata",
+      "description": "Returns metadata about the FileMaker Server product, including its name, build date and version. This endpoint does not require a specific database and is useful as a lightweight connection check to confirm the host and credentials resolve. Runs against the productInfo endpoint at the server root."
+    },
+    {
+      "name": "Set Global Fields",
+      "category": "Globals",
+      "description": "Sets the values of global fields for the current FileMaker Data API session. Global field values set this way persist only for the life of the session and are commonly used to pass context into scripts and calculations. Provide fully qualified field names (Table::GlobalField) mapped to their values in globalFields."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Create, read, edit, delete, and duplicate records in a hosted FileMaker solution as part of an automated workflow.",
+    "Run structured `_find` queries to pull matching found sets into downstream steps.",
+    "Trigger FileMaker scripts and capture their result and error code.",
+    "Discover available layouts, scripts, and layout field metadata before building record operations.",
+    "Set session-scoped global fields to pass context into FileMaker scripts and calculations.",
+    "Perform a lightweight connection check against a FileMaker Server before running heavier automations."
+  ],
+  "agentIdeas": [
+    "Use **Airtable** \"Get Records\" to pull rows from a base, then call **FileMaker** \"Create Record\" to sync each row into the matching FileMaker layout.",
+    "When a **FileMaker** \"Find Records\" query returns a found set, use **Google Sheets** \"Add Rows\" to export the matching `fieldData` into a spreadsheet for reporting.",
+    "After a **FileMaker** \"Edit Record\" or \"Run Script\" completes, use **Slack** \"Send Message To Channel\" to notify the team with the updated record's `recordId` and `modId`."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/filemaker/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/filemaker",
+    "readme": "services/filemaker/README.md",
+    "index": "services/filemaker/src/index.js"
+  }
+}

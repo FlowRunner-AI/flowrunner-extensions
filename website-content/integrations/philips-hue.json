@@ -1,0 +1,119 @@
+{
+  "slug": "philips-hue",
+  "name": "Philips Hue",
+  "marketingCategory": "Cloud & Infrastructure",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Control and read Philips Hue smart lighting through the **Hue Bridge CLIP v2 API**. This service talks directly to a Hue Bridge on the local network — control lights, grouped lights, rooms, zones, and scenes, and read devices and sensors (motion, temperature, ambient light level). Requests are authenticated with a `hue-application-key` header sent to the bridge's local IP.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Lights",
+    "Grouped Lights",
+    "Rooms & Zones",
+    "Scenes",
+    "Devices & Sensors",
+    "Bridge"
+  ],
+  "actions": [
+    {
+      "name": "Get Lights",
+      "category": "Lights",
+      "description": "Retrieves all light resources known to the Hue Bridge, including on/off state, brightness (dimming), color (xy), color temperature (mirek), and supported capabilities. Each light has a unique rid (UUID) used to address it in Get Light and Set Light State."
+    },
+    {
+      "name": "Get Light",
+      "category": "Lights",
+      "description": "Retrieves a single light resource by its rid (UUID). Returns full state including on/off, dimming brightness, color, and color temperature."
+    },
+    {
+      "name": "Set Light State",
+      "category": "Lights",
+      "description": "Updates the state of a single light identified by its rid (UUID). Any combination of fields may be provided: power (on), brightness (0-100 percent), color as CIE xy chromaticity coordinates, color temperature in mirek (153 cool ≈ 6500K to 500 warm ≈ 2000K), and a transition duration in milliseconds. Only the supplied fields are sent to the bridge. Setting color and color temperature together is not recommended; the bridge applies the last effective value."
+    },
+    {
+      "name": "Get Grouped Lights",
+      "category": "Grouped Lights",
+      "description": "Retrieves all grouped_light resources. A grouped light aggregates the on/off and dimming state of the lights in a room or zone, letting you control them together. Each has a unique rid (UUID)."
+    },
+    {
+      "name": "Set Grouped Light",
+      "category": "Grouped Lights",
+      "description": "Updates a grouped_light resource by its rid (UUID), applying the change to all lights in the associated room or zone at once. Accepts the same fields as Set Light State: power (on), brightness (0-100 percent), color xy, color temperature (mirek 153-500), and transition duration in milliseconds. Only supplied fields are sent."
+    },
+    {
+      "name": "Get Rooms",
+      "category": "Rooms & Zones",
+      "description": "Retrieves all room resources. A room groups devices by physical location and references a grouped_light service used to control all its lights together. Each room has a unique rid (UUID)."
+    },
+    {
+      "name": "Get Room",
+      "category": "Rooms & Zones",
+      "description": "Retrieves a single room resource by its rid (UUID), including its child devices and the grouped_light service used to control the room."
+    },
+    {
+      "name": "Get Zones",
+      "category": "Rooms & Zones",
+      "description": "Retrieves all zone resources. A zone is a flexible grouping of lights that, unlike a room, is not tied to physical location and can span multiple rooms. Each zone references a grouped_light service and has a unique rid (UUID)."
+    },
+    {
+      "name": "Get Scenes",
+      "category": "Scenes",
+      "description": "Retrieves all scene resources. A scene stores a set of light states for a room or zone and can be recalled to apply them all at once. Use a scene's rid (UUID) with Activate Scene."
+    },
+    {
+      "name": "Activate Scene",
+      "category": "Scenes",
+      "description": "Activates (recalls) a scene by its rid (UUID), applying its stored light states to the associated room or zone. Sends a recall action of \"active\"."
+    },
+    {
+      "name": "Get Devices",
+      "category": "Devices & Sensors",
+      "description": "Retrieves all device resources connected to the Hue Bridge (lights, sensors, switches, plugs, etc.). Each device lists its product metadata and the service resources (light, motion, temperature, etc.) it exposes, addressed by rid (UUID)."
+    },
+    {
+      "name": "Get Motion Sensors",
+      "category": "Devices & Sensors",
+      "description": "Retrieves all motion sensor resources, each reporting whether motion is currently detected along with enablement state. Each motion resource has a unique rid (UUID) and links back to its owning device."
+    },
+    {
+      "name": "Get Temperature",
+      "category": "Devices & Sensors",
+      "description": "Retrieves all temperature sensor resources, each reporting the current temperature in degrees Celsius. Each temperature resource has a unique rid (UUID) and links back to its owning device."
+    },
+    {
+      "name": "Get Light Level",
+      "category": "Devices & Sensors",
+      "description": "Retrieves all light_level sensor resources, each reporting the ambient light level (in lux-derived units) measured by the sensor. Each resource has a unique rid (UUID) and links back to its owning device."
+    },
+    {
+      "name": "Get Bridge",
+      "category": "Bridge",
+      "description": "Retrieves the Hue Bridge resource, including its bridge_id and owning device reference. Useful as a connection check to confirm the bridge IP, application key, and TLS reachability are correctly configured."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Turn lights on/off, dim, or set color and warmth automatically in response to events from other services",
+    "Flash or color a room to signal alerts, notifications, or build/deploy status",
+    "Recall stored scenes to set the mood for a room or zone in a single call",
+    "Control every light in a room or zone together via grouped lights",
+    "Read motion, temperature, and ambient light sensors to drive lighting or other automations",
+    "Verify bridge connectivity and configuration before running lighting workflows"
+  ],
+  "agentIdeas": [
+    "When **Home Assistant** \"Get Entity State\" reports a motion or presence entity as active, use **Philips Hue** \"Set Grouped Light\" to switch on and brighten the corresponding room's lights.",
+    "After a **Google Calendar** \"On Event Starting Soon\" trigger fires for a focus block, use **Philips Hue** \"Activate Scene\" to recall a cool, bright work scene for the office room.",
+    "Use **OpenWeatherMap** \"Get Current Weather\" to read cloud cover as daylight fades, then call **Philips Hue** \"Set Light State\" to warm and dim the living-room lights."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/philips-hue/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/philips-hue",
+    "readme": "services/philips-hue/README.md",
+    "index": "services/philips-hue/src/index.js"
+  }
+}

@@ -1,0 +1,316 @@
+{
+  "slug": "instantly",
+  "name": "Instantly",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner extension for Instantly AI - the AI-powered email outreach and deliverability platform.",
+  "actionCount": 56,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Tags",
+    "Campaigns",
+    "Leads",
+    "Blocklist",
+    "Accounts",
+    "Lead Lists",
+    "Emails"
+  ],
+  "actions": [
+    {
+      "name": "Add Tags to Campaigns",
+      "category": "Tags",
+      "description": "Add tags to one or more campaigns in your Instantly workspace. Tags help organize and categorize campaigns for better filtering and management."
+    },
+    {
+      "name": "Remove Tags From Campaigns",
+      "category": "Tags",
+      "description": "Remove tags from one or more campaigns in your Instantly workspace. This helps maintain clean campaign organization by removing outdated or unnecessary tags."
+    },
+    {
+      "name": "Add Lead to Campaign",
+      "category": "Campaigns",
+      "description": "Add a lead to a campaign in your Instantly workspace. This moves or adds a lead to the specified campaign for outreach sequences. Lead IDs must be in UUID format (e.g., \"01996da2-2642-7217-9b78-c20b687ade51\"). Use the Find Lead action to retrieve proper lead IDs."
+    },
+    {
+      "name": "Delete Leads",
+      "category": "Leads",
+      "description": "Permanently delete leads from your Instantly workspace. This removes the lead records entirely, not just from a specific campaign. Use with caution as this action cannot be undone."
+    },
+    {
+      "name": "List Leads",
+      "category": "Leads",
+      "description": "Retrieve a paginated list of leads from your Instantly workspace with optional filtering. Returns detailed lead data including status, campaign associations, and contact information."
+    },
+    {
+      "name": "Find Lead",
+      "category": "Leads",
+      "description": "Find and retrieve lead information from your Instantly workspace by searching for email address or other criteria. Returns detailed lead data including status and campaign associations."
+    },
+    {
+      "name": "Add Tags to Accounts",
+      "category": "Tags",
+      "description": "Add tags to one or more email accounts in your Instantly workspace. Tags help organize and categorize accounts for better filtering and management."
+    },
+    {
+      "name": "Remove Tags From Accounts",
+      "category": "Tags",
+      "description": "Remove tags from one or more email accounts in your Instantly workspace. This helps maintain clean account organization by removing outdated or unnecessary tags."
+    },
+    {
+      "name": "Add to Blocklist",
+      "category": "Blocklist",
+      "description": "Add email addresses or domains to the global blocklist in your Instantly workspace. Blocked emails will not receive any outreach and will be automatically filtered from campaigns."
+    },
+    {
+      "name": "Create a New Tag",
+      "category": "Tags",
+      "description": "Create a new custom tag in your Instantly workspace. Tags can be used to organize and categorize campaigns, accounts, and other resources for better filtering and management."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "List custom tags in your Instantly workspace with optional filtering and pagination."
+    },
+    {
+      "name": "Update Lead Status",
+      "category": "Leads",
+      "description": "Update the status of a lead in your Instantly workspace. This allows you to track the progress of leads through your outreach workflow and maintain accurate lead states."
+    },
+    {
+      "name": "List Accounts",
+      "category": "Accounts",
+      "description": "Retrieve a paginated list of email accounts from your Instantly workspace. Filter by status, provider, tags, or search for specific accounts."
+    },
+    {
+      "name": "Get Account",
+      "category": "Accounts",
+      "description": "Retrieve detailed information about a specific email account in your Instantly workspace by its email address."
+    },
+    {
+      "name": "Pause Account",
+      "category": "Accounts",
+      "description": "Pause an email account to temporarily stop all sending activity. The account will not send any emails until resumed."
+    },
+    {
+      "name": "Resume Account",
+      "category": "Accounts",
+      "description": "Resume a paused email account to restart sending activity. The account will resume normal operations."
+    },
+    {
+      "name": "Mark Account Fixed",
+      "category": "Accounts",
+      "description": "Mark an email account as fixed after resolving issues. This updates the account status to indicate problems have been resolved."
+    },
+    {
+      "name": "Create Account",
+      "category": "Accounts",
+      "description": "Create a new email account in your Instantly workspace with SMTP/IMAP settings. Configure warmup, daily limits, and tracking domains."
+    },
+    {
+      "name": "Update Account",
+      "category": "Accounts",
+      "description": "Update an existing email account's settings including name, limits, warmup configuration, and tracking domains."
+    },
+    {
+      "name": "Delete Account",
+      "category": "Accounts",
+      "description": "Permanently delete an email account from your Instantly workspace. This action cannot be undone. Use with caution."
+    },
+    {
+      "name": "Enable Warmup",
+      "category": "Accounts",
+      "description": "Enable email warmup for one or more accounts. Warmup gradually increases sending volume to build sender reputation."
+    },
+    {
+      "name": "Disable Warmup",
+      "category": "Accounts",
+      "description": "Disable email warmup for one or more accounts. Stops the gradual warmup process."
+    },
+    {
+      "name": "Get Warmup Analytics",
+      "category": "Accounts",
+      "description": "Retrieve warmup analytics and statistics for specified email accounts. Shows warmup progress, email volumes, and performance metrics."
+    },
+    {
+      "name": "Test Account Vitals",
+      "category": "Accounts",
+      "description": "Test the health and connection status of email accounts. Validates SMTP/IMAP settings and checks account vitals."
+    },
+    {
+      "name": "Create Lead List",
+      "category": "Lead Lists",
+      "description": "Create a new lead list in your Instantly workspace to organize and manage your leads."
+    },
+    {
+      "name": "List Lead Lists",
+      "category": "Lead Lists",
+      "description": "Retrieve a paginated list of lead lists from your Instantly workspace."
+    },
+    {
+      "name": "Get Lead List",
+      "category": "Lead Lists",
+      "description": "Retrieve detailed information about a specific lead list by its ID."
+    },
+    {
+      "name": "Update Lead List",
+      "category": "Lead Lists",
+      "description": "Update an existing lead list's properties such as name, enrichment settings, or owner."
+    },
+    {
+      "name": "Delete Lead List",
+      "category": "Lead Lists",
+      "description": "Permanently delete a lead list from your Instantly workspace. This action cannot be undone."
+    },
+    {
+      "name": "Get Lead List Verification Stats",
+      "category": "Lead Lists",
+      "description": "Retrieve email verification statistics for a specific lead list, including valid, invalid, and risky email counts."
+    },
+    {
+      "name": "Create Lead Label",
+      "category": "Lead Lists",
+      "description": "Create a custom lead label to categorize and track lead interest levels (positive, negative, neutral)."
+    },
+    {
+      "name": "List Lead Labels",
+      "category": "Lead Lists",
+      "description": "Retrieve a paginated list of custom lead labels from your Instantly workspace."
+    },
+    {
+      "name": "Get Lead Label",
+      "category": "Lead Lists",
+      "description": "Retrieve detailed information about a specific lead label by its ID."
+    },
+    {
+      "name": "Update Lead Label",
+      "category": "Lead Lists",
+      "description": "Update an existing lead label's properties such as name, interest status, or AI settings."
+    },
+    {
+      "name": "Delete Lead Label",
+      "category": "Lead Lists",
+      "description": "Permanently delete a lead label. Leads and emails with this label will be reassigned to the specified status."
+    },
+    {
+      "name": "List Emails",
+      "category": "Emails",
+      "description": "Retrieve a paginated list of emails from your Instantly workspace with powerful filtering options."
+    },
+    {
+      "name": "Get Email",
+      "category": "Emails",
+      "description": "Retrieve detailed information about a specific email by its ID."
+    },
+    {
+      "name": "Update Email",
+      "category": "Emails",
+      "description": "Update an email's properties such as read status or reminder timestamp."
+    },
+    {
+      "name": "Delete Email",
+      "category": "Emails",
+      "description": "Permanently delete an email from your Instantly workspace. This action cannot be undone."
+    },
+    {
+      "name": "Reply to Email",
+      "category": "Emails",
+      "description": "Send a reply to an existing email in your Instantly workspace."
+    },
+    {
+      "name": "Count Unread Emails",
+      "category": "Emails",
+      "description": "Get the total count of unread emails in your Instantly workspace."
+    },
+    {
+      "name": "Mark Thread as Read",
+      "category": "Emails",
+      "description": "Mark all emails in a specific thread as read."
+    },
+    {
+      "name": "Verify Email",
+      "category": "Emails",
+      "description": "Verify an email address to check if it's valid, risky, or invalid."
+    },
+    {
+      "name": "Check Email Verification Status",
+      "category": "Emails",
+      "description": "Check the verification status of a previously submitted email address."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Retrieve a paginated list of campaigns from your Instantly workspace with filtering options."
+    },
+    {
+      "name": "Create Campaign",
+      "category": "Campaigns",
+      "description": "Create a new email outreach campaign with full configuration options including scheduling, sequences, tracking, and account settings."
+    },
+    {
+      "name": "Get Campaign",
+      "category": "Campaigns",
+      "description": "Retrieve detailed information about a specific campaign by its ID."
+    },
+    {
+      "name": "Delete Campaign",
+      "category": "Campaigns",
+      "description": "Permanently delete a campaign from your Instantly workspace. This action cannot be undone."
+    },
+    {
+      "name": "Update Campaign",
+      "category": "Campaigns",
+      "description": "Update an existing campaign's configuration including name, scheduling, sequences, tracking, and account settings. All parameters are optional."
+    },
+    {
+      "name": "Activate Campaign",
+      "category": "Campaigns",
+      "description": "Start or resume a campaign to begin sending emails to leads."
+    },
+    {
+      "name": "Pause Campaign",
+      "category": "Campaigns",
+      "description": "Stop or pause a campaign to temporarily halt email sending."
+    },
+    {
+      "name": "Duplicate Campaign",
+      "category": "Campaigns",
+      "description": "Create a duplicate copy of an existing campaign with all its settings and sequences."
+    },
+    {
+      "name": "Search Campaigns by Contact",
+      "category": "Campaigns",
+      "description": "Search for campaigns that contain a specific lead email address."
+    },
+    {
+      "name": "Get Campaign Analytics",
+      "category": "Campaigns",
+      "description": "Retrieve analytics and performance metrics for one or more campaigns."
+    },
+    {
+      "name": "Get Campaign Analytics Overview",
+      "category": "Campaigns",
+      "description": "Retrieve a high-level overview of campaign analytics and performance metrics."
+    },
+    {
+      "name": "Get Daily Campaign Analytics",
+      "category": "Campaigns",
+      "description": "Retrieve day-by-day breakdown of campaign analytics and performance metrics."
+    }
+  ],
+  "triggers": [
+    "Activity Event"
+  ],
+  "idealUseCases": [],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/instantly/public/icon.png",
+  "sourcePaths": {
+    "service": "services/instantly",
+    "readme": "services/instantly/README.md",
+    "index": "services/instantly/src/index.js"
+  }
+}

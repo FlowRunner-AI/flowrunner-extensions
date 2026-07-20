@@ -1,0 +1,164 @@
+{
+  "slug": "reddit",
+  "name": "Reddit",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Reddit](https://www.reddit.com), acting on behalf of a connected Reddit user via OAuth2. Submit and edit posts and comments, vote, save and hide content, browse and search subreddits, manage subscriptions, and send private messages.",
+  "actionCount": 24,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Identity",
+    "Submissions",
+    "Comments",
+    "Voting & Saving",
+    "Listings & Browse",
+    "Subreddits",
+    "Messages"
+  ],
+  "actions": [
+    {
+      "name": "Get Me",
+      "category": "Identity",
+      "description": "Retrieves the profile of the connected Reddit user, including username, account age, karma totals, verification status, and account settings. Requires the 'identity' scope."
+    },
+    {
+      "name": "Get My Karma",
+      "category": "Identity",
+      "description": "Retrieves the connected user's karma breakdown per subreddit, returning link karma and comment karma earned in each subreddit they have participated in. Requires the 'identity' scope."
+    },
+    {
+      "name": "Get My Subreddits",
+      "category": "Identity",
+      "description": "Lists the subreddits the connected user is subscribed to. Returns unwrapped subreddit objects with subscriber counts, descriptions, and settings, plus an 'after' cursor for pagination. Requires the 'mysubreddits' scope."
+    },
+    {
+      "name": "Submit Post",
+      "category": "Submissions",
+      "description": "Submits a new post to a subreddit as the connected user. Choose the kind: 'Self' for a text post (uses the Text field) or 'Link' for a link post (uses the URL field). Supports optional flair, NSFW and spoiler flags, and inbox reply subscription. Requires the 'submit' scope. Returns Reddit's json response containing the new post's URL, id, and fullname (t3_...)."
+    },
+    {
+      "name": "Get Post",
+      "category": "Submissions",
+      "description": "Retrieves a post (link) and its comment tree by the post's base36 article id (e.g. 'abc123', the part after '/comments/'). Returns an array of two listings: the first contains the post, the second contains the top-level comments. Requires the 'read' scope."
+    },
+    {
+      "name": "Edit Post",
+      "category": "Submissions",
+      "description": "Edits the body text of an existing self (text) post owned by the connected user. Requires the 'edit' scope. Returns the updated content in Reddit's json response."
+    },
+    {
+      "name": "Delete Post",
+      "category": "Submissions",
+      "description": "Deletes a post owned by the connected user, specified by its fullname (t3_...). Requires the 'edit' scope. This action is permanent."
+    },
+    {
+      "name": "Add Comment",
+      "category": "Comments",
+      "description": "Posts a comment or reply as the connected user. The parent is a fullname: use a post's fullname (t3_...) to comment on the post, or a comment's fullname (t1_...) to reply to a comment. Requires the 'submit' scope. Returns the created comment in Reddit's json response."
+    },
+    {
+      "name": "Edit Comment",
+      "category": "Comments",
+      "description": "Edits the body of an existing comment owned by the connected user. Requires the 'edit' scope. Returns the updated comment in Reddit's json response."
+    },
+    {
+      "name": "Delete Comment",
+      "category": "Comments",
+      "description": "Deletes a comment owned by the connected user, specified by its fullname (t1_...). Requires the 'edit' scope. This action is permanent."
+    },
+    {
+      "name": "Get Comments For Post",
+      "category": "Comments",
+      "description": "Retrieves the comments for a post by the post's base36 article id (e.g. 'abc123'). Returns the flattened list of top-level comment objects plus the post itself. Supports an optional sort order and comment limit. Requires the 'read' scope."
+    },
+    {
+      "name": "Vote",
+      "category": "Voting & Saving",
+      "description": "Casts, changes, or removes the connected user's vote on a post or comment. The target is a fullname (t3_... for a post, t1_... for a comment). Requires the 'vote' scope. Per Reddit's API rules, votes must reflect a genuine user action, not automated behavior."
+    },
+    {
+      "name": "Save",
+      "category": "Voting & Saving",
+      "description": "Saves a post or comment to the connected user's saved items. The target is a fullname (t3_... or t1_...). An optional category groups the saved item (Reddit Premium feature). Requires the 'save' scope."
+    },
+    {
+      "name": "Unsave",
+      "category": "Voting & Saving",
+      "description": "Removes a post or comment from the connected user's saved items. The target is a fullname (t3_... or t1_...). Requires the 'save' scope."
+    },
+    {
+      "name": "Hide",
+      "category": "Voting & Saving",
+      "description": "Hides a post from the connected user's listings, specified by its fullname (t3_...). Requires the 'report' scope."
+    },
+    {
+      "name": "Unhide",
+      "category": "Voting & Saving",
+      "description": "Unhides a previously hidden post, specified by its fullname (t3_...). Requires the 'report' scope."
+    },
+    {
+      "name": "Get Subreddit Posts",
+      "category": "Listings & Browse",
+      "description": "Retrieves posts from a subreddit by sort order (Hot, New, Top, or Rising). For 'Top', an optional timeframe narrows results (e.g. Day, Week, All Time). Returns unwrapped post objects plus an 'after' cursor for pagination. Requires the 'read' scope."
+    },
+    {
+      "name": "Search",
+      "category": "Listings & Browse",
+      "description": "Searches Reddit for posts matching a query. When a subreddit is provided the search is restricted to that subreddit; otherwise it searches all of Reddit. Supports sort order and result limit. Returns unwrapped post objects plus an 'after' cursor. Requires the 'read' scope."
+    },
+    {
+      "name": "Get User Posts",
+      "category": "Listings & Browse",
+      "description": "Retrieves the posts submitted by a given Reddit user. Returns unwrapped post objects plus an 'after' cursor for pagination. Requires the 'history' scope."
+    },
+    {
+      "name": "Get Subreddit Info",
+      "category": "Subreddits",
+      "description": "Retrieves detailed information about a subreddit, including its title, description, subscriber count, creation date, and settings. Requires the 'read' scope."
+    },
+    {
+      "name": "Subscribe Or Unsubscribe",
+      "category": "Subreddits",
+      "description": "Subscribes the connected user to a subreddit or unsubscribes them from it. Requires the 'subscribe' scope."
+    },
+    {
+      "name": "Get Subreddit Rules",
+      "category": "Subreddits",
+      "description": "Retrieves the posting rules for a subreddit, including each rule's short name, description, and the kind of content it applies to (link, comment, or all). Requires the 'read' scope."
+    },
+    {
+      "name": "Send Message",
+      "category": "Messages",
+      "description": "Sends a private message to another Reddit user from the connected account. Requires the 'privatemessages' scope. Returns Reddit's json response, which contains any validation errors."
+    },
+    {
+      "name": "Get Inbox",
+      "category": "Messages",
+      "description": "Retrieves the connected user's message inbox, including private messages and comment/post replies. Returns unwrapped message objects plus an 'after' cursor for pagination. Requires the 'privatemessages' scope."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Cross-post announcements or content by submitting text or link posts to a subreddit as the connected user.",
+    "Monitor a subreddit's Hot/New/Top listings or search results and route matching posts into another tool.",
+    "Auto-reply to mentions or messages by reading the inbox and posting comments or private messages.",
+    "Sync a user's saved items, karma breakdown, or subscriptions into a spreadsheet or database.",
+    "Look up subreddit info and posting rules before publishing to stay compliant with community guidelines."
+  ],
+  "agentIdeas": [
+    "Use **Reddit** \"Search\" or \"Get Subreddit Posts\" to pull recent discussion on a topic, then **Anthropic Claude** \"Ask Claude\" to summarize sentiment and post the digest via **Slack** \"Send Message To Channel\".",
+    "When new mentions or replies surface via **Reddit** \"Get Inbox\", use **Reddit** \"Send Message\" to respond and **Google Sheets** \"Add Row\" to log each conversation for follow-up.",
+    "Take a write-up drafted in **Notion** \"Create Page\", then use **Reddit** \"Submit Post\" to publish it to a subreddit and \"Add Comment\" to seed the discussion thread."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/reddit/public/icon.png",
+  "sourcePaths": {
+    "service": "services/reddit",
+    "readme": "services/reddit/README.md",
+    "index": "services/reddit/src/index.js"
+  }
+}

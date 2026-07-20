@@ -1,0 +1,150 @@
+{
+  "slug": "adobe-sign",
+  "name": "Adobe Acrobat Sign",
+  "marketingCategory": "Documents & E-signature",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for Adobe Acrobat Sign (REST API v6, OAuth2). Upload documents as transient documents, send agreements out for e-signature (from uploads or library templates), track signing progress through members, events, and signing URLs, send reminders, pull signer-entered form data, and download signed PDFs and audit trails into FlowRunner file storage. Also lists library templates, web forms, users, and groups.",
+  "actionCount": 21,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Transient Documents",
+    "Agreements",
+    "Library Templates",
+    "Web Forms",
+    "Users",
+    "Groups"
+  ],
+  "actions": [
+    {
+      "name": "Upload Transient Document",
+      "category": "Transient Documents",
+      "description": "Uploads a FlowRunner file to Adobe Acrobat Sign as a transient document and returns its transientDocumentId. A transient document is temporary server-side storage (kept for about 7 days) that exists solely to be referenced when sending an agreement or creating a draft — pass the returned ID to Send Agreement or Create Draft Agreement as the Transient Document ID. Supported formats include PDF, Word, Excel, PowerPoint, text, and common image types."
+    },
+    {
+      "name": "Send Agreement",
+      "category": "Agreements",
+      "description": "Creates an agreement and immediately sends it out for e-signature. Provide the document as either a Transient Document ID (from Upload Transient Document) or a library template, plus the recipient emails — each recipient becomes their own participant set and signs in the listed order. Recipients get an email with a signing link; use Get Agreement to track status. For multi-member participant sets, mixed roles, or phone authentication, supply the raw Participant Sets Info override instead of Recipient Emails."
+    },
+    {
+      "name": "Create Draft Agreement",
+      "category": "Agreements",
+      "description": "Creates an agreement in DRAFT state without sending it, so it can be reviewed or completed in the Acrobat Sign web app before going out. Takes the same inputs as Send Agreement: a Transient Document ID or library template plus recipient emails (each its own participant set, acting in the listed order). Returns the new agreement's ID."
+    },
+    {
+      "name": "List Agreements",
+      "category": "Agreements",
+      "description": "Lists the connected user's agreements, most recent first, with each agreement's ID, name, status (e.g. OUT_FOR_SIGNATURE, SIGNED, CANCELLED), and display date. Paginate with the cursor returned in page.nextCursor."
+    },
+    {
+      "name": "Get Agreement",
+      "category": "Agreements",
+      "description": "Retrieves the full details of a single agreement — name, status, participant sets with roles and order, sender, creation date, expiration, message, and external ID. Use this to check whether an agreement has been signed, declined, or is still out for signature."
+    },
+    {
+      "name": "Cancel Agreement",
+      "category": "Agreements",
+      "description": "Cancels an in-process agreement so it can no longer be signed. Optionally records a cancellation comment and notifies the remaining participants by email. Only agreements that are still in progress (e.g. OUT_FOR_SIGNATURE) can be cancelled; completed agreements cannot."
+    },
+    {
+      "name": "Get Signing URLs",
+      "category": "Agreements",
+      "description": "Retrieves the signing URLs for an agreement's current participants — the links each signer uses to open and sign the document. Useful for embedding a signing link in your own email or app instead of relying on Acrobat Sign's notification. Only available while the agreement is out for signature; Acrobat Sign returns 404 before the agreement reaches the participant or after completion."
+    },
+    {
+      "name": "Get Agreement Members",
+      "category": "Agreements",
+      "description": "Lists all members of an agreement — the participant sets with each participant's ID, email, role, order, and status, plus CC recipients and the sender. The participant IDs returned here are what Send Reminder expects in Recipient Participant IDs."
+    },
+    {
+      "name": "Get Agreement Events",
+      "category": "Agreements",
+      "description": "Retrieves the audit event history of an agreement — creation, emails sent and viewed, signatures, delegations, reminders, cancellation, and completion — each with its timestamp, acting participant, and event type. Use this to build a timeline of what happened to an agreement."
+    },
+    {
+      "name": "Send Reminder",
+      "category": "Agreements",
+      "description": "Sends a reminder email to specific participants of an agreement who have not yet acted. Get the participant IDs from Get Agreement Members (the participantSets[].id values); an optional note is included in the reminder email."
+    },
+    {
+      "name": "Get Form Data",
+      "category": "Agreements",
+      "description": "Retrieves the form field data entered by participants of an agreement as CSV. Returns the raw CSV text plus, when it can be parsed, an array of row objects keyed by the CSV headers (one row per participant/submission). Useful for pulling signer-entered values (names, dates, custom fields) into a flow after signing."
+    },
+    {
+      "name": "Download Agreement PDF",
+      "category": "Agreements",
+      "description": "Downloads the agreement's combined document PDF (all documents merged into one file, including signatures once signed), saves it to FlowRunner file storage, and returns the saved file's URL. Optionally includes supporting documents and appends the audit report to the PDF."
+    },
+    {
+      "name": "Download Audit Trail",
+      "category": "Agreements",
+      "description": "Downloads the agreement's audit trail as a PDF — the certified record of who did what and when (sent, viewed, signed, IP addresses) — saves it to FlowRunner file storage, and returns the saved file's URL. Commonly archived alongside the signed document for compliance."
+    },
+    {
+      "name": "List Agreement Documents",
+      "category": "Agreements",
+      "description": "Lists the individual documents that make up an agreement, with each document's ID, name, MIME type, and page count. Use this to see what files were included before downloading the combined PDF."
+    },
+    {
+      "name": "List Library Documents",
+      "category": "Library Templates",
+      "description": "Lists the reusable library templates available to the connected user, with each template's ID, name, sharing mode, and template types. Use a template's ID as the Library Template when sending an agreement. Paginate with the cursor returned in page.nextCursor."
+    },
+    {
+      "name": "Get Library Document",
+      "category": "Library Templates",
+      "description": "Retrieves the details of a single library template — name, status, sharing mode, template types, creator, and timestamps. Use this to inspect a template before sending agreements from it."
+    },
+    {
+      "name": "List Web Forms",
+      "category": "Web Forms",
+      "description": "Lists the connected user's web forms (hosted signing forms, formerly called widgets), with each form's ID, name, status, and URL. Paginate with the cursor returned in page.nextCursor."
+    },
+    {
+      "name": "Get Web Form",
+      "category": "Web Forms",
+      "description": "Retrieves the details of a single web form — name, status, hosted URL, embed code, and creation info. Use this to fetch a web form's public signing URL for sharing or embedding."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users",
+      "description": "Retrieves the profile of the connected Adobe Acrobat Sign user — ID, email, name, company, account and group membership, and locale. Useful for confirming which account the connection is bound to."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists the users in the Adobe Acrobat Sign account with each user's ID, email, name, and company. NOTE: this endpoint requires the connected user to be an account administrator; non-admin connections receive a permission error. Paginate with the cursor returned in page.nextCursor."
+    },
+    {
+      "name": "List Groups",
+      "category": "Groups",
+      "description": "Lists the groups in the Adobe Acrobat Sign account that are visible to the connected user, with each group's ID, name, and creation date. Groups organize users and templates within an account. Paginate with the cursor returned in page.nextCursor."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send a contract, NDA, or offer letter for e-signature and follow it to completion",
+    "Kick off signing from a reusable library template rather than a fresh upload each time",
+    "Embed a signing link in your own email or app via Get Signing URLs instead of Acrobat Sign's notification",
+    "Nudge slow signers with targeted reminders to specific participants",
+    "Archive the signed PDF and its certified audit trail into FlowRunner file storage for compliance",
+    "Pull signer-entered field values (names, dates, custom fields) out of an agreement as structured data after signing"
+  ],
+  "agentIdeas": [
+    "Use **HubSpot** \"Get Deal By ID\" to pull a closed deal's contact, then chain **Adobe Acrobat Sign** \"Upload Transient Document\" and \"Send Agreement\" to send the contract for signature to that contact",
+    "When **Gmail** \"On New Email\" delivers an inbound contract attachment, use **Adobe Acrobat Sign** \"Upload Transient Document\" and \"Create Draft Agreement\" to stage it for review before sending",
+    "After **Adobe Acrobat Sign** \"Get Agreement\" reports a SIGNED status, use \"Download Agreement PDF\" and \"Download Audit Trail\", then **Google Drive** \"Upload File\" to archive both into a compliance folder",
+    "Use **Adobe Acrobat Sign** \"Get Form Data\" to pull signer-entered field values, then **Google Sheets** \"Add Row\" to log each completed agreement into a tracking spreadsheet"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/adobe-sign/public/icon.png",
+  "sourcePaths": {
+    "service": "services/adobe-sign",
+    "readme": "services/adobe-sign/README.md",
+    "index": "services/adobe-sign/src/index.js"
+  }
+}

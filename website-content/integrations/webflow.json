@@ -1,0 +1,125 @@
+{
+  "slug": "webflow",
+  "name": "Webflow",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Comprehensive website management and CMS platform with advanced content management, e-commerce capabilities, and real-time webhook integrations.",
+  "actionCount": 16,
+  "triggerCount": 3,
+  "operationCategories": [
+    "Collection Management",
+    "Site Management",
+    "Collection Field Management",
+    "Collection Item Management",
+    "Form Management"
+  ],
+  "actions": [
+    {
+      "name": "Get Collection Schema Info",
+      "category": "Collection Management",
+      "description": "Retrieves detailed CMS collection schema for AI agents to understand content structure, build dynamic forms, or generate content based on field definitions. Essential for automated content management, schema-driven workflows, and CMS integration."
+    },
+    {
+      "name": "Get Site Details",
+      "category": "Site Management",
+      "description": "Retrieves comprehensive site information for AI agents to access configuration data, manage multi-site workflows, or determine site capabilities. Perfect for site-aware automation, content publishing workflows, and site management operations."
+    },
+    {
+      "name": "Get Site Domains",
+      "category": "Site Management",
+      "description": "Retrieves custom domains for AI agents to manage multi-domain deployments, configure DNS automation, or build domain-aware content strategies. Essential for enterprise site management and automated domain operations."
+    },
+    {
+      "name": "Publish Site",
+      "category": "Site Management",
+      "description": "Publishes site changes for AI agents to automate content deployment, trigger post-publish workflows, or manage staged content releases. Critical for automated publishing pipelines and content delivery automation."
+    },
+    {
+      "name": "Create Collection",
+      "category": "Collection Management",
+      "description": "Creates new CMS collections for AI agents to build dynamic content structures, generate database schemas, or establish content management systems. Perfect for automated site setup, content architecture generation, and CMS configuration workflows."
+    },
+    {
+      "name": "Create Field Definition",
+      "category": "Collection Field Management",
+      "description": "Creates structured field definitions for AI agents to build dynamic content schemas, generate form structures, or define data types programmatically. Essential for automated CMS setup, schema generation, and content modeling workflows."
+    },
+    {
+      "name": "Delete Collection",
+      "category": "Collection Management",
+      "description": "Removes CMS collections for AI agents to clean up unused content structures, manage schema migrations, or automate content architecture changes. Important for site maintenance, content reorganization, and automated cleanup workflows."
+    },
+    {
+      "name": "Create Collection Field",
+      "category": "Collection Field Management",
+      "description": "Adds fields to existing collections for AI agents to extend content schemas, enhance data structures, or modify content models dynamically. Perfect for schema evolution, content enhancement, and automated field management."
+    },
+    {
+      "name": "Update Collection Field",
+      "category": "Collection Field Management",
+      "description": "Modifies collection field properties for AI agents to refine content schemas, update field requirements, or enhance data validation. Essential for schema maintenance, content model evolution, and automated field updates."
+    },
+    {
+      "name": "Delete Collection Field",
+      "category": "Collection Field Management",
+      "description": "Removes fields from collections for AI agents to streamline content schemas, perform cleanup operations, or manage schema migrations. Important for content model optimization and automated field management."
+    },
+    {
+      "name": "Get Collection Items",
+      "category": "Collection Item Management",
+      "description": "Retrieves collection items for AI agents to analyze content, process data at scale, or build content-driven workflows. Perfect for content auditing, bulk operations, and automated content processing pipelines."
+    },
+    {
+      "name": "Create Collection Item",
+      "category": "Collection Item Management",
+      "description": "Creates new collection items for AI agents to populate content databases, generate pages programmatically, or automate content creation workflows. Essential for automated publishing, content generation, and bulk content operations."
+    },
+    {
+      "name": "Update Collection Item",
+      "category": "Collection Item Management",
+      "description": "Updates existing collection items for AI agents to maintain content accuracy, process content modifications, or manage automated content updates. Critical for content maintenance, data synchronization, and automated editing workflows."
+    },
+    {
+      "name": "Delete Collection Item",
+      "category": "Collection Item Management",
+      "description": "Removes collection items for AI agents to clean up outdated content, manage content lifecycle, or automate content pruning. Important for content management, automated cleanup, and data maintenance workflows."
+    },
+    {
+      "name": "Get Form Submissions",
+      "category": "Form Management",
+      "description": "Retrieves form submissions for AI agents to process user input, analyze form data, or build automated response systems. Perfect for lead processing, form analytics, and automated customer interaction workflows."
+    },
+    {
+      "name": "Delete Form Submission",
+      "category": "Form Management",
+      "description": "Removes form submissions for AI agents to manage data retention, clean up processed entries, or maintain submission databases. Essential for data privacy compliance and automated submission management."
+    }
+  ],
+  "triggers": [
+    "On Form Submit",
+    "On New Order",
+    "On Order Updated"
+  ],
+  "idealUseCases": [
+    "Dynamic website content management and CMS automation",
+    "E-commerce order processing and inventory management",
+    "Form submission handling and lead processing",
+    "Multi-site publishing and domain management",
+    "Custom collection and field management",
+    "Content localization and translation workflows",
+    "Real-time order and form monitoring",
+    "Automated website deployment and updates"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/webflow/public/icon.png",
+  "sourcePaths": {
+    "service": "services/webflow",
+    "readme": "services/webflow/README.md",
+    "index": "services/webflow/src/index.js"
+  }
+}

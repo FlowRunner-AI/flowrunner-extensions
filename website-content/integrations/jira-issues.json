@@ -1,0 +1,96 @@
+{
+  "slug": "jira-issues",
+  "name": "Jira Issues",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "A comprehensive FlowRunner extension for integrating Jira Cloud. This service provides full CRUD operations for issues, comments, attachments, and project management.",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Issues",
+    "Comments",
+    "Attachments",
+    "Projects"
+  ],
+  "actions": [
+    {
+      "name": "Create Issue",
+      "category": "Issues",
+      "description": "Creates a new issue in a Jira project. Supports standard fields like summary, description, issue type, priority, and assignee. Custom fields can also be included in the fields object."
+    },
+    {
+      "name": "Get Issue",
+      "category": "Issues",
+      "description": "Retrieves detailed information about a specific Jira issue by its ID or key. Returns all issue fields including status, assignee, reporter, comments, and custom fields."
+    },
+    {
+      "name": "Update Issue",
+      "category": "Issues",
+      "description": "Updates fields of an existing Jira issue. Can update summary, description, status, assignee, priority, labels, and custom fields. Only specified fields will be updated."
+    },
+    {
+      "name": "Delete Issue",
+      "category": "Issues",
+      "description": "Permanently deletes a Jira issue. This action cannot be undone. Use with caution as it removes the issue and all its data from the project."
+    },
+    {
+      "name": "Search Issues",
+      "category": "Issues",
+      "description": "Searches for issues using JQL (Jira Query Language). Returns a list of issues matching the query criteria with configurable fields and pagination support."
+    },
+    {
+      "name": "Add Comment",
+      "category": "Comments",
+      "description": "Adds a new comment to a Jira issue. Supports plain text or Atlassian Document Format for rich text formatting."
+    },
+    {
+      "name": "Get Comments",
+      "category": "Comments",
+      "description": "Retrieves all comments for a specific Jira issue. Returns a paginated list of comments with author information and timestamps."
+    },
+    {
+      "name": "Update Comment",
+      "category": "Comments",
+      "description": "Updates the text of an existing comment on a Jira issue. Only the comment author or project administrators can update comments."
+    },
+    {
+      "name": "Delete Comment",
+      "category": "Comments",
+      "description": "Permanently deletes a comment from a Jira issue. Only the comment author or project administrators can delete comments."
+    },
+    {
+      "name": "Transition Issue",
+      "category": "Issues",
+      "description": "Transitions an issue to a different status by executing a workflow transition. Use Get Transitions to see available transitions for an issue."
+    },
+    {
+      "name": "Assign Issue",
+      "category": "Issues",
+      "description": "Assigns a Jira issue to a specific user by their account ID. Use empty string to unassign the issue."
+    },
+    {
+      "name": "Add Attachment",
+      "category": "Attachments",
+      "description": "Adds an attachment to a Jira issue from a public file URL. Supports various file types including images, documents, and archives."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves detailed information about a specific Jira project including its configuration, issue types, and components."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/jira-issues/public/icon.png",
+  "sourcePaths": {
+    "service": "services/jira-issues",
+    "readme": "services/jira-issues/README.md",
+    "index": "services/jira-issues/src/index.js"
+  }
+}

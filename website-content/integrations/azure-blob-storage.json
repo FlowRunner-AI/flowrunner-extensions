@@ -1,0 +1,105 @@
+{
+  "slug": "azure-blob-storage",
+  "name": "Azure Blob Storage",
+  "marketingCategory": "Storage & Files",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Manage Azure Blob Storage containers and blobs — list, create, inspect, upload, download, copy, snapshot, and manage metadata — using zero-dependency, hand-rolled Shared Key (HMAC-SHA256) request signing.",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Containers",
+    "Blobs"
+  ],
+  "actions": [
+    {
+      "name": "List Containers",
+      "category": "Containers",
+      "description": "Lists the blob containers in the storage account. Supports an optional name prefix filter, a page size, and a continuation marker for paging through large accounts. Returns each container's name, last-modified time, and lease state, plus a nextMarker to fetch the following page when the result set is truncated."
+    },
+    {
+      "name": "Create Container",
+      "category": "Containers",
+      "description": "Creates a new container in the storage account under the given name. Optionally sets the anonymous public access level (private, blob-level, or full container-level) and custom metadata name/value pairs. Container names must be lowercase, 3-63 characters, and unique within the account; creating a container that already exists returns a conflict error."
+    },
+    {
+      "name": "Get Container Properties",
+      "category": "Containers",
+      "description": "Retrieves the system properties and any custom metadata for a container, including its ETag, last-modified time, lease state, and public access level. Use this to confirm a container exists and to inspect its configuration. Returns a 404 error when the container does not exist."
+    },
+    {
+      "name": "Delete Container",
+      "category": "Containers",
+      "description": "Marks a container and all of the blobs it contains for deletion. The container is immediately made inaccessible and is asynchronously purged by Azure. This operation cannot be undone. Returns a 404 error when the container does not exist."
+    },
+    {
+      "name": "List Blobs",
+      "category": "Containers",
+      "description": "Lists the blobs inside a container, optionally filtered by a name prefix and limited to a page size. Returns each blob's name, size, content type, last-modified time, ETag, and blob type, plus a nextMarker continuation token for paging through large containers. Use the marker parameter to fetch subsequent pages."
+    },
+    {
+      "name": "Upload Blob",
+      "category": "Blobs",
+      "description": "Uploads a block blob to a container. Provide the content either inline as text or by supplying a source URL, in which case the file at that URL is downloaded and streamed into the blob. Sets the blob's content type and any custom metadata. Overwrites an existing blob of the same name. Suited to files that fit in a single request (up to several hundred MB); very large files should use staged block uploads."
+    },
+    {
+      "name": "Get Blob",
+      "category": "Blobs",
+      "description": "Downloads a blob's binary contents and stores the file in FlowRunner file storage, returning a URL that downstream steps can use. Use this to bring an Azure blob into a FlowRunner flow (for example to attach, forward, or process it). The file scope can be controlled via File Settings. Returns a 404 error when the blob does not exist."
+    },
+    {
+      "name": "Get Blob Properties",
+      "category": "Blobs",
+      "description": "Retrieves the system properties and custom metadata for a blob without downloading its contents, including content type, size, ETag, last-modified time, blob type, and lease state. Use this to inspect a blob before deciding whether to download it. Returns a 404 error when the blob does not exist."
+    },
+    {
+      "name": "Delete Blob",
+      "category": "Blobs",
+      "description": "Deletes a blob from a container. By default the blob and its snapshots are removed. This operation marks the blob for immediate deletion; if soft-delete is enabled on the account the blob is retained for the configured retention period before being permanently purged. Returns a 404 error when the blob does not exist."
+    },
+    {
+      "name": "Copy Blob",
+      "category": "Blobs",
+      "description": "Copies a blob into the destination container from a source URL that points to another Azure blob (or any accessible URL). The copy runs server-side and is asynchronous; the returned copy status is typically \"success\" for small blobs or \"pending\" for larger ones. The source must be publicly accessible or reachable by the storage account."
+    },
+    {
+      "name": "Set Blob Metadata",
+      "category": "Blobs",
+      "description": "Replaces all custom metadata on an existing blob with the supplied name/value pairs. Any metadata not included in the call is removed. Metadata names must be valid HTTP header identifiers. Returns a 404 error when the blob does not exist."
+    },
+    {
+      "name": "Get Blob Metadata",
+      "category": "Blobs",
+      "description": "Retrieves only the custom metadata name/value pairs stored on a blob, without its contents or full system properties. Use this for a lightweight read of user-defined tags on a blob. Returns a 404 error when the blob does not exist."
+    },
+    {
+      "name": "Snapshot Blob",
+      "category": "Blobs",
+      "description": "Creates a read-only, point-in-time snapshot of a blob. Snapshots let you preserve a version of the blob before modifying or deleting it, and are addressed by the returned snapshot timestamp appended as a query parameter. Snapshots share storage with the base blob until they diverge. Returns a 404 error when the blob does not exist."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Upload files into a container from inline text or by streaming from a public source URL",
+    "Download a blob into FlowRunner file storage so downstream steps can attach, forward, or process it",
+    "List containers and blobs (with prefix filtering and pagination) to drive dynamic flows",
+    "Copy a blob server-side from another Azure blob or accessible URL",
+    "Snapshot a blob to preserve a point-in-time version before modifying or deleting it",
+    "Read and replace custom metadata on blobs to tag and organize objects"
+  ],
+  "agentIdeas": [
+    "Use **Gmail** \"Get Attachments\" to pull an incoming email attachment, then call **Azure Blob Storage** \"Upload Blob\" to archive it into a container for long-term storage.",
+    "When a **Dropbox** \"On New File\" trigger fires, use **Azure Blob Storage** \"Upload Blob\" with the file's source URL to mirror the new file into an Azure container.",
+    "Use **Azure Blob Storage** \"Get Blob\" to download a stored report into FlowRunner file storage, then **Google Sheets** \"Add Row\" to log the file URL and metadata into a tracking spreadsheet."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/azure-blob-storage/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/azure-blob-storage",
+    "readme": "services/azure-blob-storage/README.md",
+    "index": "services/azure-blob-storage/src/index.js"
+  }
+}

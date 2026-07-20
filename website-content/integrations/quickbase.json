@@ -1,0 +1,118 @@
+{
+  "slug": "quickbase",
+  "name": "Quick Base",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [Quick Base](https://www.quickbase.com/) using the Quick Base JSON REST API (`https://api.quickbase.com/v1`). Query, insert, update, and delete records, manage tables and fields, read app and report metadata, run reports, and download file attachments into FlowRunner storage.",
+  "actionCount": 16,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Records",
+    "Tables",
+    "Fields",
+    "Apps",
+    "Reports",
+    "Files"
+  ],
+  "actions": [
+    {
+      "name": "Query Records",
+      "category": "Records",
+      "description": "Queries records from a Quick Base table using the Quick Base query language. Records are keyed by numeric field IDs (fids), so the Select parameter is an array of fids and the returned data is keyed by fid, e.g. {\"6\": {\"value\": \"Task A\"}}. The Where clause uses the Quick Base query syntax {fid.OPERATOR.'value'} joined with AND / OR — supported operators include EX (equals), XEX (not equals), CT (contains), XCT (not contains), SW (starts with), XSW (does not start with), GT / GTE / LT / LTE (numeric comparisons), BF / OBF / AF / OAF (date before / on-or-before / after / on-or-after), IR / XIR (date in / not in range), HAS / XHAS (user-list membership) and TV (compares underlying keys). Operators must be uppercase. Use the Get Fields Dictionary to look up fids. Optionally set Map Field Labels to also return a fieldLabels map (fid -> label) for readability."
+    },
+    {
+      "name": "Insert/Update Records",
+      "category": "Records",
+      "description": "Inserts or updates records in a Quick Base table. Records are keyed by numeric field IDs (fids); each record in Data is an object of the form {\"<fid>\": {\"value\": <value>}}, e.g. [{\"6\": {\"value\": \"Task A\"}, \"7\": {\"value\": 100}}]. To UPDATE existing records, include the record's key field in each record's data and set Merge Field ID to that key field's fid (defaults to the table's built-in Record ID# field, fid 3); records whose key value matches an existing record are updated, others are inserted. Fields To Return is an array of fids to include for each affected record in the response."
+    },
+    {
+      "name": "Delete Records",
+      "category": "Records",
+      "description": "Deletes records from a Quick Base table that match a Quick Base query. The Where clause uses the Quick Base query syntax {fid.OPERATOR.'value'} joined with AND / OR, for example {3.EX.'42'} to delete the record whose Record ID# is 42, or {7.LT.'0'} to delete records where fid 7 is negative. To delete every record in the table use the query {3.GT.'0'}. Returns the number of records deleted."
+    },
+    {
+      "name": "List Tables",
+      "category": "Tables",
+      "description": "Lists all tables in a Quick Base application. Returns each table's ID (dbid), name, description, and key field ID. The table ID is required by record, field, and report operations."
+    },
+    {
+      "name": "Get Table",
+      "category": "Tables",
+      "description": "Retrieves metadata for a single Quick Base table, including its name, description, key field ID, default sort field, and record naming. Requires both the table ID and the ID of the application that owns it."
+    },
+    {
+      "name": "Create Table",
+      "category": "Tables",
+      "description": "Creates a new table in a Quick Base application. A table is created with default built-in fields (such as Record ID# and Date Created); use Create Field afterward to add custom fields. Returns the new table's metadata including its ID (dbid)."
+    },
+    {
+      "name": "Update Table",
+      "category": "Tables",
+      "description": "Updates the name, description, or record naming of an existing Quick Base table. Only the provided values are changed; omitted values are left unchanged."
+    },
+    {
+      "name": "Delete Table",
+      "category": "Tables",
+      "description": "Permanently deletes a Quick Base table and all of its records. This action cannot be undone. Returns the ID of the deleted table."
+    },
+    {
+      "name": "List Fields",
+      "category": "Fields",
+      "description": "Lists all fields in a Quick Base table. Each field includes its numeric field ID (fid), label, and field type. Because Quick Base keys records by fid rather than by name, this operation is the primary way to discover the fids you must supply to record operations."
+    },
+    {
+      "name": "Get Field",
+      "category": "Fields",
+      "description": "Retrieves metadata for a single field in a Quick Base table by its numeric field ID (fid), including its label, field type, required/unique flags, and type-specific properties."
+    },
+    {
+      "name": "Create Field",
+      "category": "Fields",
+      "description": "Creates a new field in a Quick Base table. Choose a Field Type from the dropdown (for example Text, Numeric, Date, Checkbox, Email); the selection is mapped to the Quick Base API field type token. Returns the created field's metadata, including its assigned numeric field ID (fid)."
+    },
+    {
+      "name": "Delete Fields",
+      "category": "Fields",
+      "description": "Deletes one or more fields from a Quick Base table by their numeric field IDs (fids). Deleting a field permanently removes its data from every record and cannot be undone. Returns the fids that were deleted and any errors."
+    },
+    {
+      "name": "Get App",
+      "category": "Apps",
+      "description": "Retrieves metadata for a Quick Base application by its application ID (dbid), including the app name, description, creation and update timestamps, and app-level variables. Quick Base has no list-all-apps endpoint, so the application ID must be provided; find it in the app URL after /db/."
+    },
+    {
+      "name": "List Reports",
+      "category": "Reports",
+      "description": "Lists all reports defined on a Quick Base table. Each report includes its ID, name, type, and description. Use the report ID with Run Report to execute a pre-built report and retrieve its data."
+    },
+    {
+      "name": "Run Report",
+      "category": "Reports",
+      "description": "Runs a pre-built Quick Base report by its report ID against a table and returns the resulting records. Report data is keyed by numeric field IDs (fids) just like a record query, and the response includes field metadata and pagination info. Use Skip and Top to page through large reports."
+    },
+    {
+      "name": "Download File",
+      "category": "Files",
+      "description": "Downloads a file stored in a Quick Base File Attachment field and saves it to FlowRunner file storage, returning a URL to the stored file. Quick Base returns file contents as base64; this operation decodes them and uploads the bytes. Identify the file by the table ID, record ID, the File Attachment field's numeric field ID (fid), and the version number (use 0 for the most recent version)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [],
+  "agentIdeas": [
+    "Use **Quick Base** \"Query Records\" to pull rows matching a `where` clause, then **Google Sheets** \"Add Rows\" to mirror the fid-keyed data (enable Map Field Labels first) into a reporting spreadsheet.",
+    "After a **Quick Base** \"Insert/Update Records\" upsert flags an urgent item, use **Slack** \"Send Message To Channel\" to alert the team with the returned Record ID#.",
+    "Use **Google Sheets** \"Get Rows\" to read new entries from an intake sheet, then **Quick Base** \"Insert/Update Records\" to upsert them into the matching table by their key fid.",
+    "When **Quick Base** \"Query Records\" surfaces overdue records, use **Gmail** \"Send Message\" to email each owner a summary of the affected fields."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/quickbase/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/quickbase",
+    "readme": "services/quickbase/README.md",
+    "index": "services/quickbase/src/index.js"
+  }
+}

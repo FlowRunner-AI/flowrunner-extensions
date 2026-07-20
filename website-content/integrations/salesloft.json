@@ -1,0 +1,251 @@
+{
+  "slug": "salesloft",
+  "name": "Salesloft",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to the Salesloft sales engagement platform (API v2). Manage people and accounts, enroll prospects in cadences, create and complete tasks, log calls, record notes, and read email and meeting activity — all through the Salesloft REST API over OAuth2.",
+  "actionCount": 41,
+  "triggerCount": 0,
+  "operationCategories": [
+    "People",
+    "Accounts",
+    "Cadences",
+    "Tasks",
+    "Notes",
+    "Activities",
+    "Meetings",
+    "Users",
+    "Reference Data"
+  ],
+  "actions": [
+    {
+      "name": "List People",
+      "category": "People",
+      "description": "Retrieves a page of people (prospects and contacts) from Salesloft. Supports filtering by exact email address, last-updated timestamp, and owning user, plus page-based pagination (up to 100 per page) and sorting. Returns the people as items along with paging details (current page, next page, total pages, and total count)."
+    },
+    {
+      "name": "Get Person",
+      "category": "People",
+      "description": "Retrieves a single person by their Salesloft id, including contact details, company, owner, stage, tags, custom fields, and engagement counts."
+    },
+    {
+      "name": "Create Person",
+      "category": "People",
+      "description": "Creates a new person (prospect or contact) in Salesloft with contact details, company info, owner, stage, tags, and custom fields. Salesloft requires at least an email address, a phone number, or a last name to create a person. Returns the newly created person object including its id."
+    },
+    {
+      "name": "Update Person",
+      "category": "People",
+      "description": "Updates an existing person in Salesloft. Only the provided fields are changed; omitted fields keep their current values. Returns the updated person object."
+    },
+    {
+      "name": "Delete Person",
+      "category": "People",
+      "description": "Permanently deletes a person from Salesloft by their id. This action cannot be undone. Returns a success status (Salesloft returns no content)."
+    },
+    {
+      "name": "List Accounts",
+      "category": "Accounts",
+      "description": "Retrieves a page of accounts (companies) from Salesloft. Supports filtering by name, domain, and last-updated timestamp, plus page-based pagination (up to 100 per page). Returns the accounts as items along with paging details (current page, next page, total pages, and total count)."
+    },
+    {
+      "name": "Get Account",
+      "category": "Accounts",
+      "description": "Retrieves a single account (company) by its Salesloft id, including company details, location, owner, stage, tier, tags, and custom fields."
+    },
+    {
+      "name": "Create Account",
+      "category": "Accounts",
+      "description": "Creates a new account (company) in Salesloft with company details, location, owner, stage, tier, tags, and custom fields. Name and domain are required by Salesloft. Returns the newly created account object including its id."
+    },
+    {
+      "name": "Update Account",
+      "category": "Accounts",
+      "description": "Updates an existing account (company) in Salesloft. Only the provided fields are changed; omitted fields keep their current values. Returns the updated account object."
+    },
+    {
+      "name": "Delete Account",
+      "category": "Accounts",
+      "description": "Permanently deletes an account (company) from Salesloft by its id. This action cannot be undone. Returns a success status (Salesloft returns no content)."
+    },
+    {
+      "name": "List Cadences",
+      "category": "Cadences",
+      "description": "Retrieves a page of cadences (structured sequences of calls, emails, and other steps). Supports filtering by team cadences and shared cadences, plus page-based pagination (up to 100 per page). Returns the cadences as items along with paging details."
+    },
+    {
+      "name": "Get Cadence",
+      "category": "Cadences",
+      "description": "Retrieves a single cadence by its Salesloft id, including its name, state, sharing settings, cadence function, and people counts."
+    },
+    {
+      "name": "Add Person to Cadence",
+      "category": "Cadences",
+      "description": "Adds a person to a cadence by creating a cadence membership, which enrolls them in the cadence's sequence of steps. Optionally assigns the membership to a specific user (otherwise cadence rules determine the assignee). Returns the created cadence membership object."
+    },
+    {
+      "name": "List Cadence Memberships",
+      "category": "Cadences",
+      "description": "Retrieves a page of cadence memberships (person-to-cadence enrollments). Filter by person to see all cadences a person is on, or by cadence to see everyone enrolled in it. Returns the memberships as items along with paging details."
+    },
+    {
+      "name": "Get Cadence Membership",
+      "category": "Cadences",
+      "description": "Retrieves a single cadence membership by its id, including the person, cadence, assigned user, enrollment state, and step counts."
+    },
+    {
+      "name": "Remove Person from Cadence",
+      "category": "Cadences",
+      "description": "Removes a person from a cadence by deleting their cadence membership. The person is taken off the cadence and no further steps run for them. Use 'List Cadence Memberships' with person and cadence filters to find the membership id. Returns a success status (Salesloft returns no content)."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Retrieves a page of tasks (to-dos such as calls, emails, and general reminders). Supports filtering by assigned user, person, task type, and state, plus page-based pagination (up to 100 per page). Returns the tasks as items along with paging details."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single task by its Salesloft id, including its subject, type, due date, state, description, associated person, and assigned user."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a new scheduled task (call, email, or general to-do) for a person, assigned to a user with a due date. The task is created in the 'scheduled' state and appears on the assigned user's task list in Salesloft. Returns the newly created task object."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates an existing task's subject, due date, assignee, or description, or completes it by setting the state to Completed. Only the provided fields are changed. Note: Salesloft only allows 'general' tasks to be completed through the API; call and email tasks are completed by logging the call or sending the email. Returns the updated task object."
+    },
+    {
+      "name": "Complete Task",
+      "category": "Tasks",
+      "description": "Marks a task as completed by updating its state to 'completed'. Note: Salesloft only allows 'general' tasks to be completed through the API; call and email tasks are completed by logging the call ('Log a Call') or sending the email in Salesloft. Returns the updated task object."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task from Salesloft by its id. This action cannot be undone. Returns a success status (Salesloft returns no content)."
+    },
+    {
+      "name": "List Notes",
+      "category": "Notes",
+      "description": "Retrieves a page of notes. Filter by the person or account the notes are attached to (both the association type and id must be provided together), plus page-based pagination (up to 100 per page). Returns the notes as items along with paging details."
+    },
+    {
+      "name": "Get Note",
+      "category": "Notes",
+      "description": "Retrieves a single note by its Salesloft id, including its content, the record it is attached to, and the authoring user."
+    },
+    {
+      "name": "Create Note",
+      "category": "Notes",
+      "description": "Creates a note attached to a person or an account. The note appears on the record's activity feed in Salesloft. Returns the newly created note object."
+    },
+    {
+      "name": "Update Note",
+      "category": "Notes",
+      "description": "Updates the content of an existing note. Returns the updated note object."
+    },
+    {
+      "name": "Delete Note",
+      "category": "Notes",
+      "description": "Permanently deletes a note from Salesloft by its id. This action cannot be undone. Returns a success status (Salesloft returns no content)."
+    },
+    {
+      "name": "Log a Call",
+      "category": "Activities",
+      "description": "Logs a completed call activity against a person, recording the call's sentiment, disposition, notes, and duration. Logging a call also completes any outstanding call step for the person in an active cadence. Sentiment and disposition values must match the options configured in your Salesloft team settings. Returns the created call activity object."
+    },
+    {
+      "name": "List Calls",
+      "category": "Activities",
+      "description": "Retrieves a page of logged call activities. Supports filtering by person, user, and last-updated timestamp, plus page-based pagination (up to 100 per page). Returns the calls as items along with paging details."
+    },
+    {
+      "name": "Get Call",
+      "category": "Activities",
+      "description": "Retrieves a single logged call activity by its Salesloft id, including duration, sentiment, disposition, notes, and the associated person and user."
+    },
+    {
+      "name": "List Emails",
+      "category": "Activities",
+      "description": "Retrieves a page of email activities sent through Salesloft. Supports filtering by person, bounce status, scheduled-send time, and last-updated timestamp, plus page-based pagination (up to 100 per page). Returns the emails as items along with paging details."
+    },
+    {
+      "name": "Get Email",
+      "category": "Activities",
+      "description": "Retrieves a single email activity by its Salesloft id, including subject, status, bounce state, engagement counts (views, clicks, replies), recipient, and sending user."
+    },
+    {
+      "name": "List Meetings",
+      "category": "Meetings",
+      "description": "Retrieves a page of meetings booked through Salesloft. Supports filtering by person and calendar event id, plus page-based pagination (up to 100 per page). Returns the meetings as items along with paging details."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Retrieves a page of Salesloft users on the team, including their names, emails, guids, and active status. Supports page-based pagination (up to 100 per page). Returns the users as items along with paging details."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single Salesloft user by their id, including name, email, guid, role, active status, and team details."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users",
+      "description": "Retrieves the profile of the currently connected Salesloft user, including their id, guid, name, email, and team. Useful as a connection check and for resolving the connected user's id for other operations."
+    },
+    {
+      "name": "List Person Stages",
+      "category": "Reference Data",
+      "description": "Retrieves a page of person stages configured for the team. Person stages track where a person is in your sales process (e.g. 'Prospect', 'Qualified'). Returns the stages as items along with paging details."
+    },
+    {
+      "name": "List Account Stages",
+      "category": "Reference Data",
+      "description": "Retrieves a page of account stages configured for the team. Account stages track where a company is in your sales process. Returns the stages as items along with paging details."
+    },
+    {
+      "name": "List Account Tiers",
+      "category": "Reference Data",
+      "description": "Retrieves a page of account tiers configured for the team. Account tiers rank the importance of accounts (e.g. 'Tier 1'). Returns the tiers as items along with paging details."
+    },
+    {
+      "name": "List Custom Fields",
+      "category": "Reference Data",
+      "description": "Retrieves a page of custom fields configured for the team, including each field's name and the record type it applies to. Use the returned names as keys in the 'Custom Fields' parameter of person and account operations. Returns the custom fields as items along with paging details."
+    },
+    {
+      "name": "List Tags",
+      "category": "Reference Data",
+      "description": "Retrieves a page of tags defined for the team. Use the returned names in the 'Tags' parameter of person and account operations. Returns the tags as items along with paging details."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new leads from a form, CRM, or spreadsheet into Salesloft as people and enroll them in the right cadence",
+    "Automatically create and assign follow-up tasks for reps, then mark general tasks complete when handled elsewhere",
+    "Log completed calls (sentiment, disposition, duration) against people to keep cadence steps and activity history in sync",
+    "Attach notes to people or accounts from external systems so reps see full context on the record",
+    "Pull email and meeting engagement data into reporting spreadsheets or dashboards"
+  ],
+  "agentIdeas": [
+    "Use **HubSpot** \"Get Contact By Email\" (or \"Create Contact\") to source a lead, then call **Salesloft** \"Create Person\" and \"Add Person to Cadence\" to enroll the prospect in an outreach sequence",
+    "When a **Google Calendar** \"Create Event\" books a discovery call, use **Salesloft** \"Create Task\" to schedule the rep's prep to-do and \"Create Note\" to attach agenda context to the person's record",
+    "After a call is handled, use **Salesloft** \"Log a Call\" to record its disposition and notes, then use **Gmail** \"Send Message\" to send the prospect a templated follow-up email"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/salesloft/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/salesloft",
+    "readme": "services/salesloft/README.md",
+    "index": "services/salesloft/src/index.js"
+  }
+}

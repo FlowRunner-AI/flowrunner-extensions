@@ -1,0 +1,541 @@
+{
+  "slug": "heygen",
+  "name": "HeyGen",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [HeyGen](https://www.heygen.com), the AI avatar video generation platform. It covers the current HeyGen v3 API surface: avatar, image, and cinematic video generation, Video Agent sessions, photo and digital-twin avatars, voices, lipsync, templates, video translation with proofreading, AI clipping, background removal, HyperFrames renders, asset management, webhook endpoint management, workflows, and account/brand info. Authentication is by HeyGen API key (`x-api-key` header).",
+  "actionCount": 98,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Videos",
+    "Video Agent",
+    "Avatars",
+    "Voices & Audio",
+    "Lipsync",
+    "Templates",
+    "Video Translation",
+    "AI Clipping",
+    "Background Removal",
+    "HyperFrames",
+    "Assets",
+    "Webhooks",
+    "Account & Brand",
+    "Workflows"
+  ],
+  "actions": [
+    {
+      "name": "Create Avatar Video",
+      "category": "Videos",
+      "description": "Creates an avatar video from a HeyGen avatar (video avatar or photo avatar look). The avatar speaks a text script via text-to-speech, or lip-syncs pre-recorded audio (audio URL or uploaded asset). Supports the Avatar III, IV (default) and V rendering engines, resolutions up to 4K, six aspect ratios, solid-color or image backgrounds, motion prompts and expressiveness for photo avatars, voice tuning (speed, pitch, locale), SRT captions, and MP4/WebM output. Generation is asynchronous: the action returns a video_id immediately - poll it with Get Video, or use Create Avatar Video and Wait to block until it finishes."
+    },
+    {
+      "name": "Create Avatar Video and Wait",
+      "category": "Videos",
+      "description": "Creates an avatar video and polls its status until generation completes (or fails), then returns the finished video details including the download URL. Optionally saves the completed MP4/WebM into FlowRunner file storage and returns a stable file URL - useful because HeyGen video URLs are presigned and expire after a short time. Polls every 15 seconds by default and waits up to about 9.5 minutes; for longer renders use Create Avatar Video with a Callback URL instead. Throws an error with HeyGen's failure message if generation fails."
+    },
+    {
+      "name": "Create Video from Image",
+      "category": "Videos",
+      "description": "Creates a talking video by animating an arbitrary image (a person's photo) instead of a pre-built avatar. Provide the image via public URL or a HeyGen asset ID, plus either a text script (with optional voice) or pre-recorded audio to lip-sync. Supports motion prompts, expressiveness, resolutions up to 4K, backgrounds, captions and MP4/WebM output. Returns a video_id immediately; poll with Get Video."
+    },
+    {
+      "name": "Create Cinematic Avatar Video",
+      "category": "Videos",
+      "description": "Generates a cinematic video from a natural-language prompt plus 1-3 avatar look IDs used as visual references (HeyGen's Avatar V cinematic mode). Optionally add reference asset URLs (images, videos, audio) to guide the generation. Produces 4-15 second clips at 720p or 1080p. Returns a video_id immediately; poll with Get Video."
+    },
+    {
+      "name": "Get Video",
+      "category": "Videos",
+      "description": "Retrieves details for a video by ID, including generation status (pending, processing, completed or failed), the presigned video_url and thumbnail once completed, subtitle and captioned-video URLs when captions were requested, duration, and failure code/message if generation failed. Note that video_url is presigned and expires - re-fetch it or use Save Video to File Storage for a permanent copy."
+    },
+    {
+      "name": "List Videos",
+      "category": "Videos",
+      "description": "Lists all videos in the HeyGen account with cursor-based pagination. Optionally filter by folder ID or a title substring. Each item includes the video's ID, title, status, timestamps and URLs. Use the returned next_token to fetch subsequent pages."
+    },
+    {
+      "name": "Delete Video",
+      "category": "Videos",
+      "description": "Permanently deletes a video and its associated files from the HeyGen account. This action cannot be undone."
+    },
+    {
+      "name": "Get Bulk Video Statuses",
+      "category": "Videos",
+      "description": "Returns statuses for up to 100 videos in a single request, addressed by video IDs and/or batch IDs (each batch expands to its member videos). Statuses are queued, processing, completed or failed, plus not_found for unknown or unowned IDs. Ideal for efficiently polling many in-flight generations at once."
+    },
+    {
+      "name": "Create Video Batch",
+      "category": "Videos",
+      "description": "Submits up to 100 video creation payloads in one request and returns a batch_id immediately. Each payload uses the same JSON shape as the POST /v3/videos request body (type 'avatar', 'image' or 'cinematic_avatar' with their respective fields). Videos are created asynchronously and independently, so one bad payload does not fail the rest. Poll progress with Get Video Batch."
+    },
+    {
+      "name": "Get Video Batch",
+      "category": "Videos",
+      "description": "Returns aggregate status for a video batch plus one page of its items with their video IDs and statuses (queued, processing, completed or failed). Includes per-status counts so you can track overall progress at a glance."
+    },
+    {
+      "name": "Save Video to File Storage",
+      "category": "Videos",
+      "description": "Downloads a completed HeyGen video and stores it in FlowRunner file storage, returning a stable file URL alongside the video details. Use this after any generation completes, because HeyGen's video_url is presigned and expires after a short time. Fails with a clear error if the video is not yet completed or has no downloadable URL."
+    },
+    {
+      "name": "Create Video Agent Session",
+      "category": "Video Agent",
+      "description": "Starts a HeyGen Video Agent session that produces a complete video from a single natural-language prompt - the agent handles scripting, avatar selection, scene composition and rendering. Use 'Generate' mode for one-shot fire-and-forget creation, or 'Chat' mode for a multi-turn session you can refine with Send Video Agent Message. Optionally pin a specific avatar, voice, visual style or brand kit, and attach up to 20 reference files. Returns a session_id (and later a video_id) to poll with Get Video Agent Session."
+    },
+    {
+      "name": "Get Video Agent Session",
+      "category": "Video Agent",
+      "description": "Returns the current status (thinking, waiting_for_input, reviewing, generating, completed or failed), progress percentage, title, produced video_id and recent chat messages for a Video Agent session."
+    },
+    {
+      "name": "List Video Agent Sessions",
+      "category": "Video Agent",
+      "description": "Returns a paginated list of Video Agent sessions for the authenticated account, sorted newest-first, with each session's status, title and produced video ID."
+    },
+    {
+      "name": "List Video Agent Session Videos",
+      "category": "Video Agent",
+      "description": "Returns all videos produced within a Video Agent session, sorted newest-first. Useful in chat-mode sessions where multiple revisions generate multiple videos."
+    },
+    {
+      "name": "List Video Agent Styles",
+      "category": "Video Agent",
+      "description": "Returns curated visual style templates available for Video Agent sessions. Each style controls scene composition, pacing and aesthetics; pass its ID as Style ID when creating a session. Supports filtering by tag such as cinematic, retro-tech, iconic-artist, pop-culture, handmade or print."
+    },
+    {
+      "name": "Get Video Agent Session Resource",
+      "category": "Video Agent",
+      "description": "Returns a single resource produced or referenced within a Video Agent session (image, video, draft, avatar, voice, etc.) by its resource ID, including its URL, thumbnail and metadata."
+    },
+    {
+      "name": "Send Video Agent Message",
+      "category": "Video Agent",
+      "description": "Sends a follow-up message to an existing chat-mode Video Agent session - answer the agent's questions, add context, or request edits/revisions to a generated video. Optionally override the avatar, voice or brand kit for this message and attach reference files. Only valid for sessions created in Chat mode."
+    },
+    {
+      "name": "Stop Video Agent Session",
+      "category": "Video Agent",
+      "description": "Halts an active Video Agent run at its next checkpoint. Partial results are preserved and remain accessible via Get Video Agent Session and List Video Agent Session Videos."
+    },
+    {
+      "name": "Create Photo Avatar",
+      "category": "Avatars",
+      "description": "Creates a photo avatar from a single photo (public URL or uploaded asset). Training runs asynchronously - the response includes the new avatar item and its group; poll Get Avatar Group or Get Avatar Look until the status is completed, then use the look ID as an Avatar ID in video creation. Optionally attach the new look to an existing avatar group (identity) instead of creating a new one."
+    },
+    {
+      "name": "Create Digital Twin Avatar",
+      "category": "Avatars",
+      "description": "Creates a digital twin (video avatar) from recorded footage of a person (public URL or uploaded asset). Training runs asynchronously; poll the returned look/group status until completed. Private avatars require the consent flow (Create Avatar Consent) before they can be used for video generation. Optionally attach the twin to an existing avatar group (identity)."
+    },
+    {
+      "name": "Create AI Avatar from Prompt",
+      "category": "Avatars",
+      "description": "Generates a fully synthetic avatar from a text prompt, optionally guided by reference images or an existing avatar as the visual reference. Generation runs asynchronously; poll the returned look/group status until completed. By default a new identity (avatar group) is created - pass an Avatar Group ID to add the generated look to an existing identity instead."
+    },
+    {
+      "name": "Create Avatar Consent",
+      "category": "Avatars",
+      "description": "Initiates the consent flow for a private avatar group - required before a custom avatar (e.g. digital twin) can be used for video generation. Returns a browser URL where the person completes approval, or accepts a pre-recorded consent video (URL or asset ID) to submit directly. Optionally customize the redirect URL and consent text (premium)."
+    },
+    {
+      "name": "List Avatar Groups",
+      "category": "Avatars",
+      "description": "Returns a paginated list of avatar groups (characters/identities). Each group contains one or more looks and reports its name, gender, preview URLs, looks count, default voice and training/consent status. Filter by ownership: Public for HeyGen's preset avatars, Private for your own."
+    },
+    {
+      "name": "Get Avatar Group",
+      "category": "Avatars",
+      "description": "Returns details for an avatar group including name, gender, preview image/video URLs, looks count, default voice ID, consent status and training status (processing, pending_consent, failed or completed)."
+    },
+    {
+      "name": "Delete Avatar Group",
+      "category": "Avatars",
+      "description": "Permanently deletes a private avatar group and all its associated looks. Public and community groups cannot be deleted. This action cannot be undone."
+    },
+    {
+      "name": "List Avatar Looks",
+      "category": "Avatars",
+      "description": "Returns a paginated list of avatar looks (outfits, poses, styles). The look's id is the Avatar ID to pass when creating videos. Filter by avatar group, avatar type (Studio Avatar, Digital Twin or Photo Avatar) and ownership (Public presets vs Private)."
+    },
+    {
+      "name": "Get Avatar Look",
+      "category": "Avatars",
+      "description": "Returns details for a specific avatar look including its type, group, preview URLs, gender, tags, default voice, supported rendering engines (avatar_iii/avatar_iv/avatar_v), preferred orientation and training status. Use this to check engine eligibility before selecting an engine in video creation."
+    },
+    {
+      "name": "Update Avatar Look",
+      "category": "Avatars",
+      "description": "Updates the display name of an avatar look. Only supported for photo avatar and digital twin look types (studio avatar looks cannot be renamed via the API)."
+    },
+    {
+      "name": "Delete Avatar Look",
+      "category": "Avatars",
+      "description": "Deletes an avatar look and its backing resource. Supported for photo avatar, digital twin and kit-based looks; studio avatar looks cannot be deleted via the API. Warning: deleting the last look in a group also deletes the parent group."
+    },
+    {
+      "name": "List Voices",
+      "category": "Voices & Audio",
+      "description": "Returns a paginated list of voices available for video generation and text-to-speech. Filter by type (Public shared library vs Private cloned voices), engine compatibility (e.g. starfish for the Generate Speech action), language and gender."
+    },
+    {
+      "name": "Get Voice",
+      "category": "Voices & Audio",
+      "description": "Returns details for a specific voice, including its language, gender, preview audio URL and - for voice clones - the training status (processing, complete or failed) with any failure message. Use this to poll a clone created with Clone Voice until it is ready."
+    },
+    {
+      "name": "Design Voice",
+      "category": "Voices & Audio",
+      "description": "Finds up to 3 voices matching a natural-language description, e.g. 'warm, confident female narrator'. Filter by gender or BCP-47 locale, and vary the Seed to get different batches of matches (seed 0 returns the top matches, seed 1 the next batch, and so on)."
+    },
+    {
+      "name": "Clone Voice",
+      "category": "Voices & Audio",
+      "description": "Creates a voice clone from an audio sample (public URL or uploaded asset). Cloning runs asynchronously - poll Get Voice with the returned voice_clone_id until the status is 'complete'. The resulting voice can then be used with Generate Speech and all video creation actions. Optionally remove background noise from the sample before cloning."
+    },
+    {
+      "name": "Delete Voice",
+      "category": "Voices & Audio",
+      "description": "Deletes a voice clone owned by the account. The voice must not be in use by any template. Deleting an unknown or already-deleted voice returns a voice_not_found error. Deleted voices no longer count against your voice clone limit."
+    },
+    {
+      "name": "Generate Speech",
+      "category": "Voices & Audio",
+      "description": "Synthesizes speech audio from text (up to 5,000 characters) using HeyGen's Starfish text-to-speech engine. The chosen voice must support the starfish engine - use List Voices with engine=starfish to find compatible ones. Supports plain text or SSML, speed from 0.5x to 2.0x, and language/locale hints. Returns a presigned audio URL, duration and word timestamps; optionally saves the audio into FlowRunner file storage for a stable URL."
+    },
+    {
+      "name": "Search Audio Library",
+      "category": "Voices & Audio",
+      "description": "Semantically searches HeyGen's audio catalog by natural-language description - set the type to Music for background tracks (e.g. 'upbeat lofi hip-hop', 'tense cinematic riser') or Sound Effects for SFX (e.g. 'whoosh for a scene change'). Returns matching tracks ranked by similarity score with cursor-based pagination."
+    },
+    {
+      "name": "Create Lipsync",
+      "category": "Lipsync",
+      "description": "Replaces the audio track on an existing video and re-animates the speaker's lip movements to match the new audio. Provide the source video and replacement audio each as a public URL or a HeyGen asset ID. Choose Speed mode for fast output or Precision mode for the highest lip-sync quality. Supports partial processing via start/end time, captions, speech enhancement, music-track removal and format preservation. Runs asynchronously; poll with Get Lipsync."
+    },
+    {
+      "name": "Get Lipsync",
+      "category": "Lipsync",
+      "description": "Returns details for a lipsync job including its status (pending, running, completed or failed), duration, presigned video and caption URLs when complete, and the failure message if it failed."
+    },
+    {
+      "name": "List Lipsyncs",
+      "category": "Lipsync",
+      "description": "Returns a paginated list of all lipsync jobs in the account with their statuses and output URLs."
+    },
+    {
+      "name": "Update Lipsync",
+      "category": "Lipsync",
+      "description": "Updates the display title of a lipsync job."
+    },
+    {
+      "name": "Delete Lipsync",
+      "category": "Lipsync",
+      "description": "Permanently deletes a lipsync job and its associated files. This action cannot be undone."
+    },
+    {
+      "name": "Create Lipsync Batch",
+      "category": "Lipsync",
+      "description": "Submits up to 100 lipsync payloads as a single batch. Each payload uses the same JSON shape as the POST /v3/lipsyncs request body and becomes one batch item, created and processed independently so one bad source does not fail the rest. Returns a batch_id; poll progress with Get Lipsync Batch."
+    },
+    {
+      "name": "Get Lipsync Batch",
+      "category": "Lipsync",
+      "description": "Returns aggregate status for a lipsync batch plus one page of its items with their IDs and statuses (queued, processing, completed or failed)."
+    },
+    {
+      "name": "Get Bulk Lipsync Statuses",
+      "category": "Lipsync",
+      "description": "Returns statuses for up to 100 lipsync jobs in one request, addressed by lipsync IDs and/or batch IDs (each batch expands to its member lipsyncs). Statuses are queued, processing, completed or failed, plus not_found for unknown IDs."
+    },
+    {
+      "name": "List Templates",
+      "category": "Templates",
+      "description": "Returns a paginated list of API-ready templates in the workspace. Templates are created and edited in the HeyGen web editor; only templates with variables defined are listed here. Use a template's ID with Get Template to inspect its variable schema, then Generate Video from Template to render."
+    },
+    {
+      "name": "Get Template",
+      "category": "Templates",
+      "description": "Returns template details including its variable schema (with current default values) and scenes. Variable defaults are returned in the same shape the generate request accepts, so you can edit the response and pass it back as the Variables of Generate Video from Template. Only draft version 4 templates (the current editor format) are supported."
+    },
+    {
+      "name": "Generate Video from Template",
+      "category": "Templates",
+      "description": "Generates a video from a template by replacing its variables (text, image, video, audio, character, voice), keyed by the variable names defined in the template - inspect them with Get Template. Use Scene IDs to select, reorder or repeat existing scenes. Supports burned-in captions, subtitle styling, an output resolution override (must match the template's aspect ratio), frame rate selection (25, 30 or 60), folder placement, brand voice pronunciation, GIF previews and public sharing. Returns the created video; poll with Get Video."
+    },
+    {
+      "name": "Create Video Translation",
+      "category": "Video Translation",
+      "description": "Translates a video into one or more target languages with voice cloning and lip-sync. Provide the source video as a public URL or asset ID and one or more target language names (use List Translation Target Languages for valid values). Choose Speed mode (default) for fast turnaround or Precision for higher lip-sync quality. Supports custom dub audio, audio-only translation, speaker separation, captions, brand glossaries for custom term translations, partial translation via start/end times, custom SRT files, stock voices and more. Returns one video_translation_id per target language; poll each with Get Video Translation."
+    },
+    {
+      "name": "Get Video Translation",
+      "category": "Video Translation",
+      "description": "Returns details for a translation job: status (pending, running, completed or failed), input/output languages, duration, presigned video/audio URLs, SRT and VTT caption URLs when captions were enabled, and the failure message if it failed."
+    },
+    {
+      "name": "List Video Translations",
+      "category": "Video Translation",
+      "description": "Returns a paginated list of all video translation jobs in the account with their statuses, languages and output URLs."
+    },
+    {
+      "name": "Update Video Translation",
+      "category": "Video Translation",
+      "description": "Updates the display title of a video translation job."
+    },
+    {
+      "name": "Delete Video Translation",
+      "category": "Video Translation",
+      "description": "Permanently deletes a video translation and its associated files. This action cannot be undone."
+    },
+    {
+      "name": "List Translation Target Languages",
+      "category": "Video Translation",
+      "description": "Returns all supported target language names for video translation, e.g. 'English', 'Spanish (Spain)', 'Chinese (Cantonese, Traditional)'. Use these exact names as Output Language values in Create Video Translation and Create Proofread Session."
+    },
+    {
+      "name": "Get Bulk Video Translation Statuses",
+      "category": "Video Translation",
+      "description": "Returns statuses for up to 100 video translations in one request, addressed by translation IDs and/or batch IDs (each batch expands to its member translations). Statuses are queued, processing, completed or failed, plus not_found for unknown IDs."
+    },
+    {
+      "name": "Create Video Translation Batch",
+      "category": "Video Translation",
+      "description": "Submits up to 100 video-translation payloads (identical in shape to the POST /v3/video-translations body) as a single batch. A payload targeting multiple output_languages expands to one batch item per language, and each item is processed independently so one bad source does not fail the rest. Returns a batch_id; poll progress with Get Video Translation Batch."
+    },
+    {
+      "name": "Get Video Translation Batch",
+      "category": "Video Translation",
+      "description": "Returns aggregate status for a video translation batch plus one page of its items with their IDs and statuses (queued, processing, completed or failed)."
+    },
+    {
+      "name": "Create Proofread Session",
+      "category": "Video Translation",
+      "description": "Creates a proofread session that extracts editable translated subtitles from a video BEFORE the final render, so a human can review and correct the translation. Workflow: create the session, poll Get Proofread Session until completed, download the SRT with Get Proofread SRT URLs, optionally upload an edited SRT with Upload Proofread SRT, then render with Generate Video from Proofread. Returns one proofread_id per target language."
+    },
+    {
+      "name": "Get Proofread Session",
+      "category": "Video Translation",
+      "description": "Returns the status (processing, completed or failed) and details of a proofread session, including input/output languages and whether the edited subtitles have been submitted for review."
+    },
+    {
+      "name": "Get Proofread SRT URLs",
+      "category": "Video Translation",
+      "description": "Returns presigned download URLs for the current (edited) and original SRT subtitle files of a completed proofread session. Download the SRT, edit it, then push it back with Upload Proofread SRT."
+    },
+    {
+      "name": "Upload Proofread SRT",
+      "category": "Video Translation",
+      "description": "Replaces a proofread session's subtitles with an edited SRT file (public URL or uploaded asset). Do this after reviewing the SRT from Get Proofread SRT URLs and before rendering with Generate Video from Proofread."
+    },
+    {
+      "name": "Generate Video from Proofread",
+      "category": "Video Translation",
+      "description": "Starts final translated-video generation using the approved subtitles from a proofread session. Returns a video_translation_id to poll with Get Video Translation. Optionally generate captions, translate audio only, or set webhook callbacks."
+    },
+    {
+      "name": "Create AI Clipping Job",
+      "category": "AI Clipping",
+      "description": "Submits a long-form source video and asynchronously produces one or more short highlight clips. Choose one to four target durations (30 Seconds, 60 Seconds, 3 Minutes, or Long for the model's choice over 3 minutes), an aspect ratio (Portrait is the social-ready default), burned-in captions with an optional style preset, and optional editorial guidance for the highlight model. Poll with Get AI Clipping Job or subscribe to ai_clipping webhooks."
+    },
+    {
+      "name": "Get AI Clipping Job",
+      "category": "AI Clipping",
+      "description": "Returns the full AI clipping job including status (pending, running, completed, failed or cancelled), progress, output settings, and the produced clips with their statuses and presigned download URLs."
+    },
+    {
+      "name": "List AI Clipping Jobs",
+      "category": "AI Clipping",
+      "description": "Returns a cursor-paginated list of AI clipping jobs in the workspace, newest first. Each item embeds its full clip list, so the default page size is smaller than other lists."
+    },
+    {
+      "name": "Delete AI Clipping Job",
+      "category": "AI Clipping",
+      "description": "Soft-deletes an AI clipping job and its produced clips. Subsequent reads of the job return not found."
+    },
+    {
+      "name": "Create Background Removal",
+      "category": "Background Removal",
+      "description": "Submits a video for background removal. Runs asynchronously; poll with Get Background Removal. Once completed, the job carries presigned download URLs for the requested layers: Foreground (subject on a transparent background), Mask (grayscale alpha matte) and Background (the scene with the subject removed). All three layers are produced when none are specified. Supports a client-provided request ID as an idempotency key."
+    },
+    {
+      "name": "Get Background Removal",
+      "category": "Background Removal",
+      "description": "Returns a background removal job including its status and, once completed, presigned download URLs for the produced foreground, mask and background layers."
+    },
+    {
+      "name": "List Background Removals",
+      "category": "Background Removal",
+      "description": "Returns a paginated list of background removal jobs for the account, newest first."
+    },
+    {
+      "name": "Delete Background Removal",
+      "category": "Background Removal",
+      "description": "Soft-deletes a background removal job. Subsequent reads of the job return not found."
+    },
+    {
+      "name": "Create HyperFrames Render",
+      "category": "HyperFrames",
+      "description": "Renders a HyperFrames composition - an HTML+JS+assets project bundled as a .zip - into a video. Submit the project zip via public URL or a pre-uploaded HeyGen asset ID, choose the entry HTML file, and optionally override the composition's variables to parameterize a single project into many videos. Supports quality presets, MP4/WebM/MOV output, 1080p or 4K, and 16:9, 9:16 or 1:1 aspect ratios. Returns a render_id to poll with Get HyperFrames Render."
+    },
+    {
+      "name": "Get HyperFrames Render",
+      "category": "HyperFrames",
+      "description": "Returns full details for a HyperFrames render including its status (queued, rendering, completed or failed), render settings, and the signed video and thumbnail URLs once complete."
+    },
+    {
+      "name": "List HyperFrames Renders",
+      "category": "HyperFrames",
+      "description": "Returns a cursor-paginated list of HyperFrames renders in the account, newest first."
+    },
+    {
+      "name": "Delete HyperFrames Render",
+      "category": "HyperFrames",
+      "description": "Soft-deletes a HyperFrames render. Subsequent reads of the render return not found."
+    },
+    {
+      "name": "Upload Asset",
+      "category": "Assets",
+      "description": "Uploads a file from FlowRunner file storage (or any accessible URL) to HeyGen and returns an asset_id for use in other actions - as avatar photos, dub audio, source videos, backgrounds, SRT subtitles or HyperFrames projects. Supported types: PNG, JPEG, MP4, WebM, MP3, WAV, PDF and SRT, up to 32 MB. For larger files use Create Direct Upload."
+    },
+    {
+      "name": "Get Asset",
+      "category": "Assets",
+      "description": "Returns metadata for an asset in the workspace - name, type, owner, folder, upload timestamp and a publicly accessible URL."
+    },
+    {
+      "name": "Delete Asset",
+      "category": "Assets",
+      "description": "Permanently deletes an asset from the workspace. The asset must belong to the caller's workspace and not already be deleted."
+    },
+    {
+      "name": "Search Stock Assets",
+      "category": "Assets",
+      "description": "Semantically searches re-hosted public images and icons by natural-language description, e.g. 'pepperoni pizza on a wooden table' or 'minimalist rocket icon'. Returns assets ranked by similarity, each with a stable public URL usable in video backgrounds and templates. Set scope to Personal to search your own workspace assets instead of the public catalog."
+    },
+    {
+      "name": "Get Bulk Asset Statuses",
+      "category": "Assets",
+      "description": "Returns statuses for up to 100 assets in one request, addressed by asset IDs and/or batch IDs (each batch expands to its member assets). Statuses are queued, processing, completed or failed, plus not_found for unknown IDs."
+    },
+    {
+      "name": "Create Direct Upload",
+      "category": "Assets",
+      "description": "Begins a direct-to-S3 asset upload for large files that exceed the 32 MB proxied Upload Asset limit. Returns an asset_id and a presigned upload_url with required headers - PUT the file bytes to that URL (e.g. with an HTTP action), then call Complete Direct Upload to finalize the asset. The declared size is signed into the URL and cannot be exceeded."
+    },
+    {
+      "name": "Complete Direct Upload",
+      "category": "Assets",
+      "description": "Finalizes a direct-to-S3 upload into a reusable HeyGen asset. Call after the presigned PUT succeeds. Idempotent: repeated calls return the same finalized asset. Optionally cross-check the file with a SHA-256 checksum."
+    },
+    {
+      "name": "Create Direct Upload Batch",
+      "category": "Assets",
+      "description": "Requests up to 100 presigned direct-to-S3 upload URLs in a single call. Returns a batch_id and one upload slot per file (asset_id, presigned upload_url and required headers). PUT each file's bytes to its upload_url, then call Complete Direct Upload Batch to finalize all of them."
+    },
+    {
+      "name": "Complete Direct Upload Batch",
+      "category": "Assets",
+      "description": "Finalizes every uploaded file in a direct-upload batch after all presigned PUTs succeed. Each file is validated and ingested asynchronously and independently, so one bad file does not fail the rest. Poll per-item progress with Get Asset Batch."
+    },
+    {
+      "name": "Get Asset Batch",
+      "category": "Assets",
+      "description": "Returns aggregate status for an asset upload batch plus one page of its items with their asset IDs and statuses (queued, processing, completed or failed)."
+    },
+    {
+      "name": "List Webhook Endpoints",
+      "category": "Webhooks",
+      "description": "Returns a paginated list of webhook endpoints registered in the account, with each endpoint's URL, subscribed event types and status."
+    },
+    {
+      "name": "Create Webhook Endpoint",
+      "category": "Webhooks",
+      "description": "Registers an HTTPS URL to receive HeyGen webhook event notifications (video completions, translation results, avatar training, etc.). Choose specific event types or omit them to receive all events. Returns the endpoint details and a signing secret - store the secret securely, as it is only shown at creation and rotation. Optionally scope the endpoint to a specific entity ID."
+    },
+    {
+      "name": "Update Webhook Endpoint",
+      "category": "Webhooks",
+      "description": "Updates the URL and/or the subscribed event types of a webhook endpoint. The events list is fully replaced - include every event type you want to keep."
+    },
+    {
+      "name": "Delete Webhook Endpoint",
+      "category": "Webhooks",
+      "description": "Permanently removes a webhook endpoint. Events are no longer delivered to its URL. This action cannot be undone."
+    },
+    {
+      "name": "Rotate Webhook Secret",
+      "category": "Webhooks",
+      "description": "Generates a new signing secret for a webhook endpoint and immediately invalidates the old one. Store the new secret securely - it will not be shown again."
+    },
+    {
+      "name": "List Webhook Event Types",
+      "category": "Webhooks",
+      "description": "Returns all available webhook event types with human-readable descriptions - useful for discovering which events an endpoint can subscribe to."
+    },
+    {
+      "name": "List Webhook Events",
+      "category": "Webhooks",
+      "description": "Returns a paginated history of webhook events delivered for the account, filterable by event type or entity ID. Useful for auditing deliveries and recovering missed notifications."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Account & Brand",
+      "description": "Returns the authenticated user's profile plus remaining credits/balance and billing details. The billing_type field indicates which billing object is populated: wallet (prepaid balance), subscription (credit pools) or usage_based (metered spending). Use this to check the remaining API quota before submitting large jobs."
+    },
+    {
+      "name": "List Brand Kits",
+      "category": "Account & Brand",
+      "description": "Returns the brand kits available in the workspace. Each kit contains colors, fonts and logos; pass its brand_kit_id to Create Video Agent Session to generate on-brand videos."
+    },
+    {
+      "name": "List Brand Glossaries",
+      "category": "Account & Brand",
+      "description": "Lists brand glossaries (custom term mappings, also known as brand voices) in the workspace. A brand glossary enforces custom term translations during video translation - for example, translating 'Reformer' as Pilates equipment rather than as a political activist. Pass a glossary's ID as Brand Glossary ID in the translation actions."
+    },
+    {
+      "name": "List Workflows",
+      "category": "Workflows",
+      "description": "Lists all available HeyGen workflow types (e.g. GenerateImageNode, GenerateVideoNode) with their input and output schemas. Use a workflow's type and input schema with Execute Workflow."
+    },
+    {
+      "name": "Execute Workflow",
+      "category": "Workflows",
+      "description": "Submits a single HeyGen workflow (e.g. GenerateImageNode, GenerateVideoNode) for asynchronous execution with a workflow-specific input object matching the schema from List Workflows. Returns an execution_id to poll with Get Workflow Execution."
+    },
+    {
+      "name": "Execute Workflow Graph",
+      "category": "Workflows",
+      "description": "Submits multiple HeyGen workflows for asynchronous execution as a DAG (directed acyclic graph), allowing outputs of one workflow to feed into another. Returns a single execution_id; poll with Get Workflow Execution, which returns all outputs keyed by workflow ID."
+    },
+    {
+      "name": "Get Workflow Execution",
+      "category": "Workflows",
+      "description": "Polls the status and output of a workflow execution. Single-workflow executions return their result in the output field; graph executions return all results in the outputs field keyed by workflow ID. Includes error details on failure."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Turn text scripts into avatar-narrated videos for marketing, training, product demos, and personalized outreach at scale.",
+    "Localize existing videos into other languages with translation plus human proofreading of the transcript before rendering.",
+    "Generate photo, digital-twin, or prompt-based AI avatars and manage their looks, voices, and brand kits.",
+    "Auto-clip long-form videos, remove backgrounds, and render HyperFrames variations for social distribution.",
+    "Save finished renders straight into FlowRunner file storage and react to completion via HeyGen webhook endpoints."
+  ],
+  "agentIdeas": [
+    "After a **HeyGen** \"Create Avatar Video and Wait\" finishes, use **YouTube** \"Upload Video\" to publish the render directly to a channel, then **Slack** \"Send Message To Channel\" to share the link with the team.",
+    "When a marketing asset lands in Drive, use **Google Drive** \"Download File\" to pull a source video, call **HeyGen** \"Create Video Translation\" and \"Generate Video from Proofread\" to produce a proofread localized version, then **Google Drive** \"Upload File\" to file the result.",
+    "Use **HeyGen** \"Create AI Clipping Job\" and \"Get AI Clipping Job\" to auto-clip a long recording, then **HeyGen** \"Save Video to File Storage\" and **Slack** \"Send Direct Message\" to deliver each clip to the requesting stakeholder."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/heygen/public/icon.png",
+  "sourcePaths": {
+    "service": "services/heygen",
+    "readme": "services/heygen/README.md",
+    "index": "services/heygen/src/index.js"
+  }
+}

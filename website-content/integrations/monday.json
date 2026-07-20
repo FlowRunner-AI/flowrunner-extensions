@@ -1,0 +1,168 @@
+{
+  "slug": "monday",
+  "name": "Monday.com",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Work management platform integration for automating boards, items, groups, and workspaces through Monday.com's GraphQL API. Manage project tasks, update column values, post comments, and monitor boards for changes with polling triggers.",
+  "actionCount": 24,
+  "triggerCount": 2,
+  "operationCategories": [
+    "Items",
+    "Subitems",
+    "Updates",
+    "Boards",
+    "Groups",
+    "Workspaces",
+    "Columns"
+  ],
+  "actions": [
+    {
+      "name": "Create Item",
+      "category": "Items",
+      "description": "Create a new item on a Monday.com board within a specified group, with optional column values."
+    },
+    {
+      "name": "Get Item",
+      "category": "Items",
+      "description": "Retrieve detailed information about a specific Monday.com item, including its column values, group, and board."
+    },
+    {
+      "name": "List Items",
+      "category": "Items",
+      "description": "List and search items on a Monday.com board. Optionally filter by column values, and page through large boards with a cursor. Use this to find items matching criteria (e.g. every item whose Status is \"Done\") rather than fetching one item you already know the ID of."
+    },
+    {
+      "name": "Update Item Name",
+      "category": "Items",
+      "description": "Update the name of a specific item on a Monday.com board."
+    },
+    {
+      "name": "Change Column Value",
+      "category": "Items",
+      "description": "Change the value of a specific column for an item on a Monday.com board."
+    },
+    {
+      "name": "Change Multiple Column Values",
+      "category": "Items",
+      "description": "Change multiple column values at once for an item on a Monday.com board."
+    },
+    {
+      "name": "Add File to Column",
+      "category": "Items",
+      "description": "Upload a file from Flowrunner file storage into a Files column on a Monday.com item. Use this to attach a generated document, export, or image to an item."
+    },
+    {
+      "name": "Move Item to Group",
+      "category": "Items",
+      "description": "Move an item to a different group within the same Monday.com board."
+    },
+    {
+      "name": "Move Item to Board",
+      "category": "Items",
+      "description": "Move an item (and any subitems) from its current board to a different Monday.com board and group. Columns are matched by name and type automatically, or map them explicitly."
+    },
+    {
+      "name": "Archive Item",
+      "category": "Items",
+      "description": "Archive an item on Monday.com, removing it from the active board view while preserving its data."
+    },
+    {
+      "name": "Delete Item",
+      "category": "Items",
+      "description": "Permanently delete an item from a Monday.com board. This action cannot be undone."
+    },
+    {
+      "name": "Create Subitem",
+      "category": "Subitems",
+      "description": "Create a new subitem under an existing Monday.com item, with optional column values."
+    },
+    {
+      "name": "Delete Subitem",
+      "category": "Subitems",
+      "description": "Permanently delete a subitem from Monday.com. This action cannot be undone."
+    },
+    {
+      "name": "Create Update",
+      "category": "Updates",
+      "description": "Post an update (comment) on a Monday.com item. Supports HTML formatting for rich text content."
+    },
+    {
+      "name": "Delete Update",
+      "category": "Updates",
+      "description": "Permanently delete an update (comment) from Monday.com. This action cannot be undone."
+    },
+    {
+      "name": "Create Board",
+      "category": "Boards",
+      "description": "Create a new board in Monday.com with a specified visibility level and optional workspace assignment."
+    },
+    {
+      "name": "Duplicate Board",
+      "category": "Boards",
+      "description": "Duplicate an existing Monday.com board with options to include structure only, items, or items with updates."
+    },
+    {
+      "name": "Get Board",
+      "category": "Boards",
+      "description": "Retrieve detailed information about a specific Monday.com board, including its columns, groups, and owners."
+    },
+    {
+      "name": "Delete Board",
+      "category": "Boards",
+      "description": "Permanently delete a Monday.com board and all of its data. This action cannot be undone."
+    },
+    {
+      "name": "Create Group",
+      "category": "Groups",
+      "description": "Create a new group on a Monday.com board to organize items."
+    },
+    {
+      "name": "Delete Group",
+      "category": "Groups",
+      "description": "Permanently delete a group and all its items from a Monday.com board. This action cannot be undone."
+    },
+    {
+      "name": "Duplicate Group",
+      "category": "Groups",
+      "description": "Duplicate a group within a Monday.com board, including all of its items and column values."
+    },
+    {
+      "name": "Create Workspace",
+      "category": "Workspaces",
+      "description": "Create a new workspace in Monday.com with a specified visibility level and optional description."
+    },
+    {
+      "name": "Create Column",
+      "category": "Columns",
+      "description": "Create a new column on a Monday.com board with the specified type and title."
+    }
+  ],
+  "triggers": [
+    "On New Item",
+    "On Item Column Change"
+  ],
+  "idealUseCases": [
+    "Automating task creation and status updates across project boards",
+    "Syncing item data between Monday.com and external systems like CRMs or spreadsheets",
+    "Monitoring boards for new items or column changes to trigger downstream workflows",
+    "Organizing projects by programmatically creating boards, groups, and workspaces",
+    "Posting updates and comments on items from external events or notifications",
+    "Bulk-updating column values across items based on business logic"
+  ],
+  "agentIdeas": [
+    "When a **Monday.com** \"On New Item\" trigger fires, use **Slack** \"Send Message To Channel\" to notify the team about the new task with board and group details",
+    "Use **Google Sheets** \"On New Row\" trigger to capture form submissions, then call **Monday.com** \"Create Item\" to add each entry as a task on the appropriate board with column values pre-filled",
+    "When a **Monday.com** \"On Item Column Change\" trigger detects a status change to \"Done\", use **Gmail** \"Send Message\" to notify the client that their request has been completed"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/monday/public/icon.png",
+  "sourcePaths": {
+    "service": "services/monday",
+    "readme": "services/monday/README.md",
+    "index": "services/monday/src/index.js"
+  }
+}

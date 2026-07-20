@@ -1,0 +1,180 @@
+{
+  "slug": "monica",
+  "name": "Monica",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrates [Monica](https://www.monicahq.com/) — the open-source personal relationship management (CRM) app — with FlowRunner. Manage the people you care about: contacts, notes, activities, tasks, reminders, calls, tags, and journal entries. Works with the hosted app at app.monicahq.com or any self-hosted instance, authenticated with a Bearer API token.",
+  "actionCount": 27,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Contacts",
+    "Notes",
+    "Activities",
+    "Tasks",
+    "Reminders",
+    "Calls",
+    "Tags",
+    "Journal",
+    "User"
+  ],
+  "actions": [
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists contacts in the Monica account with pagination. Supports full-text search via query (matches first name, last name, food preferences, job, and company) and sorting. Results are wrapped in a data array alongside links and meta pagination info."
+    },
+    {
+      "name": "Search Contacts",
+      "category": "Contacts",
+      "description": "Searches contacts by a query string, matching first name, last name, food preferences, job, and company. Returns a paginated data array. Use this when you only need to find contacts by text rather than page through the full list."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by its numeric ID. The response is wrapped in a data object and includes name fields, birthdate/deceased flags, and related information such as tags and addresses."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact. Monica requires the three boolean flags is_birthdate_known, is_deceased, and is_deceased_date_known on every create — they default to false here and are always sent to avoid a 422 validation error. Provide gender_id from Monica's Gender API when known."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact by ID. Monica's update is a full replace, so the three boolean flags is_birthdate_known, is_deceased, and is_deceased_date_known are always sent (defaulting to false) along with first_name to satisfy validation."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact by ID, including all of its associated notes, activities, tasks, reminders, and calls. This cannot be undone."
+    },
+    {
+      "name": "List Notes",
+      "category": "Notes",
+      "description": "Lists notes across the account with pagination. Each note is tied to a contact and carries a body and a favorited flag. Results are wrapped in a data array alongside links and meta pagination info."
+    },
+    {
+      "name": "Get Note",
+      "category": "Notes",
+      "description": "Retrieves a single note by its numeric ID. The response is wrapped in a data object and includes the body, favorited flag, and the associated contact."
+    },
+    {
+      "name": "Create Note",
+      "category": "Notes",
+      "description": "Creates a note attached to a contact. The body holds the note text (up to 100,000 characters) and can optionally be marked as favorited."
+    },
+    {
+      "name": "Update Note",
+      "category": "Notes",
+      "description": "Updates an existing note by ID. Requires the contact ID and note body; the favorited flag can be toggled."
+    },
+    {
+      "name": "Delete Note",
+      "category": "Notes",
+      "description": "Permanently deletes a note by its numeric ID. This cannot be undone."
+    },
+    {
+      "name": "List Activities",
+      "category": "Activities",
+      "description": "Lists activities across the account with pagination. Activities record something you did with one or more contacts, with a summary, description, and the date it happened. Results are wrapped in a data array alongside links and meta pagination info."
+    },
+    {
+      "name": "Create Activity",
+      "category": "Activities",
+      "description": "Creates an activity shared with one or more contacts. Supply the activity type ID, a summary, a description, the date it happened (YYYY-MM-DD), and the list of contact IDs who attended."
+    },
+    {
+      "name": "Update Activity",
+      "category": "Activities",
+      "description": "Updates an existing activity by ID. Requires the activity type ID, summary, happened-at date, and the list of attending contact IDs."
+    },
+    {
+      "name": "Delete Activity",
+      "category": "Activities",
+      "description": "Permanently deletes an activity by its numeric ID. This cannot be undone."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Lists tasks across the account with pagination. Each task belongs to a contact and has a title, description, and completion status. Results are wrapped in a data array alongside links and meta pagination info."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a task attached to a contact. Supply a title, an optional description, and whether it is already completed."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates an existing task by ID. Requires the contact ID and title; the description and completion status can be changed."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task by its numeric ID. This cannot be undone."
+    },
+    {
+      "name": "Create Reminder",
+      "category": "Reminders",
+      "description": "Creates a reminder for a contact. Reminders can be one-time or recur weekly, monthly, or yearly. Provide the next expected date (YYYY-MM-DD), the frequency type, and, for recurring reminders, the frequency number (e.g. every 2 weeks)."
+    },
+    {
+      "name": "Create Call",
+      "category": "Calls",
+      "description": "Logs a phone call with a contact. Provide the contact ID, when the call happened (YYYY-MM-DD), and the call content or notes."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists all tags in the account with pagination. Tags can be applied to contacts for grouping and filtering. Results are wrapped in a data array alongside links and meta pagination info."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new tag by name. Tags can then be applied to contacts using Set Contact Tags."
+    },
+    {
+      "name": "Set Contact Tags",
+      "category": "Tags",
+      "description": "Associates one or more tags with a contact. Supply the contact ID and an array of tag names; tags that do not yet exist are created automatically. This replaces the contact's current tag set with the provided list."
+    },
+    {
+      "name": "List Journal Entries",
+      "category": "Journal",
+      "description": "Lists journal entries in the account with pagination. Journal entries are personal notes not tied to a specific contact. Results are wrapped in a data array alongside links and meta pagination info."
+    },
+    {
+      "name": "Create Journal Entry",
+      "category": "Journal",
+      "description": "Creates a journal entry with a title and body text. Journal entries are personal and not associated with any contact."
+    },
+    {
+      "name": "Get Me",
+      "category": "User",
+      "description": "Retrieves the authenticated user's profile. Useful as a connection check to verify the API token and base URL are correct."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new leads or people from other tools into Monica as contacts, then log the interactions you have with them.",
+    "Automatically record calls, activities, and notes against a contact after a meeting or conversation.",
+    "Create and manage follow-up tasks and recurring reminders so you never lose touch with important people.",
+    "Tag and organize contacts, and keep a personal journal of entries not tied to any single person."
+  ],
+  "agentIdeas": [
+    "After a call, use **Monica** \"Create Call\" to log the conversation and \"Create Task\" to schedule a follow-up, then use **Gmail** \"Send Message\" to email the contact a recap.",
+    "When a **Google Calendar** \"Create Event\" meeting is booked, use **Monica** \"Search Contacts\" to find the attendee and \"Create Activity\" to record the meeting against them.",
+    "Use **Google Sheets** \"Add Row\" to export contacts fetched with **Monica** \"List Contacts\", or in reverse import a spreadsheet of people by calling **Monica** \"Create Contact\" for each row."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/monica/public/icon.png",
+  "sourcePaths": {
+    "service": "services/monica",
+    "readme": "services/monica/README.md",
+    "index": "services/monica/src/index.js"
+  }
+}

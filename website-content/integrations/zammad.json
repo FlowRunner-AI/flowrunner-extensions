@@ -1,0 +1,162 @@
+{
+  "slug": "zammad",
+  "name": "Zammad",
+  "marketingCategory": "Helpdesk & ITSM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner service for [Zammad](https://zammad.org/), the open-source helpdesk / customer support system. Manage tickets, articles (messages), users, organizations, groups, and tags on your self-hosted or hosted Zammad instance over its REST API.",
+  "actionCount": 24,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Tickets",
+    "Articles",
+    "Users",
+    "Organizations",
+    "Groups",
+    "Tags"
+  ],
+  "actions": [
+    {
+      "name": "Create Ticket",
+      "category": "Tickets",
+      "description": "Creates a new ticket in Zammad along with its first article (message). The group and customer identify the owning team and the requester: group accepts a group name (e.g. \"Users\") or a numeric group ID, and customer accepts the requester's email address or a numeric user ID (Zammad auto-creates a customer if the email is unknown). State and priority accept friendly Zammad names — state one of new, open, pending reminder, pending close, closed, merged, removed; priority one of 1 low, 2 normal, 3 high — or you may pass the raw name/ID directly. The article body is the initial message; the article type defaults to note."
+    },
+    {
+      "name": "Get Ticket",
+      "category": "Tickets",
+      "description": "Retrieves a single ticket by its ID, including title, group, state, priority, customer, owner, and timestamps. Enable Expand to resolve ID references (state, priority, group, customer, owner) into human-readable names alongside the IDs."
+    },
+    {
+      "name": "List Tickets",
+      "category": "Tickets",
+      "description": "Lists tickets in the Zammad instance with pagination. Enable Expand to resolve ID references (state, priority, group, customer, owner) into human-readable names. For filtering by arbitrary criteria use Search Tickets."
+    },
+    {
+      "name": "Update Ticket",
+      "category": "Tickets",
+      "description": "Updates an existing ticket. Only the provided fields are changed; all other fields keep their current values. State and priority accept friendly Zammad names (e.g. state open/closed, priority \"3 high\") or their raw name/ID. Group accepts a group name or numeric group ID."
+    },
+    {
+      "name": "Delete Ticket",
+      "category": "Tickets",
+      "description": "Permanently deletes a ticket by its ID. This removes the ticket and all of its articles and cannot be undone. Ticket deletion requires an API token with admin permissions."
+    },
+    {
+      "name": "Search Tickets",
+      "category": "Tickets",
+      "description": "Searches tickets using Zammad's full-text query syntax. The query can be plain text or field-scoped conditions combined with AND/OR, e.g. state.name:open AND priority.name:\"3 high\", or customer.email:jane@example.com. Enable Expand to resolve ID references to names. Returns up to Page Size results per page."
+    },
+    {
+      "name": "Create Article",
+      "category": "Articles",
+      "description": "Adds an article (message) to an existing ticket. The article type controls the communication channel: note is an internal or public comment, email sends an email to the recipient, and phone records a phone call. Set Internal to true to keep the article visible to agents only. Provide To for email articles to address the recipient."
+    },
+    {
+      "name": "List Articles By Ticket",
+      "category": "Articles",
+      "description": "Lists all articles (messages) of a ticket in chronological order. Each article includes its subject, body, type, sender, and whether it is internal."
+    },
+    {
+      "name": "Get Article",
+      "category": "Articles",
+      "description": "Retrieves a single ticket article by its ID, including its subject, body, type, sender, recipients, and internal flag."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a new user in Zammad. Users are customers by default; assign roles such as Agent or Admin to grant elevated access. At least one of Email or Phone should be provided so the user can be identified and contacted."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single user by their ID, including name, email, phone, active state, roles, and organization association."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists users in the Zammad instance with pagination, including their names, emails, roles, and organization associations. For finding a specific user use Search Users."
+    },
+    {
+      "name": "Update User",
+      "category": "Users",
+      "description": "Updates an existing user. Only the provided fields are changed; all other fields keep their current values. Provide Roles to replace the user's assigned roles."
+    },
+    {
+      "name": "Search Users",
+      "category": "Users",
+      "description": "Searches users using Zammad's full-text query syntax. The query can be plain text (matches name, login, and email) or field-scoped conditions, e.g. email:jane@example.com or firstname:Jane AND active:true. Returns up to Page Size results per page."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users",
+      "description": "Retrieves the profile of the user that owns the API token in use. This is the simplest way to verify that the server URL and API token are configured correctly."
+    },
+    {
+      "name": "Create Organization",
+      "category": "Organizations",
+      "description": "Creates a new organization in Zammad. Organizations group related users (customers) together. Domain-based assignment can automatically link users whose email matches the organization's domain when Domain Assignment is enabled."
+    },
+    {
+      "name": "Get Organization",
+      "category": "Organizations",
+      "description": "Retrieves a single organization by its ID, including its name, domain, note, and active state."
+    },
+    {
+      "name": "List Organizations",
+      "category": "Organizations",
+      "description": "Lists organizations in the Zammad instance with pagination, including their names, domains, and notes. For finding a specific organization use Search Organizations."
+    },
+    {
+      "name": "Update Organization",
+      "category": "Organizations",
+      "description": "Updates an existing organization. Only the provided fields are changed; all other fields keep their current values."
+    },
+    {
+      "name": "Search Organizations",
+      "category": "Organizations",
+      "description": "Searches organizations using Zammad's full-text query syntax. The query can be plain text (matches name and domain) or field-scoped conditions, e.g. name:Acme or domain:acme.com. Returns up to Page Size results per page."
+    },
+    {
+      "name": "List Groups",
+      "category": "Groups",
+      "description": "Lists all agent groups in the Zammad instance, including their names, active state, and assignment/notification settings. Groups organize tickets and control which agents handle them."
+    },
+    {
+      "name": "Add Tag",
+      "category": "Tags",
+      "description": "Adds a tag to an object (by default a ticket). Provide the object type (\"Ticket\"), the object's numeric ID, and the tag text. If the tag does not yet exist in the instance it is created automatically."
+    },
+    {
+      "name": "Remove Tag",
+      "category": "Tags",
+      "description": "Removes a tag from an object (by default a ticket). Provide the object type (\"Ticket\"), the object's numeric ID, and the tag text to remove."
+    },
+    {
+      "name": "List Tags For Object",
+      "category": "Tags",
+      "description": "Lists all tags currently applied to an object (by default a ticket). Provide the object type (\"Ticket\") and the object's numeric ID."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Open a support ticket from an inbound event and post the customer's message as the first article",
+    "Triage and route tickets by updating state, priority, group, or owner, and tag them for reporting",
+    "Sync customers and organizations between Zammad and your CRM or spreadsheets",
+    "Search tickets, users, and organizations with Zammad's full-text query syntax for lookups and reporting"
+  ],
+  "agentIdeas": [
+    "When a **PagerDuty** \"Create Incident\" fires for a customer-facing outage, use **Zammad** \"Search Tickets\" to find affected open tickets and \"Create Article\" to post a status update to each customer.",
+    "Take a new lead from **Intercom** \"Search Contacts\", then call **Zammad** \"Create Organization\" and \"Create User\" to onboard the customer into your helpdesk and \"Create Ticket\" to open their first support request.",
+    "When a high-priority **Zammad** ticket is created (via \"Create Ticket\" or found with \"Search Tickets\"), use **Slack** \"Send Message To Channel\" to alert the support team with the ticket title and customer details."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/zammad/public/icon.png",
+  "sourcePaths": {
+    "service": "services/zammad",
+    "readme": "services/zammad/README.md",
+    "index": "services/zammad/src/index.js"
+  }
+}

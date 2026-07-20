@@ -1,0 +1,92 @@
+{
+  "slug": "mailchimp-transactional",
+  "name": "Mailchimp Transactional Email",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "High-performance transactional email delivery platform with advanced template management, tracking capabilities, and comprehensive analytics.",
+  "actionCount": 10,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Email Sending",
+    "Template Management",
+    "Analytics",
+    "Message Tracking",
+    "Account Management",
+    "Rejection Management"
+  ],
+  "actions": [
+    {
+      "name": "Send Message",
+      "category": "Email Sending",
+      "description": "Sends a new transactional message through the Mailchimp Transactional API. Supports rich HTML content, tracking options, merge variables, attachments, and advanced delivery settings for professional email campaigns."
+    },
+    {
+      "name": "Get Templates List",
+      "category": "Template Management",
+      "description": "Returns a list of all the templates available to this user. Templates are reusable email designs that can be used to send consistent messages across your campaigns."
+    },
+    {
+      "name": "Add Template",
+      "category": "Template Management",
+      "description": "Adds a new template to your account. Templates allow you to create reusable email designs with editable regions that can be customized for each campaign."
+    },
+    {
+      "name": "Send With Template",
+      "category": "Email Sending",
+      "description": "Sends a new transactional message through the Transactional API using a template. Templates provide consistent branding and allow dynamic content injection into predefined editable regions."
+    },
+    {
+      "name": "Get Tags List",
+      "category": "Analytics",
+      "description": "Returns all of the user-defined tag information. Tags help categorize and track the performance of your email campaigns with detailed analytics and statistics."
+    },
+    {
+      "name": "Get Message Info",
+      "category": "Message Tracking",
+      "description": "Gets the information for a single recently sent message. Provides detailed tracking data including opens, clicks, and delivery status for message analysis and troubleshooting."
+    },
+    {
+      "name": "Ping",
+      "category": "Account Management",
+      "description": "Validates an API key and respond to a ping. This is a simple health check method to verify your API connection and credentials are working correctly."
+    },
+    {
+      "name": "Get Rejections List",
+      "category": "Rejection Management",
+      "description": "Retrieves your email rejection denylist. You can provide an email address to limit the results. Returns up to 1000 results with detailed rejection reasons and timestamps for managing email deliverability."
+    },
+    {
+      "name": "Add Rejection",
+      "category": "Rejection Management",
+      "description": "Adds an email to your email rejection denylist. Addresses that you add manually will never expire and there is no reputation penalty for removing them from your denylist."
+    },
+    {
+      "name": "Get User Info",
+      "category": "Account Management",
+      "description": "Returns the information about the API-connected user. Provides account details including reputation score, sending quotas, and comprehensive historical statistics across different time periods."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Transactional email delivery for e-commerce and SaaS applications",
+    "Password reset and account verification email automation",
+    "Order confirmation and shipping notification systems",
+    "Automated invoice and receipt email delivery",
+    "System alerts and monitoring notification distribution",
+    "Template-based email campaigns with dynamic content",
+    "Email deliverability management and blacklist monitoring",
+    "Advanced email tracking and analytics reporting"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/mailchimp-transactional/public/icon.png",
+  "sourcePaths": {
+    "service": "services/mailchimp-transactional",
+    "readme": "services/mailchimp-transactional/README.md",
+    "index": "services/mailchimp-transactional/src/index.js"
+  }
+}

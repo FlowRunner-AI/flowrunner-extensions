@@ -1,0 +1,125 @@
+{
+  "slug": "drift",
+  "name": "Drift",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Drift](https://www.drift.com), the conversational marketing and live-chat platform. Manage contacts, drive conversations, send chat and internal messages, look up agents, and maintain account-based-marketing accounts directly from your flows. Authenticates with a Bearer access token against the Drift Platform API at `https://driftapi.com`.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Contacts",
+    "Conversations",
+    "Users",
+    "Accounts"
+  ],
+  "actions": [
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a Drift contact from a set of attributes. Email is the only required attribute; any other standard or custom attributes (name, phone, externalId, etc.) may be supplied through the Attributes object. Returns the created contact with its Drift-assigned numeric ID."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single Drift contact by its numeric contact ID, including all standard and custom attributes stored on the contact."
+    },
+    {
+      "name": "Get Contact by Email",
+      "category": "Contacts",
+      "description": "Looks up Drift contacts matching an exact email address. Drift returns the matching contacts (typically one) with their full attribute sets. Useful when you only hold the email and need the Drift contact ID."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists Drift contacts, optionally filtered to an exact email address. When no email is supplied Drift returns contacts accessible to the token. Returns each contact with its attributes."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates attributes on an existing Drift contact identified by its numeric ID. Only the attributes you provide are changed; omitted attributes are left untouched. Pass any standard or custom attributes through the fields below or the Additional Attributes object."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a Drift contact by its numeric ID. This cannot be undone."
+    },
+    {
+      "name": "List Conversations",
+      "category": "Conversations",
+      "description": "Lists Drift conversations, most-recent first. Optionally filter by status (Open, Closed or Pending) and cap the number returned. Each entry includes the conversation ID, status, participants and timestamps."
+    },
+    {
+      "name": "Get Conversation",
+      "category": "Conversations",
+      "description": "Retrieves a single Drift conversation by its numeric ID, including status, participants, associated contact and timestamps."
+    },
+    {
+      "name": "Get Conversation Messages",
+      "category": "Conversations",
+      "description": "Retrieves the messages in a Drift conversation in chronological order, including message body, author (contact or agent) and type. Supports paging with an optional cursor returned as \"next\" in a previous response."
+    },
+    {
+      "name": "Send Message",
+      "category": "Conversations",
+      "description": "Posts a message into an existing Drift conversation. Choose the message type: Chat is a normal reply visible to the site visitor, while Private Note / Private are internal notes visible only to agents. Returns the created message."
+    },
+    {
+      "name": "Update Conversation Status",
+      "category": "Conversations",
+      "description": "Changes the status of a Drift conversation to Open, Closed or Pending. Closing a conversation removes it from the active queue; reopening returns it."
+    },
+    {
+      "name": "Create Conversation",
+      "category": "Conversations",
+      "description": "Starts a new Drift conversation on behalf of a contact and posts its first message. Supply the contact's email plus the opening message body. Returns the created conversation with its ID."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists the Drift users (agents / team members) on the account, including their ID, name, email and availability. Use this to find the agent IDs referenced by conversations and assignments."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single Drift user (agent) by their numeric ID, including name, email, role and availability."
+    },
+    {
+      "name": "List Accounts",
+      "category": "Accounts",
+      "description": "Lists Drift accounts (target companies used for account-based marketing). Returns each account with its owner, domain and custom attributes. Supports paging with an optional cursor returned as \"next\" in a previous response."
+    },
+    {
+      "name": "Get Account",
+      "category": "Accounts",
+      "description": "Retrieves a single Drift account by its account ID, including owner, domain and custom attributes."
+    },
+    {
+      "name": "Create or Update Account",
+      "category": "Accounts",
+      "description": "Creates a Drift account or updates it if one with the same account ID already exists. Provide the account name and (optionally) the ID, owner, domain and custom properties. Custom properties are supplied as key/value pairs."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create or update a Drift contact when a new lead arrives from another system.",
+    "Reply to a live chat thread, post an internal agent note, or start a brand-new conversation with a visitor.",
+    "Route or triage conversations by changing their status to Open, Closed, or Pending.",
+    "Sync account-based-marketing accounts (target companies) and look up the agents assigned to them."
+  ],
+  "agentIdeas": [
+    "When a new lead lands in **HubSpot** via \"Create Contact\", call Drift \"Create Contact\" to sync the visitor into Drift and then \"Create Conversation\" to open a personalized outreach thread.",
+    "Use Drift \"Get Conversation Messages\" to pull a chat transcript, then post a summary to a channel with **Slack** \"Send Message To Channel\" so the sales team is alerted to hot conversations.",
+    "After Drift \"Update Conversation Status\" closes a chat, fire **Segment** \"Track Event\" to record the resolution in your analytics pipeline for downstream reporting."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/drift/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/drift",
+    "readme": "services/drift/README.md",
+    "index": "services/drift/src/index.js"
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "slug": "amazon-seller-central",
+  "name": "Amazon Seller Central",
+  "marketingCategory": "E-commerce",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for the Amazon Selling Partner API (SP-API). Connect a seller account via Login with Amazon and automate marketplace participations, orders and merchant shipment confirmation, catalog search, listings management, FBA inventory, reports (with gzip-aware document downloads to file storage), finances, and feed submission across the North America, Europe, and Far East regions.",
+  "actionCount": 23,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Sellers",
+    "Orders",
+    "Catalog",
+    "Listings",
+    "Inventory",
+    "Reports",
+    "Finances",
+    "Feeds"
+  ],
+  "actions": [
+    {
+      "name": "Get Marketplace Participations",
+      "category": "Sellers",
+      "description": "Retrieves the marketplaces the connected seller participates in, including each marketplace's id, name, country code, default currency, default language, and domain, plus the seller's participation and store name where available. Useful as a connection check and for discovering the seller's marketplace ids. Rate limit: about 0.016 requests per second (roughly 1 per minute, burst 15), so avoid calling it in tight loops."
+    },
+    {
+      "name": "List Orders",
+      "category": "Orders",
+      "description": "Retrieves orders created or updated in the given time range, with optional filtering by order status and fulfillment channel. Provide either Created After or Last Updated After (not both); when neither is set and no Next Token is used, orders created in the last 30 days are returned. Results are paginated via NextToken in the response. Amazon's Orders API rate limit is strict: about 0.0167 requests per second (1 per minute sustained, burst 20), so space out polling. Returns the SP-API payload with an Orders array; buyer PII fields (name, address, email) require a Restricted Data Token and are not returned by this operation."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves a single order by its Amazon order id, including status, purchase and update dates, order total, fulfillment channel, shipping service level, and item counts. Buyer PII (name, address, email) requires a Restricted Data Token and is not returned. Rate limit: about 0.0167 requests per second (burst 20)."
+    },
+    {
+      "name": "List Order Items",
+      "category": "Orders",
+      "description": "Retrieves the line items of an order, including each item's order item id, seller SKU, ASIN, title, quantities ordered and shipped, item price, and tax. Results are paginated via NextToken for orders with many items. Buyer customization data requires a Restricted Data Token and is not returned. Rate limit: about 0.5 requests per second (burst 30)."
+    },
+    {
+      "name": "Confirm Shipment",
+      "category": "Orders",
+      "description": "Confirms shipment of a merchant-fulfilled (MFN) order by submitting package tracking details, updating the order to Shipped in Amazon. Provide the carrier code, tracking number, ship date, and the order items with quantities included in the package. Amazon returns no content on success; this operation returns a success status. The package reference id is a seller-defined identifier that must be unique per order (e.g. '1'). Rate limit: about 2 requests per second (burst 10)."
+    },
+    {
+      "name": "Search Catalog Items",
+      "category": "Catalog",
+      "description": "Searches the Amazon catalog (2022-04-01) by keywords or by product identifiers (ASIN, EAN, GTIN, ISBN, JAN, MINSAN, SKU, UPC). Provide either Keywords or Identifiers, not both; searching by SKU also requires the Seller ID. Select which data sets to include per item (summaries, attributes, images, sales ranks, etc.). Results are paginated via pagination.nextToken. Rate limit: about 2 requests per second (burst 2), and identifier searches accept up to 20 identifiers per request."
+    },
+    {
+      "name": "Get Catalog Item",
+      "category": "Catalog",
+      "description": "Retrieves details of a single Amazon catalog item by ASIN (Catalog Items API 2022-04-01). Select which data sets to include: summaries (title, brand, manufacturer), attributes, classifications, dimensions, identifiers, images, product types, sales ranks, and relationships (e.g. variations). Rate limit: about 2 requests per second (burst 2)."
+    },
+    {
+      "name": "Get Listing Item",
+      "category": "Listings",
+      "description": "Retrieves a listing (Listings Items API 2021-08-01) by seller id and SKU, including summaries (status, condition, item name), full attributes, listing issues, offers (price), and fulfillment availability. Useful for inspecting a listing's current state before updating it. Rate limit: about 5 requests per second (burst 10)."
+    },
+    {
+      "name": "Put Listing Item",
+      "category": "Listings",
+      "description": "Creates a new listing or fully replaces an existing one (Listings Items API 2021-08-01). Requires the Amazon product type and the complete attributes object conforming to that product type's JSON schema — Amazon's listing attribute schemas are complex and product-type specific, so build the attributes payload against the Product Type Definitions for your product type (retrievable in Seller Central or via the SP-API productTypeDefinitions resource). Amazon processes the submission asynchronously: an ACCEPTED response means it passed validation, not that it is live. Rate limit: about 5 requests per second (burst 10)."
+    },
+    {
+      "name": "Patch Listing Item",
+      "category": "Listings",
+      "description": "Partially updates an existing listing (Listings Items API 2021-08-01) using JSON Patch operations, e.g. to change price or quantity without resubmitting the whole listing. Each patch has an op ('add', 'replace', or 'delete'), a path pointing at an attribute (e.g. '/attributes/purchasable_offer'), and for add/replace a value array of attribute objects. Amazon processes the submission asynchronously: an ACCEPTED response means it passed validation. Rate limit: about 5 requests per second (burst 10)."
+    },
+    {
+      "name": "Delete Listing Item",
+      "category": "Listings",
+      "description": "Deletes a listing (Listings Items API 2021-08-01) by seller id and SKU in the selected marketplaces, removing the offer from Amazon. Amazon processes the deletion asynchronously: an ACCEPTED response means the request passed validation. Rate limit: about 5 requests per second (burst 10)."
+    },
+    {
+      "name": "Get Inventory Summaries",
+      "category": "Inventory",
+      "description": "Retrieves FBA (Fulfillment by Amazon) inventory summaries per SKU, including fulfillable, inbound, reserved, unfulfillable, and researching quantities when Details is enabled. Optionally restrict to specific seller SKUs. Results are paginated via pagination.nextToken. Rate limit: about 2 requests per second (burst 2). Only inventory in Amazon fulfillment centers is returned; merchant-fulfilled stock is managed through listings."
+    },
+    {
+      "name": "Create Report",
+      "category": "Reports",
+      "description": "Requests generation of a report (Reports API 2021-06-30), such as open listings, all orders, sales and traffic, or FBA inventory planning. Pick a common report type from the dictionary or enter any documented SP-API reportType enum manually. Report generation is asynchronous: use the returned reportId with Get Report to poll the processing status, then fetch the output via Get Report Document or Download Report Document. Rate limit: about 0.0167 requests per second (1 per minute, burst 15)."
+    },
+    {
+      "name": "Get Report",
+      "category": "Reports",
+      "description": "Retrieves the status of a report request by report id, including its processingStatus (IN_QUEUE, IN_PROGRESS, DONE, CANCELLED, FATAL) and, once DONE, the reportDocumentId needed to fetch the output. Poll this after Create Report; report generation typically takes from seconds to several minutes depending on the report type and data volume. Rate limit: about 2 requests per second (burst 15)."
+    },
+    {
+      "name": "List Reports",
+      "category": "Reports",
+      "description": "Lists previously requested reports, filtered by report types, processing statuses, and creation time. Either Report Types or a Next Token is required by Amazon; when a Next Token is provided all other filters are ignored. Results are paginated via nextToken. Rate limit: about 0.0222 requests per second (burst 10)."
+    },
+    {
+      "name": "Get Report Document",
+      "category": "Reports",
+      "description": "Retrieves the download descriptor for a completed report document, containing a pre-signed URL (valid for 5 minutes) and the compression algorithm when the content is compressed. Use Download Report Document instead to fetch, decompress, and store the content in one step. Rate limit: about 0.0167 requests per second (burst 15)."
+    },
+    {
+      "name": "Download Report Document",
+      "category": "Reports",
+      "description": "Downloads a completed report's content in one step: resolves the report document's pre-signed URL, fetches the binary content, decompresses it when Amazon returns it GZIP-compressed, stores the result as a file in FlowRunner file storage, and returns the file URL together with a text preview of the first 50 KB. Flat-file reports are tab-separated text; some report types (e.g. Sales and Traffic) are JSON. Rate limit: about 0.0167 requests per second on the underlying document endpoint."
+    },
+    {
+      "name": "List Financial Events",
+      "category": "Finances",
+      "description": "Retrieves financial events (shipment settlements, refunds, fees, adjustments, service fees, etc.) posted within the given time range. The Posted Before date must be at least two minutes before the request time. Results are paginated via payload.NextToken. Rate limit: about 0.5 requests per second (burst 30). Returns the SP-API payload with a FinancialEvents object grouping events by kind (ShipmentEventList, RefundEventList, ServiceFeeEventList, and more)."
+    },
+    {
+      "name": "List Financial Event Groups",
+      "category": "Finances",
+      "description": "Retrieves financial event groups (settlement periods), each with its processing status (Open or Closed), fund transfer status, total amount, and start/end dates. Useful for reconciling Amazon settlements with bank transfers. Results are paginated via payload.NextToken. Rate limit: about 0.5 requests per second (burst 10)."
+    },
+    {
+      "name": "Create Feed Document",
+      "category": "Feeds",
+      "description": "Creates a feed document placeholder (Feeds API 2021-06-30), returning a feedDocumentId and a pre-signed upload URL (valid for 5 minutes). This is step 1 of submitting a feed: create the document, upload the feed content to the URL with Upload Feed Content, then submit it with Create Feed. Rate limit: about 0.5 requests per second (burst 15)."
+    },
+    {
+      "name": "Upload Feed Content",
+      "category": "Feeds",
+      "description": "Uploads feed content to the pre-signed URL returned by Create Feed Document (step 2 of submitting a feed). The content is sent as the raw request body with the same content type declared when the feed document was created — the two must match or Amazon rejects the upload. The URL expires 5 minutes after creation, so upload promptly. Returns a success status."
+    },
+    {
+      "name": "Create Feed",
+      "category": "Feeds",
+      "description": "Submits a feed for processing (step 3 of submitting a feed), referencing the uploaded feed document. Pick a common feed type or enter any documented SP-API feedType value via the override parameter. Feed processing is asynchronous: use the returned feedId with Get Feed to poll the processing status. Rate limit: about 0.0083 requests per second (roughly 1 every 2 minutes, burst 15), so batch changes into as few feeds as possible."
+    },
+    {
+      "name": "Get Feed",
+      "category": "Feeds",
+      "description": "Retrieves the status of a submitted feed by feed id, including its processingStatus (IN_QUEUE, IN_PROGRESS, DONE, CANCELLED, FATAL) and, once DONE, the resultFeedDocumentId containing Amazon's processing report with per-record errors and warnings. Rate limit: about 2 requests per second (burst 15)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new and updated orders into an ERP, CRM, or spreadsheet, then confirm merchant-fulfilled shipments with tracking back to Amazon.",
+    "Manage listings programmatically: inspect a listing, create or replace it, patch price/quantity, or delete offers.",
+    "Monitor FBA inventory levels and trigger restock or reorder workflows when fulfillable quantities run low.",
+    "Generate business reports (all orders, open listings, sales and traffic, FBA planning), poll to completion, and download the decompressed output for downstream processing.",
+    "Reconcile Amazon settlements by pulling financial events and event groups, and push bulk catalog or pricing changes through the feeds pipeline."
+  ],
+  "agentIdeas": [
+    "After **List Orders** returns recent orders, use **Google Sheets** \"Add Row\" to log each order into a fulfillment tracking sheet, then call **Confirm Shipment** once the package ships to push tracking back to Amazon.",
+    "When a **ShipBob** \"On Order Shipped\" trigger fires, use Amazon Seller Central **Confirm Shipment** to mark the corresponding merchant-fulfilled order as Shipped with the carrier and tracking number.",
+    "Use **List Financial Events** to pull Amazon settlement events, then call **QuickBooks Online** \"Create Bill\" to record the associated fees and charges in accounting."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/amazon-seller-central/public/icon.png",
+  "sourcePaths": {
+    "service": "services/amazon-seller-central",
+    "readme": "services/amazon-seller-central/README.md",
+    "index": "services/amazon-seller-central/src/index.js"
+  }
+}

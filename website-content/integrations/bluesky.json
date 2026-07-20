@@ -1,0 +1,164 @@
+{
+  "slug": "bluesky",
+  "name": "Bluesky",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Publish and manage content on [Bluesky](https://bsky.app) through the AT Protocol XRPC API. Posts get automatic rich-text facets, so links, @mentions and #hashtags in your text render as clickable without any manual markup. Anywhere a post reference is needed you can pass either an `at://` URI or a regular `bsky.app` post URL. Self-hosted PDS instances are supported.",
+  "actionCount": 24,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Posting",
+    "Feeds & Search",
+    "Profiles",
+    "Social Graph",
+    "Notifications",
+    "Identity"
+  ],
+  "actions": [
+    {
+      "name": "Create Post",
+      "category": "Posting",
+      "description": "Publishes a text post (skeet) to Bluesky, up to 300 characters. Links (https://... and bare domains like example.com), @mentions and #hashtags in the text are automatically converted to rich-text facets so they render as clickable — Bluesky does not auto-link plain text. Optionally attaches an external link preview card and sets the post language(s). Returns the record's at:// URI, CID and a bsky.app web URL."
+    },
+    {
+      "name": "Create Post with Image",
+      "category": "Posting",
+      "description": "Publishes a post with one attached image. The image is read from FlowRunner file storage, uploaded to Bluesky as a blob (com.atproto.repo.uploadBlob) and embedded via app.bsky.embed.images. Bluesky accepts PNG, JPEG, WebP, GIF and AVIF up to 1 MB per image; Bluesky posts support up to 4 images, this action attaches one. Text links, @mentions and #hashtags are auto-formatted like in Create Post."
+    },
+    {
+      "name": "Reply to Post",
+      "category": "Posting",
+      "description": "Posts a reply to an existing Bluesky post. Accepts the parent post as an at:// URI or a regular bsky.app post URL; the thread root is resolved automatically so the reply lands in the correct thread. Links, @mentions and #hashtags in the reply text are auto-formatted."
+    },
+    {
+      "name": "Quote Post",
+      "category": "Posting",
+      "description": "Publishes a new post that quotes an existing post (app.bsky.embed.record). The quoted post is shown as an embedded card below your commentary text. Accepts the quoted post as an at:// URI or a bsky.app URL. Links, @mentions and #hashtags in the text are auto-formatted."
+    },
+    {
+      "name": "Repost",
+      "category": "Posting",
+      "description": "Reposts an existing post to your followers (app.bsky.feed.repost). Accepts the post as an at:// URI or a bsky.app URL; the post's CID is resolved automatically. Returns the repost record's at:// URI and CID."
+    },
+    {
+      "name": "Like Post",
+      "category": "Posting",
+      "description": "Likes an existing post (app.bsky.feed.like). Accepts the post as an at:// URI or a bsky.app URL; the post's CID is resolved automatically. Returns the like record's at:// URI and CID. Note: removing a like is not supported by this integration because it requires the like record's own key."
+    },
+    {
+      "name": "Delete Post",
+      "category": "Posting",
+      "description": "Deletes one of the connected account's own posts (com.atproto.repo.deleteRecord). Accepts the post as an at:// URI or a bsky.app URL. Only posts created by the connected account can be deleted."
+    },
+    {
+      "name": "Get Timeline",
+      "category": "Feeds & Search",
+      "description": "Retrieves the connected account's home timeline (the \"Following\" feed) with full post views: author, text, embeds, like/repost/reply counts. Paginate with the returned cursor."
+    },
+    {
+      "name": "Get Author Feed",
+      "category": "Feeds & Search",
+      "description": "Retrieves posts authored by a specific user (their profile feed), with filtering: all posts with replies, top-level posts only, media posts only, or posts plus own-thread replies. Paginate with the returned cursor."
+    },
+    {
+      "name": "Get Post Thread",
+      "category": "Feeds & Search",
+      "description": "Retrieves a full conversation thread around a post: the post itself, its parent chain and nested replies. Accepts the post as an at:// URI or a bsky.app URL. Control how many reply levels (depth) and parent levels (parent height) are included."
+    },
+    {
+      "name": "Get Posts",
+      "category": "Feeds & Search",
+      "description": "Retrieves full post views (hydrated with author, counts and embeds) for up to 25 posts at once. Each entry can be an at:// URI or a bsky.app URL. Useful for resolving CIDs and checking engagement of known posts."
+    },
+    {
+      "name": "Search Posts",
+      "category": "Feeds & Search",
+      "description": "Searches all of Bluesky for posts matching a query string, with optional filters: author, language, and date range. Sort by relevance (Top) or recency (Latest). Returns full post views; paginate with the returned cursor. Total hit count may be approximate."
+    },
+    {
+      "name": "Get Profile",
+      "category": "Profiles",
+      "description": "Retrieves a user's full profile: display name, bio, avatar, banner, follower/following/post counts, and the connected account's relationship to them (following, followed-by, muted, blocked)."
+    },
+    {
+      "name": "Get Profiles",
+      "category": "Profiles",
+      "description": "Retrieves full profiles for up to 25 users in a single call. Each entry can be a handle or DID."
+    },
+    {
+      "name": "Search Users",
+      "category": "Profiles",
+      "description": "Searches Bluesky user profiles by name, handle or bio text (app.bsky.actor.searchActors). Returns profile views with follower counts and viewer relationship; paginate with the returned cursor."
+    },
+    {
+      "name": "Follow User",
+      "category": "Social Graph",
+      "description": "Follows a user from the connected account (creates an app.bsky.graph.follow record). Accepts a handle or DID; handles are resolved to DIDs automatically. Returns the follow record's at:// URI, which Unfollow User can reverse."
+    },
+    {
+      "name": "Unfollow User",
+      "category": "Social Graph",
+      "description": "Unfollows a user: looks up the connected account's follow record for them (via their profile's viewer state) and deletes it. Fails with a clear error if the account is not currently following the user."
+    },
+    {
+      "name": "Get Followers",
+      "category": "Social Graph",
+      "description": "Lists the accounts that follow a user, as profile views with viewer relationship info. Paginate with the returned cursor."
+    },
+    {
+      "name": "Get Follows",
+      "category": "Social Graph",
+      "description": "Lists the accounts a user follows, as profile views with viewer relationship info. Paginate with the returned cursor."
+    },
+    {
+      "name": "Mute User",
+      "category": "Social Graph",
+      "description": "Mutes a user for the connected account (app.bsky.graph.muteActor). Their posts and notifications are hidden from you; muting is private and the muted user is not notified."
+    },
+    {
+      "name": "Unmute User",
+      "category": "Social Graph",
+      "description": "Unmutes a previously muted user for the connected account (app.bsky.graph.unmuteActor), restoring their posts and notifications in your feeds."
+    },
+    {
+      "name": "List Notifications",
+      "category": "Notifications",
+      "description": "Lists the connected account's notifications: likes, reposts, follows, mentions, replies and quotes. Each notification includes the acting user, reason, subject post URI and read state. Paginate with the returned cursor."
+    },
+    {
+      "name": "Mark Notifications Seen",
+      "category": "Notifications",
+      "description": "Marks all of the connected account's notifications as seen up to the current moment (app.bsky.notification.updateSeen), clearing the unread state."
+    },
+    {
+      "name": "Resolve Handle",
+      "category": "Identity",
+      "description": "Resolves a Bluesky handle (e.g. alice.bsky.social or a custom domain handle) to its permanent DID (com.atproto.identity.resolveHandle). DIDs are stable identifiers that survive handle changes and are required by some AT Protocol operations."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Cross-post announcements, blog links or release notes to Bluesky automatically from other tools",
+    "Turn AI-generated copy and images into ready-to-publish posts (300-character limit, one image up to 1 MB)",
+    "Monitor mentions, replies and keyword searches, then reply, quote or repost programmatically",
+    "Sync a content calendar (spreadsheet or Airtable) into published Bluesky posts",
+    "Grow and maintain a social graph: follow/unfollow, mute/unmute and audit followers and follows",
+    "Resolve handles to stable DIDs and hydrate known posts for engagement tracking"
+  ],
+  "agentIdeas": [
+    "Use **AI Image Generator** \"Generate Image\" to render a visual, then call **Bluesky** \"Create Post with Image\" to publish it with an auto-formatted caption including links and hashtags",
+    "Read scheduled content with **Google Sheets** \"Get Rows\" and call **Bluesky** \"Create Post\" for each due row, writing the returned `bsky.app` URL back with \"Add Row\"",
+    "Fetch a campaign calendar via **Airtable** \"Get Records\" and call **Bluesky** \"Create Post\" or \"Quote Post\" for each entry to drive announcements from a single source of truth"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/bluesky/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/bluesky",
+    "readme": "services/bluesky/README.md",
+    "index": "services/bluesky/src/index.js"
+  }
+}

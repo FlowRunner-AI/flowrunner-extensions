@@ -1,0 +1,47 @@
+{
+  "slug": "signl4",
+  "name": "SIGNL4",
+  "marketingCategory": "SMS, Voice & Push",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Send and resolve SIGNL4 alerts (\"signls\") that reach your on-call team via push, SMS, and voice notifications. Authentication uses your team-secret inbound webhook (the last path segment of `https://connect.signl4.com/webhook/SECRET`), configured as the Team Secret — there is no separate API key or auth header.",
+  "actionCount": 2,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Alerting"
+  ],
+  "actions": [
+    {
+      "name": "Send Alert",
+      "category": "Alerting",
+      "description": "Triggers a new SIGNL4 alert (a \"signl\") that is pushed to the on-call team's mobile devices with push, SMS, and voice notifications. Set an External ID (X-S4-ExternalID) to a stable, incident-specific identifier so the alert can later be closed with Resolve Alert. Choose Single ACK (first responder acknowledges for everyone) or Multi ACK (every notified person must acknowledge). Optional Service, Location, Filtering, and Source System values enrich routing and display. Returns the created event's identifier."
+    },
+    {
+      "name": "Resolve Alert",
+      "category": "Alerting",
+      "description": "Closes an existing SIGNL4 alert by its External ID (X-S4-ExternalID). Pass the exact same External ID that was used when the alert was raised with Send Alert; SIGNL4 resolves the alert associated with that identifier and stops further escalation. Use one stable External ID per incident so Send Alert and Resolve Alert stay tied together."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Raise a mobile alert to the on-call team the moment a monitor, job, or webhook detects a failure",
+    "De-duplicate and track incidents by reusing one stable External ID per incident across raise and close",
+    "Automatically close an alert and stop escalation once an upstream system reports the incident recovered",
+    "Enrich alerts with service, location, and source-system context for faster routing and triage"
+  ],
+  "agentIdeas": [
+    "When a **PagerDuty** \"On New Triggered Incident\" trigger fires, use **SIGNL4** \"Send Alert\" to page the mobile on-call team with the incident's ID as the External ID, then call **SIGNL4** \"Resolve Alert\" once PagerDuty \"Resolve Alert\" closes the incident.",
+    "After a **SIGNL4** \"Send Alert\" raises an on-call alert, use **Slack** \"Send Message To Channel\" to post the incident title and External ID to the team's channel for shared visibility.",
+    "Use **Sentry** \"List Issues\" to detect newly unresolved production errors, then call **SIGNL4** \"Send Alert\" (reusing the Sentry issue ID as the External ID) to escalate to the on-call team."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/signl4/public/icon.png",
+  "sourcePaths": {
+    "service": "services/signl4",
+    "readme": "services/signl4/README.md",
+    "index": "services/signl4/src/index.js"
+  }
+}

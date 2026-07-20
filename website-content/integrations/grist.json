@@ -1,0 +1,117 @@
+{
+  "slug": "grist",
+  "name": "Grist",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Grist](https://www.getgrist.com/) documents with FlowRunner. Grist is a modern relational spreadsheet: documents contain tables, tables contain typed columns, and rows are addressed by a numeric row ID. This service exposes record CRUD (including upsert), table and column management, document and workspace discovery, and read-only SQL queries. Requests authenticate with `Authorization: Bearer <apiKey>` against `{baseUrl}/api`.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Records",
+    "Tables",
+    "Columns",
+    "Documents & Workspaces",
+    "SQL",
+    "Attachments"
+  ],
+  "actions": [
+    {
+      "name": "List Records",
+      "category": "Records",
+      "description": "Retrieves records from a table in a Grist document. Each record is returned as an object with a numeric row \"id\" and a \"fields\" object keyed by column ID. Supports server-side filtering by exact column values, sorting, and a result limit. The filter expects a JSON object mapping column IDs to arrays of allowed values, for example {\"Status\":[\"Open\",\"Pending\"]}."
+    },
+    {
+      "name": "Add Records",
+      "category": "Records",
+      "description": "Adds one or more records to a table in a Grist document. Provide a \"fields\" object mapping column IDs to values for a single record, or an array of such objects (or an array of {fields} records) to add several at once. Grist assigns each new record a numeric row ID and returns those IDs."
+    },
+    {
+      "name": "Update Records",
+      "category": "Records",
+      "description": "Updates existing records in a table in a Grist document. Provide an array of records, each with a numeric row \"id\" identifying the record and a \"fields\" object holding the column values to change. Only the supplied columns are modified; other columns are left untouched. Returns no body on success."
+    },
+    {
+      "name": "Add or Update Records",
+      "category": "Records",
+      "description": "Adds new records or updates existing ones (upsert) in a table in a Grist document. Each item has a \"require\" object identifying a record by column values and a \"fields\" object with the values to write. If a record matching every \"require\" column already exists it is updated with \"fields\"; otherwise a new record is created using both \"require\" and \"fields\". This makes it ideal for idempotent syncs keyed on a unique column such as an email or external ID."
+    },
+    {
+      "name": "Delete Records",
+      "category": "Records",
+      "description": "Deletes records from a table in a Grist document by their numeric row IDs. Provide an array of row IDs to remove. This operation is permanent, so the row IDs should be confirmed beforehand, typically via List Records. Returns no body on success."
+    },
+    {
+      "name": "List Tables",
+      "category": "Tables",
+      "description": "Lists all tables in a Grist document. Each table is returned with its ID, which in Grist doubles as the table's display name and is used as the tableId in record and column operations."
+    },
+    {
+      "name": "Create Table",
+      "category": "Tables",
+      "description": "Creates a new table in a Grist document with a set of columns. The table ID becomes both the identifier and the display name. Each column is defined by an ID and a \"fields\" object holding at least a \"label\" and a \"type\" (for example Text, Numeric, Int, Bool, Date, DateTime, Choice, Ref). Grist automatically adds a manual sort column."
+    },
+    {
+      "name": "Modify Table",
+      "category": "Tables",
+      "description": "Renames a table in a Grist document. Because a Grist table's ID is also its display name, changing the table ID renames it. Provide the current table ID and the new table ID. Returns confirmation with the new ID."
+    },
+    {
+      "name": "List Columns",
+      "category": "Columns",
+      "description": "Lists all columns of a table in a Grist document. Each column is returned with its ID and a \"fields\" object describing its label, type, and formula. The column ID is the key used inside record \"fields\" objects."
+    },
+    {
+      "name": "Add Columns",
+      "category": "Columns",
+      "description": "Adds one or more columns to a table in a Grist document. Each column is defined by an ID and a \"fields\" object with at least a \"label\" and a \"type\" (for example Text, Numeric, Int, Bool, Date, DateTime, Choice, Ref). Returns the created columns."
+    },
+    {
+      "name": "List Workspaces",
+      "category": "Documents & Workspaces",
+      "description": "Lists the workspaces in a Grist organization along with the documents inside each workspace. Use the organization ID or the keyword \"current\" to target the organization associated with the API key. Useful for discovering document IDs to use in record operations."
+    },
+    {
+      "name": "List Documents",
+      "category": "Documents & Workspaces",
+      "description": "Lists all documents in a Grist organization by walking every workspace and flattening their documents into a single array. Each document is returned with its ID, name, and the workspace it belongs to. Handy for finding the document ID that appears in a Grist document URL."
+    },
+    {
+      "name": "Get Document",
+      "category": "Documents & Workspaces",
+      "description": "Retrieves metadata for a single Grist document, including its name, workspace, access level, and timestamps. The document ID is the identifier that appears in the document URL."
+    },
+    {
+      "name": "Query with SQL",
+      "category": "SQL",
+      "description": "Runs a read-only SQL SELECT query against a Grist document and returns the matching rows. Grist exposes each table as a SQLite table named after its table ID, so you can join tables, aggregate, and filter with standard SQLite syntax. Only SELECT statements are permitted; write statements are rejected. Results are returned as records shaped like {\"fields\":{...}}."
+    },
+    {
+      "name": "List Attachments",
+      "category": "Attachments",
+      "description": "Lists metadata for attachments stored in a Grist document, such as file name, size, and MIME type. Attachments in Grist are files referenced by Attachment-type columns. Uploading attachments is not supported by this integration."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Keep a Grist table in sync with an external source using **Add or Update Records** (upsert) keyed on a unique column such as an email or external ID.",
+    "Log or archive incoming events by appending rows with **Add Records**.",
+    "Report on document data by running read-only `SELECT` queries with **Query with SQL**, joining and aggregating across tables.",
+    "Provision structure on the fly by creating tables and columns before writing data."
+  ],
+  "agentIdeas": [
+    "Use **Airtable** \"Get Records\" to pull a source dataset, then call **Grist** \"Add or Update Records\" to upsert each row into a Grist table keyed on a unique ID, keeping the two systems in sync.",
+    "When a **Google Sheets** \"On New Row\" trigger fires, use **Grist** \"Add Records\" to mirror the new row into a Grist table for relational reporting.",
+    "Run **Grist** \"Query with SQL\" to aggregate document data, then post the summary to a channel with **Slack** \"Send Message To Channel\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/grist/public/icon.png",
+  "sourcePaths": {
+    "service": "services/grist",
+    "readme": "services/grist/README.md",
+    "index": "services/grist/src/index.js"
+  }
+}

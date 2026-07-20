@@ -1,0 +1,208 @@
+{
+  "slug": "harvest",
+  "name": "Harvest",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Harvest](https://www.getharvest.com/) time tracking, project management, and invoicing with FlowRunner. This service wraps the [Harvest API v2](https://help.getharvest.com/api-v2/) for time entries, projects, clients, tasks, invoices, and users.",
+  "actionCount": 33,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Time Entries",
+    "Projects",
+    "Clients",
+    "Tasks",
+    "Invoices",
+    "Users & Company"
+  ],
+  "actions": [
+    {
+      "name": "Create Time Entry",
+      "category": "Time Entries",
+      "description": "Creates a time entry for a project and task on a given date. Provide either a decimal hours value (for accounts that track time via duration) or a started_time (for accounts that track time via start/end times). If you omit both hours and ended_time, a running timer is created (see Start Timer). spent_date must be YYYY-MM-DD. By default the entry is logged for the authenticated user unless a User ID is supplied."
+    },
+    {
+      "name": "Start Timer",
+      "category": "Time Entries",
+      "description": "Starts a running timer by creating a time entry with no hours (duration-tracking accounts) or no ended_time (start/end-time accounts). The returned entry has is_running set to true. Use Stop Timer with the returned ID to stop it. Note: whether a timer runs depends on the account's tracking mode — check Get Company (wants_timestamp_timers) to confirm which fields the account expects."
+    },
+    {
+      "name": "Stop Timer",
+      "category": "Time Entries",
+      "description": "Stops a running time entry timer. Only affects entries that are currently running; the response reflects the recorded hours and is_running set to false."
+    },
+    {
+      "name": "Restart Timer",
+      "category": "Time Entries",
+      "description": "Restarts a stopped time entry, creating a new running timer for the same project/task/date. Only affects entries that are not currently running; the response has is_running set to true."
+    },
+    {
+      "name": "Get Time Entry",
+      "category": "Time Entries",
+      "description": "Retrieves a single time entry by its ID, including the associated user, project, task, hours, billing state, and running status."
+    },
+    {
+      "name": "List Time Entries",
+      "category": "Time Entries",
+      "description": "Lists time entries, optionally filtered by user, client, project, running status, and a from/to date range. Results are paginated; use the Page parameter to walk through pages (per_page up to 2000). Returns the time_entries array plus pagination metadata (per_page, total_pages, next_page, page)."
+    },
+    {
+      "name": "Update Time Entry",
+      "category": "Time Entries",
+      "description": "Updates an existing time entry. Only the fields you supply are changed. Use this to correct hours, move the entry to a different project or task, adjust the date, or edit notes."
+    },
+    {
+      "name": "Delete Time Entry",
+      "category": "Time Entries",
+      "description": "Permanently deletes a time entry. Non-admin users can only delete entries that are not closed/approved. Returns an empty object on success."
+    },
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Lists projects, optionally filtered by active status and client. Results are paginated (per_page up to 2000). Returns the projects array plus pagination metadata (per_page, total_pages, next_page, page). Requires Administrator or Manager permissions on the Harvest account."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves a single project by its ID, including client, billing configuration, budget, and rate details."
+    },
+    {
+      "name": "Create Project",
+      "category": "Projects",
+      "description": "Creates a new project for a client. name, client_id, is_billable, bill_by, and budget_by are required by Harvest. Bill By controls how the project is invoiced and Budget By controls how the budget is tracked. Optionally set an hourly rate, budget amount, and notes."
+    },
+    {
+      "name": "Update Project",
+      "category": "Projects",
+      "description": "Updates an existing project. Only the fields you supply are changed. Use this to rename a project, change its billing/budget configuration, adjust the rate, or archive it via Is Active."
+    },
+    {
+      "name": "Delete Project",
+      "category": "Projects",
+      "description": "Permanently deletes a project along with its time entries and expenses. To preserve historical data, archive the project via Update Project (Is Active = false) instead. Returns an empty object on success."
+    },
+    {
+      "name": "List Clients",
+      "category": "Clients",
+      "description": "Lists clients, optionally filtered by active status. Results are paginated (per_page up to 2000). Returns the clients array plus pagination metadata (per_page, total_pages, next_page, page)."
+    },
+    {
+      "name": "Get Client",
+      "category": "Clients",
+      "description": "Retrieves a single client by its ID, including name, active status, currency, and address."
+    },
+    {
+      "name": "Create Client",
+      "category": "Clients",
+      "description": "Creates a new client. Only name is required. Optionally set the currency (ISO code such as USD, EUR, GBP) used for the client's invoices and projects."
+    },
+    {
+      "name": "Update Client",
+      "category": "Clients",
+      "description": "Updates an existing client. Only the fields you supply are changed. Use this to rename a client, change its currency or address, or archive it via Is Active."
+    },
+    {
+      "name": "Delete Client",
+      "category": "Clients",
+      "description": "Permanently deletes a client. A client can only be deleted if it has no projects, invoices, estimates, or expenses associated with it. Returns an empty object on success."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Lists tasks in the account, optionally filtered by active status. Results are paginated (per_page up to 2000). Returns the tasks array plus pagination metadata (per_page, total_pages, next_page, page). Note: to log time you must use a task assigned to the project — see List Task Assignments."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single task by its ID, including its name, default billable state, default hourly rate, and active status."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a new task in the account. Only name is required. Optionally set whether it is billable by default, a default hourly rate, and whether it should be automatically added to future projects (Is Default)."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates an existing task. Only the fields you supply are changed. Use this to rename a task, change its default billable state or rate, or archive it via Is Active."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task. A task can only be deleted if it has no time entries associated with it. Returns an empty object on success."
+    },
+    {
+      "name": "List Task Assignments",
+      "category": "Tasks",
+      "description": "Lists the tasks assigned to a specific project. Only these tasks are valid for logging time against the project (use their task_id with Create Time Entry / Start Timer). Results are paginated (per_page up to 2000). Returns the task_assignments array plus pagination metadata."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Lists invoices, optionally filtered by client, state, and an issue-date from/to range. Results are paginated (per_page up to 2000). Returns the invoices array plus pagination metadata (per_page, total_pages, next_page, page)."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves a single invoice by its ID, including its client, line items, amounts, state, and dates."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates a draft invoice for a client. Provide a subject and an array of line items, where each line item is an object with fields such as kind (e.g. \"Service\"), description, quantity, and unit_price. The invoice is created in draft state; use Send Invoice to email it."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Updates an existing invoice. Only the fields you supply are changed. Note: supplying line_items replaces the full set of line items on the invoice."
+    },
+    {
+      "name": "Delete Invoice",
+      "category": "Invoices",
+      "description": "Permanently deletes an invoice. Returns an empty object on success."
+    },
+    {
+      "name": "Send Invoice",
+      "category": "Invoices",
+      "description": "Sends an invoice by email by creating an invoice message. Provide one or more recipient email addresses. Optionally include a subject and body, and choose whether to send a copy to yourself and attach the invoice as a PDF."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users & Company",
+      "description": "Retrieves the user account associated with the access token, including name, email, role, and timezone. Useful for identifying who a Personal Access Token belongs to."
+    },
+    {
+      "name": "List Users",
+      "category": "Users & Company",
+      "description": "Lists users in the account, optionally filtered by active status. Results are paginated (per_page up to 2000). Returns the users array plus pagination metadata (per_page, total_pages, next_page, page). Requires Administrator permissions."
+    },
+    {
+      "name": "Get Company",
+      "category": "Users & Company",
+      "description": "Retrieves the company settings for the authenticated account. Useful as a connection check and to determine the account's time-tracking mode: wants_timestamp_timers indicates start/end-time tracking, and decimal_dates_and_times indicates decimal-hours entry. Also returns week start day, currency, and plan type."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically log time entries and start, stop, or restart timers from external events or schedules",
+    "Sync clients, projects, and tasks between Harvest and your CRM or project tools",
+    "Generate, send, and reconcile invoices as part of a billing workflow",
+    "Report on tracked hours by paginating time entries into a spreadsheet or dashboard",
+    "Look up the current user, the users list, or company settings to drive downstream logic"
+  ],
+  "agentIdeas": [
+    "Use Harvest **List Time Entries** to pull billable hours for a project, then create a client invoice in **QuickBooks Online** with \"Create Invoice\" (or **Xero** \"Create Invoice\") from those totals.",
+    "After Harvest **Send Invoice** goes out, post a summary with **Slack** \"Send Message To Channel\" so the finance team is notified.",
+    "Read new client rows from **Google Sheets** \"Get Rows\", then call Harvest **Create Client** followed by **Create Project** to onboard them into time tracking automatically."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/harvest/public/icon.png",
+  "sourcePaths": {
+    "service": "services/harvest",
+    "readme": "services/harvest/README.md",
+    "index": "services/harvest/src/index.js"
+  }
+}

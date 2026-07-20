@@ -1,0 +1,77 @@
+{
+  "slug": "profitwell",
+  "name": "ProfitWell",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Reads SaaS subscription financial metrics from [ProfitWell Metrics](https://www.profitwell.com/) (now **ProfitWell Metrics by Paddle**) and pushes subscription lifecycle events into manual/API-based ProfitWell accounts. Authenticates with a private ProfitWell (Paddle) API token, set as the **API Token** config item.",
+  "actionCount": 8,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Metrics",
+    "Subscriptions"
+  ],
+  "actions": [
+    {
+      "name": "Get Monthly Metrics",
+      "category": "Metrics",
+      "description": "Retrieves month-over-month ProfitWell financial metrics for your account (recurring revenue/MRR, active customers, ARPU, new/churned customers, upgrades, downgrades, reactivations, and more). Provide a start month and an optional end month in YYYY-MM format; omit end to return through the latest available month. Requires a metrics-enabled API token."
+    },
+    {
+      "name": "Get Daily Metrics",
+      "category": "Metrics",
+      "description": "Retrieves day-by-day ProfitWell financial metrics for a single month (recurring revenue/MRR, active customers, ARPU, new/churned customers, upgrades, downgrades, and more). Provide the target month in YYYY-MM format. Requires a metrics-enabled API token."
+    },
+    {
+      "name": "Get Metric Detail",
+      "category": "Metrics",
+      "description": "Retrieves a breakdown of a single ProfitWell metric over time, optionally sliced by plan. Choose the metric (e.g. Recurring Revenue, Active Customers, Churned Customers) and set the resolution to monthly or daily. For daily resolution provide a month (YYYY-MM); for monthly, optionally provide a start and end month. Optionally filter by a specific plan ID. Requires a metrics-enabled API token."
+    },
+    {
+      "name": "Create Subscription",
+      "category": "Subscriptions",
+      "description": "Pushes a new subscription into a manual/API-based ProfitWell account so it is counted in your metrics. Provide the customer's user ID, a unique subscription ID, plan details (name/ID, billing interval, ISO currency), the subscription value in cents, and the effective start date. Values take up to ~90 minutes to appear in metrics. Requires an API-based (manual) ProfitWell account."
+    },
+    {
+      "name": "Update Subscription",
+      "category": "Subscriptions",
+      "description": "Records a change to an existing subscription in a manual/API-based ProfitWell account, such as an upgrade or downgrade (expansion/contraction MRR). Identify the subscription by its subscription ID and provide the new value and/or plan details along with the effective date. Requires an API-based (manual) ProfitWell account."
+    },
+    {
+      "name": "Churn Subscription",
+      "category": "Subscriptions",
+      "description": "Marks a subscription as churned in a manual/API-based ProfitWell account. Identify the subscription by its subscription ID, set the effective churn date, and choose the churn type: voluntary (customer cancelled) or delinquent (failed payment). When Retain is enabled, delinquent churns can trigger recovery workflows. Requires an API-based (manual) ProfitWell account."
+    },
+    {
+      "name": "Get Subscriptions",
+      "category": "Subscriptions",
+      "description": "Retrieves the subscription history for a customer in a manual/API-based ProfitWell account. Look the customer up by their user ID (the identifier you supplied when creating subscriptions) or by a specific subscription ID. Returns the subscriptions and their current status. Requires an API-based (manual) ProfitWell account."
+    },
+    {
+      "name": "Migrate Subscription",
+      "category": "Subscriptions",
+      "description": "Changes the plan of an existing subscription in a manual/API-based ProfitWell account, capturing the resulting expansion or contraction MRR as a plan change. Identify the subscription by its subscription ID and provide the new plan details, value, and effective date. Requires an API-based (manual) ProfitWell account."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Pull month-over-month or day-by-day MRR, active customers, ARPU, and churn into dashboards, reports, or alerts.",
+    "Break down a single metric (e.g. Recurring Revenue, Churned Customers) over time, optionally by plan.",
+    "Feed subscription creations, upgrades/downgrades, plan migrations, and churn events into a manual/API-based ProfitWell account so they are counted in your metrics."
+  ],
+  "agentIdeas": [
+    "When a **Chargebee** \"Create Subscription\" completes, call **ProfitWell** \"Create Subscription\" to mirror the new subscription into a manual ProfitWell account so it is counted in your metrics.",
+    "On a monthly schedule, use **ProfitWell** \"Get Monthly Metrics\" to fetch MRR and churn, then **Slack** \"Send Message To Channel\" to post the revenue summary to a #metrics channel.",
+    "Use **ProfitWell** \"Get Metric Detail\" to pull churned-customer counts per plan, then **Google Sheets** \"Add Rows\" to append the breakdown into a churn-tracking spreadsheet."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/profitwell/public/icon.png",
+  "sourcePaths": {
+    "service": "services/profitwell",
+    "readme": "services/profitwell/README.md",
+    "index": "services/profitwell/src/index.js"
+  }
+}

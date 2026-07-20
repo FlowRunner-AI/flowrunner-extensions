@@ -1,0 +1,184 @@
+{
+  "slug": "chargebee",
+  "name": "Chargebee",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner service for [Chargebee](https://www.chargebee.com/), the subscription billing and revenue management platform. Manage customers, item-based subscriptions, invoices, the product catalog, payment sources, credit notes and hosted checkout pages through the Chargebee API v2.",
+  "actionCount": 28,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Customers",
+    "Subscriptions",
+    "Invoices",
+    "Product Catalog",
+    "Payment Sources",
+    "Credit Notes",
+    "Hosted Pages"
+  ],
+  "actions": [
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a new customer record in Chargebee. Provide contact details and, optionally, a billing address object. Customers group subscriptions, invoices and payment sources under a single billing profile. Returns the created customer resource."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Lists customers on the Chargebee site with optional filtering by email and pagination. Use the returned next_offset value as the Offset parameter to fetch the next page. Returns a list wrapper containing customer resources."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer by its Chargebee customer ID, including contact details, billing address and account preferences. Returns the customer resource."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates an existing customer's contact details. Only supplied fields are changed; empty fields are ignored. To update the billing address, use Get Customer to inspect the current values first. Returns the updated customer resource."
+    },
+    {
+      "name": "Delete Customer",
+      "category": "Customers",
+      "description": "Permanently deletes a customer from Chargebee. The customer must have no active subscriptions or unpaid invoices. This action cannot be undone. Returns the deleted customer resource."
+    },
+    {
+      "name": "Create Subscription",
+      "category": "Subscriptions",
+      "description": "Creates a new item-based subscription for an existing customer. Provide one or more subscription items, each referencing an item price ID (from List Item Prices) and an optional quantity. Returns the subscription along with the customer and, if generated, the first invoice."
+    },
+    {
+      "name": "Get Subscription",
+      "category": "Subscriptions",
+      "description": "Retrieves a single subscription by its ID, including its status, billing period, items and associated customer. Returns the subscription resource."
+    },
+    {
+      "name": "List Subscriptions",
+      "category": "Subscriptions",
+      "description": "Lists subscriptions on the site with optional filtering by customer ID and status, plus pagination. Use the returned next_offset value as the Offset parameter to fetch the next page. Returns a list wrapper of subscription resources."
+    },
+    {
+      "name": "Update Subscription",
+      "category": "Subscriptions",
+      "description": "Updates an item-based subscription, replacing its items with the supplied set. Provide the full desired list of subscription items; each needs an item_price_id and optional quantity. Returns the updated subscription."
+    },
+    {
+      "name": "Cancel Subscription",
+      "category": "Subscriptions",
+      "description": "Cancels an item-based subscription. By default the cancellation takes effect immediately; set End Of Term to true to schedule cancellation at the end of the current billing term instead. Returns the updated subscription."
+    },
+    {
+      "name": "Pause Subscription",
+      "category": "Subscriptions",
+      "description": "Pauses an active subscription. By default the pause takes effect immediately; set Pause Option to End Of Term to pause at the end of the current term. A paused subscription generates no charges until resumed. Returns the updated subscription."
+    },
+    {
+      "name": "Resume Subscription",
+      "category": "Subscriptions",
+      "description": "Resumes a paused subscription. By default resumption is immediate; set Resume Option to Specific Date to resume on a scheduled date. Returns the updated subscription."
+    },
+    {
+      "name": "Reactivate Subscription",
+      "category": "Subscriptions",
+      "description": "Reactivates a cancelled subscription, moving it back to active (or in-trial) status and resuming billing. Returns the reactivated subscription."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Lists invoices on the site with optional filtering by customer ID and status, plus pagination. Use the returned next_offset value as the Offset parameter to fetch the next page. Returns a list wrapper of invoice resources."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves a single invoice by its ID, including line items, amounts, taxes and payment status. Returns the invoice resource."
+    },
+    {
+      "name": "Create Invoice For Customer",
+      "category": "Invoices",
+      "description": "Creates an ad-hoc invoice for a customer using one or more item prices and/or one-off charges. Each item price entry needs an item_price_id and optional quantity; each charge needs an amount (in the smallest currency unit, e.g. cents) and a description. Returns the created invoice."
+    },
+    {
+      "name": "Void Invoice",
+      "category": "Invoices",
+      "description": "Voids an invoice, marking it as cancelled and reversing any credits it applied. Optionally provide a comment explaining the reason. Returns the voided invoice."
+    },
+    {
+      "name": "Collect Payment",
+      "category": "Invoices",
+      "description": "Attempts to collect payment for an outstanding invoice using the customer's payment source. Optionally specify a payment source ID to charge a particular card. Returns the invoice with an updated payment status."
+    },
+    {
+      "name": "Get Invoice PDF",
+      "category": "Invoices",
+      "description": "Generates a downloadable PDF for an invoice and returns a temporary, time-limited download URL. Returns a download object containing the download_url."
+    },
+    {
+      "name": "List Items",
+      "category": "Product Catalog",
+      "description": "Lists product catalog items (plans, addons and charges) on the site with optional type filtering and pagination. Use the returned next_offset value as the Offset parameter to fetch the next page. Returns a list wrapper of item resources."
+    },
+    {
+      "name": "Get Item",
+      "category": "Product Catalog",
+      "description": "Retrieves a single product catalog item by its ID, including its type, status and pricing model. Returns the item resource."
+    },
+    {
+      "name": "List Item Prices",
+      "category": "Product Catalog",
+      "description": "Lists item prices (the concrete priced variants of items, e.g. per currency and billing period) with optional item and currency filtering plus pagination. The item_price_id values returned here are used when creating or updating subscriptions. Returns a list wrapper of item price resources."
+    },
+    {
+      "name": "Get Item Price",
+      "category": "Product Catalog",
+      "description": "Retrieves a single item price by its ID, including its amount, currency, billing period and pricing model. Returns the item price resource."
+    },
+    {
+      "name": "List Payment Sources",
+      "category": "Payment Sources",
+      "description": "Lists a customer's payment sources (saved cards, bank accounts and other payment methods) with pagination. Use the returned next_offset value as the Offset parameter to fetch the next page. Returns a list wrapper of payment source resources."
+    },
+    {
+      "name": "Get Payment Source",
+      "category": "Payment Sources",
+      "description": "Retrieves a single payment source by its ID, including its type, status and (for cards) masked details. Returns the payment source resource."
+    },
+    {
+      "name": "List Credit Notes",
+      "category": "Credit Notes",
+      "description": "Lists credit notes on the site with optional filtering by customer ID and pagination. Use the returned next_offset value as the Offset parameter to fetch the next page. Returns a list wrapper of credit note resources."
+    },
+    {
+      "name": "Get Credit Note",
+      "category": "Credit Notes",
+      "description": "Retrieves a single credit note by its ID, including its line items, amounts and reference invoice. Returns the credit note resource."
+    },
+    {
+      "name": "Create Checkout",
+      "category": "Hosted Pages",
+      "description": "Creates a Chargebee-hosted checkout page for a new item-based subscription and returns a hosted page object containing a URL the customer can visit to enter payment details and complete the purchase. Provide the subscription items and, optionally, an existing customer ID to prefill the checkout. Returns the hosted_page resource."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Onboard new customers and spin up item-based subscriptions from a signup form or CRM record.",
+    "Automate revenue operations: create ad-hoc invoices, void invoices, collect payment, and review credit notes.",
+    "Manage the subscription lifecycle — pause, resume, cancel, and reactivate — in response to business events.",
+    "Generate hosted checkout pages so customers can self-serve payment and complete a purchase.",
+    "Sync the product catalog (items and item prices) and retrieve invoice PDFs for accounting workflows."
+  ],
+  "agentIdeas": [
+    "When a new signup arrives, use **Chargebee** \"Create Customer\" then \"Create Subscription\", and send a welcome email with **Gmail** \"Send Message\" that includes the hosted checkout link from \"Create Checkout\".",
+    "After **Chargebee** \"Get Invoice PDF\" produces a download URL, use **Gmail** \"Send Message\" to deliver the invoice to the customer, and log the invoice with **Google Sheets** \"Add Row\" for reconciliation.",
+    "Mirror billing records into accounting by pairing **Chargebee** \"List Customers\" and \"List Invoices\" with **QuickBooks Online** \"Create Customer\" and \"Create Invoice\"."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/chargebee/public/icon.png",
+  "sourcePaths": {
+    "service": "services/chargebee",
+    "readme": "services/chargebee/README.md",
+    "index": "services/chargebee/src/index.js"
+  }
+}

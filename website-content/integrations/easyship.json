@@ -1,0 +1,226 @@
+{
+  "slug": "easyship",
+  "name": "Easyship",
+  "marketingCategory": "ERP & Operations",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Global shipping and fulfillment integration that connects your workflows to 250+ couriers through Easyship. Compare rates, create shipments, generate labels, schedule pickups, and track parcels worldwide from a single API.",
+  "actionCount": 34,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Account",
+    "Addresses",
+    "Boxes",
+    "Couriers",
+    "Rates",
+    "Shipments",
+    "Labels",
+    "Pickups",
+    "Manifests",
+    "Tracking",
+    "Products",
+    "Batches"
+  ],
+  "actions": [
+    {
+      "name": "Get Account",
+      "category": "Account",
+      "description": "Retrieves details about the authenticated Easyship account, including company info, billing address, available credit balance, and connected payment sources. Useful for verifying API token validity or auditing account configuration."
+    },
+    {
+      "name": "List Addresses",
+      "category": "Addresses",
+      "description": "Lists saved addresses in the Easyship account with pagination support. Use this to retrieve sender, return, billing, and pickup addresses configured in the account."
+    },
+    {
+      "name": "Create Address",
+      "category": "Addresses",
+      "description": "Creates a new saved address in the Easyship account that can be reused as origin, destination, sender, or return address. The address can be marked as default for various purposes."
+    },
+    {
+      "name": "Update Address",
+      "category": "Addresses",
+      "description": "Updates an existing saved address. The Easyship 2024-09 API requires the full set of address fields on each PATCH (city, country_alpha2, line_1, company_name, contact_name, contact_phone, contact_email), so all of them must be supplied even if unchanged."
+    },
+    {
+      "name": "Deactivate Address",
+      "category": "Addresses",
+      "description": "Deactivates a saved address so it no longer appears in address pickers and cannot be used as origin, destination, sender, or return. Easyship has no hard-delete for addresses, so deactivation is the supported way to retire one."
+    },
+    {
+      "name": "List Boxes",
+      "category": "Boxes",
+      "description": "Lists custom packaging boxes saved in the Easyship account with pagination. Use this to retrieve preset box dimensions for use in rate calculations and shipment creation."
+    },
+    {
+      "name": "Create Box",
+      "category": "Boxes",
+      "description": "Creates a new custom packaging box in the Easyship account with the specified outer dimensions and weight. Boxes can be reused across rate requests and shipment creation to standardize packaging."
+    },
+    {
+      "name": "Update Box",
+      "category": "Boxes",
+      "description": "Updates a saved box's availability. The Easyship 2024-09 API only allows toggling whether a box is active (selectable in rate and shipment workflows) and whether it may be auto-selected during rate calculation - a box's name, dimensions, and weight are fixed once created."
+    },
+    {
+      "name": "Delete Box",
+      "category": "Boxes",
+      "description": "Permanently deletes a custom box from the Easyship account. The box will no longer be available for selection in rate or shipment workflows."
+    },
+    {
+      "name": "List Couriers",
+      "category": "Couriers",
+      "description": "Lists couriers connected to the Easyship account, including their authentication state, origin country, and umbrella courier name. Use this to discover which courier IDs are available for manifest, pickup, and shipment workflows."
+    },
+    {
+      "name": "Request Rates",
+      "category": "Rates",
+      "description": "Requests a list of shipping rates from couriers for a prospective shipment based on origin, destination, and parcel contents. Each rate carries a nested courier_service object (id, name, courier_id) - feed that courier_service.id into Create Shipment, Generate Labels, or Schedule Pickup. Returns delivery time, total charges, and incoterm-aware tax/duty estimates."
+    },
+    {
+      "name": "List Shipments",
+      "category": "Shipments",
+      "description": "Lists shipments from the Easyship account with rich filtering by date ranges, states, countries, and order numbers. Supports pagination for large result sets. Each shipment carries a nested courier_service object and a trackings array (there is no top-level tracking_number)."
+    },
+    {
+      "name": "Get Shipment",
+      "category": "Shipments",
+      "description": "Retrieves the full details of a specific shipment by its Easyship shipment ID, including addresses, parcels, the selected courier_service, label state, per-leg trackings, and pricing."
+    },
+    {
+      "name": "Create Shipment",
+      "category": "Shipments",
+      "description": "Creates a new shipment in Easyship with origin, destination, parcels, and optional courier selection. Returns the new Easyship shipment ID, available rates (each with a nested courier_service), and the selected courier_service. For label generation, follow up with the Generate Labels action."
+    },
+    {
+      "name": "Update Shipment",
+      "category": "Shipments",
+      "description": "Updates an existing shipment's parcels, addresses, courier selection, or metadata. Only provided fields are modified. Cannot be used after the label has been generated."
+    },
+    {
+      "name": "Cancel Shipment",
+      "category": "Shipments",
+      "description": "Cancels an existing shipment that has not yet been picked up or has a failed label. Cancelling restores any held credit balance for unused labels."
+    },
+    {
+      "name": "List Shipment Documents",
+      "category": "Shipments",
+      "description": "Retrieves shipping documents for a shipment, such as commercial invoices and packing slips. Returns document URLs or base64-encoded PDF data depending on the format requested."
+    },
+    {
+      "name": "Generate Labels",
+      "category": "Labels",
+      "description": "Submits a batch label generation request for one or more shipments. Easyship processes label creation asynchronously and returns a batch envelope whose state moves created -> processing -> processed. Poll Get Batch Status with the returned batch.id until the state is 'processed', inspect failures with List Batch Items, then use Get Shipment to retrieve label URLs and tracking numbers."
+    },
+    {
+      "name": "List Pickups",
+      "category": "Pickups",
+      "description": "Lists scheduled courier pickups in the Easyship account with pagination. Each pickup ties one or more shipments to a courier, date, and time slot."
+    },
+    {
+      "name": "List Pickup Slots",
+      "category": "Pickups",
+      "description": "Lists a courier service's available pickup time slots in local time for the coming seven days. Feed a slot's time_slot_id (with its date) into Schedule Pickup. Some couriers return no slots - in that case Schedule Pickup accepts a manual from/to time window instead."
+    },
+    {
+      "name": "Schedule Pickup",
+      "category": "Pickups",
+      "description": "Schedules a courier pickup for one or more shipments on a given date. All shipments must use the same courier and have pending or generated labels. Provide either a time_slot_id or a manual time window. Find available slots with List Pickup Slots."
+    },
+    {
+      "name": "Cancel Pickup",
+      "category": "Pickups",
+      "description": "Cancels a previously scheduled courier pickup. Once cancelled, the pickup is no longer billable and shipments can be rescheduled."
+    },
+    {
+      "name": "List Manifests",
+      "category": "Manifests",
+      "description": "Lists end-of-day manifests created in the Easyship account. A manifest groups a day's shipments by courier for handover scanning."
+    },
+    {
+      "name": "Create Manifest",
+      "category": "Manifests",
+      "description": "Generates a new end-of-day manifest for a courier, optionally restricted to a specific list of shipments. Use this once all of the day's labels are printed and ready for courier handover."
+    },
+    {
+      "name": "List Trackings",
+      "category": "Tracking",
+      "description": "Retrieves the latest tracking status and optional checkpoint history for one or more shipments. Filter by Easyship shipment IDs or platform order numbers. The response array is keyed \"shipments\"; each entry carries a status, per-leg trackings, and (when requested) a checkpoints history."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Lists products from the Easyship product catalog with pagination. Each product entry contains physical dimensions, customs data, and pricing useful for generating shipments and rate requests."
+    },
+    {
+      "name": "Create Product",
+      "category": "Products",
+      "description": "Creates a new product in the Easyship product catalog with optional dimensions, weight, customs data, and pricing. Products can later be referenced by SKU when creating shipments."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates fields of an existing product in the Easyship catalog. Only provided fields are modified; all other fields remain unchanged."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Products",
+      "description": "Permanently deletes a product from the Easyship product catalog. Existing shipments referencing the product are not affected."
+    },
+    {
+      "name": "List HS Codes",
+      "category": "Products",
+      "description": "Looks up Harmonized System (HS) customs codes by code or description keyword. Use a returned code as the HS Code input of Create Product, Update Product, or a parcel item's hs_code field. Requires the \"public.hs_code:read\" advanced scope to be enabled on the API connection, and Easyship rate-limits this endpoint (1,000 requests per day)."
+    },
+    {
+      "name": "List Item Categories",
+      "category": "Products",
+      "description": "Lists Easyship's item categories with each category's slug and default HS code. Use a category's slug as the \"category\" field and/or its hs_code as the HS code of parcel items in Request Rates and Create Shipment, or the HS Code input of Create Product."
+    },
+    {
+      "name": "List Batches",
+      "category": "Batches",
+      "description": "Lists batch jobs (label, shipment, and address batches) ordered by creation date, with optional state and type filters. Use it to find a batch ID, then check progress with Get Batch Status."
+    },
+    {
+      "name": "Get Batch Status",
+      "category": "Batches",
+      "description": "Retrieves the processing status of a batch by its ID, including its state (created, processing, processed, or failed) and per-item counts. Use it after Generate Labels to poll the returned batch until its state is \"processed\" or \"failed\", then inspect failures with List Batch Items."
+    },
+    {
+      "name": "List Batch Items",
+      "category": "Batches",
+      "description": "Lists the individual items of a batch with each item's processing state, any processing errors, and the ID of the record it produced (e.g. the created shipment). Use it after Get Batch Status reports \"processed\" or \"failed\" to see per-shipment outcomes."
+    }
+  ],
+  "triggers": [
+    "On Tracking Status Changed"
+  ],
+  "idealUseCases": [
+    "Comparing courier rates in real time at checkout to display the cheapest, fastest, or best-value option",
+    "Automating shipment creation and label generation for ecommerce orders",
+    "Scheduling and managing courier pickups for outbound shipments",
+    "Generating end-of-day manifests for courier handover",
+    "Reacting to delivery status changes as parcels move through transit",
+    "Maintaining a centralized product catalog with customs (HS code) data for international shipping",
+    "Looking up customs HS codes and item categories to classify products for cross-border shipments",
+    "Tracking asynchronous batch label jobs and inspecting their per-shipment results",
+    "Managing a library of saved sender, return, and billing addresses",
+    "Storing reusable custom packaging dimensions for consistent rate calculations"
+  ],
+  "agentIdeas": [
+    "When an Easyship **\"On Tracking Status Changed\"** trigger fires, use Gmail **\"Send Message\"** to email the customer their latest delivery status, then log the checkpoint with Google Sheets **\"Add Row\"**.",
+    "Use Shopify **\"List Orders\"** to read new orders, then call Easyship **\"Request Rates\"** and **\"Create Shipment\"** to pick the cheapest courier and generate a label automatically.",
+    "When an Easyship **\"On Tracking Status Changed\"** trigger reports a delivered parcel, post Slack **\"Send Message To Channel\"** to notify your fulfillment team and close out the order."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/easyship/public/icon.png",
+  "sourcePaths": {
+    "service": "services/easyship",
+    "readme": "services/easyship/README.md",
+    "index": "services/easyship/src/index.js"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "slug": "raindrop",
+  "name": "Raindrop.io",
+  "marketingCategory": "Utilities & Personal",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage collections, bookmarks (raindrops), tags, and text highlights through the Raindrop.io REST API v1. Authenticates with a bearer test or OAuth access token set as the **Access Token** configuration item (sent as `Authorization: Bearer {accessToken}`).",
+  "actionCount": 20,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Collections",
+    "Raindrops",
+    "Tags",
+    "Highlights",
+    "User"
+  ],
+  "actions": [
+    {
+      "name": "Get Collections",
+      "category": "Collections",
+      "description": "Retrieves all root (top-level) collections for the authenticated Raindrop.io account. Returns each collection's id, title, bookmark count, view style, visibility, and metadata. Use Get Child Collections to retrieve nested collections."
+    },
+    {
+      "name": "Get Child Collections",
+      "category": "Collections",
+      "description": "Retrieves all nested (child) collections for the authenticated account, i.e. every collection that has a parent. Combine with Get Collections to reconstruct the full collection tree."
+    },
+    {
+      "name": "Get Collection",
+      "category": "Collections",
+      "description": "Retrieves a single collection by its id, including title, bookmark count, view style, visibility, cover, and parent reference."
+    },
+    {
+      "name": "Create Collection",
+      "category": "Collections",
+      "description": "Creates a new collection. Provide a title and optionally the view style, public visibility, and a parent collection to nest it under. Returns the newly created collection."
+    },
+    {
+      "name": "Update Collection",
+      "category": "Collections",
+      "description": "Updates an existing collection. Any of title, view style, public visibility, or parent collection can be changed; omitted fields are left unchanged. Returns the updated collection."
+    },
+    {
+      "name": "Delete Collection",
+      "category": "Collections",
+      "description": "Deletes a collection by id. The bookmarks it contains are moved to Unsorted rather than deleted, and any descendant collections are removed as well."
+    },
+    {
+      "name": "Empty Trash",
+      "category": "Collections",
+      "description": "Permanently empties the Trash collection, deleting all bookmarks it contains. This action cannot be undone."
+    },
+    {
+      "name": "Get Raindrops",
+      "category": "Raindrops",
+      "description": "Lists bookmarks (raindrops) in a collection with search, sorting, and pagination. Use collection id 0 for all bookmarks, -1 for Unsorted, or -99 for Trash. The search term supports Raindrop's search operators (e.g. tag, site, type). Returns a page of raindrops plus the total count."
+    },
+    {
+      "name": "Get Raindrop",
+      "category": "Raindrops",
+      "description": "Retrieves a single bookmark (raindrop) by its id, including link, title, excerpt, note, tags, cover, type, and its parent collection."
+    },
+    {
+      "name": "Create Raindrop",
+      "category": "Raindrops",
+      "description": "Creates a new bookmark (raindrop) from a link. Optionally set a title, excerpt, tags, and target collection. When Parse Metadata is enabled, Raindrop fetches the page in the background to fill in the title, excerpt, and cover automatically."
+    },
+    {
+      "name": "Update Raindrop",
+      "category": "Raindrops",
+      "description": "Updates an existing bookmark (raindrop). Any of link, title, excerpt, tags, collection, or important flag can be changed; omitted fields are left unchanged. Returns the updated raindrop."
+    },
+    {
+      "name": "Delete Raindrop",
+      "category": "Raindrops",
+      "description": "Deletes a bookmark (raindrop) by id. The bookmark is moved to Trash; deleting a bookmark that is already in Trash removes it permanently."
+    },
+    {
+      "name": "Create Many Raindrops",
+      "category": "Raindrops",
+      "description": "Creates multiple bookmarks (raindrops) in a single request, up to 100 at once. Each item must be an object with at least a link; it may also include title, excerpt, tags, and a collection reference in the form {\"collection\":{\"$id\":123}}."
+    },
+    {
+      "name": "Update Many Raindrops",
+      "category": "Raindrops",
+      "description": "Applies a bulk update to bookmarks within a collection. Optionally restrict to specific raindrop ids; otherwise all bookmarks in the collection are affected. Can add tags, toggle the important (favorite) flag, or move bookmarks to another collection."
+    },
+    {
+      "name": "Get Tags",
+      "category": "Tags",
+      "description": "Retrieves all tags, with usage counts, either across the whole account or scoped to a single collection. Provide a collection id to scope the results, or 0 for all bookmarks."
+    },
+    {
+      "name": "Rename Tag",
+      "category": "Tags",
+      "description": "Renames a tag, merging it into the new name across the account or within a single collection. All bookmarks using the old tag are updated to the new tag."
+    },
+    {
+      "name": "Remove Tags",
+      "category": "Tags",
+      "description": "Removes one or more tags from all bookmarks, either across the account or within a single collection. The bookmarks themselves are not deleted; only the tags are stripped."
+    },
+    {
+      "name": "Get All Highlights",
+      "category": "Highlights",
+      "description": "Retrieves all text highlights the user has saved across every bookmark, with pagination. Each highlight includes the highlighted text, optional note, color, and the raindrop it belongs to."
+    },
+    {
+      "name": "Get Highlights Of Raindrop",
+      "category": "Highlights",
+      "description": "Retrieves all text highlights saved on a single bookmark (raindrop), including each highlight's text, note, and color."
+    },
+    {
+      "name": "Get User",
+      "category": "User",
+      "description": "Retrieves the authenticated user's profile, including id, email, full name, plan, and registration date. Useful as a connection check to confirm the access token is valid."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically bookmark links pulled from other apps into a chosen Raindrop collection, letting Raindrop parse page metadata.",
+    "Sync or export a collection's bookmarks, tags, or highlights into spreadsheets, docs, or chat channels for review.",
+    "Bulk-organize a research library: create many raindrops at once, rename or strip tags, and move bookmarks between collections.",
+    "Curate a shared reading list by creating and nesting collections and keeping their contents tidy (Unsorted/Trash cleanup)."
+  ],
+  "agentIdeas": [
+    "When a **Google Sheets** \"On New Row\" trigger fires with a URL, call **Raindrop.io** \"Create Raindrop\" to bookmark it into a chosen collection with tags and auto-parsed metadata.",
+    "Use **Raindrop.io** \"Get Raindrops\" to pull a collection's bookmarks, then **Notion** \"Create Page\" for each to build a research database with titles, excerpts, and tags.",
+    "Use **Raindrop.io** \"Get All Highlights\" to collect saved snippets, then **Slack** \"Send Message To Channel\" to share a weekly digest of highlights with your team."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/raindrop/public/icon.png",
+  "sourcePaths": {
+    "service": "services/raindrop",
+    "readme": "services/raindrop/README.md",
+    "index": "services/raindrop/src/index.js"
+  }
+}

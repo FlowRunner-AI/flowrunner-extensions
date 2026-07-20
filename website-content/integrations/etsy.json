@@ -1,0 +1,175 @@
+{
+  "slug": "etsy",
+  "name": "Etsy",
+  "marketingCategory": "E-commerce",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrates the Etsy Open API v3 with FlowRunner to manage a seller's shop: listings (create drafts, update, delete, full inventory control with a safe fetch-modify-write flow), listing images, orders (receipts) with shipment tracking, reviews, shop sections, shipping profiles, the seller taxonomy, and the payment ledger. Authenticates via OAuth2 with mandatory PKCE.",
+  "actionCount": 26,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Users & Shops",
+    "Listings",
+    "Listing Images",
+    "Receipts",
+    "Reviews",
+    "Shop Sections",
+    "Shipping",
+    "Taxonomy",
+    "Payments"
+  ],
+  "actions": [
+    {
+      "name": "Get Current User",
+      "category": "Users & Shops",
+      "description": "Retrieves the identity of the connected Etsy account: the numeric user id and, for seller accounts, the shop id. Use this to discover the shop id that shop-scoped actions default to. Note that Etsy access tokens are formatted \"{user_id}.{token}\", so the user id here always matches the token prefix."
+    },
+    {
+      "name": "Get Shop",
+      "category": "Users & Shops",
+      "description": "Retrieves an Etsy shop's full profile: name, title, announcement, sale messages, currency, location, listing counts, review statistics, vacation status, and URLs. When no shop id is provided, the connected account's own shop is used."
+    },
+    {
+      "name": "Update Shop",
+      "category": "Users & Shops",
+      "description": "Updates an Etsy shop's public profile fields: the shop title (the tagline under the shop name), the announcement shown at the top of the shop page, the message sent to buyers after a purchase, and the message sent to buyers of digital items. Only the provided fields are changed; at least one is required. Requires the shops_w scope."
+    },
+    {
+      "name": "List Shop Listings",
+      "category": "Listings",
+      "description": "Lists an Etsy shop's listings filtered by state (Active, Inactive, Draft, Expired, or Sold Out), with pagination and sorting by creation date, price, update date, or score. Returns up to 100 listings per page with full listing details including title, price, quantity, tags, and timestamps. Reading non-public states (Draft, Inactive, Expired, Sold Out) requires the listings_r scope."
+    },
+    {
+      "name": "Get Listing",
+      "category": "Listings",
+      "description": "Retrieves a single Etsy listing by its id, with optional associated data attached: Images, Shop, User, Translations, Videos, Personalization, and BuyerPrice. Returns the full listing record including title, description, state, price, quantity, tags, materials, taxonomy, and timestamps."
+    },
+    {
+      "name": "Get Listings by IDs",
+      "category": "Listings",
+      "description": "Retrieves multiple Etsy listings in a single call by their ids (up to 100 per request), with optional associated data attached to each. Listings the caller cannot access are silently omitted from the results."
+    },
+    {
+      "name": "Create Draft Listing",
+      "category": "Listings",
+      "description": "Creates a new listing in an Etsy shop in the Draft state (it is not published until activated, and Etsy charges its listing fee upon activation). Requires a title, description, price, quantity, and a taxonomy category; physical listings additionally need a shipping profile. Supports up to 13 tags, up to 2 style strings, materials, personalization, and digital-download listings. The price must be at least 0.20 in the shop currency. Requires the listings_w scope."
+    },
+    {
+      "name": "Update Listing",
+      "category": "Listings",
+      "description": "Updates an existing Etsy listing's attributes: title, description, tags, materials, category, shipping profile, return policy, shop section, state (activate or deactivate), personalization, and auto-renew. Only the provided fields are changed; at least one is required. Note that price and quantity are managed through Update Listing Inventory, not here. Activating a draft listing incurs Etsy's listing fee. Requires the listings_w scope."
+    },
+    {
+      "name": "Delete Listing",
+      "category": "Listings",
+      "description": "Permanently deletes an Etsy listing. Etsy only allows deletion when the listing is in one of these states: sold out, draft, expired, inactive, or active with no pending or completed orders. Returns a success status. Requires the listings_d scope."
+    },
+    {
+      "name": "Get Listing Inventory",
+      "category": "Listings",
+      "description": "Retrieves the full inventory record of an Etsy listing: its products (variations), each with a SKU, variation property values, and offerings carrying the price, quantity, and enabled flag, plus the property arrays that control which attribute prices, quantities, and SKUs vary on. Use this to inspect the structure before calling Update Listing Inventory."
+    },
+    {
+      "name": "Update Listing Inventory",
+      "category": "Listings",
+      "description": "Updates an Etsy listing's inventory (prices, quantities, SKUs, and variations). CAREFUL: Etsy's inventory endpoint is a FULL REPLACE — the products array overwrites the listing's entire inventory. This action makes that safe by default: it fetches the current inventory, applies your New Price and/or New Quantity to every offering (optionally only to products matching the SKU filter), strips the read-only fields Etsy rejects (product_id, offering_id, is_deleted, scale_name) and converts price objects to decimals, then writes the result back. Alternatively, supply the Products parameter to replace the whole inventory structure explicitly (it is sanitized the same way). Requires the listings_w scope."
+    },
+    {
+      "name": "List Listing Images",
+      "category": "Listing Images",
+      "description": "Lists all images of an Etsy listing in rank order, including image URLs in multiple resolutions, alt text, and dominant color information."
+    },
+    {
+      "name": "Upload Listing Image",
+      "category": "Listing Images",
+      "description": "Uploads an image from FlowRunner file storage to an Etsy listing. The image is sent as multipart form data with an optional display rank (1 is the primary image), alt text for accessibility, and an overwrite flag to replace the image currently at that rank. Etsy accepts JPG, PNG, and GIF images up to 20MB. Requires the listings_w scope."
+    },
+    {
+      "name": "Delete Listing Image",
+      "category": "Listing Images",
+      "description": "Removes an image from an Etsy listing. The image is deassociated from the listing, not destroyed: re-uploading the same image within 30 days restores it (Etsy retains deleted listing images for that period). Returns a success status. Requires the listings_w scope."
+    },
+    {
+      "name": "List Shop Receipts",
+      "category": "Receipts",
+      "description": "Lists an Etsy shop's receipts (orders), each containing the buyer, shipping address, payment status, totals, and line-item transactions. Supports filtering by creation date range and by paid/shipped/delivered status, plus pagination and sorting. Requires the transactions_r scope."
+    },
+    {
+      "name": "Get Receipt",
+      "category": "Receipts",
+      "description": "Retrieves a single Etsy receipt (order) by its id, including the buyer, shipping address, payment and shipment status, totals, shipments with tracking, and all line-item transactions. Requires the transactions_r scope."
+    },
+    {
+      "name": "Update Receipt",
+      "category": "Receipts",
+      "description": "Updates an Etsy receipt's (order's) fulfillment flags: mark it as shipped and/or as paid. Only the provided flags are changed; at least one is required. To record a tracking number and notify the buyer, use Create Receipt Shipment instead. Requires the transactions_w scope."
+    },
+    {
+      "name": "Create Receipt Shipment",
+      "category": "Receipts",
+      "description": "Records a shipment on an Etsy receipt (order): submits the tracking code and carrier name, marks the order as shipped, and triggers Etsy's shipping notification to the buyer (optionally BCC-ing the seller and including a personal note). Etsy rejects duplicate tracking codes for the same receipt. Requires the transactions_w scope."
+    },
+    {
+      "name": "List Receipt Transactions",
+      "category": "Receipts",
+      "description": "Lists the line-item transactions of a single Etsy receipt (order): each purchased listing with its quantity, SKU, price, shipping cost, personalization variations, and fulfillment timestamps. Requires the transactions_r scope."
+    },
+    {
+      "name": "List Shop Reviews",
+      "category": "Reviews",
+      "description": "Lists the reviews left by buyers for an Etsy shop, each with the star rating, review text, reviewed listing and transaction, and creation time. Supports pagination and filtering by creation date range."
+    },
+    {
+      "name": "List Shop Sections",
+      "category": "Shop Sections",
+      "description": "Lists an Etsy shop's sections (the custom categories sellers use to organize their listings), each with its title, rank, and active listing count."
+    },
+    {
+      "name": "Create Shop Section",
+      "category": "Shop Sections",
+      "description": "Creates a new section in an Etsy shop for organizing listings. Returns the new section with its id, which can then be assigned to listings via Update Listing. Requires the shops_w scope."
+    },
+    {
+      "name": "List Shipping Profiles",
+      "category": "Shipping",
+      "description": "Lists an Etsy shop's shipping profiles, each with its title, processing times, origin, and per-destination shipping costs and upgrades. Shipping profile ids are needed when creating physical listings."
+    },
+    {
+      "name": "List Seller Taxonomy Nodes",
+      "category": "Taxonomy",
+      "description": "Retrieves Etsy's complete seller taxonomy (the category tree used to categorize listings) and returns it flattened into a simple list of categories, each with its id, name, level, and full human-readable path (e.g. 'Home & Living > Kitchen & Dining > Cutting Boards'). The taxonomy contains several thousand categories; use the path to find the right taxonomy id for creating listings."
+    },
+    {
+      "name": "Get Taxonomy Properties",
+      "category": "Taxonomy",
+      "description": "Retrieves the product properties supported by a specific Etsy taxonomy category (e.g. Size, Color, Material), including each property's possible values and measurement scales. Use these property and value ids when building listing variations for Update Listing Inventory."
+    },
+    {
+      "name": "List Payment Ledger Entries",
+      "category": "Payments",
+      "description": "Lists the entries in an Etsy shop's payment account ledger (sales, fees, refunds, deposits, and other balance changes) within a required date range. Each entry includes the amount in cents, currency, running balance, type, and a description. Both date bounds are required by Etsy. Requires the transactions_r scope."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync Etsy orders into fulfillment, accounting, or CRM workflows and push tracking numbers back to buyers",
+    "Create and publish product listings (including images and variations) from a product database or spreadsheet",
+    "Keep prices and stock quantities in sync with an external inventory system",
+    "Monitor shop reviews and payment ledger activity"
+  ],
+  "agentIdeas": [
+    "Poll **Etsy** \"List Shop Receipts\" for unshipped paid orders, buy a label with **Shippo** \"Create Shipment\" then \"Create Transaction (Buy Label)\", and push the carrier and tracking code back with **Etsy** \"Create Receipt Shipment\" to notify the buyer automatically.",
+    "Use **Google Sheets** \"Get Rows\" to read prices and stock levels from an external inventory sheet, then call **Etsy** \"Update Listing Inventory\" for each SKU to keep the shop's pricing and quantities in sync.",
+    "Collect new feedback with **Etsy** \"List Shop Reviews\" and use **Gmail** \"Send Message\" to alert the shop owner about any low-star review that needs a response."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/etsy/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/etsy",
+    "readme": "services/etsy/README.md",
+    "index": "services/etsy/src/index.js"
+  }
+}

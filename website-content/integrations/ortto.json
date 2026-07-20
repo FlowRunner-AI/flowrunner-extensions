@@ -1,0 +1,64 @@
+{
+  "slug": "ortto",
+  "name": "Ortto",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Ortto](https://ortto.com) (formerly Autopilot) with FlowRunner. Ortto is centered on **people** (contacts) and **activities**, using a merge-based upsert model and a typed **field-id** naming convention. Authenticate with an Ortto API key sent as the `X-Api-Key` header.",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [
+    "People",
+    "Activities",
+    "Fields"
+  ],
+  "actions": [
+    {
+      "name": "Merge or Create Person",
+      "category": "People",
+      "description": "Creates a new person (contact) in Ortto or merges data into an existing one, matched by email. Ortto addresses every field by a strongly-typed field id of the form `type::name` (e.g. `str::email`, `str::first`, `str::last`). String and boolean fields take plain values; phone (`phn::`), geo (`geo::`) and date (`dtz::`) fields take objects — supply those via Raw Fields. Provide common values via Email/First Name/Last Name/Phone and/or a Raw Fields object keyed by field ids for custom fields (raw values override the convenience ones). Merge Strategy controls how existing values are updated. By default the merge is queued asynchronously and Ortto returns a per-person status acknowledgement rather than the finished person. Use Get Custom Fields to discover custom field ids."
+    },
+    {
+      "name": "Get People",
+      "category": "People",
+      "description": "Retrieves a page of people (contacts) from Ortto. Specify which field ids to return (e.g. `str::email`, `str::first`, `str::last`), an optional Ortto filter object to narrow the results, sorting, and pagination via Limit/Offset. The response includes a `contacts` array plus `has_more`, `next_offset` and `cursor_id` for paging. Field ids follow Ortto's `type::name` convention; use Get Custom Fields to discover them."
+    },
+    {
+      "name": "Get Person by Email",
+      "category": "People",
+      "description": "Looks up a single person by their email address and returns the requested field ids. Convenience wrapper over Get People with an email-equals filter; returns the first matching person, or null when no match is found. Field ids follow Ortto's `type::name` convention."
+    },
+    {
+      "name": "Create Custom Activity",
+      "category": "Activities",
+      "description": "Records a custom activity event in Ortto against a person. References a registered custom activity id and identifies the target person via the Person Fields object (usually str::email) combined with Merge By. The Attributes object carries the activity's own payload keyed by that activity's field ids (e.g. str:cm:destination, int::v). If the person does not yet exist they are created. Custom activities power journeys and reporting in Ortto; up to 50 events per activity per contact per 24h are accepted."
+    },
+    {
+      "name": "Get Custom Fields",
+      "category": "Fields",
+      "description": "Lists the custom person fields defined in the Ortto account, including each field's id (in Ortto's `type::name` convention), display name, and data type. Use these ids with Merge or Create Person (Raw Fields), Get People, and Create Custom Activity."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync contacts from forms, checkouts, or CRMs into Ortto, matching by email so records merge instead of duplicating.",
+    "Record custom activity events against people to drive Ortto journeys and reporting.",
+    "Look up a person by email, or page through people with field/filter selection, to enrich other workflows.",
+    "Discover custom person field ids so downstream steps can address the right typed fields."
+  ],
+  "agentIdeas": [
+    "Use **Typeform** \"Get Form Responses\" to pull new form submissions, then call **Ortto** \"Merge or Create Person\" to upsert each respondent by email with their answers mapped to Raw Fields.",
+    "After **Shopify** \"Get List of Orders\" returns recent purchases, call **Ortto** \"Create Custom Activity\" to record a purchase event against each customer to trigger post-sale journeys.",
+    "When a **Calendly** \"On Invitee Created\" trigger fires, call **Ortto** \"Merge or Create Person\" to sync the booker's details and \"Create Custom Activity\" to log the booking for follow-up automation."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/ortto/public/icon.png",
+  "sourcePaths": {
+    "service": "services/ortto",
+    "readme": "services/ortto/README.md",
+    "index": "services/ortto/src/index.js"
+  }
+}

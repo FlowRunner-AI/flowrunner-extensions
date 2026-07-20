@@ -1,0 +1,152 @@
+{
+  "slug": "contentful",
+  "name": "Contentful",
+  "marketingCategory": "CMS & Content",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner extension for [Contentful](https://www.contentful.com/), the API-first headless CMS. It exposes both of Contentful's core APIs: the **Content Management API (CMA, `api.contentful.com`)** for reading and writing everything — drafts, published state, assets, and content models — and the **Content Delivery API (CDA, `cdn.contentful.com`)** for fast, cached, read-only access to published content. Manage entries, assets, content types, and locales end to end.",
+  "actionCount": 22,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Entries",
+    "Delivery",
+    "Assets",
+    "Content Types",
+    "Locales"
+  ],
+  "actions": [
+    {
+      "name": "Create Entry",
+      "category": "Entries",
+      "description": "Creates a new entry of a given content type in the configured space and environment via the Content Management API. Provide field values as a simple map (e.g. {\"title\":\"Hello\",\"slug\":\"hello\"}); values are automatically wrapped into Contentful's localized shape using the default locale, unless a value is already an object keyed by locale codes, in which case it is passed through as-is. The new entry starts as a draft and is not published."
+    },
+    {
+      "name": "Get Entry",
+      "category": "Entries",
+      "description": "Retrieves a single entry (including drafts and unpublished changes) by its ID from the Content Management API. Returns the full entry with its sys metadata and localized fields."
+    },
+    {
+      "name": "List Entries",
+      "category": "Entries",
+      "description": "Lists entries from the Content Management API, including drafts and unpublished content. Pass any Contentful search query parameters as a map, for example {\"content_type\":\"blogPost\",\"limit\":25,\"skip\":0,\"order\":\"-sys.createdAt\",\"fields.slug\":\"hello\"}. Supports full-text search via \"query\", ordering, offset pagination, and field-level filters."
+    },
+    {
+      "name": "Update Entry",
+      "category": "Entries",
+      "description": "Updates an existing entry's fields via the Content Management API. Provide field values as a simple map; they are wrapped into the localized shape using the default locale. The current entry version is required in the X-Contentful-Version header — if you leave the version blank it is fetched automatically. Note that field values fully replace the values for the given locale; fields not included keep their existing values only if you merge them in yourself."
+    },
+    {
+      "name": "Delete Entry",
+      "category": "Entries",
+      "description": "Permanently deletes an entry via the Content Management API. Published entries cannot be deleted directly, so this operation automatically unpublishes the entry first (ignoring the \"not published\" case) and then deletes it. This action cannot be undone."
+    },
+    {
+      "name": "Publish Entry",
+      "category": "Entries",
+      "description": "Publishes an entry via the Content Management API, making its current draft state available through the Content Delivery API. The current entry version is required and is fetched automatically when the version parameter is left blank."
+    },
+    {
+      "name": "Unpublish Entry",
+      "category": "Entries",
+      "description": "Unpublishes an entry via the Content Management API, removing it from the Content Delivery API while keeping the draft. The entry itself is not deleted."
+    },
+    {
+      "name": "Archive Entry",
+      "category": "Entries",
+      "description": "Archives an entry via the Content Management API. Archived entries are hidden from the default entry list and cannot be edited until unarchived. Only unpublished entries can be archived. The current version is fetched automatically when the version parameter is left blank."
+    },
+    {
+      "name": "Unarchive Entry",
+      "category": "Entries",
+      "description": "Unarchives a previously archived entry via the Content Management API, restoring it to the normal draft state so it can be edited and published again."
+    },
+    {
+      "name": "Get Published Entries",
+      "category": "Delivery",
+      "description": "Retrieves published entries through the Content Delivery API (cdn.contentful.com), which is faster and cached compared to the management API but only returns published content. Requires the Delivery Token to be configured. Pass Contentful query parameters as a map, e.g. {\"content_type\":\"blogPost\",\"limit\":10,\"order\":\"-sys.createdAt\",\"fields.slug\":\"hello\"}."
+    },
+    {
+      "name": "Get Published Entry",
+      "category": "Delivery",
+      "description": "Retrieves a single published entry by ID through the Content Delivery API (cdn.contentful.com). Faster and cached, but only returns content that has been published. Requires the Delivery Token to be configured."
+    },
+    {
+      "name": "Create Asset",
+      "category": "Assets",
+      "description": "Creates a new asset (image, document, or other file) via the Content Management API. Provide fields as a simple map; the \"file\" field must describe the upload for each locale, e.g. {\"title\":\"My image\",\"file\":{\"contentType\":\"image/png\",\"fileName\":\"pic.png\",\"upload\":\"https://example.com/pic.png\"}}. The asset is created in a draft state and must be processed (Process Asset) and then published before it is delivered. Non-file fields are localized using the default locale, while a file value is stored under that locale as-is."
+    },
+    {
+      "name": "Get Asset",
+      "category": "Assets",
+      "description": "Retrieves a single asset by ID from the Content Management API, including its processing state, file details, and localized metadata."
+    },
+    {
+      "name": "List Assets",
+      "category": "Assets",
+      "description": "Lists assets from the Content Management API, including unprocessed and unpublished assets. Pass Contentful query parameters as a map, e.g. {\"limit\":25,\"skip\":0,\"order\":\"-sys.createdAt\"}."
+    },
+    {
+      "name": "Process Asset",
+      "category": "Assets",
+      "description": "Triggers processing of an asset's uploaded file for a given locale via the Content Management API. Processing downloads the file from its upload source and prepares it for delivery. This must be done after Create Asset and before Publish Asset. Returns a success acknowledgement since the API responds with no body."
+    },
+    {
+      "name": "Publish Asset",
+      "category": "Assets",
+      "description": "Publishes an asset via the Content Management API, making it available through the Content Delivery API. The asset must be processed first. The current version is fetched automatically when the version parameter is left blank."
+    },
+    {
+      "name": "Delete Asset",
+      "category": "Assets",
+      "description": "Permanently deletes an asset via the Content Management API. Published assets cannot be deleted directly, so this operation automatically unpublishes the asset first (ignoring the \"not published\" case) and then deletes it. This action cannot be undone."
+    },
+    {
+      "name": "List Content Types",
+      "category": "Content Types",
+      "description": "Lists all content types (content models) in the configured space and environment via the Content Management API. Pass optional query parameters as a map, e.g. {\"limit\":50,\"order\":\"name\"}."
+    },
+    {
+      "name": "Get Content Type",
+      "category": "Content Types",
+      "description": "Retrieves a single content type (content model) by ID via the Content Management API, including its field definitions, display field, and sys metadata."
+    },
+    {
+      "name": "Create Content Type",
+      "category": "Content Types",
+      "description": "Creates or updates a content type (content model) with an explicit ID via the Content Management API (PUT /content_types/{id}). Provide the display name, the field definitions array, and optionally the field ID to use as the display field. Each field object follows Contentful's schema, e.g. {\"id\":\"title\",\"name\":\"Title\",\"type\":\"Symbol\",\"required\":true}. The content type is created as a draft; use Activate Content Type to make it usable. Supplying the version updates an existing content type."
+    },
+    {
+      "name": "Activate Content Type",
+      "category": "Content Types",
+      "description": "Activates (publishes) a content type via the Content Management API so entries can be created against it. The current version is fetched automatically when the version parameter is left blank."
+    },
+    {
+      "name": "List Locales",
+      "category": "Locales",
+      "description": "Lists all locales configured for the space and environment via the Content Management API, including each locale's code, name, whether it is the default, and fallback settings. Useful for discovering which locale codes to use when localizing fields."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Programmatically creating, updating, and publishing entries and assets in a content workflow",
+    "Syncing content from external systems into Contentful with localized field values",
+    "Fetching published content quickly through the cached Delivery API to power sites and apps",
+    "Managing content models by creating, updating, and activating content types",
+    "Building editorial pipelines that draft, review, archive, and publish content on a schedule"
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to read a content backlog, then call **Contentful** \"Create Entry\" (and \"Publish Entry\") to draft and publish each row as a blog post or product entry.",
+    "After **Contentful** \"Publish Entry\" succeeds, use **Slack** \"Send Message To Channel\" to notify the editorial team with the entry ID and title.",
+    "When **Webflow** \"Create Collection Item\" adds new site content, mirror it into Contentful via \"Create Entry\" so both CMS platforms stay in sync, and log each sync with **Google Sheets** \"Add Row\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/contentful/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/contentful",
+    "readme": "services/contentful/README.md",
+    "index": "services/contentful/src/index.js"
+  }
+}

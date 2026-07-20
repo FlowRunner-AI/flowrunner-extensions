@@ -1,0 +1,145 @@
+{
+  "slug": "milvus",
+  "name": "Milvus",
+  "marketingCategory": "Vector Stores & AI Infra",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to [Milvus](https://milvus.io) / [Zilliz Cloud](https://zilliz.com/cloud) — an open-source vector database for similarity search and AI applications. Manage collections, write and delete entities, run vector similarity search, and administer indexes and partitions through the Milvus REST API v2.",
+  "actionCount": 21,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Collections",
+    "Entities",
+    "Indexes",
+    "Partitions"
+  ],
+  "actions": [
+    {
+      "name": "Create Collection",
+      "category": "Collections",
+      "description": "Creates a new collection. In quick-setup mode, supply a Dimension and Metric Type to auto-generate a schema with an auto-generated primary key and a single float-vector field. For full control, provide a custom Schema object (fields definition) and optionally override the primary/vector field names, ID type and auto-ID behavior. A collection must be loaded before it can be searched or queried."
+    },
+    {
+      "name": "List Collections",
+      "category": "Collections",
+      "description": "Retrieves the names of all collections in the current database."
+    },
+    {
+      "name": "Describe Collection",
+      "category": "Collections",
+      "description": "Retrieves the full definition of a collection, including its schema (fields and data types), configured indexes, load status, aliases and consistency level."
+    },
+    {
+      "name": "Drop Collection",
+      "category": "Collections",
+      "description": "Permanently deletes a collection along with all entities and indexes it contains. This action cannot be undone."
+    },
+    {
+      "name": "Has Collection",
+      "category": "Collections",
+      "description": "Checks whether a collection with the given name exists in the current database. Returns an object with a \"has\" boolean."
+    },
+    {
+      "name": "Get Collection Stats",
+      "category": "Collections",
+      "description": "Retrieves statistics for a collection, most notably its total entity (row) count."
+    },
+    {
+      "name": "Load Collection",
+      "category": "Collections",
+      "description": "Loads a collection (and its index) into memory so it can serve search and query requests. A collection must be loaded before Search or Query will return results. Loading is asynchronous; large collections may take time to become fully loaded."
+    },
+    {
+      "name": "Release Collection",
+      "category": "Collections",
+      "description": "Releases a collection from memory to free resources. Once released, the collection can no longer serve search or query requests until it is loaded again."
+    },
+    {
+      "name": "Insert Entities",
+      "category": "Entities",
+      "description": "Inserts one or more entities (rows) into a collection. Each entity is an object whose keys match the collection's field names, e.g. {\"id\":1,\"vector\":[0.1,0.2,...],\"title\":\"Doc\"}. Omit the primary key when the collection uses auto-ID. Returns the count of inserted rows and their primary keys."
+    },
+    {
+      "name": "Upsert Entities",
+      "category": "Entities",
+      "description": "Inserts new entities or replaces existing ones matched by primary key in a collection. Each entity is an object whose keys match the collection's field names. Use this to write data idempotently without checking for existence first."
+    },
+    {
+      "name": "Delete Entities",
+      "category": "Entities",
+      "description": "Deletes entities from a collection by an explicit list of primary key IDs or by a boolean filter expression. Provide exactly one selector. Filter expressions use Milvus syntax, e.g. \"color in [\\\"red\\\",\\\"green\\\"]\" or \"id > 100\"."
+    },
+    {
+      "name": "Search Entities",
+      "category": "Entities",
+      "description": "Performs a vector similarity search — the primary nearest-neighbor operation. Supply one or more query vectors and Milvus returns the closest entities ranked by distance/similarity. Supports scalar filtering, output field selection, pagination via offset, and per-request search parameters (metric type and index params like nprobe/ef). The collection must be loaded first (use Load Collection)."
+    },
+    {
+      "name": "Query Entities",
+      "category": "Entities",
+      "description": "Retrieves entities that match a scalar boolean filter expression, without vector similarity. Use it to fetch rows by metadata, e.g. \"color == \\\"red\\\" and price < 100\". Supports selecting output fields and limiting the number of rows. The collection must be loaded first."
+    },
+    {
+      "name": "Get Entities",
+      "category": "Entities",
+      "description": "Retrieves entities from a collection by their primary key IDs. Optionally restricts the returned fields. The collection must be loaded first."
+    },
+    {
+      "name": "Create Index",
+      "category": "Indexes",
+      "description": "Creates one or more indexes on fields of a collection. Each index entry names the target field, the index type (e.g. AUTOINDEX, IVF_FLAT, HNSW) and, for vector fields, the distance metric. Building an index accelerates vector search and scalar filtering."
+    },
+    {
+      "name": "Describe Index",
+      "category": "Indexes",
+      "description": "Retrieves the configuration and build state of a specific index on a collection, including its index type, metric type, parameters and indexed-rows count."
+    },
+    {
+      "name": "List Indexes",
+      "category": "Indexes",
+      "description": "Retrieves the names of all indexes defined on a collection."
+    },
+    {
+      "name": "Drop Index",
+      "category": "Indexes",
+      "description": "Permanently deletes an index from a collection. The collection must be released from memory before an index can be dropped."
+    },
+    {
+      "name": "List Partitions",
+      "category": "Partitions",
+      "description": "Retrieves the names of all partitions within a collection."
+    },
+    {
+      "name": "Create Partition",
+      "category": "Partitions",
+      "description": "Creates a new partition within a collection. Partitions let you group entities so that searches and inserts can be scoped to a subset of the data for better performance."
+    },
+    {
+      "name": "Drop Partition",
+      "category": "Partitions",
+      "description": "Permanently deletes a partition and all entities it contains from a collection. The partition must be released from memory before it can be dropped. This action cannot be undone."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Build a semantic search or retrieval-augmented generation (RAG) backend by storing embeddings and",
+    "Sync application data into a vector collection, keeping it current with insert, upsert, and delete",
+    "Filter and retrieve records by metadata (scalar fields) without vector similarity, or fetch",
+    "Administer a vector database — create and drop collections, indexes, and partitions, and manage"
+  ],
+  "agentIdeas": [
+    "Use **OpenAI** \"Create Embeddings\" (or **Cohere** \"Create Embeddings\") to turn a document into a",
+    "On a user query, generate a query vector with **OpenAI** \"Create Embeddings\" and pass it to",
+    "Use **Airtable** \"Get Records\" to pull a batch of new content, embed each row with **Cohere**"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/milvus/public/icon.png",
+  "sourcePaths": {
+    "service": "services/milvus",
+    "readme": "services/milvus/README.md",
+    "index": "services/milvus/src/index.js"
+  }
+}

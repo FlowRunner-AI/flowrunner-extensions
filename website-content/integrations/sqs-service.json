@@ -1,0 +1,62 @@
+{
+  "slug": "sqs-service",
+  "name": "Amazon SQS",
+  "marketingCategory": "Cloud & Infrastructure",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integration with Amazon Simple Queue Service (SQS). Send, receive, and delete messages, batch-send up to 10 messages at once, and inspect queue attributes — for both standard and FIFO queues. Supports two authentication methods: direct API Key credentials or IAM Role via STS AssumeRole for cross-account access.",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Send Message",
+      "category": null,
+      "description": "Sends a single message to a queue. For FIFO queues, provide Message Group ID to ensure ordering and Message Deduplication ID to prevent duplicates. Use Delay Seconds to postpone message delivery."
+    },
+    {
+      "name": "Send Message Batch",
+      "category": null,
+      "description": "Sends up to 10 messages in a single request. Each entry must include a unique ID and a message body. Returns lists of successfully sent and failed messages."
+    },
+    {
+      "name": "Receive Messages",
+      "category": null,
+      "description": "Polls a queue and returns up to the requested number of messages. Use Wait Time Seconds for long polling to reduce empty responses and lower costs. Messages remain hidden from other consumers until the Visibility Timeout expires."
+    },
+    {
+      "name": "Delete Message",
+      "category": null,
+      "description": "Permanently removes a message from a queue using its receipt handle obtained from Receive Messages. After deletion the message cannot be received again."
+    },
+    {
+      "name": "Get Queue Attributes",
+      "category": null,
+      "description": "Retrieves attributes of a queue such as message count, visibility timeout, ARN, and delay settings. Defaults to returning all attributes."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Decoupling workflow steps by pushing messages onto a queue for asynchronous processing",
+    "Sending a single message or up to 10 messages in one batch from an automated flow",
+    "Polling a queue for work items using long polling to reduce empty responses and costs",
+    "Acknowledging and removing processed messages so they are not redelivered",
+    "Ordering and deduplicating events through FIFO queues with message group and deduplication IDs",
+    "Monitoring queue depth and configuration by reading queue attributes such as message count and visibility timeout"
+  ],
+  "agentIdeas": [
+    "After **Amazon SQS** \"Receive Messages\" returns a work item, process it and then call **Amazon SQS** \"Delete Message\" with the receipt handle so it is not redelivered, logging the outcome with **AWS DynamoDB** \"Put Item\".",
+    "When a **Slack** \"On Channel Message\" trigger fires, use **Amazon SQS** \"Send Message\" to enqueue the message for asynchronous downstream processing without blocking the flow.",
+    "Use **Amazon SQS** \"Receive Messages\" to pull queued notification jobs, then call **Amazon SNS** \"Publish Message\" to fan each one out to a topic's subscribers."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/sqs-service/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/sqs-service",
+    "readme": "services/sqs-service/README.md",
+    "index": "services/sqs-service/src/index.js"
+  }
+}

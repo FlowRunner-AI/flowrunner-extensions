@@ -1,0 +1,190 @@
+{
+  "slug": "zoho-desk",
+  "name": "Zoho Desk",
+  "marketingCategory": "Helpdesk & ITSM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Zoho Desk integration for automating help desk operations: create, update, search, assign, and close tickets; manage ticket comments and email conversation threads (including sending replies); and maintain the contacts, accounts, agents, and departments behind them. Connects via Zoho OAuth2 with region-aware data centers and automatic organization resolution.",
+  "actionCount": 30,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Organizations",
+    "Tickets",
+    "Ticket Comments",
+    "Ticket Threads",
+    "Contacts",
+    "Accounts",
+    "Agents",
+    "Departments",
+    "Search"
+  ],
+  "actions": [
+    {
+      "name": "List Organizations",
+      "category": "Organizations",
+      "description": "Retrieves all Zoho Desk organizations that the connected account belongs to, including each organization's ID, company name, portal URL, and plan details. Use the organization ID from this list in the service configuration if you want to work with an organization other than your first one."
+    },
+    {
+      "name": "List Tickets",
+      "category": "Tickets",
+      "description": "Retrieves a list of tickets from Zoho Desk with optional filtering by department, assignee, channel, and status. Supports sorting and pagination (up to 100 tickets per call). Use the Include Details option to embed related contact, assignee, and department data in each ticket."
+    },
+    {
+      "name": "Get Ticket",
+      "category": "Tickets",
+      "description": "Retrieves a single ticket from Zoho Desk by its ID, including subject, description, status, priority, requester, and timestamps. Use the Include Details option to embed the full contact, assignee, department, and team records in the response."
+    },
+    {
+      "name": "Create Ticket",
+      "category": "Tickets",
+      "description": "Creates a new support ticket in Zoho Desk. Identify the requester either by an existing Contact or by an email address - when only an email is given, Zoho Desk reuses the contact with that email or automatically creates a new one. The description supports HTML formatting, and account-specific custom fields can be set through the Custom Fields object."
+    },
+    {
+      "name": "Update Ticket",
+      "category": "Tickets",
+      "description": "Updates an existing ticket in Zoho Desk. Only the fields you fill in are changed; all other fields keep their current values. The description supports HTML formatting, and account-specific custom fields can be updated through the Custom Fields object."
+    },
+    {
+      "name": "Move Tickets to Trash",
+      "category": "Tickets",
+      "description": "Moves one or more tickets to the Recycle Bin in Zoho Desk. This is how Zoho Desk deletes tickets - trashed tickets can be restored from the Recycle Bin by an administrator before they are permanently purged."
+    },
+    {
+      "name": "Close Ticket",
+      "category": "Tickets",
+      "description": "Closes a ticket in Zoho Desk by setting its status to Closed, optionally recording a resolution summary at the same time. This is a convenience shortcut for the most common ticket update."
+    },
+    {
+      "name": "Assign Ticket",
+      "category": "Tickets",
+      "description": "Assigns a ticket to an agent, a team, or both in Zoho Desk. Provide at least one of the two. Existing assignments are replaced by the values you set."
+    },
+    {
+      "name": "Search Tickets",
+      "category": "Tickets",
+      "description": "Searches tickets in Zoho Desk by keyword, subject, requester email, status, priority, channel, department, or contact. Provide at least one search criterion; multiple criteria are combined. The keyword search supports * as a wildcard. Returns up to 100 tickets per call."
+    },
+    {
+      "name": "List Ticket Comments",
+      "category": "Ticket Comments",
+      "description": "Retrieves the comments on a ticket in Zoho Desk, including each comment's content, visibility (public or private), author, and timestamps. Supports pagination."
+    },
+    {
+      "name": "Add Ticket Comment",
+      "category": "Ticket Comments",
+      "description": "Adds a comment to a ticket in Zoho Desk. Comments can be private (visible only to agents) or public (visible to the customer in the help center), and the content can be plain text or HTML."
+    },
+    {
+      "name": "Update Ticket Comment",
+      "category": "Ticket Comments",
+      "description": "Updates an existing comment on a ticket in Zoho Desk, replacing its content and optionally changing its visibility or content type. Only comments created by the connected agent can be edited."
+    },
+    {
+      "name": "List Ticket Threads",
+      "category": "Ticket Threads",
+      "description": "Retrieves the conversation threads of a ticket in Zoho Desk - the emails and other channel messages exchanged with the customer. Each thread includes the channel, direction, author, and a content summary; use Get Ticket Thread to fetch a thread's full content."
+    },
+    {
+      "name": "Get Ticket Thread",
+      "category": "Ticket Threads",
+      "description": "Retrieves a single conversation thread of a ticket in Zoho Desk with its full message content, including the complete email body, sender and recipient addresses, and attachment metadata."
+    },
+    {
+      "name": "Send Ticket Reply",
+      "category": "Ticket Threads",
+      "description": "Sends an email reply on a ticket in Zoho Desk, adding it to the ticket's conversation and delivering it to the recipients. The From address must be one of the support email addresses configured for the ticket's department in Zoho Desk - arbitrary addresses are rejected. Content supports HTML formatting, and the reply can also be sent as a forward."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves a list of contacts from your Zoho Desk organization, including each contact's name, email, phone, and account association. Supports sorting and pagination (up to 100 contacts per call)."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact from Zoho Desk by its ID, including the contact's name, email, phone numbers, title, description, and associated account."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact in Zoho Desk. Only the last name is mandatory; add an email so the contact can raise and receive ticket correspondence, and link an account to group the contact under a company."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact in Zoho Desk. Only the fields you fill in are changed; all other fields keep their current values."
+    },
+    {
+      "name": "List Contact Tickets",
+      "category": "Contacts",
+      "description": "Retrieves the tickets raised by a specific contact in Zoho Desk, most useful for building a customer's support history. Supports pagination (up to 100 tickets per call)."
+    },
+    {
+      "name": "List Accounts",
+      "category": "Accounts",
+      "description": "Retrieves a list of accounts (companies) from your Zoho Desk organization, including each account's name, email, phone, website, and industry. Supports pagination (up to 100 accounts per call)."
+    },
+    {
+      "name": "Get Account",
+      "category": "Accounts",
+      "description": "Retrieves a single account (company) from Zoho Desk by its ID, including the account's name, contact details, website, industry, and description."
+    },
+    {
+      "name": "Create Account",
+      "category": "Accounts",
+      "description": "Creates a new account (company) in Zoho Desk. Only the account name is mandatory; contacts can then be associated with the account to group a company's support activity."
+    },
+    {
+      "name": "Update Account",
+      "category": "Accounts",
+      "description": "Updates an existing account (company) in Zoho Desk. Only the fields you fill in are changed; all other fields keep their current values."
+    },
+    {
+      "name": "List Agents",
+      "category": "Agents",
+      "description": "Retrieves the agents in your Zoho Desk organization, including each agent's name, email, role, and status. Filter by status to list only active or disabled agents. Supports pagination."
+    },
+    {
+      "name": "Get Agent",
+      "category": "Agents",
+      "description": "Retrieves a single agent from Zoho Desk by its ID, including the agent's name, email, role, status, and department associations."
+    },
+    {
+      "name": "Get Current Agent",
+      "category": "Agents",
+      "description": "Retrieves the profile of the agent whose Zoho Desk account is connected to this service, including name, email, role, and profile photo. Useful for identifying who the automation acts as."
+    },
+    {
+      "name": "List Departments",
+      "category": "Departments",
+      "description": "Retrieves the departments in your Zoho Desk organization, including each department's name, description, and enabled state. Departments are the top-level grouping for tickets and support addresses."
+    },
+    {
+      "name": "Get Department",
+      "category": "Departments",
+      "description": "Retrieves a single department from Zoho Desk by its ID, including the department's name, description, enabled state, and associated agents."
+    },
+    {
+      "name": "Global Search",
+      "category": "Search",
+      "description": "Searches across a Zoho Desk module (tickets, contacts, or accounts) by keyword. The keyword matches the module's searchable fields and supports * as a wildcard. Optionally restrict the search to a single department. Supports pagination."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [],
+  "agentIdeas": [
+    "Use **Zoho Desk** \"Search Tickets\" to pull open high-priority tickets, then post a digest to a support channel with **Slack** \"Send Message To Channel\" so the team can triage quickly.",
+    "When a **Zoho Desk** \"Get Contact\" reveals a customer without a CRM record, call **Zoho CRM** \"Create Record\" to add them as a lead and keep support and sales data in sync.",
+    "Escalate a bug reported through **Zoho Desk** \"Get Ticket\" by creating a tracked engineering task with **Jira Issues** \"Create Issue\" (or **Linear** \"Create Issue\"), then use **Zoho Desk** \"Add Ticket Comment\" to note the linked issue."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/zoho-desk/public/icon.png",
+  "sourcePaths": {
+    "service": "services/zoho-desk",
+    "readme": "services/zoho-desk/README.md",
+    "index": "services/zoho-desk/src/index.js"
+  }
+}

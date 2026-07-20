@@ -1,0 +1,91 @@
+{
+  "slug": "linkedin",
+  "name": "LinkedIn",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Publish and manage LinkedIn content from FlowRunner. Create text, article-link, and image posts as a member or a company page; read and delete posts; comment on and like posts; and list the organizations (company pages) the connected member administers. Authentication is OAuth 2.0 (3-legged, OpenID Connect); posts are created through LinkedIn's versioned Posts API.",
+  "actionCount": 10,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Profile",
+    "Posts",
+    "Organizations",
+    "Social Actions"
+  ],
+  "actions": [
+    {
+      "name": "Get My Profile",
+      "category": "Profile",
+      "description": "Retrieves the connected member's LinkedIn profile using the OpenID Connect userinfo endpoint. Returns the member's OpenID subject id ('sub'), full name, given/family name, email, locale, and profile picture URL. The 'sub' value is the person id used to build the author URN for posts (urn:li:person:{sub}). Requires the 'openid', 'profile', and 'email' scopes."
+    },
+    {
+      "name": "Create Post",
+      "category": "Posts",
+      "description": "Creates an organic text post (share) on LinkedIn via the versioned Posts API. Posts by default as the authenticated member (urn:li:person:{sub}); pass an Organization URN as the Author to post as a company page (requires Community Management API approval and an admin role). Optionally attach an article link (source URL, title, description) rendered as a link preview card — note LinkedIn does not scrape the URL, so the title and description must be supplied. For image posts, use Create Image Post instead. Commentary supports LinkedIn mention and hashtag annotation syntax. Requires the 'w_member_social' scope (member) or 'w_organization_social' (organization)."
+    },
+    {
+      "name": "Create Image Post",
+      "category": "Posts",
+      "description": "Creates a LinkedIn image post in one call by orchestrating LinkedIn's multi-step image flow: (1) POST /rest/images?action=initializeUpload to register the upload and obtain an upload URL and image URN, (2) download the image bytes from the supplied Flowrunner file URL and PUT them to that upload URL, then (3) create a post via POST /rest/posts with content.media set to the new image URN. Posts as the connected member by default; pass an Organization URN as the Author to post as a company page. Accepts JPG, PNG, or GIF images under ~36 megapixels. Requires the 'w_member_social' scope (member) or 'w_organization_social' (organization)."
+    },
+    {
+      "name": "Get Post",
+      "category": "Posts",
+      "description": "Retrieves a single LinkedIn post by its URN (a share URN 'urn:li:share:{id}' or UGC post URN 'urn:li:ugcPost:{id}'). Returns the post's author, commentary, visibility, distribution, content, and lifecycle metadata. Retrieving another member's posts requires the restricted 'r_member_social' scope; organization posts require 'r_organization_social'."
+    },
+    {
+      "name": "Delete Post",
+      "category": "Posts",
+      "description": "Permanently deletes a LinkedIn post by its URN (share or UGC post URN). Deletion is idempotent — deleting an already-deleted post still succeeds. The connected member must be the author (or an admin of the authoring organization). Requires the 'w_member_social' or 'w_organization_social' scope."
+    },
+    {
+      "name": "Get My Organizations",
+      "category": "Organizations",
+      "description": "Lists the LinkedIn company pages (organizations) the connected member administers, returning each organization's URN and the member's role (e.g. ADMINISTRATOR, CONTENT_ADMIN). Use the returned organization URNs as the Author when posting as a company page. Requires the 'rw_organization_admin' or 'r_organization_social' scope and Community Management API approval."
+    },
+    {
+      "name": "Get Organization",
+      "category": "Organizations",
+      "description": "Retrieves details about a single LinkedIn organization (company page) by its numeric id or URN, including its localized name, vanity name, description, and website. The connected member must administer the organization. Requires the 'rw_organization_admin' or 'r_organization_social' scope."
+    },
+    {
+      "name": "Create Comment",
+      "category": "Social Actions",
+      "description": "Adds a comment to a LinkedIn post on behalf of the connected member (or an administered organization). The comment is created via the Social Actions API on the target post or comment URN. Requires the 'w_member_social' scope (member) or 'w_organization_social' (organization)."
+    },
+    {
+      "name": "Get Comments",
+      "category": "Social Actions",
+      "description": "Lists the comments on a LinkedIn post, returning each comment's actor, text, and creation time. Supports pagination via start and count. Requires read access to the post's social actions ('r_member_social' or 'r_organization_social')."
+    },
+    {
+      "name": "Like Post",
+      "category": "Social Actions",
+      "description": "Adds a like to a LinkedIn post on behalf of the connected member (or an administered organization) via the Social Actions API. Requires the 'w_member_social' scope (member) or 'w_organization_social' (organization)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically share new blog articles, product launches, or announcements to a company page.",
+    "Cross-post content from other channels (spreadsheets, CMS, newsletters) into LinkedIn.",
+    "Publish image posts (e.g. event photos, marketing creatives) fetched from a URL in one step.",
+    "Engage with your own content by programmatically commenting on or liking posts.",
+    "Enrich a CRM or reporting workflow with the list of organizations a member administers."
+  ],
+  "agentIdeas": [
+    "When a **Google Sheets** \"On New Row\" trigger fires with a queued post, use **LinkedIn** \"Create Post\" to publish it to the company page, then **Slack** \"Send Message To Channel\" to confirm it went live.",
+    "Use **Notion** \"Create Page\" to draft an article, then **LinkedIn** \"Create Image Post\" to publish it with a cover image and **HubSpot** \"Create Contact\" to log anyone who engages.",
+    "When **Gmail** \"On New Email\" receives a customer testimonial, use **LinkedIn** \"Create Post\" to share the quote and **Google Sheets** \"Get Rows\" to pull the matching customer details for attribution."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/linkedin/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/linkedin",
+    "readme": "services/linkedin/README.md",
+    "index": "services/linkedin/src/index.js"
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "slug": "copper",
+  "name": "Copper",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage your Copper CRM directly from FlowRunner. This extension covers people (contacts), companies, leads, opportunities (deals), tasks, and activities — with full create, read, search, update, and delete support plus lead conversion. Authentication uses a Copper API key and the associated user email.",
+  "actionCount": 27,
+  "triggerCount": 0,
+  "operationCategories": [
+    "People",
+    "Companies",
+    "Leads",
+    "Opportunities",
+    "Tasks",
+    "Activities"
+  ],
+  "actions": [
+    {
+      "name": "Create Person",
+      "category": "People",
+      "description": "Creates a new person (contact) in Copper. Provide a name and any contact details — email, phone, company, title, or address. Custom fields can be passed through as an array of {custom_field_definition_id, value} objects. Returns the created person including its Copper ID."
+    },
+    {
+      "name": "Get Person",
+      "category": "People",
+      "description": "Retrieves a single person (contact) by its Copper ID, including emails, phone numbers, company, tags, and custom fields."
+    },
+    {
+      "name": "Search People",
+      "category": "People",
+      "description": "Searches people (contacts) in Copper with paging, sorting, and optional name/email filters. Returns an array of matching people. Copper caps page_size at 200."
+    },
+    {
+      "name": "Update Person",
+      "category": "People",
+      "description": "Updates an existing person (contact) in Copper. Only the fields you supply are changed; leave a field blank to keep its current value. Custom fields can be passed through as an array. Returns the updated person."
+    },
+    {
+      "name": "Delete Person",
+      "category": "People",
+      "description": "Permanently deletes a person (contact) from Copper by its ID. This cannot be undone."
+    },
+    {
+      "name": "Create Company",
+      "category": "Companies",
+      "description": "Creates a new company in Copper. Provide a name and any details — email domain, phone, website, address, or assignee. Custom fields can be passed through as an array. Returns the created company including its Copper ID."
+    },
+    {
+      "name": "Get Company",
+      "category": "Companies",
+      "description": "Retrieves a single company by its Copper ID, including email domain, phone numbers, address, tags, and custom fields."
+    },
+    {
+      "name": "Search Companies",
+      "category": "Companies",
+      "description": "Searches companies in Copper with paging and sorting, optionally filtering by name. Returns an array of matching companies. Copper caps page_size at 200."
+    },
+    {
+      "name": "Update Company",
+      "category": "Companies",
+      "description": "Updates an existing company in Copper. Only the fields you supply are changed; leave a field blank to keep its current value. Returns the updated company."
+    },
+    {
+      "name": "Delete Company",
+      "category": "Companies",
+      "description": "Permanently deletes a company from Copper by its ID. This cannot be undone."
+    },
+    {
+      "name": "Create Lead",
+      "category": "Leads",
+      "description": "Creates a new lead in Copper. Provide a name and any details — email, phone, company, title, status, or monetary value. Custom fields can be passed through as an array. Returns the created lead including its Copper ID."
+    },
+    {
+      "name": "Get Lead",
+      "category": "Leads",
+      "description": "Retrieves a single lead by its Copper ID, including contact details, status, monetary value, and custom fields."
+    },
+    {
+      "name": "Search Leads",
+      "category": "Leads",
+      "description": "Searches leads in Copper with paging and sorting, optionally filtering by name. Returns an array of matching leads. Copper caps page_size at 200."
+    },
+    {
+      "name": "Update Lead",
+      "category": "Leads",
+      "description": "Updates an existing lead in Copper. Only the fields you supply are changed; leave a field blank to keep its current value. Returns the updated lead."
+    },
+    {
+      "name": "Delete Lead",
+      "category": "Leads",
+      "description": "Permanently deletes a lead from Copper by its ID. This cannot be undone."
+    },
+    {
+      "name": "Convert Lead",
+      "category": "Leads",
+      "description": "Converts a lead into a person, company, and/or opportunity. Optionally supply the pipeline and stage and a name for the resulting opportunity. Returns the conversion result with the created record IDs."
+    },
+    {
+      "name": "Create Opportunity",
+      "category": "Opportunities",
+      "description": "Creates a new opportunity (deal) in Copper. Requires a name and a pipeline. Optionally link a primary contact and company, set a stage, monetary value, win probability, and close date. Returns the created opportunity including its Copper ID."
+    },
+    {
+      "name": "Get Opportunity",
+      "category": "Opportunities",
+      "description": "Retrieves a single opportunity (deal) by its Copper ID, including pipeline, stage, monetary value, close date, and custom fields."
+    },
+    {
+      "name": "Search Opportunities",
+      "category": "Opportunities",
+      "description": "Searches opportunities (deals) in Copper with paging and sorting, optionally filtering by name or pipeline. Returns an array of matching opportunities. Copper caps page_size at 200."
+    },
+    {
+      "name": "Update Opportunity",
+      "category": "Opportunities",
+      "description": "Updates an existing opportunity (deal) in Copper. Only the fields you supply are changed; leave a field blank to keep its current value. Set the status to move the deal to Won or Lost. Returns the updated opportunity."
+    },
+    {
+      "name": "Delete Opportunity",
+      "category": "Opportunities",
+      "description": "Permanently deletes an opportunity (deal) from Copper by its ID. This cannot be undone."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a task in Copper, optionally related to a person, company, opportunity, or lead. Set a due date, reminder, assignee, priority, and status. Returns the created task including its Copper ID."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Lists tasks in Copper with paging and sorting. Returns an array of tasks. Copper caps page_size at 200."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates an existing task in Copper. Only the fields you supply are changed; leave a field blank to keep its current value. Set status to Completed to close the task. Returns the updated task."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task from Copper by its ID. This cannot be undone."
+    },
+    {
+      "name": "Create Activity",
+      "category": "Activities",
+      "description": "Logs an activity (note or interaction) in Copper against a parent record such as a person, company, lead, or opportunity. The activity type is identified by a category (\"user\" for logged interactions, \"system\" for automatic) and a type ID. Returns the created activity."
+    },
+    {
+      "name": "List Activities",
+      "category": "Activities",
+      "description": "Lists activities in Copper, optionally scoped to a single parent record (person, company, lead, or opportunity) and paged. Returns an array of activities. Copper caps page_size at 200."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync contacts and companies between Copper and other apps when records are created or updated elsewhere",
+    "Capture inbound leads from web forms into Copper and convert qualified ones into people, companies, and opportunities",
+    "Automate deal-pipeline updates, moving opportunities through stages or marking them Won/Lost",
+    "Create follow-up tasks and log activities against CRM records as part of a workflow",
+    "Search and enrich existing Copper records within multi-step automations"
+  ],
+  "agentIdeas": [
+    "Use **Typeform** \"Get Form Responses\" to pull recent survey entries, then call Copper \"Create Lead\" to add each prospect and \"Convert Lead\" once qualified into a person, company, and opportunity.",
+    "When Copper \"Create Opportunity\" adds a deal, use **Slack** \"Send Message To Channel\" to notify the sales team with the deal name, value, and pipeline stage.",
+    "After Copper \"Convert Lead\" produces a new person, use **Gmail** \"Send Message\" to send the new contact a personalized welcome email."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/copper/public/icon.png",
+  "sourcePaths": {
+    "service": "services/copper",
+    "readme": "services/copper/README.md",
+    "index": "services/copper/src/index.js"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "slug": "stackby",
+  "name": "Stackby",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Row-level CRUD integration for [Stackby](https://stackby.com), the spreadsheet-database that organizes data in Stacks (bases) made of tables and columns. Authenticates with an API key sent in the `api-key` request header.",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Rows"
+  ],
+  "actions": [
+    {
+      "name": "List Rows",
+      "category": "Rows",
+      "description": "Retrieves rows from a Stackby table. Returns each row as an object with an \"id\" and a \"field\" object holding column-name/value pairs. Supports optional view filtering, a maximum record cap, and an offset for paging through large tables. The Stack ID comes from your Stackby stack URL and the table is referenced by its display name as shown in the Stackby UI."
+    },
+    {
+      "name": "Get Row",
+      "category": "Rows",
+      "description": "Retrieves a single row from a Stackby table by its unique row ID. Uses the row-list endpoint's rowIds filter to fetch just the requested row, returning it as an object with an id and a field object of column values, or null when no row matches."
+    },
+    {
+      "name": "Create Rows",
+      "category": "Rows",
+      "description": "Creates one or more rows in a Stackby table. Provide an array of field objects — each object maps column names (as shown in the Stackby UI) to their values. Up to 10 rows can be created per request. Returns the created rows including their newly assigned row IDs."
+    },
+    {
+      "name": "Update Rows",
+      "category": "Rows",
+      "description": "Updates one or more existing rows in a Stackby table. Provide an array of objects, each containing the row \"id\" and a \"field\" object with the columns to change. Only the supplied columns are modified; omitted columns keep their current values. Up to 10 rows can be updated per request. Returns the updated rows."
+    },
+    {
+      "name": "Delete Rows",
+      "category": "Rows",
+      "description": "Deletes one or more rows from a Stackby table by their unique row IDs. Accepts an array of row IDs and removes each matching row. Up to 10 rows can be deleted per request. Returns the API response confirming the deletion."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Logging inbound records (leads, orders, form submissions) into a Stackby table",
+    "Syncing rows between Stackby and other apps on a schedule or trigger",
+    "Reading a row to check a status field and drive downstream automation",
+    "Bulk-creating, updating, or deleting rows from an AI Agent workflow"
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to pull records from a spreadsheet, then call **Stackby** \"Create Rows\" to sync each record into a Stackby table.",
+    "When a **Google Sheets** \"On New Row\" trigger fires, use **Stackby** \"Create Rows\" to mirror the new record into a Stackby table for downstream reporting.",
+    "Read a status field with **Stackby** \"Get Row\", and when it warrants action, use **Slack** \"Send Message To Channel\" to notify the team with the row details."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/stackby/public/icon.png",
+  "sourcePaths": {
+    "service": "services/stackby",
+    "readme": "services/stackby/README.md",
+    "index": "services/stackby/src/index.js"
+  }
+}

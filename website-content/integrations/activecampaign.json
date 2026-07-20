@@ -1,0 +1,162 @@
+{
+  "slug": "activecampaign",
+  "name": "ActiveCampaign",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connects FlowRunner to [ActiveCampaign](https://www.activecampaign.com) for email marketing, marketing automation, and CRM. Manage contacts, tags, lists, custom fields, deals, automations, campaigns, and notes, and react to account activity in real time. Built on the [ActiveCampaign v3 API](https://developers.activecampaign.com/reference).",
+  "actionCount": 23,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Contacts",
+    "Tags",
+    "Lists",
+    "Custom Fields",
+    "Deals",
+    "Automations",
+    "Campaigns",
+    "Notes"
+  ],
+  "actions": [
+    {
+      "name": "Sync Contact",
+      "category": "Contacts",
+      "description": "Creates a contact or updates the existing one matched by email address (upsert). Sets name, phone, and any custom field values in a single call. Use this as the default way to push contacts into ActiveCampaign without worrying about duplicates."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by its ID, including email, name, phone, and timestamps. Use List Contacts first if you only know the email address."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists contacts with optional filtering by exact email, free-text search (name, email, phone, organization), and subscription status, plus paging. Returns the matching contacts and the total match count."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact by ID. Only the fields you provide are changed; blank fields keep their current values. Use Sync Contact instead when you only know the email address."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact and its associated data from ActiveCampaign. This cannot be undone."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new contact tag in ActiveCampaign. Tags created here can then be applied to contacts with Add Tag To Contact."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists tags in the account with optional name search and paging. Returns each tag's ID, name, type, and how many contacts carry it."
+    },
+    {
+      "name": "Add Tag To Contact",
+      "category": "Tags",
+      "description": "Applies an existing tag to a contact. Tagging can start automations that use \"tag is added\" as a trigger."
+    },
+    {
+      "name": "Remove Tag From Contact",
+      "category": "Tags",
+      "description": "Removes a tag from a contact. Looks up the contact's tag associations to find the matching one, then deletes it — you only need the contact ID and the tag, not the association ID."
+    },
+    {
+      "name": "List Lists",
+      "category": "Lists",
+      "description": "Lists the mailing lists in the account with optional exact-name filtering and paging. Returns each list's ID, name, and sender info."
+    },
+    {
+      "name": "Update List Status For Contact",
+      "category": "Lists",
+      "description": "Subscribes a contact to a mailing list or unsubscribes them from it. Subscribing an unconfirmed or previously unsubscribed contact re-adds them to the list."
+    },
+    {
+      "name": "List Fields",
+      "category": "Custom Fields",
+      "description": "Lists the contact custom field definitions in the account — IDs, titles, types, and options. Use the returned field IDs when setting custom field values on contacts."
+    },
+    {
+      "name": "Create Field Value",
+      "category": "Custom Fields",
+      "description": "Sets a custom field value on a contact. If the contact already has a value for the field it is replaced. For multi-value fields (checkbox, list box) use ||-delimited values, e.g. ||Option 1||Option 2||."
+    },
+    {
+      "name": "Create Deal",
+      "category": "Deals",
+      "description": "Creates a new deal in the CRM, placing it in a pipeline stage and optionally linking it to a contact and owner. The deal value is specified in cents (e.g. 45000 = $450.00)."
+    },
+    {
+      "name": "Get Deal",
+      "category": "Deals",
+      "description": "Retrieves a single deal by its ID, including title, value, pipeline, stage, status, and linked contact."
+    },
+    {
+      "name": "List Deals",
+      "category": "Deals",
+      "description": "Lists deals with optional filtering by title search, pipeline, stage, status, and linked contact, plus paging. Returns the matching deals and the total match count."
+    },
+    {
+      "name": "Update Deal",
+      "category": "Deals",
+      "description": "Updates an existing deal by ID — title, value, currency, stage, owner, status, or description. Only the fields you provide are changed. Use the status field to mark a deal Won or Lost."
+    },
+    {
+      "name": "List Pipelines",
+      "category": "Deals",
+      "description": "Lists the deal pipelines (deal groups) in the account with paging. Use the returned IDs with Create Deal, Update Deal, and List Stages."
+    },
+    {
+      "name": "List Stages",
+      "category": "Deals",
+      "description": "Lists the stages of a deal pipeline in order. Use the returned stage IDs when creating, updating, or filtering deals."
+    },
+    {
+      "name": "List Automations",
+      "category": "Automations",
+      "description": "Lists the automations in the account with paging. Returns each automation's ID, name, status, and how many contacts have entered it."
+    },
+    {
+      "name": "Add Contact To Automation",
+      "category": "Automations",
+      "description": "Adds a contact to an automation, starting them at its first step. The contact enters the automation even if they don't meet its normal start-trigger conditions."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Lists email campaigns with optional status filtering and paging. Each campaign includes basic performance stats such as send count, unique opens, and link clicks."
+    },
+    {
+      "name": "Add Note To Contact",
+      "category": "Notes",
+      "description": "Adds a note to a contact's activity timeline. Notes are visible on the contact record in ActiveCampaign."
+    }
+  ],
+  "triggers": [
+    "On ActiveCampaign Event"
+  ],
+  "idealUseCases": [
+    "Sync leads captured elsewhere into ActiveCampaign as contacts without creating duplicates",
+    "Tag and segment contacts, then start them in automations based on external events",
+    "Keep CRM deals up to date and move them through pipeline stages",
+    "Subscribe or unsubscribe contacts on mailing lists and set custom field values",
+    "Trigger downstream workflows the moment a contact, tag, deal, or campaign event occurs"
+  ],
+  "agentIdeas": [
+    "When an **ActiveCampaign** \"On ActiveCampaign Event\" trigger fires for a new contact, use **Slack** \"Send Message To Channel\" to alert the sales team with the contact's email and name.",
+    "Use **Google Sheets** \"Get Rows\" to read a list of leads, then call **ActiveCampaign** \"Sync Contact\" for each row to upsert them into ActiveCampaign without duplicates.",
+    "When an **ActiveCampaign** \"On ActiveCampaign Event\" trigger fires for a won deal (Deal Updated), use **Gmail** \"Send Message\" to send the customer an onboarding welcome email."
+  ],
+  "icon": "/icon.webp",
+  "iconFile": "services/activecampaign/public/icon.webp",
+  "sourcePaths": {
+    "service": "services/activecampaign",
+    "readme": "services/activecampaign/README.md",
+    "index": "services/activecampaign/src/index.js"
+  }
+}

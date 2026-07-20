@@ -1,0 +1,105 @@
+{
+  "slug": "gravity-forms",
+  "name": "Gravity Forms",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Complete WordPress Gravity Forms integration for creating, managing, and processing form submissions. Build sophisticated form workflows with automated entry processing and notification systems.",
+  "actionCount": 13,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Form Management",
+    "Form Submission",
+    "Entry Management",
+    "Notification Management"
+  ],
+  "actions": [
+    {
+      "name": "Create Form",
+      "category": "Form Management",
+      "description": "Create a new Gravity Forms form with specified configuration including fields, notifications, and confirmations. This method allows you to programmatically build complex forms with multiple field types, validation rules, and custom styling options."
+    },
+    {
+      "name": "Get Form",
+      "category": "Form Management",
+      "description": "Retrieve detailed information about a specific Gravity Forms form including all field configurations, notifications, confirmations, and form settings. This method returns the complete form structure needed for form rendering or administrative purposes."
+    },
+    {
+      "name": "Delete Form",
+      "category": "Form Management",
+      "description": "Permanently delete a Gravity Forms form and optionally all its associated entries. By default, forms are moved to trash; use the force parameter to permanently delete the form and all its data including entries, notifications, and confirmations."
+    },
+    {
+      "name": "Get Forms List",
+      "category": "Form Management",
+      "description": "Retrieve a comprehensive list of all Gravity Forms in your WordPress site with basic information including titles, IDs, and entry counts. This method provides an overview of all forms for management and selection purposes."
+    },
+    {
+      "name": "Update Form",
+      "category": "Form Management",
+      "description": "Update an existing Gravity Forms form with new configuration, fields, or settings. This method completely replaces the form configuration, so ensure all required properties are included to prevent data loss."
+    },
+    {
+      "name": "Submit Entry",
+      "category": "Form Submission",
+      "description": "Submit form data through the complete Gravity Forms submission process including validation, spam filtering, notifications, and confirmations. This method processes the submission as if submitted through the actual form on your website."
+    },
+    {
+      "name": "Validate Submission",
+      "category": "Form Submission",
+      "description": "Validate form submission data without actually creating an entry. This method checks field validation rules, required fields, and performs anti-spam checks to ensure data integrity before submission."
+    },
+    {
+      "name": "Create Entry",
+      "category": "Entry Management",
+      "description": "Directly create a form entry bypassing the normal submission process. This method creates entries without triggering notifications, confirmations, or validation - useful for importing data or programmatic entry creation."
+    },
+    {
+      "name": "Update Entry",
+      "category": "Entry Management",
+      "description": "Update an existing form entry with new field values or metadata. This method allows modification of entry data after submission, useful for data correction or status updates."
+    },
+    {
+      "name": "Get Entry",
+      "category": "Entry Management",
+      "description": "Retrieve detailed information about a specific form entry including all field values, metadata, and submission details. This method provides complete entry data for review or processing."
+    },
+    {
+      "name": "Delete Entry",
+      "category": "Entry Management",
+      "description": "Delete an existing form entry permanently or move it to trash. Use force parameter to control whether the entry is permanently removed or can be restored later."
+    },
+    {
+      "name": "Get Form Entries",
+      "category": "Entry Management",
+      "description": "Retrieve all entries submitted to a specific form with pagination support. This method returns entry data along with submission metadata and total counts for management and analysis purposes."
+    },
+    {
+      "name": "Send Entry Notification",
+      "category": "Notification Management",
+      "description": "Manually trigger notifications for a specific form entry. This method sends all configured notifications for the entry, useful for resending notifications or triggering them for entries created directly via API."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Creating dynamic WordPress forms with complex field configurations and validation",
+    "Processing form submissions with automated data validation and spam filtering",
+    "Building customer support ticket systems with form-based data collection",
+    "Managing lead generation workflows with automated form processing and notifications",
+    "Creating membership registration and user onboarding forms with custom workflows",
+    "Building survey and feedback collection systems with automated response processing",
+    "Integrating form submissions with CRM systems and marketing automation platforms",
+    "Managing e-commerce order forms and payment processing workflows"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.svg",
+  "iconFile": "services/gravity-forms/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/gravity-forms",
+    "readme": "services/gravity-forms/README.md",
+    "index": "services/gravity-forms/src/index.js"
+  }
+}

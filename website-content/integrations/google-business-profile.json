@@ -1,0 +1,95 @@
+{
+  "slug": "google-business-profile",
+  "name": "Google Business Profile",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage Google Business Profile accounts, business locations, and customer reviews from FlowRunner. This service wraps the Google Business Profile APIs (Account Management, Business Information, and the legacy v4 Reviews API) behind a single OAuth2 (Google) connection.",
+  "actionCount": 11,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Accounts",
+    "Locations",
+    "Reviews",
+    "Media"
+  ],
+  "actions": [
+    {
+      "name": "List Accounts",
+      "category": "Accounts",
+      "description": "Lists all Google Business Profile accounts the authenticated user can access, including personal accounts and location groups (organizations). Returns each account's resource name, display name, type, role, and verification state. Supports pagination."
+    },
+    {
+      "name": "Get Account",
+      "category": "Accounts",
+      "description": "Retrieves a single Google Business Profile account by its resource name, returning its display name, type, role, and verification state. Accepts either a bare account id or a full resource name (accounts/{accountId})."
+    },
+    {
+      "name": "List Locations",
+      "category": "Locations",
+      "description": "Lists business locations under a specified account. A readMask is REQUIRED by the Business Information API and defaults to a sensible set (name, title, storefrontAddress, phoneNumbers) when not supplied. Supports server-side filtering, ordering, and pagination."
+    },
+    {
+      "name": "Get Location",
+      "category": "Locations",
+      "description": "Retrieves the full details of a single business location. A readMask is REQUIRED by the Business Information API; when omitted, a comprehensive default mask is applied. Accepts a bare location id or a full resource name (locations/{locationId})."
+    },
+    {
+      "name": "Update Location",
+      "category": "Locations",
+      "description": "Updates fields on a business location. An updateMask is REQUIRED and must list exactly the fields being changed (e.g. title,phoneNumbers,websiteUri); only those fields in the provided location object are applied. Accepts a bare location id or a full resource name (locations/{locationId})."
+    },
+    {
+      "name": "List Reviews",
+      "category": "Reviews",
+      "description": "Lists customer reviews for a business location using the legacy Business Profile v4 API, including star rating, reviewer, comment, and any existing owner reply. Returns the location's average rating and total review count. Supports ordering and pagination (max 50 per page)."
+    },
+    {
+      "name": "Get Review",
+      "category": "Reviews",
+      "description": "Retrieves a single customer review for a location by its review id, including the star rating, reviewer, comment, and any existing owner reply. Uses the legacy Business Profile v4 API."
+    },
+    {
+      "name": "Reply To Review",
+      "category": "Reviews",
+      "description": "Creates or updates the business owner's public reply to a customer review. Calling this on a review that already has a reply overwrites the existing reply. Uses the legacy Business Profile v4 API."
+    },
+    {
+      "name": "Delete Review Reply",
+      "category": "Reviews",
+      "description": "Deletes the business owner's reply to a customer review, removing the public response. The review itself is not affected. Uses the legacy Business Profile v4 API."
+    },
+    {
+      "name": "Batch Get Reviews",
+      "category": "Reviews",
+      "description": "Retrieves reviews across multiple locations of an account in a single batch call using the legacy Business Profile v4 API. Accepts up to 10 location ids and returns the reviews for each, along with per-location average rating and total review count."
+    },
+    {
+      "name": "List Location Media",
+      "category": "Media",
+      "description": "Lists the photos and videos associated with a business location (owner and customer media) using the legacy Business Profile v4 API. Returns media items with their URLs, category, and metadata. Supports pagination."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Monitor and reply to new customer reviews across all of a business's locations from a single automation",
+    "Keep location details (hours, phone, website) in sync with an external source of truth",
+    "Aggregate reviews and average ratings across multiple locations for reporting or alerting",
+    "Audit an account's locations and their media assets on a schedule"
+  ],
+  "agentIdeas": [
+    "Use **Google Business Profile** \"List Reviews\" to pull recent low-star reviews, then **Slack** \"Send Message To Channel\" to alert the support team so they can draft a response.",
+    "After a customer complaint is resolved, use **Google Business Profile** \"Reply To Review\" to post the public response and **Gmail** \"Send Message\" to confirm resolution with the customer.",
+    "Use **Google Business Profile** \"Batch Get Reviews\" across an account's locations, then **Google Sheets** \"Add Row\" to log each location's average rating and review count for a weekly reputation report."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/google-business-profile/public/icon.png",
+  "sourcePaths": {
+    "service": "services/google-business-profile",
+    "readme": "services/google-business-profile/README.md",
+    "index": "services/google-business-profile/src/index.js"
+  }
+}

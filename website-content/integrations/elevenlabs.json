@@ -1,0 +1,129 @@
+{
+  "slug": "elevenlabs",
+  "name": "ElevenLabs",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "AI-powered voice synthesis and audio processing integration for ElevenLabs. Convert text to natural-sounding speech, generate sound effects, clone and design custom voices, and retrieve audio history — all with file storage and direct download URL support.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Audio Generation",
+    "Account",
+    "Voice Management",
+    "Audio Processing",
+    "Voice Generation",
+    "Models",
+    "History"
+  ],
+  "actions": [
+    {
+      "name": "Text to Speech",
+      "category": "Audio Generation",
+      "description": "Converts text to speech using ElevenLabs AI voice synthesis. Generates high-quality, natural-sounding audio from text input with customizable voice selection and model options. The audio file is saved to file storage and the file URL is returned."
+    },
+    {
+      "name": "Get User Info",
+      "category": "Account",
+      "description": "Retrieves information about your ElevenLabs account including subscription tier, character quota, and usage statistics. Use this to monitor your API usage and remaining credits."
+    },
+    {
+      "name": "Delete Voice",
+      "category": "Voice Management",
+      "description": "Deletes a custom voice from your ElevenLabs account. Only custom voices you have created can be deleted. Pre-made voices cannot be removed. Use this to manage your voice library and stay within voice limits."
+    },
+    {
+      "name": "Speech to Text",
+      "category": "Audio Processing",
+      "description": "Converts audio from a file URL to text transcription using ElevenLabs speech recognition. Supports multiple audio formats including MP3, WAV, and more."
+    },
+    {
+      "name": "Text to Sound Effects",
+      "category": "Audio Generation",
+      "description": "Generates sound effects from text descriptions using ElevenLabs AI. Create realistic sound effects by describing what you want to hear."
+    },
+    {
+      "name": "Get Voice",
+      "category": "Voice Management",
+      "description": "Retrieves detailed information about a specific voice including settings, metadata, and availability."
+    },
+    {
+      "name": "Edit Voice",
+      "category": "Voice Management",
+      "description": "Updates voice metadata including name, description, and labels. This endpoint uses multipart/form-data to modify voice properties. Only available for custom voices."
+    },
+    {
+      "name": "Create Voice (Instant Clone)",
+      "category": "Voice Management",
+      "description": "Creates an instant voice clone (IVC) from audio samples. Upload audio files to quickly create a custom voice. This method is faster than PVC but may have lower quality for some use cases."
+    },
+    {
+      "name": "Create Voice (Professional)",
+      "category": "Voice Management",
+      "description": "Creates a professional voice clone (PVC) with metadata only. Audio samples must be added separately using the Add Voice Samples endpoint. PVC offers higher quality than IVC."
+    },
+    {
+      "name": "Add Voice Samples",
+      "category": "Voice Management",
+      "description": "Adds audio samples to an existing professional voice clone (PVC). Multiple samples improve voice quality and consistency. Each sample should be clear audio of the target voice."
+    },
+    {
+      "name": "Design Voice from Text",
+      "category": "Voice Generation",
+      "description": "Generates AI voice previews from a text description. Describe the voice characteristics you want and ElevenLabs will generate preview samples. You can then create an actual voice from your favorite preview."
+    },
+    {
+      "name": "Create Voice from Generation",
+      "category": "Voice Generation",
+      "description": "Creates a usable voice from a generated preview. After using Design Voice to generate previews, use this to save your favorite preview as an actual voice you can use for text-to-speech."
+    },
+    {
+      "name": "Get Models",
+      "category": "Models",
+      "description": "Retrieves a list of all available text-to-speech and speech-to-text models with their capabilities and supported languages."
+    },
+    {
+      "name": "Get Voices",
+      "category": "Voice Management",
+      "description": "Retrieves a list of all available voices in your account including pre-made and custom voices."
+    },
+    {
+      "name": "Get History",
+      "category": "History",
+      "description": "Retrieves the history of all text-to-speech generations made with your account. Results can be filtered and paginated."
+    },
+    {
+      "name": "Get History Item Audio",
+      "category": "History",
+      "description": "Downloads the audio file for a specific history item and saves it to file storage."
+    },
+    {
+      "name": "Delete History Item",
+      "category": "History",
+      "description": "Deletes a specific history item from your account. This removes the audio file and metadata permanently."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Converting article or notification text into audio files for podcasts or voice alerts",
+    "Generating branded voice-overs using a cloned or custom-designed voice",
+    "Creating sound effects from text descriptions for media production pipelines",
+    "Retrieving and archiving audio history items from ElevenLabs to external storage",
+    "Building multilingual audio content pipelines with model selection"
+  ],
+  "agentIdeas": [
+    "When a **Google Sheets** \"On New Row\" trigger fires with a script column, use **ElevenLabs** \"Text to Speech\" to generate audio and store the returned URL back in the sheet with \"Update Cell\"",
+    "Use **ElevenLabs** \"Design Voice from Text\" to prototype a brand voice, then pass the resulting voice ID to \"Text to Speech\" for bulk audio generation across a content library",
+    "Combine **ElevenLabs** \"Speech to Text\" with **Brevo** \"Send Transactional Email\" to transcribe an audio file and email the transcript to stakeholders"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/elevenlabs/public/icon.png",
+  "sourcePaths": {
+    "service": "services/elevenlabs",
+    "readme": "services/elevenlabs/README.md",
+    "index": "services/elevenlabs/src/index.js"
+  }
+}

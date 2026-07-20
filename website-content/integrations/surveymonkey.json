@@ -1,0 +1,121 @@
+{
+  "slug": "surveymonkey",
+  "name": "SurveyMonkey",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner service for the [SurveyMonkey API v3](https://developer.surveymonkey.com/api/v3/). Manage surveys, responses, collectors, pages, and questions using a SurveyMonkey private-app access token (sent as an `Authorization: Bearer <token>` header on every request).",
+  "actionCount": 16,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Surveys",
+    "Responses",
+    "Collectors",
+    "Pages & Questions",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "List Surveys",
+      "category": "Surveys",
+      "description": "Retrieves a paginated list of surveys owned by or shared with the authenticated account. Supports filtering by title and sorting. Results are wrapped in a standard envelope with data, page, per_page, total, and links for navigating pages."
+    },
+    {
+      "name": "Get Survey",
+      "category": "Surveys",
+      "description": "Retrieves basic details for a single survey by its ID, including title, category, question and page counts, response counts, and timestamps. Does not include the full page/question structure - use Get Survey Details for that."
+    },
+    {
+      "name": "Get Survey Details",
+      "category": "Surveys",
+      "description": "Retrieves the full expanded structure of a survey, including all pages and their questions with question headings, families, subtypes, and answer choice definitions (choice IDs and text). This is the mapping you need to translate response answer choice IDs into human-readable question and answer text."
+    },
+    {
+      "name": "Create Survey",
+      "category": "Surveys",
+      "description": "Creates a new survey. Provide a title to create a blank survey, or supply a template ID or an existing survey ID to copy its structure. If a source is supplied the new title overrides the copied title."
+    },
+    {
+      "name": "Delete Survey",
+      "category": "Surveys",
+      "description": "Permanently deletes a survey by its ID. This also removes the survey's collectors and responses. This action cannot be undone."
+    },
+    {
+      "name": "List Survey Responses",
+      "category": "Responses",
+      "description": "Retrieves a paginated list of response summaries for a survey (without the answer content). Supports filtering by response status and by the date the response was created. Use Get Response Details or List All Responses Bulk to obtain answer content."
+    },
+    {
+      "name": "Get Response Details",
+      "category": "Responses",
+      "description": "Retrieves the full answer content for a single response, structured as pages -> questions -> answers. IMPORTANT: answers reference question and answer-choice IDs (choice_id, row_id, col_id) rather than human-readable text. To translate them into question headings and choice labels, fetch Get Survey Details for the same survey and map the IDs. Set Include Survey Mapping to have this operation fetch the survey structure and attach a readable answer summary automatically."
+    },
+    {
+      "name": "List All Responses Bulk",
+      "category": "Responses",
+      "description": "Retrieves a paginated list of responses for a survey with full answer content included inline for each response (pages -> questions -> answers). Answers still reference question and choice IDs; combine with Get Survey Details to translate them to readable text. Prefer this over calling Get Response Details per response when exporting many responses."
+    },
+    {
+      "name": "List Collectors",
+      "category": "Collectors",
+      "description": "Retrieves a paginated list of collectors for a survey. A collector is a channel through which responses are gathered (for example a web link or an email invitation). Results are wrapped in the standard envelope."
+    },
+    {
+      "name": "Get Collector",
+      "category": "Collectors",
+      "description": "Retrieves details for a single collector by its ID, including its type, name, status, response count, and (for web link collectors) the shareable URL."
+    },
+    {
+      "name": "Create Collector",
+      "category": "Collectors",
+      "description": "Creates a new collector for a survey. Choose Web Link to generate a shareable survey URL or Email to create an email invitation collector. Returns the created collector; for web link collectors the response includes the shareable URL."
+    },
+    {
+      "name": "Get Collector Responses",
+      "category": "Collectors",
+      "description": "Retrieves a paginated list of response summaries gathered by a specific collector. Use this to review responses scoped to one channel (for example a single web link or email campaign) rather than the whole survey."
+    },
+    {
+      "name": "List Survey Pages",
+      "category": "Pages & Questions",
+      "description": "Retrieves a paginated list of pages within a survey, including each page's title, description, and question count. Use Get Page or List Page Questions to drill into a specific page."
+    },
+    {
+      "name": "Get Page",
+      "category": "Pages & Questions",
+      "description": "Retrieves details for a single page within a survey by its page ID, including title, description, and question count."
+    },
+    {
+      "name": "List Page Questions",
+      "category": "Pages & Questions",
+      "description": "Retrieves a paginated list of questions on a specific survey page, including each question's heading, family (question type), subtype, and answer choice definitions. Combine with response data to interpret answers."
+    },
+    {
+      "name": "Get Me",
+      "category": "Account",
+      "description": "Retrieves the account details of the authenticated user, including user ID, username, email, account type, and language. Useful as a connection check to verify the access token is valid."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Export survey responses into a spreadsheet or database for reporting and analysis.",
+    "Automatically notify a team when new responses come in and translate answer IDs into readable text.",
+    "Programmatically create surveys and web link or email collectors, then distribute the share URL.",
+    "Audit account surveys, pages, and questions, or verify connectivity via the authenticated user."
+  ],
+  "agentIdeas": [
+    "Use SurveyMonkey **\"List All Responses Bulk\"** together with **\"Get Survey Details\"** to translate answer IDs to text, then Google Sheets **\"Add Rows\"** to export each response into a reporting spreadsheet.",
+    "After SurveyMonkey **\"Create Collector\"** (Web Link), use Slack **\"Send Message To Channel\"** to share the generated survey URL with your team.",
+    "Use SurveyMonkey **\"Get Response Details\"** with Include Survey Mapping enabled, then use HubSpot to update the corresponding contact or log a follow-up based on flagged answers."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/surveymonkey/public/icon.png",
+  "sourcePaths": {
+    "service": "services/surveymonkey",
+    "readme": "services/surveymonkey/README.md",
+    "index": "services/surveymonkey/src/index.js"
+  }
+}

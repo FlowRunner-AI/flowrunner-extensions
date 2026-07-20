@@ -1,0 +1,116 @@
+{
+  "slug": "facebook-messenger",
+  "name": "Facebook Messenger",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Interact with the Facebook Messenger Platform via the Meta Graph API. Send text, media, template, and quick-reply messages, drive sender actions, browse conversations and user profiles, and configure a Page's Messenger Profile (greeting, get-started button, persistent menu).",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Sending",
+    "Conversations",
+    "Users",
+    "Messenger Profile",
+    "Pages"
+  ],
+  "actions": [
+    {
+      "name": "Send Text Message",
+      "category": "Sending",
+      "description": "Sends a plain text message to a Messenger user via POST /{pageId}/messages using the Page access token. The recipient must have messaged the Page first; the PSID (page-scoped user id) comes from those conversations (see List Conversations). Standard messaging (RESPONSE/UPDATE) is only allowed inside the 24-hour messaging window after the user's last message; outside that window set Messaging Type to \"Message Tag\" and pick an eligible tag (e.g. Human Agent). Requires pages_messaging, which needs Meta App Review Advanced Access for public use — Development mode works for Pages you own."
+    },
+    {
+      "name": "Send Media Message",
+      "category": "Sending",
+      "description": "Sends an image, audio, video, or file attachment by URL to a Messenger user via POST /{pageId}/messages with the Page access token. Facebook fetches the media from the provided public URL. Set Reusable to true to have Facebook return a reusable attachment_id for future sends. Subject to the same 24-hour window / message tag rules and pages_messaging Advanced Access requirement as text messages."
+    },
+    {
+      "name": "Send Button Template",
+      "category": "Sending",
+      "description": "Sends a button template message (text plus up to 3 tappable buttons) via POST /{pageId}/messages with the Page access token. Each button is either a \"web_url\" button (opens a link) or a \"postback\" button (sends a developer-defined payload back to your webhook). Uses RESPONSE messaging within the 24-hour window. Requires pages_messaging Advanced Access for public use."
+    },
+    {
+      "name": "Send Generic Template",
+      "category": "Sending",
+      "description": "Sends a generic (carousel) template message via POST /{pageId}/messages with the Page access token. The Elements parameter is a raw array of up to 10 element objects, each a horizontally-scrollable card with title, optional subtitle, image_url, default_action, and buttons. Uses RESPONSE messaging within the 24-hour window. Requires pages_messaging Advanced Access for public use."
+    },
+    {
+      "name": "Send Quick Replies",
+      "category": "Sending",
+      "description": "Sends a text message accompanied by up to 13 quick reply buttons via POST /{pageId}/messages with the Page access token. Quick replies appear as tappable chips above the composer and disappear once tapped, sending their payload back to your webhook. Uses RESPONSE messaging within the 24-hour window. Requires pages_messaging Advanced Access for public use."
+    },
+    {
+      "name": "Send Sender Action",
+      "category": "Sending",
+      "description": "Sends a sender action to a Messenger user via POST /{pageId}/messages with the Page access token. Typing On shows a typing indicator, Typing Off hides it, and Mark Seen marks the user's last message as read. Sender actions do not count as messages and help make automated conversations feel more responsive."
+    },
+    {
+      "name": "List Conversations",
+      "category": "Conversations",
+      "description": "Lists Messenger conversations for a Page via GET /{pageId}/conversations?platform=messenger using the Page access token. Returns each conversation's id, participants, last update time, a snippet of the latest message, and the unread count. Use the conversation id with Get Conversation Messages, and the participant ids as PSIDs for sending. Requires pages_read_engagement and pages_messaging."
+    },
+    {
+      "name": "Get Conversation Messages",
+      "category": "Conversations",
+      "description": "Lists the messages in a Messenger conversation via GET /{conversationId}/messages using the Page access token. Returns each message's id, text, sender (from), recipient (to), creation time, and any attachments. Note that only recent messages are accessible through the API; older history may not be returned. Requires pages_read_engagement and pages_messaging."
+    },
+    {
+      "name": "Get User Profile",
+      "category": "Users",
+      "description": "Retrieves a Messenger user's profile via GET /{psid} using the Page access token. Returns first_name, last_name, profile_pic, locale, and timezone where available. Field availability depends on the permissions granted to your app and the user's privacy settings — some fields (e.g. locale, timezone) may be omitted. The user must have an active conversation with the Page."
+    },
+    {
+      "name": "Get Messenger Profile",
+      "category": "Messenger Profile",
+      "description": "Retrieves the Page's Messenger profile via GET /me/messenger_profile using the Page access token. Returns the configured greeting, Get Started button payload, and persistent menu. The Messenger profile controls the welcome experience and navigation shown to users in the Page's Messenger thread. Requires pages_messaging."
+    },
+    {
+      "name": "Set Get Started Button",
+      "category": "Messenger Profile",
+      "description": "Configures the Page's Get Started button via POST /me/messenger_profile using the Page access token. When a user opens the Page's Messenger thread for the first time they see a Get Started button; tapping it sends the specified payload to your webhook so you can trigger a welcome flow. Requires pages_messaging."
+    },
+    {
+      "name": "Set Greeting",
+      "category": "Messenger Profile",
+      "description": "Sets the Page's Messenger greeting text via POST /me/messenger_profile using the Page access token. The greeting is shown on the welcome screen before a user starts a conversation. This sets the default-locale greeting; personalization tokens such as {{user_first_name}} are supported by Messenger. Requires pages_messaging."
+    },
+    {
+      "name": "Set Persistent Menu",
+      "category": "Messenger Profile",
+      "description": "Sets the Page's persistent menu via POST /me/messenger_profile using the Page access token. The persistent menu is always accessible from the composer and can contain nested call-to-action items (postback, web_url, or nested submenus). The Menu parameter is a raw array of menu objects, one per locale. Requires pages_messaging."
+    },
+    {
+      "name": "Delete Messenger Profile Fields",
+      "category": "Messenger Profile",
+      "description": "Deletes specific fields from the Page's Messenger profile via DELETE /me/messenger_profile using the Page access token. Select one or more of greeting, get_started, or persistent_menu to remove. Note that deleting get_started also clears the persistent menu, since the Get Started button is a prerequisite for it. Requires pages_messaging."
+    },
+    {
+      "name": "List My Pages",
+      "category": "Pages",
+      "description": "Lists the Facebook Pages the authenticated user manages via GET /me/accounts. Returns each Page's id, name, and category. Use a Page id with the messaging and Messenger profile actions — those actions automatically resolve the corresponding Page access token behind the scenes. Requires pages_show_list."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Deliver automated replies, order updates, or notifications to customers who have messaged your Facebook Page",
+    "Send rich interactive messages (button templates, generic-template carousels, quick replies) to guide users through a flow",
+    "Discover conversations and page-scoped user IDs (PSIDs), then look up user profiles for personalization",
+    "Configure a Page's Messenger onboarding experience: greeting text, Get Started button, and persistent menu"
+  ],
+  "agentIdeas": [
+    "After **Get Conversation Messages** surfaces a customer PSID, call **HubSpot** \"Create Contact\" to log the lead, then use **Send Text Message** to reply within the 24-hour window",
+    "When **HubSpot** \"Get Contact By Email\" confirms an existing customer, use **Send Button Template** to offer support options and **Send Quick Replies** to collect a structured response",
+    "Reach a customer on whichever channel they last used by pairing **WhatsApp** \"Send Text Message\" with **Facebook Messenger** \"Send Text Message\", personalizing each with data from **Get User Profile**"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/facebook-messenger/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/facebook-messenger",
+    "readme": "services/facebook-messenger/README.md",
+    "index": "services/facebook-messenger/src/index.js"
+  }
+}

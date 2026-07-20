@@ -1,0 +1,69 @@
+{
+  "slug": "clearbit",
+  "name": "Clearbit",
+  "marketingCategory": "Sales Intelligence & Enrichment",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Enrich people and companies with Clearbit's data APIs — turn an email, domain, or IP address into a rich profile (name, employment, social, firmographics, technology stack, and more). Authenticates with your Clearbit secret API key over HTTP Basic auth.",
+  "actionCount": 6,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Enrichment",
+    "Prospecting",
+    "Discovery"
+  ],
+  "actions": [
+    {
+      "name": "Enrich Person",
+      "category": "Enrichment",
+      "description": "Enriches a person from their email address using the Clearbit Person Enrichment API. Returns the person's full name, employment (company, title, seniority, role), social handles (LinkedIn, Twitter, GitHub, Facebook), geographic location, bio, and avatar. If Clearbit is still resolving the lookup it returns a pending payload (HTTP 202) — retry after a few seconds. NOTE: Clearbit is now part of HubSpot (Breeze Intelligence); this endpoint works with a legacy Clearbit secret API key."
+    },
+    {
+      "name": "Enrich Company",
+      "category": "Enrichment",
+      "description": "Enriches a company from its domain using the Clearbit Company Enrichment API. Returns the legal and common name, description, category (industry, sector, SIC/NAICS), metrics (employees, estimated revenue, Alexa rank, market cap), technology stack, social profiles, logo, and location. If Clearbit is still resolving the lookup it returns a pending payload (HTTP 202) — retry after a few seconds. NOTE: Clearbit is now part of HubSpot (Breeze Intelligence); this endpoint works with a legacy Clearbit secret API key."
+    },
+    {
+      "name": "Enrich Combined",
+      "category": "Enrichment",
+      "description": "Enriches a person and their employer in a single call using the Clearbit Combined Enrichment API. Returns a person object (name, employment, social, location, avatar) alongside a company object (name, category, metrics, technology, social, logo) for the domain of the person's email. If Clearbit is still resolving the lookup it returns a pending payload (HTTP 202) — retry after a few seconds. NOTE: Clearbit is now part of HubSpot (Breeze Intelligence); this endpoint works with a legacy Clearbit secret API key."
+    },
+    {
+      "name": "Find Contacts (Prospector)",
+      "category": "Prospecting",
+      "description": "Finds business contacts at a company domain using the Clearbit Prospector API, optionally filtered by role, seniority, and job title. Returns matching people with name, title, role, seniority, verified email, and company details. LEGACY: the Prospector API was deprecated ahead of the HubSpot (Breeze Intelligence) migration and may be unavailable on newer accounts; use with an established legacy Clearbit account."
+    },
+    {
+      "name": "Search Companies (Discovery)",
+      "category": "Discovery",
+      "description": "Searches for companies matching a query using the Clearbit Discovery API. Accepts a free-text or Clearbit Discovery query string (e.g. \"tag:SaaS employees:>100 tech:salesforce\") and returns matching company records with name, domain, category, and metrics. LEGACY: the Discovery API was deprecated ahead of the HubSpot (Breeze Intelligence) migration and may be unavailable on newer accounts; use with an established legacy Clearbit account."
+    },
+    {
+      "name": "Reveal Company (IP Lookup)",
+      "category": "Discovery",
+      "description": "Identifies the company associated with an IP address using the Clearbit Reveal API — useful for de-anonymizing website visitors. Returns the matched company (name, domain, category, metrics), the match confidence, geo/IP details, and type (company, education, government, isp). LEGACY: the Reveal API was deprecated ahead of the HubSpot (Breeze Intelligence) migration and may be unavailable on newer accounts; use with an established legacy Clearbit account."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Enrich an inbound signup's email into a full person + company profile before routing to sales",
+    "Auto-fill CRM contact and company records from just an email or domain",
+    "Identify (reveal) the companies behind anonymous website visitors by IP for account-based marketing",
+    "Build targeted prospect lists by searching companies and finding contacts at a domain"
+  ],
+  "agentIdeas": [
+    "Use **Clearbit** \"Enrich Combined\" to turn a signup email into a full person and company profile, then call **HubSpot** \"Create Contact\" to seed a fully populated CRM record.",
+    "Use **Clearbit** \"Reveal Company (IP Lookup)\" to identify the company behind a visitor's IP, then use **Apollo** \"People Search\" to find decision-maker contacts at that company for outreach.",
+    "Use **Clearbit** \"Find Contacts (Prospector)\" to pull business contacts at a target domain, then call **Copper** \"Create Person\" to add each prospect to your CRM pipeline."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/clearbit/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/clearbit",
+    "readme": "services/clearbit/README.md",
+    "index": "services/clearbit/src/index.js"
+  }
+}

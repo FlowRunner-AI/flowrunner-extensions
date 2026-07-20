@@ -1,0 +1,171 @@
+{
+  "slug": "paypal",
+  "name": "PayPal",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [PayPal](https://www.paypal.com/) with FlowRunner to process orders and payments, manage invoices and subscriptions, and send batch payouts across the Checkout, Payments, Invoicing, Billing, and Payouts APIs.",
+  "actionCount": 26,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Orders",
+    "Payments",
+    "Invoicing",
+    "Subscriptions",
+    "Payouts"
+  ],
+  "actions": [
+    {
+      "name": "Create Order",
+      "category": "Orders",
+      "description": "Creates a PayPal order (Checkout v2). Provide either a simple amount, currency, and description to build a single purchase unit, or pass a raw purchaseUnits array (1-10 units) for full control over items, shipping, and payees. The order intent controls whether funds are captured immediately (Capture) or reserved for later capture (Authorize). Returns the order id, status, and approval links."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves the full details of a PayPal order by its id, including status, purchase units, payer information, and payment source."
+    },
+    {
+      "name": "Capture Order",
+      "category": "Orders",
+      "description": "Captures payment for a previously approved order (intent Capture). The buyer must have approved the order first. Returns the captured payment details, including the capture id used for later refunds."
+    },
+    {
+      "name": "Authorize Order",
+      "category": "Orders",
+      "description": "Authorizes (reserves) payment for a previously approved order with intent Authorize. Returns the authorization details, including the authorization id used to capture or void the payment later."
+    },
+    {
+      "name": "Get Captured Payment",
+      "category": "Payments",
+      "description": "Retrieves the details of a captured payment by its capture id, including amount, status, and whether it is the final capture."
+    },
+    {
+      "name": "Refund Captured Payment",
+      "category": "Payments",
+      "description": "Refunds a captured payment. Leave the amount empty for a full refund, or provide an amount and currency for a partial refund. Optionally add a note visible to the payer and an external invoice id. Returns the refund id and status."
+    },
+    {
+      "name": "Get Authorized Payment",
+      "category": "Payments",
+      "description": "Retrieves the details of an authorized (reserved) payment by its authorization id, including amount, status, and expiration time."
+    },
+    {
+      "name": "Capture Authorized Payment",
+      "category": "Payments",
+      "description": "Captures funds from a previously authorized payment. Leave the amount empty to capture the full authorized amount. Set Final Capture to true when no further captures against this authorization are expected. Returns the resulting capture id and status."
+    },
+    {
+      "name": "Void Authorized Payment",
+      "category": "Payments",
+      "description": "Voids (cancels) a previously authorized payment so the reserved funds are released. Once voided, the authorization can no longer be captured."
+    },
+    {
+      "name": "Create Draft Invoice",
+      "category": "Invoicing",
+      "description": "Creates a draft invoice. Provide the full PayPal invoice object via the Invoice parameter, containing detail (currency_code, invoice_number, note), invoicer (business info), primary_recipients (each with billing_info), and items (each with name, quantity, and unit_amount). The invoice is saved as a draft; use Send Invoice to deliver it. Returns the created invoice id and status."
+    },
+    {
+      "name": "Send Invoice",
+      "category": "Invoicing",
+      "description": "Sends or schedules an invoice to the recipient by email. Optionally override the email subject and note, and control whether copies go to the recipient and the invoicer. Moves the invoice from DRAFT to SENT (or SCHEDULED)."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoicing",
+      "description": "Retrieves the full details of an invoice by its id, including status, recipients, line items, amounts, and payment history."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoicing",
+      "description": "Lists invoices for the merchant account with pagination. Use Page and Page Size to page through results, and enable Total Required to include total item and page counts in the response."
+    },
+    {
+      "name": "Cancel Invoice",
+      "category": "Invoicing",
+      "description": "Cancels a sent invoice and optionally notifies the recipient. Override the notification subject and note as needed. The invoice moves to CANCELLED status."
+    },
+    {
+      "name": "Generate Invoice Number",
+      "category": "Invoicing",
+      "description": "Generates the next available invoice number for the merchant account. Use the returned number as detail.invoice_number when creating a new invoice."
+    },
+    {
+      "name": "Delete Invoice",
+      "category": "Invoicing",
+      "description": "Permanently deletes a draft or cancelled invoice. Sent invoices in other states cannot be deleted."
+    },
+    {
+      "name": "Record Payment",
+      "category": "Invoicing",
+      "description": "Records an external (offline) payment against an invoice, such as cash, check, or bank transfer. Provide the payment method, date, and amount. Returns the recorded payment id."
+    },
+    {
+      "name": "Create Subscription",
+      "category": "Subscriptions",
+      "description": "Creates a subscription for a billing plan. Provide the plan id and subscriber details (name and email). Optionally set the quantity and start time. Returns the subscription id, status, and the approval link the subscriber uses to confirm."
+    },
+    {
+      "name": "Get Subscription",
+      "category": "Subscriptions",
+      "description": "Retrieves the details of a subscription by its id, including status, plan id, subscriber, and billing information."
+    },
+    {
+      "name": "Activate Subscription",
+      "category": "Subscriptions",
+      "description": "Activates a suspended subscription so billing resumes. Optionally provide a reason."
+    },
+    {
+      "name": "Suspend Subscription",
+      "category": "Subscriptions",
+      "description": "Suspends an active subscription, pausing billing until it is reactivated. Provide a reason for the suspension."
+    },
+    {
+      "name": "Cancel Subscription",
+      "category": "Subscriptions",
+      "description": "Cancels an active or suspended subscription. This action is permanent and stops all future billing. Provide a reason for the cancellation."
+    },
+    {
+      "name": "List Plans",
+      "category": "Subscriptions",
+      "description": "Lists billing plans for the merchant account with pagination. Optionally filter by a product id. Enable Total Required to include total item and page counts."
+    },
+    {
+      "name": "Get Plan",
+      "category": "Subscriptions",
+      "description": "Retrieves the details of a billing plan by its id, including status, billing cycles, and pricing."
+    },
+    {
+      "name": "Create Batch Payout",
+      "category": "Payouts",
+      "description": "Creates a batch payout that sends money to one or more recipients. Provide a unique sender batch id, an optional email subject, and an array of payout items, each with a receiver, amount, currency, recipient type, and optional note. Returns the payout batch id and initial status."
+    },
+    {
+      "name": "Get Payout Batch",
+      "category": "Payouts",
+      "description": "Retrieves the status and details of a batch payout by its payout batch id, including the status of each individual payout item."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Accept a payment by creating and capturing (or authorizing) a Checkout order, then refunding or voiding it later.",
+    "Automate invoicing: draft, send, track, and record payments against invoices for the merchant account.",
+    "Manage recurring revenue by creating subscriptions and activating, suspending, or cancelling them.",
+    "Pay out to many recipients at once (contractors, affiliates, refunds) with a single batch payout."
+  ],
+  "agentIdeas": [
+    "When a **WooCommerce** \"On Order Created\" trigger fires, use PayPal \"Create Order\" and \"Capture Order\" to collect payment, then **Gmail** \"Send Message\" to email the buyer a confirmation.",
+    "Use **QuickBooks Online** \"Get Invoice\" to pull an unpaid invoice's line items, call PayPal \"Create Draft Invoice\" and \"Send Invoice\" to bill the customer, then log the sent invoice id with **Google Sheets** \"Add Row\".",
+    "After a PayPal \"Get Payout Batch\" reports a batch as SUCCESS, use **Slack** \"Send Message To Channel\" to notify the finance team and **Google Sheets** \"Add Row\" to record each recipient's payout status."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/paypal/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/paypal",
+    "readme": "services/paypal/README.md",
+    "index": "services/paypal/src/index.js"
+  }
+}

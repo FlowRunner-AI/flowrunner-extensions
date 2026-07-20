@@ -1,0 +1,90 @@
+{
+  "slug": "aws-comprehend",
+  "name": "AWS Comprehend",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Zero-dependency integration with Amazon Comprehend using native AWS Signature V4 signing (Node crypto). Runs synchronous natural-language processing on text — sentiment, entities, key phrases, dominant language, PII, syntax, and targeted (entity-level) sentiment — plus batch variants for processing multiple documents in one call. Supports two authentication methods: direct API Key credentials or IAM Role via STS AssumeRole for cross-account access.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Sentiment",
+    "Entities",
+    "Key Phrases",
+    "Language",
+    "Syntax"
+  ],
+  "actions": [
+    {
+      "name": "Detect Sentiment",
+      "category": "Sentiment",
+      "description": "Analyzes a single document and returns the prevailing sentiment (POSITIVE, NEGATIVE, NEUTRAL, or MIXED) along with confidence scores for each sentiment class. Synchronous, single-document call; the input text must not exceed 5,000 UTF-8 bytes."
+    },
+    {
+      "name": "Detect Entities",
+      "category": "Entities",
+      "description": "Identifies named entities (people, places, organizations, dates, quantities, and more) in a single document, returning each entity's type, text, confidence score, and character offsets. Synchronous, single-document call; the input text must not exceed 5,000 UTF-8 bytes."
+    },
+    {
+      "name": "Detect Key Phrases",
+      "category": "Key Phrases",
+      "description": "Extracts the key noun phrases from a single document, returning each phrase's text, confidence score, and character offsets. Synchronous, single-document call; the input text must not exceed 5,000 UTF-8 bytes."
+    },
+    {
+      "name": "Detect Dominant Language",
+      "category": "Language",
+      "description": "Determines the dominant language of a single document, returning candidate language codes ranked by confidence score. No language must be supplied; the input text must not exceed 5,000 UTF-8 bytes."
+    },
+    {
+      "name": "Detect PII Entities",
+      "category": "Entities",
+      "description": "Locates personally identifiable information (PII) such as names, addresses, emails, phone numbers, and account identifiers in a single document, returning each entity's type, confidence score, and character offsets. English only. Synchronous, single-document call; the input text must not exceed 5,000 UTF-8 bytes."
+    },
+    {
+      "name": "Detect Syntax",
+      "category": "Syntax",
+      "description": "Performs part-of-speech tagging on a single document, returning each token's text, part-of-speech tag, confidence score, and character offsets. Supported languages: English, Spanish, French, German, Italian, and Portuguese. Synchronous, single-document call; the input text must not exceed 5,000 UTF-8 bytes."
+    },
+    {
+      "name": "Detect Targeted Sentiment",
+      "category": "Sentiment",
+      "description": "Performs entity-level (targeted) sentiment analysis on a single document, returning each identified entity along with its mentions and the sentiment expressed toward it. Currently supports English only. Synchronous, single-document call; the input text must not exceed 5,000 UTF-8 bytes."
+    },
+    {
+      "name": "Batch Detect Sentiment",
+      "category": "Sentiment",
+      "description": "Analyzes up to 25 documents in a single request and returns the prevailing sentiment and confidence scores for each. Returns a resultList (successful documents, each keyed by its input Index) and an errorList (documents that failed). Each document must not exceed 5,000 UTF-8 bytes."
+    },
+    {
+      "name": "Batch Detect Entities",
+      "category": "Entities",
+      "description": "Identifies named entities in up to 25 documents in a single request. Returns a resultList (successful documents, each keyed by its input Index with its detected entities) and an errorList (documents that failed). Each document must not exceed 5,000 UTF-8 bytes."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Scoring the sentiment of customer feedback, reviews, or support tickets as they flow through automations",
+    "Extracting named entities (people, organizations, places, dates, quantities) from documents for enrichment or routing",
+    "Pulling key phrases from long text to summarize or tag content",
+    "Detecting the language of incoming text before further processing or translation",
+    "Redacting or flagging personally identifiable information (PII) in user-submitted content",
+    "Part-of-speech tagging for linguistic analysis",
+    "Understanding sentiment toward specific entities mentioned in a document (targeted sentiment)",
+    "Processing up to 25 documents at once with the batch operations"
+  ],
+  "agentIdeas": [
+    "Use **AWS Comprehend** \"Detect Sentiment\" on incoming support emails, then branch on the result to escalate negative messages via **Amazon SNS** \"Publish Message\".",
+    "Use **AWS Comprehend** \"Detect PII Entities\" to flag documents containing sensitive data before storing them with **DynamoDB** \"Put Item\".",
+    "Use **AWS Comprehend** \"Detect Entities\" to extract organizations and people from an article, then enrich a record in **Google Sheets** \"Add Rows\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/aws-comprehend/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/aws-comprehend",
+    "readme": "services/aws-comprehend/README.md",
+    "index": "services/aws-comprehend/src/index.js"
+  }
+}

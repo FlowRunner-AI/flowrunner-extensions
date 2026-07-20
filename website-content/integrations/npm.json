@@ -1,0 +1,75 @@
+{
+  "slug": "npm",
+  "name": "npm Registry",
+  "marketingCategory": "Utilities & Personal",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Read-only access to the public npm registry: fetch package metadata and versions, resolve dist-tags, search packages, and pull download statistics. Public package reads require no authentication; an npm access token is only needed to read private packages.",
+  "actionCount": 7,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Packages",
+    "Search",
+    "Downloads",
+    "Registry"
+  ],
+  "actions": [
+    {
+      "name": "Get Package",
+      "category": "Packages",
+      "description": "Retrieves the full metadata document (packument) for a package, including every published version, dist-tags (such as latest and next), maintainers, description, keywords, license, and repository links. Accepts both unscoped names (e.g. express) and scoped names (e.g. @angular/core) — scoped names are URL-encoded automatically. Public packages need no authentication; a token is only required to read private packages."
+    },
+    {
+      "name": "Get Package Version",
+      "category": "Packages",
+      "description": "Retrieves the metadata for a single package version. The version may be an exact version number (e.g. 4.19.2) or a dist-tag such as latest or next. Returns the manifest for that version including its dependencies, dist information (tarball URL, shasum, integrity), engines, and scripts. Scoped package names are URL-encoded automatically."
+    },
+    {
+      "name": "Get Package Dist-Tags",
+      "category": "Packages",
+      "description": "Retrieves the distribution tags for a package as a map of tag name to version (e.g. {\"latest\":\"4.19.2\",\"next\":\"5.0.0-beta.3\"}). Dist-tags are human-friendly aliases that point to specific versions and are what users install when they do not specify an exact version. Scoped package names are URL-encoded automatically."
+    },
+    {
+      "name": "Search Packages",
+      "category": "Search",
+      "description": "Performs a full-text search of the npm registry and returns an array of matching packages under objects[], each with the package summary (name, version, description, keywords, author, links) plus quality, popularity, and maintenance scores. Supports pagination via size (max 250) and from, and optional scoring weights (quality, popularity, maintenance) between 0 and 1 to bias the ranking. The text field also accepts qualifiers such as author:, maintainer:, scope:, and keywords:."
+    },
+    {
+      "name": "Get Download Count",
+      "category": "Downloads",
+      "description": "Returns the total number of downloads for a package over a period. The period may be a friendly preset (Last Day, Last Week, Last Month, Last Year) or a custom date range in YYYY-MM-DD:YYYY-MM-DD form. Returns the aggregate count together with the resolved start and end dates. Omit the package name to get total downloads across the entire registry for the period."
+    },
+    {
+      "name": "Get Download Range",
+      "category": "Downloads",
+      "description": "Returns a per-day breakdown of downloads for a package over a period. The period may be a friendly preset (Last Day, Last Week, Last Month, Last Year) or a custom date range in YYYY-MM-DD:YYYY-MM-DD form. Returns an array of { day, downloads } entries plus the resolved start and end dates — useful for charting download trends. Omit the package name to get registry-wide daily totals."
+    },
+    {
+      "name": "Get Registry Info",
+      "category": "Registry",
+      "description": "Retrieves the top-level information document from the npm registry root. Useful as a connection and health check, and to read general registry metadata such as the database name and document counts. Requires no authentication."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Monitoring package versions and dist-tags for dependency automation",
+    "Tracking download trends for packages you publish or depend on",
+    "Searching the registry to discover packages by keyword, scope, or author",
+    "Health-checking the registry connection"
+  ],
+  "agentIdeas": [
+    "Use **npm Registry** \"Get Package Dist-Tags\" to check the current `latest` version of a dependency, then when it changes call **GitHub** \"Create Issue\" to open a \"Bump dependency\" ticket in the affected repo.",
+    "Run **npm Registry** \"Get Download Range\" for a package you maintain and use **Google Sheets** \"Add Row\" to log the daily download counts into a spreadsheet for trend charting.",
+    "Use **npm Registry** \"Search Packages\" to discover packages matching a keyword or scope, then post the top results to a channel with **Slack** \"Send Message To Channel\" for team review."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/npm/public/icon.png",
+  "sourcePaths": {
+    "service": "services/npm",
+    "readme": "services/npm/README.md",
+    "index": "services/npm/src/index.js"
+  }
+}

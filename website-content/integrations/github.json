@@ -1,0 +1,511 @@
+{
+  "slug": "github",
+  "name": "GitHub",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Comprehensive GitHub integration via OAuth2 for managing repositories, issues, pull requests, branches, files, commits, releases, organizations, teams, gists, webhooks, secrets, variables, GitHub Actions workflows, and more. Includes reading file contents and commit history, searching repositories and issues, triggering and inspecting Actions workflow runs, and polling triggers that react to repository, issue, pull request, and account activity. Requires a GitHub OAuth App (Client ID and Client Secret) to authenticate.",
+  "actionCount": 86,
+  "triggerCount": 21,
+  "operationCategories": [
+    "User Management",
+    "Issues",
+    "Repositories",
+    "Pull Requests",
+    "Gists",
+    "Webhooks",
+    "Organizations",
+    "Projects",
+    "Discussions",
+    "Secrets",
+    "Variables",
+    "Branches",
+    "Users",
+    "Search",
+    "Actions"
+  ],
+  "actions": [
+    {
+      "name": "Get Current User",
+      "category": "User Management",
+      "description": "Retrieves information about the authenticated user"
+    },
+    {
+      "name": "Create Issue",
+      "category": "Issues",
+      "description": "Creates a new issue in a repository"
+    },
+    {
+      "name": "Update Issue",
+      "category": "Issues",
+      "description": "Updates an existing issue in a repository"
+    },
+    {
+      "name": "Create Issue Comment",
+      "category": "Issues",
+      "description": "Creates a new comment on an issue or pull request"
+    },
+    {
+      "name": "Create Repository",
+      "category": "Repositories",
+      "description": "Creates a new repository for the authenticated user"
+    },
+    {
+      "name": "Create Organization Repository",
+      "category": "Repositories",
+      "description": "Creates a new repository under the specified organization"
+    },
+    {
+      "name": "Delete Repository",
+      "category": "Repositories",
+      "description": "Deletes a repository"
+    },
+    {
+      "name": "Create Pull Request",
+      "category": "Pull Requests",
+      "description": "Creates a new pull request"
+    },
+    {
+      "name": "Merge Pull Request",
+      "category": "Pull Requests",
+      "description": "Merges a pull request"
+    },
+    {
+      "name": "Create Gist",
+      "category": "Gists",
+      "description": "Creates a new gist for the authenticated user"
+    },
+    {
+      "name": "Delete Gist",
+      "category": "Gists",
+      "description": "Deletes a gist"
+    },
+    {
+      "name": "Create Release",
+      "category": "Repositories",
+      "description": "Creates a new release in a repository"
+    },
+    {
+      "name": "Delete Release",
+      "category": "Repositories",
+      "description": "Deletes a release from a repository"
+    },
+    {
+      "name": "Create Branch",
+      "category": "Repositories",
+      "description": "Creates a new branch in a repository"
+    },
+    {
+      "name": "Delete Branch",
+      "category": "Repositories",
+      "description": "Deletes a branch from a repository"
+    },
+    {
+      "name": "Create File",
+      "category": "Repositories",
+      "description": "Creates a new file in a repository"
+    },
+    {
+      "name": "Update File",
+      "category": "Repositories",
+      "description": "Updates an existing file in a repository"
+    },
+    {
+      "name": "Delete File",
+      "category": "Repositories",
+      "description": "Deletes a file from a repository"
+    },
+    {
+      "name": "Get Contents",
+      "category": "Repositories",
+      "description": "Retrieves the contents of a file or directory in a repository. When the path points to a file, GitHub returns a single object containing the Base64-encoded file content along with its sha, size and type (\"file\"). When the path points to a directory (or is empty, meaning the repository root), GitHub returns an array of entries, each describing a file or subdirectory with its name, path, sha, size and type. Use the optional ref to read from a specific branch, tag, or commit SHA."
+    },
+    {
+      "name": "Get File Content",
+      "category": "Repositories",
+      "description": "Retrieves a single file from a repository and returns its decoded UTF-8 text content. This is a convenience wrapper over the repository contents endpoint: it fetches the file, decodes the Base64 content GitHub returns, and provides the decoded text alongside the file's sha, size and URLs. Use the optional ref to read from a specific branch, tag, or commit SHA. Throws an error if the path points to a directory or is otherwise not a file. Intended for text files; binary files may not decode cleanly to UTF-8."
+    },
+    {
+      "name": "List Commits",
+      "category": "Repositories",
+      "description": "Lists commits for a repository. Returns the commits in reverse chronological order. You can narrow the results by branch or commit SHA to start from, a file or directory path, an author, and a date range. Supports pagination via per-page and page parameters."
+    },
+    {
+      "name": "Get Commit",
+      "category": "Repositories",
+      "description": "Retrieves a single commit from a repository, identified by a commit SHA, branch name, or tag. The response includes the full commit details, including the author and committer, the commit message, the list of changed files with per-file additions/deletions, and aggregate stats for the commit."
+    },
+    {
+      "name": "Add Collaborator",
+      "category": "Repositories",
+      "description": "Adds a collaborator to a repository"
+    },
+    {
+      "name": "Remove Collaborator",
+      "category": "Repositories",
+      "description": "Removes a collaborator from a repository"
+    },
+    {
+      "name": "Add Label to Issue/PR",
+      "category": "Issues",
+      "description": "Adds a label to an issue or pull request"
+    },
+    {
+      "name": "Remove Label from Issue/PR",
+      "category": "Issues",
+      "description": "Removes a label from an issue or pull request"
+    },
+    {
+      "name": "Assign Issue/PR",
+      "category": "Issues",
+      "description": "Assigns users to an issue or pull request"
+    },
+    {
+      "name": "Unassign Issue/PR",
+      "category": "Issues",
+      "description": "Unassigns users from an issue or pull request"
+    },
+    {
+      "name": "Create Repository Webhook",
+      "category": "Webhooks",
+      "description": "Creates a new webhook for a repository"
+    },
+    {
+      "name": "Delete Repository Webhook",
+      "category": "Webhooks",
+      "description": "Deletes a webhook from a repository"
+    },
+    {
+      "name": "Create Team",
+      "category": "Organizations",
+      "description": "Creates a new team in an organization"
+    },
+    {
+      "name": "Delete Team",
+      "category": "Organizations",
+      "description": "Deletes a team from an organization"
+    },
+    {
+      "name": "Add Team Member",
+      "category": "Organizations",
+      "description": "Adds a team member to a team"
+    },
+    {
+      "name": "Remove Team Member",
+      "category": "Organizations",
+      "description": "Removes a team member from a team"
+    },
+    {
+      "name": "Add Team Repository",
+      "category": "Organizations",
+      "description": "Adds a repository to a team"
+    },
+    {
+      "name": "Remove Team Repository",
+      "category": "Organizations",
+      "description": "Removes a repository from a team"
+    },
+    {
+      "name": "Fork Repository",
+      "category": "Repositories",
+      "description": "Forks a repository"
+    },
+    {
+      "name": "Star Repository",
+      "category": "Repositories",
+      "description": "Stars a repository"
+    },
+    {
+      "name": "Unstar Repository",
+      "category": "Repositories",
+      "description": "Unstars a repository"
+    },
+    {
+      "name": "Watch Repository",
+      "category": "Repositories",
+      "description": "Watches a repository"
+    },
+    {
+      "name": "Unwatch Repository",
+      "category": "Repositories",
+      "description": "Unwatches a repository"
+    },
+    {
+      "name": "Create Repository Project",
+      "category": "Projects",
+      "description": "Creates a new project in a repository"
+    },
+    {
+      "name": "Create Organization Project",
+      "category": "Projects",
+      "description": "Creates a new project in an organization"
+    },
+    {
+      "name": "Delete Project",
+      "category": "Projects",
+      "description": "Deletes a project"
+    },
+    {
+      "name": "Create Label",
+      "category": "Issues",
+      "description": "Creates a new label for a repository"
+    },
+    {
+      "name": "Update Label",
+      "category": "Issues",
+      "description": "Updates an existing label in a repository"
+    },
+    {
+      "name": "Delete Label",
+      "category": "Issues",
+      "description": "Deletes a label from a repository"
+    },
+    {
+      "name": "Create Milestone",
+      "category": "Issues",
+      "description": "Creates a new milestone in a repository"
+    },
+    {
+      "name": "Update Milestone",
+      "category": "Issues",
+      "description": "Updates an existing milestone in a repository"
+    },
+    {
+      "name": "Delete Milestone",
+      "category": "Issues",
+      "description": "Deletes a milestone from a repository"
+    },
+    {
+      "name": "Create Deploy Key",
+      "category": "Repositories",
+      "description": "Creates a new deploy key for a repository"
+    },
+    {
+      "name": "Delete Deploy Key",
+      "category": "Repositories",
+      "description": "Deletes a deploy key from a repository"
+    },
+    {
+      "name": "Create Repository Dispatch Event",
+      "category": "Repositories",
+      "description": "Creates a new repository dispatch event"
+    },
+    {
+      "name": "Create Discussion",
+      "category": "Discussions",
+      "description": "Creates a new discussion in a repository"
+    },
+    {
+      "name": "Create Discussion Comment",
+      "category": "Discussions",
+      "description": "Creates a new comment on a discussion"
+    },
+    {
+      "name": "Create Repository Secret",
+      "category": "Secrets",
+      "description": "Creates a new secret for a repository"
+    },
+    {
+      "name": "Delete Repository Secret",
+      "category": "Secrets",
+      "description": "Deletes a secret from a repository"
+    },
+    {
+      "name": "Create Organization Secret",
+      "category": "Secrets",
+      "description": "Creates a new secret for an organization"
+    },
+    {
+      "name": "Delete Organization Secret",
+      "category": "Secrets",
+      "description": "Deletes a secret from an organization"
+    },
+    {
+      "name": "Create Environment Secret",
+      "category": "Secrets",
+      "description": "Creates a new environment secret for a repository"
+    },
+    {
+      "name": "Delete Environment Secret",
+      "category": "Secrets",
+      "description": "Deletes an environment secret from a repository"
+    },
+    {
+      "name": "Create Repository Variable",
+      "category": "Variables",
+      "description": "Creates a new repository variable"
+    },
+    {
+      "name": "Update Repository Variable",
+      "category": "Variables",
+      "description": "Updates an existing repository variable"
+    },
+    {
+      "name": "Delete Repository Variable",
+      "category": "Variables",
+      "description": "Deletes a repository variable"
+    },
+    {
+      "name": "Create Organization Variable",
+      "category": "Variables",
+      "description": "Creates a new organization variable"
+    },
+    {
+      "name": "Update Organization Variable",
+      "category": "Variables",
+      "description": "Updates an existing organization variable"
+    },
+    {
+      "name": "Delete Organization Variable",
+      "category": "Variables",
+      "description": "Deletes an organization variable"
+    },
+    {
+      "name": "Create Environment Variable",
+      "category": "Variables",
+      "description": "Creates a new environment variable"
+    },
+    {
+      "name": "Update Environment Variable",
+      "category": "Variables",
+      "description": "Updates an existing environment variable"
+    },
+    {
+      "name": "Delete Environment Variable",
+      "category": "Variables",
+      "description": "Deletes an environment variable"
+    },
+    {
+      "name": "Check Organization Membership",
+      "category": "Organizations",
+      "description": "Checks if a user is a member of an organization"
+    },
+    {
+      "name": "Find Branch",
+      "category": "Branches",
+      "description": "Finds a branch in a repository"
+    },
+    {
+      "name": "Find Organization",
+      "category": "Organizations",
+      "description": "Finds an organization by name"
+    },
+    {
+      "name": "Find Repository",
+      "category": "Repositories",
+      "description": "Finds a repository by owner and name"
+    },
+    {
+      "name": "Find Issue",
+      "category": "Issues",
+      "description": "Finds an issue by number"
+    },
+    {
+      "name": "Find Pull Request",
+      "category": "Pull Requests",
+      "description": "Finds a pull request by number"
+    },
+    {
+      "name": "Find User",
+      "category": "Users",
+      "description": "Finds a user by username"
+    },
+    {
+      "name": "Find or Create Issue",
+      "category": "Issues",
+      "description": "Finds an issue by title or creates a new one if not found"
+    },
+    {
+      "name": "Find or Create Pull Request",
+      "category": "Pull Requests",
+      "description": "Finds a pull request by title or creates a new one if not found"
+    },
+    {
+      "name": "Search Repositories",
+      "category": "Search",
+      "description": "Searches for repositories across GitHub using GitHub's search syntax (e.g. \"tetris language:assembly stars:>100\"). Returns matching repositories ranked by best match, or by the optional sort and order parameters. Results are paginated and the response includes the total number of matches and an incomplete_results flag indicating whether the search timed out before completion."
+    },
+    {
+      "name": "Search Issues and Pull Requests",
+      "category": "Search",
+      "description": "Searches issues and pull requests across GitHub using GitHub's search syntax. GitHub's issue search covers both issues and pull requests, so results may include either type; you can scope the query with qualifiers such as \"is:issue\", \"is:pr\", \"repo:owner/name\", \"is:open\" or \"label:bug\". Results are paginated and the response includes the total number of matches and an incomplete_results flag."
+    },
+    {
+      "name": "List Workflows",
+      "category": "Actions",
+      "description": "Lists all GitHub Actions workflows defined in a repository. Returns the total count and the workflow definitions, including each workflow's ID, name, path, and current state."
+    },
+    {
+      "name": "List Workflow Runs",
+      "category": "Actions",
+      "description": "Lists GitHub Actions workflow runs for a repository. Optionally scope the results to a single workflow by providing a workflow ID or filename, and filter by branch, triggering event, run status, or the user who triggered the run."
+    },
+    {
+      "name": "Get Workflow Run",
+      "category": "Actions",
+      "description": "Retrieves a single GitHub Actions workflow run by its ID, returning the full run object including status, conclusion, triggering event, commit, timing, and related URLs."
+    },
+    {
+      "name": "List Workflow Run Jobs",
+      "category": "Actions",
+      "description": "Lists the jobs that belong to a GitHub Actions workflow run. By default returns jobs from the latest attempt; set the filter to 'all' to include jobs from previous attempts. Each job includes its status, conclusion, steps, and timing."
+    },
+    {
+      "name": "Trigger Workflow",
+      "category": "Actions",
+      "description": "Manually triggers a GitHub Actions workflow that defines a 'workflow_dispatch' event. Specify the git ref (branch or tag) to run on and any inputs the workflow defines. GitHub returns no content on success, so this method returns { success: true }."
+    }
+  ],
+  "triggers": [
+    "On Issue Opened",
+    "On Pull Request Opened",
+    "On Push",
+    "On Star",
+    "On Release Published",
+    "New Branch",
+    "New Commit Comment",
+    "New Repo Event",
+    "New Global Event",
+    "New Label",
+    "New Milestone",
+    "New Collaborator",
+    "New Commit",
+    "New Gist",
+    "New Mention",
+    "New Notification",
+    "New Organization",
+    "New Review Request",
+    "New Watcher",
+    "New Repository",
+    "New Team"
+  ],
+  "idealUseCases": [
+    "Automating repository lifecycle tasks such as creating repos, branches, files, and releases",
+    "Reading file contents and reviewing commit history to drive code-aware automations",
+    "Searching repositories, issues, and pull requests with GitHub search syntax to locate relevant items",
+    "Triaging and managing issues and pull requests, including labels, milestones, assignees, and comments",
+    "Synchronizing GitHub activity (new issues, PRs, pushes, releases, stars) into downstream flows",
+    "Managing organizations, teams, collaborators, and membership programmatically",
+    "Maintaining CI/CD configuration through repository, organization, and environment secrets and variables",
+    "Triggering GitHub Actions workflows on demand and monitoring their runs and jobs for status reporting",
+    "Publishing gists and triggering repository dispatch events for custom workflow automation",
+    "Monitoring notifications, mentions, and review requests for a connected GitHub account"
+  ],
+  "agentIdeas": [
+    "When a **GitHub** \"On Issue Opened\" trigger fires, use **Slack** \"Send Message To Channel\" to notify the engineering channel with the issue title, author, and link",
+    "When a **GitHub** \"On Push\" trigger fires, call **GitHub** \"Trigger Workflow\" to launch a CI/CD workflow on the pushed ref, then poll **GitHub** \"List Workflow Runs\" and \"Get Workflow Run\" and post the conclusion to **Slack** \"Send Message To Channel\"",
+    "When a **GitHub** \"On Pull Request Opened\" trigger fires, use **GitHub** \"List Workflow Run Jobs\" to summarize check status for that branch and **Slack** \"Send Message To Channel\" to alert reviewers of any failed jobs",
+    "Use **Gmail** \"On New Email\" to capture inbound bug reports, then call **GitHub** \"Search Issues and Pull Requests\" to find duplicates and **GitHub** \"Find or Create Issue\" to file or update a matching issue",
+    "Use **GitHub** \"List Workflows\" and \"Get File Content\" to audit a repository's Actions configuration, then send the summary via **Gmail** \"Send Message\" as a daily project digest"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/github/public/icon.png",
+  "sourcePaths": {
+    "service": "services/github",
+    "readme": "services/github/README.md",
+    "index": "services/github/src/index.js"
+  }
+}

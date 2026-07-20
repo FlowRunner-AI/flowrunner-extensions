@@ -1,0 +1,84 @@
+{
+  "slug": "google-firestore",
+  "name": "Google Firestore",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Cloud Firestore](https://firebase.google.com/docs/firestore), the NoSQL document database in Firebase / Google Cloud. Create, read, update, delete, list, query, and aggregate documents — all with plain JSON in and plain JSON out. Authenticates with a Google service account key (a signed JWT is exchanged for a short-lived access token).",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Documents",
+    "Queries",
+    "Collections"
+  ],
+  "actions": [
+    {
+      "name": "Create Document",
+      "category": "Documents",
+      "description": "Creates a new document in a collection from a plain JSON object — values are converted to Firestore's typed wire format automatically (whole numbers become integers, other numbers doubles, plus booleans, strings, nulls, nested objects as maps, and arrays). If Document ID is omitted, Firestore generates a random ID. The collection path may target a subcollection, e.g. 'users/abc/orders'. Fails if a document with the given ID already exists."
+    },
+    {
+      "name": "Get Document",
+      "category": "Documents",
+      "description": "Retrieves a single document by its path and returns its fields as plain JSON (Firestore's typed wire format is converted automatically; integers become numbers, timestamps become ISO 8601 strings, maps become nested objects). Also returns the document's ID, full resource name, and create/update timestamps. Fails if the document does not exist."
+    },
+    {
+      "name": "Update Document",
+      "category": "Documents",
+      "description": "Merges plain JSON data into a document: only the top-level fields present in Data are written (an update mask is built from its keys), all other fields are left untouched. Values are converted to Firestore's typed wire format automatically. Setting a field to null stores an explicit null. By default the document is created if it does not exist; enable Must Exist to fail instead. Returns the full updated document."
+    },
+    {
+      "name": "Delete Document",
+      "category": "Documents",
+      "description": "Permanently deletes a document by its path. THIS CANNOT BE UNDONE. Deleting a document does NOT delete its subcollections — documents under 'users/abc/orders' remain after 'users/abc' is deleted. By default the operation succeeds even if the document does not exist; enable Must Exist to fail in that case."
+    },
+    {
+      "name": "List Documents",
+      "category": "Documents",
+      "description": "Lists the documents in a collection (or subcollection) with their fields converted to plain JSON. Supports pagination via Page Size and the returned nextPageToken, and simple sorting via Order By (e.g. 'age desc, name'). For filtered reads use 'Query Documents' instead."
+    },
+    {
+      "name": "Batch Get Documents",
+      "category": "Documents",
+      "description": "Retrieves up to several hundred documents by path in a single call. Returns the documents that exist (with fields converted to plain JSON) in 'found', and the paths of documents that do not exist in 'missing'. Paths may point at any collection or subcollection in the database."
+    },
+    {
+      "name": "Query Documents",
+      "category": "Queries",
+      "description": "Runs a structured query against a collection and returns the matching documents with their fields converted to plain JSON. Conditions filter on document fields (==, !=, <, <=, >, >=, array-contains, in) and are combined with AND. Supports sorting on a field, a result limit, and querying every collection with the given ID across the database (collection group query). Compound filters on different fields may require a composite index — Firestore's error message includes a link to create it."
+    },
+    {
+      "name": "Run Aggregation Query",
+      "category": "Queries",
+      "description": "Computes an aggregate — Count, Sum, or Average — over the documents of a collection matching the given conditions, without reading the documents themselves (billed as index entries, far cheaper than fetching). Sum and Average require a numeric Field and skip documents where the field is missing or non-numeric; Average returns null when no documents match."
+    },
+    {
+      "name": "List Collection IDs",
+      "category": "Collections",
+      "description": "Lists the IDs of the collections directly under the database root, or of the subcollections directly under a given document (e.g. the subcollections of 'users/abc'). Supports pagination for documents with many subcollections."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Persist form submissions, webhook payloads, or AI-generated records into a Firestore collection.",
+    "Look up or update user/app data stored in Firestore as part of an automation.",
+    "Run structured or collection-group queries and aggregations (Count / Sum / Average) to power reports.",
+    "Sync documents between Firestore and other systems (spreadsheets, warehouses, CRMs)."
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires, use Firestore \"Create Document\" to log the sender, subject, and body into a `messages` collection for later querying.",
+    "Use Firestore \"Query Documents\" to pull matching records, then **Google Sheets** \"Add Rows\" to export them into a spreadsheet for reporting.",
+    "Use **BigQuery** \"Get Query Results\" to compute a summary, then Firestore \"Update Document\" to write the aggregated figures back into a per-tenant config document consumed by your app."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/google-firestore/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/google-firestore",
+    "readme": "services/google-firestore/README.md",
+    "index": "services/google-firestore/src/index.js"
+  }
+}

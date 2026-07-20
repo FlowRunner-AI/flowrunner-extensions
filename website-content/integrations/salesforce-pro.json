@@ -1,0 +1,167 @@
+{
+  "slug": "salesforce-pro",
+  "name": "Salesforce PRO",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Comprehensive Salesforce CRM integration with advanced features for complex sales operations, lead conversion, and enterprise-level automation workflows.",
+  "actionCount": 25,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Campaign Management",
+    "Document Management",
+    "Lead Management",
+    "Record Management",
+    "Contact Management",
+    "Communication"
+  ],
+  "actions": [
+    {
+      "name": "Add Contact to Campaign",
+      "category": "Campaign Management",
+      "description": "Adds an existing contact to an existing campaign."
+    },
+    {
+      "name": "Add File to Record",
+      "category": "Document Management",
+      "description": "Adds an existing file to an existing record."
+    },
+    {
+      "name": "Add Lead to Campaign",
+      "category": "Campaign Management",
+      "description": "Adds an existing lead to an existing campaign."
+    },
+    {
+      "name": "Convert Lead to Contact",
+      "category": "Lead Management",
+      "description": "Converts an existing lead to a contact."
+    },
+    {
+      "name": "Create Attachment",
+      "category": "Document Management",
+      "description": "Creates a new attachment (max 25MB)."
+    },
+    {
+      "name": "Create Child Records (with line item support)",
+      "category": "Record Management",
+      "description": "Creates records from line items and sets the parent-child relationship."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contact Management",
+      "description": "Creates a new contact in Salesforce."
+    },
+    {
+      "name": "Create Enhanced Note",
+      "category": "Document Management",
+      "description": "Creates a new enhanced note with optional record attachment."
+    },
+    {
+      "name": "Create File",
+      "category": "Document Management",
+      "description": "Creates a new file (max 25MB)."
+    },
+    {
+      "name": "Create Lead",
+      "category": "Lead Management",
+      "description": "Creates a new lead in Salesforce."
+    },
+    {
+      "name": "Create Note",
+      "category": "Document Management",
+      "description": "Creates a new note and links it to a parent record."
+    },
+    {
+      "name": "Create Record",
+      "category": "Record Management",
+      "description": "Creates a new record of a specified Salesforce object (e.g., Contact, Lead, Opportunity)."
+    },
+    {
+      "name": "Create Record (UTC)",
+      "category": "Record Management",
+      "description": "Creates a new record of a specified Salesforce object (e.g., Contact, Lead, Opportunity). Date inputs will be treated as if they are in UTC."
+    },
+    {
+      "name": "Delete Record",
+      "category": "Record Management",
+      "description": "Deletes an existing record of a specified Salesforce object."
+    },
+    {
+      "name": "Send Email",
+      "category": "Communication",
+      "description": "Sends an email using Salesforce Simple Email Actions."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contact Management",
+      "description": "Updates an existing contact in Salesforce."
+    },
+    {
+      "name": "Update Lead",
+      "category": "Lead Management",
+      "description": "Updates an existing lead in Salesforce."
+    },
+    {
+      "name": "Update Record",
+      "category": "Record Management",
+      "description": "Updates an existing record for a specified Salesforce object."
+    },
+    {
+      "name": "Update Record (UTC)",
+      "category": "Record Management",
+      "description": "Updates an existing record for a specified Salesforce object. Date inputs will be treated as if they are in UTC."
+    },
+    {
+      "name": "Find Child Records",
+      "category": "Record Management",
+      "description": "Finds child records for a given Parent ID and returns the child records as line items."
+    },
+    {
+      "name": "Find Record",
+      "category": "Record Management",
+      "description": "Finds a record of a specified Salesforce object by up to two fields and values you choose. Optionally, creates a record if none is found."
+    },
+    {
+      "name": "Find Record by Query",
+      "category": "Record Management",
+      "description": "Finds a record of a Salesforce object using a Salesforce Object Query (SOQL) WHERE clause. Optionally, creates a record if none is found."
+    },
+    {
+      "name": "Find Records",
+      "category": "Record Management",
+      "description": "Finds records of a specified Salesforce object by a field and a value you choose."
+    },
+    {
+      "name": "Find Records by Query",
+      "category": "Record Management",
+      "description": "Finds one or more records of a Salesforce object using a Salesforce Object Query (SOQL) WHERE clause."
+    },
+    {
+      "name": "Get Record Attachments",
+      "category": "Document Management",
+      "description": "Gets all notes and attachments for a record."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Advanced lead management and conversion workflows",
+    "Complex sales opportunity tracking and reporting",
+    "Multi-record relationship management and line items",
+    "Enterprise email automation and communication",
+    "Advanced file and attachment management",
+    "Custom SOQL query execution and data analysis",
+    "Parent-child record relationship automation",
+    "Comprehensive contact and lead lifecycle management"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.png",
+  "iconFile": "services/salesforce-pro/public/icon.png",
+  "sourcePaths": {
+    "service": "services/salesforce-pro",
+    "readme": "services/salesforce-pro/README.md",
+    "index": "services/salesforce-pro/src/index.js"
+  }
+}

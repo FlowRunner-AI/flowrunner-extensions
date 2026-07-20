@@ -1,0 +1,69 @@
+{
+  "slug": "pushover",
+  "name": "Pushover",
+  "marketingCategory": "SMS, Voice & Push",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Send push notifications to phones, tablets, and desktops through [Pushover](https://pushover.net). This service wraps the Pushover API so FlowRunner flows can deliver real-time alerts, validate recipients, monitor emergency acknowledgements, and check account quotas.",
+  "actionCount": 6,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Notifications",
+    "Emergency",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Send Notification",
+      "category": "Notifications",
+      "description": "Sends a push notification to a Pushover user or group. Requires the recipient's user/group key and a message body (max 1024 characters). Supports an optional title, priority (Lowest to Emergency), a notification sound, a supplementary URL with title, targeting a specific device, HTML formatting, a custom timestamp, and a message time-to-live. For Emergency priority (2) the notification repeats until acknowledged, and both Retry Interval and Expire After are required; a receipt id is returned so you can poll acknowledgement status with Get Receipt. Returns the API status and request id."
+    },
+    {
+      "name": "Validate User/Group",
+      "category": "Notifications",
+      "description": "Verifies that a Pushover user or group key is valid and has at least one active device that can receive notifications. Optionally checks a specific device name. Returns the list of the user's device names and platform licenses. Use this to confirm a recipient before sending."
+    },
+    {
+      "name": "Get Receipt",
+      "category": "Emergency",
+      "description": "Retrieves the acknowledgement status of an Emergency-priority (2) notification using the receipt id returned by Send Notification. Reports whether the message has been acknowledged, by which device, when it was last delivered, and whether it has expired or a callback has fired. Poll this to track whether an emergency alert was seen."
+    },
+    {
+      "name": "Cancel Emergency Retry",
+      "category": "Emergency",
+      "description": "Stops an Emergency-priority (2) notification from continuing to repeat, using the receipt id returned by Send Notification. Use this once an alert has been handled outside of Pushover so recipients stop being re-notified. Returns the API status and request id."
+    },
+    {
+      "name": "Get Sounds",
+      "category": "Account",
+      "description": "Lists the notification sounds available to the configured application, including any custom sounds the application owner has uploaded. Each entry maps a sound identifier to its display name. Useful for discovering valid sound values beyond the built-in set offered on Send Notification."
+    },
+    {
+      "name": "Get Limits",
+      "category": "Account",
+      "description": "Returns the application's monthly message quota and usage: the total limit, the number of messages remaining, and the Unix timestamp at which the counter next resets. Use this to monitor how close the application is to its sending cap."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Push critical system alerts to on-call staff using Emergency priority that retries until acknowledged.",
+    "Deliver order, deployment, or job-completion updates to a team's devices in real time.",
+    "Validate a recipient's user or group key and active devices before sending important messages.",
+    "Monitor an application's monthly message quota and usage to stay under the sending cap."
+  ],
+  "agentIdeas": [
+    "When a **PagerDuty** \"Create Incident\" is raised, use **Pushover** \"Send Notification\" with Emergency priority to alert the on-call engineer until they acknowledge, then poll **Pushover** \"Get Receipt\" to confirm the alert was seen.",
+    "After a **Sentry** \"List Issues\" query surfaces new unresolved errors, use **Pushover** \"Send Notification\" with a supplementary URL linking straight to the Sentry issue.",
+    "When a **Jenkins** \"Trigger Build\" job finishes, use **Pushover** \"Send Notification\" to push the build result and console link to the team's devices."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/pushover/public/icon.png",
+  "sourcePaths": {
+    "service": "services/pushover",
+    "readme": "services/pushover/README.md",
+    "index": "services/pushover/src/index.js"
+  }
+}

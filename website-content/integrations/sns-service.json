@@ -1,0 +1,63 @@
+{
+  "slug": "sns-service",
+  "name": "Amazon SNS",
+  "marketingCategory": "Cloud & Infrastructure",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Zero-dependency integration with Amazon Simple Notification Service (SNS) using native AWS Signature V4 signing (Node crypto) over the AWS Query/XML protocol. Publish messages to topics or send SMS directly to phone numbers, manage topics, and manage subscriptions for pub/sub fan-out delivery. Supports two authentication methods: direct API Key credentials or IAM Role via STS AssumeRole for cross-account access.",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Publish Message",
+      "category": null,
+      "description": "Sends a message to a topic or directly to a phone number via SMS. Provide either a topic ARN or a phone number — at least one is required alongside the message."
+    },
+    {
+      "name": "Create Topic",
+      "category": null,
+      "description": "Creates a new SNS topic with the given name. Returns the topic ARN which can be used for publishing and subscribing."
+    },
+    {
+      "name": "Delete Topic",
+      "category": null,
+      "description": "Permanently deletes the specified topic and all its subscriptions."
+    },
+    {
+      "name": "Subscribe",
+      "category": null,
+      "description": "Subscribes an endpoint (email address, phone number, URL, SQS queue, or Lambda) to a topic. Returns the subscription ARN which may be \"pending confirmation\" for email endpoints."
+    },
+    {
+      "name": "Unsubscribe",
+      "category": null,
+      "description": "Removes a subscription from a topic using the subscription ARN."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Fanning out workflow events to many subscribers at once by publishing to an SNS topic",
+    "Sending transactional or alert SMS messages directly to a phone number",
+    "Creating and tearing down topics on demand as part of automated provisioning flows",
+    "Subscribing endpoints (email, SMS, HTTP/HTTPS, SQS, Lambda) to a topic and removing them later",
+    "Notifying email subscribers with a custom subject line on important events"
+  ],
+  "agentIdeas": [
+    "When a **Slack** \"On Channel Message\" trigger fires, use **Amazon SNS** \"Publish Message\" to fan the message out to all subscribers of an alerts topic.",
+    "Use **Google Sheets** \"Get Rows\" to read a list of new contacts, then call **Amazon SNS** \"Subscribe\" to add each one's email address to a notifications topic.",
+    "Use **Amazon SNS** \"Publish Message\" with a phone number to send an SMS alert, then use **DynamoDB** \"Put Item\" to log the notification and its message ID for auditing.",
+    "Use **Amazon SNS** \"Subscribe\" to wire a topic to an SQS endpoint, then use **Amazon SQS** \"Receive Messages\" downstream to process the fanned-out events from the queue.",
+    "After **Amazon SNS** \"Create Topic\", call **AWS Lambda** \"Invoke Function\" to register the topic ARN with downstream processing, or use **Amazon SES** \"Send Email\" to notify an operator that a new notification channel is live."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/sns-service/public/icon.png",
+  "sourcePaths": {
+    "service": "services/sns-service",
+    "readme": "services/sns-service/README.md",
+    "index": "services/sns-service/src/index.js"
+  }
+}

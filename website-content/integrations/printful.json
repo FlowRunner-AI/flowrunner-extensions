@@ -1,0 +1,195 @@
+{
+  "slug": "printful",
+  "name": "Printful",
+  "marketingCategory": "E-commerce",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connects FlowRunner to [Printful](https://www.printful.com/), the print-on-demand and fulfillment platform. Browse the blank product catalog, manage your store's sync products and variants, place and manage orders (including drafts, cost estimates, confirmation and cancellation), calculate shipping and tax rates, manage the file library, and configure store webhooks. Authenticates with a Printful private token (Bearer); an optional Store ID is sent as the `X-PF-Store-Id` header for account-level tokens covering multiple stores.",
+  "actionCount": 30,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Stores",
+    "Catalog",
+    "Sync Products",
+    "Orders",
+    "Shipping & Tax",
+    "Files",
+    "Countries",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "List Stores",
+      "category": "Stores",
+      "description": "Lists all Printful stores the API token can access. Account-level tokens may see multiple stores; store-level tokens see one. Use a store's id as the Store ID configuration value (sent as the X-PF-Store-Id header) when the token covers more than one store. Returns items with total count and supports offset/limit pagination."
+    },
+    {
+      "name": "Get Store Info",
+      "category": "Stores",
+      "description": "Returns basic information about the current store: id, name, type (native, shopify, etsy, woocommerce, etc.), website, currency and creation time. The current store is determined by the API token, or by the Store ID configuration value for account-level tokens with multiple stores."
+    },
+    {
+      "name": "List Catalog Products",
+      "category": "Catalog",
+      "description": "Lists blank products from the Printful catalog (t-shirts, mugs, posters, etc.) that can be used to build store products. Each product includes its type, brand, model, image and variant count. Optionally filter by catalog category id (see List Categories). Use Get Catalog Product to load the variants of a product."
+    },
+    {
+      "name": "Get Catalog Product",
+      "category": "Catalog",
+      "description": "Returns a single blank product from the Printful catalog together with the full list of its variants (size/color combinations). Each variant's id is the catalog variant id required when creating sync products or ordering catalog items directly."
+    },
+    {
+      "name": "Get Catalog Variant",
+      "category": "Catalog",
+      "description": "Returns a single catalog variant (a specific size/color of a blank product) together with information about its parent product. Useful for checking price, stock availability and attributes of the exact variant referenced by variant_id in sync products and orders."
+    },
+    {
+      "name": "List Categories",
+      "category": "Catalog",
+      "description": "Lists all categories of the Printful catalog (e.g. Men's clothing, Home & living). Use a category's id with List Catalog Products to browse blank products by category."
+    },
+    {
+      "name": "List Sync Products",
+      "category": "Sync Products",
+      "description": "Lists the products of your store (sync products) with their name, thumbnail and variant counts. Optionally filter by a search term matched against product names. Use Get Sync Product to load a product's variants. Supports offset/limit pagination."
+    },
+    {
+      "name": "Get Sync Product",
+      "category": "Sync Products",
+      "description": "Returns a single store product (sync_product) together with all of its variants (sync_variants), including retail prices, mapped catalog variant ids, SKUs and attached print files. Accepts the numeric Printful product id or the external id prefixed with @ (e.g. @my-external-id)."
+    },
+    {
+      "name": "Create Sync Product",
+      "category": "Sync Products",
+      "description": "Creates a new product in your store with one or more variants. Each variant maps a Printful catalog variant (variant_id from Get Catalog Product / Get Catalog Variant) to a retail price and the print file(s) to produce it with. Printful generates mockups asynchronously after creation."
+    },
+    {
+      "name": "Update Sync Product",
+      "category": "Sync Products",
+      "description": "Updates an existing store product. IMPORTANT: when Sync Variants are provided they fully REPLACE the existing variant list - variants missing from the request are deleted, variants with an id are updated, and variants without an id are created. Omit Sync Variants to update only the product name/thumbnail. Accepts the numeric product id or @external-id."
+    },
+    {
+      "name": "Delete Sync Product",
+      "category": "Sync Products",
+      "description": "Deletes a store product and all of its variants from Printful. This does not remove the product from an external e-commerce platform - it only removes the Printful side of the sync. Accepts the numeric product id or @external-id. This action cannot be undone."
+    },
+    {
+      "name": "Get Sync Variant",
+      "category": "Sync Products",
+      "description": "Returns a single store product variant (sync variant) with its retail price, SKU, mapped catalog variant id and attached print files. Accepts the numeric sync variant id or the external id prefixed with @."
+    },
+    {
+      "name": "Update Sync Variant",
+      "category": "Sync Products",
+      "description": "Updates a single store product variant: retail price, SKU, the mapped catalog variant or its print files. Providing Print Files replaces the variant's existing file list. Accepts the numeric sync variant id or @external-id."
+    },
+    {
+      "name": "Delete Sync Variant",
+      "category": "Sync Products",
+      "description": "Deletes a single variant from a store product. Accepts the numeric sync variant id or the external id prefixed with @. This action cannot be undone."
+    },
+    {
+      "name": "List Orders",
+      "category": "Orders",
+      "description": "Lists orders of the store, optionally filtered by fulfillment status. Each order includes the recipient, items, costs and current status (draft, pending, inprocess, fulfilled, etc.). Supports offset/limit pagination."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Returns a single order with full details: recipient address, items, print files, costs, shipments and current fulfillment status. Accepts the numeric Printful order id or the external order id prefixed with @ (e.g. @my-order-1)."
+    },
+    {
+      "name": "Create Order",
+      "category": "Orders",
+      "description": "Creates a new order. By default the order is created as an editable DRAFT and is not fulfilled or billed; enable Confirm for Fulfillment to submit it immediately (sent as the confirm=true query parameter). Items can reference an existing store variant (sync_variant_id), an external variant (external_variant_id), or a raw catalog variant (variant_id plus print files)."
+    },
+    {
+      "name": "Update Order",
+      "category": "Orders",
+      "description": "Updates an unsubmitted (draft or failed) order. Provided fields replace the corresponding order data - for example, a provided Items list replaces all existing items. Optionally submits the order for fulfillment in the same call via Confirm for Fulfillment. Accepts the numeric order id or @external-id. Orders already in fulfillment cannot be updated."
+    },
+    {
+      "name": "Confirm Order",
+      "category": "Orders",
+      "description": "Submits a draft or failed order for fulfillment. Billing happens at this point and the order status changes to pending. Accepts the numeric order id or the external order id prefixed with @."
+    },
+    {
+      "name": "Cancel Order",
+      "category": "Orders",
+      "description": "Cancels a pending order or deletes a draft order. If the order was already charged, the amount is returned to your Printful Wallet. Orders already being fulfilled cannot be canceled. Accepts the numeric order id or @external-id. Returns the canceled order."
+    },
+    {
+      "name": "Estimate Order Costs",
+      "category": "Orders",
+      "description": "Calculates the estimated fulfillment costs of an order without creating it: product subtotal, discount, shipping, digitization, tax/VAT and total, plus retail costs when retail prices are set on the items. Useful for showing a price preview before placing the order."
+    },
+    {
+      "name": "Get Shipping Rates",
+      "category": "Shipping & Tax",
+      "description": "Calculates available shipping options and rates for a destination address and a set of items. Returns each shipping method's id (usable as the Shipping Method of an order, e.g. STANDARD), display name, price and estimated delivery days. Items are referenced by catalog variant_id, external_variant_id or warehouse_product_variant_id."
+    },
+    {
+      "name": "Get Tax Rate",
+      "category": "Shipping & Tax",
+      "description": "Calculates the sales tax rate for a destination address. Indicates whether Printful is required to collect tax for that destination, the tax rate to apply, and whether shipping is taxable. Printful currently calculates tax for destinations such as US and Canadian states."
+    },
+    {
+      "name": "List Files",
+      "category": "Files",
+      "description": "Lists files in the store's Printful file library (uploaded print files and previews) with their processing status, dimensions and thumbnails. Supports offset/limit pagination."
+    },
+    {
+      "name": "Add File",
+      "category": "Files",
+      "description": "Registers a file in the store's Printful file library by URL. Printful downloads and processes the file asynchronously (status starts as waiting); the returned file id can then be referenced in sync variants and order items instead of repeating the URL. Use Get File to check processing status."
+    },
+    {
+      "name": "Get File",
+      "category": "Files",
+      "description": "Returns information about a file in the store's Printful file library, including its processing status (waiting, ok, failed), dimensions, DPI, thumbnail and preview URLs."
+    },
+    {
+      "name": "List Countries",
+      "category": "Countries",
+      "description": "Lists all countries Printful ships to, with their two-letter ISO codes and, where applicable, their states/provinces with codes. Use these codes for recipient country_code and state_code values in orders, shipping rate and tax rate calculations."
+    },
+    {
+      "name": "Get Webhook Config",
+      "category": "Webhooks",
+      "description": "Returns the current webhook configuration of the store: the callback URL and the list of event types Printful sends to it. An empty URL means webhooks are disabled."
+    },
+    {
+      "name": "Set Webhook Config",
+      "category": "Webhooks",
+      "description": "Enables webhooks for the store by setting a callback URL and the event types to be notified about. This replaces any previously configured URL and event types. Printful sends a POST request to the URL each time one of the selected events occurs."
+    },
+    {
+      "name": "Disable Webhooks",
+      "category": "Webhooks",
+      "description": "Disables webhook notifications for the store by removing the configured callback URL and all subscribed event types. Returns the cleared webhook configuration."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new products from a source system into your Printful store, mapping catalog variants to retail prices and print files",
+    "Automate order fulfillment: create draft orders, preview costs, then confirm eligible orders for fulfillment",
+    "Quote live shipping options and sales tax to customers before an order is placed",
+    "Register and track print files in the Printful library, reusing file ids across variants and orders",
+    "Keep an external catalog in sync by listing, updating and deleting sync products and variants"
+  ],
+  "agentIdeas": [
+    "Use **Shopify** \"Get List of Products\" to read a store's catalog, then call **Printful** \"Create Sync Product\" to mirror each product into Printful with mapped catalog variants and print files",
+    "When a **Shopify** \"On New Order\" trigger fires, call **Printful** \"Get Shipping Rates\" and \"Create Order\" (with \"Confirm for Fulfillment\") to submit the order for print-on-demand fulfillment",
+    "Use **Printful** \"List Orders\" to pull recent orders and their statuses, then **Google Sheets** \"Add Rows\" to log fulfillment progress into a tracking spreadsheet"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/printful/public/icon.png",
+  "sourcePaths": {
+    "service": "services/printful",
+    "readme": "services/printful/README.md",
+    "index": "services/printful/src/index.js"
+  }
+}

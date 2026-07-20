@@ -1,0 +1,190 @@
+{
+  "slug": "kajabi",
+  "name": "Kajabi",
+  "marketingCategory": "CMS & Content",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Kajabi is an all-in-one platform for creators to sell online courses, coaching, communities, and digital products. This extension integrates with the Kajabi Public API (JSON:API) to manage sites, contacts (with tagging), offers (with grant/revoke enrollment), products and courses, tags, purchases and orders, opt-in forms, and webhooks across the sites in a Kajabi account.",
+  "actionCount": 29,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Sites",
+    "Contacts",
+    "Offers",
+    "Products",
+    "Tags",
+    "Commerce",
+    "Forms",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "List Sites",
+      "category": "Sites",
+      "description": "Lists the Kajabi sites the connected credentials can access. A Kajabi account can contain multiple sites, and most other operations are site-scoped, so use this first to discover the Site ID to pass into contact, offer, product, tag, and webhook operations. Returns each site's title and subdomain along with JSON:API pagination."
+    },
+    {
+      "name": "Get Site",
+      "category": "Sites",
+      "description": "Retrieves a single Kajabi site by its ID, returning its title, subdomain, and timestamps. Use List Sites to discover available Site IDs."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists contacts (people) for a Kajabi site, with optional full-text search and filters for name, email, and tag/offer/product membership. Returns JSON:API contact resources including name, email, phone, address, and subscription status, plus pagination. Provide a Site ID to scope results to a single site."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by ID, returning the full JSON:API contact resource with attributes (name, email, phone, address, subscription status) and relationships (site, tags, offers). Use List Contacts to discover contact IDs."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a contact on a Kajabi site. A Site ID is required so the contact is associated with the correct site. Email is required; name, phone, and address fields are optional. Returns the newly created JSON:API contact resource. Note: external_user_id is not supported at creation and only becomes available after the contact is granted an offer or makes a purchase."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates attributes of an existing contact by ID. Only the fields you provide are changed; empty fields are left untouched. Returns the updated JSON:API contact resource."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact by ID. This action cannot be undone. Returns a confirmation object with the deleted contact ID."
+    },
+    {
+      "name": "Add Tag to Contact",
+      "category": "Contacts",
+      "description": "Adds an existing contact tag to a contact. Tags must already exist on the site (Kajabi's API does not create tags on demand) — use List Tags to find the tag ID. Returns the contact's updated list of tag resource identifiers."
+    },
+    {
+      "name": "Remove Tag from Contact",
+      "category": "Contacts",
+      "description": "Removes a contact tag from a contact. Returns the contact's updated list of remaining tag resource identifiers. This removes the association only; the tag itself continues to exist on the site."
+    },
+    {
+      "name": "List Offers",
+      "category": "Offers",
+      "description": "Lists active (non-archived) offers for a Kajabi site that can be granted to contacts. Returns JSON:API offer resources including title, price, currency, payment type, and checkout URL, plus pagination. Use offer IDs with Grant Offer to Contact."
+    },
+    {
+      "name": "Get Offer",
+      "category": "Offers",
+      "description": "Retrieves a single offer by ID, returning its full JSON:API resource including title, price, currency, payment type, checkout URL, and its related products. Use List Offers to discover offer IDs."
+    },
+    {
+      "name": "Grant Offer to Contact",
+      "category": "Offers",
+      "description": "Grants an offer to a contact, enrolling them and giving access to the offer's products. If no matching customer exists, one is created from the contact's details. By default a welcome email is sent to the customer; set Send Welcome Email to false to suppress it. Returns the contact's updated list of granted offer identifiers."
+    },
+    {
+      "name": "Revoke Offer from Contact",
+      "category": "Offers",
+      "description": "Revokes a previously granted offer from a contact, removing their access to the offer's products. Returns the contact's updated list of remaining granted offer identifiers."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Lists active (non-archived) products for a Kajabi site that can be granted to contacts. Returns JSON:API product resources including title, description, status, and member counts, plus pagination."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves a single product by ID, returning its full JSON:API resource including title, description, status, and member counts. Use List Products to discover product IDs."
+    },
+    {
+      "name": "List Courses",
+      "category": "Products",
+      "description": "Lists courses for a Kajabi site with optional title/description filters and publish-status filtering. Returns JSON:API course resources including title, description, and thumbnail, plus pagination."
+    },
+    {
+      "name": "Get Course",
+      "category": "Products",
+      "description": "Retrieves a single course by ID, returning its full JSON:API resource including title, description, and thumbnail. Include related modules, lessons, or offers via the Include parameter to expand the response."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists contact tags for a Kajabi site, with an optional name filter. Returns JSON:API contact-tag resources (id and name) plus pagination. Use tag IDs with Add Tag to Contact and Remove Tag from Contact. Note: Kajabi's public API does not support creating tags; tags are managed in the Kajabi dashboard."
+    },
+    {
+      "name": "Get Tag",
+      "category": "Tags",
+      "description": "Retrieves a single contact tag by ID, returning its JSON:API resource (id and name). Use List Tags to discover tag IDs."
+    },
+    {
+      "name": "List Purchases",
+      "category": "Commerce",
+      "description": "Lists purchases (offer grants a contact has bought or received) for a Kajabi site, with filters for active/deactivated status, referrer, coupon code, and customer. Returns JSON:API purchase resources plus pagination."
+    },
+    {
+      "name": "Get Purchase",
+      "category": "Commerce",
+      "description": "Retrieves a single purchase by ID, returning its full JSON:API resource. Use List Purchases to discover purchase IDs."
+    },
+    {
+      "name": "List Orders",
+      "category": "Commerce",
+      "description": "Lists orders for a Kajabi site, with filters for customer, order number, and fulfillment status. Returns JSON:API order resources plus pagination."
+    },
+    {
+      "name": "Get Order",
+      "category": "Commerce",
+      "description": "Retrieves a single order by ID, returning its full JSON:API resource including order number and timestamps. Use List Orders to discover order IDs."
+    },
+    {
+      "name": "List Forms",
+      "category": "Forms",
+      "description": "Lists opt-in and marketing forms for a Kajabi site, with an optional title filter. Returns JSON:API form resources plus pagination."
+    },
+    {
+      "name": "Get Form",
+      "category": "Forms",
+      "description": "Retrieves a single form by ID, returning its full JSON:API resource. Use List Forms to discover form IDs."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Lists webhooks (hooks) configured for a Kajabi site. Returns JSON:API hook resources including target URL and subscribed event, plus pagination."
+    },
+    {
+      "name": "Create Webhook",
+      "category": "Webhooks",
+      "description": "Creates a webhook (hook) on a Kajabi site that delivers events to your target URL. Choose the event to subscribe to; optionally provide a Resource ID (for example a contact tag ID) to filter to a specific resource, or leave it blank to receive all events of that type. Requires that your API credentials have the scopes for the chosen event. Returns the created JSON:API hook resource."
+    },
+    {
+      "name": "Get Webhook",
+      "category": "Webhooks",
+      "description": "Retrieves a single webhook (hook) by ID, returning its target URL and subscribed event. Use List Webhooks to discover webhook IDs."
+    },
+    {
+      "name": "Delete Webhook",
+      "category": "Webhooks",
+      "description": "Deletes a webhook (hook) by ID so it stops delivering events. Returns a confirmation object with the deleted webhook ID."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new or updated Kajabi contacts into a CRM or email marketing platform",
+    "Automatically grant an offer (enroll a student) when a contact completes an external purchase or form",
+    "Tag and segment contacts based on activity tracked in other systems",
+    "Log new orders and purchases into a spreadsheet or reporting pipeline",
+    "Register webhooks so downstream flows can react to Kajabi events"
+  ],
+  "agentIdeas": [
+    "Use **HubSpot** \"Get Contact By Email\" to check a lead, then call Kajabi **Create Contact** and **Grant Offer to Contact** to enroll them in a course after a deal closes.",
+    "After a Kajabi **List Orders** or **List Purchases** run, use **Google Sheets** \"Add Rows\" to log each order into a revenue-tracking spreadsheet.",
+    "When a new Kajabi contact is found via **List Contacts**, use **Mailchimp** \"Add Or Update List Member\" to sync them into an email list and **Slack** \"Send Message To Channel\" to notify your team."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/kajabi/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/kajabi",
+    "readme": "services/kajabi/README.md",
+    "index": "services/kajabi/src/index.js"
+  }
+}

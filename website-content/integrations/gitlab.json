@@ -1,0 +1,178 @@
+{
+  "slug": "gitlab",
+  "name": "GitLab",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate GitLab into FlowRunner to manage projects, issues, merge requests, repository content, CI/CD pipelines, and releases through the GitLab REST API v4. Works with both **GitLab SaaS** (gitlab.com) and **self-managed** GitLab instances.",
+  "actionCount": 27,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Projects",
+    "Issues",
+    "Merge Requests",
+    "Repository",
+    "Pipelines",
+    "Releases"
+  ],
+  "actions": [
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Lists projects the authenticated user is a member of. Supports free-text search and page-based pagination (up to 100 per page). Results are ordered by most recent activity."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves a single project by its numeric ID or URL-encoded 'group/project' path, including its default branch, visibility, statistics and namespace details."
+    },
+    {
+      "name": "Create Issue",
+      "category": "Issues",
+      "description": "Creates a new issue in a project. Labels are passed as a comma-separated string, assignees as a comma-separated list of numeric user IDs. Optionally set a milestone and due date."
+    },
+    {
+      "name": "Get Issue",
+      "category": "Issues",
+      "description": "Retrieves a single issue by its project-scoped internal ID (iid), including state, labels, assignees and milestone."
+    },
+    {
+      "name": "List Issues",
+      "category": "Issues",
+      "description": "Lists issues in a project. Filter by state, labels, assignee username and free-text search. Supports page-based pagination."
+    },
+    {
+      "name": "Update Issue",
+      "category": "Issues",
+      "description": "Updates an existing issue by its internal ID (iid). You can change the title, description, labels, assignees, milestone and due date. Setting State to Close or Reopen transitions the issue accordingly; leaving it blank keeps the current state."
+    },
+    {
+      "name": "Create Issue Note",
+      "category": "Issues",
+      "description": "Adds a note (comment) to an issue, identified by its internal ID (iid). The note body supports GitLab-flavored Markdown."
+    },
+    {
+      "name": "Create Merge Request",
+      "category": "Merge Requests",
+      "description": "Creates a merge request from a source branch into a target branch. Optionally set a description and request removal of the source branch when the MR is merged."
+    },
+    {
+      "name": "Get Merge Request",
+      "category": "Merge Requests",
+      "description": "Retrieves a single merge request by its project-scoped internal ID (iid), including state, source/target branches and merge status."
+    },
+    {
+      "name": "List Merge Requests",
+      "category": "Merge Requests",
+      "description": "Lists merge requests in a project. Filter by state and free-text search. Supports page-based pagination."
+    },
+    {
+      "name": "Update Merge Request",
+      "category": "Merge Requests",
+      "description": "Updates an existing merge request by its internal ID (iid). You can change the title, description and target branch. Setting State to Close or Reopen transitions the MR accordingly; leaving it blank keeps the current state."
+    },
+    {
+      "name": "Merge Merge Request",
+      "category": "Merge Requests",
+      "description": "Merges a merge request identified by its internal ID (iid). Optionally set a custom merge commit message and squash the commits into one on merge."
+    },
+    {
+      "name": "Add Merge Request Note",
+      "category": "Merge Requests",
+      "description": "Adds a note (comment) to a merge request, identified by its internal ID (iid). The note body supports GitLab-flavored Markdown."
+    },
+    {
+      "name": "List Branches",
+      "category": "Repository",
+      "description": "Lists branches in a project's repository. Supports free-text search and page-based pagination."
+    },
+    {
+      "name": "Create Branch",
+      "category": "Repository",
+      "description": "Creates a new branch in a project's repository from an existing branch, tag or commit SHA (the ref)."
+    },
+    {
+      "name": "Delete Branch",
+      "category": "Repository",
+      "description": "Deletes a branch from a project's repository. This action is permanent."
+    },
+    {
+      "name": "Get File",
+      "category": "Repository",
+      "description": "Retrieves a file from a project's repository at a given ref (branch, tag or commit). The file content is decoded from base64 into UTF-8 text and returned as `content`, alongside metadata and a `raw` flag indicating the content was decoded."
+    },
+    {
+      "name": "Create or Update File",
+      "category": "Repository",
+      "description": "Creates a new file or updates an existing file in a project's repository on a given branch, producing a commit. If the file already exists it is updated; otherwise it is created."
+    },
+    {
+      "name": "List Commits",
+      "category": "Repository",
+      "description": "Lists commits in a project's repository. Optionally filter by ref (branch, tag or commit) and supports page-based pagination."
+    },
+    {
+      "name": "Create Commit",
+      "category": "Repository",
+      "description": "Creates a commit on a branch with one or more file actions in a single request. Each action is an object with `action` (create, update or delete), `file_path`, and `content` (for create/update). Useful for atomic multi-file commits."
+    },
+    {
+      "name": "List Pipelines",
+      "category": "Pipelines",
+      "description": "Lists CI/CD pipelines in a project. Optionally filter by ref (branch/tag) and status. Supports page-based pagination."
+    },
+    {
+      "name": "Get Pipeline",
+      "category": "Pipelines",
+      "description": "Retrieves a single CI/CD pipeline by its numeric ID, including status, ref, commit SHA and timing details."
+    },
+    {
+      "name": "Trigger Pipeline",
+      "category": "Pipelines",
+      "description": "Triggers a new CI/CD pipeline on a given ref (branch or tag). The pipeline runs the project's .gitlab-ci.yml configuration."
+    },
+    {
+      "name": "Retry Pipeline",
+      "category": "Pipelines",
+      "description": "Retries the failed and canceled jobs in an existing pipeline, identified by its numeric ID. Returns the updated pipeline."
+    },
+    {
+      "name": "Cancel Pipeline",
+      "category": "Pipelines",
+      "description": "Cancels a running pipeline and its jobs, identified by its numeric ID. Returns the updated pipeline."
+    },
+    {
+      "name": "List Releases",
+      "category": "Releases",
+      "description": "Lists releases in a project, ordered by release date. Supports page-based pagination."
+    },
+    {
+      "name": "Create Release",
+      "category": "Releases",
+      "description": "Creates a release for a project from a tag. If the tag does not yet exist, provide a ref (branch or commit SHA) and GitLab creates the tag from it. Optionally set a display name and description."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create GitLab issues from support tickets, form submissions, or monitoring alerts",
+    "Open, review, and merge merge requests as part of a release workflow",
+    "Commit generated files or configuration changes into a repository branch",
+    "Trigger, retry, or cancel CI/CD pipelines and react to their status",
+    "Publish releases and notify stakeholders when they ship"
+  ],
+  "agentIdeas": [
+    "When a new bug report arrives, use **GitLab** \"Create Issue\" to file it, then use **Slack** \"Send Message To Channel\" to notify the engineering channel with the issue link.",
+    "After **GitLab** \"Merge Merge Request\" completes, use **GitLab** \"Create Release\" to tag the version and **Gmail** \"Send Message\" to email stakeholders the release notes.",
+    "Mirror tracked work from **Linear** \"Create Issue\" or **Jira** \"Create Issue\" into GitLab via \"Create Issue\", keeping engineering and project-management tools aligned."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/gitlab/public/icon.png",
+  "sourcePaths": {
+    "service": "services/gitlab",
+    "readme": "services/gitlab/README.md",
+    "index": "services/gitlab/src/index.js"
+  }
+}

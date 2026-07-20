@@ -1,0 +1,132 @@
+{
+  "slug": "acuity",
+  "name": "Acuity Scheduling",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Book, reschedule, and cancel appointments, list appointments with date/type/client filtering and sort direction, look up open availability, and manage clients, appointment types, calendars, and intake forms through the Acuity Scheduling API (now part of Squarespace). Authenticates with HTTP Basic using your account's `userId:apiKey`.",
+  "actionCount": 17,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Appointments",
+    "Availability",
+    "Appointment Types",
+    "Calendars",
+    "Clients",
+    "Forms",
+    "Certificates",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "List Appointments",
+      "category": "Appointments",
+      "description": "Retrieves scheduled appointments. Supports filtering by date range (minDate/maxDate as YYYY-MM-DD), calendar, appointment type, client email, and canceled status, plus sort direction (newest or oldest first). Returns up to the requested maximum (Acuity defaults to 100). Use this to find appointment IDs for other operations."
+    },
+    {
+      "name": "Get Appointment",
+      "category": "Appointments",
+      "description": "Retrieves the full details of a single appointment by its ID, including client contact info, scheduled time, appointment type, calendar, price, and any intake form field values."
+    },
+    {
+      "name": "Create Appointment",
+      "category": "Appointments",
+      "description": "Books a new appointment as an administrator (bypasses client-facing availability restrictions). Requires an appointment type, an ISO 8601 datetime, and the client's first name, last name, and email. Optionally set phone, a specific calendar, and intake form field values. No confirmation email is sent unless configured on the account."
+    },
+    {
+      "name": "Reschedule Appointment",
+      "category": "Appointments",
+      "description": "Moves an existing appointment to a new start time. Provide the appointment ID and the new datetime in ISO 8601 format. Returns the updated appointment. The new time should correspond to an available slot for the appointment's type and calendar."
+    },
+    {
+      "name": "Cancel Appointment",
+      "category": "Appointments",
+      "description": "Cancels an existing appointment by ID. Optionally include a cancellation note that is stored on the appointment. Returns the updated (canceled) appointment. Cancellation is not reversible via the API."
+    },
+    {
+      "name": "Update Appointment",
+      "category": "Appointments",
+      "description": "Updates editable details on an existing appointment, such as private notes and intake form field values. Does not change the scheduled time (use Reschedule Appointment for that). Returns the updated appointment."
+    },
+    {
+      "name": "Get Availability Dates",
+      "category": "Availability",
+      "description": "Returns the dates within a given month that have open availability for a specific appointment type, optionally scoped to one calendar. Use the returned dates with Get Availability Times to find bookable slots."
+    },
+    {
+      "name": "Get Availability Times",
+      "category": "Availability",
+      "description": "Returns the specific open time slots on a given date for an appointment type, optionally scoped to one calendar. Each returned time is a bookable ISO 8601 datetime that can be passed to Create Appointment."
+    },
+    {
+      "name": "Check Times",
+      "category": "Availability",
+      "description": "Validates whether specific times are still available for booking a given appointment type before creating appointments. Provide the appointment type and a list of ISO 8601 datetimes; returns the subset that are currently bookable. Useful to confirm slots have not been taken since they were fetched."
+    },
+    {
+      "name": "List Appointment Types",
+      "category": "Appointment Types",
+      "description": "Retrieves all appointment types configured on the account, including their name, ID, duration, price, category, and whether they are active or private. Use the returned IDs when booking or checking availability."
+    },
+    {
+      "name": "List Calendars",
+      "category": "Calendars",
+      "description": "Retrieves all calendars on the account, including their name, ID, email, timezone, and location. Calendars represent staff members or resources against which appointments are booked."
+    },
+    {
+      "name": "List Clients",
+      "category": "Clients",
+      "description": "Retrieves clients stored on the account. Supply an optional search term to filter by name, email, or phone. Returns each client's name and contact details."
+    },
+    {
+      "name": "Create Client",
+      "category": "Clients",
+      "description": "Creates a new client record on the account with a first name, last name, and optional email and phone. Returns the created client. Note that appointments booked via Create Appointment automatically create clients as well."
+    },
+    {
+      "name": "Update Client",
+      "category": "Clients",
+      "description": "Updates an existing client identified by their current first name, last name, and phone (Acuity's composite client key). Provide the fields to change. Returns the updated client record."
+    },
+    {
+      "name": "List Forms",
+      "category": "Forms",
+      "description": "Retrieves the intake form definitions configured on the account, including each form's fields and their IDs, names, and types. Use these field IDs to populate the Form Fields parameter when creating or updating appointments."
+    },
+    {
+      "name": "List Certificates",
+      "category": "Certificates",
+      "description": "Retrieves discount and gift certificate codes configured on the account, including the code, discount type/amount, appointment type restrictions, and remaining uses. Useful for auditing or applying promotional codes."
+    },
+    {
+      "name": "Get Me",
+      "category": "Account",
+      "description": "Retrieves the authenticated Acuity account's profile, including business name, email, timezone, currency, and plan. Useful as a connection/credential check."
+    }
+  ],
+  "triggers": [
+    "On New Appointment"
+  ],
+  "idealUseCases": [
+    "Automatically book, reschedule, or cancel appointments from another system or workflow",
+    "Check open availability (dates and times) before offering or confirming a booking",
+    "Sync new appointments into a CRM, spreadsheet, or notification channel the moment they are booked",
+    "Keep client records and intake form data up to date across tools",
+    "Audit appointment types, calendars, and discount/gift certificates"
+  ],
+  "agentIdeas": [
+    "When an **Acuity Scheduling** \"On New Appointment\" trigger fires, use **Gmail** \"Send Message\" to email the client a personalized confirmation with the scheduled time and any prep instructions.",
+    "After booking with **Acuity Scheduling** \"Create Appointment\", call **Google Calendar** \"Create Event\" to mirror the appointment onto a staff member's calendar with the client's contact details.",
+    "When an **Acuity Scheduling** \"On New Appointment\" trigger fires, use **HubSpot** \"Create Contact\" (or \"Update Contact\") to add or enrich the client record and log the booking in your CRM."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/acuity/public/icon.png",
+  "sourcePaths": {
+    "service": "services/acuity",
+    "readme": "services/acuity/README.md",
+    "index": "services/acuity/src/index.js"
+  }
+}

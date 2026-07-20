@@ -1,0 +1,157 @@
+{
+  "slug": "kit",
+  "name": "Kit (ConvertKit)",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Kit](https://kit.com) — the creator email marketing platform **formerly known as ConvertKit** (the product was renamed in 2024; if you are searching for a ConvertKit integration, this is it). Built on the Kit **v4 API**, it manages subscribers, tags, forms, sequences, custom fields, and broadcasts, and reacts in realtime to Kit webhook events. Authentication uses a Kit v4 API key sent in the `X-Kit-Api-Key` header (get it in Kit under Settings → Developer → API Keys (v4)).",
+  "actionCount": 22,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Account",
+    "Subscribers",
+    "Tags",
+    "Forms",
+    "Sequences",
+    "Custom Fields",
+    "Broadcasts"
+  ],
+  "actions": [
+    {
+      "name": "Get Account",
+      "category": "Account",
+      "description": "Retrieves the current Kit account — name, primary email, plan type, and timezone. Use this to verify the API key connection or to read account-level details."
+    },
+    {
+      "name": "Create Subscriber",
+      "category": "Subscribers",
+      "description": "Creates a subscriber in Kit (or updates the existing one when the email address is already present). Optionally sets the first name, state, and custom field values. Note: subscribers created this way are added directly without a confirmation email."
+    },
+    {
+      "name": "Get Subscriber",
+      "category": "Subscribers",
+      "description": "Retrieves a single Kit subscriber by ID, including their email, first name, state, and custom field values."
+    },
+    {
+      "name": "List Subscribers",
+      "category": "Subscribers",
+      "description": "Lists subscribers in the Kit account with optional filters: exact email address, status, and creation date range. Results are cursor-paginated — pass the returned pagination.end_cursor as After Cursor to fetch the next page."
+    },
+    {
+      "name": "Update Subscriber",
+      "category": "Subscribers",
+      "description": "Updates a Kit subscriber's email address, first name, and/or custom field values. Leave a field blank to keep its current value. To change subscription state, use Unsubscribe Subscriber instead."
+    },
+    {
+      "name": "Unsubscribe Subscriber",
+      "category": "Subscribers",
+      "description": "Unsubscribes a Kit subscriber so they no longer receive any emails from the account. This sets their state to cancelled; it does not delete the subscriber record."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new tag in the Kit account. Tags are the primary way to segment subscribers for automations and broadcast filters."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists the tags in the Kit account. Results are cursor-paginated — pass the returned pagination.end_cursor as After Cursor to fetch the next page."
+    },
+    {
+      "name": "Tag Subscriber",
+      "category": "Tags",
+      "description": "Adds a tag to an existing subscriber identified by their subscriber ID. Use Tag Subscriber By Email when you only have the email address."
+    },
+    {
+      "name": "Tag Subscriber By Email",
+      "category": "Tags",
+      "description": "Adds a tag to a subscriber identified by email address. The subscriber must already exist in the Kit account — use Create Subscriber first for new contacts."
+    },
+    {
+      "name": "Remove Tag From Subscriber",
+      "category": "Tags",
+      "description": "Removes a tag from a subscriber. The subscriber stays in the account — only the tag association is deleted."
+    },
+    {
+      "name": "List Subscribers For Tag",
+      "category": "Tags",
+      "description": "Lists the subscribers that have a given tag, with optional status and creation date filters. Results are cursor-paginated."
+    },
+    {
+      "name": "List Forms",
+      "category": "Forms",
+      "description": "Lists the forms and landing pages in the Kit account with their names, types, and embed details. Results are cursor-paginated."
+    },
+    {
+      "name": "Add Subscriber To Form",
+      "category": "Forms",
+      "description": "Adds an existing subscriber to a Kit form, which triggers the form's incentive email and automations. Identify the subscriber by ID or by email address (one is required; ID wins when both are given)."
+    },
+    {
+      "name": "List Sequences",
+      "category": "Sequences",
+      "description": "Lists the email sequences (courses) in the Kit account. Results are cursor-paginated."
+    },
+    {
+      "name": "Add Subscriber To Sequence",
+      "category": "Sequences",
+      "description": "Enrolls an existing subscriber in a Kit email sequence so they start receiving its emails. Identify the subscriber by ID or by email address (one is required; ID wins when both are given)."
+    },
+    {
+      "name": "List Custom Fields",
+      "category": "Custom Fields",
+      "description": "Lists the custom fields defined in the Kit account, including each field's label and the key used when setting values on subscribers. Results are cursor-paginated."
+    },
+    {
+      "name": "Create Custom Field",
+      "category": "Custom Fields",
+      "description": "Creates a new custom field in the Kit account. Once created, set its value on subscribers via Create Subscriber or Update Subscriber using the field's label as the key."
+    },
+    {
+      "name": "List Broadcasts",
+      "category": "Broadcasts",
+      "description": "Lists the broadcasts (one-time emails) in the Kit account with their subjects and send times. Results are cursor-paginated."
+    },
+    {
+      "name": "Create Broadcast",
+      "category": "Broadcasts",
+      "description": "Creates a broadcast email in Kit. Leave Send At blank to save it as a draft you can review and send from the Kit UI; set Send At to schedule delivery to all active subscribers at that time. Content supports HTML."
+    },
+    {
+      "name": "Get Broadcast",
+      "category": "Broadcasts",
+      "description": "Retrieves a single broadcast by ID, including its subject, content, send time, and publication settings."
+    },
+    {
+      "name": "Get Broadcast Stats",
+      "category": "Broadcasts",
+      "description": "Retrieves delivery and engagement statistics for a sent broadcast — recipients, open rate, click rate, unsubscribes, and click counts."
+    }
+  ],
+  "triggers": [
+    "On Kit Event"
+  ],
+  "idealUseCases": [
+    "Sync new leads from forms, stores, or spreadsheets into Kit and tag them for the right automation.",
+    "Keep subscriber records current — update custom fields, unsubscribe cancelled contacts, and manage tag membership.",
+    "Enroll subscribers into email sequences or add them to forms to trigger incentive emails.",
+    "Draft or schedule broadcasts and pull open/click stats for reporting.",
+    "Kick off cross-app workflows whenever a subscriber activates, is tagged, completes a sequence, clicks a link, or makes a purchase."
+  ],
+  "agentIdeas": [
+    "When a **Kit** \"On Kit Event\" trigger fires for a Purchase Created event, use **Slack** \"Send Message To Channel\" to alert the team with the subscriber's email and purchase details.",
+    "Use **Google Sheets** \"On New Row\" to capture new leads from a spreadsheet, then call **Kit** \"Create Subscriber\" and \"Tag Subscriber By Email\" to add and segment each one for the right automation.",
+    "When a **Shopify** \"On New Customer\" trigger fires, use **Kit** \"Create Subscriber\" to add them to the mailing list and **Kit** \"Add Subscriber To Sequence\" to start a welcome course.",
+    "When a **Kit** \"On Kit Event\" trigger fires for Subscriber Activated, use **Google Sheets** \"Add Row\" to log the new subscriber into a growth-tracking spreadsheet."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/kit/public/icon.png",
+  "sourcePaths": {
+    "service": "services/kit",
+    "readme": "services/kit/README.md",
+    "index": "services/kit/src/index.js"
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "slug": "resend",
+  "name": "Resend",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Send and manage transactional and marketing email through the [Resend](https://resend.com) API. Supports rich single sends (CC/BCC, reply-to, custom headers, tags, natural-language scheduling, plus FlowRunner-file and remote-URL attachments), independent batch sends, and full management of sending domains with DNS verification, API keys, audiences, contacts, and broadcasts. Authenticates with a Resend API key.",
+  "actionCount": 29,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Emails",
+    "Domains",
+    "API Keys",
+    "Audiences",
+    "Contacts",
+    "Broadcasts"
+  ],
+  "actions": [
+    {
+      "name": "Send Email",
+      "category": "Emails",
+      "description": "Sends a transactional email through Resend. Supports up to 50 recipients, CC/BCC, reply-to addresses, custom headers, tags for analytics, and scheduled delivery via natural language (e.g. 'in 1 hour') or an ISO 8601 timestamp. Attach a FlowRunner file (its bytes are base64-encoded and embedded) and/or remote files by public URL. Total attachment size is limited to 40 MB per email; emails with attachments cannot be scheduled. Provide at least one of HTML Body or Text Body. Returns the ID of the created email."
+    },
+    {
+      "name": "Get Email",
+      "category": "Emails",
+      "description": "Retrieves a single sent or scheduled email by ID, including sender, recipients, subject, HTML/text content, creation time, and the last delivery event (e.g. delivered, bounced, complained)."
+    },
+    {
+      "name": "Update Email",
+      "category": "Emails",
+      "description": "Updates a scheduled email that has not been sent yet by changing its delivery time. Accepts natural language like 'in 1 hour' or an ISO 8601 timestamp."
+    },
+    {
+      "name": "Cancel Scheduled Email",
+      "category": "Emails",
+      "description": "Cancels a scheduled email so it is never delivered. Only emails scheduled via the Scheduled At option that have not been sent yet can be canceled."
+    },
+    {
+      "name": "Send Batch Emails",
+      "category": "Emails",
+      "description": "Sends up to 100 fully independent emails in a single API call. Each item defines its own sender, recipients, subject, and HTML/text content. Batch sending does not support attachments, tags, or scheduled delivery - use Send Email for those. Returns the IDs of all created emails in order."
+    },
+    {
+      "name": "Create Domain",
+      "category": "Domains",
+      "description": "Registers a sending domain in Resend and returns the DNS records (SPF, DKIM, MX) you must add at your DNS provider before the domain can be verified. Choose the region closest to your users for fastest delivery."
+    },
+    {
+      "name": "List Domains",
+      "category": "Domains",
+      "description": "Lists all sending domains in your Resend account with their verification status, region, and creation time."
+    },
+    {
+      "name": "Get Domain",
+      "category": "Domains",
+      "description": "Retrieves a single sending domain by ID, including its verification status, region, and the DNS records (with per-record status) you need to configure at your DNS provider."
+    },
+    {
+      "name": "Verify Domain",
+      "category": "Domains",
+      "description": "Triggers DNS verification for a domain after you have added the required SPF, DKIM, and MX records at your DNS provider. Verification runs asynchronously - check the domain status with Get Domain afterwards."
+    },
+    {
+      "name": "Update Domain",
+      "category": "Domains",
+      "description": "Updates a domain's tracking and TLS settings. Enable click tracking to rewrite links for analytics, open tracking to embed a tracking pixel, and choose whether TLS is enforced (delivery fails without a secure connection) or opportunistic (falls back to unencrypted delivery)."
+    },
+    {
+      "name": "Delete Domain",
+      "category": "Domains",
+      "description": "Permanently removes a sending domain from your Resend account. Emails can no longer be sent from addresses on this domain until it is re-added and verified."
+    },
+    {
+      "name": "Create API Key",
+      "category": "API Keys",
+      "description": "Creates a new Resend API key. Full Access keys can manage all resources (domains, contacts, broadcasts) and send emails; Sending Access keys can only send emails, optionally restricted to a single domain. The token is returned only once in this response - store it securely."
+    },
+    {
+      "name": "List API Keys",
+      "category": "API Keys",
+      "description": "Lists all API keys in your Resend account with their names and creation times. Token values are never returned - they are only visible once, when the key is created."
+    },
+    {
+      "name": "Delete API Key",
+      "category": "API Keys",
+      "description": "Permanently revokes an API key. Any application still using the key will immediately lose access to the Resend API."
+    },
+    {
+      "name": "Create Audience",
+      "category": "Audiences",
+      "description": "Creates a new audience - a named list of contacts that broadcasts can be sent to. Returns the audience ID used by contact and broadcast operations."
+    },
+    {
+      "name": "List Audiences",
+      "category": "Audiences",
+      "description": "Lists all audiences in your Resend account with their IDs, names, and creation times."
+    },
+    {
+      "name": "Get Audience",
+      "category": "Audiences",
+      "description": "Retrieves a single audience by ID, including its name and creation time."
+    },
+    {
+      "name": "Delete Audience",
+      "category": "Audiences",
+      "description": "Permanently deletes an audience and all contacts inside it. Broadcasts already sent to this audience are not affected."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Adds a contact to an audience with an email address, optional first and last name, and subscription status. Returns the new contact's ID."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists all contacts in an audience with their email addresses, names, subscription status, and creation times."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact from an audience by contact ID or email address, including name, subscription status, and creation time."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates a contact's first name, last name, or subscription status. The contact can be identified by contact ID or email address. Only provided fields are changed."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently removes a contact from an audience. The contact can be identified by contact ID or email address."
+    },
+    {
+      "name": "Create Broadcast",
+      "category": "Broadcasts",
+      "description": "Creates a draft broadcast (marketing email) targeted at an audience. The broadcast is not delivered until you call Send Broadcast. HTML content supports personalization variables like {{{FIRST_NAME|there}}} and the required {{{RESEND_UNSUBSCRIBE_URL}}} unsubscribe link. Returns the broadcast ID."
+    },
+    {
+      "name": "List Broadcasts",
+      "category": "Broadcasts",
+      "description": "Lists all broadcasts in your Resend account with their status (draft, scheduled, or sent), target audience, and timing information."
+    },
+    {
+      "name": "Get Broadcast",
+      "category": "Broadcasts",
+      "description": "Retrieves a single broadcast by ID, including its name, sender, subject, preview text, target audience, status, and scheduling information."
+    },
+    {
+      "name": "Update Broadcast",
+      "category": "Broadcasts",
+      "description": "Updates a draft broadcast's audience, sender, subject, content, name, reply-to, or preview text. Only provided fields are changed. Broadcasts that have already been sent cannot be updated."
+    },
+    {
+      "name": "Send Broadcast",
+      "category": "Broadcasts",
+      "description": "Sends a draft broadcast to its audience, either immediately or at a scheduled time. Scheduling accepts natural language like 'in 1 hour' or an ISO 8601 timestamp."
+    },
+    {
+      "name": "Delete Broadcast",
+      "category": "Broadcasts",
+      "description": "Permanently deletes a broadcast. Only broadcasts with draft status can be deleted; scheduled or sent broadcasts cannot."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Send transactional emails (receipts, password resets, alerts) from an automated flow, optionally scheduled for later delivery",
+    "Attach a FlowRunner-generated file or a remote document to an outgoing email",
+    "Fan out up to 100 independent emails in one call with Send Batch Emails",
+    "Register and verify a sending domain, then manage its tracking and TLS settings",
+    "Build and maintain audiences and contacts, then create and send broadcasts (marketing campaigns) with personalization and unsubscribe links",
+    "Provision and revoke scoped API keys for downstream systems"
+  ],
+  "agentIdeas": [
+    "When an **Airtable** \"On New Record\" trigger fires for a new sign-up, use **Resend** \"Send Email\" to deliver a personalized welcome message, then \"Create Contact\" to add the person to a Resend audience for future broadcasts.",
+    "Use **Google Sheets** \"Get Rows\" to pull a subscriber list, loop **Resend** \"Create Contact\" to add each into an audience, then \"Create Broadcast\" and \"Send Broadcast\" to run a campaign against it.",
+    "Use **Typeform** \"Get Form Responses\" to collect survey submissions, then use **Resend** \"Send Batch Emails\" to send each respondent a tailored follow-up in a single call."
+  ],
+  "icon": "/icon.jpeg",
+  "iconFile": "services/resend/public/icon.jpeg",
+  "sourcePaths": {
+    "service": "services/resend",
+    "readme": "services/resend/README.md",
+    "index": "services/resend/src/index.js"
+  }
+}

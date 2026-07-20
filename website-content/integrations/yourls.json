@@ -1,0 +1,63 @@
+{
+  "slug": "yourls",
+  "name": "YOURLS",
+  "marketingCategory": "Utilities & Personal",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connects FlowRunner to your self-hosted [YOURLS](https://yourls.org) URL shortener. Shorten and expand links and read click statistics — all through the single `yourls-api.php` endpoint using signature-based passwordless API access.",
+  "actionCount": 5,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Links",
+    "Statistics"
+  ],
+  "actions": [
+    {
+      "name": "Shorten URL",
+      "category": "Links",
+      "description": "Shortens a long URL on your YOURLS instance (action=shorturl). Optionally set a custom keyword (the short slug) and a title. If the long URL was already shortened, YOURLS returns the existing short URL instead of creating a duplicate; this operation surfaces that existing short link and the duplicate notice rather than failing. Returns the short URL, the resolved title, and the stored link details."
+    },
+    {
+      "name": "Expand Short URL",
+      "category": "Links",
+      "description": "Expands a YOURLS short URL back to its original long URL (action=expand). Accepts either the full short URL or just the keyword (short slug). Returns the original long URL along with the keyword and short URL."
+    },
+    {
+      "name": "Get URL Stats",
+      "category": "Statistics",
+      "description": "Retrieves click statistics for a single YOURLS short URL (action=url-stats). Accepts the short URL or its keyword. Returns a link object containing the total click count, creation timestamp, title, destination URL, and creator IP."
+    },
+    {
+      "name": "Get Stats",
+      "category": "Statistics",
+      "description": "Retrieves a ranked list of links from your YOURLS instance (action=stats). Filter by the most clicked (Top), least clicked (Bottom), a random selection (Random), or the most recently created (Last), and limit how many links are returned. Also returns overall totals for links and clicks."
+    },
+    {
+      "name": "Get Database Stats",
+      "category": "Statistics",
+      "description": "Retrieves global statistics for your entire YOURLS instance (action=db-stats): the total number of shortened links and the total number of clicks across all links."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically shorten campaign or content links on your own branded domain before publishing them.",
+    "Resolve incoming short URLs or keywords back to their original destinations for validation or logging.",
+    "Report on link performance by pulling per-link click counts and instance-wide totals into dashboards or spreadsheets.",
+    "Surface your top, most recent, or randomly sampled links for newsletters and reviews."
+  ],
+  "agentIdeas": [
+    "Use **YOURLS** \"Shorten URL\" to brand a campaign link, then **Slack** \"Send Message To Channel\" to post the short link into a marketing channel for the team to share.",
+    "On a schedule, call **YOURLS** \"Get Stats\" to fetch the top-clicked links and **Google Sheets** \"Add Row\" to append each link and its click count into a performance-tracking spreadsheet.",
+    "When a new record appears via **Airtable** \"Get Records\", use **YOURLS** \"Shorten URL\" to generate a trackable short link for distribution."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/yourls/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/yourls",
+    "readme": "services/yourls/README.md",
+    "index": "services/yourls/src/index.js"
+  }
+}

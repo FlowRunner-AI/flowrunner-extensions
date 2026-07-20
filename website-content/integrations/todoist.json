@@ -1,0 +1,173 @@
+{
+  "slug": "todoist",
+  "name": "Todoist",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Todoist](https://todoist.com) with FlowRunner to manage tasks, projects, sections, labels, and comments. Built on the Todoist API v1 and authenticated with a personal API token.",
+  "actionCount": 26,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Tasks",
+    "Projects",
+    "Sections",
+    "Labels",
+    "Comments"
+  ],
+  "actions": [
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a new task. Provide task content (the title), which is required. Optionally set a description, place the task in a project and section, make it a subtask via a parent task, attach labels, set a priority, assign a due date, and assign it to a collaborator. Due dates can be given either as natural language via Due String (e.g. \"tomorrow at 5pm\", \"every Monday\") or as a fixed calendar date via Due Date (YYYY-MM-DD); if both are supplied Due String takes precedence."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single active task by its ID, including its content, project, labels, priority, and due date."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Lists active (non-completed) tasks. Narrow the results by project, section, or label, or use a Todoist filter query (e.g. \"today | overdue\", \"@work & p1\") for advanced filtering. Results are paginated via a cursor; pass the returned next_cursor back in as Cursor to fetch the next page."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates an existing task. Only the fields you provide are changed; leave a field empty to keep its current value. Supports changing content, description, labels, priority, due date (natural language or fixed date), and assignee."
+    },
+    {
+      "name": "Close Task",
+      "category": "Tasks",
+      "description": "Completes (closes) a task. For recurring tasks this advances the task to its next occurrence instead of removing it. Returns a success confirmation."
+    },
+    {
+      "name": "Reopen Task",
+      "category": "Tasks",
+      "description": "Reopens a completed task, restoring it (and any completed ancestors/sections) to the active state. Returns a success confirmation."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task and all of its subtasks. This cannot be undone. Returns a success confirmation."
+    },
+    {
+      "name": "Move Task",
+      "category": "Tasks",
+      "description": "Moves a task to a different project and/or section, or nests it under a parent task. Provide at least one destination: a project, a section, or a parent task ID."
+    },
+    {
+      "name": "Create Project",
+      "category": "Projects",
+      "description": "Creates a new project. Only the name is required. Optionally set a color, nest it under a parent project, mark it as a favorite, and choose its default view style (list, board, or calendar)."
+    },
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Lists the user's projects, paginated via a cursor. Pass the returned next_cursor back in as Cursor to fetch the next page."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves a single project by its ID, including its name, color, view style, and favorite status."
+    },
+    {
+      "name": "Update Project",
+      "category": "Projects",
+      "description": "Updates an existing project. Only the fields you provide are changed. Supports renaming, changing color, toggling favorite status, and changing the view style."
+    },
+    {
+      "name": "Delete Project",
+      "category": "Projects",
+      "description": "Permanently deletes a project along with all of its sections and tasks. This cannot be undone. Returns a success confirmation."
+    },
+    {
+      "name": "Get Collaborators",
+      "category": "Projects",
+      "description": "Lists all collaborators on a shared project, returning each person's user ID, name, and email. Use the returned IDs as the Assignee when creating or updating tasks."
+    },
+    {
+      "name": "Create Section",
+      "category": "Sections",
+      "description": "Creates a new section within a project. Both the section name and the target project are required."
+    },
+    {
+      "name": "List Sections",
+      "category": "Sections",
+      "description": "Lists sections, optionally restricted to a single project, paginated via a cursor. Pass the returned next_cursor back in as Cursor to fetch the next page."
+    },
+    {
+      "name": "Delete Section",
+      "category": "Sections",
+      "description": "Permanently deletes a section and all tasks within it. This cannot be undone. Returns a success confirmation."
+    },
+    {
+      "name": "Create Label",
+      "category": "Labels",
+      "description": "Creates a new personal label. Only the name is required. Optionally set a color, an ordering position, and mark it as a favorite."
+    },
+    {
+      "name": "List Labels",
+      "category": "Labels",
+      "description": "Lists the user's personal labels, paginated via a cursor. Pass the returned next_cursor back in as Cursor to fetch the next page."
+    },
+    {
+      "name": "Update Label",
+      "category": "Labels",
+      "description": "Updates an existing personal label. Only the fields you provide are changed. Supports renaming, changing color, reordering, and toggling favorite status. Renaming updates the label on all tasks that carry it."
+    },
+    {
+      "name": "Delete Label",
+      "category": "Labels",
+      "description": "Permanently deletes a personal label and removes it from all tasks that carry it. This cannot be undone. Returns a success confirmation."
+    },
+    {
+      "name": "Create Comment",
+      "category": "Comments",
+      "description": "Adds a comment to a task or a project. Provide the comment content plus exactly one of Task ID or Project ID to indicate where the comment belongs."
+    },
+    {
+      "name": "List Comments",
+      "category": "Comments",
+      "description": "Lists comments on a task or a project. Provide exactly one of Task ID or Project ID. Results are paginated via a cursor; pass the returned next_cursor back in as Cursor to fetch the next page."
+    },
+    {
+      "name": "Get Comment",
+      "category": "Comments",
+      "description": "Retrieves a single comment by its ID, including its content, author, and the task or project it belongs to."
+    },
+    {
+      "name": "Update Comment",
+      "category": "Comments",
+      "description": "Updates the content of an existing comment."
+    },
+    {
+      "name": "Delete Comment",
+      "category": "Comments",
+      "description": "Permanently deletes a comment. This cannot be undone. Returns a success confirmation."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Auto-create Todoist tasks from incoming emails, form submissions, or chat messages.",
+    "Sync project tasks with spreadsheets or other project-management tools.",
+    "Set natural-language due dates (e.g. \"tomorrow at 5pm\", \"every Monday\") and friendly priorities from automated flows.",
+    "Post comments or move tasks between projects/sections as part of a workflow.",
+    "Manage labels and shared-project collaborators programmatically."
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires, call **Todoist** \"Create Task\" with a natural-language Due String to turn the email into a follow-up task.",
+    "Use **Google Sheets** \"Get Rows\" to read a project plan, then call **Todoist** \"Create Task\" for each row to populate a Todoist project.",
+    "After **Todoist** \"Close Task\" completes a task, use **Slack** \"Send Message To Channel\" to notify the team that the item is done.",
+    "When a **Google Calendar** \"Create Event\" schedules a meeting, call **Todoist** \"Create Task\" to add a prep reminder due before the event."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/todoist/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/todoist",
+    "readme": "services/todoist/README.md",
+    "index": "services/todoist/src/index.js"
+  }
+}

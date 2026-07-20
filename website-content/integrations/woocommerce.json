@@ -1,0 +1,312 @@
+{
+  "slug": "woocommerce",
+  "name": "WooCommerce",
+  "marketingCategory": "E-commerce",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect a self-hosted WooCommerce store to FlowRunner and automate your storefront over the WooCommerce REST API (`/wp-json/wc/v3`). Manage products, variations, categories, global attributes and their terms, orders, notes, refunds, customers, and coupons - bulk-sync products, orders, and customers in a single request, and react in real time to new and changed orders, products, and customers. Auth uses a per-store Consumer Key/Secret over HTTPS, with an optional query-string fallback for hosts that strip the Authorization header.",
+  "actionCount": 51,
+  "triggerCount": 6,
+  "operationCategories": [
+    "Products",
+    "Product Variations",
+    "Product Categories",
+    "Product Attributes",
+    "Orders",
+    "Order Notes",
+    "Order Refunds",
+    "Customers",
+    "Coupons",
+    "Batch"
+  ],
+  "actions": [
+    {
+      "name": "Create Product",
+      "category": "Products",
+      "description": "Creates a new product in the store catalog. Use this to add inventory programmatically - a simple item, or a variable parent you then attach variations to."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves a single product by ID, including price, stock, and category data. Pick the product from the dropdown instead of pasting an ID."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Lists products, optionally filtered by search text, category, or status. Use this to browse the catalog or find a product before acting on it."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates an existing product's name, price, status, or any other field. Use this to change pricing, publish a draft, or adjust catalog details."
+    },
+    {
+      "name": "Delete Product",
+      "category": "Products",
+      "description": "Deletes a product. By default it is moved to trash; enable Permanent to remove it entirely. Use when retiring inventory."
+    },
+    {
+      "name": "Create Product Variation",
+      "category": "Product Variations",
+      "description": "Adds a variation (e.g. a specific size/color combination) to a variable product. Use after creating a 'variable' product to define its purchasable options."
+    },
+    {
+      "name": "Get Product Variation",
+      "category": "Product Variations",
+      "description": "Retrieves a single variation of a variable product by ID, including its price and stock."
+    },
+    {
+      "name": "List Product Variations",
+      "category": "Product Variations",
+      "description": "Lists all variations of a variable product. Use to enumerate the purchasable options of a product."
+    },
+    {
+      "name": "Update Product Variation",
+      "category": "Product Variations",
+      "description": "Updates a variation's price, stock, or other fields. Use to reprice or restock a specific size/color."
+    },
+    {
+      "name": "Delete Product Variation",
+      "category": "Product Variations",
+      "description": "Permanently deletes a variation of a variable product. Variations cannot be trashed, so this removal is final."
+    },
+    {
+      "name": "Create Product Category",
+      "category": "Product Categories",
+      "description": "Creates a product category to organize the catalog. Optionally nest it under a parent category."
+    },
+    {
+      "name": "Get Product Category",
+      "category": "Product Categories",
+      "description": "Retrieves a single product category by ID, including its product count and parent."
+    },
+    {
+      "name": "List Product Categories",
+      "category": "Product Categories",
+      "description": "Lists product categories, optionally filtered by search text. Use to discover how the catalog is organized."
+    },
+    {
+      "name": "Update Product Category",
+      "category": "Product Categories",
+      "description": "Updates a product category's name or description."
+    },
+    {
+      "name": "Delete Product Category",
+      "category": "Product Categories",
+      "description": "Permanently deletes a product category. Categories cannot be trashed, so this removal is final; products are not deleted but lose this category."
+    },
+    {
+      "name": "Create Product Attribute",
+      "category": "Product Attributes",
+      "description": "Creates a global product attribute (e.g. \"Color\" or \"Size\") that can be reused across products. Create this first, then add its terms (the selectable values) and assign it to a variable product before defining variations."
+    },
+    {
+      "name": "Get Product Attribute",
+      "category": "Product Attributes",
+      "description": "Retrieves a single global product attribute by ID, including its type and sort order."
+    },
+    {
+      "name": "List Product Attributes",
+      "category": "Product Attributes",
+      "description": "Lists the store's global product attributes, optionally filtered by search text. Use to discover which attributes exist before creating terms or assigning them to a variable product."
+    },
+    {
+      "name": "Update Product Attribute",
+      "category": "Product Attributes",
+      "description": "Updates a global product attribute's name, slug, sort order, or archive setting."
+    },
+    {
+      "name": "Delete Product Attribute",
+      "category": "Product Attributes",
+      "description": "Permanently deletes a global product attribute and all of its terms. Attributes cannot be trashed, so this removal is final; products that used it lose those attribute selections."
+    },
+    {
+      "name": "Create Attribute Term",
+      "category": "Product Attributes",
+      "description": "Adds a selectable term (e.g. \"Blue\" for the \"Color\" attribute) to a global product attribute. Use after creating the attribute so it has values to assign to variable products."
+    },
+    {
+      "name": "Get Attribute Term",
+      "category": "Product Attributes",
+      "description": "Retrieves a single term of a global product attribute by ID, including how many products use it."
+    },
+    {
+      "name": "List Attribute Terms",
+      "category": "Product Attributes",
+      "description": "Lists the terms (selectable values) of a global product attribute, optionally filtered by search text. Use to see or reuse an attribute's existing options, e.g. all colors already defined."
+    },
+    {
+      "name": "Update Attribute Term",
+      "category": "Product Attributes",
+      "description": "Updates a term's name, slug, description, or sort order within a global product attribute."
+    },
+    {
+      "name": "Delete Attribute Term",
+      "category": "Product Attributes",
+      "description": "Permanently deletes a term from a global product attribute. Terms cannot be trashed, so this removal is final; variations using it lose that attribute selection."
+    },
+    {
+      "name": "Create Order",
+      "category": "Orders",
+      "description": "Creates an order with line items, customer, and billing details. Use to record a sale made outside the storefront or to draft an order for a customer."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves a single order by ID, including line items, totals, and customer/billing data."
+    },
+    {
+      "name": "List Orders",
+      "category": "Orders",
+      "description": "Lists orders, optionally filtered by status, customer, or search text. Use to find recent sales or a customer's order history."
+    },
+    {
+      "name": "Update Order",
+      "category": "Orders",
+      "description": "Updates an order - most often to change its status (e.g. mark processing or completed). Use to advance fulfillment or correct order details."
+    },
+    {
+      "name": "Delete Order",
+      "category": "Orders",
+      "description": "Deletes an order. By default it is moved to trash; enable Permanent to remove it entirely."
+    },
+    {
+      "name": "Create Order Note",
+      "category": "Order Notes",
+      "description": "Adds a note to an order. Mark it as a customer note to email it to the buyer, or leave it private for staff. Use for fulfillment updates or internal remarks."
+    },
+    {
+      "name": "Get Order Note",
+      "category": "Order Notes",
+      "description": "Retrieves a single note on an order by ID."
+    },
+    {
+      "name": "List Order Notes",
+      "category": "Order Notes",
+      "description": "Lists all notes on an order, both customer-facing and private. Use to review an order's history."
+    },
+    {
+      "name": "Delete Order Note",
+      "category": "Order Notes",
+      "description": "Permanently deletes a note from an order. Notes cannot be trashed, so this removal is final."
+    },
+    {
+      "name": "Create Order Refund",
+      "category": "Order Refunds",
+      "description": "Issues a refund against an order for a given amount. Optionally trigger the payment gateway to refund the customer automatically. Use for returns and chargebacks."
+    },
+    {
+      "name": "Get Order Refund",
+      "category": "Order Refunds",
+      "description": "Retrieves a single refund on an order by ID."
+    },
+    {
+      "name": "List Order Refunds",
+      "category": "Order Refunds",
+      "description": "Lists all refunds issued against an order. Use to total what has already been refunded."
+    },
+    {
+      "name": "Delete Order Refund",
+      "category": "Order Refunds",
+      "description": "Permanently deletes a refund record from an order. This removes the record only; it does not reverse money already returned."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a customer account. Use to register a buyer programmatically so future orders attach to a known profile."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer by ID, including billing/shipping and spend totals."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Lists customers, optionally filtered by search text or an exact email. Use to look up a buyer before creating an order."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates a customer's profile fields, e.g. name or addresses."
+    },
+    {
+      "name": "Delete Customer",
+      "category": "Customers",
+      "description": "Permanently deletes a customer account. Customers cannot be trashed, so this removal is final; optionally reassign their posts to another user."
+    },
+    {
+      "name": "Create Coupon",
+      "category": "Coupons",
+      "description": "Creates a discount coupon. Use to run promotions - a percentage off, a fixed cart discount, or a fixed product discount."
+    },
+    {
+      "name": "Get Coupon",
+      "category": "Coupons",
+      "description": "Retrieves a single coupon by ID, including its discount type, amount, and usage count."
+    },
+    {
+      "name": "List Coupons",
+      "category": "Coupons",
+      "description": "Lists coupons, optionally filtered by search text against the code. Use to audit active promotions."
+    },
+    {
+      "name": "Update Coupon",
+      "category": "Coupons",
+      "description": "Updates a coupon's amount, description, or other fields. Use to adjust an ongoing promotion."
+    },
+    {
+      "name": "Delete Coupon",
+      "category": "Coupons",
+      "description": "Deletes a coupon. By default it is moved to trash; enable Permanent to remove it entirely."
+    },
+    {
+      "name": "Batch Products",
+      "category": "Batch",
+      "description": "Creates, updates, and/or deletes multiple products in a single request. Use this to sync a catalog in bulk instead of calling Create/Update/Delete Product repeatedly. WooCommerce allows at most 100 items total across Create, Update, and Delete per request."
+    },
+    {
+      "name": "Batch Orders",
+      "category": "Batch",
+      "description": "Creates, updates, and/or deletes multiple orders in a single request. Use this to bulk-import orders or push status changes across many orders at once. WooCommerce allows at most 100 items total across Create, Update, and Delete per request."
+    },
+    {
+      "name": "Batch Customers",
+      "category": "Batch",
+      "description": "Creates, updates, and/or deletes multiple customers in a single request. Use this to bulk-import a customer list or update many profiles at once. WooCommerce allows at most 100 items total across Create, Update, and Delete per request."
+    }
+  ],
+  "triggers": [
+    "On Order Created",
+    "On Order Updated",
+    "On Product Created",
+    "On Product Updated",
+    "On Customer Created",
+    "On Customer Updated"
+  ],
+  "idealUseCases": [
+    "Sync products, prices, and stock between WooCommerce and another system (ERP, PIM, spreadsheet).",
+    "Automate order fulfillment: advance status, add notes, and issue refunds without leaving your flow.",
+    "Trigger workflows the moment an order is placed or updated - send confirmations, notify a warehouse, post to chat.",
+    "Onboard new customers to a CRM or mailing list automatically when they register or update their profile.",
+    "Run promotions by creating and adjusting discount coupons programmatically.",
+    "Define reusable global attributes (e.g. Color, Size) and their terms, then build variable products from them.",
+    "Bulk-import or reconcile large catalogs, order sets, or customer lists in one call with the batch actions.",
+    "Let an AI agent answer \"what did this customer order?\" using dictionary-backed pickers."
+  ],
+  "agentIdeas": [
+    "When a **WooCommerce** \"On Order Created\" trigger fires, use **ShipBob** \"Create Order\" to push the sale into fulfillment, then **Gmail** \"Send Message\" to email the customer an order confirmation with the expected ship date.",
+    "When a **WooCommerce** \"On Customer Created\" trigger fires, use **Brevo** \"Create Contact\" to add the new buyer to your CRM and mailing list automatically.",
+    "When a **WooCommerce** \"On Order Updated\" trigger reports a cancelled order, chain **WooCommerce** \"Create Order Refund\" to return the funds and **Slack** \"Send Message To Channel\" to alert the finance team with the order ID and amount."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/woocommerce/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/woocommerce",
+    "readme": "services/woocommerce/README.md",
+    "index": "services/woocommerce/src/index.js"
+  }
+}

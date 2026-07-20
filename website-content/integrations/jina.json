@@ -1,0 +1,70 @@
+{
+  "slug": "jina",
+  "name": "Jina AI",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner service for [Jina AI](https://jina.ai) — a suite of search-foundation APIs for building AI and RAG workflows: embeddings, reranking, web-page reading, web search, zero-shot classification, text segmentation, and agentic deep search.",
+  "actionCount": 7,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Embeddings",
+    "Search & Ranking",
+    "Reader",
+    "Classification"
+  ],
+  "actions": [
+    {
+      "name": "Create Embeddings",
+      "category": "Embeddings",
+      "description": "Generates vector embeddings for one or more input texts using Jina's embedding models (default jina-embeddings-v3). Supports task-specific embeddings (retrieval query/passage, text matching, classification, separation), optional output dimensionality reduction via Matryoshka (dimensions), and late chunking for long documents. Returns one embedding vector per input plus token usage. Use the resulting vectors for semantic search, RAG, or similarity workloads."
+    },
+    {
+      "name": "Rerank Documents",
+      "category": "Search & Ranking",
+      "description": "Reorders a set of candidate documents by semantic relevance to a query using Jina's reranker models (default jina-reranker-v2-base-multilingual). Returns each document's original index and a relevance_score, sorted most-relevant first, optionally including the document text. Ideal as a second-stage reranker after vector or keyword retrieval in a RAG pipeline."
+    },
+    {
+      "name": "Read URL",
+      "category": "Reader",
+      "description": "Fetches a web page through Jina Reader and returns clean, LLM-ready content (markdown by default). Renders the page server-side, strips boilerplate, and can return markdown, HTML, plain text, or a screenshot. Optionally appends a summary of all links on the page or targets a specific CSS selector. This is the ideal way to feed live web content into an AI/RAG workflow."
+    },
+    {
+      "name": "Search Web",
+      "category": "Reader",
+      "description": "Runs a web search through Jina Search and returns the top results already fetched and cleaned into LLM-ready content, so each result carries usable page text rather than just a snippet. Choose the content format for the returned pages. Ideal for grounding AI answers with fresh web content in a single call."
+    },
+    {
+      "name": "Classify Texts",
+      "category": "Classification",
+      "description": "Performs zero-shot classification of one or more input texts against a set of candidate labels using a Jina embedding or classifier model. No training is required: provide the texts and the labels, and each input is assigned the best-matching label with a confidence score. Useful for intent detection, content moderation, and routing."
+    },
+    {
+      "name": "Segment Text",
+      "category": "Classification",
+      "description": "Tokenizes and splits long text into smaller chunks using Jina Segmenter. Returns the total token count and, when requested, the list of text chunks bounded by a maximum chunk length. Use it to prepare documents for embedding or LLM context windows in a RAG pipeline."
+    },
+    {
+      "name": "Deep Search",
+      "category": "Reader",
+      "description": "Runs an agentic deep-research search with jina-deepsearch-v1. Given a conversation (messages), it iteratively searches the web, reads pages, and reasons to produce a grounded, cited answer to complex questions. OpenAI chat-completions compatible. Returns the assistant's answer and, when available, the sources it consulted. Slower than a plain search but far more thorough."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [],
+  "agentIdeas": [
+    "Use **Jina AI** \"Read URL\" to fetch and clean a web page, \"Segment Text\" to chunk it, and \"Create Embeddings\" to vectorize the chunks, then call **Qdrant** \"Upsert Points\" to index them for retrieval.",
+    "On a user question, call **Pinecone** \"Query Vectors\" to retrieve candidate passages, pass them through **Jina AI** \"Rerank Documents\" for second-stage relevance, then send the top results to **Anthropic AI** \"Ask Claude\" to generate a grounded answer.",
+    "Use **Jina AI** \"Search Web\" to pull fresh, pre-cleaned web content for a query and feed it into **Anthropic AI** \"Ask Claude\" to produce an up-to-date, cited summary."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/jina/public/icon.png",
+  "sourcePaths": {
+    "service": "services/jina",
+    "readme": "services/jina/README.md",
+    "index": "services/jina/src/index.js"
+  }
+}

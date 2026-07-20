@@ -1,0 +1,224 @@
+{
+  "slug": "freshservice",
+  "name": "Freshservice",
+  "marketingCategory": "Helpdesk & ITSM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to Freshservice, Freshworks' IT service management (ITSM) platform, to automate the full ITSM lifecycle across tickets, changes, problems, releases, CMDB assets, agents, and requesters via the Freshservice API v2. Authentication uses HTTP Basic auth with your API key.",
+  "actionCount": 35,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Tickets",
+    "Conversations",
+    "Changes",
+    "Problems",
+    "Releases",
+    "Assets",
+    "Agents",
+    "Requesters",
+    "Groups"
+  ],
+  "actions": [
+    {
+      "name": "Create Ticket",
+      "category": "Tickets",
+      "description": "Creates a new service desk ticket (incident/service request) in Freshservice. Provide either the requester Email or an existing Requester ID. The description supports HTML markup. Priority, status, source, urgency, and impact accept friendly labels; group and agent can be selected from your account. Account-specific fields can be set via Custom Fields (keys must match the field names configured in your account, e.g. cf_order_id)."
+    },
+    {
+      "name": "Get Ticket",
+      "category": "Tickets",
+      "description": "Retrieves a single ticket by its ID, including subject, description, status, priority, requester, assignment, tags, and custom fields. Optionally embeds the ticket's conversations, requester, and stats in the response."
+    },
+    {
+      "name": "List Tickets",
+      "category": "Tickets",
+      "description": "Lists tickets in the Freshservice account with pagination. Supports predefined filters (New & My Open, Watching, Spam, Deleted), an updated-since timestamp filter, and sorting. Note: without the Updated Since filter, only tickets created in the past 30 days are returned."
+    },
+    {
+      "name": "Update Ticket",
+      "category": "Tickets",
+      "description": "Updates an existing ticket. Only the provided fields are changed; all other fields keep their current values. Priority, status, urgency, and impact accept friendly labels, and group/agent assignment can be selected from your account."
+    },
+    {
+      "name": "Delete Ticket",
+      "category": "Tickets",
+      "description": "Deletes a ticket by its ID. The ticket is moved to the trash (Deleted view) and can be restored with Restore Ticket."
+    },
+    {
+      "name": "Restore Ticket",
+      "category": "Tickets",
+      "description": "Restores a previously deleted ticket by its ID, moving it out of the trash and back into active tickets."
+    },
+    {
+      "name": "Reply to Ticket",
+      "category": "Tickets",
+      "description": "Adds a public reply to a ticket. The reply is sent to the requester by email and appears in the ticket's conversation thread. The body supports HTML markup."
+    },
+    {
+      "name": "Add Note",
+      "category": "Tickets",
+      "description": "Adds a note to a ticket's conversation thread. Notes are private (visible only to agents) by default; set Private to false to create a public note visible to the requester. The body supports HTML markup."
+    },
+    {
+      "name": "List Conversations",
+      "category": "Conversations",
+      "description": "Lists all conversations (replies and notes) of a ticket in chronological order, with pagination. Each entry indicates whether it is private, incoming, and which user created it."
+    },
+    {
+      "name": "Create Change",
+      "category": "Changes",
+      "description": "Creates a new change request in Freshservice, used to plan and track modifications to IT infrastructure or services. Priority, status, change type, risk, and impact accept friendly labels. Planned start/end dates should be ISO 8601 timestamps."
+    },
+    {
+      "name": "Get Change",
+      "category": "Changes",
+      "description": "Retrieves a single change request by its ID, including subject, description, status, priority, risk, impact, planned schedule, and assignment."
+    },
+    {
+      "name": "List Changes",
+      "category": "Changes",
+      "description": "Lists change requests in the Freshservice account with pagination."
+    },
+    {
+      "name": "Update Change",
+      "category": "Changes",
+      "description": "Updates an existing change request. Only the provided fields are changed; all other fields keep their current values. Priority, status, change type, risk, and impact accept friendly labels."
+    },
+    {
+      "name": "Delete Change",
+      "category": "Changes",
+      "description": "Deletes a change request by its ID."
+    },
+    {
+      "name": "Create Problem",
+      "category": "Problems",
+      "description": "Creates a new problem record in Freshservice, used to investigate and resolve the root cause of one or more incidents. Priority, status, and impact accept friendly labels. Due By should be an ISO 8601 timestamp."
+    },
+    {
+      "name": "Get Problem",
+      "category": "Problems",
+      "description": "Retrieves a single problem record by its ID, including subject, description, status, priority, impact, and assignment."
+    },
+    {
+      "name": "List Problems",
+      "category": "Problems",
+      "description": "Lists problem records in the Freshservice account with pagination."
+    },
+    {
+      "name": "Update Problem",
+      "category": "Problems",
+      "description": "Updates an existing problem record. Only the provided fields are changed; all other fields keep their current values. Priority, status, and impact accept friendly labels."
+    },
+    {
+      "name": "Delete Problem",
+      "category": "Problems",
+      "description": "Deletes a problem record by its ID."
+    },
+    {
+      "name": "Create Release",
+      "category": "Releases",
+      "description": "Creates a new release in Freshservice, used to plan and coordinate the rollout of one or more changes. Priority, status, and release type accept friendly labels. Planned start/end dates should be ISO 8601 timestamps."
+    },
+    {
+      "name": "Get Release",
+      "category": "Releases",
+      "description": "Retrieves a single release by its ID, including subject, description, status, priority, release type, and planned schedule."
+    },
+    {
+      "name": "List Releases",
+      "category": "Releases",
+      "description": "Lists releases in the Freshservice account with pagination."
+    },
+    {
+      "name": "Create Asset",
+      "category": "Assets",
+      "description": "Creates a new asset in the Freshservice CMDB. An Asset Type ID is required and determines which type-specific fields apply. Type-specific attributes are passed via Type Fields as key/value pairs (keys follow the pattern of the asset type's field names). Impact accepts a friendly label."
+    },
+    {
+      "name": "Get Asset",
+      "category": "Assets",
+      "description": "Retrieves a single asset by its display ID (the number shown in the Freshservice UI), including its name, type, impact, asset tag, and type-specific fields."
+    },
+    {
+      "name": "List Assets",
+      "category": "Assets",
+      "description": "Lists assets in the Freshservice CMDB with pagination. Optionally filters using the Freshservice filter query syntax (e.g. \"asset_type_id:1000123456\")."
+    },
+    {
+      "name": "Update Asset",
+      "category": "Assets",
+      "description": "Updates an existing asset identified by its display ID. Only the provided fields are changed; all other fields keep their current values. Impact accepts a friendly label."
+    },
+    {
+      "name": "Delete Asset",
+      "category": "Assets",
+      "description": "Deletes an asset by its display ID. The asset is moved to the trash and can be restored from the Freshservice UI."
+    },
+    {
+      "name": "List Agents",
+      "category": "Agents",
+      "description": "Lists agents in the Freshservice account with pagination, including their contact details, availability, and roles. Optionally filters by an exact email address."
+    },
+    {
+      "name": "Get Agent",
+      "category": "Agents",
+      "description": "Retrieves a single agent by their ID, including name, email, availability, roles, and group memberships."
+    },
+    {
+      "name": "Get Current Agent",
+      "category": "Agents",
+      "description": "Retrieves the agent associated with the API key used for authentication. Useful as a connection check to verify that the domain and API key are configured correctly."
+    },
+    {
+      "name": "Create Requester",
+      "category": "Requesters",
+      "description": "Creates a new requester (end user) in Freshservice. At least one of Primary Email, Work Phone, or Mobile Phone is required. Custom requester fields can be set via Custom Fields."
+    },
+    {
+      "name": "Get Requester",
+      "category": "Requesters",
+      "description": "Retrieves a single requester by their ID, including name, email, phone numbers, job title, and department associations."
+    },
+    {
+      "name": "List Requesters",
+      "category": "Requesters",
+      "description": "Lists requesters (end users) in the Freshservice account with pagination. Optionally filters by an exact email address."
+    },
+    {
+      "name": "Update Requester",
+      "category": "Requesters",
+      "description": "Updates an existing requester. Only the provided fields are changed; all other fields keep their current values."
+    },
+    {
+      "name": "List Groups",
+      "category": "Groups",
+      "description": "Lists agent groups in the Freshservice account with pagination, including their names, descriptions, and business hours."
+    }
+  ],
+  "triggers": [
+    "On New Ticket"
+  ],
+  "idealUseCases": [
+    "Auto-create and triage service desk tickets from monitoring alerts, forms, or inbound messages",
+    "Keep an external system of record in sync by reading and updating tickets, changes, and problems",
+    "Coordinate change management and releases across teams from a single workflow",
+    "Sync the CMDB by creating and updating assets programmatically",
+    "Onboard requesters and route work to the right agents and groups",
+    "Notify stakeholders whenever a new ticket is opened"
+  ],
+  "agentIdeas": [
+    "When a **PagerDuty** \"Create Incident\" fires for an outage, use Freshservice \"Create Ticket\" to open a linked service desk ticket and \"Add Note\" with the incident details for the on-call team.",
+    "When the Freshservice \"On New Ticket\" trigger fires, use **Slack** \"Send Message To Channel\" to alert the support channel with the ticket subject, priority, and requester.",
+    "Use **Freshdesk** \"Get Ticket\" to pull a customer-facing conversation, then call Freshservice \"Create Problem\" to open an internal root-cause investigation referencing it."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/freshservice/public/icon.png",
+  "sourcePaths": {
+    "service": "services/freshservice",
+    "readme": "services/freshservice/README.md",
+    "index": "services/freshservice/src/index.js"
+  }
+}

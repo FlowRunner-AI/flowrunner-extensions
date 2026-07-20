@@ -1,0 +1,58 @@
+{
+  "slug": "mindee",
+  "name": "Mindee",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Document parsing and OCR powered by [Mindee](https://www.mindee.com/) using the **Mindee V2 API** (app.mindee.com). Extract structured data from any Mindee model — prebuilt models for invoices, receipts, financial documents, IDs, passports, resumes, and US driver licenses, or your own custom-built models — by referencing the model's ID. Authenticates with a Mindee API Key sent as the raw `Authorization: <key>` header.",
+  "actionCount": 4,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Extraction",
+    "Jobs"
+  ],
+  "actions": [
+    {
+      "name": "Extract Document",
+      "category": "Extraction",
+      "description": "Runs a document through a Mindee V2 extraction model and waits for the result. Provide the model ID (a UUID you create in the Mindee platform from the model catalog — e.g. the prebuilt Invoice, Receipt, Passport, ID, Resume, or US Driver License model, or your own custom model) and a document URL. The file is downloaded and enqueued, the job is polled until it finishes, and a flattened `fields` object (simple values, nested objects, and lists) is returned alongside the complete raw inference. Because parsing is asynchronous, allow up to roughly a minute for large or multi-page documents."
+    },
+    {
+      "name": "Enqueue Inference",
+      "category": "Extraction",
+      "description": "Enqueues a document for extraction without waiting for the result, returning the created job (with its id and polling/result URLs). Use this for high-volume or webhook-driven flows where you retrieve the outcome later via Get Job Status and Get Inference Result, or via a configured Mindee webhook. Provide the model ID and a document URL; the file is downloaded and uploaded to Mindee. Optionally supply webhook IDs (comma-separated) to have Mindee notify your endpoints when the job completes."
+    },
+    {
+      "name": "Get Job Status",
+      "category": "Jobs",
+      "description": "Retrieves the current status of an asynchronous inference job by its id. Returns the job object, whose `status` is one of Processing, Processed, or Failed; once processed, `result_url` points to the completed inference. Use this to poll a job created by Enqueue Inference before fetching its result."
+    },
+    {
+      "name": "Get Inference Result",
+      "category": "Jobs",
+      "description": "Fetches a completed extraction inference by its id and returns a flattened `fields` object (simple values, nested objects, and lists) alongside the complete raw inference. Use this after Get Job Status reports the job as Processed. The inference id is the completed job's id."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automate invoice and receipt data entry into accounting or ERP systems",
+    "Onboard candidates by parsing resumes/CVs into structured profiles",
+    "Verify identity from passports, national ID cards, or US driver licenses",
+    "Run documents through your own custom-trained or generated Mindee models"
+  ],
+  "agentIdeas": [
+    "When a **Google Drive** \"On New File\" trigger fires for an uploaded bill, call **Mindee** \"Extract Document\" with your Invoice model and then use **QuickBooks Online** \"Create Invoice\" to record it automatically.",
+    "Use **Mindee** \"Extract Document\" with your Receipt model on an expense image, then **Google Sheets** \"Add Row\" to append the merchant, date, total, and tax to an expense-tracking spreadsheet.",
+    "When a candidate's CV lands via **Google Drive** \"On New File\", run **Mindee** \"Extract Document\" with your Resume model and use **HubSpot** \"Create Contact\" to add the candidate with their extracted name, email, and phone."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/mindee/public/icon.png",
+  "sourcePaths": {
+    "service": "services/mindee",
+    "readme": "services/mindee/README.md",
+    "index": "services/mindee/src/index.js"
+  }
+}

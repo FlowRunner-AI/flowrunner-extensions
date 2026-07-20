@@ -1,0 +1,49 @@
+{
+  "slug": "ai-vision",
+  "name": "AI Vision",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "A multi-provider AI vision service that analyzes images using 10 supported providers including OpenAI, Anthropic, Google Gemini, Mistral, Cohere, Together AI, Fireworks AI, xAI, Hugging Face, and Moonshot AI. Supports both free-form text analysis and structured JSON output with schema enforcement. Accepts HTTP/HTTPS image URLs and base64 data URIs.",
+  "actionCount": 2,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Image Analysis"
+  ],
+  "actions": [
+    {
+      "name": "Analyze Image",
+      "category": "Image Analysis",
+      "description": "Analyzes one or more images using a selected AI vision provider and model. Supports 10 providers including OpenAI, Anthropic, Google Gemini, Mistral, and others. Send image URLs or base64 data URIs along with a text prompt to receive detailed image analysis."
+    },
+    {
+      "name": "Analyze Image with Structured Output",
+      "category": "Image Analysis",
+      "description": "Analyzes images and returns a structured JSON response matching a provided JSON Schema. Ideal for extracting specific data points, classifications, or structured information from images. OpenAI, Google Gemini, and Mistral constrain the response to the schema natively; Anthropic uses a forced tool call to the schema; the remaining providers are instructed to reply with matching JSON."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Extracting structured data from images such as invoices, receipts, or business cards",
+    "Classifying and tagging visual content for automated content moderation",
+    "Building AI agents that interpret screenshots, charts, or diagrams",
+    "Automating quality inspection workflows with image-based analysis",
+    "Comparing vision model outputs across providers for accuracy benchmarking",
+    "Processing document images into structured records for database storage"
+  ],
+  "agentIdeas": [
+    "When a **Google Sheets** \"On New Row\" trigger fires with an image URL, use **AI Vision** \"Analyze Image with Structured Output\" to extract fields into JSON, then write the results back with **Google Sheets** \"Update Row\"",
+    "Use **Dropbox** \"On New File\" to detect a newly uploaded receipt, call **AI Vision** \"Analyze Image with Structured Output\" to pull totals and line items, then store them with **Airtable** \"Create Record\"",
+    "When a **Slack** \"On New Message\" trigger includes a screenshot, use **AI Vision** \"Analyze Image\" to describe the image and **Slack** \"Send Message In Channel\" to post the summary back to the thread"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/ai-vision/public/icon.png",
+  "sourcePaths": {
+    "service": "services/ai-vision",
+    "readme": "services/ai-vision/README.md",
+    "index": "services/ai-vision/src/index.js"
+  }
+}

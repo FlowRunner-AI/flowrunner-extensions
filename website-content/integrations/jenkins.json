@@ -1,0 +1,126 @@
+{
+  "slug": "jenkins",
+  "name": "Jenkins",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Jenkins](https://www.jenkins.io/) with FlowRunner to manage jobs, trigger and monitor builds, inspect the build queue, and query system information through the Jenkins remote access API.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Jobs",
+    "Builds",
+    "Queue",
+    "System"
+  ],
+  "actions": [
+    {
+      "name": "List Jobs",
+      "category": "Jobs",
+      "description": "Lists all top-level jobs on the Jenkins instance with their name, URL, and status color. The color encodes build status: blue (success), red (failure), yellow (unstable), and grey/notbuilt (never run); an \"_anime\" suffix (e.g. blue_anime) means a build is currently in progress. Jobs inside folders are not expanded here - open a folder job and use its nested path (e.g. folder/job) with Get Job."
+    },
+    {
+      "name": "Get Job",
+      "category": "Jobs",
+      "description": "Retrieves detailed information about a single job, including its description, whether it is buildable, recent builds, health report score, and pointers to the last build, last successful build, and last failed build. Use a folder path (e.g. folder/job) for jobs nested inside folders."
+    },
+    {
+      "name": "Get Job Config",
+      "category": "Jobs",
+      "description": "Retrieves the raw config.xml definition of a job as XML text. Useful for backing up a job, inspecting its configuration, or supplying it to Create Job / Copy Job. Requires Job/Configure (extended read) permission."
+    },
+    {
+      "name": "Create Job",
+      "category": "Jobs",
+      "description": "Creates a new job from a config.xml definition. The job is created at the top level unless a folder path is supplied. Provide a valid Jenkins config.xml as the body - you can obtain one from an existing job via Get Job Config. Fails if a job with the same name already exists."
+    },
+    {
+      "name": "Copy Job",
+      "category": "Jobs",
+      "description": "Creates a new job by copying an existing job's configuration. The new job is disabled by default in Jenkins after copying; use Enable Job to activate it. Both jobs live at the same level unless a folder path is supplied."
+    },
+    {
+      "name": "Enable Job",
+      "category": "Jobs",
+      "description": "Enables a job so it can be built and its triggers become active. Safe to call on an already-enabled job."
+    },
+    {
+      "name": "Disable Job",
+      "category": "Jobs",
+      "description": "Disables a job so it cannot be built manually or by its triggers. Any queued or running builds are unaffected. Safe to call on an already-disabled job."
+    },
+    {
+      "name": "Delete Job",
+      "category": "Jobs",
+      "description": "Permanently deletes a job and all of its build history. This action cannot be undone. Use a folder path for nested jobs."
+    },
+    {
+      "name": "Trigger Build",
+      "category": "Builds",
+      "description": "Triggers a new build of a job and returns the queue item location. When parameters are supplied the build is submitted to buildWithParameters (as URL-encoded form data); otherwise a plain build is triggered. Builds do not start immediately - Jenkins places them in the queue, so the response returns the queue item URL/ID rather than a build number. Poll Get Queue or Get Build (using lastBuild) to track progress."
+    },
+    {
+      "name": "Get Build",
+      "category": "Builds",
+      "description": "Retrieves details of a specific build, including its result (SUCCESS, FAILURE, UNSTABLE, ABORTED, or null while running), duration, timestamp, whether it is still building, and the parameters/causes that started it. The build number accepts numeric values or Jenkins aliases such as lastBuild, lastSuccessfulBuild, lastFailedBuild, and lastCompletedBuild."
+    },
+    {
+      "name": "Get Build Console Output",
+      "category": "Builds",
+      "description": "Returns the full plain-text console log for a build. For very large or in-progress builds prefer Get Build Log Tail. The build number accepts numeric values or aliases such as lastBuild and lastSuccessfulBuild."
+    },
+    {
+      "name": "Get Build Log Tail",
+      "category": "Builds",
+      "description": "Returns the last portion of a build's console log - useful for quickly checking the outcome of a large or running build without downloading the entire log. The number of lines is capped at the tail of the full console text."
+    },
+    {
+      "name": "Stop Build",
+      "category": "Builds",
+      "description": "Stops (aborts) a running build. Has no effect if the build has already completed. The build number accepts numeric values or aliases like lastBuild."
+    },
+    {
+      "name": "Get Queue",
+      "category": "Queue",
+      "description": "Retrieves the current build queue - all items waiting to be executed, including why each is queued (e.g. waiting for an available executor), the associated task/job, and its queue item ID. Use a queue item ID with Cancel Queue Item."
+    },
+    {
+      "name": "Cancel Queue Item",
+      "category": "Queue",
+      "description": "Cancels a queued build before it starts executing, identified by its queue item ID (from Get Queue or the queueItemId returned by Trigger Build). Has no effect if the item has already started or left the queue."
+    },
+    {
+      "name": "Get Jenkins Info",
+      "category": "System",
+      "description": "Retrieves top-level information about the Jenkins instance, including the top-level jobs, the node/executor mode, quieting-down status, and the Jenkins version (read from the X-Jenkins response header when available). Useful for a health/overview check."
+    },
+    {
+      "name": "Get Views",
+      "category": "System",
+      "description": "Lists all views configured on the Jenkins instance with their name and URL. Views are named, filtered groupings of jobs (e.g. the default \"All\" view, or custom dashboards)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Trigger a Jenkins build (with parameters) as part of a larger automation and follow it to completion.",
+    "Create, copy, enable/disable, or delete jobs programmatically from a workflow.",
+    "Capture build results and console output for reporting, alerting, or archiving.",
+    "Monitor the build queue and cancel stuck or unwanted queued builds.",
+    "Pull Jenkins version, mode, and view information for dashboards and health checks."
+  ],
+  "agentIdeas": [
+    "When a **GitHub** push or new pull request arrives, call Jenkins \"Trigger Build\" for the corresponding job, then use **GitHub** \"Create Issue Comment\" to post the resulting build status back onto the pull request.",
+    "After Jenkins \"Get Build\" reports a failed result, use **PagerDuty** \"Create Incident\" to page the on-call engineer, including the failing job and the console output from \"Get Build Console Output\".",
+    "When Jenkins \"Trigger Build\" completes, use **Slack** \"Send Message To Channel\" to notify the team with the build result, duration, and a link to the console log."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/jenkins/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/jenkins",
+    "readme": "services/jenkins/README.md",
+    "index": "services/jenkins/src/index.js"
+  }
+}

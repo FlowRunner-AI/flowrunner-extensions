@@ -1,0 +1,553 @@
+{
+  "slug": "recruitee",
+  "name": "Recruitee",
+  "marketingCategory": "HR & Recruiting",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate Recruitee, an applicant tracking system: candidates, jobs, pipelines, interviews, notes, tasks, requisitions, and communication. Uses a Personal API Token and Company ID.",
+  "actionCount": 100,
+  "triggerCount": 4,
+  "operationCategories": [
+    "General",
+    "Candidates",
+    "Jobs",
+    "Pipeline",
+    "Organization",
+    "Notes & Tasks",
+    "Activity",
+    "Custom Fields",
+    "Interviews",
+    "Communication",
+    "Requisitions",
+    "Advanced"
+  ],
+  "actions": [
+    {
+      "name": "Test Connection",
+      "category": "General",
+      "description": "Checks that your API Token and Company ID are valid by looking up the signed-in user. Use this first to confirm the connection works before building a flow."
+    },
+    {
+      "name": "Find Candidates",
+      "category": "Candidates",
+      "description": "Finds candidates in your account. Leave the search box empty to list the most recent candidates, or type a name, email, or keyword to search. You can also narrow results to a single job or by status."
+    },
+    {
+      "name": "Get Candidate",
+      "category": "Candidates",
+      "description": "Returns the full profile of one candidate, including contact details, jobs they are on, tags, and current stage."
+    },
+    {
+      "name": "Add Candidate",
+      "category": "Candidates",
+      "description": "Adds a new candidate to your account, optionally placing them on a job. Turn on \"Update if already exists\" to update the matching candidate instead of creating a duplicate when the email is already on file."
+    },
+    {
+      "name": "Update Candidate",
+      "category": "Candidates",
+      "description": "Updates a candidate's basic details. Only the fields you fill in are changed; leave a field empty to keep its current value."
+    },
+    {
+      "name": "Delete Candidate",
+      "category": "Candidates",
+      "description": "Permanently deletes a candidate and all their data. This cannot be undone. Leave \"Confirm\" off first to preview who would be removed."
+    },
+    {
+      "name": "Add Candidate to Job",
+      "category": "Candidates",
+      "description": "Places an existing candidate onto a job's hiring pipeline, optionally in a specific stage."
+    },
+    {
+      "name": "Move Candidate to Stage",
+      "category": "Candidates",
+      "description": "Moves one or more candidates to a different stage in a job's hiring pipeline (for example from 'Screening' to 'Interview')."
+    },
+    {
+      "name": "Disqualify Candidate",
+      "category": "Candidates",
+      "description": "Disqualifies one or more candidates on a job, optionally recording a reason (e.g. 'Withdrew', 'Not a fit')."
+    },
+    {
+      "name": "Restore (Requalify) Candidate",
+      "category": "Candidates",
+      "description": "Reverses a disqualification, putting one or more candidates back into a job's active pipeline."
+    },
+    {
+      "name": "Add Tags to Candidate",
+      "category": "Candidates",
+      "description": "Adds one or more tags (labels) to a candidate. Tags that don't exist yet are created automatically."
+    },
+    {
+      "name": "Add Source to Candidate",
+      "category": "Candidates",
+      "description": "Records where a candidate came from (for example 'LinkedIn' or 'Referral'). Useful for tracking your best hiring channels."
+    },
+    {
+      "name": "Add Candidate to Talent Pool",
+      "category": "Candidates",
+      "description": "Adds a candidate to a talent pool so you can keep them on file for future roles."
+    },
+    {
+      "name": "Parse Candidate CV",
+      "category": "Candidates",
+      "description": "Re-reads the candidate's current CV and fills in details like work history, education, and skills from it."
+    },
+    {
+      "name": "Merge Candidates",
+      "category": "Candidates",
+      "description": "Merges a duplicate candidate profile into a main one, combining their history into a single profile."
+    },
+    {
+      "name": "Find Jobs",
+      "category": "Jobs",
+      "description": "Lists the jobs in your account. By default this shows current (non-archived) jobs; turn on \"Include archived\" or pick a status to change that."
+    },
+    {
+      "name": "Get Job",
+      "category": "Jobs",
+      "description": "Returns the full details of one job, including its description, location, department, and pipeline."
+    },
+    {
+      "name": "Create Job",
+      "category": "Jobs",
+      "description": "Creates a new job. It starts as a draft so you can review it before publishing with \"Update Job Status\"."
+    },
+    {
+      "name": "Update Job",
+      "category": "Jobs",
+      "description": "Updates a job's details. Only the fields you fill in are changed."
+    },
+    {
+      "name": "Update Job Status",
+      "category": "Jobs",
+      "description": "Changes whether a job is published, internal-only, closed, archived, or a draft — all in one place."
+    },
+    {
+      "name": "Duplicate Job",
+      "category": "Jobs",
+      "description": "Creates a copy of an existing job as a new draft, so you can quickly post a similar role."
+    },
+    {
+      "name": "Delete Job",
+      "category": "Jobs",
+      "description": "Permanently deletes a job (or talent pool) and its candidate links. This cannot be undone. Leave \"Confirm\" off to preview first. To simply close a job, use \"Update Job Status\" instead."
+    },
+    {
+      "name": "Tag Job",
+      "category": "Jobs",
+      "description": "Adds or removes labels on a job, making it easier to group and find jobs."
+    },
+    {
+      "name": "Get Job Candidates",
+      "category": "Jobs",
+      "description": "Lists the candidates currently on a job's pipeline, along with the stage each one is in."
+    },
+    {
+      "name": "List Job Stages",
+      "category": "Jobs",
+      "description": "Lists the hiring pipeline stages for a job (for example Applied, Screening, Interview, Hired)."
+    },
+    {
+      "name": "List Pipeline Templates",
+      "category": "Pipeline",
+      "description": "Lists the reusable hiring pipeline templates in your account."
+    },
+    {
+      "name": "Get Pipeline Template",
+      "category": "Pipeline",
+      "description": "Returns one pipeline template with its stages."
+    },
+    {
+      "name": "Create Pipeline Template",
+      "category": "Pipeline",
+      "description": "Creates a new reusable hiring pipeline template."
+    },
+    {
+      "name": "Update Pipeline Template",
+      "category": "Pipeline",
+      "description": "Renames an existing pipeline template."
+    },
+    {
+      "name": "Delete Pipeline Template",
+      "category": "Pipeline",
+      "description": "Permanently deletes a pipeline template. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "Add Pipeline Stage",
+      "category": "Pipeline",
+      "description": "Adds a new stage to a pipeline template."
+    },
+    {
+      "name": "Update Pipeline Stage",
+      "category": "Pipeline",
+      "description": "Renames a stage within a pipeline template."
+    },
+    {
+      "name": "Delete Pipeline Stage",
+      "category": "Pipeline",
+      "description": "Deletes a stage from a pipeline template, moving any candidates in it to another stage you choose. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "List Disqualify Reasons",
+      "category": "Organization",
+      "description": "Lists the reasons your team can use when disqualifying candidates."
+    },
+    {
+      "name": "Create Disqualify Reason",
+      "category": "Organization",
+      "description": "Adds a new disqualify reason your team can choose from."
+    },
+    {
+      "name": "Update Disqualify Reason",
+      "category": "Organization",
+      "description": "Renames an existing disqualify reason."
+    },
+    {
+      "name": "Delete Disqualify Reason",
+      "category": "Organization",
+      "description": "Permanently deletes a disqualify reason. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "List Departments",
+      "category": "Organization",
+      "description": "Lists the departments in your account."
+    },
+    {
+      "name": "Create Department",
+      "category": "Organization",
+      "description": "Adds a new department."
+    },
+    {
+      "name": "Delete Department",
+      "category": "Organization",
+      "description": "Permanently deletes a department. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "List Locations",
+      "category": "Organization",
+      "description": "Lists the office locations in your account."
+    },
+    {
+      "name": "Create Location",
+      "category": "Organization",
+      "description": "Adds a new office location."
+    },
+    {
+      "name": "Delete Location",
+      "category": "Organization",
+      "description": "Permanently deletes an office location. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "List Tags",
+      "category": "Organization",
+      "description": "Lists all candidate tags used in your account."
+    },
+    {
+      "name": "List Sources",
+      "category": "Organization",
+      "description": "Lists all candidate sources used in your account."
+    },
+    {
+      "name": "List Talent Pools",
+      "category": "Organization",
+      "description": "Lists the talent pools in your account."
+    },
+    {
+      "name": "Create Talent Pool",
+      "category": "Organization",
+      "description": "Creates a new talent pool to keep promising candidates on file for future roles."
+    },
+    {
+      "name": "List Team Members",
+      "category": "Organization",
+      "description": "Lists the hiring team members (admins) in your account."
+    },
+    {
+      "name": "Add Candidate Note",
+      "category": "Notes & Tasks",
+      "description": "Adds a note to a candidate's profile. Notes are great for interview feedback, reminders, or context for your team."
+    },
+    {
+      "name": "List Candidate Notes",
+      "category": "Notes & Tasks",
+      "description": "Lists the notes saved on a candidate's profile."
+    },
+    {
+      "name": "Add Note",
+      "category": "Notes & Tasks",
+      "description": "Adds a note to a candidate, job, talent pool, or requisition. For candidates, \"Add Candidate Note\" offers a handy candidate picker."
+    },
+    {
+      "name": "Update Note",
+      "category": "Notes & Tasks",
+      "description": "Edits the text of an existing note."
+    },
+    {
+      "name": "Pin or Unpin Note",
+      "category": "Notes & Tasks",
+      "description": "Pins a note to the top of a profile, or unpins it."
+    },
+    {
+      "name": "Delete Note",
+      "category": "Notes & Tasks",
+      "description": "Permanently deletes a note. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "Create Task",
+      "category": "Notes & Tasks",
+      "description": "Creates a to-do task, optionally linked to a candidate and assigned to a team member with a due date."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Notes & Tasks",
+      "description": "Lists tasks in your account, optionally only completed or only open ones."
+    },
+    {
+      "name": "Get Task",
+      "category": "Notes & Tasks",
+      "description": "Returns the details of one task."
+    },
+    {
+      "name": "Update Task",
+      "category": "Notes & Tasks",
+      "description": "Updates a task's title, due date, or whether it's completed."
+    },
+    {
+      "name": "Complete Task",
+      "category": "Notes & Tasks",
+      "description": "Marks a task as done."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Notes & Tasks",
+      "description": "Permanently deletes a task. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "List Activity",
+      "category": "Activity",
+      "description": "Shows the recent activity timeline — who did what and when. Narrow it to a single candidate or job, or leave both empty for company-wide activity."
+    },
+    {
+      "name": "List Custom Field Sets",
+      "category": "Custom Fields",
+      "description": "Lists the custom field sets (groups of extra fields) configured in your account."
+    },
+    {
+      "name": "Create Custom Field Set",
+      "category": "Custom Fields",
+      "description": "Creates a new custom field set."
+    },
+    {
+      "name": "Delete Custom Field Set",
+      "category": "Custom Fields",
+      "description": "Permanently deletes a custom field set. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "Set Candidate Custom Field",
+      "category": "Custom Fields",
+      "description": "Sets the value of one custom field on a candidate's profile."
+    },
+    {
+      "name": "Schedule Interview",
+      "category": "Interviews",
+      "description": "Schedules an interview for a candidate at a chosen time. Turn on \"Notify participants\" to email the candidate and interviewers an invitation."
+    },
+    {
+      "name": "List Interviews",
+      "category": "Interviews",
+      "description": "Lists scheduled interview events, optionally for one candidate or within a date range."
+    },
+    {
+      "name": "Get Interview",
+      "category": "Interviews",
+      "description": "Returns the details of one interview event."
+    },
+    {
+      "name": "Update Interview",
+      "category": "Interviews",
+      "description": "Updates an interview's title, time, or location."
+    },
+    {
+      "name": "Cancel Interview",
+      "category": "Interviews",
+      "description": "Cancels (deletes) an interview event and notifies the candidate. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "Submit Scorecard",
+      "category": "Interviews",
+      "description": "Records interview feedback (a scorecard) for a candidate, including an overall rating and comments."
+    },
+    {
+      "name": "List Scorecards",
+      "category": "Interviews",
+      "description": "Lists the interview feedback (scorecards) recorded for a candidate."
+    },
+    {
+      "name": "Request Interview Feedback",
+      "category": "Interviews",
+      "description": "Asks one or more team members to leave interview feedback for a candidate."
+    },
+    {
+      "name": "List Interview Templates",
+      "category": "Interviews",
+      "description": "Lists the reusable interview templates (question sets / scorecards) in your account."
+    },
+    {
+      "name": "Create Interview Template",
+      "category": "Interviews",
+      "description": "Creates a new interview template."
+    },
+    {
+      "name": "Delete Interview Template",
+      "category": "Interviews",
+      "description": "Permanently deletes an interview template. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "List Interview Availability Schedules",
+      "category": "Interviews",
+      "description": "Lists your self-scheduling templates that let candidates pick an interview slot themselves."
+    },
+    {
+      "name": "List Meeting Rooms",
+      "category": "Interviews",
+      "description": "Lists the meeting rooms available for booking interviews."
+    },
+    {
+      "name": "List Calendars",
+      "category": "Interviews",
+      "description": "Lists the connected calendars used for scheduling interviews."
+    },
+    {
+      "name": "Send Email to Candidate",
+      "category": "Communication",
+      "description": "Sends an email to a candidate. You can write the message yourself or start from a saved template."
+    },
+    {
+      "name": "Schedule Email to Candidate",
+      "category": "Communication",
+      "description": "Schedules an email to be sent to a candidate at a future time."
+    },
+    {
+      "name": "List Candidate Emails",
+      "category": "Communication",
+      "description": "Lists the email conversations with a candidate."
+    },
+    {
+      "name": "Get Email Thread",
+      "category": "Communication",
+      "description": "Returns one email conversation with its messages."
+    },
+    {
+      "name": "List Email Templates",
+      "category": "Communication",
+      "description": "Lists your saved email templates of a chosen type."
+    },
+    {
+      "name": "Create Email Template",
+      "category": "Communication",
+      "description": "Creates a new saved email template."
+    },
+    {
+      "name": "Delete Email Template",
+      "category": "Communication",
+      "description": "Permanently deletes a saved email template. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "Send Text Message (SMS)",
+      "category": "Communication",
+      "description": "Sends an SMS text message to a candidate (requires texting to be enabled in your Recruitee account)."
+    },
+    {
+      "name": "List Text Messages (SMS)",
+      "category": "Communication",
+      "description": "Lists SMS conversations, optionally for a single candidate."
+    },
+    {
+      "name": "Find Requisitions",
+      "category": "Requisitions",
+      "description": "Lists hiring requisitions (requests to open a role), optionally filtered by status."
+    },
+    {
+      "name": "Get Requisition",
+      "category": "Requisitions",
+      "description": "Returns the details of one requisition."
+    },
+    {
+      "name": "Create Requisition",
+      "category": "Requisitions",
+      "description": "Creates a new hiring requisition to request approval to open a role."
+    },
+    {
+      "name": "Update Requisition",
+      "category": "Requisitions",
+      "description": "Updates a requisition's title, department, or number of openings."
+    },
+    {
+      "name": "Update Requisition Status",
+      "category": "Requisitions",
+      "description": "Approves, rejects, archives, cancels, or restores a requisition — all in one place."
+    },
+    {
+      "name": "Delete Requisition",
+      "category": "Requisitions",
+      "description": "Permanently deletes a pending requisition. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "List Saved Searches",
+      "category": "Advanced",
+      "description": "Lists your saved candidate searches (segments)."
+    },
+    {
+      "name": "Create Saved Search",
+      "category": "Advanced",
+      "description": "Saves a candidate search so you can reuse it later."
+    },
+    {
+      "name": "Delete Saved Search",
+      "category": "Advanced",
+      "description": "Permanently deletes a saved search. This cannot be undone. Leave \"Confirm\" off to preview first."
+    },
+    {
+      "name": "List Imports",
+      "category": "Advanced",
+      "description": "Lists candidate import jobs (CSV uploads) and their status."
+    },
+    {
+      "name": "Get Import",
+      "category": "Advanced",
+      "description": "Returns the details and status of one candidate import."
+    },
+    {
+      "name": "Revert Import",
+      "category": "Advanced",
+      "description": "Reverts a candidate import, removing the candidates it added. This cannot be undone. Leave \"Confirm\" off to preview first."
+    }
+  ],
+  "triggers": [
+    "On New Candidate",
+    "On New Application",
+    "On Candidate Moved to Stage",
+    "On Status Change"
+  ],
+  "idealUseCases": [
+    "Add and route candidates into the right job and pipeline stage",
+    "Move, disqualify, tag, and source candidates in a hiring flow",
+    "Create and publish jobs; schedule interviews and submit scorecards",
+    "Email or SMS candidates and log notes, tasks, and activity"
+  ],
+  "agentIdeas": [
+    "On **Recruitee** \"On New Candidate\", use **Gmail** \"Send Message\" to email the hiring manager the applicant's CV link.",
+    "On **Recruitee** \"On Candidate Moved to Stage\" for \"Interview\", use **Slack** \"Send Message To Channel\" to alert the team.",
+    "On **Recruitee** \"On Status Change\" for hires, use **Google Sheets** \"Add Row\" to log the new hire to a tracker."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/recruitee/public/icon.png",
+  "sourcePaths": {
+    "service": "services/recruitee",
+    "readme": "services/recruitee/README.md",
+    "index": "services/recruitee/src/index.js"
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "slug": "billcom",
+  "name": "BILL.com",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automates accounts payable and accounts receivable workflows in BILL.com. Manage vendors, customers, bills, invoices, and payments with session-based authentication and support for both production and sandbox environments.",
+  "actionCount": 24,
+  "triggerCount": 7,
+  "operationCategories": [
+    "Vendors",
+    "Bills",
+    "Customers",
+    "Invoices",
+    "Bill Payments",
+    "Receivable Payments"
+  ],
+  "actions": [
+    {
+      "name": "Create Vendor",
+      "category": "Vendors",
+      "description": "Creates a new vendor in BILL.com for accounts payable. Vendors represent the people or companies you pay for goods and services."
+    },
+    {
+      "name": "Get Vendor",
+      "category": "Vendors",
+      "description": "Retrieves detailed information about a specific vendor by ID from BILL.com. Returns the full vendor record including contact details, address, and payment configuration."
+    },
+    {
+      "name": "Update Vendor",
+      "category": "Vendors",
+      "description": "Updates an existing vendor's information in BILL.com. Only the fields you provide will be changed; all other fields remain unchanged."
+    },
+    {
+      "name": "List Vendors",
+      "category": "Vendors",
+      "description": "Retrieves a paginated list of vendors from BILL.com. Returns vendors with their basic details including name, email, and status."
+    },
+    {
+      "name": "Create Bill",
+      "category": "Bills",
+      "description": "Creates a new bill in BILL.com to record an amount owed to a vendor. Requires a vendor, invoice number, dates, and at least one line item with amount and description."
+    },
+    {
+      "name": "Get Bill",
+      "category": "Bills",
+      "description": "Retrieves detailed information about a specific bill by ID from BILL.com. Returns the full bill record including vendor reference, line items, payment status, and approval status."
+    },
+    {
+      "name": "Update Bill",
+      "category": "Bills",
+      "description": "Updates an existing bill in BILL.com. You can update bill details such as due date and line items. Only the fields you provide will be changed."
+    },
+    {
+      "name": "List Bills",
+      "category": "Bills",
+      "description": "Retrieves a paginated list of bills from BILL.com. Returns bills with their basic details including vendor, amount, due date, and payment status."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a new customer in BILL.com for accounts receivable. Customers represent the people or companies you invoice for goods and services."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves detailed information about a specific customer by ID from BILL.com. Returns the full customer record including contact details, billing address, and balance."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates an existing customer's information in BILL.com. Only the fields you provide will be changed; all other fields remain unchanged."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Retrieves a paginated list of customers from BILL.com. Returns customers with their basic details including name, email, and account type."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates a new invoice in BILL.com for a specified customer. Line items define the products or services being invoiced with quantity, description, and price per unit."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves detailed information about a specific invoice by ID from BILL.com. Returns the full invoice record including customer reference, line items, amounts, and payment status."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Updates an existing invoice in BILL.com. You can update the due date, invoice number, and line items. Only the fields you provide will be changed."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Retrieves a paginated list of invoices from BILL.com. Returns invoices with their basic details including customer, amounts, due date, and status."
+    },
+    {
+      "name": "Send Invoice",
+      "category": "Invoices",
+      "description": "Sends an invoice to the customer via email through BILL.com. The customer receives a professionally formatted email with the invoice details and a payment link."
+    },
+    {
+      "name": "Record Bill Payment",
+      "category": "Bill Payments",
+      "description": "Records an accounts payable payment in BILL.com. Use this to record a payment made to a vendor and apply the recorded amount to one or more bills."
+    },
+    {
+      "name": "Pay Bill",
+      "category": "Bill Payments",
+      "description": "Initiates and sends an accounts payable payment to a vendor through BILL.com, disbursing funds from one of your funding accounts. Unlike Record Bill Payment (which logs a payment made outside BILL), this actually moves money via ACH, check, or card."
+    },
+    {
+      "name": "Get Bill Payment",
+      "category": "Bill Payments",
+      "description": "Retrieves detailed information about a specific bill payment by ID from BILL.com. Returns the full payment record including vendor, amount, status, and linked bills."
+    },
+    {
+      "name": "List Bill Payments",
+      "category": "Bill Payments",
+      "description": "Retrieves a paginated list of accounts payable payments from BILL.com. Returns payments with their basic details including vendor, amount, and status."
+    },
+    {
+      "name": "Charge Customer",
+      "category": "Receivable Payments",
+      "description": "Charges a customer for one or more invoices in BILL.com. The customer must have a bank account on file. Applies the payment to specified invoices."
+    },
+    {
+      "name": "Get Receivable Payment",
+      "category": "Receivable Payments",
+      "description": "Retrieves detailed information about a specific received payment by ID from BILL.com. Returns the full payment record including customer, amount, status, and linked invoices."
+    },
+    {
+      "name": "List Receivable Payments",
+      "category": "Receivable Payments",
+      "description": "Retrieves a paginated list of received payments from BILL.com. Returns payments with their basic details including customer, amount, status, and payment date."
+    }
+  ],
+  "triggers": [
+    "On Bill Created",
+    "On Bill Updated",
+    "On Invoice Created",
+    "On Invoice Updated",
+    "On Vendor Created",
+    "On Payment Updated",
+    "On Payment Failed"
+  ],
+  "idealUseCases": [
+    "Automating vendor bill creation and payment tracking from external order systems",
+    "Syncing customer records and invoices between BILL.com and other business platforms",
+    "Recording bill payments and charging customers when milestones or due dates are reached",
+    "Building accounts payable and receivable reporting pipelines",
+    "Sending invoices to customers automatically after order fulfillment"
+  ],
+  "agentIdeas": [
+    "When a **BILL.com** \"On Bill Created\" trigger fires, use **Slack** \"Send Message\" to notify the finance channel with the vendor name and amount for approval",
+    "When a **BILL.com** \"On Payment Failed\" trigger fires, use **Gmail** \"Send Email\" to alert the accounts payable team with the payment details so they can retry or investigate",
+    "When a **BILL.com** \"On Invoice Created\" trigger fires, use **Google Sheets** \"Append Row\" to log the invoice number, customer, and amount into a revenue tracking spreadsheet",
+    "Use **BILL.com** \"List Bill Payments\" filtered by vendor, status, and process date range to gather a period's scheduled payments, then use **Google Sheets** \"Append Row\" to build a cash-flow forecast",
+    "Use **BILL.com** \"Pay Bill\" to disburse funds to a vendor via ACH or check from a funding account, or \"Record Bill Payment\" to log a payment you already made outside BILL — Pay Bill moves money, Record Bill Payment only records it"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/billcom/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/billcom",
+    "readme": "services/billcom/README.md",
+    "index": "services/billcom/src/index.js"
+  }
+}

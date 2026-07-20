@@ -1,0 +1,58 @@
+{
+  "slug": "dhl",
+  "name": "DHL",
+  "marketingCategory": "ERP & Operations",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Track shipments across all DHL business units and find DHL locations (service points, post offices, parcel lockers, and more) directly from FlowRunner. This service wraps DHL's [Shipment Tracking - Unified](https://developer.dhl.com/api-reference/shipment-tracking-unified) and [Location Finder](https://developer.dhl.com/api-reference/location-finder) APIs, authenticating with a single API key sent as the `DHL-API-Key` header.",
+  "actionCount": 4,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Tracking",
+    "Location Finder"
+  ],
+  "actions": [
+    {
+      "name": "Track Shipment",
+      "category": "Tracking",
+      "description": "Tracks a shipment across all DHL business units using the Shipment Tracking - Unified API. Provide a tracking number and, optionally, the specific DHL service to disambiguate when a number is shared across units. Returns a shipments array where each entry includes the current status, origin and destination, estimated delivery time, service details, and a chronological list of tracking events (timestamp, status code, description, and location). Returns a 404 when no tracking information is available for the number. Requires the API key to be subscribed to the \"Shipment Tracking - Unified\" product in the DHL Developer Portal."
+    },
+    {
+      "name": "Find Locations by Address",
+      "category": "Location Finder",
+      "description": "Finds DHL service points, post offices, parcel lockers, and other locations near a postal address using the Location Finder API. Provide a country code and any combination of city, postal code, and street. Returns a locations array where each entry includes the location id, name, type, full address, geo-coordinates, distance, opening hours, and supported service types. Requires the API key to be subscribed to the \"Location Finder\" product in the DHL Developer Portal."
+    },
+    {
+      "name": "Find Locations by Geo",
+      "category": "Location Finder",
+      "description": "Finds DHL service points, post offices, parcel lockers, and other locations near a geographic coordinate using the Location Finder API. Provide latitude and longitude, and optionally a radius and result limit. Returns a locations array where each entry includes the location id, name, type, full address, geo-coordinates, distance, opening hours, and supported service types. Requires the API key to be subscribed to the \"Location Finder\" product in the DHL Developer Portal."
+    },
+    {
+      "name": "Get Location by ID",
+      "category": "Location Finder",
+      "description": "Retrieves the full details of a single DHL location by its location id (as returned by Find Locations by Address or Find Locations by Geo) using the Location Finder API. Returns the location's name, type, full address, geo-coordinates, opening hours, closure periods, contact information, and supported service types. Requires the API key to be subscribed to the \"Location Finder\" product in the DHL Developer Portal."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Look up the live status and delivery estimate for a DHL tracking number and notify customers automatically",
+    "Build a chronological delivery event timeline for support agents or order dashboards",
+    "Help customers find the closest DHL drop-off or pickup point by address or geo-coordinate",
+    "Enrich order records with the full details of a specific DHL location"
+  ],
+  "agentIdeas": [
+    "After **EasyPost** \"Create and Buy Shipment\" (or **Shippo** \"Create Transaction (Buy Label)\") returns a DHL tracking number, poll **DHL** \"Track Shipment\" to monitor delivery progress and status events.",
+    "When **DHL** \"Track Shipment\" reports a delivery or exception status, use **Slack** \"Send Message To Channel\" or **Gmail** \"Send Message\" to alert the team or customer with the latest event details.",
+    "Take a customer's address from an order, call **DHL** \"Find Locations by Address\" to suggest the nearest drop-off point, then **Get Location by ID** to include full opening hours in a **Gmail** \"Send Message\" confirmation."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/dhl/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/dhl",
+    "readme": "services/dhl/README.md",
+    "index": "services/dhl/src/index.js"
+  }
+}

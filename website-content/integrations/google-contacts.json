@@ -1,0 +1,89 @@
+{
+  "slug": "google-contacts",
+  "name": "Google Contacts",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Google Contacts](https://contacts.google.com) — create, retrieve, update, search, and delete contacts and manage contact groups (labels) through the [Google People API](https://developers.google.com/people/api/rest) using the connected user's Google account (OAuth 2.0).",
+  "actionCount": 10,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Contacts",
+    "Contact Groups"
+  ],
+  "actions": [
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact in the connected user's Google Contacts. Build the contact from the simple fields (name, email, phone, company, job title, notes) and/or provide a Raw Person object in the People API Person format for advanced fields (multiple emails, addresses, birthdays, memberships, etc.) — raw fields override the simple ones. At least one field must be provided. Returns the created contact with a simplified shape plus the raw People API resource (including 'resourceName' and 'etag')."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact from the connected user's Google Contacts by its resource name. Returns a simplified shape (flattened name, emails, phones, company, job title, notes, addresses) plus the raw People API resource (including 'etag')."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Lists the connected user's contacts (connections), sorted by first name, last name, or last modified time. Supports pagination via page token — up to 1000 contacts per page (default 100). Returns simplified contact objects (flattened name, emails, phones, company, notes) each including the raw People API resource, plus 'nextPageToken' and 'totalItems'."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact in the connected user's Google Contacts. Only the provided fields are updated — the current contact is fetched first to obtain its 'etag' (required by the People API for concurrency control) and to merge partial name/organization changes, so e.g. updating only the first name preserves the last name. Returns the updated contact in a simplified shape plus the raw People API resource."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Permanently deletes a contact from the connected user's Google Contacts by its resource name. This cannot be undone through the API (deleted contacts remain in the Google Contacts trash for 30 days via the web UI)."
+    },
+    {
+      "name": "Search Contacts",
+      "category": "Contacts",
+      "description": "Searches the connected user's contacts by name, nickname, email address, phone number, or organization using prefix matching. Sends the warmup request recommended by Google (an empty-query search that refreshes the server-side cache) before the real search, so recently changed contacts are included. Returns up to 30 matches (API maximum) as simplified contact objects, each including the raw People API resource."
+    },
+    {
+      "name": "List Contact Groups",
+      "category": "Contact Groups",
+      "description": "Lists the connected user's contact groups (labels), including system groups such as 'myContacts' and 'starred' as well as user-created groups. Each group includes its resource name, formatted name, group type, and member count. Supports pagination via page token."
+    },
+    {
+      "name": "Create Contact Group",
+      "category": "Contact Groups",
+      "description": "Creates a new contact group (label) in the connected user's Google Contacts. The group name must be unique among the user's groups. Returns the created group including its resource name (e.g. 'contactGroups/3bfe8d2c0a1b2c3d'), which can be used to add or remove contacts."
+    },
+    {
+      "name": "Add Contacts To Group",
+      "category": "Contact Groups",
+      "description": "Adds one or more contacts to a contact group (label) in the connected user's Google Contacts. Only user-created groups can be modified — system groups (e.g. 'myContacts', 'starred') are read-only. Up to 500 contacts can be added per call. Returns any contact resource names that could not be found."
+    },
+    {
+      "name": "Remove Contacts From Group",
+      "category": "Contact Groups",
+      "description": "Removes one or more contacts from a contact group (label) in the connected user's Google Contacts. Only user-created groups can be modified — system groups (e.g. 'myContacts', 'starred') are read-only. The contacts themselves are not deleted, only their membership in the group. Returns any contact resource names that could not be found or removed."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create contacts from form submissions, CRM records, or new customer sign-ups.",
+    "Keep Google Contacts in sync with external systems by updating fields when source data changes.",
+    "Search contacts by name, email, phone, or organization to enrich workflow data.",
+    "Organize contacts by creating groups (labels) and adding or removing members programmatically.",
+    "Clean up address books by listing and deleting outdated contacts."
+  ],
+  "agentIdeas": [
+    "When a new lead arrives, use **Google Contacts** \"Create Contact\" to add them to the address book, then **Gmail** \"Send Message\" to send a personalized welcome email using their stored email.",
+    "Use **Google Sheets** \"Find Rows\" to pull a list of customers, then call **Google Contacts** \"Search Contacts\" and \"Update Contact\" to keep names, phones, and organizations in sync with the spreadsheet.",
+    "Use **Google Contacts** \"Search Contacts\" to look up an attendee's email by name, then **Google Calendar** \"Create Event\" to schedule a meeting and invite them."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/google-contacts/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/google-contacts",
+    "readme": "services/google-contacts/README.md",
+    "index": "services/google-contacts/src/index.js"
+  }
+}

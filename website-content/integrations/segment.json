@@ -1,0 +1,795 @@
+{
+  "slug": "segment",
+  "name": "Segment",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage your entire Segment workspace with the Segment Public (management) API - Sources, Destinations, Tracking Plans, Warehouses, Destination Filters, Functions, Engage Audiences (schedules, previews, destination connections, activations), Unify Computed Traits and Space Filters, Reverse ETL, Profiles Sync, Selective Sync, Live Plugins, dbt, Transformations, Deletion & Suppression, Delivery Overview metrics, IAM (users, invites, groups, roles), Labels, Audit Trail, Usage, and Customer Insights - no code, with searchable dropdowns for every resource. It also sends live events to Segment's Tracking API (data plane) - Track, Identify, Group, Page, Screen, Alias, and Batch.",
+  "actionCount": 145,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Tracking",
+    "Workspace",
+    "Sources",
+    "Destinations",
+    "Destination Filters",
+    "Tracking Plans",
+    "Warehouses",
+    "Functions",
+    "Spaces",
+    "Audiences",
+    "Audience Schedules",
+    "Audience Previews",
+    "Audience Activations",
+    "Computed Traits",
+    "Space Filters",
+    "Reverse ETL",
+    "Profiles Sync",
+    "Selective Sync",
+    "Live Plugins",
+    "dbt",
+    "Transformations",
+    "Deletion and Suppression",
+    "Delivery Overview",
+    "IAM Users",
+    "IAM Invites",
+    "IAM Groups",
+    "IAM Roles",
+    "Labels",
+    "Audit Trail",
+    "Usage and Monitoring",
+    "Customer Insights"
+  ],
+  "actions": [
+    {
+      "name": "Track Event",
+      "category": "Tracking",
+      "description": "Records an action a user or group performed, e.g. \"Order Completed\", along with any properties describing it. Sent to the Segment Tracking API (data plane) using the source Write Key config item, not the workspace API Token. Requires a User ID, an Anonymous ID, or both, to identify who performed the event."
+    },
+    {
+      "name": "Identify User",
+      "category": "Tracking",
+      "description": "Ties a user to their actions and records traits about them, e.g. name, email, or plan. Sent to the Segment Tracking API (data plane) using the source Write Key config item. Requires a User ID, an Anonymous ID, or both."
+    },
+    {
+      "name": "Group User",
+      "category": "Tracking",
+      "description": "Associates an identified or anonymous user with a group, e.g. a company, organization, or account, and records traits about that group. Sent to the Segment Tracking API (data plane) using the source Write Key config item."
+    },
+    {
+      "name": "Track Page View",
+      "category": "Tracking",
+      "description": "Records a website page view, along with optional properties about the page. Sent to the Segment Tracking API (data plane) using the source Write Key config item. Requires a User ID, an Anonymous ID, or both."
+    },
+    {
+      "name": "Track Screen View",
+      "category": "Tracking",
+      "description": "Records a mobile app screen view, along with optional properties about the screen. Sent to the Segment Tracking API (data plane) using the source Write Key config item. Requires a User ID, an Anonymous ID, or both."
+    },
+    {
+      "name": "Alias User",
+      "category": "Tracking",
+      "description": "Merges a previous, typically anonymous, identity with a new, typically known, User ID for the same user. Sent to the Segment Tracking API (data plane) using the source Write Key config item. Use this when a previously-anonymous user becomes identified (e.g. signs up or logs in)."
+    },
+    {
+      "name": "Send Batch Events",
+      "category": "Tracking",
+      "description": "Sends up to 500 Track/Identify/Group/Page/Screen/Alias calls in a single request (max ~500KB total, 32KB per call). Sent to the Segment Tracking API (data plane) using the source Write Key config item. Use this to reduce round-trips when sending many events at once."
+    },
+    {
+      "name": "Get Workspace",
+      "category": "Workspace",
+      "description": "Returns the Segment workspace the API token belongs to, including its id, name, and slug. Use this to confirm which workspace your token targets before managing Sources, Destinations, or other resources."
+    },
+    {
+      "name": "List Sources",
+      "category": "Sources",
+      "description": "Returns a page of Sources in the workspace. Use this to browse your data Sources or find a Source ID before getting, updating, or deleting one."
+    },
+    {
+      "name": "Get Source",
+      "category": "Sources",
+      "description": "Retrieves a single Source by its ID, including its write keys, settings, and metadata. The Source field is a dropdown backed by a dictionary so you can pick instead of pasting an ID."
+    },
+    {
+      "name": "Create Source",
+      "category": "Sources",
+      "description": "Creates a new data Source in the workspace from a Source type (metadata id) picked from the catalog. Use this to connect a new website, app, or server that will send data into Segment."
+    },
+    {
+      "name": "Update Source",
+      "category": "Sources",
+      "description": "Updates an existing Source's name, slug, enabled state, or settings. Use this to rename a Source or pause/resume its data flow without recreating it."
+    },
+    {
+      "name": "Delete Source",
+      "category": "Sources",
+      "description": "Permanently deletes a Source and stops it from sending data. This cannot be undone, so use Get Source first to confirm the right Source."
+    },
+    {
+      "name": "List Destinations",
+      "category": "Destinations",
+      "description": "Returns a page of Destinations in the workspace. Use this to browse where your data is sent or find a Destination ID before getting, updating, or deleting one."
+    },
+    {
+      "name": "Get Destination",
+      "category": "Destinations",
+      "description": "Retrieves a single Destination by its ID, including its settings, metadata, and the Source it receives data from. The Destination field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "Create Destination",
+      "category": "Destinations",
+      "description": "Connects a new Destination to a Source so Segment forwards that Source's data to a tool such as Amplitude or Mixpanel. Pick the Source and the Destination type, then supply the tool's configuration as Settings."
+    },
+    {
+      "name": "Update Destination",
+      "category": "Destinations",
+      "description": "Updates an existing Destination's name, enabled state, or settings. Use this to rotate an API key, pause data flow, or rename a Destination without recreating it."
+    },
+    {
+      "name": "Delete Destination",
+      "category": "Destinations",
+      "description": "Permanently deletes a Destination and stops Segment from forwarding data to it. This cannot be undone, so use Get Destination first to confirm the right one."
+    },
+    {
+      "name": "List Destination Filters",
+      "category": "Destination Filters",
+      "description": "Returns the filters configured on a Destination. Filters drop or sample events before they reach the Destination. Use this to review a Destination's filters or find a filter ID."
+    },
+    {
+      "name": "Get Destination Filter",
+      "category": "Destination Filters",
+      "description": "Retrieves a single Destination filter by its ID, including its FQL condition and actions. Use List Destination Filters to find the filter ID."
+    },
+    {
+      "name": "Create Destination Filter",
+      "category": "Destination Filters",
+      "description": "Adds a filter to a Destination that drops, samples, or trims event properties based on an FQL condition. Use this to keep specific events or fields out of a downstream tool."
+    },
+    {
+      "name": "Update Destination Filter",
+      "category": "Destination Filters",
+      "description": "Updates an existing Destination filter's condition, actions, title, description, or enabled state. Use this to adjust which events a Destination receives without recreating the filter."
+    },
+    {
+      "name": "Delete Destination Filter",
+      "category": "Destination Filters",
+      "description": "Permanently removes a filter from a Destination, so the events it was dropping or sampling flow through again. This cannot be undone."
+    },
+    {
+      "name": "List Tracking Plans",
+      "category": "Tracking Plans",
+      "description": "Returns a page of Tracking Plans, optionally filtered by type. Tracking Plans define and validate the events and properties your Sources are allowed to send. Requires the Protocols feature."
+    },
+    {
+      "name": "Get Tracking Plan",
+      "category": "Tracking Plans",
+      "description": "Retrieves a single Tracking Plan by its ID, including its type and resource schema id. The Tracking Plan field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "Create Tracking Plan",
+      "category": "Tracking Plans",
+      "description": "Creates a new Tracking Plan to govern which events and properties your Sources may send. Requires the Protocols feature enabled on the workspace. Use Live for a standard event-validation plan."
+    },
+    {
+      "name": "Update Tracking Plan",
+      "category": "Tracking Plans",
+      "description": "Updates an existing Tracking Plan's name or description. Use this to rename a plan or refine its description without recreating it."
+    },
+    {
+      "name": "Delete Tracking Plan",
+      "category": "Tracking Plans",
+      "description": "Permanently deletes a Tracking Plan, removing its event/property validation rules. This cannot be undone, so use Get Tracking Plan first to confirm the right one."
+    },
+    {
+      "name": "List Warehouses",
+      "category": "Warehouses",
+      "description": "Returns a page of Warehouses (data destinations such as Snowflake or BigQuery) connected to the workspace. Use this to browse Warehouses or find a Warehouse ID."
+    },
+    {
+      "name": "Get Warehouse",
+      "category": "Warehouses",
+      "description": "Retrieves a single Warehouse by its ID, including its connector metadata and (non-secret) settings. The Warehouse field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "Create Warehouse",
+      "category": "Warehouses",
+      "description": "Connects a new data Warehouse (e.g. Snowflake, BigQuery, Redshift) to the workspace so Segment can sync data into it. Provide the Warehouse type and its connection details as Settings. (Settings keys and values are connector-specific - verify against a live workspace.)"
+    },
+    {
+      "name": "Update Warehouse",
+      "category": "Warehouses",
+      "description": "Updates an existing Warehouse's connection settings, name, or enabled state. The Segment API requires the full Settings object on update. (Settings keys and values are connector-specific - verify against a live workspace.)"
+    },
+    {
+      "name": "Delete Warehouse",
+      "category": "Warehouses",
+      "description": "Permanently deletes a Warehouse connection and stops Segment from syncing data into it. This cannot be undone, so use Get Warehouse first to confirm the right one."
+    },
+    {
+      "name": "List Functions",
+      "category": "Functions",
+      "description": "Returns a page of Functions, optionally filtered by type. Functions are custom JavaScript that ingest, transform, or send data in Segment. Requires the Functions feature."
+    },
+    {
+      "name": "Get Function",
+      "category": "Functions",
+      "description": "Retrieves a single Function by its ID, including its source code and resource type. The Function field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "Create Function",
+      "category": "Functions",
+      "description": "Creates a new custom Function from JavaScript source code. Source/Destination functions ingest or send data; Insert functions transform events in the pipeline. Requires the Functions feature. (Code and Settings are user-authored - verify against a live workspace.)"
+    },
+    {
+      "name": "Update Function",
+      "category": "Functions",
+      "description": "Updates an existing Function's code, settings, display name, logo, or description. Use this to ship a new version of a Function's logic without recreating it. (Code and Settings are user-authored - verify against a live workspace.)"
+    },
+    {
+      "name": "Delete Function",
+      "category": "Functions",
+      "description": "Permanently deletes a Function. Any Sources or Destinations built on it stop working, so confirm with Get Function first. This cannot be undone."
+    },
+    {
+      "name": "List Spaces",
+      "category": "Spaces",
+      "description": "Returns the Engage Spaces in the workspace. A Space is the root scope for Audiences, Computed Traits, and other Engage/Unify resources. Use this to find a Space ID."
+    },
+    {
+      "name": "Get Space",
+      "category": "Spaces",
+      "description": "Retrieves a single Engage Space by its ID, including its name and slug. The Space field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "List Audiences",
+      "category": "Audiences",
+      "description": "Returns a page of Audiences in an Engage Space. Use this to browse Audiences or find an Audience ID before getting, updating, or deleting one. Requires the Engage entitlement."
+    },
+    {
+      "name": "Get Audience",
+      "category": "Audiences",
+      "description": "Retrieves a single Audience by its ID, including its definition query, type, and status. The Audience field is a dropdown backed by a dictionary that depends on the chosen Space."
+    },
+    {
+      "name": "Create Audience",
+      "category": "Audiences",
+      "description": "Creates a new Audience in an Engage Space from a definition query. The query is written in Segment's audience query language (FQL) and is user-authored. Requires the Engage entitlement."
+    },
+    {
+      "name": "Update Audience",
+      "category": "Audiences",
+      "description": "Updates an existing Audience's name, description, enabled state, definition, or options. The definition query is user-authored FQL. Use this to refine an audience without recreating it."
+    },
+    {
+      "name": "Delete Audience",
+      "category": "Audiences",
+      "description": "Permanently removes an Audience from a Space. This cannot be undone, so use Get Audience first to confirm the right one."
+    },
+    {
+      "name": "Execute Audience Run",
+      "category": "Audiences",
+      "description": "Forces an Audience to recompute now, outside its normal schedule. Takes no request body. Use this to refresh audience membership immediately after a definition change."
+    },
+    {
+      "name": "List Audience Schedules",
+      "category": "Audience Schedules",
+      "description": "Returns the compute schedules configured on an Audience. Use this to review when an audience recomputes or find a schedule ID."
+    },
+    {
+      "name": "Get Audience Schedule",
+      "category": "Audience Schedules",
+      "description": "Retrieves a single Audience schedule by its ID, including its strategy and config. Use List Audience Schedules to find the schedule ID."
+    },
+    {
+      "name": "Add Audience Schedule",
+      "category": "Audience Schedules",
+      "description": "Adds a compute schedule to an Audience. The config shape depends on the chosen strategy (Periodic vs Specific Days) and is user-authored."
+    },
+    {
+      "name": "Update Audience Schedule",
+      "category": "Audience Schedules",
+      "description": "Updates an existing Audience schedule's strategy and config. Use this to change when an audience recomputes without recreating the schedule."
+    },
+    {
+      "name": "Delete Audience Schedule",
+      "category": "Audience Schedules",
+      "description": "Permanently removes a compute schedule from an Audience. The audience stops recomputing on that schedule. This cannot be undone."
+    },
+    {
+      "name": "Create Audience Preview",
+      "category": "Audience Previews",
+      "description": "Starts an ephemeral preview computation for an audience query without creating an audience. Returns a preview ID to poll with Get Audience Preview. The query is user-authored FQL."
+    },
+    {
+      "name": "Get Audience Preview",
+      "category": "Audience Previews",
+      "description": "Retrieves the status and results of a previously-started audience preview. Poll this with the preview ID from Create Audience Preview until status is complete."
+    },
+    {
+      "name": "Add Destination to Audience",
+      "category": "Audience Activations",
+      "description": "Connects a destination to an Audience so its membership can be activated to that tool. The destination and connection settings are connector-specific and user-authored."
+    },
+    {
+      "name": "List Audience Destinations",
+      "category": "Audience Activations",
+      "description": "Returns the destination connections attached to an Audience. Use this to review where an audience activates or find a connection ID before adding an activation."
+    },
+    {
+      "name": "Update Audience Destination",
+      "category": "Audience Activations",
+      "description": "Updates a destination connection on an Audience - its ID-sync rules or connection settings. Both are connector-specific and user-authored."
+    },
+    {
+      "name": "Remove Audience Destination",
+      "category": "Audience Activations",
+      "description": "Permanently removes a destination connection from an Audience. The audience stops activating to that destination. This cannot be undone."
+    },
+    {
+      "name": "Add Activation",
+      "category": "Audience Activations",
+      "description": "Adds an activation to a destination connection so audience membership changes are sent to the destination. Personalization and destination mapping are user-authored objects."
+    },
+    {
+      "name": "List Activations",
+      "category": "Audience Activations",
+      "description": "Returns the activations configured on an Audience. Use this to review or find an activation ID before getting, updating, or removing one."
+    },
+    {
+      "name": "Get Activation",
+      "category": "Audience Activations",
+      "description": "Retrieves a single activation by its ID, including its type, personalization, and destination mapping. Use List Activations to find the activation ID."
+    },
+    {
+      "name": "Update Activation",
+      "category": "Audience Activations",
+      "description": "Updates an activation's name, enabled state, resync flag, personalization, or destination mapping. Personalization and destination mapping are user-authored objects."
+    },
+    {
+      "name": "Remove Activation",
+      "category": "Audience Activations",
+      "description": "Permanently removes an activation from an Audience. The destination stops receiving that audience's membership events. This cannot be undone."
+    },
+    {
+      "name": "List Supported Destinations",
+      "category": "Audience Activations",
+      "description": "Returns the destinations (and their actions) that support activation for a given audience type in a Space. Use this to discover which destination to connect and its available actions."
+    },
+    {
+      "name": "List Computed Traits",
+      "category": "Computed Traits",
+      "description": "Returns a page of Computed Traits in an Engage Space. Use this to browse traits or find a trait ID. Requires the Unify entitlement."
+    },
+    {
+      "name": "Get Computed Trait",
+      "category": "Computed Traits",
+      "description": "Retrieves a single Computed Trait by its ID, including its definition query and type. The trait field is a dropdown backed by a dictionary that depends on the chosen Space."
+    },
+    {
+      "name": "Create Computed Trait",
+      "category": "Computed Traits",
+      "description": "Creates a new Computed Trait in an Engage Space from a definition query and type. The query is user-authored FQL. Requires the Unify entitlement."
+    },
+    {
+      "name": "Update Computed Trait",
+      "category": "Computed Traits",
+      "description": "Updates an existing Computed Trait's name, description, enabled state, or definition. The definition query is user-authored FQL."
+    },
+    {
+      "name": "Delete Computed Trait",
+      "category": "Computed Traits",
+      "description": "Permanently removes a Computed Trait from a Space. This cannot be undone, so use Get Computed Trait first to confirm the right one."
+    },
+    {
+      "name": "List Space Filters",
+      "category": "Space Filters",
+      "description": "Returns the profile/event filters configured on an Engage Space. Use this to review a Space's filters or find a filter ID."
+    },
+    {
+      "name": "Get Space Filter",
+      "category": "Space Filters",
+      "description": "Retrieves a single Space Filter by its ID, including its FQL condition. Pick a Space to populate the filter dropdown, then choose the filter."
+    },
+    {
+      "name": "Create Space Filter",
+      "category": "Space Filters",
+      "description": "Creates a profile/event filter on an Engage Space based on an FQL condition. Use this to block or drop events from a Space's profiles."
+    },
+    {
+      "name": "Update Space Filter",
+      "category": "Space Filters",
+      "description": "Updates an existing Space Filter's name, condition, enabled state, or drop behavior. Pick the Space to populate the filter dropdown. Provide at least one field to change."
+    },
+    {
+      "name": "Delete Space Filter",
+      "category": "Space Filters",
+      "description": "Permanently removes a Space Filter. The events it was blocking flow through again. Pick a Space to populate the filter dropdown. This cannot be undone."
+    },
+    {
+      "name": "List Reverse ETL Models",
+      "category": "Reverse ETL",
+      "description": "Returns a page of Reverse ETL Models in the workspace. Each model is a SQL query that extracts rows from a connected warehouse Source. Use this to browse models or find a model ID. Requires a Reverse-ETL-capable Source."
+    },
+    {
+      "name": "Get Reverse ETL Model",
+      "category": "Reverse ETL",
+      "description": "Retrieves a single Reverse ETL Model by its ID, including its SQL query and identifier column. The Model field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "Create Reverse ETL Model",
+      "category": "Reverse ETL",
+      "description": "Creates a Reverse ETL Model: a SQL query that extracts rows from a connected warehouse Source so they can be synced out to destinations. The query is user-authored SQL."
+    },
+    {
+      "name": "Update Reverse ETL Model",
+      "category": "Reverse ETL",
+      "description": "Updates an existing Reverse ETL Model's name, description, enabled state, SQL query, or identifier column. Use this to refine a model without recreating it."
+    },
+    {
+      "name": "Delete Reverse ETL Model",
+      "category": "Reverse ETL",
+      "description": "Permanently deletes a Reverse ETL Model. This cannot be undone, so use Get Reverse ETL Model first to confirm the right one."
+    },
+    {
+      "name": "Create Reverse ETL Manual Sync",
+      "category": "Reverse ETL",
+      "description": "Triggers a manual Reverse ETL sync for a model + mapping (subscription). Use this to run a sync now outside its normal schedule. Rate limit 20/min."
+    },
+    {
+      "name": "Get Reverse ETL Sync Status",
+      "category": "Reverse ETL",
+      "description": "Retrieves the status of one Reverse ETL sync run, including its extract and load phase counts. Use the Sync ID returned by Create Reverse ETL Manual Sync."
+    },
+    {
+      "name": "List Reverse ETL Sync Statuses",
+      "category": "Reverse ETL",
+      "description": "Returns a page of sync statuses for a model + mapping (subscription). Use this to review recent syncs. This endpoint uses plain count/cursor query params (not Segment's dotted pagination)."
+    },
+    {
+      "name": "Cancel Reverse ETL Sync",
+      "category": "Reverse ETL",
+      "description": "Cancels an in-progress Reverse ETL sync, recording a reason. Use the Sync ID returned by Create Reverse ETL Manual Sync."
+    },
+    {
+      "name": "List Profiles Warehouses",
+      "category": "Profiles Sync",
+      "description": "Returns the Profiles Sync warehouses configured on an Engage Space. Use this to review where profile data is synced or find a profiles-warehouse ID. Requires a Profiles-Sync-enabled Space."
+    },
+    {
+      "name": "Create Profiles Warehouse",
+      "category": "Profiles Sync",
+      "description": "Connects a warehouse to an Engage Space so Segment syncs profile data into it. Pick the warehouse type and supply the connection Settings, which are connector-specific."
+    },
+    {
+      "name": "Update Profiles Warehouse",
+      "category": "Profiles Sync",
+      "description": "Updates a Profiles Sync warehouse's settings, name, enabled state, or schema name. Use List Profiles Warehouses to find the warehouse ID."
+    },
+    {
+      "name": "Delete Profiles Warehouse",
+      "category": "Profiles Sync",
+      "description": "Permanently removes a Profiles Sync warehouse from a Space. This cannot be undone."
+    },
+    {
+      "name": "List Profiles Selective Syncs",
+      "category": "Profiles Sync",
+      "description": "Returns the selective-sync collection settings for a Profiles Sync warehouse, showing which collections and properties sync. Use List Profiles Warehouses to find the warehouse ID."
+    },
+    {
+      "name": "Update Profiles Selective Sync",
+      "category": "Profiles Sync",
+      "description": "Updates which collections and properties a Profiles Sync warehouse syncs, via per-connector settings and optional sync overrides."
+    },
+    {
+      "name": "Get Advanced Sync Schedule",
+      "category": "Selective Sync",
+      "description": "Returns the advanced sync schedule for a Warehouse, listing the hours of day it syncs and its timezone. Rate limit 2/min."
+    },
+    {
+      "name": "Replace Advanced Sync Schedule",
+      "category": "Selective Sync",
+      "description": "Replaces the advanced sync schedule for a Warehouse with a new set of sync hours and timezone. Rate limit 2/min."
+    },
+    {
+      "name": "List Warehouse Selective Syncs",
+      "category": "Selective Sync",
+      "description": "Returns the selective-sync property settings for a Source connected to a Warehouse, showing which collections and properties sync. Rate limit 2/min."
+    },
+    {
+      "name": "List Warehouse Syncs",
+      "category": "Selective Sync",
+      "description": "Returns the recent sync reports for a Warehouse across all its connected Sources. Rate limit 2/min."
+    },
+    {
+      "name": "List Warehouse Source Syncs",
+      "category": "Selective Sync",
+      "description": "Returns the recent sync reports for one Source connected to a Warehouse. Rate limit 2/min."
+    },
+    {
+      "name": "Update Warehouse Selective Sync",
+      "category": "Selective Sync",
+      "description": "Applies per-property selective-sync overrides for a Warehouse, controlling which Source collections and properties sync. Rate limit 2/min."
+    },
+    {
+      "name": "Create Live Plugin",
+      "category": "Live Plugins",
+      "description": "Uploads (creates or replaces) the Live Plugin JavaScript code for a Source. Requires Live Plugins enabled on the Source. The code is user-authored."
+    },
+    {
+      "name": "Get Latest Live Plugin",
+      "category": "Live Plugins",
+      "description": "Retrieves the latest Live Plugin for a Source, including its version and download URL."
+    },
+    {
+      "name": "Delete Live Plugin Code",
+      "category": "Live Plugins",
+      "description": "Permanently deletes the Live Plugin code for a Source. This cannot be undone."
+    },
+    {
+      "name": "Create dbt Model Sync",
+      "category": "dbt",
+      "description": "Triggers a dbt model sync for a Source. The exact path and request body for this endpoint could not be confirmed from the docs (the dbt tag is JS-rendered), so confirm it against a live workspace before relying on it. Rate limit 10/min."
+    },
+    {
+      "name": "List Transformations",
+      "category": "Transformations",
+      "description": "Returns a page of Transformations in the workspace. Transformations rename, drop, or rewrite events from a Source before they reach destinations. Use this to browse or find a transformation ID."
+    },
+    {
+      "name": "Get Transformation",
+      "category": "Transformations",
+      "description": "Retrieves a single Transformation by its ID, including its FQL condition and transform rules. The Transformation field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "Create Transformation",
+      "category": "Transformations",
+      "description": "Creates a Transformation that rewrites a Source's events (rename event, rename properties, drop, hash, etc.) based on an FQL condition before they reach destinations. The condition and transform rules are user-authored."
+    },
+    {
+      "name": "Update Transformation",
+      "category": "Transformations",
+      "description": "Updates an existing Transformation's name, source, condition, or transform rules. Use this to refine a transformation without recreating it."
+    },
+    {
+      "name": "Delete Transformation",
+      "category": "Transformations",
+      "description": "Permanently deletes a Transformation. This cannot be undone, so use Get Transformation first to confirm the right one."
+    },
+    {
+      "name": "Create Workspace Regulation",
+      "category": "Deletion and Suppression",
+      "description": "Creates a data deletion/suppression regulation across the whole workspace for the given subjects. DESTRUCTIVE - permanently deletes or suppresses user data. Use with care."
+    },
+    {
+      "name": "Create Source Regulation",
+      "category": "Deletion and Suppression",
+      "description": "Creates a data deletion/suppression regulation scoped to one Source. DESTRUCTIVE - permanently deletes or suppresses user data from that Source."
+    },
+    {
+      "name": "Create Cloud Source Regulation",
+      "category": "Deletion and Suppression",
+      "description": "Creates a data deletion/suppression regulation for a cloud Source collection. DESTRUCTIVE - permanently deletes or suppresses object data from that collection."
+    },
+    {
+      "name": "List Workspace Regulations",
+      "category": "Deletion and Suppression",
+      "description": "Returns a page of deletion/suppression regulations in the workspace, optionally filtered by status or type. Use this to track regulation progress or find a regulate ID."
+    },
+    {
+      "name": "List Source Regulations",
+      "category": "Deletion and Suppression",
+      "description": "Returns a page of deletion/suppression regulations scoped to one Source, optionally filtered by status or type."
+    },
+    {
+      "name": "Get Regulation",
+      "category": "Deletion and Suppression",
+      "description": "Retrieves the status of a single regulation by its regulate ID, including overall status and per-stream status. Use the regulate ID returned by a Create Regulation action."
+    },
+    {
+      "name": "List Suppressions",
+      "category": "Deletion and Suppression",
+      "description": "Returns a page of the workspace's current suppressions (subjects whose data is suppressed)."
+    },
+    {
+      "name": "Get Egress Success Metrics",
+      "category": "Delivery Overview",
+      "description": "Returns successful-delivery (egress) metrics for a Source->Destination pair over a time window. MINUTE granularity allows max 4h within the last 48h; HOUR max 14d within the last 30d; DAY max 30d within the last 30d."
+    },
+    {
+      "name": "Get Egress Failed Metrics",
+      "category": "Delivery Overview",
+      "description": "Returns failed-delivery (egress) metrics for a Source->Destination pair over a time window. MINUTE max 4h/last 48h; HOUR max 14d/last 30d; DAY max 30d/last 30d."
+    },
+    {
+      "name": "Get Filtered At Destination Metrics",
+      "category": "Delivery Overview",
+      "description": "Returns metrics for events filtered at the Destination for a Source->Destination pair over a time window. MINUTE max 4h/last 48h; HOUR max 14d/last 30d; DAY max 30d/last 30d."
+    },
+    {
+      "name": "Get Filtered At Source Metrics",
+      "category": "Delivery Overview",
+      "description": "Returns metrics for events filtered at the Source over a time window. MINUTE max 4h/last 48h; HOUR max 14d/last 30d; DAY max 30d/last 30d."
+    },
+    {
+      "name": "Get Ingress Failed Metrics",
+      "category": "Delivery Overview",
+      "description": "Returns failed-on-ingest (ingress) metrics for a Source over a time window. MINUTE max 4h/last 48h; HOUR max 14d/last 30d; DAY max 30d/last 30d."
+    },
+    {
+      "name": "Get Ingress Success Metrics",
+      "category": "Delivery Overview",
+      "description": "Returns successfully-received (ingress) metrics for a Source over a time window. MINUTE max 4h/last 48h; HOUR max 14d/last 30d; DAY max 30d/last 30d."
+    },
+    {
+      "name": "List Users",
+      "category": "IAM Users",
+      "description": "Returns a page of workspace Users. Use this to browse members or find a user ID. Rate limit 60/min."
+    },
+    {
+      "name": "Get User",
+      "category": "IAM Users",
+      "description": "Retrieves a single workspace User by ID, including their assigned roles and resource permissions. The User field is a dropdown backed by a dictionary. Rate limit 60/min."
+    },
+    {
+      "name": "Delete Users",
+      "category": "IAM Users",
+      "description": "Removes one or more Users from the workspace. DESTRUCTIVE - the users lose access. Rate limit 60/min."
+    },
+    {
+      "name": "List User Groups from User",
+      "category": "IAM Users",
+      "description": "Returns the User Groups a given User belongs to. Rate limit 60/min."
+    },
+    {
+      "name": "Add User Permissions",
+      "category": "IAM Users",
+      "description": "Adds role + resource permissions to a User. Use Get Roles Dictionary to pick role IDs. Rate limit 60/min."
+    },
+    {
+      "name": "Replace User Permissions",
+      "category": "IAM Users",
+      "description": "Replaces ALL of a User's permissions with the provided set. Use Get Roles Dictionary to pick role IDs. Rate limit 60/min."
+    },
+    {
+      "name": "Create Invites",
+      "category": "IAM Invites",
+      "description": "Invites one or more people to the workspace with their permissions. Use Get Roles Dictionary to pick role IDs."
+    },
+    {
+      "name": "List Invites",
+      "category": "IAM Invites",
+      "description": "Returns a page of pending workspace invites (email addresses)."
+    },
+    {
+      "name": "Delete Invites",
+      "category": "IAM Invites",
+      "description": "Revokes pending workspace invites by email. DESTRUCTIVE - the invited people can no longer accept."
+    },
+    {
+      "name": "List User Groups",
+      "category": "IAM Groups",
+      "description": "Returns a page of workspace User Groups. Use this to browse groups or find a group ID."
+    },
+    {
+      "name": "Get User Group",
+      "category": "IAM Groups",
+      "description": "Retrieves a single User Group by ID, including its member count and permissions. The Group field is a dropdown backed by a dictionary."
+    },
+    {
+      "name": "Create User Group",
+      "category": "IAM Groups",
+      "description": "Creates a new User Group in the workspace. Add members and permissions afterward with the related actions."
+    },
+    {
+      "name": "Update User Group",
+      "category": "IAM Groups",
+      "description": "Renames a User Group."
+    },
+    {
+      "name": "Delete User Group",
+      "category": "IAM Groups",
+      "description": "Permanently deletes a User Group. This cannot be undone."
+    },
+    {
+      "name": "Add Users to User Group",
+      "category": "IAM Groups",
+      "description": "Adds users (by email) to a User Group."
+    },
+    {
+      "name": "List Users from User Group",
+      "category": "IAM Groups",
+      "description": "Returns the users that belong to a User Group."
+    },
+    {
+      "name": "Replace Users in User Group",
+      "category": "IAM Groups",
+      "description": "Replaces ALL members of a User Group with the provided emails."
+    },
+    {
+      "name": "Remove Users from User Group",
+      "category": "IAM Groups",
+      "description": "Removes users (by email) from a User Group. DESTRUCTIVE - those users lose the group's permissions."
+    },
+    {
+      "name": "List Invites from User Group",
+      "category": "IAM Groups",
+      "description": "Returns the pending invites attached to a User Group."
+    },
+    {
+      "name": "Add User Group Permissions",
+      "category": "IAM Groups",
+      "description": "Adds role + resource permissions to a User Group. Use Get Roles Dictionary to pick role IDs."
+    },
+    {
+      "name": "Replace User Group Permissions",
+      "category": "IAM Groups",
+      "description": "Replaces ALL of a User Group's permissions with the provided set. Use Get Roles Dictionary to pick role IDs."
+    },
+    {
+      "name": "List Roles",
+      "category": "IAM Roles",
+      "description": "Lists the Roles available to assign in permissions (used to pick a roleId)."
+    },
+    {
+      "name": "List Labels",
+      "category": "Labels",
+      "description": "Returns all labels defined in the workspace. Labels are key/value tags applied to resources for organization and access control."
+    },
+    {
+      "name": "Create Label",
+      "category": "Labels",
+      "description": "Creates a label (key/value tag) in the workspace. Rate limit 60/min."
+    },
+    {
+      "name": "Delete Label",
+      "category": "Labels",
+      "description": "Permanently deletes a label by its key and value. This cannot be undone. Rate limit 60/min."
+    },
+    {
+      "name": "List Audit Events",
+      "category": "Audit Trail",
+      "description": "Returns a page of workspace audit-trail events (resource created/updated/deleted, member changes, etc.), optionally filtered by time window or resource."
+    },
+    {
+      "name": "Get Daily Workspace API Calls",
+      "category": "Usage and Monitoring",
+      "description": "Returns the daily API-call usage for the whole workspace in a given month."
+    },
+    {
+      "name": "Get Daily Per Source API Calls",
+      "category": "Usage and Monitoring",
+      "description": "Returns the daily per-Source API-call usage for the workspace in a given month."
+    },
+    {
+      "name": "Create Customer Insights Download",
+      "category": "Customer Insights",
+      "description": "Generates presigned download URLs for Customer Insights data for a collection and hour bucket. Data is hourly with one-month retention. Rate limit 120 requests/day per workspace."
+    }
+  ],
+  "triggers": [
+    "New Audit Event"
+  ],
+  "idealUseCases": [
+    "Provision Sources and connect them to Destinations, Warehouses, and Reverse ETL models.",
+    "Build, schedule, preview, and activate Engage Audiences and Unify Computed Traits.",
+    "Govern data: run Deletion & Suppression regulations, manage IAM users/groups/roles and Labels.",
+    "Monitor delivery, API-call usage, and the audit trail - and react when new audit events occur."
+  ],
+  "agentIdeas": [
+    "When a **Segment** \"New Audit Event\" trigger fires for a destructive change, use **PagerDuty** \"Create Incident\" to page the on-call owner about the workspace configuration change.",
+    "Poll **Segment** \"New Audit Event\" and post each event to a governance channel with **Slack** \"Send Message To Channel\" so the data team has a live audit feed.",
+    "Pull usage with **Segment** \"Get Daily Workspace API Calls\" (or \"Get Daily Per Source API Calls\") and append the numbers to a tracking sheet via **Google Sheets** \"Add Row\" for month-over-month reporting.",
+    "When a new lead is captured, use **Segment** \"Identify User\" to set their traits and \"Track Event\" to record the signup, feeding the customer profile that downstream Destinations consume."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/segment/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/segment",
+    "readme": "services/segment/README.md",
+    "index": "services/segment/src/index.js"
+  }
+}

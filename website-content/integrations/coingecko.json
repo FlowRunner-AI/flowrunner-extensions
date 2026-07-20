@@ -1,0 +1,129 @@
+{
+  "slug": "coingecko",
+  "name": "CoinGecko",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Access live and historical cryptocurrency market data from the [CoinGecko API v3](https://docs.coingecko.com/reference/introduction): current prices, coin and token pricing, market charts, OHLC candles, trending coins, exchange and category data, and global market statistics. Works keyless against the rate-limited free tier, or with a Demo or Pro API key for higher limits.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "System",
+    "Simple",
+    "Coins",
+    "Search & Trending",
+    "Global",
+    "Exchanges",
+    "Categories"
+  ],
+  "actions": [
+    {
+      "name": "Ping",
+      "category": "System",
+      "description": "Checks that the CoinGecko API is reachable and that your API key and plan are valid. Returns a simple confirmation message. Use this to verify connectivity before running other operations."
+    },
+    {
+      "name": "Get Price",
+      "category": "Simple",
+      "description": "Gets the current price of one or more coins in one or more target currencies. Provide coin IDs (e.g. \"bitcoin,ethereum\") and currency codes (e.g. \"usd,eur\"). Optionally include market cap and 24h price change. Supports up to 515 coin IDs per request."
+    },
+    {
+      "name": "Get Token Price by Contract",
+      "category": "Simple",
+      "description": "Gets the current price of one or more tokens by their contract addresses on a given blockchain platform. Provide the asset platform ID (e.g. \"ethereum\") and comma-separated contract addresses. Useful for pricing tokens not listed by a simple coin ID."
+    },
+    {
+      "name": "Supported VS Currencies",
+      "category": "Simple",
+      "description": "Returns the full list of supported target (\"vs\") currency codes that can be used in price and market operations, such as usd, eur, btc, and eth."
+    },
+    {
+      "name": "List Coins",
+      "category": "Coins",
+      "description": "Returns the full list of coins supported by CoinGecko, each with its ID, symbol, and name. Use the returned \"id\" values as input to other operations such as Get Price, Get Coin Data, and Get Coin Market Chart. The list is large (thousands of coins)."
+    },
+    {
+      "name": "Coins Markets",
+      "category": "Coins",
+      "description": "Returns market data (price, market cap, volume, rank, and price changes) for coins in a target currency, sorted and paginated. Optionally filter to specific coin IDs and request extra price-change windows. Ideal for building coin leaderboards and dashboards."
+    },
+    {
+      "name": "Get Coin Data",
+      "category": "Coins",
+      "description": "Returns detailed data for a single coin, including description, links, images, market data, and optionally exchange tickers and community metrics. Provide the coin's CoinGecko ID. Use the toggles to control which data sections are included."
+    },
+    {
+      "name": "Get Coin Market Chart",
+      "category": "Coins",
+      "description": "Returns historical market data (prices, market caps, and total volumes) for a coin over a number of days in a target currency. Data granularity depends on the range: minutely for 1 day, hourly for 2-90 days, and daily beyond that unless an interval is specified."
+    },
+    {
+      "name": "Get Coin OHLC",
+      "category": "Coins",
+      "description": "Returns open-high-low-close (OHLC) candlestick data for a coin over a selected time range in a target currency. Each entry is [timestamp, open, high, low, close]. Candle granularity is automatically determined by the selected number of days."
+    },
+    {
+      "name": "Get Coin History",
+      "category": "Coins",
+      "description": "Returns a snapshot of a coin's data (price, market cap, and 24h volume across currencies) at 00:00 UTC on a specific historical date. Provide the coin ID and a date in dd-mm-yyyy format."
+    },
+    {
+      "name": "Search",
+      "category": "Search & Trending",
+      "description": "Searches CoinGecko for coins, exchanges, categories, and NFTs matching a query string. Returns matching entities with their IDs and names. Use a returned coin \"id\" with price and market operations."
+    },
+    {
+      "name": "Trending",
+      "category": "Search & Trending",
+      "description": "Returns the top trending coins, NFTs, and categories on CoinGecko over the last 24 hours, based on user search activity. Useful for surfacing what the market is currently interested in."
+    },
+    {
+      "name": "Global Data",
+      "category": "Global",
+      "description": "Returns global cryptocurrency market data, including total market capitalization, total 24h volume, market cap percentage by coin, and the number of active cryptocurrencies and markets."
+    },
+    {
+      "name": "Global DeFi Data",
+      "category": "Global",
+      "description": "Returns global decentralized finance (DeFi) market data, including total DeFi market cap, DeFi-to-total market cap ratio, DeFi 24h trading volume, and the top DeFi coin by market share."
+    },
+    {
+      "name": "List Exchanges",
+      "category": "Exchanges",
+      "description": "Returns a paginated list of cryptocurrency exchanges tracked by CoinGecko, including each exchange's ID, name, trust score, and trade volume. Use a returned \"id\" with Get Exchange for details."
+    },
+    {
+      "name": "Get Exchange",
+      "category": "Exchanges",
+      "description": "Returns detailed data for a single exchange, including trust score, trade volume, year established, country, and top tickers. Provide the exchange's CoinGecko ID (find it with List Exchanges)."
+    },
+    {
+      "name": "List Categories",
+      "category": "Categories",
+      "description": "Returns the list of coin categories with market data, including market cap, 24h market cap change, 24h volume, and the top coins in each category. Useful for analyzing sectors such as DeFi, Layer 1, or meme coins."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Fetch current prices for a portfolio of coins or contract-addressed tokens and log or notify on changes",
+    "Build crypto leaderboards and dashboards from market, category, and global data",
+    "Pull historical prices, OHLC candles, and market charts for analysis or reporting",
+    "Surface trending coins and search results to enrich alerts and content",
+    "Verify API connectivity and plan validity before running downstream automations"
+  ],
+  "agentIdeas": [
+    "Use CoinGecko **Get Price** to fetch the latest prices for a watchlist, then **Google Sheets** \"Add Row\" to append each price snapshot to a tracking spreadsheet",
+    "Call CoinGecko **Trending** each morning and post the top trending coins to a channel with **Slack** \"Send Message To Channel\"",
+    "Pull market data with CoinGecko **Coins Markets** and store each coin's rank, price, and market cap using **Airtable** \"Create Record\" for a maintained crypto database"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/coingecko/public/icon.png",
+  "sourcePaths": {
+    "service": "services/coingecko",
+    "readme": "services/coingecko/README.md",
+    "index": "services/coingecko/src/index.js"
+  }
+}

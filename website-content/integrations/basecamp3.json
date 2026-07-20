@@ -1,0 +1,232 @@
+{
+  "slug": "basecamp3",
+  "name": "Basecamp",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connect FlowRunner to [Basecamp](https://basecamp.com) (the Basecamp 4 / \"bc3\" API) to manage projects, to-do lists and to-dos, message board posts, comments, campfire chat, people, schedule entries, and documents. Authentication is OAuth2 via 37signals Launchpad, and every project tool (to-dos, messages, docs, schedule, campfire) is resolved automatically from the project's dock — so you normally only ever pass a project id.",
+  "actionCount": 37,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Projects",
+    "To-do Lists",
+    "To-dos",
+    "Recordings",
+    "Messages",
+    "Comments",
+    "Campfire",
+    "People",
+    "Schedule",
+    "Documents"
+  ],
+  "actions": [
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Lists the projects visible to the connected user. By default only active projects are returned; choose Archived or Trashed to list those instead. Results are paginated — the response includes items, totalCount, and nextPage/nextPageUrl when more pages exist (pass nextPage back as the Page parameter to continue). Each project includes its dock array with the per-project tool ids (to-dos, message board, docs and files, schedule, campfire)."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves a single project by id, including its name, description, people access settings, and the dock array. The dock lists the project's tools with their per-project ids — todoset (to-dos), message_board (messages), vault (docs and files), chat (campfire), and schedule — which other Basecamp endpoints are scoped to. The to-do list, message, document, schedule, and campfire actions in this integration resolve those ids automatically, so you normally only need the project id."
+    },
+    {
+      "name": "Create Project",
+      "category": "Projects",
+      "description": "Creates a new project with the given name and optional description. The connected user becomes a member of the new project. Returns the full project including its dock of tools. Fails with a plan-limit error if the account has reached its maximum number of projects."
+    },
+    {
+      "name": "Update Project",
+      "category": "Projects",
+      "description": "Updates a project's name and/or description. Only the fields you provide are changed — omitted fields keep their current values (the current project is fetched first and merged). Returns the updated project."
+    },
+    {
+      "name": "Trash Project",
+      "category": "Projects",
+      "description": "Moves a project to the trash. Trashed projects are hidden from everyone and are permanently deleted by Basecamp after 30 days (until then they can be restored from the trash in the Basecamp UI). Use List Projects with status Trashed to see what is in the trash."
+    },
+    {
+      "name": "Get Todoset",
+      "category": "To-do Lists",
+      "description": "Retrieves a project's todoset — the container that holds all of the project's to-do lists. The todoset id is resolved automatically from the project's dock, so only the project id is needed. Returns the todoset with its to-do list count, completion ratio, and the URL for its to-do lists."
+    },
+    {
+      "name": "List To-do Lists",
+      "category": "To-do Lists",
+      "description": "Lists the to-do lists in a project. The project's todoset is resolved automatically from its dock, so only the project id is needed. By default only active lists are returned; choose Archived or Trashed to list those instead. Results are paginated — the response includes items, totalCount, and nextPage/nextPageUrl when more pages exist."
+    },
+    {
+      "name": "Get To-do List",
+      "category": "To-do Lists",
+      "description": "Retrieves a single to-do list by id, including its name, description, completion ratio, and the URL for its to-dos."
+    },
+    {
+      "name": "Create To-do List",
+      "category": "To-do Lists",
+      "description": "Creates a new to-do list in a project. The project's todoset is resolved automatically from its dock, so only the project id is needed. The description may contain simple HTML formatting. Returns the new to-do list, including the URL to add to-dos to it."
+    },
+    {
+      "name": "Update To-do List",
+      "category": "To-do Lists",
+      "description": "Updates a to-do list's name and/or description. Only the fields you provide are changed — omitted fields keep their current values (the current list is fetched first and merged). Returns the updated to-do list."
+    },
+    {
+      "name": "List To-dos",
+      "category": "To-dos",
+      "description": "Lists the to-dos in a to-do list. By default only active, incomplete to-dos are returned; enable Completed to list completed ones, or choose Archived/Trashed status. Results are paginated — the response includes items, totalCount, and nextPage/nextPageUrl when more pages exist. Each to-do includes its content, due date, assignees, and completion state."
+    },
+    {
+      "name": "Get To-do",
+      "category": "To-dos",
+      "description": "Retrieves a single to-do by id, including its content, rich-text description, due date, start date, assignees, completion subscribers, completion state, and comment count."
+    },
+    {
+      "name": "Create To-do",
+      "category": "To-dos",
+      "description": "Creates a new to-do in a to-do list. Content is the task text; the optional description supports simple HTML. Assignees and completion subscribers are set by numeric people ids (use the people dictionary or List Project People to find them). Set Notify to email the assignees about the new task. Due and start dates use YYYY-MM-DD format. Returns the new to-do."
+    },
+    {
+      "name": "Update To-do",
+      "category": "To-dos",
+      "description": "Updates an existing to-do. The Basecamp API replaces the whole to-do on update (omitted fields would be cleared), so this action fetches the current to-do first and merges your changes — only the fields you provide are changed, everything else keeps its current value. Returns the updated to-do."
+    },
+    {
+      "name": "Complete To-do",
+      "category": "To-dos",
+      "description": "Marks a to-do as completed. People subscribed to the to-do's completion are notified by Basecamp. Use Uncomplete To-do to revert."
+    },
+    {
+      "name": "Uncomplete To-do",
+      "category": "To-dos",
+      "description": "Marks a completed to-do as incomplete again, putting it back on the active to-do list."
+    },
+    {
+      "name": "Trash Recording",
+      "category": "Recordings",
+      "description": "Moves any recording to the trash by its id. In Basecamp almost everything is a recording, so this works for to-dos, to-do lists, messages, documents, comments, schedule entries, and campfire lines alike. Trashed recordings are permanently deleted by Basecamp after 30 days; until then they can be restored from the trash in the Basecamp UI."
+    },
+    {
+      "name": "List Messages",
+      "category": "Messages",
+      "description": "Lists the messages on a project's message board. The message board is resolved automatically from the project's dock, so only the project id is needed. Results are paginated — the response includes items, totalCount, and nextPage/nextPageUrl when more pages exist. Each message includes its subject, rich-text content, creator, and comment count."
+    },
+    {
+      "name": "Get Message",
+      "category": "Messages",
+      "description": "Retrieves a single message by id, including its subject, full rich-text HTML content, creator, and comment count."
+    },
+    {
+      "name": "Create Message",
+      "category": "Messages",
+      "description": "Posts a new message to a project's message board and publishes it immediately. The message board is resolved automatically from the project's dock. Content is rich text — it may contain HTML such as <strong>, <em>, lists, block quotes, and links. Returns the new message."
+    },
+    {
+      "name": "Update Message",
+      "category": "Messages",
+      "description": "Updates a message's subject and/or rich-text content. Only the fields you provide are changed — omitted fields keep their current values (the current message is fetched first and merged). Returns the updated message."
+    },
+    {
+      "name": "List Comments",
+      "category": "Comments",
+      "description": "Lists the comments on any recording — a to-do, message, document, or schedule entry. Pass the recording's id (for example a message id from List Messages or a to-do id from List To-dos). Results are paginated — the response includes items, totalCount, and nextPage/nextPageUrl when more pages exist."
+    },
+    {
+      "name": "Get Comment",
+      "category": "Comments",
+      "description": "Retrieves a single comment by id, including its rich-text HTML content, creator, and the recording it belongs to."
+    },
+    {
+      "name": "Create Comment",
+      "category": "Comments",
+      "description": "Adds a comment to any recording — a to-do, message, document, or schedule entry. Content is rich text and may contain HTML formatting. People subscribed to the recording are notified by Basecamp. Returns the new comment."
+    },
+    {
+      "name": "List Campfires",
+      "category": "Campfire",
+      "description": "Lists all campfires (chat rooms) visible to the connected user across every project. Each campfire includes its id, the project (bucket) it belongs to, and the URL for its chat lines. Results are paginated — the response includes items, totalCount, and nextPage/nextPageUrl when more pages exist."
+    },
+    {
+      "name": "Get Campfire Lines",
+      "category": "Campfire",
+      "description": "Retrieves the chat lines (messages) from a project's campfire, newest first. If no campfire id is given, the project's main campfire is resolved automatically from its dock. Results are paginated — the response includes items, totalCount, and nextPage/nextPageUrl when more pages exist."
+    },
+    {
+      "name": "Create Campfire Line",
+      "category": "Campfire",
+      "description": "Posts a chat line (message) to a project's campfire. If no campfire id is given, the project's main campfire is resolved automatically from its dock. Content is rich text and may contain simple HTML. Returns the new chat line."
+    },
+    {
+      "name": "List All People",
+      "category": "People",
+      "description": "Lists every person visible to the connected user across the whole Basecamp account, including their id, name, email address, title, and admin/owner flags. Use the ids for to-do assignees and schedule participants. Results are paginated — the response includes items, totalCount, and nextPage/nextPageUrl when more pages exist."
+    },
+    {
+      "name": "List Project People",
+      "category": "People",
+      "description": "Lists the people with access to a specific project. Use this to find valid assignee and participant ids for that project's to-dos and schedule entries. Results are paginated — the response includes items, totalCount, and nextPage/nextPageUrl when more pages exist."
+    },
+    {
+      "name": "Get Person",
+      "category": "People",
+      "description": "Retrieves a single person by id, including their name, email address, title, company, admin/owner flags, and avatar URL."
+    },
+    {
+      "name": "Get My Profile",
+      "category": "People",
+      "description": "Retrieves the profile of the connected user — their id, name, email address, title, admin/owner flags, and avatar URL. Useful to find your own person id for assignments and subscriptions."
+    },
+    {
+      "name": "List Schedule Entries",
+      "category": "Schedule",
+      "description": "Lists the entries (events) on a project's schedule. The schedule is resolved automatically from the project's dock, so only the project id is needed. Each entry includes its summary, start/end times, all-day flag, and participants. Results are paginated — the response includes items, totalCount, and nextPage/nextPageUrl when more pages exist."
+    },
+    {
+      "name": "Create Schedule Entry",
+      "category": "Schedule",
+      "description": "Creates an event on a project's schedule. The schedule is resolved automatically from the project's dock. Provide the summary and start/end times in ISO 8601 (e.g. 2026-08-01T15:00:00Z); enable All Day for date-only events. Participants are set by numeric people ids, and Notify controls whether they are notified about the new event. Returns the new schedule entry."
+    },
+    {
+      "name": "List Documents",
+      "category": "Documents",
+      "description": "Lists the documents in a project's Docs & Files vault. The vault is resolved automatically from the project's dock, so only the project id is needed. Each document includes its title, creator, and comment count (fetch a single document for its full content). Results are paginated — the response includes items, totalCount, and nextPage/nextPageUrl when more pages exist."
+    },
+    {
+      "name": "Get Document",
+      "category": "Documents",
+      "description": "Retrieves a single document by id, including its title, full rich-text HTML content, creator, and comment count."
+    },
+    {
+      "name": "Create Document",
+      "category": "Documents",
+      "description": "Creates a new document in a project's Docs & Files vault and publishes it immediately. The vault is resolved automatically from the project's dock. Content is rich text — it may contain HTML such as headings, lists, block quotes, and links. Returns the new document."
+    },
+    {
+      "name": "Update Document",
+      "category": "Documents",
+      "description": "Updates a document's title and/or rich-text content. Only the fields you provide are changed — omitted fields keep their current values (the current document is fetched first and merged). Returns the updated document."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Turn incoming form submissions, tickets, or leads into new Basecamp to-dos with assignees and due dates",
+    "Keep a project's message board or documents in sync with content generated elsewhere in a flow",
+    "Post automated status updates or alerts to a project's campfire chat",
+    "Fan out schedule entries to a project team from an external calendar or planning system",
+    "Complete or uncomplete to-dos programmatically as work moves through downstream systems"
+  ],
+  "agentIdeas": [
+    "After **Basecamp** \"Create To-do\" assigns a task, use **Slack** \"Send Direct Message\" to notify the assignee with the to-do content and due date",
+    "When a **Google Calendar** \"On Event Starting Soon\" trigger fires, use **Basecamp** \"Create Campfire Line\" to post a heads-up to the project team's chat",
+    "Use **Basecamp** \"List To-dos\" to gather a project's open tasks, then **Gmail** \"Send Message\" to email a daily progress digest to stakeholders"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/basecamp3/public/icon.png",
+  "sourcePaths": {
+    "service": "services/basecamp3",
+    "readme": "services/basecamp3/README.md",
+    "index": "services/basecamp3/src/index.js"
+  }
+}

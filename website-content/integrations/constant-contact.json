@@ -1,0 +1,241 @@
+{
+  "slug": "constant-contact",
+  "name": "Constant Contact",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage Constant Contact email marketing directly from FlowRunner: create and upsert contacts, organize them into lists, tags, custom fields, and segments, and build, schedule, test, and report on email campaigns. Connects via OAuth2 (with automatically rotating refresh tokens); requires a Client Id and Client Secret from the Constant Contact developer portal.",
+  "actionCount": 39,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Account",
+    "Contacts",
+    "Contact Lists",
+    "Custom Fields",
+    "Tags",
+    "Segments",
+    "Email Campaigns",
+    "Campaign Activities",
+    "Reporting"
+  ],
+  "actions": [
+    {
+      "name": "Get Account Summary",
+      "category": "Account",
+      "description": "Retrieves a summary of the connected Constant Contact account, including the organization name, contact email and phone, physical address country/state, time zone, and website. Useful as a connection check and for identifying which account is linked."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves contacts from the account, with optional filters by status, list membership, exact email address, and last-update time. Select sub-resources (custom fields, list memberships, phone numbers, street addresses) to embed in each contact. Returns up to 500 contacts per page; when more pages exist the response includes a top-level \"cursor\" convenience field to pass back through the Cursor parameter."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by its id, including name, email address with permission status, and source/audit timestamps. Select sub-resources (custom fields, list memberships, phone numbers, street addresses) to embed in the result."
+    },
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact with an email address (stored with 'implicit' permission to send), optional profile fields, a phone number, street address, custom field values, and initial list memberships. Fails with a conflict error if a contact with the email already exists — use Create or Update Contact for upsert behavior. Returns the full created contact including its contact_id."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact by id. The underlying API performs a full replace, so this action first fetches the contact (with custom fields, list memberships, phone numbers, and street addresses) and merges your changes into it — omitted parameters keep their current values, making this behave like a partial update. Provided custom field values are merged by field id; a provided phone number replaces the contact's primary phone; provided list memberships replace the full membership set. Returns the updated contact."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Deletes a contact by id. The contact's status becomes 'deleted', they are removed from all contact lists, and they no longer receive emails; historical tracking data is retained and deleted contacts can be reactivated by re-adding them. Returns a success status (the API returns no content)."
+    },
+    {
+      "name": "Create or Update Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact or updates an existing one, matched by email address (upsert). This is the simplest way to add subscribers: at least one contact list is required, and provided name fields update the existing contact when it already exists. Returns the contact_id and an \"action\" of either 'created' or 'updated'."
+    },
+    {
+      "name": "List Contact Lists",
+      "category": "Contact Lists",
+      "description": "Retrieves the account's contact lists (up to 1000 per account) with name, description, favorite flag, and audit timestamps. Optionally includes the total list count and per-list membership counts (all or active-only members)."
+    },
+    {
+      "name": "Get Contact List",
+      "category": "Contact Lists",
+      "description": "Retrieves a single contact list by id, including its name, description, favorite flag, and audit timestamps. Optionally includes the list's membership count (all or active-only members)."
+    },
+    {
+      "name": "Create Contact List",
+      "category": "Contact Lists",
+      "description": "Creates a new contact list with a name (must be unique in the account) and optional description and favorite flag. An account can have up to 1000 lists. Returns the created list including its list_id."
+    },
+    {
+      "name": "Update Contact List",
+      "category": "Contact Lists",
+      "description": "Updates an existing contact list's name, description, and/or favorite flag. The underlying API performs a full replace, so this action first fetches the list and merges your changes — omitted parameters keep their current values. Returns the updated list."
+    },
+    {
+      "name": "Delete Contact List",
+      "category": "Contact Lists",
+      "description": "Deletes a contact list by id. Contacts that belong to the list are NOT deleted, only their membership in this list is removed. The deletion runs as an asynchronous background activity; the returned activity can be monitored with Get Activity Status."
+    },
+    {
+      "name": "Add Contacts to Lists",
+      "category": "Contact Lists",
+      "description": "Adds up to 500 contacts to up to 50 contact lists in a single call. This runs as an asynchronous background activity — the returned activity object (with activity_id, state, and percent_done) can be monitored with Get Activity Status until its state is 'completed'."
+    },
+    {
+      "name": "Remove Contacts from Lists",
+      "category": "Contact Lists",
+      "description": "Removes up to 500 contacts from up to 50 contact lists in a single call. The contacts themselves are not deleted. This runs as an asynchronous background activity — the returned activity object can be monitored with Get Activity Status until its state is 'completed'."
+    },
+    {
+      "name": "Get Activity Status",
+      "category": "Contact Lists",
+      "description": "Retrieves the status of an asynchronous background activity (such as Add Contacts to Lists, Remove Contacts from Lists, or Delete Contact List) by its activity id. The state progresses from 'initialized'/'processing' to 'completed', 'cancelled', 'failed', or 'timed_out'; percent_done and activity_errors provide progress detail."
+    },
+    {
+      "name": "List Custom Fields",
+      "category": "Custom Fields",
+      "description": "Retrieves the account's contact custom fields, including each field's label, generated internal name, type (string or date), and audit timestamps. Returns up to 100 fields per page with a top-level \"cursor\" convenience field when more pages exist."
+    },
+    {
+      "name": "Create Custom Field",
+      "category": "Custom Fields",
+      "description": "Creates a new contact custom field with a display label and a data type of either Text (free-form string) or Date. An account can have up to 100 custom fields. Returns the created field including its custom_field_id, which is used when setting values on contacts."
+    },
+    {
+      "name": "Delete Custom Field",
+      "category": "Custom Fields",
+      "description": "Deletes a contact custom field by id. The field and all values stored in it are removed from every contact in the account; this cannot be undone. Returns a success status (the API returns no content)."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Retrieves the account's contact tags, including each tag's name, id, and source. Returns up to 500 tags per page with a top-level \"cursor\" convenience field when more pages exist. Optionally includes the number of contacts assigned to each tag."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new contact tag with the given name. Tags provide a flexible way to label and group contacts without using lists. Returns the created tag including its tag_id."
+    },
+    {
+      "name": "Delete Tag",
+      "category": "Tags",
+      "description": "Deletes a contact tag by id and removes it from all contacts it is assigned to. The removal runs as an asynchronous background activity; the returned activity can be monitored with Get Activity Status."
+    },
+    {
+      "name": "List Segments",
+      "category": "Segments",
+      "description": "Retrieves the account's segments (saved dynamic groups of contacts based on criteria), sorted by last-update date (newest first) or by name. Includes each segment's name, numeric id, and edit timestamps, plus a top-level \"cursor\" convenience field when more pages exist."
+    },
+    {
+      "name": "Get Segment",
+      "category": "Segments",
+      "description": "Retrieves a single segment by its numeric id, including its name, full segment_criteria (as a JSON string), and edit timestamps."
+    },
+    {
+      "name": "Create Segment",
+      "category": "Segments",
+      "description": "Creates a new segment from a unique name and segment criteria. The criteria must be a single-string JSON document following Constant Contact's segment criteria schema (e.g. {\"version\":\"1.0.0\",\"criteria\":{...}}); this action validates that the provided string parses as JSON before sending. Returns the created segment including its numeric segment_id."
+    },
+    {
+      "name": "Update Segment Name",
+      "category": "Segments",
+      "description": "Renames an existing segment without changing its criteria. Returns the segment with its updated name."
+    },
+    {
+      "name": "Delete Segment",
+      "category": "Segments",
+      "description": "Deletes a segment by its numeric id. Contacts matched by the segment are not affected. Returns a success status (the API returns no content)."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Email Campaigns",
+      "description": "Retrieves the account's email campaigns (newest first), including each campaign's name, id, type, and current status (Draft, Scheduled, Executing, Done, Error, Removed). Optionally filter by creation date range. Returns up to 500 campaigns per page with a top-level \"cursor\" convenience field when more pages exist."
+    },
+    {
+      "name": "Get Campaign",
+      "category": "Email Campaigns",
+      "description": "Retrieves a single email campaign by id, including its name, status, and its campaign_activities array. Each activity has a role — the activity with role 'primary_email' is the one to use with the Campaign Activities actions (update content, send tests, schedule); 'permalink' is the web view."
+    },
+    {
+      "name": "Create Campaign",
+      "category": "Email Campaigns",
+      "description": "Creates a new email campaign with a custom-code HTML email (format_type 5). The from address must be an email address verified in the Constant Contact account. The HTML content should include the required '[[trackingImage]]' token and an unsubscribe link for best deliverability. Returns the created campaign with its campaign_activities — use the 'primary_email' activity id to set recipients (Update Campaign Activity), send tests, and schedule."
+    },
+    {
+      "name": "Update Campaign Name",
+      "category": "Email Campaigns",
+      "description": "Renames an existing email campaign without changing its content or schedule. Returns a success status (the API returns no content)."
+    },
+    {
+      "name": "Delete Campaign",
+      "category": "Email Campaigns",
+      "description": "Deletes an email campaign and all of its activities by campaign id. Sent campaigns are moved to a 'Removed' status. Returns a success status (the API returns no content)."
+    },
+    {
+      "name": "Get Campaign Activity",
+      "category": "Campaign Activities",
+      "description": "Retrieves a single email campaign activity by id, including sender details, subject, preheader, HTML content, current status, and the contact lists / segments it will be sent to. Use Get Campaign to find the activity id with role 'primary_email'."
+    },
+    {
+      "name": "Update Campaign Activity",
+      "category": "Campaign Activities",
+      "description": "Updates an email campaign activity's sender details, subject, preheader, HTML content, and/or recipients (contact lists and segments). The underlying API performs a full replace, so this action first fetches the activity and merges your changes into it — omitted parameters keep their current values. Only draft (unsent, unscheduled) activities can be updated. Setting recipients here is required before the campaign can be scheduled."
+    },
+    {
+      "name": "Send Test Email",
+      "category": "Campaign Activities",
+      "description": "Sends a test version of an email campaign activity to up to 5 email addresses, with an optional personal message shown above the email content. Test sends do not affect campaign status or reporting."
+    },
+    {
+      "name": "Schedule Campaign",
+      "category": "Campaign Activities",
+      "description": "Schedules an email campaign activity to be sent at a specific date and time, or immediately when no date is provided. The activity must be in DRAFT status and must already have recipients (contact lists or segments — see Update Campaign Activity) and a verified from address. Returns the resulting schedule."
+    },
+    {
+      "name": "Get Campaign Schedules",
+      "category": "Campaign Activities",
+      "description": "Retrieves the current send schedule of an email campaign activity. Returns an array with the scheduled date when the activity is scheduled, or an empty array when it is not."
+    },
+    {
+      "name": "Unschedule Campaign",
+      "category": "Campaign Activities",
+      "description": "Unschedules a previously scheduled email campaign activity so it will not be sent, returning it to DRAFT status. Only works before the send begins. Returns a success status (the API returns no content)."
+    },
+    {
+      "name": "Get Campaign Summary Reports",
+      "category": "Reporting",
+      "description": "Retrieves summary performance reports for the account's sent email campaigns (newest first). Each summary includes the campaign id and unique counts of sends, opens, clicks, forwards, opt-outs, bounces, and abuse reports. Returns up to 500 summaries per page with a top-level \"cursor\" convenience field when more pages exist."
+    },
+    {
+      "name": "Get Campaign Activity Stats",
+      "category": "Reporting",
+      "description": "Retrieves unique-count statistics for up to 25 email campaign activities in one call: sends, opens, clicks, bounces, opt-outs, forwards, and abuse reports per activity. This stats endpoint was chosen as the single per-activity reporting read because it returns stable aggregate counts in one request (rather than paging through individual tracking events). Use Get Campaign to find each campaign's 'primary_email' activity id."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new subscribers from forms, spreadsheets, or your app into Constant Contact and add them to the right lists (upsert by email)",
+    "Keep contact profiles, custom fields, and tags up to date from external systems of record",
+    "Programmatically build a custom-HTML email campaign, set recipients, send a test, and schedule the send",
+    "Bulk add or remove hundreds of contacts across many lists as background activities and monitor completion",
+    "Pull campaign performance reports (sends, opens, clicks, bounces, opt-outs) into dashboards or downstream automations"
+  ],
+  "agentIdeas": [
+    "Use **Typeform** \"Get Form Responses\" to collect new sign-ups, then call **Constant Contact** \"Create or Update Contact\" to upsert each respondent by email and add them to a subscriber list",
+    "Use **Google Sheets** \"Get Rows\" to read a mailing list, upsert each row with **Constant Contact** \"Create or Update Contact\", then \"Create Campaign\" and \"Schedule Campaign\" to launch the email",
+    "After **Constant Contact** \"Get Campaign Summary Reports\" returns opens and clicks, use **Gmail** \"Send Message\" to email a performance digest to the marketing team"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/constant-contact/public/icon.png",
+  "sourcePaths": {
+    "service": "services/constant-contact",
+    "readme": "services/constant-contact/README.md",
+    "index": "services/constant-contact/src/index.js"
+  }
+}

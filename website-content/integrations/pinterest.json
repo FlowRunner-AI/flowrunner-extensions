@@ -1,0 +1,163 @@
+{
+  "slug": "pinterest",
+  "name": "Pinterest",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Manage a Pinterest account through the [Pinterest API v5](https://developers.pinterest.com/docs/api/v5/): read the connected profile and analytics, organize boards and board sections, create image, carousel, and full async video pins, save (repin) existing pins, and search your own content. Authenticates via OAuth2.",
+  "actionCount": 24,
+  "triggerCount": 0,
+  "operationCategories": [
+    "User",
+    "Boards",
+    "Board Sections",
+    "Pins",
+    "Search",
+    "Media"
+  ],
+  "actions": [
+    {
+      "name": "Get User Account",
+      "category": "User",
+      "description": "Retrieves the profile of the connected Pinterest account, including username, account type (personal or business), profile image, website URL, and aggregate counts of pins, boards, followers, and following. Useful as a connection check."
+    },
+    {
+      "name": "Get User Account Analytics",
+      "category": "User",
+      "description": "Retrieves engagement and reach analytics for the connected account over a date range (both dates required, in YYYY-MM-DD format, within the last 90 days). Optionally break results down by a field such as pin format or content type. Returns daily metric values keyed by the split field. Note: analytics require a business account and Standard API access."
+    },
+    {
+      "name": "List Boards",
+      "category": "Boards",
+      "description": "Retrieves the boards owned by the connected account, paginated. Optionally filter by privacy (Public, Protected, or Secret). Returns board objects with a \"bookmark\" pagination token for retrieving the next page."
+    },
+    {
+      "name": "Get Board",
+      "category": "Boards",
+      "description": "Retrieves a single board by its id, including its name, description, privacy, owner, cover image, and pin/follower counts."
+    },
+    {
+      "name": "Create Board",
+      "category": "Boards",
+      "description": "Creates a new board on the connected account. Only the name is required; description and privacy are optional (privacy defaults to Public). Returns the newly created board object including its id."
+    },
+    {
+      "name": "Update Board",
+      "category": "Boards",
+      "description": "Updates the name, description, and/or privacy of an existing board. Only the fields you provide are changed. Returns the updated board object."
+    },
+    {
+      "name": "Delete Board",
+      "category": "Boards",
+      "description": "Permanently deletes a board and all of the pins it contains. This action cannot be undone. Returns a success status."
+    },
+    {
+      "name": "List Board Pins",
+      "category": "Boards",
+      "description": "Retrieves the pins contained in a board, paginated. Returns pin objects with a \"bookmark\" pagination token for retrieving the next page."
+    },
+    {
+      "name": "List Board Sections",
+      "category": "Board Sections",
+      "description": "Retrieves the sections of a board, paginated. Sections group pins within a board. Returns section objects with a \"bookmark\" pagination token."
+    },
+    {
+      "name": "Create Board Section",
+      "category": "Board Sections",
+      "description": "Creates a new section within a board to help organize its pins. Returns the newly created section object including its id."
+    },
+    {
+      "name": "List Section Pins",
+      "category": "Board Sections",
+      "description": "Retrieves the pins contained in a specific section of a board, paginated. Returns pin objects with a \"bookmark\" pagination token."
+    },
+    {
+      "name": "Delete Board Section",
+      "category": "Board Sections",
+      "description": "Deletes a section from a board. The pins that were in the section remain on the board (they are moved out of the section, not deleted). Returns a success status."
+    },
+    {
+      "name": "Create Pin",
+      "category": "Pins",
+      "description": "Creates an image pin on a board from one or more publicly accessible image URLs. A single image URL produces a standard image pin; supplying more than one URL produces a carousel pin. Optionally set a title, description, destination link, alt text, dominant color, and target section. For video pins use \"Create Video Pin\" instead. Returns the newly created pin object including its id."
+    },
+    {
+      "name": "Get Pin",
+      "category": "Pins",
+      "description": "Retrieves a single pin by its id, including its board, title, description, destination link, media details, and creation time."
+    },
+    {
+      "name": "Update Pin",
+      "category": "Pins",
+      "description": "Updates an existing pin's metadata and/or moves it to a different board or section. Only the fields you provide are changed. To move a pin, supply a new Board (and optionally Section). Returns the updated pin object."
+    },
+    {
+      "name": "Delete Pin",
+      "category": "Pins",
+      "description": "Permanently deletes a pin. This action cannot be undone. Returns a success status."
+    },
+    {
+      "name": "List Pins",
+      "category": "Pins",
+      "description": "Retrieves the pins owned by the connected account across all boards, paginated. Optionally filter to exclude native pins or return only promoted pins. Returns pin objects with a \"bookmark\" pagination token."
+    },
+    {
+      "name": "Save Pin to Board",
+      "category": "Pins",
+      "description": "Saves (repins) an existing pin to one of your boards, optionally into a specific section. This copies the pin to your board rather than creating new media. Returns the saved pin object."
+    },
+    {
+      "name": "Get Pin Analytics",
+      "category": "Pins",
+      "description": "Retrieves engagement analytics for a single pin over a date range (both dates required, YYYY-MM-DD, within the last 90 days). Select one or more metric types and an optional device/app breakdown. Returns daily and summary metric values. Note: analytics require a business account and Standard API access."
+    },
+    {
+      "name": "Create Video Pin",
+      "category": "Pins",
+      "description": "Creates a video pin on a board from a Flowrunner video file. This performs the full Pinterest video flow: it registers a media upload, uploads the video bytes to Pinterest's storage, waits for processing to succeed, then creates the pin using the processed media and a cover image. Requires a publicly accessible cover image URL. Note: video processing can take up to a couple of minutes."
+    },
+    {
+      "name": "Search My Pins",
+      "category": "Search",
+      "description": "Searches the connected account's own pins by keyword, paginated. On Trial API access, search is limited to your own content. Returns matching pin objects with a \"bookmark\" pagination token."
+    },
+    {
+      "name": "Search My Boards",
+      "category": "Search",
+      "description": "Searches the connected account's own boards by keyword, paginated. On Trial API access, search is limited to your own content. Returns matching board objects with a \"bookmark\" pagination token."
+    },
+    {
+      "name": "Register Media Upload",
+      "category": "Media",
+      "description": "Registers a media upload for a video pin and returns the upload target. The response includes a media_id, an upload_url, and the signed upload_parameters that must be submitted with the video file. After uploading the bytes to the upload_url, poll \"Get Media Upload Status\" until it succeeds, then create a pin with the media_id. For most cases, prefer \"Create Video Pin\", which performs this entire flow automatically."
+    },
+    {
+      "name": "Get Media Upload Status",
+      "category": "Media",
+      "description": "Retrieves the processing status of a registered media upload by its media id. The status field is 'registered', 'processing', 'succeeded', or 'failed'. Use this to confirm a video is ready before creating a pin with it."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Auto-publish marketing image or carousel pins to a board from a content pipeline",
+    "Upload marketing videos as video pins straight from FlowRunner file storage",
+    "Keep boards and sections organized programmatically as new content is produced",
+    "Pull account and per-pin engagement analytics into a reporting workflow",
+    "Repin curated content into campaign boards and search your own pins/boards"
+  ],
+  "agentIdeas": [
+    "Call **AI Image Generator** \"Generate Image\" to produce campaign artwork, then use **Pinterest** \"Create Pin\" to publish it (or several generated images as a carousel) to a board.",
+    "Use **Canva** \"Export Design and Wait\" to render a finished design, then **Pinterest** \"Create Pin\" to post the exported image with a destination link.",
+    "Fetch queued content with **Google Sheets** \"Get Rows\" (or **Airtable** \"Get Records\"), then loop **Pinterest** \"Create Pin\" to publish each row and record the returned pin ids back to the sheet."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/pinterest/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/pinterest",
+    "readme": "services/pinterest/README.md",
+    "index": "services/pinterest/src/index.js"
+  }
+}

@@ -1,0 +1,331 @@
+{
+  "slug": "mollie",
+  "name": "Mollie",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Accept and manage online payments through Mollie's v2 REST API — create hosted-checkout payments, refunds, chargebacks, captures, and payment links, and manage customers, mandates, subscriptions, payment methods, balances, settlements, invoices, profiles, and terminals. Authenticate with a Mollie `live_...` or `test_...` API key.",
+  "actionCount": 56,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Payments",
+    "Refunds",
+    "Chargebacks",
+    "Captures",
+    "Payment Links",
+    "Customers",
+    "Mandates",
+    "Subscriptions",
+    "Payment Methods",
+    "Balances",
+    "Settlements",
+    "Invoices",
+    "Profiles",
+    "Terminals"
+  ],
+  "actions": [
+    {
+      "name": "Create Payment",
+      "category": "Payments",
+      "description": "Creates a payment in Mollie and returns it together with a hosted checkout URL (checkoutUrl) to redirect the customer to. Leave Method empty to let the customer choose from all payment methods enabled on your profile. Amounts are sent as Mollie amount objects with a string value with two decimals (e.g. 10.00). Set Sequence Type to First to establish a mandate for later recurring charges, or Recurring together with a Customer ID to charge an existing mandate without customer interaction. Due Date only applies to bank transfer payments; Lines itemize the payment and are required by some methods such as Klarna."
+    },
+    {
+      "name": "List Payments",
+      "category": "Payments",
+      "description": "Retrieves payments created with the current API key, newest first. Returns up to 250 payments per page as a plain items array with a nextCursor for fetching the next page."
+    },
+    {
+      "name": "Get Payment",
+      "category": "Payments",
+      "description": "Retrieves a single payment by its ID, including status, amounts (paid, remaining, refunded), payment method details, and metadata. Optionally embeds the payment's refunds, chargebacks, and/or captures in the response."
+    },
+    {
+      "name": "Update Payment",
+      "category": "Payments",
+      "description": "Updates the description, redirect URL, webhook URL, or metadata of an existing payment. Only certain properties can be changed, and generally only while the payment is still open."
+    },
+    {
+      "name": "Cancel Payment",
+      "category": "Payments",
+      "description": "Cancels a payment that has not been completed yet. Only possible while the payment's isCancelable property is true (e.g. open bank transfer payments or authorized card payments). Returns the payment with status canceled."
+    },
+    {
+      "name": "Create Refund",
+      "category": "Refunds",
+      "description": "Refunds a paid payment, fully or partially. If no amount is provided, the payment's full remaining refundable amount is refunded automatically. Partial refunds can be created repeatedly as long as a refundable amount remains. The refund is processed towards the customer's original payment method."
+    },
+    {
+      "name": "List Payment Refunds",
+      "category": "Refunds",
+      "description": "Retrieves all refunds created for a specific payment, newest first, as a plain items array with a nextCursor for pagination."
+    },
+    {
+      "name": "Get Refund",
+      "category": "Refunds",
+      "description": "Retrieves a single refund by its ID and the ID of the payment it belongs to, including its amount, status (queued, pending, processing, refunded, failed, canceled), and settlement amount."
+    },
+    {
+      "name": "Cancel Refund",
+      "category": "Refunds",
+      "description": "Cancels a refund that has not been processed yet. Only refunds with status queued or pending can be canceled; once a refund reaches processing it can no longer be stopped."
+    },
+    {
+      "name": "List All Refunds",
+      "category": "Refunds",
+      "description": "Retrieves all refunds across all payments created with the current API key, newest first, as a plain items array with a nextCursor for pagination."
+    },
+    {
+      "name": "List Payment Chargebacks",
+      "category": "Chargebacks",
+      "description": "Retrieves all chargebacks issued for a specific payment as a plain items array with a nextCursor for pagination. Chargebacks occur when a customer disputes a payment through their bank or card issuer."
+    },
+    {
+      "name": "Get Chargeback",
+      "category": "Chargebacks",
+      "description": "Retrieves a single chargeback by its ID and the ID of the payment it belongs to, including the disputed amount, settlement impact, and the reason reported by the bank or card scheme."
+    },
+    {
+      "name": "List All Chargebacks",
+      "category": "Chargebacks",
+      "description": "Retrieves all chargebacks across all payments created with the current API key, newest first, as a plain items array with a nextCursor for pagination. Useful for dispute monitoring and reconciliation."
+    },
+    {
+      "name": "Create Capture",
+      "category": "Captures",
+      "description": "Captures an authorized payment, transferring the reserved funds to your account. Applies to card and Klarna payments created with a manual capture mode. Leave the amount empty to capture the full authorized amount; provide an amount for a partial capture."
+    },
+    {
+      "name": "List Captures",
+      "category": "Captures",
+      "description": "Retrieves all captures created for a specific payment as a plain items array with a nextCursor for pagination."
+    },
+    {
+      "name": "Get Capture",
+      "category": "Captures",
+      "description": "Retrieves a single capture by its ID and the ID of the payment it belongs to, including the captured amount, settlement amount, and status."
+    },
+    {
+      "name": "Create Payment Link",
+      "category": "Payment Links",
+      "description": "Creates a shareable Mollie payment link and returns it with the hosted paymentLinkUrl to send to customers via email, chat, or invoices. Set a fixed amount, or leave the amount empty (optionally with a minimum amount) to let the customer decide what to pay. Reusable links can be paid multiple times by different customers."
+    },
+    {
+      "name": "List Payment Links",
+      "category": "Payment Links",
+      "description": "Retrieves all payment links created with the current API key, newest first, as a plain items array with a nextCursor for pagination."
+    },
+    {
+      "name": "Get Payment Link",
+      "category": "Payment Links",
+      "description": "Retrieves a single payment link by its ID, including its amount, expiry, archive state, and the hosted paymentLinkUrl customers use to pay."
+    },
+    {
+      "name": "Update Payment Link",
+      "category": "Payment Links",
+      "description": "Updates the description of a payment link or archives it. Archived links can no longer be paid but remain available for reporting."
+    },
+    {
+      "name": "Delete Payment Link",
+      "category": "Payment Links",
+      "description": "Permanently deletes a payment link. The link immediately stops working and this cannot be undone. Payments already made through the link are not affected."
+    },
+    {
+      "name": "List Payment Link Payments",
+      "category": "Payment Links",
+      "description": "Retrieves all payments made through a specific payment link, newest first, as a plain items array with a nextCursor for pagination. Useful for tracking who paid a reusable link."
+    },
+    {
+      "name": "Create Customer",
+      "category": "Customers",
+      "description": "Creates a customer in Mollie. Customers let you link payments to a person, enable single-click payments, and are required for recurring payments via mandates and subscriptions."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Retrieves all customers created with the current API key, newest first, as a plain items array with a nextCursor for pagination."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves a single customer by their ID, including name, email, locale, and metadata."
+    },
+    {
+      "name": "Update Customer",
+      "category": "Customers",
+      "description": "Updates a customer's name, email, locale, or metadata. Only the fields you provide are changed."
+    },
+    {
+      "name": "Delete Customer",
+      "category": "Customers",
+      "description": "Permanently deletes a customer. All of the customer's mandates are revoked and pending subscriptions are canceled. This cannot be undone."
+    },
+    {
+      "name": "List Customer Payments",
+      "category": "Customers",
+      "description": "Retrieves all payments linked to a specific customer, newest first, as a plain items array with a nextCursor for pagination."
+    },
+    {
+      "name": "Create Customer Payment",
+      "category": "Customers",
+      "description": "Creates a payment for an existing customer. With Sequence Type Recurring (the default), the customer's valid mandate is charged immediately without any customer interaction (on-demand recurring billing). With First, a checkout is started that establishes a mandate for future recurring charges (Redirect URL required); the returned checkoutUrl should then be presented to the customer."
+    },
+    {
+      "name": "Create Mandate",
+      "category": "Mandates",
+      "description": "Creates a mandate for a customer, authorizing you to charge them with recurring payments. Use this when the customer's consent was obtained outside Mollie's checkout (e.g. a signed SEPA Direct Debit form or an existing PayPal billing agreement). For SEPA Direct Debit, provide the consumer's name and IBAN; for PayPal, provide the consumer's email and PayPal billing agreement ID."
+    },
+    {
+      "name": "List Mandates",
+      "category": "Mandates",
+      "description": "Retrieves all mandates of a customer as a plain items array with a nextCursor for pagination. Check the status property (valid, pending, invalid) to see which mandates can be charged."
+    },
+    {
+      "name": "Get Mandate",
+      "category": "Mandates",
+      "description": "Retrieves a single mandate by its ID and the ID of the customer it belongs to, including its method, status, and consumer details."
+    },
+    {
+      "name": "Revoke Mandate",
+      "category": "Mandates",
+      "description": "Revokes a customer's mandate so it can no longer be charged. Pending subscription payments that rely on this mandate will fail, and subscriptions using it are canceled. This cannot be undone."
+    },
+    {
+      "name": "Create Subscription",
+      "category": "Subscriptions",
+      "description": "Creates a subscription that automatically charges a customer's valid mandate at a regular interval (e.g. every 1 month or 14 days). The customer must have a valid mandate first, typically created by a payment with Sequence Type First. Use Times to limit the number of charges, or leave it empty for an ongoing subscription."
+    },
+    {
+      "name": "List Customer Subscriptions",
+      "category": "Subscriptions",
+      "description": "Retrieves all subscriptions of a specific customer as a plain items array with a nextCursor for pagination."
+    },
+    {
+      "name": "List All Subscriptions",
+      "category": "Subscriptions",
+      "description": "Retrieves all subscriptions across all customers created with the current API key as a plain items array with a nextCursor for pagination."
+    },
+    {
+      "name": "Get Subscription",
+      "category": "Subscriptions",
+      "description": "Retrieves a single subscription by its ID and the ID of the customer it belongs to, including its status, amount, interval, remaining charges, and next payment date."
+    },
+    {
+      "name": "Update Subscription",
+      "category": "Subscriptions",
+      "description": "Updates a running subscription. You can change the amount, interval, description, number of charges, start date, mandate, webhook URL, or metadata. Only the fields you provide are changed."
+    },
+    {
+      "name": "Cancel Subscription",
+      "category": "Subscriptions",
+      "description": "Cancels a subscription so no further charges are created. Returns the subscription with status canceled. Payments already created by the subscription are not affected."
+    },
+    {
+      "name": "List Subscription Payments",
+      "category": "Subscriptions",
+      "description": "Retrieves all payments created by a specific subscription, newest first, as a plain items array with a nextCursor for pagination. Useful for checking which recurring charges succeeded or failed."
+    },
+    {
+      "name": "List Enabled Payment Methods",
+      "category": "Payment Methods",
+      "description": "Retrieves the payment methods currently enabled on your Mollie profile, in the order they appear in the checkout. Optionally filter by amount (methods have minimum and maximum amounts), sequence type for recurring flows, or billing country, and include the Apple Pay wallet."
+    },
+    {
+      "name": "List All Payment Methods",
+      "category": "Payment Methods",
+      "description": "Retrieves every payment method Mollie offers, regardless of whether it is enabled on your profile. Useful for discovering method IDs and building settings screens. Optionally includes Mollie's pricing per method."
+    },
+    {
+      "name": "Get Payment Method",
+      "category": "Payment Methods",
+      "description": "Retrieves a single payment method by its ID, including its display name, image assets, and minimum and maximum amounts. Optionally includes the method's issuers (e.g. the list of iDEAL banks)."
+    },
+    {
+      "name": "List Balances",
+      "category": "Balances",
+      "description": "Retrieves the balances of your organization, including available and pending amounts per currency, as a plain items array with a nextCursor for pagination. Note: the Balances API requires an organization access token; standard API keys are not accepted, so supply an organization access token in the API Key configuration field to use this operation."
+    },
+    {
+      "name": "Get Balance",
+      "category": "Balances",
+      "description": "Retrieves a single balance by its ID, including available and pending amounts and payout settings. Pass primary as the Balance ID to fetch your organization's primary balance. Note: the Balances API requires an organization access token; standard API keys are not accepted."
+    },
+    {
+      "name": "Get Balance Report",
+      "category": "Balances",
+      "description": "Retrieves a summarized report of a balance over a given period, grouped either by status balances (opening/closing balances) or by transaction categories (payments, refunds, chargebacks, fees). Pass primary as the Balance ID for the primary balance. Note: the Balances API requires an organization access token; standard API keys are not accepted."
+    },
+    {
+      "name": "List Balance Transactions",
+      "category": "Balances",
+      "description": "Retrieves the individual movements on a balance (payments, refunds, chargebacks, payouts, fees), newest first, as a plain items array with a nextCursor for pagination. Pass primary as the Balance ID for the primary balance. Note: the Balances API requires an organization access token; standard API keys are not accepted."
+    },
+    {
+      "name": "List Settlements",
+      "category": "Settlements",
+      "description": "Retrieves the settlements (payouts to your bank account) of your organization, newest first, as a plain items array with a nextCursor for pagination. Note: the Settlements API requires an organization access token; standard API keys are not accepted, so supply an organization access token in the API Key configuration field to use this operation."
+    },
+    {
+      "name": "Get Settlement",
+      "category": "Settlements",
+      "description": "Retrieves a single settlement by its ID, including its status, total amount, and period breakdown. Pass next as the ID to preview the upcoming settlement, or open for amounts not yet scheduled for settlement. Note: the Settlements API requires an organization access token; standard API keys are not accepted."
+    },
+    {
+      "name": "List Settlement Payments",
+      "category": "Settlements",
+      "description": "Retrieves all payments included in a specific settlement as a plain items array with a nextCursor for pagination. Useful for reconciling a payout with the individual payments it contains. Note: the Settlements API requires an organization access token; standard API keys are not accepted."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Retrieves the invoices Mollie issued to your organization for its fees, newest first, as a plain items array with a nextCursor for pagination. Note: the Invoices API requires an organization access token; standard API keys are not accepted, so supply an organization access token in the API Key configuration field to use this operation."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves a single Mollie fee invoice by its ID, including its status, line items, amounts, and a link to the PDF version. Note: the Invoices API requires an organization access token; standard API keys are not accepted."
+    },
+    {
+      "name": "List Profiles",
+      "category": "Profiles",
+      "description": "Retrieves the website profiles of your organization as a plain items array with a nextCursor for pagination. Each profile represents a website or app you accept payments on."
+    },
+    {
+      "name": "Get Profile",
+      "category": "Profiles",
+      "description": "Retrieves a single website profile by its ID, including its name, website, contact details, and review status. Pass me as the Profile ID to fetch the profile belonging to the current API key."
+    },
+    {
+      "name": "List Terminals",
+      "category": "Terminals",
+      "description": "Retrieves the physical point-of-sale terminals linked to your Mollie account as a plain items array with a nextCursor for pagination."
+    },
+    {
+      "name": "Get Terminal",
+      "category": "Terminals",
+      "description": "Retrieves a single point-of-sale terminal by its ID, including its brand, model, serial number, and activation status."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generate a hosted checkout URL for a customer and track the payment through to paid, refunded, or charged-back.",
+    "Send shareable payment links via email or chat for invoices, donations, or pay-what-you-want flows.",
+    "Set up recurring billing: establish a mandate with a first payment, then charge customers automatically via subscriptions.",
+    "Issue full or partial refunds and monitor chargebacks for dispute handling and reconciliation.",
+    "Reconcile payouts and fees by pulling balances, settlements, and Mollie fee invoices (organization access token required)."
+  ],
+  "agentIdeas": [
+    "After **Mollie** \"Create Payment\" returns a `checkoutUrl`, use **Gmail** \"Send Message\" to email the customer their hosted checkout link and payment reference.",
+    "When a **Mollie** \"Create Payment Link\" produces a shareable `paymentLinkUrl`, use **Slack** \"Send Message To Channel\" to post it into a sales channel for the team to share.",
+    "Use **Mollie** \"List Settlements\" and \"List Settlement Payments\" to reconcile a payout, then **Google Sheets** \"Add Rows\" to log each included payment into a finance tracking spreadsheet."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/mollie/public/icon.png",
+  "sourcePaths": {
+    "service": "services/mollie",
+    "readme": "services/mollie/README.md",
+    "index": "services/mollie/src/index.js"
+  }
+}

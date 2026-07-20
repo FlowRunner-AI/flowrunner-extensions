@@ -1,0 +1,46 @@
+{
+  "slug": "lambda-service",
+  "name": "AWS Lambda",
+  "marketingCategory": "Cloud & Infrastructure",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Zero-dependency integration with AWS Lambda using native AWS Signature V4 signing (Node crypto). Invoke functions synchronously, asynchronously, or as a dry run, and retrieve function configuration details. Supports two authentication methods: direct API Key credentials or IAM Role via STS AssumeRole for cross-account access.",
+  "actionCount": 2,
+  "triggerCount": 0,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Invoke Function",
+      "category": null,
+      "description": "Invokes a function synchronously (RequestResponse), asynchronously (Event), or performs a dry run (DryRun) without executing. Returns the status code, any function error, and the parsed response payload."
+    },
+    {
+      "name": "Get Function",
+      "category": null,
+      "description": "Retrieves configuration details for a function, including runtime, handler, memory, timeout, state, and ARN."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Triggering custom Lambda functions as a step in an automated flow and using their results downstream",
+    "Running synchronous (RequestResponse) functions to compute, transform, or enrich data inline",
+    "Fire-and-forget (Event) invocations for background processing without waiting for a response",
+    "Validating invocation parameters and permissions with a DryRun before going live",
+    "Inspecting a function's runtime, handler, memory, timeout, state, and ARN before invoking it"
+  ],
+  "agentIdeas": [
+    "Use **AWS SQS** \"Receive Messages\" to pull queued jobs, then call **AWS Lambda** \"Invoke Function\" (RequestResponse) to process each message and use **AWS DynamoDB** \"Put Item\" to persist the returned payload.",
+    "Use **AWS Lambda** \"Invoke Function\" to run custom processing on incoming data, then use **AWS SNS** \"Publish Message\" to broadcast the result to downstream subscribers.",
+    "Use **AWS Lambda** \"Get Function\" to confirm a target function is `Active` before using \"Invoke Function\", and **AWS SES** \"Send Email\" to alert the team if the invocation returns a function error."
+  ],
+  "icon": "/icon.jpeg",
+  "iconFile": "services/lambda-service/public/icon.jpeg",
+  "sourcePaths": {
+    "service": "services/lambda-service",
+    "readme": "services/lambda-service/README.md",
+    "index": "services/lambda-service/src/index.js"
+  }
+}

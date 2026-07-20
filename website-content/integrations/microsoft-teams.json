@@ -1,0 +1,113 @@
+{
+  "slug": "microsoft-teams",
+  "name": "Microsoft Teams",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams) built on the [Microsoft Graph API](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview) (v1.0). It lets flows list teams and channels, send and read channel messages, reply to threads, create and delete channels, work with one-on-one and group chats, and inspect team membership — all on behalf of the connected user (delegated permissions).",
+  "actionCount": 14,
+  "triggerCount": 0,
+  "operationCategories": [
+    "User Information",
+    "Teams",
+    "Channels",
+    "Channel Messages",
+    "Chats"
+  ],
+  "actions": [
+    {
+      "name": "Get My Profile",
+      "category": "User Information",
+      "description": "Retrieves the profile of the signed-in user including display name, email, and user principal name. Useful for verifying the connection."
+    },
+    {
+      "name": "List Teams",
+      "category": "Teams",
+      "description": "Retrieves the Microsoft Teams the signed-in user is a member of, including each team's ID, display name, and description."
+    },
+    {
+      "name": "List Team Members",
+      "category": "Teams",
+      "description": "Retrieves the members of a team, including each member's display name, email, roles, and Microsoft Entra user ID."
+    },
+    {
+      "name": "List Channels",
+      "category": "Channels",
+      "description": "Retrieves the channels of a team, including each channel's ID, display name, description, and membership type (standard, private, or shared)."
+    },
+    {
+      "name": "Create Channel",
+      "category": "Channels",
+      "description": "Creates a new channel in a team with the given display name, optional description, and membership type. When creating a private channel, the signed-in user is automatically added as the channel owner."
+    },
+    {
+      "name": "Delete Channel",
+      "category": "Channels",
+      "description": "Deletes a channel from a team. The channel is soft-deleted and can be restored by a team administrator within 30 days."
+    },
+    {
+      "name": "Send Channel Message",
+      "category": "Channel Messages",
+      "description": "Sends a message to a team channel as the signed-in user. Supports plain text or HTML content and an optional subject line."
+    },
+    {
+      "name": "Reply To Channel Message",
+      "category": "Channel Messages",
+      "description": "Sends a reply to an existing message in a team channel as the signed-in user. Supports plain text or HTML content."
+    },
+    {
+      "name": "Get Channel Messages",
+      "category": "Channel Messages",
+      "description": "Retrieves the most recent top-level messages from a team channel, newest first. Replies are not included; use Get Channel Message or the replies of a specific message to inspect threads."
+    },
+    {
+      "name": "Get Channel Message",
+      "category": "Channel Messages",
+      "description": "Retrieves a single message from a team channel by its ID, including its content, sender, timestamps, and reactions."
+    },
+    {
+      "name": "List Chats",
+      "category": "Chats",
+      "description": "Retrieves the signed-in user's chats (one-on-one, group, and meeting chats) with their members expanded, so each chat includes participant display names and emails."
+    },
+    {
+      "name": "Send Chat Message",
+      "category": "Chats",
+      "description": "Sends a message to an existing one-on-one or group chat as the signed-in user. Supports plain text or HTML content."
+    },
+    {
+      "name": "Get Chat Messages",
+      "category": "Chats",
+      "description": "Retrieves the most recent messages from a one-on-one or group chat, newest first."
+    },
+    {
+      "name": "Create One-On-One Chat",
+      "category": "Chats",
+      "description": "Creates (or returns the existing) one-on-one chat between the signed-in user and another user in the organization, identified by email address, user principal name, or Microsoft Entra user ID. Use Send Chat Message with the returned chat ID to start messaging."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Post automated status updates, alerts, or approvals into a Teams channel from any workflow",
+    "Route incoming leads, tickets, or form submissions into the right channel or direct chat",
+    "Reply to an existing channel thread to keep conversations grouped",
+    "Sync team and channel membership into another system, or gate automations on membership",
+    "Read recent channel or chat messages to trigger downstream processing",
+    "Provision channels on demand (e.g. a private channel per project) and clean them up afterwards"
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires with a support request, use **Microsoft Teams** \"Send Channel Message\" to alert the support channel and page the on-call engineer.",
+    "Use **Google Sheets** \"On New Row\" to detect a new project entry, then call **Microsoft Teams** \"Create Channel\" to spin up a dedicated private channel and \"Send Channel Message\" to post the kickoff details.",
+    "Use **Microsoft Teams** \"Get Channel Messages\" to pull the latest channel activity and **Slack** \"Send Message To Channel\" to mirror important updates into a Slack workspace."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/microsoft-teams/public/icon.png",
+  "sourcePaths": {
+    "service": "services/microsoft-teams",
+    "readme": "services/microsoft-teams/README.md",
+    "index": "services/microsoft-teams/src/index.js"
+  }
+}

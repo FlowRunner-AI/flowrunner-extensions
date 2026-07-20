@@ -1,0 +1,81 @@
+{
+  "slug": "aws-textract",
+  "name": "AWS Textract",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Extract text and structured data from documents with [Amazon Textract](https://aws.amazon.com/textract/). Supports optical character recognition (OCR), form and table extraction, natural-language queries, invoice/receipt analysis, and identity-document parsing — synchronously for single-page documents and asynchronously for large multi-page PDFs stored in Amazon S3. All requests are signed with AWS Signature Version 4 (hand-rolled, zero external dependencies) using the AWS JSON 1.1 protocol.",
+  "actionCount": 8,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Text Detection",
+    "Document Analysis",
+    "Asynchronous"
+  ],
+  "actions": [
+    {
+      "name": "Detect Document Text",
+      "category": "Text Detection",
+      "description": "Runs synchronous OCR on a single-page image (JPEG, PNG, or TIFF) or single-page PDF and returns every detected line and word as Textract Block objects. Supply the document either as a FlowRunner file URL (downloaded and sent inline, single page and up to about 5 MB) or as an Amazon S3 object. Adds a convenience \"text\" field that concatenates all LINE blocks into readable plain text. For multi-page PDFs use the asynchronous Start/Get Document Text Detection operations with an S3 object."
+    },
+    {
+      "name": "Analyze Document",
+      "category": "Document Analysis",
+      "description": "Runs synchronous document analysis to extract structured data using one or more feature types: FORMS (key-value pairs), TABLES (rows and cells), QUERIES (natural-language questions answered from the document), SIGNATURES (signature locations), and LAYOUT (reading order and layout elements). Supply the document as a FlowRunner file URL (single page, up to ~5 MB) or an S3 object. In addition to the raw Blocks, returns convenience extractions: form key-value pairs, a query-to-answer map, and simplified table rows. This is the flagship Textract operation. For multi-page PDFs use the asynchronous Start/Get Document Analysis operations."
+    },
+    {
+      "name": "Analyze Expense",
+      "category": "Document Analysis",
+      "description": "Synchronously analyzes an invoice or receipt and extracts financially relevant data. Supply the document as a FlowRunner file URL (single page, up to ~5 MB) or an S3 object. Returns the raw ExpenseDocuments alongside a convenience flattening into summaryFields (header-level fields such as vendor name, total, and dates as label/value/type/confidence) and lineItems (individual purchased items, each a flat map of field label to value)."
+    },
+    {
+      "name": "Analyze ID",
+      "category": "Document Analysis",
+      "description": "Synchronously analyzes identity documents such as U.S. driver's licenses and passports and extracts identity fields. Supply the document as a FlowRunner file URL (single page, up to ~5 MB) or an S3 object. Returns a convenience \"fields\" map keyed by the normalized field type (e.g. FIRST_NAME, LAST_NAME, DATE_OF_BIRTH), each with its detected value and confidence, plus the raw IdentityDocuments array."
+    },
+    {
+      "name": "Start Document Text Detection",
+      "category": "Asynchronous",
+      "description": "Starts an asynchronous OCR job over a document stored in Amazon S3 (used for multi-page PDFs and TIFFs, up to 500 MB / 3000 pages). Returns a JobId. Poll Get Document Text Detection with that JobId until JobStatus is SUCCEEDED, then read the extracted text. The document must be in an S3 bucket in the same region as this integration."
+    },
+    {
+      "name": "Get Document Text Detection",
+      "category": "Asynchronous",
+      "description": "Retrieves the results of an asynchronous OCR job started by Start Document Text Detection. Returns the JobStatus (IN_PROGRESS, SUCCEEDED, FAILED, or PARTIAL_SUCCESS). When SUCCEEDED, this operation automatically paginates through all result pages (following NextToken) and concatenates every LINE into a single readable \"text\" field, alongside the full set of Blocks. Poll this operation until JobStatus is no longer IN_PROGRESS."
+    },
+    {
+      "name": "Start Document Analysis",
+      "category": "Asynchronous",
+      "description": "Starts an asynchronous document analysis job over a document stored in Amazon S3 (used for multi-page PDFs and TIFFs, up to 500 MB / 3000 pages). Choose one or more feature types (FORMS, TABLES, QUERIES, SIGNATURES, LAYOUT). Returns a JobId. Poll Get Document Analysis with that JobId until JobStatus is SUCCEEDED. The document must be in an S3 bucket in the same region as this integration."
+    },
+    {
+      "name": "Get Document Analysis",
+      "category": "Asynchronous",
+      "description": "Retrieves the results of an asynchronous document analysis job started by Start Document Analysis. Returns the JobStatus (IN_PROGRESS, SUCCEEDED, FAILED, or PARTIAL_SUCCESS). When SUCCEEDED, this operation automatically paginates through all result pages and returns the full set of Blocks plus convenience extractions across the whole document: form key-value pairs, a query-to-answer map, and simplified table rows. Poll this operation until JobStatus is no longer IN_PROGRESS."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Running OCR on scanned images or PDFs to recover plain, machine-readable text",
+    "Extracting form key-value pairs and tables from structured documents into workflow data",
+    "Asking natural-language questions of a document and getting back direct answers",
+    "Parsing invoices and receipts into header fields and line items for accounting automation",
+    "Reading identity documents (driver's licenses, passports) into normalized identity fields",
+    "Processing large multi-page PDFs stored in S3 through asynchronous jobs"
+  ],
+  "agentIdeas": [
+    "When a **Dropbox** \"On New File\" trigger fires with a scanned invoice, use **AWS Textract** \"Analyze Expense\" to extract vendor, total, and line items, then use **Google Sheets** \"Add Row\" to log the expense into an accounting spreadsheet.",
+    "Use **S3 Storage** \"Upload Object from URL\" to stage a large multi-page PDF, call **AWS Textract** \"Start Document Analysis\" and poll \"Get Document Analysis\" until `SUCCEEDED`, then use **Slack** \"Send Message To Channel\" to post the extracted form fields to the team.",
+    "When a **Gmail** \"On New Attachment\" trigger delivers an ID document, use **AWS Textract** \"Analyze ID\" to parse the identity fields, then use **Google Sheets** \"Add Row\" to record the applicant's normalized details for verification."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/aws-textract/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/aws-textract",
+    "readme": "services/aws-textract/README.md",
+    "index": "services/aws-textract/src/index.js"
+  }
+}

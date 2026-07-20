@@ -1,0 +1,128 @@
+{
+  "slug": "customerio",
+  "name": "Customer.io",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Customer.io](https://customer.io) — identify people, track events, manage manual segments, send transactional email, trigger broadcasts, and query customer data and campaign metrics.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "People",
+    "Events",
+    "Segments",
+    "Messaging",
+    "Campaigns"
+  ],
+  "actions": [
+    {
+      "name": "Identify Person",
+      "category": "People",
+      "description": "Creates a new person or updates an existing one in your Customer.io workspace (upsert). Identify a person by email address or by your internal ID, and set any profile attributes as key-value pairs. Reserved attributes like \"email\", \"created_at\" (Unix timestamp) and \"unsubscribed\" can be included in the attributes object. Uses the Track API."
+    },
+    {
+      "name": "Delete Person",
+      "category": "People",
+      "description": "Permanently deletes a person and their profile data from your Customer.io workspace. This does not prevent the person from being re-added later; to stop all future messaging and re-identification, use Suppress Person instead. Uses the Track API."
+    },
+    {
+      "name": "Suppress Person",
+      "category": "People",
+      "description": "Suppresses a person: deletes their profile and prevents Customer.io from ever re-adding or messaging that identifier again until it is unsuppressed. Use this for hard opt-outs and data removal requests. Uses the Track API."
+    },
+    {
+      "name": "Unsuppress Person",
+      "category": "People",
+      "description": "Removes the suppression from a previously suppressed identifier, allowing Customer.io to identify and message that person again. This does not restore the deleted profile data; re-identify the person to rebuild their profile. Uses the Track API."
+    },
+    {
+      "name": "Track Event",
+      "category": "Events",
+      "description": "Sends a named event for a known person to Customer.io. Events can trigger campaigns, update segments, and appear on the person's activity timeline. Event data is available in campaign messages via liquid (e.g. {{event.plan}}). Uses the Track API."
+    },
+    {
+      "name": "Track Anonymous Event",
+      "category": "Events",
+      "description": "Sends a named event that is not associated with a known person. Anonymous events can trigger event-triggered campaigns for anonymous invites and similar flows. Optionally provide an anonymous ID to group events from the same unidentified visitor; if that visitor is later identified with the same ID, Customer.io can associate their anonymous events. Uses the Track API."
+    },
+    {
+      "name": "Add To Manual Segment",
+      "category": "Segments",
+      "description": "Adds up to 1000 people to a manual segment by their IDs. The segment must be a manual (not data-driven) segment created in Customer.io. People who do not exist yet are ignored. Uses the Track API."
+    },
+    {
+      "name": "Remove From Manual Segment",
+      "category": "Segments",
+      "description": "Removes up to 1000 people from a manual segment by their IDs. The segment must be a manual (not data-driven) segment created in Customer.io. Uses the Track API."
+    },
+    {
+      "name": "List Segments",
+      "category": "Segments",
+      "description": "Lists all segments in the workspace with their ID, name, description, type (manual or data-driven) and state. Use the numeric ID with the manual segment actions. Requires the App API key."
+    },
+    {
+      "name": "Send Transactional Email",
+      "category": "Messaging",
+      "description": "Sends a transactional email using a transactional message template defined in Customer.io. Personalize the template with message data (available via liquid, e.g. {{trigger.order_id}}), and optionally override the template's from address, subject or body for this send. Identify the recipient person by ID or email; if the person does not exist, Customer.io creates a profile for them. Returns the delivery ID for tracking. Requires the App API key."
+    },
+    {
+      "name": "Trigger Broadcast",
+      "category": "Messaging",
+      "description": "Triggers an API-triggered broadcast campaign, sending it to its configured audience or to the recipients you specify. Only campaigns created as API-triggered broadcasts in Customer.io can be triggered this way; regular segment- or event-triggered campaigns cannot. Trigger data is available in the broadcast's messages via liquid (e.g. {{trigger.headline}}). Returns the trigger ID for status tracking. Requires the App API key."
+    },
+    {
+      "name": "List Transactional Messages",
+      "category": "Messaging",
+      "description": "Lists the transactional message templates defined in the workspace with their numeric ID, name and settings. Use the ID with Send Transactional Email. Requires the App API key."
+    },
+    {
+      "name": "Search Customers",
+      "category": "People",
+      "description": "Searches people in the workspace by attribute. Either provide a simple attribute name/value pair (matched with the \"eq\" operator) or supply a raw Customer.io filter object for advanced queries (and/or/not, segment membership, exists). Returns matching people's identifiers (id, email, cio_id) and a cursor for the next page. Requires the App API key."
+    },
+    {
+      "name": "Get Customer Attributes",
+      "category": "People",
+      "description": "Returns a person's full attribute set, along with the timestamp each attribute was last updated and the person's devices and unsubscribe state. Requires the App API key."
+    },
+    {
+      "name": "List Customer Activities",
+      "category": "People",
+      "description": "Returns a person's activity timeline: events they performed, attribute changes, page views, messages sent/opened/clicked, and more. Optionally filter by activity type. Returns activities plus a cursor for the next page. Requires the App API key."
+    },
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Lists all campaigns in the workspace with their metadata: numeric ID, name, type (segment, event or API-triggered), state, trigger and action details, and tags. Use the ID with Get Campaign Metrics. Requires the App API key."
+    },
+    {
+      "name": "Get Campaign Metrics",
+      "category": "Campaigns",
+      "description": "Returns time-series performance metrics for a campaign: sent, delivered, opened, clicked, converted, bounced, unsubscribed and more, bucketed by the period you choose. Use Steps to control how many periods are returned (e.g. period Days with 30 steps returns the last 30 days). Requires the App API key."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync people and their attributes from another system into Customer.io (upsert on identify).",
+    "Track product/behavioral events that drive event-triggered campaigns and segmentation.",
+    "Send transactional email or fire API-triggered broadcasts as part of a larger workflow.",
+    "Manage hard opt-outs and data-removal requests via suppress/unsuppress.",
+    "Curate manual segment membership in bulk (up to 1000 people per call).",
+    "Pull customer attributes, activity timelines, and campaign performance metrics for reporting."
+  ],
+  "agentIdeas": [
+    "When a **Shopify** \"On New Order\" trigger fires, use **Customer.io** \"Identify Person\" to upsert the buyer's profile, then \"Track Event\" to record the purchase so it can drive an event-triggered campaign.",
+    "Use **Google Sheets** \"On New Row\" to detect a new signup, then call **Customer.io** \"Identify Person\" to add them and \"Add To Manual Segment\" to enroll them in an onboarding audience.",
+    "After **Customer.io** \"Get Campaign Metrics\" returns performance data, use **Slack** \"Send Message To Channel\" to post a daily campaign summary to the marketing channel."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/customerio/public/icon.png",
+  "sourcePaths": {
+    "service": "services/customerio",
+    "readme": "services/customerio/README.md",
+    "index": "services/customerio/src/index.js"
+  }
+}

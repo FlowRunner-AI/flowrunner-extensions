@@ -1,0 +1,192 @@
+{
+  "slug": "aws-iam",
+  "name": "AWS IAM",
+  "marketingCategory": "Identity & Security",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage AWS Identity and Access Management (IAM) entities — users, groups, roles, managed policies, and access keys — plus account-level information, using zero-dependency native SigV4 request signing.",
+  "actionCount": 30,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Users",
+    "Groups",
+    "Roles",
+    "Policies",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists the IAM users in the AWS account, optionally filtered by a path prefix. Returns user name, ID, ARN, path, and creation date. Supports pagination via a marker returned when results are truncated. Note that this list operation does not return user tags or permissions boundaries."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves detailed information about a single IAM user, including the user ID, ARN, path, creation date, and the date the user's password was last used. If no user name is supplied, returns details for the user making the request (based on the configured access key)."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a new IAM user in the AWS account. Optionally sets a path for organizing users and attaches tags. The new user has no permissions until policies are attached. User names are unique within the account and can contain up to 64 characters."
+    },
+    {
+      "name": "Delete User",
+      "category": "Users",
+      "description": "Permanently deletes an IAM user from the AWS account. This action cannot be undone. The user must first have all access keys, signing certificates, MFA devices, group memberships, inline policies, and attached managed policies removed, otherwise the request fails with a deletion conflict."
+    },
+    {
+      "name": "List Access Keys",
+      "category": "Users",
+      "description": "Lists the access key IDs associated with an IAM user, along with each key's status (Active or Inactive) and creation date. Secret access key values are never returned by this operation; they are only shown once when the key is first created."
+    },
+    {
+      "name": "Create Access Key",
+      "category": "Users",
+      "description": "Creates a new programmatic access key (access key ID and secret access key) for an IAM user. IMPORTANT: the secret access key is returned only once by this operation and cannot be retrieved again afterward — store it securely immediately. A user can have at most two access keys at a time."
+    },
+    {
+      "name": "Update Access Key",
+      "category": "Users",
+      "description": "Activates or deactivates an existing access key for an IAM user. Setting the status to Inactive disables the key without deleting it, allowing it to be re-enabled later. Commonly used during credential rotation to temporarily disable an old key before deleting it."
+    },
+    {
+      "name": "Delete Access Key",
+      "category": "Users",
+      "description": "Permanently deletes an access key associated with an IAM user. This action cannot be undone and immediately revokes any programmatic access that used the key. Deactivate the key first and confirm no active workloads depend on it before deleting."
+    },
+    {
+      "name": "List Groups",
+      "category": "Groups",
+      "description": "Lists the IAM groups in the AWS account, optionally filtered by a path prefix. Returns each group's name, ID, ARN, path, and creation date. Supports pagination via a marker when results are truncated."
+    },
+    {
+      "name": "Get Group",
+      "category": "Groups",
+      "description": "Retrieves an IAM group and the list of users that belong to it. Returns the group's metadata along with an array of member users (name, ID, ARN, and path). Useful for auditing group membership."
+    },
+    {
+      "name": "Create Group",
+      "category": "Groups",
+      "description": "Creates a new IAM group in the AWS account. Groups let you attach policies once and apply the permissions to all member users. Optionally sets a path for organizing groups. The group has no permissions until policies are attached."
+    },
+    {
+      "name": "Delete Group",
+      "category": "Groups",
+      "description": "Permanently deletes an IAM group from the AWS account. This action cannot be undone. The group must be empty and have no attached or inline policies before it can be deleted, otherwise the request fails with a deletion conflict."
+    },
+    {
+      "name": "Add User To Group",
+      "category": "Groups",
+      "description": "Adds an existing IAM user to an existing IAM group. The user inherits all permissions granted by the policies attached to the group. A user can belong to multiple groups."
+    },
+    {
+      "name": "Remove User From Group",
+      "category": "Groups",
+      "description": "Removes an IAM user from an IAM group. The user loses any permissions that were granted solely through that group's policies. This does not delete the user or the group."
+    },
+    {
+      "name": "List Groups For User",
+      "category": "Groups",
+      "description": "Lists all IAM groups that a specified user is a member of. Returns each group's name, ID, ARN, and path. Useful for determining a user's group-based permissions."
+    },
+    {
+      "name": "List Roles",
+      "category": "Roles",
+      "description": "Lists the IAM roles in the AWS account, optionally filtered by a path prefix. Returns each role's name, ID, ARN, path, description, and trust policy (assume-role policy document). Supports pagination via a marker when results are truncated."
+    },
+    {
+      "name": "Get Role",
+      "category": "Roles",
+      "description": "Retrieves detailed information about a single IAM role, including its ARN, path, description, maximum session duration, and its trust policy (assume-role policy document, returned as parsed JSON)."
+    },
+    {
+      "name": "Create Role",
+      "category": "Roles",
+      "description": "Creates a new IAM role with the specified trust policy (assume-role policy document). The trust policy defines which principals (users, services, or accounts) are allowed to assume the role. Optionally sets a path and description. The role has no permissions policies until they are attached separately."
+    },
+    {
+      "name": "Delete Role",
+      "category": "Roles",
+      "description": "Permanently deletes an IAM role from the AWS account. This action cannot be undone. The role must first have all inline policies removed, all managed policies detached, and any instance profile associations removed, otherwise the request fails with a deletion conflict. Ensure no running workloads depend on the role before deleting."
+    },
+    {
+      "name": "List Attached Role Policies",
+      "category": "Roles",
+      "description": "Lists the managed policies attached to an IAM role. Returns each policy's name and ARN. Note that this lists only attached managed policies, not inline policies defined directly on the role."
+    },
+    {
+      "name": "List Policies",
+      "category": "Policies",
+      "description": "Lists the managed policies available in the AWS account. Filter by scope to return AWS-managed policies, customer-managed (Local) policies, or all. Optionally return only policies that are currently attached to at least one entity. Supports pagination via a marker when results are truncated."
+    },
+    {
+      "name": "Get Policy",
+      "category": "Policies",
+      "description": "Retrieves metadata about a managed policy by its ARN, including the policy name, ID, default version, attachment count, and description. Does not return the policy document itself; use the policy version APIs for the full document."
+    },
+    {
+      "name": "Create Policy",
+      "category": "Policies",
+      "description": "Creates a new customer-managed IAM policy from a JSON policy document. The policy defines a set of permissions that can then be attached to users, groups, or roles. The policy document must be valid JSON conforming to the IAM policy grammar."
+    },
+    {
+      "name": "Delete Policy",
+      "category": "Policies",
+      "description": "Permanently deletes a customer-managed IAM policy by its ARN. This action cannot be undone. Before deleting, the policy must be detached from all users, groups, and roles, and all non-default versions must be deleted, otherwise the request fails with a deletion conflict. AWS-managed policies cannot be deleted."
+    },
+    {
+      "name": "Attach User Policy",
+      "category": "Policies",
+      "description": "Attaches a managed policy to an IAM user, granting the user the permissions defined in the policy. Both AWS-managed and customer-managed policies can be attached. A user can have up to a limited number of attached managed policies."
+    },
+    {
+      "name": "Detach User Policy",
+      "category": "Policies",
+      "description": "Detaches a managed policy from an IAM user, removing the permissions the policy granted. This does not delete the policy itself; it only removes the association with the user."
+    },
+    {
+      "name": "Attach Role Policy",
+      "category": "Policies",
+      "description": "Attaches a managed policy to an IAM role, granting the role the permissions defined in the policy. Both AWS-managed and customer-managed policies can be attached. This is the primary way to grant permissions to a role."
+    },
+    {
+      "name": "Detach Role Policy",
+      "category": "Policies",
+      "description": "Detaches a managed policy from an IAM role, removing the permissions the policy granted. This does not delete the policy itself; it only removes the association with the role."
+    },
+    {
+      "name": "Get Account Summary",
+      "category": "Account",
+      "description": "Retrieves a summary of IAM entity usage and IAM quotas for the AWS account, such as the number of users, groups, roles, and policies, along with their respective quotas and MFA status. Returns a map of summary keys to their integer values."
+    },
+    {
+      "name": "List Account Aliases",
+      "category": "Account",
+      "description": "Lists the account alias associated with the AWS account, if one is set. An account can have at most one alias, which is used in the account sign-in page URL. Returns an empty list when no alias is configured."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Provision new IAM users and programmatic access keys as part of an onboarding automation",
+    "Attach or detach managed policies on users and roles to grant or revoke permissions on demand",
+    "Manage group membership to apply permission sets consistently across teams",
+    "Rotate access keys by creating a new key, deactivating the old one, then deleting it",
+    "Audit account posture by listing users, groups, roles, and pulling an IAM account summary"
+  ],
+  "agentIdeas": [
+    "After **AWS IAM** \"Create User\" and \"Create Access Key\" during onboarding, use **Amazon SES** \"Send Email\" to securely deliver the new credentials and setup instructions to the user.",
+    "When rotating credentials, use **AWS IAM** \"Update Access Key\" to deactivate an old key and then **Amazon SNS** \"Publish Message\" to notify a security topic that the rotation completed.",
+    "Run **AWS IAM** \"Get Account Summary\" and \"List Users\" on a schedule, then use **Amazon SQS** \"Send Message\" to enqueue the audit snapshot for a downstream compliance-processing workflow."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/aws-iam/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/aws-iam",
+    "readme": "services/aws-iam/README.md",
+    "index": "services/aws-iam/src/index.js"
+  }
+}

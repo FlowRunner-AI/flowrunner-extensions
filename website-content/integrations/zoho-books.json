@@ -1,0 +1,389 @@
+{
+  "slug": "zoho-books",
+  "name": "Zoho Books",
+  "marketingCategory": "CRM & Sales",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integration with Zoho Books, Zoho's online accounting platform. Manage contacts, items, invoices, estimates, sales and purchase orders, bills, expenses, customer and vendor payments, credit notes, and recurring invoices through a single OAuth2-connected service. Works across any Zoho data center and emits realtime webhook and polling triggers for accounting events.",
+  "actionCount": 65,
+  "triggerCount": 13,
+  "operationCategories": [
+    "Contacts",
+    "Invoices",
+    "Estimates",
+    "Customer Payments",
+    "Bills",
+    "Vendor Payments",
+    "Expenses",
+    "Items",
+    "Sales Orders",
+    "Purchase Orders",
+    "Credit Notes",
+    "Recurring Invoices"
+  ],
+  "actions": [
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new customer or vendor contact in Zoho Books. Supports primary contact details, billing address, shipping address, and tax-relevant fields."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves the full details of a single contact in Zoho Books, including contact persons, addresses, and balance information."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing Zoho Books contact. Provide a fields object containing any subset of contact properties to merge into the existing record (for example contact_name, company_name, billing_address, etc.)."
+    },
+    {
+      "name": "Delete Contact",
+      "category": "Contacts",
+      "description": "Deletes a contact from Zoho Books. Contacts that have transactions associated with them cannot be deleted; consider archiving instead."
+    },
+    {
+      "name": "List Contacts",
+      "category": "Contacts",
+      "description": "Retrieves a paginated list of contacts from Zoho Books with optional search and contact-type filters. Returns the full contact records for downstream processing."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates a new invoice in Zoho Books for a customer. Line items can reference Zoho Books items by item_id or specify name and rate inline. Supports invoice date, due date, notes, and terms."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves the complete details of a single invoice including line items, totals, customer information, and current status."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Updates an existing invoice in Zoho Books. Pass any subset of invoice fields (line_items, due_date, notes, etc.); the provided fields are merged into the existing invoice."
+    },
+    {
+      "name": "Delete Invoice",
+      "category": "Invoices",
+      "description": "Permanently deletes an invoice from Zoho Books. Use with caution; sent or paid invoices may not be deletable depending on organization settings."
+    },
+    {
+      "name": "Mark Invoice Sent",
+      "category": "Invoices",
+      "description": "Transitions an invoice from draft to sent status without actually emailing it. Useful when invoices are delivered through other channels but still need to be marked as outstanding."
+    },
+    {
+      "name": "Void Invoice",
+      "category": "Invoices",
+      "description": "Voids an invoice in Zoho Books. Voided invoices remain in the system for auditing but no longer count against the customer's outstanding balance."
+    },
+    {
+      "name": "Email Invoice",
+      "category": "Invoices",
+      "description": "Emails an invoice to one or more recipients with optional CC, custom subject, and body. Useful for triggering ad-hoc invoice deliveries from automated workflows."
+    },
+    {
+      "name": "List Invoices",
+      "category": "Invoices",
+      "description": "Retrieves a paginated list of invoices with optional status and customer filters. Returns the full invoice records including totals and balances."
+    },
+    {
+      "name": "Create Estimate",
+      "category": "Estimates",
+      "description": "Creates a new estimate (quote) for a customer with line items, dates, and optional notes and terms."
+    },
+    {
+      "name": "Get Estimate",
+      "category": "Estimates",
+      "description": "Retrieves the full details of a single estimate including line items, totals, and current status."
+    },
+    {
+      "name": "Update Estimate",
+      "category": "Estimates",
+      "description": "Updates an existing estimate by merging the provided fields into the existing record."
+    },
+    {
+      "name": "Delete Estimate",
+      "category": "Estimates",
+      "description": "Permanently deletes an estimate from Zoho Books."
+    },
+    {
+      "name": "Mark Estimate Accepted",
+      "category": "Estimates",
+      "description": "Marks an estimate as accepted by the customer, useful for tracking conversions in sales workflows."
+    },
+    {
+      "name": "Mark Estimate Declined",
+      "category": "Estimates",
+      "description": "Marks an estimate as declined by the customer for accurate sales pipeline reporting."
+    },
+    {
+      "name": "Convert Estimate To Invoice",
+      "category": "Estimates",
+      "description": "Converts an accepted estimate into a new invoice in Zoho Books, copying the line items and customer details so billing can proceed."
+    },
+    {
+      "name": "Record Customer Payment",
+      "category": "Customer Payments",
+      "description": "Records a payment received from a customer and applies it to an invoice. Supports specifying the payment mode (cash, bank transfer, credit card, etc.) and a reference number."
+    },
+    {
+      "name": "Get Customer Payment",
+      "category": "Customer Payments",
+      "description": "Retrieves a single customer payment by ID, including the invoices it was applied to and remaining unused amounts."
+    },
+    {
+      "name": "Delete Customer Payment",
+      "category": "Customer Payments",
+      "description": "Deletes a customer payment, restoring the related invoice balances."
+    },
+    {
+      "name": "Create Bill",
+      "category": "Bills",
+      "description": "Creates a new vendor bill in Zoho Books, capturing line items, dates, and an optional bill number for reconciliation."
+    },
+    {
+      "name": "Get Bill",
+      "category": "Bills",
+      "description": "Retrieves a single bill by ID with full line item details, totals, and payment status."
+    },
+    {
+      "name": "Update Bill",
+      "category": "Bills",
+      "description": "Updates an existing bill by merging the supplied fields into the existing record."
+    },
+    {
+      "name": "Delete Bill",
+      "category": "Bills",
+      "description": "Permanently deletes a vendor bill from Zoho Books."
+    },
+    {
+      "name": "Mark Bill Open",
+      "category": "Bills",
+      "description": "Transitions a bill from draft to open, making it visible in payable reports and ready for vendor payments to be applied."
+    },
+    {
+      "name": "Mark Bill Void",
+      "category": "Bills",
+      "description": "Voids a bill in Zoho Books. Voided bills remain in the system for auditing but no longer affect outstanding payables."
+    },
+    {
+      "name": "Record Vendor Payment",
+      "category": "Vendor Payments",
+      "description": "Records a payment made to a vendor and applies it to an outstanding bill. Supports payment mode and date specification."
+    },
+    {
+      "name": "Create Expense",
+      "category": "Expenses",
+      "description": "Records an expense transaction in Zoho Books. Requires a GL expense account and the account the funds were paid from. Optionally associate with a vendor and a billable customer."
+    },
+    {
+      "name": "Get Expense",
+      "category": "Expenses",
+      "description": "Retrieves a single expense record by ID with the full detail set including the source account and any billable customer."
+    },
+    {
+      "name": "Update Expense",
+      "category": "Expenses",
+      "description": "Updates an existing expense by merging the supplied fields into the existing record."
+    },
+    {
+      "name": "Delete Expense",
+      "category": "Expenses",
+      "description": "Permanently deletes an expense from Zoho Books."
+    },
+    {
+      "name": "List Expenses",
+      "category": "Expenses",
+      "description": "Retrieves a paginated list of expenses with optional filters. Useful for syncing expense data into reporting or reimbursement workflows."
+    },
+    {
+      "name": "Create Item",
+      "category": "Items",
+      "description": "Creates a new product or service item in Zoho Books. Items are reusable line entries used by invoices, estimates, and bills."
+    },
+    {
+      "name": "Get Item",
+      "category": "Items",
+      "description": "Retrieves a single item by ID with full configuration including rate, accounts, and tax settings."
+    },
+    {
+      "name": "Update Item",
+      "category": "Items",
+      "description": "Updates an existing item by merging the provided fields into the existing record."
+    },
+    {
+      "name": "Delete Item",
+      "category": "Items",
+      "description": "Permanently deletes an item from Zoho Books. Items currently used in transactions cannot be deleted."
+    },
+    {
+      "name": "Create Sales Order",
+      "category": "Sales Orders",
+      "description": "Creates a new sales order in Zoho Books for tracking customer commitments before invoicing."
+    },
+    {
+      "name": "Get Sales Order",
+      "category": "Sales Orders",
+      "description": "Retrieves a single sales order by ID with line items, totals, and current status."
+    },
+    {
+      "name": "Update Sales Order",
+      "category": "Sales Orders",
+      "description": "Updates an existing sales order by merging the provided fields into the existing record."
+    },
+    {
+      "name": "Delete Sales Order",
+      "category": "Sales Orders",
+      "description": "Permanently deletes a sales order from Zoho Books."
+    },
+    {
+      "name": "Create Purchase Order",
+      "category": "Purchase Orders",
+      "description": "Creates a new purchase order in Zoho Books for tracking commitments to a vendor before the bill arrives."
+    },
+    {
+      "name": "Get Purchase Order",
+      "category": "Purchase Orders",
+      "description": "Retrieves a single purchase order by ID with line items, totals, and status."
+    },
+    {
+      "name": "Update Purchase Order",
+      "category": "Purchase Orders",
+      "description": "Updates an existing purchase order by merging the provided fields into the existing record."
+    },
+    {
+      "name": "Delete Purchase Order",
+      "category": "Purchase Orders",
+      "description": "Permanently deletes a purchase order from Zoho Books."
+    },
+    {
+      "name": "Mark Sales Order Open",
+      "category": "Sales Orders",
+      "description": "Transitions a sales order from draft to open."
+    },
+    {
+      "name": "Mark Sales Order Void",
+      "category": "Sales Orders",
+      "description": "Voids a sales order."
+    },
+    {
+      "name": "Mark Purchase Order Issued",
+      "category": "Purchase Orders",
+      "description": "Transitions a purchase order from draft to issued."
+    },
+    {
+      "name": "Mark Purchase Order Cancelled",
+      "category": "Purchase Orders",
+      "description": "Cancels an issued purchase order."
+    },
+    {
+      "name": "Submit Invoice",
+      "category": "Invoices",
+      "description": "Submits an invoice for approval (when invoice approval workflow is enabled in Zoho Books)."
+    },
+    {
+      "name": "Approve Invoice",
+      "category": "Invoices",
+      "description": "Approves an invoice that was submitted for approval."
+    },
+    {
+      "name": "Write Off Invoice",
+      "category": "Invoices",
+      "description": "Writes off the outstanding balance of an invoice. Useful for marking uncollectible invoices."
+    },
+    {
+      "name": "Create Credit Note",
+      "category": "Credit Notes",
+      "description": "Creates a customer credit note in Zoho Books with line items. Credit notes can later be applied to invoices or refunded."
+    },
+    {
+      "name": "Get Credit Note",
+      "category": "Credit Notes",
+      "description": "Retrieves a credit note by ID."
+    },
+    {
+      "name": "Update Credit Note",
+      "category": "Credit Notes",
+      "description": "Updates an existing credit note by merging fields into the existing record."
+    },
+    {
+      "name": "Delete Credit Note",
+      "category": "Credit Notes",
+      "description": "Permanently deletes a credit note."
+    },
+    {
+      "name": "Apply Credit Note To Invoices",
+      "category": "Credit Notes",
+      "description": "Applies all or part of a credit note to one or more invoices."
+    },
+    {
+      "name": "Create Recurring Invoice",
+      "category": "Recurring Invoices",
+      "description": "Creates a recurring invoice schedule that automatically generates invoices on a defined cadence."
+    },
+    {
+      "name": "Get Recurring Invoice",
+      "category": "Recurring Invoices",
+      "description": "Retrieves a recurring invoice by ID."
+    },
+    {
+      "name": "Update Recurring Invoice",
+      "category": "Recurring Invoices",
+      "description": "Updates a recurring invoice by merging fields into the existing record."
+    },
+    {
+      "name": "Delete Recurring Invoice",
+      "category": "Recurring Invoices",
+      "description": "Permanently deletes a recurring invoice schedule."
+    },
+    {
+      "name": "Activate Recurring Invoice",
+      "category": "Recurring Invoices",
+      "description": "Activates a recurring invoice so it begins generating invoices on schedule."
+    },
+    {
+      "name": "Stop Recurring Invoice",
+      "category": "Recurring Invoices",
+      "description": "Stops a recurring invoice so it no longer generates new invoices."
+    }
+  ],
+  "triggers": [
+    "On Invoice Created (Realtime)",
+    "On Invoice Updated (Realtime)",
+    "On Invoice Deleted (Realtime)",
+    "On Payment Created (Realtime)",
+    "On Contact Created (Realtime)",
+    "On Contact Updated (Realtime)",
+    "On Estimate Accepted (Realtime)",
+    "On Bill Created (Realtime)",
+    "On Bill Paid (Realtime)",
+    "On New Or Updated Invoice (Polling)",
+    "On New Or Updated Contact (Polling)",
+    "On New Or Updated Customer Payment (Polling)",
+    "On New Or Updated Bill (Polling)"
+  ],
+  "idealUseCases": [
+    "Automating invoice, estimate, and recurring-billing creation when orders or milestones complete",
+    "Syncing customers, vendors, and items between Zoho Books and other systems",
+    "Recording customer and vendor payments and reconciling outstanding balances",
+    "Capturing vendor bills and expenses from parsed documents or receipts",
+    "Managing the order-to-cash and procure-to-pay lifecycle, from sales/purchase orders to invoices/bills",
+    "Reacting in real time to new invoices, payments, contacts, and bills via webhooks"
+  ],
+  "agentIdeas": [
+    "When **Stripe** \"Create Charge\" processes a payment, call **Zoho Books** \"Record Customer Payment\" to apply it against the matching invoice and keep accounts receivable reconciled.",
+    "When a **Parseur** \"On Document Processed\" trigger emits a parsed vendor invoice, use **Zoho Books** \"Create Bill\" to record the payable, then **Slack** \"Send Message To Channel\" to flag it for approval.",
+    "When a **Zoho Books** \"On Invoice Created (Realtime)\" trigger fires, use **Gmail** \"Send Message\" to email the customer and **Google Sheets** \"Add Row\" to log it in a revenue tracker."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/zoho-books/public/icon.png",
+  "sourcePaths": {
+    "service": "services/zoho-books",
+    "readme": "services/zoho-books/README.md",
+    "index": "services/zoho-books/src/index.js"
+  }
+}

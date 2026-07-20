@@ -1,0 +1,64 @@
+{
+  "slug": "google-calendar",
+  "name": "Google Calendar",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "A comprehensive integration that enables seamless interaction with Google Calendar. This extension provides full event management capabilities, automated scheduling, and calendar operations for AI-powered workflows and intelligent calendar coordination.",
+  "actionCount": 5,
+  "triggerCount": 2,
+  "operationCategories": [
+    "Event Management"
+  ],
+  "actions": [
+    {
+      "name": "Create Event",
+      "category": "Event Management",
+      "description": "Creates a new calendar event with specified details, enabling AI agents to automatically schedule meetings, appointments, and reminders. Perfect for automated scheduling, meeting coordination, and calendar management workflows."
+    },
+    {
+      "name": "Get Event",
+      "category": "Event Management",
+      "description": "Retrieves details of a specific calendar event, enabling AI agents to access event information, check status, or extract attendee data. Perfect for event verification, status checking, and data extraction workflows."
+    },
+    {
+      "name": "List Events",
+      "category": "Event Management",
+      "description": "Lists upcoming events from a calendar with optional filtering, enabling AI agents to retrieve event schedules, check availability, or find specific events. Perfect for availability checking, schedule analysis, and event discovery."
+    },
+    {
+      "name": "Update Event",
+      "category": "Event Management",
+      "description": "Updates an existing calendar event with new details, enabling AI agents to modify event times, locations, attendees, or other properties. Perfect for rescheduling, updating meeting details, or managing event changes."
+    },
+    {
+      "name": "Delete Event",
+      "category": "Event Management",
+      "description": "Deletes a calendar event, enabling AI agents to cancel meetings, remove appointments, or clean up outdated events. Perfect for automated cancellations, schedule cleanup, and event removal workflows."
+    }
+  ],
+  "triggers": [
+    "On Event Starting Soon",
+    "On Event Ended"
+  ],
+  "idealUseCases": [
+    "Automating meeting scheduling and calendar coordination across teams",
+    "Building AI agents that manage appointments and track availability",
+    "Creating automated workflows that respond to calendar events",
+    "Implementing intelligent scheduling assistants for customer bookings",
+    "Developing event reminder and notification systems",
+    "Setting up recurring task and meeting automation",
+    "Synchronizing calendars across multiple platforms and services"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.webp",
+  "iconFile": "services/google-calendar/public/icon.webp",
+  "sourcePaths": {
+    "service": "services/google-calendar",
+    "readme": "services/google-calendar/README.md",
+    "index": "services/google-calendar/src/index.js"
+  }
+}

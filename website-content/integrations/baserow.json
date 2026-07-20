@@ -1,0 +1,115 @@
+{
+  "slug": "baserow",
+  "name": "Baserow",
+  "marketingCategory": "Databases & Warehouses",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Baserow](https://baserow.io), the open-source no-code database. Read and write rows and manage databases, tables, and fields. Baserow uses two different credentials: a **database token** authenticates row-data operations, while a **JWT access token** is required for structure/metadata operations (databases, tables, and fields). Works with both Baserow Cloud and self-hosted instances.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Databases",
+    "Tables",
+    "Fields",
+    "Rows"
+  ],
+  "actions": [
+    {
+      "name": "List Databases",
+      "category": "Databases",
+      "description": "Lists all Baserow databases the configured token can access. Databases are the \"database\" type applications within your workspaces; each groups a set of tables. Use the returned database IDs with the table operations."
+    },
+    {
+      "name": "List Tables",
+      "category": "Tables",
+      "description": "Lists all tables within the specified Baserow database, including each table's ID, name and order. Use a table ID with the row and field operations."
+    },
+    {
+      "name": "Get Table",
+      "category": "Tables",
+      "description": "Retrieves metadata for a single Baserow table by its ID, including its name, order and parent database."
+    },
+    {
+      "name": "Create Table",
+      "category": "Tables",
+      "description": "Creates a new table in the specified Baserow database. Optionally seeds the table with initial rows: provide a 2D array where the first inner array is the header row of column names and each subsequent array is a data row. When no data is supplied Baserow creates the table with default fields and rows."
+    },
+    {
+      "name": "List Fields",
+      "category": "Fields",
+      "description": "Lists all fields (columns) of the specified Baserow table, including each field's ID, name, type and type-specific configuration. Useful for discovering the schema before reading or writing rows."
+    },
+    {
+      "name": "Create Field",
+      "category": "Fields",
+      "description": "Creates a new field (column) in the specified Baserow table. Choose the field type from the dropdown; type-specific settings (for example the \"select_options\" for a Single Select, or \"number_decimal_places\" for a Number) can be supplied via the Options object and are merged into the request."
+    },
+    {
+      "name": "List Rows",
+      "category": "Rows",
+      "description": "Lists rows from a Baserow table with pagination, search, ordering and filtering. When \"Use Field Names\" is enabled (default) rows are keyed by human-readable field names instead of internal field_123 IDs. Filtering: pass a Filters object whose keys use Baserow's \"filter__{field}__{type}\" syntax mapping to the value to match, for example {\"filter__Name__contains\":\"Acme\",\"filter__Age__higher_than\":\"18\"}. When multiple filters are supplied, the Filter Type parameter controls whether they are combined with AND or OR. Ordering: pass a comma-separated list of field names to Order By; prefix a name with \"-\" for descending, e.g. \"-Created,Name\". Returns the page of rows plus the total count and the URL of the next page (null when there are no more)."
+    },
+    {
+      "name": "Get Row",
+      "category": "Rows",
+      "description": "Retrieves a single row from a Baserow table by its row ID. When \"Use Field Names\" is enabled (default) the returned row is keyed by human-readable field names instead of internal field_123 IDs."
+    },
+    {
+      "name": "Create Row",
+      "category": "Rows",
+      "description": "Creates a new row in a Baserow table. Provide a Data object of the row's field values. When \"Use Field Names\" is enabled (default) the Data keys are human-readable field names (e.g. {\"Name\":\"Acme\",\"Status\":\"Open\"}); disable it to key by internal field_123 IDs. Returns the created row."
+    },
+    {
+      "name": "Update Row",
+      "category": "Rows",
+      "description": "Updates an existing row in a Baserow table. Only the fields included in the Data object are modified; omitted fields keep their current values. When \"Use Field Names\" is enabled (default) the Data keys are human-readable field names. Returns the updated row."
+    },
+    {
+      "name": "Delete Row",
+      "category": "Rows",
+      "description": "Deletes a single row from a Baserow table by its row ID. The row is moved to the trash and can be restored from the Baserow interface. Returns a confirmation object."
+    },
+    {
+      "name": "Move Row",
+      "category": "Rows",
+      "description": "Moves a row to a new position within its Baserow table, changing its order. Provide the \"Before Row ID\" of the row that the moved row should be placed before; leave it empty to move the row to the end of the table. Returns the moved row with its updated order."
+    },
+    {
+      "name": "Create Rows (Batch)",
+      "category": "Rows",
+      "description": "Creates multiple rows in a Baserow table in a single request. Provide an array of row objects; when \"Use Field Names\" is enabled (default) each object is keyed by human-readable field names. Returns the array of created rows."
+    },
+    {
+      "name": "Update Rows (Batch)",
+      "category": "Rows",
+      "description": "Updates multiple rows in a Baserow table in a single request. Each object in the array must include the row's \"id\"; the remaining keys are the field values to change. When \"Use Field Names\" is enabled (default) those keys are human-readable field names. Returns the array of updated rows."
+    },
+    {
+      "name": "Delete Rows (Batch)",
+      "category": "Rows",
+      "description": "Deletes multiple rows from a Baserow table in a single request by their row IDs. The rows are moved to the trash and can be restored from the Baserow interface. Returns a confirmation object."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync form submissions, orders, or CRM records into a Baserow table as structured rows.",
+    "Query rows with search, ordering, and filters to feed downstream steps in an automation.",
+    "Keep a Baserow table in sync with another system via batch create/update/delete operations.",
+    "Provision new tables and fields on the fly to store data collected during a workflow."
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to pull a batch of records from a spreadsheet, then call **Baserow** \"Create Rows (Batch)\" to import them into a Baserow table in a single request.",
+    "When an **Airtable** \"On New or Updated Record\" trigger fires, use **Baserow** \"Create Row\" or \"Update Row\" to mirror the change into a Baserow table.",
+    "Use **Baserow** \"List Rows\" with a filter to find rows needing follow-up, then call **Gmail** \"Send Message\" to email each contact."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/baserow/public/icon.png",
+  "sourcePaths": {
+    "service": "services/baserow",
+    "readme": "services/baserow/README.md",
+    "index": "services/baserow/src/index.js"
+  }
+}

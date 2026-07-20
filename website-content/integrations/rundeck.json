@@ -1,0 +1,117 @@
+{
+  "slug": "rundeck",
+  "name": "Rundeck",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Rundeck](https://www.rundeck.com/), a runbook automation and job scheduler. Flows can list projects and jobs, run and retry jobs, run adhoc commands and scripts, and inspect or control executions. Authenticates with a Rundeck User API Token sent as the `X-Rundeck-Auth-Token` header against a configurable API version.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Projects",
+    "Jobs",
+    "Executions",
+    "Adhoc",
+    "System"
+  ],
+  "actions": [
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Lists all projects visible to the API token on the Rundeck server. Each project entry includes its name, optional description, and a URL to the project resource. Use a project name with the job and execution operations."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Returns detailed information about a single project, including its name, description, and configuration properties. Use List Projects to discover project names."
+    },
+    {
+      "name": "List Jobs",
+      "category": "Jobs",
+      "description": "Lists the jobs defined in a project. Each job includes its unique ID, name, group, project, and description. Use a job ID with Get Job Definition, Run Job, or Retry Job Execution. Optionally filter by job name or group."
+    },
+    {
+      "name": "Get Job Definition",
+      "category": "Jobs",
+      "description": "Returns the full definition of a job in JSON format, including its options, workflow steps, node filters, schedule, and notifications. Use List Jobs to find the job ID."
+    },
+    {
+      "name": "Run Job",
+      "category": "Jobs",
+      "description": "Executes a job by ID and returns the created execution, including its ID, status, and permalink. Supply job option values as an Object of name/value pairs, or a raw argString. Optionally target specific nodes with a filter, run as another user, or schedule the run for a future time. Returns immediately; use Get Execution or Get Execution State to track progress."
+    },
+    {
+      "name": "Retry Job Execution",
+      "category": "Jobs",
+      "description": "Retries a job based on a previous failed execution, re-running only the nodes that failed (unless overridden with a node filter). Reuses the original execution's options unless new option values are supplied. Returns the newly created execution."
+    },
+    {
+      "name": "Get Execution",
+      "category": "Executions",
+      "description": "Returns metadata for a single execution, including its status, job reference, start and end times, the user who ran it, options used, and permalink. Use to check the outcome of a run started with Run Job or an adhoc operation."
+    },
+    {
+      "name": "Get Execution State",
+      "category": "Executions",
+      "description": "Returns the detailed workflow state of an execution, including the overall status, per-node and per-step states, and step progress. Use to monitor a running execution in fine detail."
+    },
+    {
+      "name": "Get Execution Output",
+      "category": "Executions",
+      "description": "Returns the log output for an execution, including timestamped log entries, their log level, source node, and step context. Supports paging by byte offset and limiting the maximum number of lines returned. Use after or during a run to inspect what happened."
+    },
+    {
+      "name": "Abort Execution",
+      "category": "Executions",
+      "description": "Requests abortion of a currently running execution. Returns the abort request status and the execution's resulting state. Aborting is asynchronous; poll Get Execution or Get Execution State to confirm the execution has stopped."
+    },
+    {
+      "name": "List Project Executions",
+      "category": "Executions",
+      "description": "Lists executions within a project, most recent first, with paging and count metadata. Filter by one or more job IDs, execution status, and limit the number returned. Use to review recent runs or find executions to retry or inspect."
+    },
+    {
+      "name": "Delete Execution",
+      "category": "Executions",
+      "description": "Permanently deletes a single execution and its associated log output. This cannot be undone. Requires 'delete_execution' permission for the API token."
+    },
+    {
+      "name": "Run Adhoc Command",
+      "category": "Adhoc",
+      "description": "Runs an arbitrary shell command directly on the nodes of a project, without a predefined job. Returns the created execution. Target nodes with a node filter (defaults to the local Rundeck server if omitted). Requires 'run' permission on the project's adhoc resource."
+    },
+    {
+      "name": "Run Adhoc Script",
+      "category": "Adhoc",
+      "description": "Runs an arbitrary script (its full text) on the nodes of a project without a predefined job. The script is uploaded and executed with the given interpreter and optional arguments. Returns the created execution. Requires 'run' permission on the project's adhoc resource."
+    },
+    {
+      "name": "Get System Info",
+      "category": "System",
+      "description": "Returns Rundeck server system information, including version, build, uptime, JVM, OS, and metrics. Use this as a connection check to verify the server URL, API version, and API token are valid."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Trigger a Rundeck job as part of a larger workflow, passing option values, then track the resulting execution to completion.",
+    "Kick off deployment or maintenance runbooks and poll their status, state, and log output.",
+    "Run adhoc shell commands or scripts across project nodes without defining a job.",
+    "Retry failed executions, abort runaway runs, and audit or clean up execution history.",
+    "Verify server connectivity and browse available projects and jobs before automating."
+  ],
+  "agentIdeas": [
+    "After a **Jenkins** \"Trigger Build\" completes, call **Rundeck** \"Run Job\" to execute the deployment runbook for the new artifact, then poll \"Get Execution State\" until it finishes.",
+    "When a **Rundeck** execution fails, use \"Get Execution Output\" to capture the logs and **PagerDuty** \"Create Incident\" to alert the on-call engineer with the failure details.",
+    "Use **Rundeck** \"List Project Executions\" to summarize recent runs, then post the results to a channel with **Slack** \"Send Message To Channel\"."
+  ],
+  "icon": "/icon.jpeg",
+  "iconFile": "services/rundeck/public/icon.jpeg",
+  "sourcePaths": {
+    "service": "services/rundeck",
+    "readme": "services/rundeck/README.md",
+    "index": "services/rundeck/src/index.js"
+  }
+}

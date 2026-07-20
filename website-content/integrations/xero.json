@@ -1,0 +1,248 @@
+{
+  "slug": "xero",
+  "name": "Xero",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "A comprehensive integration with Xero accounting software that enables automated financial workflows. This extension provides full access to contacts, invoices, payments, bank transactions, credit notes, quotes, purchase orders, items, accounts, and financial reports, with real-time and polling triggers for event-driven automation.",
+  "actionCount": 38,
+  "triggerCount": 8,
+  "operationCategories": [
+    "Contacts",
+    "Invoices",
+    "Payments",
+    "Bank Transactions",
+    "Credit Notes",
+    "Quotes",
+    "Purchase Orders",
+    "Items",
+    "Accounts",
+    "Reports",
+    "Organization"
+  ],
+  "actions": [
+    {
+      "name": "Create Contact",
+      "category": "Contacts",
+      "description": "Creates a new contact (customer or supplier) in Xero. Contacts are used for invoicing, bills, and tracking business relationships."
+    },
+    {
+      "name": "Update Contact",
+      "category": "Contacts",
+      "description": "Updates an existing contact's information in Xero."
+    },
+    {
+      "name": "Get Contact",
+      "category": "Contacts",
+      "description": "Retrieves a single contact by ID with full details including addresses and phone numbers."
+    },
+    {
+      "name": "Find Contacts",
+      "category": "Contacts",
+      "description": "Searches for contacts with optional filters. Supports pagination for large result sets."
+    },
+    {
+      "name": "Archive Contact",
+      "category": "Contacts",
+      "description": "Archives a contact, making it inactive but preserving historical data."
+    },
+    {
+      "name": "Create Invoice",
+      "category": "Invoices",
+      "description": "Creates a new invoice (sales invoice or bill) in Xero. Supports line items, tax, and multi-currency."
+    },
+    {
+      "name": "Update Invoice",
+      "category": "Invoices",
+      "description": "Updates an existing invoice. Only DRAFT invoices can have line items modified."
+    },
+    {
+      "name": "Get Invoice",
+      "category": "Invoices",
+      "description": "Retrieves a single invoice by ID with full details including line items and payments."
+    },
+    {
+      "name": "Find Invoices",
+      "category": "Invoices",
+      "description": "Searches for invoices with optional filters by contact, status, type, and date range."
+    },
+    {
+      "name": "Void Invoice",
+      "category": "Invoices",
+      "description": "Voids an invoice, making it inactive while preserving the record."
+    },
+    {
+      "name": "Email Invoice",
+      "category": "Invoices",
+      "description": "Sends an invoice to the contact via email directly from Xero."
+    },
+    {
+      "name": "Create Payment",
+      "category": "Payments",
+      "description": "Records a payment against an invoice or bill in Xero."
+    },
+    {
+      "name": "Get Payment",
+      "category": "Payments",
+      "description": "Retrieves a single payment by ID with full details."
+    },
+    {
+      "name": "Find Payments",
+      "category": "Payments",
+      "description": "Searches for payments with optional filters by invoice or reference."
+    },
+    {
+      "name": "Delete Payment",
+      "category": "Payments",
+      "description": "Deletes a payment from Xero. Only non-reconciled payments can be deleted."
+    },
+    {
+      "name": "Create Bank Transaction",
+      "category": "Bank Transactions",
+      "description": "Creates a spend or receive money transaction in Xero."
+    },
+    {
+      "name": "Get Bank Transaction",
+      "category": "Bank Transactions",
+      "description": "Retrieves a single bank transaction by ID with full details."
+    },
+    {
+      "name": "Find Bank Transactions",
+      "category": "Bank Transactions",
+      "description": "Searches for bank transactions with optional filters by type, reference, invoice, or date range."
+    },
+    {
+      "name": "Create Credit Note",
+      "category": "Credit Notes",
+      "description": "Creates a credit note to refund or credit a customer/supplier."
+    },
+    {
+      "name": "Get Credit Note",
+      "category": "Credit Notes",
+      "description": "Retrieves a single credit note by ID."
+    },
+    {
+      "name": "Allocate Credit Note",
+      "category": "Credit Notes",
+      "description": "Allocates a credit note to an invoice to reduce the amount due."
+    },
+    {
+      "name": "Create Quote",
+      "category": "Quotes",
+      "description": "Creates a new quote/estimate for a customer."
+    },
+    {
+      "name": "Get Quote",
+      "category": "Quotes",
+      "description": "Retrieves a single quote by ID."
+    },
+    {
+      "name": "Find Quotes",
+      "category": "Quotes",
+      "description": "Searches for quotes with optional filters."
+    },
+    {
+      "name": "Create Purchase Order",
+      "category": "Purchase Orders",
+      "description": "Creates a new purchase order for a supplier."
+    },
+    {
+      "name": "Get Purchase Order",
+      "category": "Purchase Orders",
+      "description": "Retrieves a single purchase order by ID."
+    },
+    {
+      "name": "Create Item",
+      "category": "Items",
+      "description": "Creates a new product or service item in Xero."
+    },
+    {
+      "name": "Get Item",
+      "category": "Items",
+      "description": "Retrieves a single item by ID or code."
+    },
+    {
+      "name": "Find Items",
+      "category": "Items",
+      "description": "Lists all items in Xero with optional search filter."
+    },
+    {
+      "name": "Get Accounts",
+      "category": "Accounts",
+      "description": "Retrieves the chart of accounts with optional type filter."
+    },
+    {
+      "name": "Get Balance Sheet",
+      "category": "Reports",
+      "description": "Retrieves the balance sheet report showing assets, liabilities, and equity."
+    },
+    {
+      "name": "Get Profit and Loss",
+      "category": "Reports",
+      "description": "Retrieves the profit and loss (income statement) report."
+    },
+    {
+      "name": "Get Trial Balance",
+      "category": "Reports",
+      "description": "Retrieves the trial balance report showing all account balances."
+    },
+    {
+      "name": "Get Aged Receivables",
+      "category": "Reports",
+      "description": "Retrieves aged receivables report showing outstanding customer invoices."
+    },
+    {
+      "name": "Get Aged Payables",
+      "category": "Reports",
+      "description": "Retrieves aged payables report showing outstanding supplier bills."
+    },
+    {
+      "name": "Get Organization",
+      "category": "Organization",
+      "description": "Retrieves details about the connected Xero organization."
+    },
+    {
+      "name": "Get Currencies",
+      "category": "Organization",
+      "description": "Retrieves all currencies enabled for the organization."
+    },
+    {
+      "name": "Get Tax Rates",
+      "category": "Organization",
+      "description": "Retrieves all tax rates available in the organization."
+    }
+  ],
+  "triggers": [
+    "On Contact Created",
+    "On Contact Updated",
+    "On Invoice Created",
+    "On Invoice Updated",
+    "On Credit Note Created",
+    "On Credit Note Updated",
+    "On New Payment Received",
+    "On New Bank Transaction"
+  ],
+  "idealUseCases": [
+    "Automating invoice creation and payment tracking for recurring billing workflows",
+    "Building AI agents that sync customer data between CRM systems and Xero",
+    "Creating automated payment reminders and collection workflows based on aging reports",
+    "Implementing real-time notifications when invoices are paid or overdue",
+    "Developing expense tracking automation with bank transaction categorization",
+    "Setting up automated quote-to-invoice conversion workflows",
+    "Building supplier payment automation with purchase order management",
+    "Automating financial reporting and dashboard updates",
+    "Creating customer onboarding workflows that provision contacts and payment terms",
+    "Implementing multi-currency transaction processing for international businesses"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.svg",
+  "iconFile": "services/xero/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/xero",
+    "readme": "services/xero/README.md",
+    "index": "services/xero/src/index.js"
+  }
+}

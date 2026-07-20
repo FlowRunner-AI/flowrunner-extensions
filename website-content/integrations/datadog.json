@@ -1,0 +1,342 @@
+{
+  "slug": "datadog",
+  "name": "Datadog",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate the [Datadog](https://www.datadoghq.com/) monitoring and observability platform: post and search events, submit and query metrics, ship and search logs, and manage monitors, downtimes, incidents, dashboards, SLOs, hosts, users, Synthetics, and notebooks. Authenticates with a Datadog API key plus application key and works across all six Datadog sites (US1/US3/US5, EU, AP1, and US1-FED).",
+  "actionCount": 58,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Events",
+    "Metrics",
+    "Logs",
+    "Monitors",
+    "Downtimes",
+    "Incidents",
+    "Dashboards",
+    "SLOs",
+    "Hosts",
+    "Host Tags",
+    "Users",
+    "Synthetics",
+    "Service Checks",
+    "Notebooks",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Post Event",
+      "category": "Events",
+      "description": "Posts a custom event to the Datadog event stream. Events show up in the Events Explorer and can trigger event monitors. The title is limited to 100 characters and the text body to 4000 characters; text supports markdown when wrapped in %%% markers. Use tags, an aggregation key, and a source type name to group and route related events."
+    },
+    {
+      "name": "List Events",
+      "category": "Events",
+      "description": "Queries the event stream for events between two timestamps. Returns the most recent 1000 matching events, optionally filtered by priority, sources, and tags. The time range may be up to 32 days."
+    },
+    {
+      "name": "Search Events",
+      "category": "Events",
+      "description": "Searches events with the full Datadog events query syntax (e.g. \"source:alert env:prod\"). Supports relative time expressions like \"now-15m\" and cursor-based pagination, making it the best choice for high-volume or precise event lookups."
+    },
+    {
+      "name": "Submit Metric",
+      "category": "Metrics",
+      "description": "Submits a single data point for a custom metric via the v2 series intake. Creates the metric automatically on first submission. Timestamps must be no more than 10 minutes in the future or 1 hour in the past. Optionally associates the point with a host and applies tags."
+    },
+    {
+      "name": "Query Timeseries",
+      "category": "Metrics",
+      "description": "Queries timeseries data for any metric using the full Datadog query syntax, including aggregations, filters, and functions (e.g. \"avg:system.cpu.user{env:prod} by {host}\"). Returns series of [timestamp, value] points for the requested window."
+    },
+    {
+      "name": "List Metrics",
+      "category": "Metrics",
+      "description": "Lists metrics known to your organization via the v2 metrics endpoint. Optionally filters to metrics carrying specific tags and restricts the lookback window used to decide whether a metric is actively reporting."
+    },
+    {
+      "name": "Get Metric Metadata",
+      "category": "Metrics",
+      "description": "Retrieves the metadata of a metric: type, description, units, per-unit, short name, StatsD interval, and integration source."
+    },
+    {
+      "name": "Update Metric Metadata",
+      "category": "Metrics",
+      "description": "Updates a metric's metadata: type, description, short name, units, and StatsD interval. Only the fields you provide are changed."
+    },
+    {
+      "name": "Send Log",
+      "category": "Logs",
+      "description": "Sends a log entry to Datadog Log Management via the HTTP intake (host http-intake.logs.{site}). Set source, service, hostname, and tags for indexing and correlation; arbitrary extra attributes can be attached as JSON and become searchable log facets."
+    },
+    {
+      "name": "Search Logs",
+      "category": "Logs",
+      "description": "Searches indexed logs with the Datadog log search syntax (e.g. \"service:web status:error @http.status_code:500\"). Supports absolute or relative time bounds, index selection, sorting, and cursor-based pagination."
+    },
+    {
+      "name": "Create Monitor",
+      "category": "Monitors",
+      "description": "Creates a monitor that alerts on a metric, log, event, process, or other data source. The query must follow the syntax of the selected monitor type (e.g. \"avg(last_5m):avg:system.cpu.user{env:prod} > 90\" for a metric alert). The message supports @-notification handles and template variables. Advanced settings (thresholds, notify_no_data, renotify_interval, etc.) go in Options."
+    },
+    {
+      "name": "List Monitors",
+      "category": "Monitors",
+      "description": "Lists monitors with optional filtering by name, monitor tags, scope tags, and group states. Supports page-based pagination."
+    },
+    {
+      "name": "Get Monitor",
+      "category": "Monitors",
+      "description": "Retrieves the full definition and current state of a monitor, optionally including per-group states."
+    },
+    {
+      "name": "Update Monitor",
+      "category": "Monitors",
+      "description": "Updates an existing monitor. Only the fields you provide are changed; the monitor type cannot be changed after creation."
+    },
+    {
+      "name": "Delete Monitor",
+      "category": "Monitors",
+      "description": "Permanently deletes a monitor. Fails if the monitor is referenced by other resources (e.g. composite monitors or SLOs) unless those references are removed first."
+    },
+    {
+      "name": "Mute Monitor",
+      "category": "Monitors",
+      "description": "Mutes a monitor so it stops sending notifications, either entirely or for a specific scope (e.g. one host), optionally until a given time."
+    },
+    {
+      "name": "Unmute Monitor",
+      "category": "Monitors",
+      "description": "Unmutes a monitor, either for a specific scope or across all scopes, so it resumes sending notifications."
+    },
+    {
+      "name": "Search Monitors",
+      "category": "Monitors",
+      "description": "Searches monitors with the monitor search query syntax (e.g. \"status:alert type:\\\"metric alert\\\" team:payments\"). Returns matching monitors with facet counts, supporting pagination and sorting."
+    },
+    {
+      "name": "Create Downtime",
+      "category": "Downtimes",
+      "description": "Schedules a downtime (v2) that mutes matching monitors for a scope. Target either a specific monitor by ID or all monitors carrying certain tags. Without a schedule the downtime starts immediately and runs until canceled; provide ISO-8601 start/end for a one-time window."
+    },
+    {
+      "name": "List Downtimes",
+      "category": "Downtimes",
+      "description": "Lists scheduled downtimes (v2), optionally restricted to only currently active ones, with offset-based pagination."
+    },
+    {
+      "name": "Get Downtime",
+      "category": "Downtimes",
+      "description": "Retrieves a downtime's full definition and current status by its ID."
+    },
+    {
+      "name": "Cancel Downtime",
+      "category": "Downtimes",
+      "description": "Cancels a scheduled or active downtime so its monitors resume notifying. Returns no content on success."
+    },
+    {
+      "name": "Create Incident",
+      "category": "Incidents",
+      "description": "Declares a new incident in Datadog Incident Management. Requires Incident Management to be enabled for the organization (the API is in preview). Set the customer-impact flag and optional severity to drive response workflows."
+    },
+    {
+      "name": "List Incidents",
+      "category": "Incidents",
+      "description": "Lists incidents for the organization with offset-based pagination. Requires Incident Management to be enabled (the API is in preview)."
+    },
+    {
+      "name": "Get Incident",
+      "category": "Incidents",
+      "description": "Retrieves an incident's full details, including state, severity, impact, and timeline metadata. Requires Incident Management to be enabled (the API is in preview)."
+    },
+    {
+      "name": "Update Incident",
+      "category": "Incidents",
+      "description": "Updates an incident's title, state, severity, or customer impact. Only the fields you provide are changed. Requires Incident Management to be enabled (the API is in preview)."
+    },
+    {
+      "name": "Delete Incident",
+      "category": "Incidents",
+      "description": "Permanently deletes an incident and its timeline. Requires Incident Management to be enabled (the API is in preview). Returns no content on success."
+    },
+    {
+      "name": "Create Dashboard",
+      "category": "Dashboards",
+      "description": "Creates a dashboard from raw widget JSON. Widgets follow the Datadog widget JSON schema (each item has a \"definition\" object, e.g. {\"definition\":{\"type\":\"timeseries\",\"requests\":[{\"q\":\"avg:system.cpu.user{*}\"}]}}). Choose an ordered (top-to-bottom) or free (drag-anywhere) layout."
+    },
+    {
+      "name": "List Dashboards",
+      "category": "Dashboards",
+      "description": "Lists all dashboards in the organization with summary information (ID, title, author, URL). Optionally filters to shared or deleted dashboards, with offset-based pagination."
+    },
+    {
+      "name": "Get Dashboard",
+      "category": "Dashboards",
+      "description": "Retrieves a dashboard's full definition, including all widget JSON, template variables, and layout settings."
+    },
+    {
+      "name": "Delete Dashboard",
+      "category": "Dashboards",
+      "description": "Deletes a dashboard. Recently deleted dashboards can be listed via List Dashboards with the Deleted Only filter."
+    },
+    {
+      "name": "Create SLO",
+      "category": "SLOs",
+      "description": "Creates a service level objective. A metric-based SLO computes the ratio of a numerator query over a denominator query (e.g. good requests / total requests); a monitor-based SLO tracks the uptime of one or more monitors. The threshold defines the target percentage over a timeframe."
+    },
+    {
+      "name": "List SLOs",
+      "category": "SLOs",
+      "description": "Lists service level objectives, optionally filtered by IDs, name query, SLO tags, or underlying metric queries, with offset-based pagination."
+    },
+    {
+      "name": "Get SLO",
+      "category": "SLOs",
+      "description": "Retrieves a service level objective's full definition, optionally including the IDs of alerts configured against it."
+    },
+    {
+      "name": "Update SLO",
+      "category": "SLOs",
+      "description": "Updates a service level objective. Fetches the current definition first and merges your changes, so only the fields you provide are modified. The SLO type cannot be changed after creation."
+    },
+    {
+      "name": "Delete SLO",
+      "category": "SLOs",
+      "description": "Permanently deletes a service level objective. Fails if the SLO is referenced by dashboards or SLO alerts unless those references are removed first."
+    },
+    {
+      "name": "Get SLO History",
+      "category": "SLOs",
+      "description": "Retrieves an SLO's history over a time window: overall uptime percentage, error budget remaining, and the series behind them. The window may span up to 90 days."
+    },
+    {
+      "name": "List Hosts",
+      "category": "Hosts",
+      "description": "Lists infrastructure hosts reporting to Datadog, with search filtering (e.g. \"env:prod\", a host name fragment, or a tag), sorting, pagination, and optional mute/metadata detail."
+    },
+    {
+      "name": "Get Host Totals",
+      "category": "Hosts",
+      "description": "Returns the total number of active and up hosts in the organization over roughly the last 2 hours."
+    },
+    {
+      "name": "Mute Host",
+      "category": "Hosts",
+      "description": "Mutes a host so all monitors covering it stop sending notifications, optionally until a given time and with a note explaining why."
+    },
+    {
+      "name": "Unmute Host",
+      "category": "Hosts",
+      "description": "Unmutes a host so its monitors resume sending notifications."
+    },
+    {
+      "name": "List All Host Tags",
+      "category": "Host Tags",
+      "description": "Returns a mapping of every host tag in the organization to the hosts carrying it, optionally restricted to one tag source (e.g. user, chef, aws)."
+    },
+    {
+      "name": "Get Host Tags",
+      "category": "Host Tags",
+      "description": "Returns the list of tags applied to a specific host, optionally restricted to one tag source."
+    },
+    {
+      "name": "Add Host Tags",
+      "category": "Host Tags",
+      "description": "Adds tags to a host without removing its existing tags. Tags apply to all metrics the host reports."
+    },
+    {
+      "name": "Update Host Tags",
+      "category": "Host Tags",
+      "description": "Replaces all of a host's tags (for the given source) with a new set. Existing tags from that source not included in the new set are removed."
+    },
+    {
+      "name": "Remove Host Tags",
+      "category": "Host Tags",
+      "description": "Removes all tags from a host for the given source. Returns no content on success."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Lists organization users with optional text filtering, status filtering, sorting, and page-based pagination."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a user's details, including name, email, status, and organization role relationships."
+    },
+    {
+      "name": "Create User",
+      "category": "Users",
+      "description": "Creates a user in the organization and, by default, emails them an invitation to join. The user appears with Pending status until they accept."
+    },
+    {
+      "name": "Disable User",
+      "category": "Users",
+      "description": "Disables a user so they can no longer access the organization. Users are disabled rather than deleted, so their handle remains attached to past activity. Returns no content on success."
+    },
+    {
+      "name": "List Synthetics Tests",
+      "category": "Synthetics",
+      "description": "Lists all Synthetic tests (API and browser) configured in the organization, including their public IDs, status, locations, and tags."
+    },
+    {
+      "name": "Get Synthetics Test",
+      "category": "Synthetics",
+      "description": "Retrieves the full configuration of a Synthetic test by its public ID, including request/steps definition, assertions, locations, and scheduling options."
+    },
+    {
+      "name": "Trigger Synthetics CI Tests",
+      "category": "Synthetics",
+      "description": "Triggers one or more Synthetic tests on demand (CI mode) and returns the result IDs to poll for outcomes. Useful for gating deployments on synthetic checks."
+    },
+    {
+      "name": "Get Synthetics Test Results",
+      "category": "Synthetics",
+      "description": "Retrieves the latest results of a Synthetic test, optionally bounded to a time window and filtered by probe locations. Choose the test type to route to the correct results endpoint."
+    },
+    {
+      "name": "Submit Service Check",
+      "category": "Service Checks",
+      "description": "Submits a service check status for a host. Service checks feed check-based monitors and the host status overview. The message is limited to 500 characters and is only shown for Warning and Critical statuses."
+    },
+    {
+      "name": "List Notebooks",
+      "category": "Notebooks",
+      "description": "Lists notebooks in the organization with summary information, supporting text search, sorting, and offset-based pagination."
+    },
+    {
+      "name": "Get Notebook",
+      "category": "Notebooks",
+      "description": "Retrieves a notebook's full content, including all cells (markdown, timeseries, log stream, etc.) and its global time frame."
+    },
+    {
+      "name": "Validate API Key",
+      "category": "Account",
+      "description": "Checks that the configured API key is valid on the configured Datadog site. Useful as a connection test when setting up the integration."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Push deployment or release markers into the event stream and correlate them with metric and log spikes",
+    "Submit custom business metrics and query timeseries to drive alerting and reporting workflows",
+    "Ship application logs to the log intake and search indexed logs for errors during incident triage",
+    "Programmatically create, mute, and search monitors and schedule downtimes around planned maintenance",
+    "Declare and update incidents, sync host tags, and gate deployments on Synthetic CI test runs"
+  ],
+  "agentIdeas": [
+    "When a **Datadog** \"Search Monitors\" run surfaces monitors in the alert state, use **PagerDuty** \"Create Incident\" to page the on-call responder with the failing monitor details.",
+    "After a **Datadog** \"Create Incident\" fires, use **Slack** \"Send Message To Channel\" to broadcast the incident title and severity to the team's incident channel for coordination.",
+    "When a **Sentry** \"Get Issue\" reveals a spike in a production error, use **Datadog** \"Search Logs\" to pull the correlated backend log lines and **Datadog** \"Post Event\" to mark the investigation on the event stream."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/datadog/public/icon.png",
+  "sourcePaths": {
+    "service": "services/datadog",
+    "readme": "services/datadog/README.md",
+    "index": "services/datadog/src/index.js"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "slug": "google-vertex-ai",
+  "name": "Google Vertex AI",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [Google Vertex AI](https://cloud.google.com/vertex-ai), Google Cloud's enterprise AI platform. Generate text and multimodal content with Gemini models, create embeddings, generate images with Imagen, and call any partner or open model (Anthropic Claude, Meta Llama, Mistral, AI21, and more) through the Vertex AI Model Garden. Authentication is self-contained: the service signs a service-account JWT and exchanges it for a Google Cloud access token, with no SDK, no OAuth consent screen, and zero npm dependencies.",
+  "actionCount": 7,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Content Generation",
+    "Embeddings",
+    "Image Generation",
+    "Model Garden"
+  ],
+  "actions": [
+    {
+      "name": "Generate Content",
+      "category": "Content Generation",
+      "description": "Generates text with a Gemini model on Vertex AI from a single prompt. Supports an optional system instruction plus temperature and max output token controls, and returns the generated text together with the finish reason and token usage. For multi-turn history, multimodal inputs, structured JSON output, Google Search grounding, thinking control, function calling, or safety settings, use 'Generate Content (Advanced)'."
+    },
+    {
+      "name": "Generate Content (Advanced)",
+      "category": "Content Generation",
+      "description": "Generates content with the full Gemini feature set on Vertex AI: multimodal inputs (images, audio, video, PDFs sent inline from URLs), multi-turn conversation history, Google Search grounding with citations, custom function declarations, structured JSON output via a response schema, thinking budget control for reasoning models, safety settings, and full sampling controls (temperature, top-p, top-k, stop sequences, seed). Returns the text plus thought summaries, function calls, grounding metadata, finish reason, and token usage."
+    },
+    {
+      "name": "Count Tokens",
+      "category": "Content Generation",
+      "description": "Counts the number of tokens a text prompt would consume for a given Gemini model on Vertex AI, without generating content or incurring generation cost. Useful for staying within context windows and estimating costs before a request."
+    },
+    {
+      "name": "Create Embeddings",
+      "category": "Embeddings",
+      "description": "Generates dense vector embeddings for one or more texts using a Vertex AI embedding model (e.g. 'gemini-embedding-001'). Each text is embedded in its own request for compatibility with models that accept a single instance per call, and the vectors are returned in the same order as the input texts. Supports an optional task type to optimize the embeddings for a downstream use case, and an optional output dimensionality to truncate the vectors."
+    },
+    {
+      "name": "Generate Image",
+      "category": "Image Generation",
+      "description": "Generates images from a text prompt using an Imagen model on Vertex AI. Supports 1 to 4 images per request, a choice of aspect ratios, and an optional negative prompt (honored by older Imagen models only). Generated images are saved to FlowRunner file storage and returned as public URLs."
+    },
+    {
+      "name": "Call Partner Model",
+      "category": "Model Garden",
+      "description": "Calls any partner or open model deployed through the Vertex AI Model Garden (Anthropic Claude, Meta Llama, Mistral, AI21, and others) via the rawPredict endpoint. The request body is passed through verbatim in the publisher's native schema, so any model-specific feature is available. For Anthropic models, use the Messages API schema and include \"anthropic_version\": \"vertex-2023-10-16\" in the body. The publisher's raw response is returned unchanged."
+    },
+    {
+      "name": "Predict",
+      "category": "Model Garden",
+      "description": "Sends a generic prediction request to any Vertex AI predict target: a custom model deployed to an endpoint, or a publisher model that uses the instances/parameters schema. Provide the target as an endpoint resource (e.g. 'endpoints/1234567890'), a full publisher path (e.g. 'publishers/google/models/text-embedding-005'), or a bare Google model ID. Instances and parameters are passed through verbatim and the raw prediction response is returned."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generate text, summaries, or structured JSON output from Gemini models grounded in Google Search",
+    "Analyze multimodal inputs (images, audio, video, PDFs) alongside conversation history",
+    "Create dense vector embeddings for semantic search, classification, or retrieval pipelines",
+    "Generate images from text prompts with Imagen and store them as shareable file URLs",
+    "Call enterprise partner models (Anthropic Claude, Meta Llama, Mistral) through Model Garden",
+    "Estimate token usage before a request to stay within context windows and manage cost"
+  ],
+  "agentIdeas": [
+    "Use **Google Drive** \"On New File\" trigger and \"Download File\" to fetch an uploaded contract, then call **Google Vertex AI** \"Generate Content (Advanced)\" with the PDF as inline media to extract structured JSON terms.",
+    "Call **Google Vertex AI** \"Generate Content\" to draft a customer response, then use **Slack** \"Send Message To Channel\" to post it for human review before sending.",
+    "Use **Google Vertex AI** \"Generate Image\" to produce marketing visuals from a prompt, then **Notion** \"Create Page\" to publish the generated image URLs into a content calendar.",
+    "Call **Google Vertex AI** \"Create Embeddings\" for each row of source text, then use **Google Sheets** \"Add Row\" to store the vectors alongside their labels for a lightweight semantic index."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/google-vertex-ai/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/google-vertex-ai",
+    "readme": "services/google-vertex-ai/README.md",
+    "index": "services/google-vertex-ai/src/index.js"
+  }
+}

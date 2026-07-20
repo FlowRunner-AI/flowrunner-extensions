@@ -1,0 +1,129 @@
+{
+  "slug": "cal-com",
+  "name": "Cal.com",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Cal.com](https://cal.com), the open-source scheduling platform. Manage bookings, event types, availability slots, and schedules, and trigger flows in real time when Cal.com events occur.",
+  "actionCount": 17,
+  "triggerCount": 1,
+  "operationCategories": [
+    "Bookings",
+    "Event Types",
+    "Availability",
+    "Schedules",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "List Bookings",
+      "category": "Bookings",
+      "description": "Lists bookings for the connected Cal.com account with optional filters by status, attendee email, event type, and date range. Supports paging via take and skip. Use this to find bookings and their UIDs for follow-up actions."
+    },
+    {
+      "name": "Get Booking",
+      "category": "Bookings",
+      "description": "Retrieves a single booking by its UID, returning its status, times, event type, attendees, location, and metadata. Use this to inspect a booking before cancelling, rescheduling, or confirming it."
+    },
+    {
+      "name": "Create Booking",
+      "category": "Bookings",
+      "description": "Creates a new booking for an event type at a specific start time on behalf of an attendee. The attendee's name, email, and time zone are required. Use Get Available Slots first to find a valid start time. Optionally pass custom booking-field responses, guests, a location, and metadata."
+    },
+    {
+      "name": "Cancel Booking",
+      "category": "Bookings",
+      "description": "Cancels an existing booking by its UID, with an optional reason recorded on the cancellation. Notifies attendees per the event type's settings. This cannot be undone; create a new booking to rebook."
+    },
+    {
+      "name": "Reschedule Booking",
+      "category": "Bookings",
+      "description": "Reschedules a booking to a new start time, cancelling the original and creating a linked replacement. Returns the new booking. Use Get Available Slots to pick a valid new start time."
+    },
+    {
+      "name": "Confirm Booking",
+      "category": "Bookings",
+      "description": "Confirms a booking that is awaiting the host's approval (an event type that requires confirmation). The booking moves from unconfirmed/requested to accepted and attendees are notified."
+    },
+    {
+      "name": "Decline Booking",
+      "category": "Bookings",
+      "description": "Declines a booking that is awaiting the host's approval, with an optional reason. The booking is rejected and attendees are notified. Use this for event types that require confirmation."
+    },
+    {
+      "name": "Mark Absent",
+      "category": "Bookings",
+      "description": "Marks the host and/or specific attendees of a booking as no-shows (absent). Use this after a meeting to record who did not attend. Turn on Host Absent to mark the host, and list attendee emails to mark them absent."
+    },
+    {
+      "name": "List Event Types",
+      "category": "Event Types",
+      "description": "Lists the event types available for a Cal.com user, optionally filtered by username and event slug. Event types define bookable meeting configurations (length, availability, location). Use this to discover event type IDs for creating bookings."
+    },
+    {
+      "name": "Get Event Type",
+      "category": "Event Types",
+      "description": "Retrieves a single event type by its ID, returning its title, slug, length, description, locations, availability schedule, and booking fields. Use this to inspect an event type before booking or updating it."
+    },
+    {
+      "name": "Create Event Type",
+      "category": "Event Types",
+      "description": "Creates a new event type for the connected account with a title, URL slug, and length in minutes. Optionally set a description, hide it from the public page, and add locations. The event type becomes bookable once created."
+    },
+    {
+      "name": "Update Event Type",
+      "category": "Event Types",
+      "description": "Updates an existing event type's title, slug, length, description, or hidden state. Only the fields you provide are changed; leave a field blank to keep its current value."
+    },
+    {
+      "name": "Delete Event Type",
+      "category": "Event Types",
+      "description": "Permanently deletes an event type by its ID. Existing bookings for the event type are not removed, but no new bookings can be made against it. This cannot be undone."
+    },
+    {
+      "name": "Get Available Slots",
+      "category": "Availability",
+      "description": "Returns the available time slots for an event type within a date range, honoring the host's availability and existing bookings. Use the returned start times to create or reschedule a booking. Optionally set the time zone the slots are expressed in."
+    },
+    {
+      "name": "List Schedules",
+      "category": "Schedules",
+      "description": "Lists the availability schedules for the connected Cal.com account. Schedules define working hours and time zones that event types reference. Use this to find schedule IDs."
+    },
+    {
+      "name": "Get Schedule",
+      "category": "Schedules",
+      "description": "Retrieves a single availability schedule by its ID, returning its name, time zone, default flag, and per-day working hours. Use this to inspect the availability an event type uses."
+    },
+    {
+      "name": "Get My Profile",
+      "category": "Account",
+      "description": "Retrieves the profile of the Cal.com user the API key belongs to — username, email, name, time zone, and default schedule. Use this to verify the connection and read the account's default settings."
+    }
+  ],
+  "triggers": [
+    "On Cal.com Event"
+  ],
+  "idealUseCases": [
+    "Automatically book, reschedule, or cancel Cal.com meetings from an inbound form, CRM, or chat message.",
+    "Sync new and cancelled bookings into a spreadsheet, database, or notification channel.",
+    "Confirm or decline bookings that require approval as part of an automated review flow.",
+    "Look up open availability slots and create a booking at the first free time.",
+    "Kick off onboarding, reminder, or follow-up workflows the moment a Cal.com event fires."
+  ],
+  "agentIdeas": [
+    "When the **Cal.com** \"On Cal.com Event\" trigger fires for a new booking, use **Slack** \"Send Message To Channel\" to post the attendee, time, and event type to a scheduling channel.",
+    "Use **Cal.com** \"Get Available Slots\" to find the next open time, then \"Create Booking\" to schedule the meeting, and log it with **Google Sheets** \"Add Row\".",
+    "When the **Cal.com** \"On Cal.com Event\" trigger fires for a cancellation, use **Gmail** \"Send Message\" to email the host a rebooking link."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/cal-com/public/icon.png",
+  "sourcePaths": {
+    "service": "services/cal-com",
+    "readme": "services/cal-com/README.md",
+    "index": "services/cal-com/src/index.js"
+  }
+}

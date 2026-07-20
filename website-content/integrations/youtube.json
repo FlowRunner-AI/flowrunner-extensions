@@ -1,0 +1,477 @@
+{
+  "slug": "youtube",
+  "name": "YouTube",
+  "marketingCategory": "Social & Media Generation",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Connects FlowRunner to the YouTube Data API and YouTube Analytics/Reporting APIs over OAuth2, letting you manage channels, videos, playlists, comments, captions, subscriptions, live streams, and pull analytics for the authenticated account.",
+  "actionCount": 85,
+  "triggerCount": 4,
+  "operationCategories": [
+    "Channel",
+    "Videos",
+    "Playlists",
+    "Comments & Moderation",
+    "Search & Discovery",
+    "Subscriptions",
+    "Captions",
+    "Analytics",
+    "Reporting",
+    "Live Streaming"
+  ],
+  "actions": [
+    {
+      "name": "Get My Channel",
+      "category": "Channel",
+      "description": "Retrieves the authenticated user's primary YouTube channel including snippet, statistics, branding, and content details. Quota cost: 1 unit per requested part."
+    },
+    {
+      "name": "Get Channel",
+      "category": "Channel",
+      "description": "Retrieves a YouTube channel by ID, handle (e.g., @MrBeast), or legacy username. Resolves the appropriate filter automatically. Quota cost: 1 unit per requested part."
+    },
+    {
+      "name": "Update Channel Branding",
+      "category": "Channel",
+      "description": "Updates the authenticated user's channel branding settings (title, description, country, keywords, default language)."
+    },
+    {
+      "name": "Restore Channel Branding",
+      "category": "Channel",
+      "description": "Restores channel branding from a previously captured snapshot. Pass the entire brandingSettings object (e.g., from Get My Channel). Use when reverting changes from Update Channel Branding."
+    },
+    {
+      "name": "Test Connection",
+      "category": "Channel",
+      "description": "Verify the YouTube connection is working. Returns the connected channel's basic info — useful for setup wizards or health checks."
+    },
+    {
+      "name": "Get Video by URL",
+      "category": "Videos",
+      "description": "Look up a video using a YouTube URL (watch link, shorts, embed, youtu.be) instead of an ID. Returns the same payload as Get Video."
+    },
+    {
+      "name": "Get Playlist by URL",
+      "category": "Playlists",
+      "description": "Look up a playlist by URL or ID. Returns the playlist's snippet, status, and item count."
+    },
+    {
+      "name": "Get Latest Videos",
+      "category": "Videos",
+      "description": "Get the most recent videos uploaded by a channel, identified by URL, @handle, username, or UC... ID. Cheap (3 quota units) compared to a search-based approach."
+    },
+    {
+      "name": "Summarize Channel",
+      "category": "Channel",
+      "description": "One-call channel summary: identity, statistics, and latest 5 videos. Useful for AI dashboards and channel cards."
+    },
+    {
+      "name": "List My Videos",
+      "category": "Videos",
+      "description": "Get videos uploaded to your YouTube channel, sorted newest-first. Returns video IDs, titles, descriptions, and thumbnails. Use for content audits, dashboards, or piping recent uploads into a workflow. (API quota: 2 units per page — efficient compared to search.)"
+    },
+    {
+      "name": "Get Video",
+      "category": "Videos",
+      "description": "Retrieves full metadata for one or more videos by ID, including statistics, content details, and status. Quota cost: 1 unit per part."
+    },
+    {
+      "name": "List Popular Videos",
+      "category": "Videos",
+      "description": "Get currently trending videos in a country, optionally filtered by category. Returns titles, view counts, and channel info. Use for trend analysis, content strategy, or surfacing popular content."
+    },
+    {
+      "name": "Upload Video",
+      "category": "Videos",
+      "description": "Upload a video to YouTube. Pick a video file from Flowrunner storage or paste any publicly fetchable URL. Set title, description, tags, category, privacy, and optional schedule time. Use for publishing pipelines, automated re-uploads, or content syndication. (API quota: 1600 units — heavy; ~6 uploads per default daily quota.)"
+    },
+    {
+      "name": "Update Video",
+      "category": "Videos",
+      "description": "Updates metadata for an existing video. Only provided fields are changed; others are preserved via read-modify-write."
+    },
+    {
+      "name": "Delete Video",
+      "category": "Videos",
+      "description": "Deletes a video. Authenticated user must own the video."
+    },
+    {
+      "name": "Rate Video",
+      "category": "Videos",
+      "description": "Sets the authenticated user's rating on a video (like, dislike, or none)."
+    },
+    {
+      "name": "Get Video Rating",
+      "category": "Videos",
+      "description": "Returns the authenticated user's current rating(s) on one or more videos."
+    },
+    {
+      "name": "Report Video Abuse",
+      "category": "Comments & Moderation",
+      "description": "Reports a video for abuse. Provide a reason ID from Get Video Abuse Report Reasons."
+    },
+    {
+      "name": "Set Video Thumbnail",
+      "category": "Videos",
+      "description": "Sets a custom thumbnail for a video. Image must be JPEG/PNG, max 2MB."
+    },
+    {
+      "name": "List Playlists",
+      "category": "Playlists",
+      "description": "Lists playlists owned by a channel or by ID. Defaults to authenticated user's playlists."
+    },
+    {
+      "name": "Create Playlist",
+      "category": "Playlists",
+      "description": "Creates a new playlist on the authenticated user's channel."
+    },
+    {
+      "name": "Update Playlist",
+      "category": "Playlists",
+      "description": "Updates an existing playlist's metadata."
+    },
+    {
+      "name": "Delete Playlist",
+      "category": "Playlists",
+      "description": "Deletes a playlist owned by the authenticated user."
+    },
+    {
+      "name": "List Playlist Items",
+      "category": "Playlists",
+      "description": "Lists items in a playlist."
+    },
+    {
+      "name": "Add Video to Playlist",
+      "category": "Playlists",
+      "description": "Adds a video to a playlist. Optionally specify position."
+    },
+    {
+      "name": "Update Playlist Item",
+      "category": "Playlists",
+      "description": "Updates a playlist item (e.g., reorder by changing position)."
+    },
+    {
+      "name": "Remove Playlist Item",
+      "category": "Playlists",
+      "description": "Removes an item from a playlist."
+    },
+    {
+      "name": "Search Videos",
+      "category": "Search & Discovery",
+      "description": "Search YouTube for videos by keywords with filters for duration, definition, captions, recency, and live status. Returns video titles, channel info, and thumbnails. Use for content discovery, trend research, or building dynamic feeds. Statistics (view counts, likes) are NOT included by default — enable \"Enrich Statistics\" to add them in one extra call. (API quota: 100 units per call, +1 if enriching.)"
+    },
+    {
+      "name": "Search Channels",
+      "category": "Search & Discovery",
+      "description": "Search YouTube for channels matching keywords. Returns channel titles, IDs, and descriptions. Use for finding creators, competitor research, or building channel directories. (API quota: 100 units per call.)"
+    },
+    {
+      "name": "Search Playlists",
+      "category": "Search & Discovery",
+      "description": "Search YouTube for public playlists by keywords. Returns playlist titles, owners, and IDs. Use for content curation discovery or finding curated collections. (API quota: 100 units per call.)"
+    },
+    {
+      "name": "List Subscriptions",
+      "category": "Subscriptions",
+      "description": "Lists subscriptions. By default returns the authenticated user's subscriptions."
+    },
+    {
+      "name": "Subscribe to Channel",
+      "category": "Subscriptions",
+      "description": "Subscribes the authenticated user to a channel."
+    },
+    {
+      "name": "Unsubscribe",
+      "category": "Subscriptions",
+      "description": "Removes a subscription. Pass the subscription ID (not channel ID) — get it from List Subscriptions."
+    },
+    {
+      "name": "List Comment Threads",
+      "category": "Comments & Moderation",
+      "description": "Lists top-level comment threads on a video, channel, or all threads related to a channel."
+    },
+    {
+      "name": "List Comment Replies",
+      "category": "Comments & Moderation",
+      "description": "Lists replies to a parent comment."
+    },
+    {
+      "name": "Post Top-Level Comment",
+      "category": "Comments & Moderation",
+      "description": "Posts a top-level comment on a video or channel discussion."
+    },
+    {
+      "name": "Post Comment Reply",
+      "category": "Comments & Moderation",
+      "description": "Posts a reply to an existing comment."
+    },
+    {
+      "name": "Update Comment",
+      "category": "Comments & Moderation",
+      "description": "Updates an existing comment owned by the authenticated user."
+    },
+    {
+      "name": "Delete Comment",
+      "category": "Comments & Moderation",
+      "description": "Deletes a comment."
+    },
+    {
+      "name": "Set Comment Moderation Status",
+      "category": "Comments & Moderation",
+      "description": "Sets the moderation status for one or more comments. Channel owners only."
+    },
+    {
+      "name": "Mark Comments as Spam",
+      "category": "Comments & Moderation",
+      "description": "Marks one or more comments as spam."
+    },
+    {
+      "name": "List Captions",
+      "category": "Captions",
+      "description": "Lists caption tracks for a video."
+    },
+    {
+      "name": "Download Caption",
+      "category": "Captions",
+      "description": "Downloads a caption track. Returns text content. Quota cost: 200 units."
+    },
+    {
+      "name": "Upload Caption",
+      "category": "Captions",
+      "description": "Uploads a caption track for a video."
+    },
+    {
+      "name": "Delete Caption",
+      "category": "Captions",
+      "description": "Deletes a caption track."
+    },
+    {
+      "name": "List Activities",
+      "category": "Channel",
+      "description": "Lists recent activities for a channel (uploads, likes, etc.)."
+    },
+    {
+      "name": "Run Analytics Query",
+      "category": "Analytics",
+      "description": "Run a custom YouTube Analytics query with full control over metrics, dimensions, filters, and sort. Use when the canned reports (Channel Overview, Top Videos, etc.) don't cover your use case. Defaults to the authenticated channel."
+    },
+    {
+      "name": "Get Channel Overview",
+      "category": "Analytics",
+      "description": "Returns headline channel metrics for a date range (views, watch time, subs gained, likes, comments, shares). Optionally includes revenue if monetary scope is enabled."
+    },
+    {
+      "name": "Get Channel Time Series",
+      "category": "Analytics",
+      "description": "Returns daily time-series for a channel across requested metrics."
+    },
+    {
+      "name": "Get Top Videos",
+      "category": "Analytics",
+      "description": "Returns top videos for a channel ranked by a metric (default: views)."
+    },
+    {
+      "name": "Get Video Analytics",
+      "category": "Analytics",
+      "description": "Returns analytics for one or more specific videos."
+    },
+    {
+      "name": "Get Demographics Report",
+      "category": "Analytics",
+      "description": "Returns audience demographics breakdown by age group and gender."
+    },
+    {
+      "name": "Get Traffic Source Report",
+      "category": "Analytics",
+      "description": "Returns traffic source breakdown for the channel (where viewers come from)."
+    },
+    {
+      "name": "Get Device Report",
+      "category": "Analytics",
+      "description": "Returns viewership breakdown by device type and operating system."
+    },
+    {
+      "name": "Get Geography Report",
+      "category": "Analytics",
+      "description": "Returns country-level breakdown for the channel."
+    },
+    {
+      "name": "List Analytics Groups",
+      "category": "Analytics",
+      "description": "Lists analytics groups owned by the authenticated user. Groups are custom collections of videos/playlists/channels for analytics aggregation."
+    },
+    {
+      "name": "Create Analytics Group",
+      "category": "Analytics",
+      "description": "Creates a new analytics group."
+    },
+    {
+      "name": "Delete Analytics Group",
+      "category": "Analytics",
+      "description": "Deletes an analytics group."
+    },
+    {
+      "name": "List Analytics Group Items",
+      "category": "Analytics",
+      "description": "Lists items inside an analytics group."
+    },
+    {
+      "name": "List Report Types",
+      "category": "Reporting",
+      "description": "List the report types YouTube can generate as bulk daily CSVs. Use to discover which scheduled reports you can subscribe to."
+    },
+    {
+      "name": "List Reporting Jobs",
+      "category": "Reporting",
+      "description": "List the reporting jobs you've already scheduled. Each job generates a daily CSV for one report type."
+    },
+    {
+      "name": "Create Reporting Job",
+      "category": "Reporting",
+      "description": "Schedule a daily CSV report. Once created, YouTube starts generating reports for the chosen report type every day; download via List Reports + Get Report. Idempotent on (reportTypeId, name)."
+    },
+    {
+      "name": "Delete Reporting Job",
+      "category": "Reporting",
+      "description": "Cancel a scheduled reporting job. Already-generated reports remain available for ~60 days."
+    },
+    {
+      "name": "List Reports",
+      "category": "Reporting",
+      "description": "List the daily-generated reports available for a job. Each report covers one calendar day."
+    },
+    {
+      "name": "Get Report",
+      "category": "Reporting",
+      "description": "Get a single generated report. Choose 'metadata' for the descriptor, 'raw' to download the CSV text, or 'parsed' to download and parse into rows of objects."
+    },
+    {
+      "name": "List Live Broadcasts",
+      "category": "Live Streaming",
+      "description": "List your live broadcasts filtered by lifecycle status. Returns titles, scheduled times, and live chat IDs."
+    },
+    {
+      "name": "Create Live Broadcast",
+      "category": "Live Streaming",
+      "description": "Schedule a new live broadcast. Returns the broadcast resource including the live chat ID."
+    },
+    {
+      "name": "Update Live Broadcast",
+      "category": "Live Streaming",
+      "description": "Update broadcast metadata. Only provided fields are changed."
+    },
+    {
+      "name": "Delete Live Broadcast",
+      "category": "Live Streaming",
+      "description": "Delete a scheduled or completed broadcast."
+    },
+    {
+      "name": "Transition Broadcast",
+      "category": "Live Streaming",
+      "description": "Move a broadcast through its lifecycle (testing → live → complete). Bound stream must be active before transitioning to 'live'."
+    },
+    {
+      "name": "Bind Broadcast to Stream",
+      "category": "Live Streaming",
+      "description": "Bind a live ingestion stream to a broadcast (or unbind by passing empty Stream)."
+    },
+    {
+      "name": "Insert Cuepoint",
+      "category": "Live Streaming",
+      "description": "Insert an ad cuepoint into a live broadcast. Channel must be partnered/monetized."
+    },
+    {
+      "name": "List Live Streams",
+      "category": "Live Streaming",
+      "description": "List your ingestion streams (RTMP/HLS endpoints with stream keys)."
+    },
+    {
+      "name": "Create Live Stream",
+      "category": "Live Streaming",
+      "description": "Create an ingestion stream config (RTMP/HLS endpoint). Returns the stream key needed to broadcast."
+    },
+    {
+      "name": "Update Live Stream",
+      "category": "Live Streaming",
+      "description": "Update an ingestion stream's title or CDN config."
+    },
+    {
+      "name": "Delete Live Stream",
+      "category": "Live Streaming",
+      "description": "Delete an ingestion stream config."
+    },
+    {
+      "name": "List Live Chat Messages",
+      "category": "Live Streaming",
+      "description": "Poll messages from a live chat. Honor the returned pollingIntervalMillis between calls. Only works while the broadcast is testing/live."
+    },
+    {
+      "name": "Post Live Chat Message",
+      "category": "Live Streaming",
+      "description": "Post a text message to a live chat."
+    },
+    {
+      "name": "Delete Live Chat Message",
+      "category": "Live Streaming",
+      "description": "Delete a live chat message. Owner or moderators only."
+    },
+    {
+      "name": "List Live Chat Moderators",
+      "category": "Live Streaming",
+      "description": "List moderators of a live chat."
+    },
+    {
+      "name": "Add Live Chat Moderator",
+      "category": "Live Streaming",
+      "description": "Promote a viewer to chat moderator for an active live chat."
+    },
+    {
+      "name": "Remove Live Chat Moderator",
+      "category": "Live Streaming",
+      "description": "Remove a chat moderator."
+    },
+    {
+      "name": "Ban User from Live Chat",
+      "category": "Live Streaming",
+      "description": "Ban a user from a live chat (permanent or for a duration)."
+    },
+    {
+      "name": "Remove Live Chat Ban",
+      "category": "Live Streaming",
+      "description": "Lift a live chat ban."
+    },
+    {
+      "name": "List Super Chats",
+      "category": "Live Streaming",
+      "description": "List Super Chat events from your channel (last 30 days). Authenticated channel must be the recipient."
+    }
+  ],
+  "triggers": [
+    "On New Video on Channel",
+    "On New Comment on Video",
+    "On New Subscriber",
+    "On New Video on Channel (Realtime)"
+  ],
+  "idealUseCases": [
+    "Automate publishing: upload videos, set thumbnails, manage playlists, and update metadata as part of a content pipeline.",
+    "Moderate and engage: monitor comment threads, reply, mark spam, and run live-chat moderation during streams.",
+    "Report on performance: pull channel/video analytics, demographics, traffic-source, device, and geography reports into spreadsheets or dashboards.",
+    "React to channel activity: trigger downstream workflows when a new video, comment, or subscriber appears.",
+    "Operate live events: create and transition broadcasts, bind streams, insert cuepoints, and manage live chat."
+  ],
+  "agentIdeas": [
+    "When **YouTube** \"On New Video on Channel\" fires, use **YouTube** \"Summarize Channel\" plus **Notion** \"Create Page\" to log each upload with a channel summary into a content tracker.",
+    "On a **YouTube** \"On New Comment on Video\" trigger, evaluate sentiment and call **Slack** \"Send Message To Channel\" to alert the community team, optionally replying via **YouTube** \"Post Comment Reply\".",
+    "Pull performance with **YouTube** \"Get Channel Time Series\" and \"Get Top Videos\", then use **Google Sheets** \"Add Row\" to append the metrics into a weekly analytics report."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/youtube/public/icon.png",
+  "sourcePaths": {
+    "service": "services/youtube",
+    "readme": "services/youtube/README.md",
+    "index": "services/youtube/src/index.js"
+  }
+}

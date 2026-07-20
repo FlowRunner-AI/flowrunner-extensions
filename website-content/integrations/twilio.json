@@ -1,0 +1,111 @@
+{
+  "slug": "twilio",
+  "name": "Twilio",
+  "marketingCategory": "SMS, Voice & Push",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Comprehensive Twilio integration for SMS messaging, voice calls, and phone number management with secure API key authentication for reliable communication workflows.",
+  "actionCount": 13,
+  "triggerCount": 2,
+  "operationCategories": [
+    "Messaging",
+    "Voice",
+    "Conversations",
+    "Phone Numbers",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Send SMS",
+      "category": "Messaging",
+      "description": "Sends an SMS message to a specified phone number using Twilio's messaging service."
+    },
+    {
+      "name": "Make Voice Call",
+      "category": "Voice",
+      "description": "Initiates a voice call to a specified phone number with custom instructions or TwiML."
+    },
+    {
+      "name": "Get Message Details",
+      "category": "Messaging",
+      "description": "Retrieves detailed information about a specific SMS or MMS message."
+    },
+    {
+      "name": "Get Call Details",
+      "category": "Voice",
+      "description": "Retrieves detailed information about a specific voice call."
+    },
+    {
+      "name": "List Messages",
+      "category": "Messaging",
+      "description": "Retrieves a list of SMS and MMS messages from your Twilio account with optional filtering."
+    },
+    {
+      "name": "Start Conversation",
+      "category": "Conversations",
+      "description": "Creates a new conversation and optionally adds participants to it. This combines conversation creation and participant addition into a single operation."
+    },
+    {
+      "name": "Add Conversation Participant (SMS)",
+      "category": "Conversations",
+      "description": "Adds an SMS participant to an existing conversation. The participant will receive messages via SMS."
+    },
+    {
+      "name": "Add Message to Conversation",
+      "category": "Conversations",
+      "description": "Adds a new message to an existing conversation."
+    },
+    {
+      "name": "Get Conversation Messages",
+      "category": "Conversations",
+      "description": "Retrieves a list of messages from a specific conversation."
+    },
+    {
+      "name": "Delete Conversation Message",
+      "category": "Conversations",
+      "description": "Deletes a specific message from a conversation."
+    },
+    {
+      "name": "List Calls",
+      "category": "Voice",
+      "description": "Retrieves a list of voice calls from your Twilio account with optional filtering."
+    },
+    {
+      "name": "List Phone Numbers",
+      "category": "Phone Numbers",
+      "description": "Retrieves all phone numbers associated with your Twilio account."
+    },
+    {
+      "name": "Get Account Info",
+      "category": "Account",
+      "description": "Retrieves information about your Twilio account including balance and status."
+    }
+  ],
+  "triggers": [
+    "On New SMS",
+    "On New Call"
+  ],
+  "idealUseCases": [
+    "Automated SMS notification and alert systems",
+    "Two-factor authentication (2FA) via SMS",
+    "Voice call automation and IVR systems",
+    "Customer communication workflows",
+    "Order status and shipping notifications",
+    "Appointment reminders and confirmations",
+    "Emergency notification systems",
+    "Marketing campaigns via SMS/Voice",
+    "Phone number verification services",
+    "Call center automation and logging"
+  ],
+  "agentIdeas": [],
+  "icon": "/icon.webp",
+  "iconFile": "services/twilio/public/icon.webp",
+  "sourcePaths": {
+    "service": "services/twilio",
+    "readme": "services/twilio/README.md",
+    "index": "services/twilio/src/index.js"
+  }
+}

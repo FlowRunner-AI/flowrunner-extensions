@@ -1,0 +1,168 @@
+{
+  "slug": "clockify",
+  "name": "Clockify",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Clockify](https://clockify.me), the time-tracking service. Track time, manage projects, tasks, clients, and tags, and generate summary reports directly from your flows.",
+  "actionCount": 25,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Time Entries",
+    "Projects",
+    "Tasks",
+    "Clients",
+    "Tags",
+    "Users",
+    "Reports"
+  ],
+  "actions": [
+    {
+      "name": "Add Time Entry",
+      "category": "Time Entries",
+      "description": "Creates a time entry for the authenticated user in a workspace. Provide a start time (ISO-8601) and optionally an end time to log a completed entry; omit the end time to leave the entry running. Supports linking to a project, task, and tags, and setting billable status."
+    },
+    {
+      "name": "Start Timer",
+      "category": "Time Entries",
+      "description": "Starts a running timer for the authenticated user by creating a time entry with the current time as the start and no end time. Any timer already running is stopped automatically by Clockify. Optionally associate the timer with a description, project, task, and tags."
+    },
+    {
+      "name": "Stop Timer",
+      "category": "Time Entries",
+      "description": "Stops the currently running timer for the authenticated user by setting its end time to the current time. Returns the completed time entry. Fails if no timer is currently running."
+    },
+    {
+      "name": "Get Time Entry",
+      "category": "Time Entries",
+      "description": "Retrieves a single time entry by its ID from a workspace, including its description, project, task, tags, billable flag, and time interval with computed duration."
+    },
+    {
+      "name": "List Time Entries",
+      "category": "Time Entries",
+      "description": "Lists time entries for the authenticated user in a workspace, most recent first. Supports filtering by a start/end date range and by project, plus pagination. Set Hydrated to true to receive expanded project, task, and tag objects instead of just their IDs."
+    },
+    {
+      "name": "Update Time Entry",
+      "category": "Time Entries",
+      "description": "Updates an existing time entry by its ID. All fields are replaced with the values provided, so include every field you want to keep. Supports changing the start/end time, description, project, task, tags, and billable status."
+    },
+    {
+      "name": "Delete Time Entry",
+      "category": "Time Entries",
+      "description": "Permanently deletes a time entry by its ID from a workspace. This action cannot be undone."
+    },
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Lists projects in a workspace, optionally filtered by name and archived status, with pagination. Returns each project's name, client, color, billable and public flags, and archived state."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves a single project by its ID from a workspace, including its name, client, color, billable and public flags, estimate settings, and archived state."
+    },
+    {
+      "name": "Create Project",
+      "category": "Projects",
+      "description": "Creates a new project in a workspace. Requires a name, and optionally accepts a client, color, billable and public flags, and a note. The color must be one of Clockify's supported project colors."
+    },
+    {
+      "name": "Update Project",
+      "category": "Projects",
+      "description": "Updates an existing project by its ID. Only the fields provided are changed. Supports updating the name, client, color, billable and public flags, note, and archived status."
+    },
+    {
+      "name": "Delete Project",
+      "category": "Projects",
+      "description": "Permanently deletes a project by its ID from a workspace. The project must be archived before it can be deleted. This action cannot be undone."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Lists tasks belonging to a project within a workspace, with pagination. Returns each task's name, status, assignees, and estimate."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a task within a project. Requires a task name, and optionally accepts a list of assignee user IDs and a time estimate in ISO-8601 duration format (e.g. PT4H for four hours)."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates a task within a project by its ID. Supports changing the task name, assignees, estimate, and status (Active or Done)."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task from a project by its ID. This action cannot be undone."
+    },
+    {
+      "name": "List Clients",
+      "category": "Clients",
+      "description": "Lists clients in a workspace, optionally filtered by name, with pagination. Returns each client's name, note, and archived state."
+    },
+    {
+      "name": "Create Client",
+      "category": "Clients",
+      "description": "Creates a new client in a workspace. Requires a name and optionally accepts a note."
+    },
+    {
+      "name": "Update Client",
+      "category": "Clients",
+      "description": "Updates an existing client by its ID. Supports changing the name, note, and archived status."
+    },
+    {
+      "name": "Delete Client",
+      "category": "Clients",
+      "description": "Permanently deletes a client by its ID from a workspace. This action cannot be undone."
+    },
+    {
+      "name": "List Tags",
+      "category": "Tags",
+      "description": "Lists tags in a workspace with pagination. Returns each tag's name and archived state."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new tag in a workspace. Requires a tag name."
+    },
+    {
+      "name": "Get Current User",
+      "category": "Users",
+      "description": "Retrieves the profile of the user that owns the API key, including their ID, name, email, active workspace, and default workspace. Use this to discover the default workspace ID for other operations."
+    },
+    {
+      "name": "List Workspace Users",
+      "category": "Users",
+      "description": "Lists members of a workspace, optionally filtered by name or email, with pagination. Returns each member's ID, name, email, and status."
+    },
+    {
+      "name": "Generate Summary Report",
+      "category": "Reports",
+      "description": "Generates a summary time report for a workspace over a date range, grouped by the dimensions you choose (e.g. Project then Task). Returns total tracked and billable time plus grouped breakdowns. This operation uses Clockify's separate reports host (reports.api.clockify.me)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Log completed work or start/stop running timers from automated workflows",
+    "Keep projects, tasks, clients, and tags in sync with your other tools",
+    "Generate summary time reports over a date range for billing or analytics",
+    "Look up workspace members and the authenticated user's default workspace"
+  ],
+  "agentIdeas": [
+    "Use **Clockify** \"Generate Summary Report\" to pull last week's tracked time, then **Google Sheets** \"Add Row\" to append the totals into a weekly timesheet spreadsheet.",
+    "When an **Asana** \"Create Task\" fires for a new project deliverable, call **Clockify** \"Create Task\" to mirror it under the matching Clockify project for time tracking.",
+    "After **Clockify** \"Stop Timer\" closes out a session, use **Slack** \"Send Message To Channel\" to post a summary of the logged entry to a team channel."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/clockify/public/icon.png",
+  "sourcePaths": {
+    "service": "services/clockify",
+    "readme": "services/clockify/README.md",
+    "index": "services/clockify/src/index.js"
+  }
+}

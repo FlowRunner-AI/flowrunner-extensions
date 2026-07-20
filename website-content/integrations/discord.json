@@ -1,0 +1,132 @@
+{
+  "slug": "discord",
+  "name": "Discord",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Discord](https://discord.com) — send and manage messages, create channels and threads, react to messages, DM members, manage roles, and post through webhooks, all via the Discord REST API (v10) using a bot token.",
+  "actionCount": 18,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Messages",
+    "Channels",
+    "Members & Roles",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "Send Message",
+      "category": "Messages",
+      "description": "Sends a message to a Discord channel as the bot. Supports plain text content up to 2000 characters, an optional simple embed (title, description, color, image), and text-to-speech delivery. Either message content or at least one embed field is required. The bot must have the Send Messages permission in the target channel. Returns the created message including its ID for later editing, reactions, or thread creation."
+    },
+    {
+      "name": "Send Message (Advanced)",
+      "category": "Messages",
+      "description": "Sends a message to a Discord channel using a raw Discord message payload for full control. The payload object is passed straight to the Discord Create Message endpoint, so it can include multiple rich embeds, interactive components (buttons, select menus), allowed_mentions rules, message_reference for replies, flags, and any other fields Discord supports. Use this when the simple Send Message operation is not flexible enough."
+    },
+    {
+      "name": "Edit Message",
+      "category": "Messages",
+      "description": "Edits a previously sent message in a channel. Only messages authored by the bot can be edited. Updates the text content and, optionally, replaces the message embed with a new one built from the embed fields. Fields left empty are not changed unless a new embed is provided, in which case the previous embeds are replaced."
+    },
+    {
+      "name": "Delete Message",
+      "category": "Messages",
+      "description": "Permanently deletes a message from a channel. The bot can always delete its own messages; deleting other users' messages requires the Manage Messages permission in the channel. Deletion cannot be undone."
+    },
+    {
+      "name": "Get Messages",
+      "category": "Messages",
+      "description": "Retrieves recent messages from a channel, newest first. Supports paging backwards through history with the Before message ID or forwards with the After message ID (use only one of the two). Returns up to 100 messages per call, including author, content, embeds, attachments, and reactions. Requires the Read Message History permission."
+    },
+    {
+      "name": "Get Message",
+      "category": "Messages",
+      "description": "Retrieves a single message by its ID, including author, content, embeds, attachments, reactions, and thread information. Requires the Read Message History permission in the channel."
+    },
+    {
+      "name": "Add Reaction",
+      "category": "Messages",
+      "description": "Adds an emoji reaction to a message as the bot. Accepts a standard Unicode emoji (e.g. 👍 or 🎉) or a custom server emoji in the name:id format (e.g. partyblob:1234567890123456789). Requires the Add Reactions permission, plus Read Message History to access the message."
+    },
+    {
+      "name": "Send Direct Message",
+      "category": "Messages",
+      "description": "Sends a private direct message to a server member as the bot. Opens (or reuses) a DM channel with the user, then posts the message to it. Note: Discord only allows bots to DM users who share a server with the bot, and users can disable DMs from server members, in which case delivery fails with a permissions error."
+    },
+    {
+      "name": "Create Channel",
+      "category": "Channels",
+      "description": "Creates a new channel in the configured Discord server. Supports text, voice, category, and announcement channel types, an optional topic (text and announcement channels), and an optional parent category to nest the channel under. Requires the Manage Channels permission. Returns the created channel including its ID."
+    },
+    {
+      "name": "List Channels",
+      "category": "Channels",
+      "description": "Lists all channels in the configured Discord server, including text, voice, category, announcement, forum, and stage channels (threads are not included). Each entry contains the channel ID, name, numeric type, topic, position, and parent category ID."
+    },
+    {
+      "name": "Delete Channel",
+      "category": "Channels",
+      "description": "Permanently deletes a channel from the server, or closes a thread. Deleting a category does not delete the channels inside it. Requires the Manage Channels permission. This action cannot be undone and removes all messages in the channel."
+    },
+    {
+      "name": "Create Thread",
+      "category": "Channels",
+      "description": "Creates a thread in a text or announcement channel. When a Message ID is provided the thread is attached to that message; otherwise a standalone public thread is created. The auto-archive duration controls how long the thread stays visible without activity. Requires the Create Public Threads permission."
+    },
+    {
+      "name": "List Guild Members",
+      "category": "Members & Roles",
+      "description": "Lists members of the configured Discord server, sorted by user ID. Returns up to 1000 members per call; page through larger servers by passing the highest user ID from the previous page as the After parameter. Requires the Server Members privileged intent to be enabled for the bot in the Discord Developer Portal."
+    },
+    {
+      "name": "Get Guild Member",
+      "category": "Members & Roles",
+      "description": "Retrieves a single member of the configured server by user ID, including their username, server nickname, assigned role IDs, join date, and timeout status."
+    },
+    {
+      "name": "Add Role To Member",
+      "category": "Members & Roles",
+      "description": "Assigns a role to a server member. Requires the Manage Roles permission, and the bot's highest role must be positioned above the role being assigned in the server's role list."
+    },
+    {
+      "name": "Remove Role From Member",
+      "category": "Members & Roles",
+      "description": "Removes a role from a server member. Requires the Manage Roles permission, and the bot's highest role must be positioned above the role being removed in the server's role list."
+    },
+    {
+      "name": "List Roles",
+      "category": "Members & Roles",
+      "description": "Lists all roles in the configured Discord server with their ID, name, color, position, permissions bitfield, and whether they are managed by an integration. Role IDs can be used with Add Role To Member and Remove Role From Member."
+    },
+    {
+      "name": "Send Webhook Message",
+      "category": "Webhooks",
+      "description": "Posts a message through a Discord webhook URL without using the bot token — a standalone escape hatch for channels or servers where the bot is not installed. Create the webhook in Discord (Channel Settings → Integrations → Webhooks) and paste its URL. Supports text content, a custom username and avatar override, and an optional simple embed. Returns the created message."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Notify a team channel when an event fires in another system (new order, alert, form submission).",
+    "Post rich embeds (release notes, dashboards, status updates) to announcement channels.",
+    "Spin up per-topic threads automatically for incidents, support tickets, or discussions.",
+    "Onboard members by assigning or removing roles based on external data.",
+    "DM individual members with personalized reminders or notifications.",
+    "Relay messages into channels the bot is not installed in via an incoming webhook URL."
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires for a support request, use **Discord** \"Create Thread\" to open a triage thread and \"Send Message\" to post the email details for the team.",
+    "Use **Google Sheets** \"Get Rows\" to pull a list of new signups, then call **Discord** \"Add Role To Member\" for each so onboarded users automatically receive the right server role.",
+    "When a **Trello** \"Create Card\" represents a new incident, use **Discord** \"Send Message (Advanced)\" to post a rich embed with status and links into the incidents channel."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/discord/public/icon.png",
+  "sourcePaths": {
+    "service": "services/discord",
+    "readme": "services/discord/README.md",
+    "index": "services/discord/src/index.js"
+  }
+}

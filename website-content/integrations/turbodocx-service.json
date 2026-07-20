@@ -1,0 +1,127 @@
+{
+  "slug": "turbodocx-service",
+  "name": "TurboDocx",
+  "marketingCategory": "Documents & E-signature",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Document generation and e-signature automation integration for TurboDocx. Generate documents from templates with dynamic variables, manage signing and review workflows, download completed documents to FlowRunner file storage, and track signature audit trails.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Templates",
+    "Tags",
+    "Document Generation",
+    "E-Signatures",
+    "Bulk Signatures"
+  ],
+  "actions": [
+    {
+      "name": "Get Template Variables",
+      "category": "Templates",
+      "description": "Retrieves the list of variable definitions for a specific template. Use this to discover which variables need to be filled before generating a document from the template."
+    },
+    {
+      "name": "Get Template By ID",
+      "category": "Templates",
+      "description": "Retrieves full details of a specific template including its ID, name, fonts, default font, creation date, and all variable definitions. Returns the complete template object from the TurboDocx API."
+    },
+    {
+      "name": "Delete Template",
+      "category": "Templates",
+      "description": "Permanently deletes a template from TurboDocx. This action cannot be undone. Any deliverables previously generated from this template will not be affected."
+    },
+    {
+      "name": "Get Template Preview Link",
+      "category": "Templates",
+      "description": "Gets a PDF preview link for a template. Use this to preview the template layout and variable placements before generating a document."
+    },
+    {
+      "name": "Create Tag",
+      "category": "Tags",
+      "description": "Creates a new tag in TurboDocx for organizing templates and knowledge base entries. Tags help categorize and quickly locate templates by topic, department, or project."
+    },
+    {
+      "name": "Generate Document",
+      "category": "Document Generation",
+      "description": "Generates a document by filling template variables with provided values. Pass a JSON object of key-value pairs where keys match the template variable names (e.g. {\"CompanyName\": \"Acme\", \"Date\": \"2026-01-15\"}). Returns the generated deliverable metadata including its ID for download."
+    },
+    {
+      "name": "Create Deliverable",
+      "category": "Document Generation",
+      "description": "Creates a deliverable from a template using the raw TurboDocx variables array format. Each variable object can specify name, placeholder, text, mimeType (text or html), subvariables, variableStack, and aiPrompt. Use this for advanced variable types like rich text, nested structures, or AI-generated content."
+    },
+    {
+      "name": "Download Document",
+      "category": "Document Generation",
+      "description": "Downloads a generated document from TurboDocx and saves it to Flowrunner file storage. Provide the deliverable ID from the Generate Document action and a target file path."
+    },
+    {
+      "name": "Send for Signing",
+      "category": "E-Signatures",
+      "description": "Sends a document for legally-binding e-signatures via TurboSign. Immediately sends signing request emails to all recipients. Provide either a deliverable ID from a generated document or a file URL. Recipients and signature fields must be JSON arrays."
+    },
+    {
+      "name": "Send for Review",
+      "category": "E-Signatures",
+      "description": "Creates a signature request with a preview URL without sending emails to recipients. Use this to review the document layout and field placements before sending for actual signing. Returns a preview URL for verification."
+    },
+    {
+      "name": "Prepare for Signing",
+      "category": "E-Signatures",
+      "description": "Prepares a document and immediately sends signing request emails to all recipients via TurboSign. Accepts a file source (deliverableId, templateId, fileLink, or file URL) along with recipients and signature field definitions. Supports CC emails and custom sender information."
+    },
+    {
+      "name": "Prepare for Review",
+      "category": "E-Signatures",
+      "description": "Prepares a document for review and returns a preview URL without sending emails to recipients. Use this to verify document layout, field placements, and recipient configuration before committing to send. Supports deliverableId, templateId, fileLink, or direct file as the document source."
+    },
+    {
+      "name": "Download Signed Document",
+      "category": "E-Signatures",
+      "description": "Downloads a completed signed document from TurboSign. Returns a presigned download URL that expires in 1 hour. Only available after all recipients have completed signing."
+    },
+    {
+      "name": "Get Signature Audit Trail",
+      "category": "E-Signatures",
+      "description": "Retrieves the complete audit trail for a signed document including all actions, timestamps, and cryptographic hash chain for compliance verification. Tracks events like document sent, viewed, signed, and voided."
+    },
+    {
+      "name": "Ingest Bulk Batch",
+      "category": "Bulk Signatures",
+      "description": "Creates a bulk batch of signature requests via TurboSign. Processes up to 1,000 documents in a single batch, each with its own recipients and signature fields. The batch is queued for asynchronous processing. Costs 1 credit per recipient per job."
+    },
+    {
+      "name": "List All Batches",
+      "category": "Bulk Signatures",
+      "description": "Lists all bulk signature batches with optional filtering by status, date range, and search query. Returns batch metadata including job counts and processing status. Supports pagination with limit and offset."
+    },
+    {
+      "name": "List Jobs in Batch",
+      "category": "Bulk Signatures",
+      "description": "Lists all jobs within a specific bulk signature batch. Returns individual job details including document ID, status, recipient emails, error information, and attempt counts. Supports pagination and filtering by job status."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generating contracts, proposals, or reports from templates populated with CRM or spreadsheet data",
+    "Automating document signing workflows by sending documents to recipients via TurboDocx",
+    "Downloading signed documents and storing them in FlowRunner for archiving or further processing",
+    "Building bulk document generation pipelines from batch data sources",
+    "Tracking document signature status and audit trails within automated flows"
+  ],
+  "agentIdeas": [
+    "When a **Google Sheets** \"On New Row\" trigger fires with a new client record, use **TurboDocx** \"Generate Document\" to produce a contract and \"Send for Signing\" to dispatch it to the client automatically",
+    "Use **TurboDocx** \"Download Signed Document\" after a signing event to store the PDF URL and write it back to **Google Sheets** \"Update Cell\" as a record link",
+    "Combine **Gmail** \"On New Email\" with **TurboDocx** \"Get Template Variables\" to extract required fields and \"Generate Document\" to produce the requested document on demand"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/turbodocx-service/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/turbodocx-service",
+    "readme": "services/turbodocx-service/README.md",
+    "index": "services/turbodocx-service/src/index.js"
+  }
+}

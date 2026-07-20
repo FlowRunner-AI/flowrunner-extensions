@@ -1,0 +1,168 @@
+{
+  "slug": "netlify",
+  "name": "Netlify",
+  "marketingCategory": "Dev Tools & Observability",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Netlify](https://www.netlify.com/) with FlowRunner to manage sites, deploys, environment variables, forms, and DNS. Authenticates with a Netlify personal access token (sent as a Bearer token).",
+  "actionCount": 25,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Sites",
+    "Deploys",
+    "Environment Variables",
+    "Forms",
+    "DNS",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "List Sites",
+      "category": "Sites",
+      "description": "Lists all sites the authenticated user has access to. Supports optional name filtering and pagination. Returns an array of site objects, each including the site id, name, URL, custom domain, and current published deploy details."
+    },
+    {
+      "name": "Get Site",
+      "category": "Sites",
+      "description": "Retrieves the full details for a single site by its id, including build settings, custom domain, SSL status, and the currently published deploy."
+    },
+    {
+      "name": "Create Site",
+      "category": "Sites",
+      "description": "Creates a new Netlify site. You can optionally set a subdomain name and a custom domain. If no name is given, Netlify generates a random one. Returns the created site object with its id and default netlify.app URL."
+    },
+    {
+      "name": "Update Site",
+      "category": "Sites",
+      "description": "Updates settings on an existing site, such as its name or custom domain. Only the provided fields are changed. Returns the updated site object."
+    },
+    {
+      "name": "Delete Site",
+      "category": "Sites",
+      "description": "Permanently deletes a site and all of its deploys. This action cannot be undone. Returns a confirmation object."
+    },
+    {
+      "name": "List Deploys",
+      "category": "Deploys",
+      "description": "Lists deploys for a site, most recent first. Each deploy includes its id, state (e.g. ready, building, error), branch, commit, and deploy URL. Supports pagination."
+    },
+    {
+      "name": "Get Deploy",
+      "category": "Deploys",
+      "description": "Retrieves the full details of a single deploy by its id, including its state, associated site, branch, commit, error message (if any), and published URL."
+    },
+    {
+      "name": "Trigger Build",
+      "category": "Deploys",
+      "description": "Triggers a new build and deploy for a site from its connected Git repository. Optionally clears the build cache first. Returns the created build object. Use this instead of uploading files directly."
+    },
+    {
+      "name": "Lock Deploy",
+      "category": "Deploys",
+      "description": "Locks a deploy so it stays published and cannot be replaced by new deploys until it is unlocked. Useful for pinning a known-good release. Returns the locked deploy object."
+    },
+    {
+      "name": "Unlock Deploy",
+      "category": "Deploys",
+      "description": "Unlocks a previously locked deploy, allowing new deploys to be published again. Returns the unlocked deploy object."
+    },
+    {
+      "name": "Restore Deploy",
+      "category": "Deploys",
+      "description": "Publishes (rolls back to) a previous deploy for a site, making it the live deploy again. Provide the site and the id of the older deploy to restore. Returns the restored deploy object."
+    },
+    {
+      "name": "Cancel Deploy",
+      "category": "Deploys",
+      "description": "Cancels an in-progress deploy by its id, stopping the build/publish process. Returns the cancelled deploy object."
+    },
+    {
+      "name": "List Environment Variables",
+      "category": "Environment Variables",
+      "description": "Lists environment variables for the configured account, optionally scoped to a specific site. Requires the Account ID config item to be set. Returns an array of env var objects, each with its key and per-context values."
+    },
+    {
+      "name": "Create Environment Variable",
+      "category": "Environment Variables",
+      "description": "Creates a new environment variable in the configured account with a value for a specific deploy context. Requires the Account ID config item. Optionally scopes the variable to a single site. Returns the created env var object."
+    },
+    {
+      "name": "Get Environment Variable",
+      "category": "Environment Variables",
+      "description": "Retrieves a single environment variable by key from the configured account, optionally scoped to a site. Requires the Account ID config item. Returns the env var object with all of its context values."
+    },
+    {
+      "name": "Set Environment Variable Value",
+      "category": "Environment Variables",
+      "description": "Updates the value of an existing environment variable for a specific deploy context in the configured account. Requires the Account ID config item. Optionally scopes to a site. Returns the updated env var object."
+    },
+    {
+      "name": "Delete Environment Variable",
+      "category": "Environment Variables",
+      "description": "Deletes an environment variable by key from the configured account, optionally scoped to a site. Requires the Account ID config item. Returns a confirmation object."
+    },
+    {
+      "name": "List Forms",
+      "category": "Forms",
+      "description": "Lists all Netlify Forms detected for a site, including each form's id, name, number of submissions, and the fields it captures."
+    },
+    {
+      "name": "List Form Submissions",
+      "category": "Forms",
+      "description": "Lists submissions for a specific Netlify Form. Each submission includes its id, the submitted field data, the submitter's email/name (when captured), and the creation timestamp. Supports pagination."
+    },
+    {
+      "name": "Delete Form Submission",
+      "category": "Forms",
+      "description": "Permanently deletes a single form submission by its id. This action cannot be undone. Returns a confirmation object."
+    },
+    {
+      "name": "List DNS Zones",
+      "category": "DNS",
+      "description": "Lists all DNS zones the authenticated user manages in Netlify DNS. Each zone includes its id, domain name, name servers, and associated account."
+    },
+    {
+      "name": "List DNS Records",
+      "category": "DNS",
+      "description": "Lists all DNS records for a DNS zone. Each record includes its id, type (A, AAAA, CNAME, MX, TXT, etc.), hostname, value, and TTL."
+    },
+    {
+      "name": "Create DNS Record",
+      "category": "DNS",
+      "description": "Creates a new DNS record in a zone. Provide the record type, hostname, value, and optional TTL. Returns the created DNS record object."
+    },
+    {
+      "name": "Delete DNS Record",
+      "category": "DNS",
+      "description": "Permanently deletes a DNS record from a zone by its id. This action cannot be undone. Returns a confirmation object."
+    },
+    {
+      "name": "List Accounts",
+      "category": "Account",
+      "description": "Lists the accounts (teams) the authenticated user belongs to. Use this to discover the account id required by the Environment Variable operations, then set it as the Account ID config item."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Trigger a new build/deploy from a connected Git repository as part of a release workflow, then monitor its state.",
+    "Roll back to a known-good deploy (lock/restore) when a bad release is detected.",
+    "Sync environment variables across sites and deploy contexts (production, deploy previews, branch deploys).",
+    "Collect and process Netlify Forms submissions, then archive or clean them up.",
+    "Manage Netlify DNS zones and records programmatically."
+  ],
+  "agentIdeas": [
+    "When a **GitHub** \"Get Workflows\" run or push signals a release is ready, call **Netlify** \"Trigger Build\" to deploy the site, then use \"Get Deploy\" to confirm it reaches the `ready` state.",
+    "After **Netlify** \"List Form Submissions\" returns new entries, use **Slack** \"Send Message To Channel\" to notify the team of each new submission, then \"Delete Form Submission\" to clear processed entries.",
+    "When a bad release is detected, use **Netlify** \"List Deploys\" to find the last good deploy and \"Restore Deploy\" to roll back, then post an alert with **Slack** \"Send Message To Channel\"."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/netlify/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/netlify",
+    "readme": "services/netlify/README.md",
+    "index": "services/netlify/src/index.js"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "slug": "google-chat",
+  "name": "Google Chat",
+  "marketingCategory": "Chat & Messaging",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Google Chat](https://chat.google.com) — send and manage messages, create and configure spaces, and manage space memberships through the [Google Chat API](https://developers.google.com/workspace/chat/api/reference/rest) using the connected user's Google account (OAuth 2.0).",
+  "actionCount": 14,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Spaces",
+    "Messages",
+    "Members"
+  ],
+  "actions": [
+    {
+      "name": "List Spaces",
+      "category": "Spaces",
+      "description": "Lists Google Chat spaces the connected user is a member of, including named spaces, group chats, and direct messages. Supports filtering by space type and pagination via page token. Group chats and direct messages are listed only after the first message is sent in them."
+    },
+    {
+      "name": "Get Space",
+      "category": "Spaces",
+      "description": "Retrieves details about a single Google Chat space, including its display name, space type, threading state, and history settings. The connected user must be a member of the space."
+    },
+    {
+      "name": "Create Space",
+      "category": "Spaces",
+      "description": "Creates a new named Google Chat space (spaceType SPACE) owned by the connected user. The display name must be unique within the organization and supports up to 128 characters. To create a space and add members in a single call, use Set Up Space instead."
+    },
+    {
+      "name": "Set Up Space",
+      "category": "Spaces",
+      "description": "Creates a new named Google Chat space and adds the specified users as members in a single call. The connected user is added automatically as the space manager. Members are specified by email address or Google user ID."
+    },
+    {
+      "name": "Send Message",
+      "category": "Messages",
+      "description": "Sends a text message to a Google Chat space on behalf of the connected user. Supports Google Chat text formatting (e.g. *bold*, _italic_, user mentions via <users/{id}>) and threaded replies: provide a Thread Key or Thread Name together with a Reply Option to post into an existing thread. The connected user must be a member of the space."
+    },
+    {
+      "name": "Send Card Message",
+      "category": "Messages",
+      "description": "Sends a rich card message (cardsV2) to a Google Chat space on behalf of the connected user. Accepts the Google Chat cardsV2 JSON structure for interactive cards with headers, sections, widgets, buttons, and images. Optionally include fallback text shown in notifications and clients that cannot render cards."
+    },
+    {
+      "name": "Get Message",
+      "category": "Messages",
+      "description": "Retrieves a single Google Chat message by its full resource name, including its text, sender, thread, cards, and timestamps."
+    },
+    {
+      "name": "Update Message",
+      "category": "Messages",
+      "description": "Updates the text of an existing Google Chat message. Only messages sent by the connected user can be updated. Uses a partial update (updateMask=text), so other message properties are preserved."
+    },
+    {
+      "name": "Delete Message",
+      "category": "Messages",
+      "description": "Deletes a Google Chat message by its full resource name. Only messages sent by the connected user (or messages the user has permission to delete, e.g. as a space manager) can be deleted."
+    },
+    {
+      "name": "List Messages",
+      "category": "Messages",
+      "description": "Lists messages in a Google Chat space the connected user is a member of, including messages in threads. Supports pagination, sort order, and filtering by creation time or thread, e.g. 'createTime > \"2025-01-01T00:00:00+00:00\"' or 'thread.name = spaces/AAA/threads/BBB'."
+    },
+    {
+      "name": "Send Webhook Message",
+      "category": "Messages",
+      "description": "Sends a text message to a Google Chat space through an incoming webhook URL. Does not use the OAuth connection — the message is posted by the webhook's Chat app identity, so it works even in spaces the connected user is not a member of. Configure an incoming webhook in the target space (space settings > Apps & integrations > Webhooks) to obtain the URL."
+    },
+    {
+      "name": "List Members",
+      "category": "Members",
+      "description": "Lists memberships of a Google Chat space, returning each member's resource name, type (HUMAN or BOT), role, and state. The connected user must be a member of the space. Supports pagination and optional filtering by member type or role."
+    },
+    {
+      "name": "Add Member",
+      "category": "Members",
+      "description": "Adds a user to a Google Chat space as a member. The user is specified by email address or Google user ID. The connected user must have permission to add members to the space (typically a space manager, or any member depending on space settings)."
+    },
+    {
+      "name": "Remove Member",
+      "category": "Members",
+      "description": "Removes a member from a Google Chat space. The member can be specified by email address, Google user ID, or full membership resource name. The connected user must have permission to remove the member (typically a space manager)."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Post automated notifications, alerts, or status updates into Google Chat spaces as the connected user.",
+    "Send rich interactive card messages (cardsV2) with headers, buttons, and images from a workflow.",
+    "Create and set up new spaces with an initial member list for onboarding or project kickoff.",
+    "Manage space membership by adding or removing users programmatically.",
+    "Post to spaces the user is not a member of via an incoming-webhook URL under a bot identity.",
+    "Retrieve, update, delete, and list messages to build chat-driven automations."
+  ],
+  "agentIdeas": [
+    "When a **Gmail** \"On New Email\" trigger fires for a support inbox, use **Google Chat** \"Send Message\" to notify the team space with the sender and subject.",
+    "Use **Google Sheets** \"Get Rows\" to read a roster of new hires, then call **Google Chat** \"Set Up Space\" to create an onboarding space and add each person as a member.",
+    "When a **Slack** \"On Channel Message\" trigger fires, use **Google Chat** \"Send Card Message\" to cross-post a formatted summary card into a Google Chat space.",
+    "Post the outcome of a workflow with **Google Chat** \"Send Message\", then use **Google Sheets** \"Add Row\" to log the message resource name and timestamp for auditing."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/google-chat/public/icon.png",
+  "sourcePaths": {
+    "service": "services/google-chat",
+    "readme": "services/google-chat/README.md",
+    "index": "services/google-chat/src/index.js"
+  }
+}

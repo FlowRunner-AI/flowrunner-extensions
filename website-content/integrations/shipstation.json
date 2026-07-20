@@ -1,0 +1,221 @@
+{
+  "slug": "shipstation",
+  "name": "ShipStation",
+  "marketingCategory": "ERP & Operations",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Automate e-commerce shipping and fulfillment with ShipStation. Manage orders, buy shipping labels, compare live carrier rates, void labels, and keep customers, products, warehouses, stores, and webhooks in sync through automated workflows.",
+  "actionCount": 34,
+  "triggerCount": 2,
+  "operationCategories": [
+    "Orders",
+    "Shipments",
+    "Customers",
+    "Products",
+    "Warehouses",
+    "Stores",
+    "Carriers",
+    "Webhooks"
+  ],
+  "actions": [
+    {
+      "name": "List Orders",
+      "category": "Orders",
+      "description": "Retrieves a paginated list of orders from ShipStation, with optional filtering by customer, status, store, dates, order number, and item keyword. Useful for syncing orders, building dashboards, or driving order-based automations."
+    },
+    {
+      "name": "Get Order",
+      "category": "Orders",
+      "description": "Retrieves the full details of a single order by its ShipStation order ID, including line items, addresses, totals, weights, dimensions, and advanced options."
+    },
+    {
+      "name": "Create or Update Order",
+      "category": "Orders",
+      "description": "Creates a new order or updates an existing one in ShipStation. Supplying an existing orderKey updates the matching order; otherwise a new order is created. Includes shipping and billing addresses, line items, totals, and shipping preferences."
+    },
+    {
+      "name": "Delete Order",
+      "category": "Orders",
+      "description": "Permanently deletes an order from ShipStation. The order is removed from the database and cannot be recovered."
+    },
+    {
+      "name": "Mark Order as Shipped",
+      "category": "Orders",
+      "description": "Marks an existing order as shipped without creating a label in ShipStation. Useful when the shipment was created outside of ShipStation but should still be reflected in the order record."
+    },
+    {
+      "name": "Hold Order Until",
+      "category": "Orders",
+      "description": "Places an order on hold until a specified date. On the hold-until date the order automatically returns to the awaiting_shipment status."
+    },
+    {
+      "name": "Restore Order from Hold",
+      "category": "Orders",
+      "description": "Restores an order from on-hold status back to awaiting_shipment immediately, regardless of any previously set hold-until date."
+    },
+    {
+      "name": "Add Tag to Order",
+      "category": "Orders",
+      "description": "Adds a tag to an existing order, useful for categorizing or triggering downstream automations based on tag membership."
+    },
+    {
+      "name": "Remove Tag from Order",
+      "category": "Orders",
+      "description": "Removes a previously applied tag from an order. Reverses an earlier add-tag action without affecting the order otherwise."
+    },
+    {
+      "name": "List Order Tags",
+      "category": "Orders",
+      "description": "Retrieves the order tags configured in the ShipStation account, each with its numeric ID, name, and display color. Use this to discover the tag IDs accepted by Add Tag to Order and Remove Tag from Order."
+    },
+    {
+      "name": "List Shipments",
+      "category": "Shipments",
+      "description": "Retrieves a paginated list of shipments matching optional filters such as recipient, carrier, service, tracking number, store, and date ranges. Useful for tracking dashboards or post-fulfillment automations."
+    },
+    {
+      "name": "Get Shipment Rates",
+      "category": "Shipments",
+      "description": "Returns the available shipping rates for the supplied carrier between the supplied origin and destination addresses. Useful for letting customers select shipping options at checkout or for choosing the cheapest service before purchasing a label."
+    },
+    {
+      "name": "Create Shipment Label",
+      "category": "Shipments",
+      "description": "Creates a shipping label for the supplied carrier and service and returns label data, tracking number, and rate. Charges the connected carrier account for the label cost."
+    },
+    {
+      "name": "Void Shipment Label",
+      "category": "Shipments",
+      "description": "Voids a previously created shipping label so that the carrier does not charge the account for it. The label may not be voidable after a carrier-defined cutoff window."
+    },
+    {
+      "name": "Create Label for Order",
+      "category": "Shipments",
+      "description": "Creates a shipping label for an order that already exists in ShipStation and returns the label data, tracking number, and cost. The order supplies the addresses, so only the carrier, service, confirmation, and ship date are required. The returned labelData is a base64-encoded PDF. Charges the connected carrier account unless Test Label is on."
+    },
+    {
+      "name": "List Fulfillments",
+      "category": "Shipments",
+      "description": "Retrieves a paginated list of fulfillments - shipments recorded against orders by an external marketplace or fulfillment provider rather than shipped through ShipStation - with optional filtering by fulfillment, order, tracking number, recipient, and date ranges. Useful for reconciling externally fulfilled orders and tracking their delivery."
+    },
+    {
+      "name": "List Customers",
+      "category": "Customers",
+      "description": "Retrieves a paginated list of customers, with optional filtering by state, country, marketplace, and tag. Useful for syncing customer data to a CRM or for personalized outreach."
+    },
+    {
+      "name": "Get Customer",
+      "category": "Customers",
+      "description": "Retrieves the full details of a single customer by ShipStation customer ID, including address, marketplace usernames, and tags."
+    },
+    {
+      "name": "List Products",
+      "category": "Products",
+      "description": "Retrieves a paginated list of products from the ShipStation product catalog, with optional filtering by SKU, name, category, type, tag, UPC, or creation date."
+    },
+    {
+      "name": "Get Product",
+      "category": "Products",
+      "description": "Retrieves the full details of a single product by ShipStation product ID, including pricing, weight, dimensions, fulfillment SKU, and tags."
+    },
+    {
+      "name": "Update Product",
+      "category": "Products",
+      "description": "Updates an existing product in the ShipStation catalog. Only the fields you supply are changed - the current product is fetched first and your changes are merged over it. This is required because ShipStation's update API replaces the entire product, so any field left blank would otherwise be cleared. All fields except Product ID are optional."
+    },
+    {
+      "name": "List Warehouses",
+      "category": "Warehouses",
+      "description": "Retrieves the list of warehouses (Ship From Locations) configured in the ShipStation account, including their origin and return addresses."
+    },
+    {
+      "name": "Get Warehouse",
+      "category": "Warehouses",
+      "description": "Retrieves the full details of a single warehouse (Ship From Location) by ID, including origin and return addresses."
+    },
+    {
+      "name": "Create Warehouse",
+      "category": "Warehouses",
+      "description": "Creates a new warehouse (Ship From Location) in ShipStation with the supplied origin and optional return address."
+    },
+    {
+      "name": "Delete Warehouse",
+      "category": "Warehouses",
+      "description": "Permanently deletes a warehouse (Ship From Location). The warehouse cannot be the default Ship From Location."
+    },
+    {
+      "name": "List Stores",
+      "category": "Stores",
+      "description": "Retrieves the list of stores connected to the ShipStation account, with an option to include inactive stores or filter by marketplace."
+    },
+    {
+      "name": "Get Store",
+      "category": "Stores",
+      "description": "Retrieves the full configuration of a single store by ShipStation store ID, including marketplace details, refresh status, and contact info."
+    },
+    {
+      "name": "Refresh Store",
+      "category": "Stores",
+      "description": "Triggers a manual refresh on the specified store so that ShipStation pulls in the latest orders. The optional date range limits which orders are fetched."
+    },
+    {
+      "name": "List Carriers",
+      "category": "Carriers",
+      "description": "Retrieves the list of carriers connected to the ShipStation account, including their account numbers, balances, and shipping provider IDs."
+    },
+    {
+      "name": "List Carrier Services",
+      "category": "Carriers",
+      "description": "Retrieves the list of shipping services available from the specified carrier (for example USPS Priority Mail or FedEx 2 Day)."
+    },
+    {
+      "name": "List Carrier Packages",
+      "category": "Carriers",
+      "description": "Retrieves the list of package types available from the specified carrier (for example envelopes, flat rate boxes, custom packages)."
+    },
+    {
+      "name": "List Webhooks",
+      "category": "Webhooks",
+      "description": "Retrieves the list of webhooks currently registered on the ShipStation account, including each webhook's event, target URL, friendly name, and store filter."
+    },
+    {
+      "name": "Subscribe Webhook",
+      "category": "Webhooks",
+      "description": "Subscribes a new webhook so that ShipStation POSTs an event payload to the specified target URL whenever the chosen event occurs."
+    },
+    {
+      "name": "Unsubscribe Webhook",
+      "category": "Webhooks",
+      "description": "Unsubscribes (deletes) an existing webhook by webhook ID so that ShipStation stops posting events to its target URL."
+    }
+  ],
+  "triggers": [
+    "On New Order",
+    "On New Shipment"
+  ],
+  "idealUseCases": [
+    "Syncing orders from sales channels and driving order-based automations",
+    "Comparing live carrier rates to pick the cheapest or fastest service",
+    "Buying shipping labels and capturing tracking numbers, then voiding unused ones",
+    "Marking externally-fulfilled orders as shipped and notifying customers",
+    "Holding, tagging, and restoring orders as part of fulfillment logic",
+    "Syncing customer and product data into a CRM or catalog",
+    "Managing warehouses (Ship From Locations), stores, and carrier webhooks",
+    "Reacting to new orders and shipments in real time with polling triggers"
+  ],
+  "agentIdeas": [
+    "When Shopify's \"On New Order\" trigger fires, use ShipStation \"Create or Update Order\" to push the order into fulfillment, then \"Get Shipment Rates\" to pick the cheapest carrier before buying a label.",
+    "When ShipStation's \"On New Shipment\" trigger fires, use Gmail's \"Send Message\" to email the customer their carrier and tracking number.",
+    "When ShipStation's \"On New Order\" trigger fires, use Slack's \"Send Message To Channel\" to alert the fulfillment team and Google Sheets' \"Add Row\" to log the order for reporting."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/shipstation/public/icon.png",
+  "sourcePaths": {
+    "service": "services/shipstation",
+    "readme": "services/shipstation/README.md",
+    "index": "services/shipstation/src/index.js"
+  }
+}

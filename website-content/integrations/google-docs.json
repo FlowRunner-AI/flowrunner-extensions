@@ -1,0 +1,87 @@
+{
+  "slug": "google-docs",
+  "name": "Google Docs",
+  "marketingCategory": "Documents & E-signature",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "FlowRunner integration for [Google Docs](https://docs.google.com) — create, read, edit, export, and generate documents from templates through the [Google Docs API](https://developers.google.com/docs/api/reference/rest) and the [Google Drive API](https://developers.google.com/drive/api/reference/rest/v3) using the connected user's Google account (OAuth 2.0).",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Documents",
+    "Text Editing",
+    "Templates",
+    "Export"
+  ],
+  "actions": [
+    {
+      "name": "Create Document",
+      "category": "Documents",
+      "description": "Creates a new blank Google Docs document with the given title in the connected user's My Drive root. Optionally inserts initial body text right after creation. Returns the new document ID, title, revision ID, and a direct edit URL."
+    },
+    {
+      "name": "Get Document",
+      "category": "Documents",
+      "description": "Retrieves a Google Docs document by ID, returning the raw document resource (title, body structure, styles, revision ID) plus a convenience 'text' field containing the full document body as concatenated plain text (paragraphs, tables, and table-of-contents content included). Use 'text' for easy consumption in workflows and the raw 'body' for index-based editing."
+    },
+    {
+      "name": "Delete Document",
+      "category": "Documents",
+      "description": "Permanently deletes a Google Docs document from Google Drive by ID. The file is deleted immediately without being moved to the trash and cannot be recovered — the connected user must own the file or have permission to delete it."
+    },
+    {
+      "name": "Append Text",
+      "category": "Text Editing",
+      "description": "Appends text to the very end of a Google Docs document body. Use newline characters in the text to create new paragraphs. Returns the batch update result including the new revision ID."
+    },
+    {
+      "name": "Insert Text",
+      "category": "Text Editing",
+      "description": "Inserts text at a specific character index in a Google Docs document body. Index 1 is the very beginning of the body; indexes for existing content can be found in the 'body.content' structure returned by Get Document ('startIndex'/'endIndex' of each element). The index must fall inside the body's existing bounds."
+    },
+    {
+      "name": "Replace All Text",
+      "category": "Text Editing",
+      "description": "Replaces all occurrences of a text string in a Google Docs document with replacement text. Matching can be case-sensitive or case-insensitive. Leave the replacement empty to delete all occurrences. Returns the number of occurrences changed."
+    },
+    {
+      "name": "Batch Update",
+      "category": "Text Editing",
+      "description": "Executes a raw Google Docs batchUpdate request against a document — an escape hatch for any operation not covered by dedicated actions (styling, tables, images, named ranges, headers/footers, deletions, etc.). Provide an array of request objects exactly as defined by the Google Docs API batchUpdate reference; requests are applied atomically in order."
+    },
+    {
+      "name": "Create From Template",
+      "category": "Templates",
+      "description": "Creates a new Google Docs document from a template: copies the template document via Google Drive, then replaces placeholder tokens with the provided values. Placeholders in the template should use the double-curly-brace convention, e.g. {{name}} or {{invoice_number}}; the replacements object maps placeholder keys to values ({\"name\":\"Acme Corp\",\"invoice_number\":\"INV-42\"} — braces are added automatically, keys already wrapped in {{ }} are used as-is). Matching is case-sensitive. This is the go-to operation for generating contracts, invoices, and personalized letters."
+    },
+    {
+      "name": "Export Document",
+      "category": "Export",
+      "description": "Exports a Google Docs document to PDF, plain text, Word (DOCX), or HTML and saves the exported file to FlowRunner file storage, returning a URL to the stored file. Uses the Google Drive export endpoint, which limits exported content to 10 MB."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generate contracts, invoices, offer letters, and reports from a template document by replacing",
+    "Read a document's full plain text for summarization, analysis, or AI processing",
+    "Append meeting notes, logs, or AI-generated content to a running document.",
+    "Export a finished document to PDF (or DOCX/HTML/plain text) and store it in FlowRunner file",
+    "Perform any advanced Docs API operation (styling, tables, images, headers) via the raw"
+  ],
+  "agentIdeas": [
+    "Fetch a submission with **Google Forms** \"Get Form Response by ID\", use **Google Docs** \"Create From Template\" to generate a personalized welcome letter, then \"Export Document\" to PDF and email it via **Gmail** \"Send Message\".",
+    "Use **Google Docs** \"Get Document\" to pull a meeting-notes document as plain text, summarize it with an AI action, and post the summary to **Google Chat** \"Send Message\" or **Slack** \"Send Message To Channel\".",
+    "Read deal data with **HubSpot** \"Get Deal By ID\", generate a contract via **Google Docs** \"Create From Template\", and send the exported PDF for signature with **DocuSign** \"Send Envelope with Document\".",
+    "Append daily workflow run summaries to a shared log document with **Google Docs** \"Append Text\", keeping a running audit trail the whole team can read."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/google-docs/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/google-docs",
+    "readme": "services/google-docs/README.md",
+    "index": "services/google-docs/src/index.js"
+  }
+}

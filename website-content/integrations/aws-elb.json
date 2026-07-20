@@ -1,0 +1,132 @@
+{
+  "slug": "aws-elb",
+  "name": "AWS Elastic Load Balancing",
+  "marketingCategory": "Cloud & Infrastructure",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage and monitor Amazon Elastic Load Balancing (ELBv2) — Application Load Balancers (ALB), Network Load Balancers (NLB), and Gateway Load Balancers (GLB). The service is read-heavy and centered on inspection and target-health monitoring, with supporting create/modify/delete operations for load balancers, target groups, listeners, rules, and tags. It authenticates to AWS using hand-rolled Signature Version 4 with zero external dependencies.",
+  "actionCount": 18,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Load Balancers",
+    "Target Groups",
+    "Target Health",
+    "Listeners",
+    "Rules",
+    "Tags"
+  ],
+  "actions": [
+    {
+      "name": "Describe Load Balancers",
+      "category": "Load Balancers",
+      "description": "Lists Application, Network, and Gateway Load Balancers in the configured region. Filter by specific load balancer ARNs or names, or omit both to list all. Supports pagination via a marker returned in prior calls."
+    },
+    {
+      "name": "Create Load Balancer",
+      "category": "Load Balancers",
+      "description": "Creates an Application, Network, or Gateway Load Balancer. Application and Network Load Balancers require subnets from the appropriate Availability Zones; security groups apply to Application and Network Load Balancers only. Scheme cannot be set for Gateway Load Balancers."
+    },
+    {
+      "name": "Delete Load Balancer",
+      "category": "Load Balancers",
+      "description": "Deletes the specified Application, Network, or Gateway Load Balancer. Its listeners are deleted as well, but associated target groups are not. Deletion may be blocked if deletion protection is enabled."
+    },
+    {
+      "name": "Describe Target Groups",
+      "category": "Target Groups",
+      "description": "Lists target groups in the region. Filter by target group ARNs, names, or by the load balancer they are attached to, or omit all filters to list every target group. Supports pagination."
+    },
+    {
+      "name": "Create Target Group",
+      "category": "Target Groups",
+      "description": "Creates a target group used to route requests to registered targets. For Application and Network Load Balancers set Protocol and Port; use a VPC and Target Type appropriate for the routing method. Optional health check settings control how target health is evaluated."
+    },
+    {
+      "name": "Modify Target Group",
+      "category": "Target Groups",
+      "description": "Updates the health check configuration of an existing target group, including the health check protocol, port, path, intervals, timeouts, and healthy/unhealthy thresholds. Only the supplied settings are changed."
+    },
+    {
+      "name": "Delete Target Group",
+      "category": "Target Groups",
+      "description": "Deletes the specified target group. The target group cannot be deleted while it is referenced by a listener or listener rule action."
+    },
+    {
+      "name": "Describe Target Health",
+      "category": "Target Health",
+      "description": "Reports the health of targets in a target group. Returns each target's state (healthy, unhealthy, initial, draining, unused, unavailable), along with a reason and description when a target is not healthy. Optionally scope the check to specific targets."
+    },
+    {
+      "name": "Register Targets",
+      "category": "Target Health",
+      "description": "Registers one or more targets with a target group so the load balancer routes traffic to them. Provide targets as objects with an Id (instance ID, IP address, Lambda ARN, or ALB ARN) and an optional Port. After registration, targets pass through health checks before receiving traffic."
+    },
+    {
+      "name": "Deregister Targets",
+      "category": "Target Health",
+      "description": "Deregisters one or more targets from a target group. The load balancer stops routing new requests to each target; in-flight requests are allowed to complete during the configured deregistration delay (connection draining)."
+    },
+    {
+      "name": "Describe Listeners",
+      "category": "Listeners",
+      "description": "Lists the listeners for a load balancer, or describes specific listeners by ARN. Each listener includes its protocol, port, SSL policy, certificates, and default actions. Supports pagination."
+    },
+    {
+      "name": "Create Listener",
+      "category": "Listeners",
+      "description": "Creates a listener on a load balancer that checks for connection requests on the given protocol and port and forwards them using the supplied default actions. Provide default actions as the raw ELB action objects (e.g. a forward action to a target group)."
+    },
+    {
+      "name": "Modify Listener",
+      "category": "Listeners",
+      "description": "Replaces properties of an existing listener. Supply only the fields to change: the protocol, port, and/or default actions. Unspecified properties are left unchanged."
+    },
+    {
+      "name": "Delete Listener",
+      "category": "Listeners",
+      "description": "Deletes the specified listener. The listener's rules are deleted as well; the load balancer and its target groups are not affected."
+    },
+    {
+      "name": "Describe Rules",
+      "category": "Rules",
+      "description": "Lists the rules for a listener, or describes specific rules by ARN. Each rule includes its priority, conditions, actions, and whether it is the default rule. Supports pagination."
+    },
+    {
+      "name": "Describe Tags",
+      "category": "Tags",
+      "description": "Returns the tags for the specified ELB resources (load balancers, target groups, listeners, or rules). Provide one or more resource ARNs and receive their tag key/value pairs."
+    },
+    {
+      "name": "Add Tags",
+      "category": "Tags",
+      "description": "Adds or updates tags on the specified ELB resources. Existing tags with the same key are overwritten. Provide tags as key/value objects."
+    },
+    {
+      "name": "Remove Tags",
+      "category": "Tags",
+      "description": "Removes the specified tag keys from the given ELB resources. Tag keys that are not present are ignored."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Monitor target-group health and branch a flow when any target reports `unhealthy`, or wait for `initial` targets to become `healthy` after registration.",
+    "Automate blue/green or scaling workflows by registering and deregistering targets (EC2 instances, IPs, Lambda functions, or nested ALBs) with a target group.",
+    "Provision load balancers, target groups, and listeners as part of an infrastructure automation flow.",
+    "Audit ELB inventory across a region, inspecting listeners, rules, and tags for compliance reporting."
+  ],
+  "agentIdeas": [
+    "After **Register Targets** in a target group, poll **Describe Target Health** and, once a target reports `unhealthy`, use **Amazon SNS** \"Publish Message\" to alert the on-call team with the target ID and failure reason.",
+    "Use **AWS Lambda** \"Invoke Function\" to run a custom deployment step, then call **Register Targets** to add the new instances/IPs to a target group and **Deregister Targets** to drain the old ones for a blue/green cutover.",
+    "On a schedule, run **Describe Load Balancers** and **Describe Target Health** across the region and use **S3 Storage** \"Upload Object\" to archive the health snapshot as a compliance/audit record."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/aws-elb/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/aws-elb",
+    "readme": "services/aws-elb/README.md",
+    "index": "services/aws-elb/src/index.js"
+  }
+}

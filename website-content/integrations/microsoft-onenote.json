@@ -1,0 +1,157 @@
+{
+  "slug": "microsoft-onenote",
+  "name": "Microsoft OneNote",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for Microsoft OneNote via the Microsoft Graph API (`/me/onenote`). Work with the signed-in user's notebooks, section groups, sections, and pages: create pages from HTML (images referenced by public URL render on the page), read page content as XHTML, update or append content with structured change commands, and run asynchronous copy operations for notebooks, sections, and pages with built-in wait-for-completion polling.",
+  "actionCount": 23,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Notebooks",
+    "Section Groups",
+    "Sections",
+    "Pages",
+    "Operations"
+  ],
+  "actions": [
+    {
+      "name": "List Notebooks",
+      "category": "Notebooks",
+      "description": "Retrieves the signed-in user's OneNote notebooks, including each notebook's ID, display name, default flag, user role, sharing status, and OneNote client/web links. Sorted by name ascending by default. Supports OData filtering, ordering, paging, and expanding sections and section groups inline."
+    },
+    {
+      "name": "Get Notebook",
+      "category": "Notebooks",
+      "description": "Retrieves a single OneNote notebook by its ID, including its display name, default flag, user role, sharing status, timestamps, and OneNote client/web links."
+    },
+    {
+      "name": "Create Notebook",
+      "category": "Notebooks",
+      "description": "Creates a new OneNote notebook with the given name in the signed-in user's account. Notebook names must be unique, cannot exceed 128 characters, and cannot contain the characters ? * \\ / : < > | ' \"."
+    },
+    {
+      "name": "List Notebook Sections",
+      "category": "Notebooks",
+      "description": "Retrieves the sections directly under a specific notebook, including each section's ID, display name, default flag, and pages URL. Sections nested inside the notebook's section groups are not included; use List Section Group Sections for those. Sorted by name ascending by default."
+    },
+    {
+      "name": "Create Section",
+      "category": "Notebooks",
+      "description": "Creates a new section directly under a notebook. Section names must be unique within the notebook, cannot exceed 50 characters, and cannot contain the characters ? * \\ / : < > | & # ' % ~."
+    },
+    {
+      "name": "Copy Notebook",
+      "category": "Notebooks",
+      "description": "Copies a notebook to the Notebooks folder in the signed-in user's OneDrive Documents library (the folder is created if it does not exist). The copy runs asynchronously on the Microsoft side; by default this action polls until the operation completes (up to about 100 seconds) and returns the final operation status including the ID of the created notebook. Turn off Wait For Completion to return immediately and track progress with Get Operation Status."
+    },
+    {
+      "name": "List Section Groups",
+      "category": "Section Groups",
+      "description": "Retrieves the signed-in user's OneNote section groups, including nested section groups, across all notebooks or within a specific notebook. Each section group includes its ID, display name, parent notebook, and URLs for its sections and child section groups. Sorted by name ascending by default."
+    },
+    {
+      "name": "Get Section Group",
+      "category": "Section Groups",
+      "description": "Retrieves a single section group by its ID, including its display name, parent notebook, parent section group, and URLs for its sections and child section groups."
+    },
+    {
+      "name": "List Section Group Sections",
+      "category": "Section Groups",
+      "description": "Retrieves the sections directly under a specific section group, including each section's ID, display name, and pages URL. Sorted by name ascending by default."
+    },
+    {
+      "name": "Create Section in Section Group",
+      "category": "Section Groups",
+      "description": "Creates a new section inside a section group. Section names must be unique within the section group, cannot exceed 50 characters, and cannot contain the characters ? * \\ / : < > | & # ' % ~."
+    },
+    {
+      "name": "List Sections",
+      "category": "Sections",
+      "description": "Retrieves all sections from all of the signed-in user's notebooks, including sections nested in section groups. Each section includes its ID, display name, parent notebook, and pages URL. Sorted by name ascending by default."
+    },
+    {
+      "name": "Get Section",
+      "category": "Sections",
+      "description": "Retrieves a single section by its ID, including its display name, parent notebook, parent section group, timestamps, and pages URL."
+    },
+    {
+      "name": "List Section Pages",
+      "category": "Sections",
+      "description": "Retrieves the pages of a specific section, including each page's ID, title, timestamps, content URL, and OneNote client/web links. Sorted by last modified time descending by default; up to 100 pages per call with offset paging. This is the recommended way to enumerate pages for accounts with many sections."
+    },
+    {
+      "name": "Copy Section To Notebook",
+      "category": "Sections",
+      "description": "Copies a section (with all of its pages) into a target notebook. The copy runs asynchronously on the Microsoft side; by default this action polls until the operation completes (up to about 100 seconds) and returns the final operation status including the ID of the created section. Turn off Wait For Completion to return immediately and track progress with Get Operation Status."
+    },
+    {
+      "name": "Copy Section To Section Group",
+      "category": "Sections",
+      "description": "Copies a section (with all of its pages) into a target section group. The copy runs asynchronously on the Microsoft side; by default this action polls until the operation completes (up to about 100 seconds) and returns the final operation status including the ID of the created section. Turn off Wait For Completion to return immediately and track progress with Get Operation Status."
+    },
+    {
+      "name": "List Pages",
+      "category": "Pages",
+      "description": "Retrieves page metadata across all of the signed-in user's notebooks, sorted by last modified time descending by default. Supports full-text search (personal Microsoft accounts with notebooks on consumer OneDrive only), OData filtering, ordering, and offset paging up to 100 pages per call. For work or school accounts with many sections, Microsoft recommends List Section Pages instead; this endpoint returns an error when the account exceeds the maximum number of sections."
+    },
+    {
+      "name": "Get Page",
+      "category": "Pages",
+      "description": "Retrieves the metadata of a single page by its ID, including its title, timestamps, content URL, parent section, and OneNote client/web links. Use Get Page Content to retrieve the page HTML."
+    },
+    {
+      "name": "Get Page Content",
+      "category": "Pages",
+      "description": "Retrieves the full content of a page as an XHTML string, including its structure, text, and resource links for embedded images and files. Enable Include Element IDs to also receive generated element IDs, which are required as targets for most Update Page Content commands."
+    },
+    {
+      "name": "Create Page",
+      "category": "Pages",
+      "description": "Creates a new page in a section from a title and HTML body, or from a complete raw XHTML document for full control. The body HTML supports standard elements (p, h1-h6, ul, ol, table, div, img, a) and images referenced by public URL, e.g. <img src='https://example.com/chart.png' width='500' />, which OneNote downloads and renders on the page. Returns the created page metadata including its ID and OneNote links."
+    },
+    {
+      "name": "Update Page Content",
+      "category": "Pages",
+      "description": "Updates the content of an existing page by applying change commands. Use Append HTML for the common case of adding content to the end of the page, or supply structured commands to append, insert, prepend, or replace specific elements. Targets are data-id values prefixed with # (defined in the page HTML at creation), generated element IDs from Get Page Content with Include Element IDs enabled, or the keywords body and title. External image URLs are not supported in update commands (unlike Create Page)."
+    },
+    {
+      "name": "Copy Page To Section",
+      "category": "Pages",
+      "description": "Copies a page into a target section. The copy runs asynchronously on the Microsoft side; by default this action polls until the operation completes (up to about 100 seconds) and returns the final operation status including the ID of the created page. Turn off Wait For Completion to return immediately and track progress with Get Operation Status."
+    },
+    {
+      "name": "Delete Page",
+      "category": "Pages",
+      "description": "Permanently deletes a page from its section, including all of its content."
+    },
+    {
+      "name": "Get Operation Status",
+      "category": "Operations",
+      "description": "Retrieves the status of a long-running OneNote copy operation started by Copy Notebook, Copy Section To Notebook, Copy Section To Section Group, or Copy Page To Section. While the operation runs, the status is NotStarted or Running. When the status is Completed, resourceId and resourceLocation identify the created copy; when the status is Failed, the error property contains details."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically capture meeting notes, form submissions, or AI-generated summaries as new OneNote pages",
+    "Append log entries, status updates, or research snippets to an existing page as work progresses",
+    "Scaffold a notebook / section structure for a new project, client, or team",
+    "Duplicate a template notebook, section, or page for each new engagement and track the async copy to completion",
+    "Extract page content as XHTML to feed downstream summarization, search indexing, or archival"
+  ],
+  "agentIdeas": [
+    "After **Outlook** \"Get Messages List\" pulls in a meeting recap thread, call **Microsoft OneNote** \"Create Page\" to file the summary into a project section, then use \"Update Page Content\" to append follow-ups as they arrive.",
+    "Use **Microsoft OneNote** \"Get Page Content\" to extract a spec page as XHTML, then create tracked action items with **Microsoft To Do** \"Create Task\" for each item.",
+    "When **Microsoft OneDrive** \"Upload File\" stores a new report, use **Microsoft OneNote** \"Create Page\" to add a summary page linking to it, keeping notes and files together in the same account."
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/microsoft-onenote/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/microsoft-onenote",
+    "readme": "services/microsoft-onenote/README.md",
+    "index": "services/microsoft-onenote/src/index.js"
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "slug": "ramp-service",
+  "name": "Ramp",
+  "marketingCategory": "Payments & Finance",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": false,
+  "shortDescription": "Integrates with the Ramp corporate spend platform for card management, transaction monitoring, user provisioning, vendor and bill pay operations, and expense reimbursements. Authenticates via OAuth2 client credentials and supports production and sandbox environments.",
+  "actionCount": 21,
+  "triggerCount": 3,
+  "operationCategories": [
+    "Transactions",
+    "Cards",
+    "Users",
+    "Organization",
+    "Vendors",
+    "Bills",
+    "Reimbursements"
+  ],
+  "actions": [
+    {
+      "name": "List Transactions",
+      "category": "Transactions",
+      "description": "Retrieves a paginated list of card transactions with optional filters by date range, card, user, department, and state (CLEARED, PENDING, DECLINED, etc.). Use this to query historical spend or build expense reports."
+    },
+    {
+      "name": "Get Transaction",
+      "category": "Transactions",
+      "description": "Retrieves a single card transaction by ID, including merchant details, amount, state, line items, the cardholder, and any associated receipt or memo."
+    },
+    {
+      "name": "List Cards",
+      "category": "Cards",
+      "description": "Retrieves a paginated list of corporate cards with optional filters by user, department, and state (ACTIVE, FROZEN, TERMINATED). Useful for card audits and management workflows."
+    },
+    {
+      "name": "Get Card",
+      "category": "Cards",
+      "description": "Retrieves a single card by ID, including cardholder info, spending restrictions, state, fulfillment status, and last-four digits."
+    },
+    {
+      "name": "Issue Card",
+      "category": "Cards",
+      "description": "Issues a new corporate card to a Ramp user. The card is created asynchronously via a deferred task; the response includes a task ID you can poll. Spending restrictions (amount in cents, interval, allowed/blocked categories) are required."
+    },
+    {
+      "name": "Freeze Card",
+      "category": "Cards",
+      "description": "Freezes a card so no new transactions can be made. The card remains in the user's wallet and can be unfrozen later without re-issuing."
+    },
+    {
+      "name": "Unfreeze Card",
+      "category": "Cards",
+      "description": "Unfreezes a previously frozen card, restoring its ability to make new transactions."
+    },
+    {
+      "name": "Terminate Card",
+      "category": "Cards",
+      "description": "Permanently terminates a card. This is irreversible — the card cannot be reactivated and a new card must be issued to replace it."
+    },
+    {
+      "name": "List Users",
+      "category": "Users",
+      "description": "Retrieves a paginated list of users in the Ramp account, with optional filters by department, location, and role. Useful for HR sync, audit reports, and admin workflows."
+    },
+    {
+      "name": "Get User",
+      "category": "Users",
+      "description": "Retrieves a single user by ID, including name, email, role, department, location, manager status, and account status."
+    },
+    {
+      "name": "Invite User",
+      "category": "Users",
+      "description": "Invites a new user to join the Ramp account with a specified role and optional department/location. Invitation is created asynchronously via a deferred task; the new user receives an email to set up their account."
+    },
+    {
+      "name": "List Departments",
+      "category": "Organization",
+      "description": "Retrieves all departments configured in the Ramp account. Departments are used to organize users, cards, and transactions."
+    },
+    {
+      "name": "List Locations",
+      "category": "Organization",
+      "description": "Retrieves all physical locations configured in the Ramp account. Locations are used for assigning users and cards to offices or sites."
+    },
+    {
+      "name": "List Vendors",
+      "category": "Vendors",
+      "description": "Retrieves a paginated list of vendors configured for Ramp Bill Pay, with optional name search. Vendors are entities that bills are paid to."
+    },
+    {
+      "name": "Get Vendor",
+      "category": "Vendors",
+      "description": "Retrieves a single vendor by ID, including contact details, payment method, and account/routing info (masked)."
+    },
+    {
+      "name": "Create Vendor",
+      "category": "Vendors",
+      "description": "Creates a new vendor in Ramp Bill Pay. Vendors are required before bills can be created against them. Provide payment method (ACH, CHECK, WIRE) and the corresponding banking details."
+    },
+    {
+      "name": "List Bills",
+      "category": "Bills",
+      "description": "Retrieves a paginated list of bills (AP invoices) in Ramp, with optional filters by vendor and status (OPEN, PAID, PENDING_APPROVAL, etc.). Useful for AP dashboards and payment reconciliation."
+    },
+    {
+      "name": "Get Bill",
+      "category": "Bills",
+      "description": "Retrieves a single bill (AP invoice) by ID, including vendor, line items, amounts, due date, status, and any attached invoice files."
+    },
+    {
+      "name": "List Reimbursements",
+      "category": "Reimbursements",
+      "description": "Retrieves a paginated list of expense reimbursements with optional filters by user, status (PENDING, APPROVED, PAID, DENIED), and date range. Useful for expense audits and payroll integration."
+    },
+    {
+      "name": "Get Reimbursement",
+      "category": "Reimbursements",
+      "description": "Retrieves a single reimbursement by ID, including the submitting user, amount, merchant, status, memo, and any receipts or attachments."
+    },
+    {
+      "name": "Approve Reimbursement",
+      "category": "Reimbursements",
+      "description": "Approves a pending reimbursement, advancing it to the APPROVED state and queueing it for payment. The caller must have approval authority for the submitting user."
+    }
+  ],
+  "triggers": [
+    "On New Transaction",
+    "On New Bill",
+    "On New Reimbursement"
+  ],
+  "idealUseCases": [
+    "Monitoring new card transactions for spend alerts and policy enforcement",
+    "Issuing, freezing, unfreezing, or terminating corporate cards",
+    "Onboarding and offboarding employees via user invites and card access",
+    "Syncing AP bills and vendor records with accounting or ERP systems",
+    "Automating reimbursement approval routing by amount, user, or department",
+    "Building expense and AP dashboards from filtered Ramp data"
+  ],
+  "agentIdeas": [
+    "When a **Ramp** \"On New Transaction\" trigger fires, use **Slack** \"Send Message To Channel\" to alert finance, then **Google Sheets** \"Add Row\" to log it into a spend tracker",
+    "When **Parseur** \"On Document Processed (Realtime)\" extracts an invoice, call **Ramp** \"Create Vendor\" for new vendors and \"List Bills\" to detect duplicates before AP entry",
+    "When a **Ramp** \"On New Reimbursement\" trigger fires, use **Gmail** \"Send Message\" to notify the approver, then call **Ramp** \"Approve Reimbursement\" after review"
+  ],
+  "icon": "/logo.png",
+  "iconFile": "services/ramp-service/public/logo.png",
+  "sourcePaths": {
+    "service": "services/ramp-service",
+    "readme": "services/ramp-service/README.md",
+    "index": "services/ramp-service/src/index.js"
+  }
+}

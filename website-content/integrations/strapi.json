@@ -1,0 +1,84 @@
+{
+  "slug": "strapi",
+  "name": "Strapi",
+  "marketingCategory": "CMS & Content",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": true,
+  "usesFileStorage": true,
+  "shortDescription": "Connect FlowRunner to a self-hosted or Strapi Cloud instance to manage content-type entries and Media Library files through the Strapi v5 REST API.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Entries",
+    "Media"
+  ],
+  "actions": [
+    {
+      "name": "List Entries",
+      "category": "Entries",
+      "description": "Lists entries from any Strapi collection type. Provide the plural API ID of the collection (e.g. \"articles\", \"products\"). Supports Strapi v5 querying: populate relations/media, filter with the document operator syntax, sort, select fields, paginate, request a locale, and choose published or draft entries. Returns the entries in \"data\" plus a \"meta.pagination\" block (page, pageSize, pageCount, total). In Strapi v5 each entry is flat — its fields sit directly on the object alongside \"id\" and the string \"documentId\"."
+    },
+    {
+      "name": "Get Entry",
+      "category": "Entries",
+      "description": "Retrieves a single entry from a collection type by its Strapi v5 documentId (a string identifier, not the numeric id used in Strapi v4). Optionally populate relations, components, and media, and choose the published or draft version. Returns the entry under \"data\" with its fields flattened to the top level alongside \"id\" and \"documentId\"."
+    },
+    {
+      "name": "Create Entry",
+      "category": "Entries",
+      "description": "Creates a new entry in a collection type. Provide the entry fields as an object; they are automatically wrapped in the required {\"data\": {...}} envelope Strapi expects. For content types with Draft & Publish enabled, a new entry is created as a draft unless the target status is published. Returns the created entry under \"data\" with its \"documentId\"."
+    },
+    {
+      "name": "Update Entry",
+      "category": "Entries",
+      "description": "Updates an existing entry, identified by its Strapi v5 documentId. Provide only the fields you want to change as an object; they are wrapped in the {\"data\": {...}} envelope automatically. To publish a draft you can set the target status to Published, or set the publishedAt field, depending on the content type's Draft & Publish configuration. Returns the updated entry under \"data\"."
+    },
+    {
+      "name": "Delete Entry",
+      "category": "Entries",
+      "description": "Permanently deletes an entry from a collection type by its Strapi v5 documentId. For internationalized content, deleting without a locale removes all localizations of the document; pass a locale to delete only that localization. Returns an empty data payload on success (HTTP 204 with no body in newer Strapi versions)."
+    },
+    {
+      "name": "Upload File",
+      "category": "Media",
+      "description": "Uploads a file to the Strapi Media Library from a Flowrunner file. Optionally attach the uploaded file to a specific entry field by supplying the target model UID (ref), the numeric entry id (refId), and the field name — for example to set a restaurant's cover image. Returns an array with the uploaded media file object, including its numeric id, url, mime type, size, and generated image formats."
+    },
+    {
+      "name": "List Media Files",
+      "category": "Media",
+      "description": "Lists files in the Strapi Media Library. Optionally filter by name, mime type, or other file fields using the same nested filter syntax as entries, and sort the results. Returns a flat array of media file objects (id, name, url, mime, size, formats). Folders are an admin-only feature and are not returned by the Content API."
+    },
+    {
+      "name": "Get Media File",
+      "category": "Media",
+      "description": "Retrieves the metadata for a single Media Library file by its numeric id. Returns the file object with its name, url, mime type, size, dimensions, and generated image formats."
+    },
+    {
+      "name": "Delete Media File",
+      "category": "Media",
+      "description": "Permanently deletes a file from the Strapi Media Library by its numeric id. Returns the deleted file's metadata on success."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Publish content from external systems (spreadsheets, forms, AI-generated drafts) into any Strapi collection as entries.",
+    "Keep a headless Strapi CMS in sync with product, article, or catalog data maintained elsewhere.",
+    "Upload images and documents to the Strapi Media Library and attach them to entries automatically.",
+    "Read, filter, and paginate published or draft entries to feed downstream automations, notifications, or reports.",
+    "Manage Draft & Publish workflows by creating drafts and publishing them on approval."
+  ],
+  "agentIdeas": [
+    "Use **Google Sheets** \"Get Rows\" to read a content backlog, then call **Strapi** \"Create Entry\" for each row to bulk-publish articles or products into a collection.",
+    "When **Slack** \"On File Shared\" fires, use **Strapi** \"Upload File\" to push the asset into the Media Library and attach it to the relevant entry via `ref` / `refId` / `field`.",
+    "Use **Strapi** \"List Entries\" to fetch newly published drafts, then send an approval prompt with **Gmail** \"Send Message\" before calling **Strapi** \"Update Entry\" with the status set to `Published`."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/strapi/public/icon.png",
+  "sourcePaths": {
+    "service": "services/strapi",
+    "readme": "services/strapi/README.md",
+    "index": "services/strapi/src/index.js"
+  }
+}

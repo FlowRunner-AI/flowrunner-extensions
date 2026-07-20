@@ -1,0 +1,117 @@
+{
+  "slug": "lemlist",
+  "name": "Lemlist",
+  "marketingCategory": "Marketing & Email",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "FlowRunner integration for [Lemlist](https://www.lemlist.com/), the cold outreach and sales engagement platform. Manage campaigns, add and update leads, track engagement activities, and maintain your unsubscribe list directly from your flows.",
+  "actionCount": 15,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Campaigns",
+    "Leads",
+    "Activities",
+    "Unsubscribes",
+    "Team"
+  ],
+  "actions": [
+    {
+      "name": "List Campaigns",
+      "category": "Campaigns",
+      "description": "Lists the campaigns in your Lemlist team. Supports offset/limit pagination (limit up to 100). Each campaign includes its identifier, name, status, and creation date. Use the returned campaign identifier with Get Campaign, Get Campaign Stats, or Add Lead to Campaign."
+    },
+    {
+      "name": "Get Campaign",
+      "category": "Campaigns",
+      "description": "Retrieves a single campaign by its identifier, including its name, status, sequence configuration, and metadata. Use List Campaigns or the Campaigns dictionary to find the campaign identifier."
+    },
+    {
+      "name": "Get Campaign Stats",
+      "category": "Campaigns",
+      "description": "Returns aggregate performance statistics for a campaign, such as the number of emails sent, opened, clicked, replied, bounced, and unsubscribed. Use this to monitor campaign engagement over its lifetime."
+    },
+    {
+      "name": "Add Lead to Campaign",
+      "category": "Leads",
+      "description": "Adds a lead to a campaign, or updates the lead if the email already exists in it. The email address is required and identifies the lead. First name, last name, company name, phone, LinkedIn URL, and any custom variables you pass are stored on the lead and available as merge variables in the campaign's messages."
+    },
+    {
+      "name": "Get Lead",
+      "category": "Leads",
+      "description": "Retrieves a lead by email address, including its stored variables, campaign association, and current sequence state. Returns the lead as it exists across your team."
+    },
+    {
+      "name": "Update Lead",
+      "category": "Leads",
+      "description": "Updates an existing lead in a campaign, identified by email. Only the fields you provide are changed; omitted fields are left as-is. Use this to correct lead details or refresh custom merge variables before or during a sequence."
+    },
+    {
+      "name": "Delete Lead from Campaign",
+      "category": "Leads",
+      "description": "Removes a lead from a campaign by email address. The lead stops receiving that campaign's sequence. This does not add the address to your unsubscribe list; use Add to Unsubscribes for that."
+    },
+    {
+      "name": "Unsubscribe Lead",
+      "category": "Leads",
+      "description": "Marks a lead as unsubscribed within a specific campaign, stopping further messages to that lead in that campaign. To block an address across all campaigns, use Add to Unsubscribes instead."
+    },
+    {
+      "name": "Mark Lead as Interested",
+      "category": "Leads",
+      "description": "Marks a lead in a campaign as interested. This updates the lead's status for reporting and can pause automated follow-ups so you can take over the conversation manually."
+    },
+    {
+      "name": "Mark Lead as Not Interested",
+      "category": "Leads",
+      "description": "Marks a lead in a campaign as not interested. This updates the lead's status for reporting and typically stops further automated messages to that lead in the campaign."
+    },
+    {
+      "name": "Get Activities",
+      "category": "Activities",
+      "description": "Retrieves activity events from your Lemlist team, such as emails sent, opened, clicked, replied, bounced, and unsubscribes. Filter by activity type and/or campaign, and page through results with limit and offset. Use this to build engagement timelines or sync events into other systems."
+    },
+    {
+      "name": "List Unsubscribes",
+      "category": "Unsubscribes",
+      "description": "Lists the email addresses on your team's unsubscribe (blocklist) list. Addresses on this list are excluded from all campaigns. Supports limit/offset pagination."
+    },
+    {
+      "name": "Add to Unsubscribes",
+      "category": "Unsubscribes",
+      "description": "Adds an email address to your team's unsubscribe (blocklist) list. The address is excluded from all current and future campaigns across the team. Use this to honor opt-out requests globally."
+    },
+    {
+      "name": "Delete from Unsubscribes",
+      "category": "Unsubscribes",
+      "description": "Removes an email address from your team's unsubscribe (blocklist) list, allowing it to be contacted by campaigns again. Use with care and only when you have a valid basis to re-engage the address."
+    },
+    {
+      "name": "Get Team",
+      "category": "Team",
+      "description": "Retrieves your Lemlist team information, including team name, plan, sending limits, connected senders, and remaining credits. Useful as a connection check to confirm the API key is valid and to inspect available sending capacity."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Sync new prospects from your CRM or enrichment tools into Lemlist campaigns automatically.",
+    "Log outreach engagement events (opens, clicks, replies) into a spreadsheet or database for reporting.",
+    "Honor opt-out requests globally by adding addresses to the team-wide unsubscribe blocklist.",
+    "Route interested leads to a sales rep for manual follow-up as soon as they engage."
+  ],
+  "agentIdeas": [
+    "Use **Apollo.io** \"People Search\" to find target prospects, then call **Lemlist** \"Add Lead to Campaign\" to enroll each result into an outreach sequence with enriched merge variables.",
+    "Use **Hunter.io** \"Email Finder\" to resolve a prospect's email and **Email Verifier** to confirm deliverability, then **Lemlist** \"Add Lead to Campaign\" to add only valid addresses.",
+    "Poll **Lemlist** \"Get Activities\" for reply and click events and use **HubSpot** \"Create Contact\" (or \"Update Contact\") to sync engaged leads into your CRM.",
+    "When **Lemlist** \"Mark Lead as Interested\" is applied, use **Google Sheets** \"Add Row\" to log the interested lead into a hot-lead handoff sheet for the sales team."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/lemlist/public/icon.png",
+  "sourcePaths": {
+    "service": "services/lemlist",
+    "readme": "services/lemlist/README.md",
+    "index": "services/lemlist/src/index.js"
+  }
+}

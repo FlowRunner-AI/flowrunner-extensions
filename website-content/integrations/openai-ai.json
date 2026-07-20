@@ -1,0 +1,251 @@
+{
+  "slug": "openai-ai",
+  "name": "OpenAI",
+  "marketingCategory": "AI & LLMs",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": true,
+  "shortDescription": "Integrates OpenAI's full platform into FlowRunner workflows: text generation with the Responses and Chat Completions APIs (including structured JSON output, reasoning models, and built-in web search, file search, and code interpreter tools), image generation and editing, Sora video generation, text-to-speech, transcription and translation, embeddings, content moderation, file management, cost-saving batch jobs, and vector stores for retrieval-augmented generation.",
+  "actionCount": 39,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Moderation",
+    "Audio",
+    "Web Search",
+    "Responses",
+    "Chat",
+    "Embeddings",
+    "Images",
+    "Files",
+    "Batches",
+    "Vector Stores",
+    "Videos",
+    "Models"
+  ],
+  "actions": [
+    {
+      "name": "Moderate Content",
+      "category": "Moderation",
+      "description": "Analyzes text and image inputs for harmful content across multiple safety categories (harassment, hate speech, violence, sexual content, self-harm, and more) using OpenAI's Moderation API. Returns per-category flags and confidence scores for each input."
+    },
+    {
+      "name": "Text to Speech",
+      "category": "Audio",
+      "description": "Converts text into natural-sounding speech audio using OpenAI's text-to-speech models. Uploads the generated audio file and returns its URL. The maximum allowed input length is 4096 characters. With the 'gpt-4o-mini-tts' model, optional voice instructions can control tone, accent, pacing, and emotion."
+    },
+    {
+      "name": "Speech to Text",
+      "category": "Audio",
+      "description": "Transcribes an audio file into text using OpenAI's speech recognition models. Downloads the audio from the provided URL and returns the transcribed text."
+    },
+    {
+      "name": "Translate Audio",
+      "category": "Audio",
+      "description": "Translates spoken audio in any supported language into English text using OpenAI's Whisper model. Downloads the audio from the provided URL, sends it to the Audio Translations API, and returns the English translation."
+    },
+    {
+      "name": "Web Search",
+      "category": "Web Search",
+      "description": "Generates a grounded answer to a prompt by letting the model search the web for current information. Returns the answer text along with cited source URLs."
+    },
+    {
+      "name": "Create Response",
+      "category": "Responses",
+      "description": "Generates a model response via OpenAI's Responses API — the primary interface for text generation. Supports plain text input or a full input items array (multi-turn conversations, vision image parts), system instructions, reasoning effort for reasoning models, structured JSON output via a JSON schema, conversation chaining via a previous response ID, background execution, custom function tools, and OpenAI's built-in tools: web search, file search over vector stores, and code interpreter. Returns the full response object with a convenience 'outputText' field containing the concatenated assistant text."
+    },
+    {
+      "name": "Get Response",
+      "category": "Responses",
+      "description": "Retrieves a previously created model response by its ID, including its status, output items, and token usage. Use this to poll background responses until they complete, or to inspect stored responses. Adds a convenience 'outputText' field with the concatenated assistant text."
+    },
+    {
+      "name": "Cancel Response",
+      "category": "Responses",
+      "description": "Cancels an in-progress model response that was created with Background enabled. Only background responses can be cancelled."
+    },
+    {
+      "name": "Delete Response",
+      "category": "Responses",
+      "description": "Permanently deletes a stored model response by its ID from OpenAI's servers."
+    },
+    {
+      "name": "List Response Input Items",
+      "category": "Responses",
+      "description": "Lists the input items (messages, tool calls, etc.) that were used to generate a stored response, with cursor-based pagination."
+    },
+    {
+      "name": "Create Chat Completion",
+      "category": "Chat",
+      "description": "Generates a model response via OpenAI's Chat Completions API from a full messages array (system/user/assistant/tool roles, including vision image content parts). Supports sampling controls, max completion tokens and reasoning effort for reasoning models, deterministic seeding, stop sequences, structured output (JSON object or strict JSON schema), and function tool calling with tool choice. Returns the raw completion with choices and token usage. For new workflows, prefer 'Create Response' — the Responses API is OpenAI's primary interface."
+    },
+    {
+      "name": "Create Embeddings",
+      "category": "Embeddings",
+      "description": "Generates vector embeddings for one or more text inputs using OpenAI's embedding models. Supports the 'dimensions' parameter of the text-embedding-3 family to produce shortened vectors. Returns the embedding vectors with token usage, ordered to match the inputs."
+    },
+    {
+      "name": "Generate Image",
+      "category": "Images",
+      "description": "Generates images from a text prompt using OpenAI's image models ('gpt-image-1' or the DALL·E family). Supports size, quality, transparent backgrounds and output format (gpt-image-1), and multiple images per request. Generated images are uploaded to FlowRunner file storage and returned as URLs, along with the revised prompt when the model provides one."
+    },
+    {
+      "name": "Edit Image",
+      "category": "Images",
+      "description": "Edits or extends existing images from a text prompt using OpenAI's image models. With 'gpt-image-1', multiple input images can be combined into a new composition; an optional mask marks the transparent areas to be repainted (inpainting). Source images are downloaded from the provided URLs, and the edited results are uploaded to FlowRunner file storage and returned as URLs."
+    },
+    {
+      "name": "Upload File",
+      "category": "Files",
+      "description": "Uploads a file to the OpenAI account by downloading it from the provided URL. Uploaded files can be used across the API: batch inputs (purpose 'batch'), file search / vector stores (purpose 'assistants'), vision inputs (purpose 'vision'), fine-tuning datasets (purpose 'fine-tune'), and general Responses API inputs (purpose 'user_data'). Returns the created file object with its ID."
+    },
+    {
+      "name": "List Files",
+      "category": "Files",
+      "description": "Lists the files uploaded to the OpenAI account, optionally filtered by purpose, with cursor-based pagination and sorting by creation date."
+    },
+    {
+      "name": "Get File",
+      "category": "Files",
+      "description": "Retrieves the metadata of an uploaded file by its ID, including filename, size in bytes, purpose, and creation date."
+    },
+    {
+      "name": "Delete File",
+      "category": "Files",
+      "description": "Permanently deletes an uploaded file from the OpenAI account by its ID."
+    },
+    {
+      "name": "Download File Content",
+      "category": "Files",
+      "description": "Downloads the content of a file stored in the OpenAI account (e.g. a batch output or error file), uploads it to FlowRunner file storage, and returns its URL. The original filename and size are included in the result."
+    },
+    {
+      "name": "Create Batch",
+      "category": "Batches",
+      "description": "Creates a batch job that processes a .jsonl file of API requests asynchronously within 24 hours at 50% of the standard cost. The input file must first be uploaded with purpose 'Batch' (see 'Upload File') and contain one request per line with 'custom_id', 'method', 'url', and 'body' fields. Poll the batch with 'Get Batch' and download results via 'Download File Content' using the batch's output_file_id."
+    },
+    {
+      "name": "Get Batch",
+      "category": "Batches",
+      "description": "Retrieves the current state of a batch job by its ID, including status (validating, in_progress, completed, failed, expired, cancelled), request counts, and the output_file_id and error_file_id for downloading results once finished."
+    },
+    {
+      "name": "List Batches",
+      "category": "Batches",
+      "description": "Lists the batch jobs in the OpenAI account with their statuses and request counts, using cursor-based pagination."
+    },
+    {
+      "name": "Cancel Batch",
+      "category": "Batches",
+      "description": "Cancels an in-progress batch job by its ID. The batch moves to 'cancelling' for up to 10 minutes and then 'cancelled'; partial results of already-completed requests remain available in the output file."
+    },
+    {
+      "name": "Create Vector Store",
+      "category": "Vector Stores",
+      "description": "Creates a vector store for semantic file search (RAG). Optionally attaches already-uploaded files (purpose 'Assistants'), which are automatically chunked and embedded. The resulting vector store can be searched directly with 'Search Vector Store' or used by the file search tool in 'Create Response'."
+    },
+    {
+      "name": "List Vector Stores",
+      "category": "Vector Stores",
+      "description": "Lists the vector stores in the OpenAI account with their statuses, file counts and storage usage, using cursor-based pagination."
+    },
+    {
+      "name": "Get Vector Store",
+      "category": "Vector Stores",
+      "description": "Retrieves a vector store by its ID, including its status, file counts, storage usage, and expiration policy."
+    },
+    {
+      "name": "Delete Vector Store",
+      "category": "Vector Stores",
+      "description": "Permanently deletes a vector store by its ID. The underlying uploaded files are not deleted and remain in the account."
+    },
+    {
+      "name": "Add File to Vector Store",
+      "category": "Vector Stores",
+      "description": "Attaches an already-uploaded file to a vector store. The file is automatically chunked and embedded; poll 'List Vector Store Files' or 'Get Vector Store' until processing completes."
+    },
+    {
+      "name": "List Vector Store Files",
+      "category": "Vector Stores",
+      "description": "Lists the files attached to a vector store with their processing statuses, optionally filtered by status, using cursor-based pagination."
+    },
+    {
+      "name": "Remove File from Vector Store",
+      "category": "Vector Stores",
+      "description": "Detaches a file from a vector store by its ID. The underlying uploaded file is not deleted and remains in the account."
+    },
+    {
+      "name": "Search Vector Store",
+      "category": "Vector Stores",
+      "description": "Performs a semantic similarity search over a vector store and returns the most relevant file chunks with their scores — a direct RAG retrieval step without invoking a model. Supports optional query rewriting for better retrieval quality."
+    },
+    {
+      "name": "Create Video",
+      "category": "Videos",
+      "description": "Starts an asynchronous video generation job from a text prompt using OpenAI's Sora models. Optionally accepts an input reference image used as the first frame. Returns immediately with a job object; poll it with 'Get Video' until its status is 'completed', then fetch the file with 'Download Video Content'."
+    },
+    {
+      "name": "Remix Video",
+      "category": "Videos",
+      "description": "Creates a new video generation job based on a completed video, applying the changes described in the prompt while preserving the original's structure. Returns a new job object; poll it with 'Get Video'."
+    },
+    {
+      "name": "Get Video",
+      "category": "Videos",
+      "description": "Retrieves a video generation job by its ID, including its status (queued, in_progress, completed, failed) and progress percentage. Poll this until the status is 'completed', then use 'Download Video Content'."
+    },
+    {
+      "name": "List Videos",
+      "category": "Videos",
+      "description": "Lists the video generation jobs in the OpenAI account with their statuses, using cursor-based pagination."
+    },
+    {
+      "name": "Delete Video",
+      "category": "Videos",
+      "description": "Permanently deletes a video generation job and its assets from OpenAI's servers by its ID."
+    },
+    {
+      "name": "Download Video Content",
+      "category": "Videos",
+      "description": "Downloads the rendered content of a completed Sora video job (the MP4 video, a thumbnail image, or a spritesheet), uploads it to FlowRunner file storage, and returns its URL. Generated videos expire on OpenAI's servers, so download them promptly after completion."
+    },
+    {
+      "name": "List Models",
+      "category": "Models",
+      "description": "Lists all models currently available to the account, including their owners and creation dates. Useful for discovering the exact model IDs to use in other operations."
+    },
+    {
+      "name": "Get Model",
+      "category": "Models",
+      "description": "Retrieves the basic details of a specific model by its ID, confirming that it is available to the account."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Generating, summarizing, classifying, or extracting structured JSON data from text with GPT and o-series reasoning models",
+    "Answering questions with current, cited information pulled from the web",
+    "Building RAG pipelines: upload documents, index them in vector stores, and search or ground model answers on them",
+    "Generating and editing marketing images with gpt-image-1, or producing short videos with Sora",
+    "Converting text to narrated audio and transcribing or translating call recordings and voice memos",
+    "Screening user-generated text and images for policy violations before publishing",
+    "Processing large workloads asynchronously at half cost with the Batch API"
+  ],
+  "agentIdeas": [
+    "Use **OpenAI** \"Create Response\" with a JSON schema to extract structured order details from incoming emails, then create records with **Airtable** \"Create Record\"",
+    "Build a support knowledge base: upload docs with **OpenAI** \"Upload File\", index them via \"Create Vector Store\", and answer tickets with \"Create Response\" using file search over the store",
+    "Use **OpenAI** \"Moderate Content\" on incoming user submissions, and if flagged, notify moderators via **Slack** \"Send Message To Channel\" before the content is published",
+    "When a **Gmail** \"On New Attachment\" trigger fires with a voice memo, use **OpenAI** \"Speech to Text\" to transcribe it, then save the transcript into **Google Sheets** \"Add Row\"",
+    "Generate product visuals with **OpenAI** \"Generate Image\", then publish them via **Google Drive** \"Create File\"",
+    "Create a short promo clip with **OpenAI** \"Create Video\", poll \"Get Video\" until complete, then fetch it with \"Download Video Content\" and share the link in **Slack**",
+    "Use **OpenAI** \"Web Search\" to answer a customer question with current information, then send the response via **Slack** \"Send Message To Channel\"",
+    "Generate a script with an AI text step, convert it to narrated audio with **OpenAI** \"Text to Speech\", and upload the resulting file via **Google Drive** \"Create File\""
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/openai-ai/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/openai-ai",
+    "readme": "services/openai-ai/README.md",
+    "index": "services/openai-ai/src/index.js"
+  }
+}

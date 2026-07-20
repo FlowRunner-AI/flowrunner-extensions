@@ -1,0 +1,159 @@
+{
+  "slug": "taiga",
+  "name": "Taiga",
+  "marketingCategory": "Productivity & PM",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integrate [Taiga](https://taiga.io) — the open-source agile project management platform — with FlowRunner. Manage projects, user stories, tasks, issues, epics, and milestones (sprints) directly from your flows. Authenticates with your Taiga username and password (exchanged for a short-lived `auth_token`) and works with both the hosted app and self-hosted instances.",
+  "actionCount": 23,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Projects",
+    "User Stories",
+    "Tasks",
+    "Issues",
+    "Epics",
+    "Milestones",
+    "Members"
+  ],
+  "actions": [
+    {
+      "name": "List Projects",
+      "category": "Projects",
+      "description": "Lists Taiga projects visible to the authenticated user. Optionally filter to projects a specific member belongs to, or look up a project by its slug. Returns an array of project summaries including id, name, slug and description."
+    },
+    {
+      "name": "Get Project",
+      "category": "Projects",
+      "description": "Retrieves a single Taiga project by its numeric ID, including its name, slug, description, members, enabled modules and configured statuses for user stories, tasks and issues."
+    },
+    {
+      "name": "Get Project by Slug",
+      "category": "Projects",
+      "description": "Retrieves a single Taiga project by its slug (the human-readable identifier in project URLs) rather than its numeric ID. Returns the same detailed project object as Get Project."
+    },
+    {
+      "name": "List User Stories",
+      "category": "User Stories",
+      "description": "Lists user stories, optionally filtered by project, status and milestone (sprint). Returns an array of user story objects including subject, status, assignee, points and the version number required for updates."
+    },
+    {
+      "name": "Get User Story",
+      "category": "User Stories",
+      "description": "Retrieves a single user story by its ID, including subject, description, status, assignee, tags, points and its current version number (needed to perform an update)."
+    },
+    {
+      "name": "Create User Story",
+      "category": "User Stories",
+      "description": "Creates a new user story in a Taiga project. Requires the project ID and a subject; optionally set the description, status, milestone (sprint) and tags. Returns the created user story including its new ID, ref and version."
+    },
+    {
+      "name": "Update User Story",
+      "category": "User Stories",
+      "description": "Updates fields on an existing user story. Taiga uses optimistic concurrency control, so you MUST pass the story's current version (from Get User Story) — the update is rejected if the version is stale. Only the fields you provide are changed."
+    },
+    {
+      "name": "Delete User Story",
+      "category": "User Stories",
+      "description": "Permanently deletes a user story by its ID. This also removes its tasks and cannot be undone. Returns a confirmation object."
+    },
+    {
+      "name": "List Tasks",
+      "category": "Tasks",
+      "description": "Lists tasks, optionally filtered by project and by the user story they belong to. Returns an array of task objects including subject, status, assignee and the version number required for updates."
+    },
+    {
+      "name": "Get Task",
+      "category": "Tasks",
+      "description": "Retrieves a single task by its ID, including subject, description, status, assignee, its parent user story and its current version number (needed to perform an update)."
+    },
+    {
+      "name": "Create Task",
+      "category": "Tasks",
+      "description": "Creates a new task in a Taiga project. Requires the project ID and a subject; optionally attach it to a user story and set its status. Returns the created task including its new ID, ref and version."
+    },
+    {
+      "name": "Update Task",
+      "category": "Tasks",
+      "description": "Updates fields on an existing task. Taiga uses optimistic concurrency control, so you MUST pass the task's current version (from Get Task) — the update is rejected if the version is stale. Only the fields you provide are changed."
+    },
+    {
+      "name": "Delete Task",
+      "category": "Tasks",
+      "description": "Permanently deletes a task by its ID. This action cannot be undone. Returns a confirmation object."
+    },
+    {
+      "name": "List Issues",
+      "category": "Issues",
+      "description": "Lists issues, optionally filtered by project. Returns an array of issue objects including subject, type, status, priority, severity, assignee and the version number required for updates."
+    },
+    {
+      "name": "Get Issue",
+      "category": "Issues",
+      "description": "Retrieves a single issue by its ID, including subject, description, type, status, priority, severity, assignee and its current version number (needed to perform an update)."
+    },
+    {
+      "name": "Create Issue",
+      "category": "Issues",
+      "description": "Creates a new issue in a Taiga project. Requires the project ID and a subject; optionally set the priority, severity, issue type and status (each referenced by its numeric ID from the project configuration). Returns the created issue including its new ID, ref and version."
+    },
+    {
+      "name": "Update Issue",
+      "category": "Issues",
+      "description": "Updates fields on an existing issue. Taiga uses optimistic concurrency control, so you MUST pass the issue's current version (from Get Issue) — the update is rejected if the version is stale. Only the fields you provide are changed."
+    },
+    {
+      "name": "List Epics",
+      "category": "Epics",
+      "description": "Lists epics, optionally filtered by project. Epics group related user stories across sprints. Returns an array of epic objects including subject, status, color and the version number required for updates."
+    },
+    {
+      "name": "Create Epic",
+      "category": "Epics",
+      "description": "Creates a new epic in a Taiga project. Requires the project ID and a subject; optionally set the description. Returns the created epic including its new ID, ref and version."
+    },
+    {
+      "name": "List Milestones",
+      "category": "Milestones",
+      "description": "Lists milestones (sprints) for a project, including their name, start and finish dates, and roll-up statistics such as total and closed points. Returns an array of milestone objects."
+    },
+    {
+      "name": "Create Milestone",
+      "category": "Milestones",
+      "description": "Creates a new milestone (sprint) in a Taiga project. Requires the project ID, a name and the estimated start and finish dates (ISO date, YYYY-MM-DD). Returns the created milestone including its new ID and slug."
+    },
+    {
+      "name": "Get Me",
+      "category": "Members",
+      "description": "Returns the profile of the authenticated Taiga user (id, username, full name, email). Useful as a connection check to confirm the configured credentials are valid."
+    },
+    {
+      "name": "List Memberships",
+      "category": "Members",
+      "description": "Lists project memberships, optionally filtered by project. Each membership links a user to a project with a role. Returns an array of membership objects including user, role, email and status."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically create user stories, tasks, or issues in Taiga from inbound tickets, form submissions, or chat messages",
+    "Keep an external system in sync by listing and updating stories, tasks, and issues across a project's sprints",
+    "Spin up new sprints (milestones) and epics as part of a release-planning automation",
+    "Triage bugs by creating issues with the correct type, priority, and severity pulled from a project's configuration",
+    "Verify a connection and resolve project/member context before running downstream automation steps"
+  ],
+  "agentIdeas": [
+    "Use **GitHub** \"Get Issues\" to pull open bug reports from a repository, then call **Taiga** \"Create Issue\" to mirror each one into a Taiga project with the appropriate type, priority, and severity",
+    "When a **Slack** \"On Channel Message\" trigger fires with a feature request, use **Taiga** \"Create User Story\" to log it and reply via **Slack** \"Send Message To Channel\" with the new story's ref",
+    "On a recurring schedule, use **Taiga** \"List User Stories\" filtered by milestone and **Google Sheets** \"Add Row\" to append each story's status and points into a sprint-tracking spreadsheet"
+  ],
+  "icon": "/icon.svg",
+  "iconFile": "services/taiga/public/icon.svg",
+  "sourcePaths": {
+    "service": "services/taiga",
+    "readme": "services/taiga/README.md",
+    "index": "services/taiga/src/index.js"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "slug": "gotowebinar",
+  "name": "GoTo Webinar",
+  "marketingCategory": "Forms, Scheduling & Events",
+  "categorySource": "keyword",
+  "auth": "OAuth2",
+  "requiresOAuth": true,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Manage GoTo Webinar (formerly GoToWebinar) webinars, registrants, attendees, and past-session analytics from FlowRunner. Schedule and update webinars, register attendees and hand them their personal join URLs, and pull attendance, poll, question, and survey data for reporting.",
+  "actionCount": 17,
+  "triggerCount": 0,
+  "operationCategories": [
+    "Webinars",
+    "Registrants",
+    "Attendees",
+    "Sessions",
+    "Account"
+  ],
+  "actions": [
+    {
+      "name": "Get All Webinars",
+      "category": "Webinars",
+      "description": "Lists webinars for the connected organizer within a date range. Returns each webinar's key, subject, description, session times, and registration URL. Use this to find a webinar before managing its registrants or reading its sessions. The from/to time range is required by GoTo and cannot exceed one year."
+    },
+    {
+      "name": "Get Webinar",
+      "category": "Webinars",
+      "description": "Retrieves the full details of a single webinar by its key, including subject, description, all session times, time zone, type, and registration settings. Use this after finding a webinar with Get All Webinars."
+    },
+    {
+      "name": "Create Webinar",
+      "category": "Webinars",
+      "description": "Schedules a new webinar for the connected organizer. Provide the subject, one or more session time ranges, and a time zone. For a single occurrence use type Single Session with one time range; use Series or Sequence with multiple time ranges for recurring events. Returns the new webinar key and registration URL."
+    },
+    {
+      "name": "Update Webinar",
+      "category": "Webinars",
+      "description": "Updates an existing webinar's subject, description, session times, time zone, or approval setting. Only the fields you provide are changed. When changing session times, set Notify Participants to control whether registrants receive an updated-time email. Returns no content on success."
+    },
+    {
+      "name": "Cancel Webinar",
+      "category": "Webinars",
+      "description": "Cancels (deletes) a webinar. Optionally sends cancellation emails to everyone who registered. This cannot be undone — the webinar and its registration URL stop working immediately."
+    },
+    {
+      "name": "Get Registrants",
+      "category": "Registrants",
+      "description": "Lists everyone who has registered for a webinar, including their name, email, registration status, and join URL. Use this to export a registration list or check who has signed up."
+    },
+    {
+      "name": "Get Registrant",
+      "category": "Registrants",
+      "description": "Retrieves a single registrant's details by their registrant key, including status, registration answers, and personal join URL. Use this after listing registrants."
+    },
+    {
+      "name": "Create Registrant",
+      "category": "Registrants",
+      "description": "Registers a new person for a webinar. First name, last name, and email are required; additional profile fields can be supplied. Returns the registrant key, status, and a personal join URL to send to the attendee. If the webinar requires approval, the status will be WAITING until an organizer approves."
+    },
+    {
+      "name": "Delete Registrant",
+      "category": "Registrants",
+      "description": "Removes a registrant from a webinar, cancelling their registration. Their personal join URL stops working. Use this to unregister someone who signed up in error."
+    },
+    {
+      "name": "Get Attendees",
+      "category": "Attendees",
+      "description": "Lists the people who actually attended a specific past session of a webinar, including their join and leave times and time in session. Attendee data is only available after a session has ended. Use Get All Sessions first to find the session key."
+    },
+    {
+      "name": "Get Attendee",
+      "category": "Attendees",
+      "description": "Retrieves a single attendee's participation details for a past webinar session by their registrant key. Use this after listing attendees to inspect one person's session activity."
+    },
+    {
+      "name": "Get All Sessions",
+      "category": "Sessions",
+      "description": "Lists all past sessions of a webinar (each time it was actually run), with each session's key, start/end times, and registrant/attendee counts. Use this to find a session key for reading attendees, performance, polls, questions, or surveys."
+    },
+    {
+      "name": "Get Session Performance",
+      "category": "Sessions",
+      "description": "Retrieves aggregate performance metrics for a past webinar session — attendance, engagement, poll and survey counts, questions asked, and interest rating. Use this to report on how a session went."
+    },
+    {
+      "name": "Get Session Polls",
+      "category": "Sessions",
+      "description": "Retrieves the poll questions asked during a past webinar session along with the attendees' answers. Use this to analyze audience responses to your polls."
+    },
+    {
+      "name": "Get Session Questions",
+      "category": "Sessions",
+      "description": "Retrieves the questions asked by attendees during a past webinar session, with the organizer's answers where provided. Use this to review the Q&A from a session."
+    },
+    {
+      "name": "Get Session Surveys",
+      "category": "Sessions",
+      "description": "Retrieves the post-session survey questions and the attendees' answers for a past webinar session. Use this to collect and analyze survey feedback."
+    },
+    {
+      "name": "Get Account Webinars",
+      "category": "Account",
+      "description": "Lists all webinars across every organizer in the connected account within a date range — not just the connected user's own webinars. Requires the connected account to grant account-wide access. Use this for account-level reporting across organizers."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Automatically register leads or event sign-ups from a form, CRM, or spreadsheet as webinar",
+    "Schedule and update webinars (single session, series, or sequence) as part of a marketing",
+    "After a webinar runs, pull attendance, poll, question, and survey data for post-event reporting.",
+    "Sync registrants and attendees into a CRM or email platform to trigger nurture sequences.",
+    "Run account-wide reporting across every organizer's webinars for leadership dashboards."
+  ],
+  "agentIdeas": [
+    "When a **HubSpot** \"Create Contact\" fires from a new lead, call **GoTo Webinar** \"Create Registrant\" to sign them up for the next webinar and email them their personal join URL.",
+    "Use **Google Sheets** \"Get Rows\" to read a list of event sign-ups, then call **GoTo Webinar** \"Create Registrant\" for each row to bulk-register attendees.",
+    "After a webinar runs, call **GoTo Webinar** \"Get Attendees\" and \"Get Session Surveys\", then use **Google Sheets** \"Add Rows\" to log attendance and survey feedback for reporting.",
+    "Following a **GoTo Webinar** \"Get Attendees\" call, use **Mailchimp Marketing** \"Add Or Update List Member\" to add attendees to a follow-up nurture list."
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/gotowebinar/public/icon.png",
+  "sourcePaths": {
+    "service": "services/gotowebinar",
+    "readme": "services/gotowebinar/README.md",
+    "index": "services/gotowebinar/src/index.js"
+  }
+}

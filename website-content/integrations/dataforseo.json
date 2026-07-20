@@ -1,0 +1,86 @@
+{
+  "slug": "dataforseo",
+  "name": "DataForSEO",
+  "marketingCategory": "Analytics & Data",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Pull SEO, SERP, and keyword research data from DataForSEO into AI workflows for rank tracking, keyword analysis, and competitive intelligence.",
+  "actionCount": 9,
+  "triggerCount": 0,
+  "operationCategories": [
+    "SERP",
+    "Keywords Data",
+    "Keyword Research"
+  ],
+  "actions": [
+    {
+      "name": "Google Organic Search",
+      "category": "SERP",
+      "description": "Retrieves Google organic search results live for a keyword in a specific location and language. The 'resultFormat' parameter selects payload richness: 'regular' returns organic, paid, and featured_snippet items (sufficient for rank tracking and URL/title/description analysis); 'advanced' additionally returns knowledge_graph, local_pack, ai_overview, people_also_ask, carousels, and other SERP features. Both formats cost the same per call; cost scales with the 'depth' parameter (billed per 10 results)."
+    },
+    {
+      "name": "Google Maps Search",
+      "category": "SERP",
+      "description": "Retrieves Google Maps local search results live for a keyword. Returns business listings with names, addresses, ratings, and review counts. Ideal for local SEO monitoring, competitor mapping, and location-based market analysis. DataForSEO offers only an Advanced variant for Maps (no Regular)."
+    },
+    {
+      "name": "Bing Organic Search",
+      "category": "SERP",
+      "description": "Retrieves Bing organic search results live for a keyword. The 'resultFormat' parameter selects payload richness: 'regular' returns organic, paid, and featured_snippet items (sufficient for rank tracking); 'advanced' adds rich SERP features. Both formats cost the same per call; cost scales with 'depth' (billed per 10 results). Useful for tracking Bing-specific rankings and diversifying search visibility analysis beyond Google."
+    },
+    {
+      "name": "Get Keyword Search Volume",
+      "category": "Keywords Data",
+      "description": "Retrieves Google Ads search volume data for up to 1000 keywords in a single call. Returns monthly search volumes, CPC, competition level, and historical trends from the Google Ads API. This is the canonical volume source that marketers reference for traffic estimation and bid planning."
+    },
+    {
+      "name": "Get Keyword Overview",
+      "category": "Keyword Research",
+      "description": "Retrieves comprehensive keyword metrics for up to 700 keywords in a single call. Returns search volume, CPC, competition, keyword difficulty (0-100), search intent classification, and SERP feature data from DataForSEO Labs. More cost-effective than Google Ads API for enriched keyword analysis."
+    },
+    {
+      "name": "Get Bulk Keyword Difficulty",
+      "category": "Keyword Research",
+      "description": "Retrieves keyword difficulty scores (0-100 logarithmic scale) for up to 1000 keywords in a single call. The difficulty score indicates how hard it is to rank in the top-10 organic results. Ideal for large-scale opportunity scoring and content prioritization pipelines."
+    },
+    {
+      "name": "Get Related Keywords",
+      "category": "Keyword Research",
+      "description": "Expands a single seed keyword into a tree of related keywords using SERP-overlap analysis. Returns keyword metrics including search volume, difficulty, CPC, and search intent for each related term. Depth controls expansion breadth and cost. Depth of keyword expansion. Higher depths return exponentially more keywords but cost proportionally more. depth=0: returns the seed keyword only (~$0.01 per call). depth=1: ~50-100 keywords (~$0.01-0.02 per call). depth=2: ~500-1500 keywords (~$0.06-0.16 per call). depth=3: ~2000-3500 keywords (~$0.21-0.36 per call). depth=4: up to 4680 keywords (~$0.48 per call). Default of 1 is conservative."
+    },
+    {
+      "name": "Get Keyword Suggestions",
+      "category": "Keyword Research",
+      "description": "Generates long-tail keyword suggestions from a single seed keyword using DataForSEO Labs full-text discovery. Returns keyword metrics including search volume, difficulty, CPC, and search intent for each suggestion. Ideal for content ideation and finding low-competition keyword opportunities."
+    },
+    {
+      "name": "Get Keywords For Site",
+      "category": "Keyword Research",
+      "description": "Discovers keywords that a target domain ranks for in organic search. Returns keyword metrics including search volume, difficulty, CPC, and search intent. Ideal for competitor keyword analysis, content gap discovery, and understanding a site's organic search footprint."
+    }
+  ],
+  "triggers": [],
+  "idealUseCases": [
+    "Rank monitoring across Google, Bing, and Google Maps for tracked queries",
+    "Keyword research at scale: expand a seed term, score difficulty, rank by opportunity",
+    "Competitive SERP snapshots for content briefs and gap analysis",
+    "Discovering what queries a competitor's domain ranks for",
+    "Content calendar generation grounded in real search intent and difficulty",
+    "Continuous keyword refresh feeding a downstream content pipeline"
+  ],
+  "agentIdeas": [
+    "**Weekly keyword refresh**: trigger a scheduled FlowRunner run that reads seed terms from a config, expands them via *Get Keyword Suggestions* and *Get Related Keywords*, scores the combined pool with *Get Bulk Keyword Difficulty*, and writes ranked opportunities to a Google Sheet for review and prioritization.",
+    "**Competitor gap analysis**: when *Slack* \"On Mention\" fires with a competitor domain, call *Get Keywords For Site* and reply in-thread with their top-50 ranking keywords and difficulties.",
+    "**Brief generator**: when a *Notion* \"On New Page\" trigger fires in the content-briefs database, run *Google Organic Search* and *Get Keyword Overview* for the page title, then patch the Notion page with top SERP results and keyword metrics."
+  ],
+  "icon": "/logo.png",
+  "iconFile": "services/dataforseo/public/logo.png",
+  "sourcePaths": {
+    "service": "services/dataforseo",
+    "readme": "services/dataforseo/README.md",
+    "index": "services/dataforseo/src/index.js"
+  }
+}

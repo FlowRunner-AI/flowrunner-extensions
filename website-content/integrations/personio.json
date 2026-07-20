@@ -1,0 +1,254 @@
+{
+  "slug": "personio",
+  "name": "Personio",
+  "marketingCategory": "HR & Recruiting",
+  "categorySource": "keyword",
+  "auth": "API Key / Token",
+  "requiresOAuth": false,
+  "selfHostedCapable": false,
+  "usesFileStorage": false,
+  "shortDescription": "Integration with the Personio HR platform for managing people, employments, time off, time tracking, documents, recruiting, reports, compensations, and projects. Authenticates with Personio API credentials, plus an optional Recruiting Token for candidate workflows.",
+  "actionCount": 42,
+  "triggerCount": 5,
+  "operationCategories": [],
+  "actions": [
+    {
+      "name": "Test Connection",
+      "category": null,
+      "description": "Checks the Personio credentials by quietly fetching one record from each of the three connection lanes (legacy people lane, modern people lane, recruiting lane if a Recruiting Token is set). Returns one OK or one specific error message per lane — run this first when setting up the connection or after rotating any secret."
+    },
+    {
+      "name": "Find People",
+      "category": null,
+      "description": "Fetch one or more people from Personio. Leave Person ID blank to search across everyone; fill it in to drill into a single record. The other fields narrow the search — leave them blank to skip."
+    },
+    {
+      "name": "Add Person",
+      "category": null,
+      "description": "Create a new person in Personio together with their first employment record. Use this for hires, transfers in, and bulk imports. The hire date is the calendar date the person officially starts; weekly hours are how many hours they're contracted for."
+    },
+    {
+      "name": "Update Person",
+      "category": null,
+      "description": "Change profile details for an existing person — name, email, department, office, position, custom fields. Use this for non-employment edits; for things like weekly hours or contract type use Update Employment instead."
+    },
+    {
+      "name": "Delete Person",
+      "category": null,
+      "description": "Permanently remove a person from Personio. This is irreversible and cascades to the person's employment, time off, attendance, documents, and compensation history. For people who are leaving, prefer End Employment — deletion is mostly for GDPR-style cleanups long after exit."
+    },
+    {
+      "name": "Get Employee Photo",
+      "category": null,
+      "description": "Fetch a person's profile photo from Personio and return it as a base64-encoded image. Use it to push the photo into another system (Slack profile, ID badge generator, intranet directory)."
+    },
+    {
+      "name": "Find Employments",
+      "category": null,
+      "description": "Fetch the employment record(s) attached to a person — contract terms, weekly hours, supervisor, cost center, start and termination dates. A person can have more than one employment over time (rehires, contract changes). Pass an Employment ID to drill into a single record."
+    },
+    {
+      "name": "Update Employment",
+      "category": null,
+      "description": "Change contract terms on an existing employment record — weekly hours, contract type, position, supervisor, cost center, department. For exits use End Employment instead so the termination signals are sent properly."
+    },
+    {
+      "name": "End Employment",
+      "category": null,
+      "description": "The canonical \"this person is leaving\" action. Sets a termination date, reason, and type on the employee record — Personio then fires off-boarding signals and downstream automations. Prefer this over Update Employment for exits so the right webhooks fire and HR reports stay accurate."
+    },
+    {
+      "name": "Find Time Off",
+      "category": null,
+      "description": "Look up time-off requests (vacation, sick days, parental leave, etc.). Leave Time Off ID blank to filter across people, types, status, and date range. Fill it in to drill into one specific request."
+    },
+    {
+      "name": "Request Time Off",
+      "category": null,
+      "description": "File a time-off request on someone's behalf. Pick Whole days for vacation, public holidays, or any leave measured in days. Pick Specific hours for partial days like a doctor's appointment. The form will reshape itself based on your choice."
+    },
+    {
+      "name": "Update Time Off",
+      "category": null,
+      "description": "Edit an existing time-off request — adjust dates, change status (approve/reject), update the comment. Use this for approvals and corrections."
+    },
+    {
+      "name": "Withdraw Time Off Request",
+      "category": null,
+      "description": "Cancel and remove a time-off request from Personio. Works on both pending and approved requests. For approved requests this also returns the days to the person's balance."
+    },
+    {
+      "name": "Get Time Off Balance",
+      "category": null,
+      "description": "Look up how many days of each time-off type a person has used, has left, and has accruing. Useful for \"do they have enough vacation days?\" checks before approving a request."
+    },
+    {
+      "name": "Find Time Entries",
+      "category": null,
+      "description": "Look up time-tracking entries (logged hours). Leave Entry ID blank to filter across people, projects, and date range. Fill it in to drill into one entry."
+    },
+    {
+      "name": "Track Time",
+      "category": null,
+      "description": "Log a stretch of time worked. Use this to push hours into Personio from a timer app, calendar event, or manual entry. Times are full date-times — e.g. 2026-08-15T09:00 to 2026-08-15T17:30."
+    },
+    {
+      "name": "Update Time Entry",
+      "category": null,
+      "description": "Edit a logged time entry — adjust the times, change the break, attach or change the project, edit the comment."
+    },
+    {
+      "name": "Delete Time Entry",
+      "category": null,
+      "description": "Remove a logged time entry. Useful for correcting bad imports or duplicates."
+    },
+    {
+      "name": "Summarize Time Tracked",
+      "category": null,
+      "description": "Aggregate logged hours into totals — per person, per day, and per project — over a date range. Use this for \"monthly hours worked\" reports without writing your own paging-and-summing loop. Returns total hours plus the breakdown buckets."
+    },
+    {
+      "name": "Find Documents",
+      "category": null,
+      "description": "Look up documents stored against one person's profile in Personio (contracts, payslips, ID copies, training certificates). Personio requires picking a person — documents are always scoped to an employee. Leave Document ID blank to list that person's documents; fill it in to drill into one record."
+    },
+    {
+      "name": "Upload Document",
+      "category": null,
+      "description": "Attach a document to a person's profile in Personio. Pass the file as base64-encoded bytes plus a file name. Use this for sending contracts, payslips, or any HR document into Personio from another system. Max file size 30 MB."
+    },
+    {
+      "name": "Download Document",
+      "category": null,
+      "description": "Pull the file bytes for a document from Personio, returned as base64. Use this to push the document into another storage system (Google Drive, Dropbox, internal vault)."
+    },
+    {
+      "name": "Update Document Details",
+      "category": null,
+      "description": "Change a document's metadata in Personio — title, category, comment, confidentiality. Does not change the file bytes; for that, upload a fresh document and delete the old one."
+    },
+    {
+      "name": "Delete Document",
+      "category": null,
+      "description": "Remove a document from Personio. This is irreversible — the file bytes are gone."
+    },
+    {
+      "name": "Create Candidate",
+      "category": null,
+      "description": "Add a new candidate to Personio Recruiting and attach them to a job. Requires the Recruiting Token in the connection settings. Use Upload Applicant Document afterward to attach the CV and cover letter."
+    },
+    {
+      "name": "Upload Applicant Document",
+      "category": null,
+      "description": "Attach a file (CV, cover letter, portfolio, work sample) to an existing job application. Requires the Recruiting Token. Pair this with Create Candidate to ship a full submission. Max 20 MB."
+    },
+    {
+      "name": "Run Report",
+      "category": null,
+      "description": "Execute a saved Personio report and return its rows. Personio has two report flavours — Standard (the new Analytics workspace) and Custom (the original Reports tab). Pick one above and the matching report picker appears below."
+    },
+    {
+      "name": "List Report Columns",
+      "category": null,
+      "description": "List every attribute available to Personio Analytics reports — handy for building dynamic report viewers or for discovering what compensation, attendance, and headcount fields exist."
+    },
+    {
+      "name": "Find Legal Entities",
+      "category": null,
+      "description": "Look up the legal entities (subcompanies) inside this Personio account. Leave Entity ID blank to list all; fill it in to drill into one."
+    },
+    {
+      "name": "Find Departments",
+      "category": null,
+      "description": "List the departments in use across Personio. Built by scanning employees and collecting every distinct department — Personio does not expose departments as their own list, only as an attribute on each person."
+    },
+    {
+      "name": "Find Cost Centers",
+      "category": null,
+      "description": "List the cost centers in use across Personio. Built by scanning employees — Personio does not expose cost centers as their own list, only as an attribute on each person."
+    },
+    {
+      "name": "Find Offices",
+      "category": null,
+      "description": "List the offices in use across Personio. Built by scanning employees — Personio does not expose offices as their own list, only as an attribute on each person."
+    },
+    {
+      "name": "Find Compensations",
+      "category": null,
+      "description": "Look up compensation records (salaries, bonuses, one-time payments) for one or more people. Personio compensations are append-only — to \"edit\" a salary you Add Compensation with a new effective date."
+    },
+    {
+      "name": "Add Compensation",
+      "category": null,
+      "description": "Add a new compensation record — a new base salary effective from a given date, a one-time bonus payout, a commission entry. Personio compensations are append-only, so \"raises\" are modelled as a fresh record with a later effective date. For recurring salaries you also pick how often it pays out (monthly / annual / one-time)."
+    },
+    {
+      "name": "Find Projects",
+      "category": null,
+      "description": "Look up time-tracking projects. Leave Project ID blank to filter; fill it in to drill into one."
+    },
+    {
+      "name": "Add Project",
+      "category": null,
+      "description": "Create a new time-tracking project. Use a parent project ID to make this a subproject."
+    },
+    {
+      "name": "Update Project",
+      "category": null,
+      "description": "Rename a project, change its parent, or open/archive it."
+    },
+    {
+      "name": "Delete Project",
+      "category": null,
+      "description": "Remove a project. Existing time entries on the project are preserved but new ones can't be added. Subprojects are deleted with the parent."
+    },
+    {
+      "name": "Find Project Members",
+      "category": null,
+      "description": "List the people assigned to a project. Only members can log time against it."
+    },
+    {
+      "name": "Update Project Members",
+      "category": null,
+      "description": "Add people to a project or remove them. Pick Add or Remove above; the picker below changes to match."
+    },
+    {
+      "name": "Find Webhooks",
+      "category": null,
+      "description": "List the webhooks Personio has registered for this account, or drill into one by ID. Useful for auditing what's listening, debugging delivery problems, and seeing which events each webhook covers."
+    },
+    {
+      "name": "Inspect Webhook",
+      "category": null,
+      "description": "The one-stop debugging tool for a webhook subscription. Pick what you want to do — send a quick ping, fire a test event, replay recently failed deliveries, view the delivery log, or pull the latest events Personio sent. None of the operations create new triggers or change configuration."
+    }
+  ],
+  "triggers": [
+    "On People Change",
+    "On Employment Change",
+    "On Time Off Change",
+    "On Time Tracking Change",
+    "On Document Change"
+  ],
+  "idealUseCases": [
+    "Automating onboarding and offboarding of employee records",
+    "Syncing time-off requests, balances, and attendance",
+    "Tracking work hours against projects",
+    "Managing employee documents, uploads, and downloads",
+    "Creating recruiting candidates and uploading applicant CVs",
+    "Running Personio reports and pushing results elsewhere",
+    "Monitoring HR changes in real time to trigger workflows"
+  ],
+  "agentIdeas": [
+    "When a **Personio** \"On People Change\" trigger fires for a new hire, use **Slack** \"Send Direct Message\" to welcome them and **Slack** \"Invite User To Channel\" to add them to their team channel",
+    "When a **Personio** \"On Time Off Change\" trigger fires, use **Google Sheets** \"Add Row\" to log the absence into a shared time-off tracker and **Gmail** \"Send Message\" to notify the manager",
+    "Use **Personio** \"Run Report\" to pull a headcount report, then call **Google Sheets** \"Add Rows\" to sync the results into a reporting spreadsheet for dashboards"
+  ],
+  "icon": "/icon.png",
+  "iconFile": "services/personio/public/icon.png",
+  "sourcePaths": {
+    "service": "services/personio",
+    "readme": "services/personio/README.md",
+    "index": "services/personio/src/index.js"
+  }
+}
