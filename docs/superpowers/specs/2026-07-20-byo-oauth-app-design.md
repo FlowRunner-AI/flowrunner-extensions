@@ -57,7 +57,7 @@ always present as the fallback).
 
 ```js
 {
-  displayName: 'Custom App Client ID',
+  displayName: 'Your Own App Client ID',
   name: 'customClientId',
   type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
   required: false,
@@ -66,7 +66,7 @@ always present as the fallback).
   hint: '<see Hints below>'
 },
 {
-  displayName: 'Custom App Client Secret',
+  displayName: 'Your Own App Client Secret',
   name: 'customClientSecret',
   type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
   required: false,
@@ -75,6 +75,10 @@ always present as the fallback).
   hint: '<see Hints below>'
 }
 ```
+
+Display labels are "Your Own App Client ID" / "Your Own App Client Secret";
+internal config `name`s stay `customClientId` / `customClientSecret` (stable code
+identifiers the constructor reads).
 
 This does **not** change the house rule that `shared: true` is only for OAuth
 `clientId`/`clientSecret` — the new items are `shared: false` like every other
@@ -110,7 +114,7 @@ Each custom field's hint must convey:
 1. **When to use it:** "Optional. Leave blank to use FlowRunner's built-in app.
    Provide your own app's credentials if you need scopes/permissions or rate
    limits the built-in app doesn't offer, or to run under your own reviewed app."
-2. **Both required together:** "Set both Custom App Client ID and Custom App
+2. **Both required together:** "Set both Your Own App Client ID and Your Own App
    Client Secret, or leave both blank."
 3. **Redirect URI to register:** "In your app, add this exact redirect/callback
    URL: `https://app.flowrunner.ai/api/integration/oauth/callback`"
