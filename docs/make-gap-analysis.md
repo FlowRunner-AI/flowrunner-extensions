@@ -52,6 +52,16 @@ Reconciliation: 2,534 verified = 261 covered (same-name + renamed/family) + 2,27
 
 ## Tier 1 — 57 confirmed gaps, grouped into build waves
 
+> **Status (2026-07-20): COMPLETE — 56 of 57 built and shipped across waves MW1–MW12.** The one
+> remainder, ADP Workforce Now, is deferred: it authenticates over mutual TLS (a client certificate
+> on every call), which the standard `Flowrunner.Request` HTTP client can't attach — it needs a
+> platform client-cert transport before it's buildable as a working service. Several shipped
+> services are code-complete but require the customer/us to complete a developer-app registration or
+> review before production use (marked **[GATED]** in their wave and in the registration checklist
+> below): Etsy, Amazon Seller Central, RingCentral (production), Canva (public release), Trustpilot
+> (private endpoints), PandaDoc (production key), Vimeo (upload), and all of MW11 (Meta Ads,
+> Instagram, Messenger, TikTok, Pinterest).
+
 Every candidate below survived a second-pass adversarial review (mainstream demand? self-serve API?
 not already covered? alive?). ~33 first-pass nominations were demoted to Tier 2 in that review.
 
@@ -154,11 +164,11 @@ _Meta/TikTok/Pinterest developer-app approvals required — begin registrations 
 ### MW12 — HR, dev & infra (+ SFTP spike)
 _sftp = ssh2 driver spike (same connect-per-call pattern as the DB family); ADP is partner-gated, build last_
 
-- [ ] **Greenhouse** (`greenhouse`, basic) — Harvest API: API key as basic-auth username, empty password; writes require On-Behalf-Of user-ID header
-- [ ] **Kajabi** (`kajabi`, oauth2) — OAuth2 client_credentials against /v1/oauth/token using per-account client_id/secret from Settings > Public API (customer-supplied creds, no app review)
-- [ ] **Azure DevOps** (`azure-devops`, oauth2) — legacy Azure DevOps OAuth closed to new apps Apr 2025 (EOL 2026) — register via Microsoft Entra ID; PAT basic-auth fallback; dev.azure.com/{org} REST 7.x
-- [ ] **SFTP** (`sftp`, basic) — no HTTP API — use ssh2/ssh2-sftp-client npm dependency, password or private-key auth; service needs @usesFileStorage for file handoff
-- [ ] **ADP Workforce Now** (`adp-workforce-now`, oauth2) **[GATED]** — OAuth2 client-credentials over mutual TLS to accounts.adp.com/api.adp.com; client cert issued/registered via ADP partner portal
+- [x] **Greenhouse** (`greenhouse`, basic) (`services/greenhouse`) — Harvest API: API key as basic-auth username, empty password; writes require On-Behalf-Of user-ID header
+- [x] **Kajabi** (`kajabi`, oauth2) (`services/kajabi`) — OAuth2 client_credentials against /v1/oauth/token using per-account client_id/secret from Settings > Public API (customer-supplied creds, no app review)
+- [x] **Azure DevOps** (`azure-devops`, oauth2) (`services/azure-devops`) — shipped with PAT (Basic) auth: legacy Azure DevOps 3-legged OAuth is closed to new apps (EOL 2026), so PAT is the self-serve path; dev.azure.com/{org} REST 7.1
+- [x] **SFTP** (`sftp`, basic) (`services/sftp`) — **driver spike PASSED**: ssh2-sftp-client (pure-JS, installs no-native-compile, connect-per-call like the DB family); password or private-key auth; @usesFileStorage for file handoff
+- [~] **ADP Workforce Now** (`adp-workforce-now`, oauth2) **[DEFERRED — needs platform spike]** — OAuth2 client-credentials over **mutual TLS**: every call requires a client certificate, which the standard `Flowrunner.Request` HTTP client cannot attach. Also partner-gated (cert issued via ADP partner portal). Not buildable as a working service until a client-cert transport is confirmed in the runtime; hold until demand + a mutual-TLS feasibility check.
 
 ### Gated-app registration checklist (start immediately, before MW9/MW11)
 
