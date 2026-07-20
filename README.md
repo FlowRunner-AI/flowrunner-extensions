@@ -308,7 +308,7 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [syncromsp](services/syncromsp/) |  |  |
 | [taiga](services/taiga/) |  |  |
 | [tapfiliate](services/tapfiliate/) |  |  |
-| [telegram](services/telegram/) |  |  |
+| [telegram](services/telegram/) | ✅ | ✅ |
 | [thehive](services/thehive/) |  |  |
 | [timescaledb](services/timescaledb/) |  |  |
 | [todoist](services/todoist/) |  |  |

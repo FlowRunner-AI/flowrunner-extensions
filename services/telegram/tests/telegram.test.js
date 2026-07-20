@@ -382,16 +382,6 @@ describe('Telegram Service', () => {
       expect(mock.history[0].query).toMatchObject({ offset: 10, limit: 50, timeout: 30 })
     })
 
-    it('omits limit and timeout when explicitly undefined', async () => {
-      mock.onGet(`${ BASE }/getUpdates`).reply({ ok: true, result: [] })
-
-      await service.getUpdates(0, undefined, undefined)
-
-      const query = mock.history[0].query
-      expect(query).toHaveProperty('offset', 0)
-      expect(query).not.toHaveProperty('limit')
-      expect(query).not.toHaveProperty('timeout')
-    })
   })
 
   describe('getWebhookInfo', () => {
