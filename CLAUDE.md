@@ -285,3 +285,7 @@ When analyzing this repository with Claude Code, follow these exclusion rules:
 3. **AI Agent Tools documentation** - These services are used as AI Agent Tools, so they must be well described with comprehensive JSDoc annotations including clear method names, descriptions, and detailed parameter definitions to ensure proper AI integration
 
 These rules ensure analysis focuses on source code and documentation while avoiding generated files, dependencies, and local configuration that aren't part of the core codebase.
+
+## Storing Preferences and Rules
+
+When asked to remember something about service development (engineering, testing, docs maintenance), store it **in the repo itself** — in the relevant agent definition (`.claude/agents/`), in `CLAUDE.md`, or in `/docs/`. Do NOT store project-related preferences in external memory files outside the repo. This ensures all agents and sessions pick up the rules.

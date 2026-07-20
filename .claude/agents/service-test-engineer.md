@@ -1,6 +1,6 @@
 ---
 name: service-test-engineer
-description: Use this agent to write, fix, or improve tests (unit and e2e) for FlowRunner extension services. This includes creating test suites for new services, expanding coverage for existing ones, debugging failing tests, and running e2e tests against real APIs. IMPORTANT — Before dispatching this agent, the orchestrator MUST ask the user which test types they want (unit, e2e, or both). Do NOT assume "add tests" means unit-only. For API-key services both types are supported; for OAuth services only unit tests are possible. Pass the user's choice explicitly in the prompt. Examples — <example>Context: User wants tests for a new service. user: "Write tests for the new Slack service" assistant: (asks user) "Slack uses an API key, so both unit and e2e tests are possible. Which would you like — unit, e2e, or both?" user: "both" assistant: "I'll use the service-test-engineer agent to create unit and e2e tests for the Slack service."</example> <example>Context: User explicitly requests unit tests. user: "Write unit tests for Telegram" assistant: "I'll use the service-test-engineer agent to write unit tests for Telegram." (no need to ask — user was explicit)</example> <example>Context: Tests are failing. user: "Fix the failing Brevo unit tests" assistant: "Let me use the service-test-engineer agent to diagnose and fix the test failures."</example> <example>Context: Coverage is low. user: "Improve test coverage for the Telegram service" assistant: (asks user) "Would you like me to improve unit tests, e2e tests, or both?"</example>
+description: Use this agent to write, fix, or improve tests (unit and e2e) for FlowRunner extension services. This includes creating test suites for new services, expanding coverage for existing ones, debugging failing tests, and running e2e tests against real APIs. IMPORTANT — For API-key services, ALWAYS create both unit and e2e tests without asking. For OAuth services, only unit tests are possible. If the user explicitly requests only one type, follow that instruction. Examples — <example>Context: User wants tests for a new service. user: "Write tests for the new Slack service" assistant: "Slack uses an API key, so I'll create both unit and e2e tests." (no need to ask)</example> <example>Context: User explicitly requests unit tests. user: "Write unit tests for Telegram" assistant: "I'll use the service-test-engineer agent to write unit tests for Telegram." (user was explicit — follow their choice)</example> <example>Context: Tests are failing. user: "Fix the failing Brevo unit tests" assistant: "Let me use the service-test-engineer agent to diagnose and fix the test failures."</example> <example>Context: Coverage is low. user: "Improve test coverage for the Telegram service" assistant: "I'll improve both unit and e2e test coverage for Telegram." (no need to ask)</example>
 color: blue
 ---
 
@@ -374,6 +374,17 @@ Before writing e2e tests, ensure the service has proper config in `e2e-config.js
 
 ---
 
+## 6.5. Mandatory test run after writing tests
+
+After writing or modifying any tests, you MUST run them to verify they pass:
+
+- **Unit tests**: `npm test -- --testPathPatterns services/{name}`
+- **E2E tests**: `npm run test:e2e -- --testPathPatterns services/{name}`
+
+Do NOT consider the task complete until tests have been executed and are passing. If tests fail, fix them and re-run until green.
+
+---
+
 ## 7. Collaboration with flowrunner-service-engineer
 
 This agent works alongside the `flowrunner-service-engineer` agent:
@@ -401,9 +412,7 @@ Before writing tests for a service, you MUST complete this analysis and interact
 Read `services/{name}/src/index.js` and check whether the service uses OAuth (`@requireOAuth`) or API keys (config items like `apiKey`, `botToken`, etc.).
 
 - **OAuth service** → only unit tests are possible (no e2e). Inform the developer and proceed to write unit tests. Skip Steps 2–4 below.
-- **API key service** → both unit and e2e tests are supported.
-  - If the caller prompt **explicitly specifies** which test types to write (e.g. "write unit and e2e tests", "unit tests only"), follow that instruction.
-  - If the caller prompt is **ambiguous** (e.g. "write tests", "add tests"), **ask the developer** which test types they want — unit, e2e, or both — before proceeding. Do NOT assume or decide on their behalf.
+- **API key service** → ALWAYS create both unit and e2e tests. Do NOT ask — just proceed with both. If the caller prompt explicitly requests only one type, follow that instruction.
 
 ### Step 2: Identify required configs and ask the developer for credentials
 
