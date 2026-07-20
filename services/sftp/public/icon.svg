@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="SFTP">
+  <rect width="128" height="128" rx="24" fill="#1E3A5F"/>
+  <!-- Folder -->
+  <path d="M28 44a6 6 0 0 1 6-6h20l8 8h32a6 6 0 0 1 6 6v34a6 6 0 0 1-6 6H34a6 6 0 0 1-6-6V44z" fill="#4A6E9E"/>
+  <path d="M28 52h72v30a6 6 0 0 1-6 6H34a6 6 0 0 1-6-6V52z" fill="#6D95C6"/>
+  <!-- Up arrow (send) -->
+  <g fill="#FFFFFF">
+    <rect x="52" y="66" width="6" height="18" rx="3"/>
+    <path d="M55 60l9 11H46l9-11z"/>
+  </g>
+  <!-- Down arrow (receive) -->
+  <g fill="#CFE0F5">
+    <rect x="70" y="60" width="6" height="18" rx="3"/>
+    <path d="M73 84l-9-11h18l-9 11z"/>
+  </g>
+</svg>
