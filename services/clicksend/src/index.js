@@ -712,7 +712,10 @@ class ClickSend {
 
     if (response.data && response.data.messages && response.data.messages.length) {
       const outputData = response.data.messages[0]
-      outputData.currency_name_short = response.data._currency.currency_name_short
+
+      if (response.data._currency) {
+        outputData.currency_name_short = response.data._currency.currency_name_short
+      }
 
       return outputData
     } else {
@@ -808,7 +811,9 @@ class ClickSend {
         delete outputData._return_address
       }
 
-      outputData.currency_name_short = response.data._currency.currency_name_short
+      if (response.data._currency) {
+        outputData.currency_name_short = response.data._currency.currency_name_short
+      }
 
       return outputData
     } else {
@@ -876,7 +881,10 @@ class ClickSend {
 
     if (response.data && response.data.messages && response.data.messages.length) {
       const outputData = response.data.messages[0]
-      outputData.currency_name_short = response.data.messages.currency_name_short
+
+      if (response.data._currency) {
+        outputData.currency_name_short = response.data._currency.currency_name_short
+      }
 
       return outputData
     } else {
@@ -1021,7 +1029,9 @@ class ClickSend {
         delete outputData._return_address
       }
 
-      outputData.currency_name_short = response.data._currency.currency_name_short
+      if (response.data._currency) {
+        outputData.currency_name_short = response.data._currency.currency_name_short
+      }
 
       return outputData
     } else {
@@ -1338,7 +1348,7 @@ class ClickSend {
    * @returns {Object}
    * @sampleResult {"_import_in_progress":0,"list_id":2932037,"_optout_in_progress":0,"list_email_id":"EP1EYJUOB6ZRVS4Q","_contacts_count":2,"list_name":"SMS List","contactListFound":true}
    */
-  async serachContactListByName(list_name) {
+  async searchContactListByName(list_name) {
     try {
       if (list_name) {
         list_name = list_name.trim()
@@ -1514,6 +1524,7 @@ Flowrunner.ServerCode.addService(ClickSend, [
     displayName: 'Username',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
+    shared: false,
     name: 'username',
     hint: 'You can find this value in your ClickSend account (menu item Developers - API Credentials)',
   },
@@ -1521,6 +1532,7 @@ Flowrunner.ServerCode.addService(ClickSend, [
     displayName: 'API Key',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
+    shared: false,
     name: 'apiKey',
     hint: 'You can find this value in your ClickSend account (menu item Developers - API Credentials)',
   },

@@ -370,10 +370,10 @@ class CortexService {
   /**
    * @operationName Get Responder Job
    * @category Responders
-   * @description Retrieves the current state of a responder job by its id, including its status (Waiting, InProgress, Success or Failure) and the action's output. Use this to confirm whether a responder action completed successfully.
-   * @route GET /responder/jobs
+   * @description Retrieves the current state of a responder job by its id, including its status (Waiting, InProgress, Success or Failure) and the action's output. Use this to confirm whether a responder action completed successfully. Cortex stores analyzer and responder jobs in a single unified job store, so both are fetched from the same underlying endpoint (GET /api/job/{id}); this action is provided as a responder-focused convenience.
+   * @route GET /responder-jobs
    *
-   * @paramDef {"type":"String","label":"Job ID","name":"id","required":true,"description":"The id of the responder job to retrieve."}
+   * @paramDef {"type":"String","label":"Job ID","name":"id","required":true,"description":"The id of the responder job to retrieve (returned by Run Responder)."}
    *
    * @returns {Object}
    * @sampleResult {"id":"BWNei4vH3rJ8unegCPB9","responderName":"Mailer_1_0","status":"Success","data":"analyst@example.com","dataType":"mail","createdAt":1526299593633,"endDate":1526299597064}
@@ -381,6 +381,9 @@ class CortexService {
   async getResponderJob(id) {
     const logTag = '[getResponderJob]'
 
+    // Cortex has no responder-specific job endpoint: JobCtrl serves both analyzer
+    // and responder jobs from GET /api/job/{id} (see conf/routes -> JobCtrl.get).
+    // A responder run returns a job whose id is retrieved here, same as Get Job.
     return await this.#apiRequest({
       logTag,
       url: `${ this.#apiBase() }/job/${ encodeURIComponent(id) }`,
