@@ -67,6 +67,11 @@ function createRequestMock() {
         return chain
       },
 
+      type(contentType) {
+        callRecord.contentType = contentType
+        return chain
+      },
+
       setEncoding(enc) {
         callRecord.encoding = enc
         return chain

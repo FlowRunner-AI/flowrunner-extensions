@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 119 | 119 | 166 |
-| **All Services** | **385** | **167** | **119** | **218** |
+| API Key Extensions | 285 | 163 | 163 | 122 |
+| **All Services** | **385** | **211** | **163** | **174** |
 
 ## OAuth Extensions
 
@@ -209,25 +209,25 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [freshservice](services/freshservice/) | ✅ | ✅ |
 | [freshworks-crm](services/freshworks-crm/) | ✅ | ✅ |
 | [front-service](services/front-service/) | ✅ | ✅ |
-| [gemini-ai](services/gemini-ai/) | | |
-| [getresponse](services/getresponse/) | | |
-| [ghost](services/ghost/) | | |
-| [gitlab](services/gitlab/) | | |
-| [gong](services/gong/) | | |
-| [google-books](services/google-books/) | | |
-| [google-cloud-storage](services/google-cloud-storage/) | | |
-| [google-firestore](services/google-firestore/) | | |
-| [google-maps](services/google-maps/) | | |
-| [google-natural-language](services/google-natural-language/) | | |
-| [google-translate](services/google-translate/) | | |
-| [google-vertex-ai](services/google-vertex-ai/) | | |
-| [gotify](services/gotify/) | | |
-| [grafana](services/grafana/) | | |
-| [gravity-forms](services/gravity-forms/) | | |
-| [greenhouse](services/greenhouse/) | | |
-| [grist](services/grist/) | | |
-| [groq](services/groq/) | | |
-| [gumroad](services/gumroad/) | | |
+| [gemini-ai](services/gemini-ai/) | ✅ | ✅ |
+| [getresponse](services/getresponse/) | ✅ | ✅ |
+| [ghost](services/ghost/) | ✅ | ✅ |
+| [gitlab](services/gitlab/) | ✅ | ✅ |
+| [gong](services/gong/) | ✅ | ✅ |
+| [google-books](services/google-books/) | ✅ | ✅ |
+| [google-cloud-storage](services/google-cloud-storage/) | ✅ | ✅ |
+| [google-firestore](services/google-firestore/) | ✅ | ✅ |
+| [google-maps](services/google-maps/) | ✅ | ✅ |
+| [google-natural-language](services/google-natural-language/) | ✅ | ✅ |
+| [google-translate](services/google-translate/) | ✅ | ✅ |
+| [google-vertex-ai](services/google-vertex-ai/) | ✅ | ✅ |
+| [gotify](services/gotify/) | ✅ | ✅ |
+| [grafana](services/grafana/) | ✅ | ✅ |
+| [gravity-forms](services/gravity-forms/) | ✅ | ✅ |
+| [greenhouse](services/greenhouse/) | ✅ | ✅ |
+| [grist](services/grist/) | ✅ | ✅ |
+| [groq](services/groq/) | ✅ | ✅ |
+| [gumroad](services/gumroad/) | ✅ | ✅ |
 | [hackernews](services/hackernews/) | ✅ | ✅ |
 | [halopsa](services/halopsa/) | ✅ | ✅ |
 | [harvest](services/harvest/) | ✅ | ✅ |
@@ -236,9 +236,9 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [home-assistant](services/home-assistant/) | ✅ | ✅ |
 | [huggingface](services/huggingface/) | ✅ | ✅ |
 | [hunter](services/hunter/) | ✅ | ✅ |
-| [instantly](services/instantly/) | | |
-| [invoice-ninja](services/invoice-ninja/) | | |
-| [iterable](services/iterable/) | | |
+| [instantly](services/instantly/) | ✅ | ✅ |
+| [invoice-ninja](services/invoice-ninja/) | ✅ | ✅ |
+| [iterable](services/iterable/) | ✅ | ✅ |
 | [jenkins](services/jenkins/) | ✅ | ✅ |
 | [jina](services/jina/) | ✅ | ✅ |
 | [jira-issues](services/jira-issues/) | ✅ | ✅ |
@@ -255,33 +255,33 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [line](services/line/) | ✅ | ✅ |
 | [linear](services/linear/) | ✅ | ✅ |
 | [lingvanex](services/lingvanex/) | ✅ | ✅ |
-| [magento](services/magento/) | | |
-| [mailbox](services/mailbox/) | | |
-| [mailchimp-transactional](services/mailchimp-transactional/) | | |
-| [mailer-send](services/mailer-send/) | | |
-| [mailerlite](services/mailerlite/) | | |
-| [mailgun](services/mailgun/) | | |
-| [mailjet](services/mailjet/) | | |
-| [manychat](services/manychat/) | | |
-| [marketo](services/marketo/) | | |
-| [marketstack](services/marketstack/) | | |
-| [matrix](services/matrix/) | | |
-| [mattermost](services/mattermost/) | | |
-| [mautic](services/mautic/) | | |
-| [medium](services/medium/) | | |
-| [messagebird](services/messagebird/) | | |
-| [metabase](services/metabase/) | | |
-| [milvus](services/milvus/) | | |
-| [mindee](services/mindee/) | | |
-| [misp](services/misp/) | | |
-| [mistral-ai](services/mistral-ai/) | | |
-| [mixpanel](services/mixpanel/) | | |
-| [mocean](services/mocean/) | | |
-| [mollie](services/mollie/) | | |
-| [mongodb](services/mongodb/) | | |
-| [monica](services/monica/) | | |
-| [msg91](services/msg91/) | | |
-| [mysql](services/mysql/) | | |
+| [magento](services/magento/) | ✅ | ✅ |
+| [mailbox](services/mailbox/) | ✅ | ✅ |
+| [mailchimp-transactional](services/mailchimp-transactional/) | ✅ | ✅ |
+| [mailer-send](services/mailer-send/) | ✅ | ✅ |
+| [mailerlite](services/mailerlite/) | ✅ | ✅ |
+| [mailgun](services/mailgun/) | ✅ | ✅ |
+| [mailjet](services/mailjet/) | ✅ | ✅ |
+| [manychat](services/manychat/) | ✅ | ✅ |
+| [marketo](services/marketo/) | ✅ | ✅ |
+| [marketstack](services/marketstack/) | ✅ | ✅ |
+| [matrix](services/matrix/) | ✅ | ✅ |
+| [mattermost](services/mattermost/) | ✅ | ✅ |
+| [mautic](services/mautic/) | ✅ | ✅ |
+| [medium](services/medium/) | ✅ | ✅ |
+| [messagebird](services/messagebird/) | ✅ | ✅ |
+| [metabase](services/metabase/) | ✅ | ✅ |
+| [milvus](services/milvus/) | ✅ | ✅ |
+| [mindee](services/mindee/) | ✅ | ✅ |
+| [misp](services/misp/) | ✅ | ✅ |
+| [mistral-ai](services/mistral-ai/) | ✅ | ✅ |
+| [mixpanel](services/mixpanel/) | ✅ | ✅ |
+| [mocean](services/mocean/) | ✅ | ✅ |
+| [mollie](services/mollie/) | ✅ | ✅ |
+| [mongodb](services/mongodb/) | ✅ | ✅ |
+| [monica](services/monica/) | ✅ | ✅ |
+| [msg91](services/msg91/) | ✅ | ✅ |
+| [mysql](services/mysql/) | ✅ | ✅ |
 | [nasa](services/nasa/) | | |
 | [netlify](services/netlify/) | | |
 | [nextcloud](services/nextcloud/) | | |

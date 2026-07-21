@@ -1,5 +1,6 @@
 const common = {
   coveragePathIgnorePatterns: ['/node_modules/', '/service-sandbox/'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 }
 
 module.exports = {
