@@ -231,10 +231,10 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [instantly](services/instantly/) | | |
 | [invoice-ninja](services/invoice-ninja/) | | |
 | [iterable](services/iterable/) | | |
-| [jenkins](services/jenkins/) | | |
-| [jina](services/jina/) | | |
-| [jira-issues](services/jira-issues/) | | |
-| [jotform](services/jotform/) | | |
+| [jenkins](services/jenkins/) | ✅ | ✅ |
+| [jina](services/jina/) | ✅ | ✅ |
+| [jira-issues](services/jira-issues/) | ✅ | ✅ |
+| [jotform](services/jotform/) | ✅ | ✅ |
 | [kajabi](services/kajabi/) | | |
 | [keap](services/keap/) | | |
 | [kit](services/kit/) | | |
