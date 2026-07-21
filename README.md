@@ -190,17 +190,17 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [elevenlabs](services/elevenlabs/) | ✅ | ✅ |
 | [erpnext](services/erpnext/) | ✅ | ✅ |
 | [eventbrite](services/eventbrite/) | ✅ | ✅ |
-| [facebook](services/facebook/) | | |
-| [figma](services/figma/) | | |
-| [filemaker](services/filemaker/) | | |
-| [firecrawl](services/firecrawl/) | | |
-| [fireflies-service](services/fireflies-service/) | | |
-| [formio](services/formio/) | | |
-| [formstack](services/formstack/) | | |
-| [freshdesk](services/freshdesk/) | | |
-| [freshservice](services/freshservice/) | | |
-| [freshworks-crm](services/freshworks-crm/) | | |
-| [front-service](services/front-service/) | | |
+| [facebook](services/facebook/) | ✅ | ✅ |
+| [figma](services/figma/) | ✅ | ✅ |
+| [filemaker](services/filemaker/) | ✅ | ✅ |
+| [firecrawl](services/firecrawl/) | ✅ | ✅ |
+| [fireflies-service](services/fireflies-service/) | ✅ | ✅ |
+| [formio](services/formio/) | ✅ | ✅ |
+| [formstack](services/formstack/) | ✅ | ✅ |
+| [freshdesk](services/freshdesk/) | ✅ | ✅ |
+| [freshservice](services/freshservice/) | ✅ | ✅ |
+| [freshworks-crm](services/freshworks-crm/) | ✅ | ✅ |
+| [front-service](services/front-service/) | ✅ | ✅ |
 | [gemini-ai](services/gemini-ai/) | | |
 | [getresponse](services/getresponse/) | | |
 | [ghost](services/ghost/) | | |
