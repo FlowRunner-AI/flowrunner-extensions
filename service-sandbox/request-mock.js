@@ -72,6 +72,11 @@ function createRequestMock() {
         return chain
       },
 
+      unwrapBody(flag) {
+        callRecord.unwrapBody = flag
+        return chain
+      },
+
       then(resolve, reject) {
         history.push(callRecord)
 

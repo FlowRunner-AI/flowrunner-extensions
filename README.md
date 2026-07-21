@@ -6,56 +6,56 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 
 | Extension Name | Unit Tests | E2E Tests |
 |---|---|---|
-| [adobe-sign](services/adobe-sign/) | | |
-| [airtable](services/airtable/) | | |
-| [amazon-seller-central](services/amazon-seller-central/) | | |
-| [apollo](services/apollo/) | | |
-| [asana](services/asana/) | | |
-| [backendless](services/backendless/) | | |
-| [bamboohr](services/bamboohr/) | | |
-| [basecamp3](services/basecamp3/) | | |
-| [bigcommerce](services/bigcommerce/) | | |
-| [box](services/box/) | | |
-| [calendly](services/calendly/) | | |
-| [canva](services/canva/) | | |
-| [clickup](services/clickup/) | | |
-| [closecrm](services/closecrm/) | | |
-| [confluence](services/confluence/) | | |
-| [constant-contact](services/constant-contact/) | | |
-| [deel](services/deel/) | | |
-| [docusign](services/docusign/) | | |
-| [dropbox-service](services/dropbox-service/) | | |
-| [dynamics-365](services/dynamics-365/) | | |
-| [entra-id](services/entra-id/) | | |
-| [etsy](services/etsy/) | | |
-| [facebook-lead-ads](services/facebook-lead-ads/) | | |
-| [facebook-messenger](services/facebook-messenger/) | | |
-| [freshbooks](services/freshbooks/) | | |
-| [github](services/github/) | | |
-| [gmail-service](services/gmail-service/) | | |
-| [gocardless](services/gocardless/) | | |
-| [gohighlevel](services/gohighlevel/) | | |
-| [google-ads](services/google-ads/) | | |
-| [google-analytics](services/google-analytics/) | | |
-| [google-business-profile](services/google-business-profile/) | | |
-| [google-calendar](services/google-calendar/) | | |
-| [google-chat](services/google-chat/) | | |
-| [google-contacts](services/google-contacts/) | | |
-| [google-docs](services/google-docs/) | | |
-| [google-drive-api](services/google-drive-api/) | | |
-| [google-forms](services/google-forms/) | | |
-| [google-meet](services/google-meet/) | | |
-| [google-search-console](services/google-search-console/) | | |
+| [adobe-sign](services/adobe-sign/) | ✅ | |
+| [airtable](services/airtable/) | ✅ | |
+| [amazon-seller-central](services/amazon-seller-central/) | ✅ | |
+| [apollo](services/apollo/) | ✅ | |
+| [asana](services/asana/) | ✅ | |
+| [backendless](services/backendless/) | ✅ | |
+| [bamboohr](services/bamboohr/) | ✅ | |
+| [basecamp3](services/basecamp3/) | ✅ | |
+| [bigcommerce](services/bigcommerce/) | ✅ | |
+| [box](services/box/) | ✅ | |
+| [calendly](services/calendly/) | ✅ | |
+| [canva](services/canva/) | ✅ | |
+| [clickup](services/clickup/) | ✅ | |
+| [closecrm](services/closecrm/) | ✅ | |
+| [confluence](services/confluence/) | ✅ | |
+| [constant-contact](services/constant-contact/) | ✅ | |
+| [deel](services/deel/) | ✅ | |
+| [docusign](services/docusign/) | ✅ | |
+| [dropbox-service](services/dropbox-service/) | ✅ | |
+| [dynamics-365](services/dynamics-365/) | ✅ | |
+| [entra-id](services/entra-id/) | ✅ | |
+| [etsy](services/etsy/) | ✅ | |
+| [facebook-lead-ads](services/facebook-lead-ads/) | ✅ | |
+| [facebook-messenger](services/facebook-messenger/) | ✅ | |
+| [freshbooks](services/freshbooks/) | ✅ | |
+| [github](services/github/) | ✅ | |
+| [gmail-service](services/gmail-service/) | ✅ | |
+| [gocardless](services/gocardless/) | ✅ | |
+| [gohighlevel](services/gohighlevel/) | ✅ | |
+| [google-ads](services/google-ads/) | ✅ | |
+| [google-analytics](services/google-analytics/) | ✅ | |
+| [google-business-profile](services/google-business-profile/) | ✅ | |
+| [google-calendar](services/google-calendar/) | ✅ | |
+| [google-chat](services/google-chat/) | ✅ | |
+| [google-contacts](services/google-contacts/) | ✅ | |
+| [google-docs](services/google-docs/) | ✅ | |
+| [google-drive-api](services/google-drive-api/) | ✅ | |
+| [google-forms](services/google-forms/) | ✅ | |
+| [google-meet](services/google-meet/) | ✅ | |
+| [google-search-console](services/google-search-console/) | ✅ | |
 | [google-sheets](services/google-sheets/) | | |
-| [google-slides](services/google-slides/) | | |
-| [google-tasks](services/google-tasks/) | | |
-| [google-workspace-admin](services/google-workspace-admin/) | | |
-| [gotowebinar](services/gotowebinar/) | | |
-| [hubspot](services/hubspot/) | | |
-| [instagram-business](services/instagram-business/) | | |
+| [google-slides](services/google-slides/) | ✅ | |
+| [google-tasks](services/google-tasks/) | ✅ | |
+| [google-workspace-admin](services/google-workspace-admin/) | ✅ | |
+| [gotowebinar](services/gotowebinar/) | ✅ | |
+| [hubspot](services/hubspot/) | ✅ | |
+| [instagram-business](services/instagram-business/) | ✅ | |
 | [intercom](services/intercom/) | | |
-| [linkedin](services/linkedin/) | | |
-| [mailchimp-marketing](services/mailchimp-marketing/) | | |
+| [linkedin](services/linkedin/) | ✅ | |
+| [mailchimp-marketing](services/mailchimp-marketing/) | ✅ | |
 | [meta-ads](services/meta-ads/) | | |
 | [microsoft-excel](services/microsoft-excel/) | | |
 | [microsoft-onedrive](services/microsoft-onedrive/) | | |
@@ -111,34 +111,34 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 
 | Extension Name | Unit Tests | E2E Tests |
 |---|---|---|
-| [action-network](services/action-network/) | | |
-| [activecampaign](services/activecampaign/) | | |
-| [acuity](services/acuity/) | | |
-| [acumatica](services/acumatica/) | | |
-| [adalo](services/adalo/) | | |
-| [affinity](services/affinity/) | | |
-| [agile-crm](services/agile-crm/) | | |
-| [ai-image-generator](services/ai-image-generator/) | | |
-| [ai-vision](services/ai-vision/) | | |
-| [airtop](services/airtop/) | | |
-| [amplitude](services/amplitude/) | | |
-| [anthropic-ai](services/anthropic-ai/) | | |
-| [apitemplate](services/apitemplate/) | | |
-| [aws-acm](services/aws-acm/) | | |
-| [aws-bedrock](services/aws-bedrock/) | | |
-| [aws-cognito](services/aws-cognito/) | | |
-| [aws-comprehend](services/aws-comprehend/) | | |
-| [aws-elb](services/aws-elb/) | | |
-| [aws-iam](services/aws-iam/) | | |
-| [aws-rekognition](services/aws-rekognition/) | | |
-| [aws-textract](services/aws-textract/) | | |
-| [aws-transcribe](services/aws-transcribe/) | | |
-| [azure-ai-search](services/azure-ai-search/) | | |
-| [azure-blob-storage](services/azure-blob-storage/) | | |
-| [azure-cosmos-db](services/azure-cosmos-db/) | | |
-| [azure-devops](services/azure-devops/) | | |
-| [azure-openai](services/azure-openai/) | | |
-| [azure-table-storage](services/azure-table-storage/) | | |
+| [action-network](services/action-network/) | ✅ | ✅ |
+| [activecampaign](services/activecampaign/) | ✅ | ✅ |
+| [acuity](services/acuity/) | ✅ | ✅ |
+| [acumatica](services/acumatica/) | ✅ | ✅ |
+| [adalo](services/adalo/) | ✅ | ✅ |
+| [affinity](services/affinity/) | ✅ | ✅ |
+| [agile-crm](services/agile-crm/) | ✅ | ✅ |
+| [ai-image-generator](services/ai-image-generator/) | ✅ | ✅ |
+| [ai-vision](services/ai-vision/) | ✅ | ✅ |
+| [airtop](services/airtop/) | ✅ | ✅ |
+| [amplitude](services/amplitude/) | ✅ | ✅ |
+| [anthropic-ai](services/anthropic-ai/) | ✅ | ✅ |
+| [apitemplate](services/apitemplate/) | ✅ | ✅ |
+| [aws-acm](services/aws-acm/) | ✅ | ✅ |
+| [aws-bedrock](services/aws-bedrock/) | ✅ | ✅ |
+| [aws-cognito](services/aws-cognito/) | ✅ | ✅ |
+| [aws-comprehend](services/aws-comprehend/) | ✅ | ✅ |
+| [aws-elb](services/aws-elb/) | ✅ | ✅ |
+| [aws-iam](services/aws-iam/) | ✅ | ✅ |
+| [aws-rekognition](services/aws-rekognition/) | ✅ | ✅ |
+| [aws-textract](services/aws-textract/) | ✅ | ✅ |
+| [aws-transcribe](services/aws-transcribe/) | ✅ | ✅ |
+| [azure-ai-search](services/azure-ai-search/) | ✅ | ✅ |
+| [azure-blob-storage](services/azure-blob-storage/) | ✅ | ✅ |
+| [azure-cosmos-db](services/azure-cosmos-db/) | ✅ | ✅ |
+| [azure-devops](services/azure-devops/) | ✅ | ✅ |
+| [azure-openai](services/azure-openai/) | ✅ | ✅ |
+| [azure-table-storage](services/azure-table-storage/) | ✅ | ✅ |
 | [bannerbear](services/bannerbear/) | | |
 | [baserow](services/baserow/) | | |
 | [beeminder](services/beeminder/) | | |
