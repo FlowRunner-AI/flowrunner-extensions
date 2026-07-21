@@ -6,56 +6,56 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 
 | Extension Name | Unit Tests | E2E Tests |
 |---|---|---|
-| [adobe-sign](services/adobe-sign/) | | |
-| [airtable](services/airtable/) | | |
-| [amazon-seller-central](services/amazon-seller-central/) | | |
-| [apollo](services/apollo/) | | |
-| [asana](services/asana/) | | |
-| [backendless](services/backendless/) | | |
-| [bamboohr](services/bamboohr/) | | |
-| [basecamp3](services/basecamp3/) | | |
-| [bigcommerce](services/bigcommerce/) | | |
-| [box](services/box/) | | |
-| [calendly](services/calendly/) | | |
-| [canva](services/canva/) | | |
-| [clickup](services/clickup/) | | |
-| [closecrm](services/closecrm/) | | |
-| [confluence](services/confluence/) | | |
-| [constant-contact](services/constant-contact/) | | |
-| [deel](services/deel/) | | |
-| [docusign](services/docusign/) | | |
-| [dropbox-service](services/dropbox-service/) | | |
-| [dynamics-365](services/dynamics-365/) | | |
-| [entra-id](services/entra-id/) | | |
-| [etsy](services/etsy/) | | |
-| [facebook-lead-ads](services/facebook-lead-ads/) | | |
-| [facebook-messenger](services/facebook-messenger/) | | |
-| [freshbooks](services/freshbooks/) | | |
-| [github](services/github/) | | |
-| [gmail-service](services/gmail-service/) | | |
-| [gocardless](services/gocardless/) | | |
-| [gohighlevel](services/gohighlevel/) | | |
-| [google-ads](services/google-ads/) | | |
-| [google-analytics](services/google-analytics/) | | |
-| [google-business-profile](services/google-business-profile/) | | |
-| [google-calendar](services/google-calendar/) | | |
-| [google-chat](services/google-chat/) | | |
-| [google-contacts](services/google-contacts/) | | |
-| [google-docs](services/google-docs/) | | |
-| [google-drive-api](services/google-drive-api/) | | |
-| [google-forms](services/google-forms/) | | |
-| [google-meet](services/google-meet/) | | |
-| [google-search-console](services/google-search-console/) | | |
+| [adobe-sign](services/adobe-sign/) | ✅ | |
+| [airtable](services/airtable/) | ✅ | |
+| [amazon-seller-central](services/amazon-seller-central/) | ✅ | |
+| [apollo](services/apollo/) | ✅ | |
+| [asana](services/asana/) | ✅ | |
+| [backendless](services/backendless/) | ✅ | |
+| [bamboohr](services/bamboohr/) | ✅ | |
+| [basecamp3](services/basecamp3/) | ✅ | |
+| [bigcommerce](services/bigcommerce/) | ✅ | |
+| [box](services/box/) | ✅ | |
+| [calendly](services/calendly/) | ✅ | |
+| [canva](services/canva/) | ✅ | |
+| [clickup](services/clickup/) | ✅ | |
+| [closecrm](services/closecrm/) | ✅ | |
+| [confluence](services/confluence/) | ✅ | |
+| [constant-contact](services/constant-contact/) | ✅ | |
+| [deel](services/deel/) | ✅ | |
+| [docusign](services/docusign/) | ✅ | |
+| [dropbox-service](services/dropbox-service/) | ✅ | |
+| [dynamics-365](services/dynamics-365/) | ✅ | |
+| [entra-id](services/entra-id/) | ✅ | |
+| [etsy](services/etsy/) | ✅ | |
+| [facebook-lead-ads](services/facebook-lead-ads/) | ✅ | |
+| [facebook-messenger](services/facebook-messenger/) | ✅ | |
+| [freshbooks](services/freshbooks/) | ✅ | |
+| [github](services/github/) | ✅ | |
+| [gmail-service](services/gmail-service/) | ✅ | |
+| [gocardless](services/gocardless/) | ✅ | |
+| [gohighlevel](services/gohighlevel/) | ✅ | |
+| [google-ads](services/google-ads/) | ✅ | |
+| [google-analytics](services/google-analytics/) | ✅ | |
+| [google-business-profile](services/google-business-profile/) | ✅ | |
+| [google-calendar](services/google-calendar/) | ✅ | |
+| [google-chat](services/google-chat/) | ✅ | |
+| [google-contacts](services/google-contacts/) | ✅ | |
+| [google-docs](services/google-docs/) | ✅ | |
+| [google-drive-api](services/google-drive-api/) | ✅ | |
+| [google-forms](services/google-forms/) | ✅ | |
+| [google-meet](services/google-meet/) | ✅ | |
+| [google-search-console](services/google-search-console/) | ✅ | |
 | [google-sheets](services/google-sheets/) | | |
-| [google-slides](services/google-slides/) | | |
-| [google-tasks](services/google-tasks/) | | |
-| [google-workspace-admin](services/google-workspace-admin/) | | |
-| [gotowebinar](services/gotowebinar/) | | |
-| [hubspot](services/hubspot/) | | |
-| [instagram-business](services/instagram-business/) | | |
+| [google-slides](services/google-slides/) | ✅ | |
+| [google-tasks](services/google-tasks/) | ✅ | |
+| [google-workspace-admin](services/google-workspace-admin/) | ✅ | |
+| [gotowebinar](services/gotowebinar/) | ✅ | |
+| [hubspot](services/hubspot/) | ✅ | |
+| [instagram-business](services/instagram-business/) | ✅ | |
 | [intercom](services/intercom/) | | |
-| [linkedin](services/linkedin/) | | |
-| [mailchimp-marketing](services/mailchimp-marketing/) | | |
+| [linkedin](services/linkedin/) | ✅ | |
+| [mailchimp-marketing](services/mailchimp-marketing/) | ✅ | |
 | [meta-ads](services/meta-ads/) | | |
 | [microsoft-excel](services/microsoft-excel/) | | |
 | [microsoft-onedrive](services/microsoft-onedrive/) | | |
@@ -111,96 +111,96 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 
 | Extension Name | Unit Tests | E2E Tests |
 |---|---|---|
-| [action-network](services/action-network/) | | |
-| [activecampaign](services/activecampaign/) | | |
-| [acuity](services/acuity/) | | |
-| [acumatica](services/acumatica/) | | |
-| [adalo](services/adalo/) | | |
-| [affinity](services/affinity/) | | |
-| [agile-crm](services/agile-crm/) | | |
-| [ai-image-generator](services/ai-image-generator/) | | |
-| [ai-vision](services/ai-vision/) | | |
-| [airtop](services/airtop/) | | |
-| [amplitude](services/amplitude/) | | |
-| [anthropic-ai](services/anthropic-ai/) | | |
-| [apitemplate](services/apitemplate/) | | |
-| [aws-acm](services/aws-acm/) | | |
-| [aws-bedrock](services/aws-bedrock/) | | |
-| [aws-cognito](services/aws-cognito/) | | |
-| [aws-comprehend](services/aws-comprehend/) | | |
-| [aws-elb](services/aws-elb/) | | |
-| [aws-iam](services/aws-iam/) | | |
-| [aws-rekognition](services/aws-rekognition/) | | |
-| [aws-textract](services/aws-textract/) | | |
-| [aws-transcribe](services/aws-transcribe/) | | |
-| [azure-ai-search](services/azure-ai-search/) | | |
-| [azure-blob-storage](services/azure-blob-storage/) | | |
-| [azure-cosmos-db](services/azure-cosmos-db/) | | |
-| [azure-devops](services/azure-devops/) | | |
-| [azure-openai](services/azure-openai/) | | |
-| [azure-table-storage](services/azure-table-storage/) | | |
-| [bannerbear](services/bannerbear/) | | |
-| [baserow](services/baserow/) | | |
-| [beeminder](services/beeminder/) | | |
-| [bigquery](services/bigquery/) | | |
-| [billcom](services/billcom/) | | |
-| [bitbucket](services/bitbucket/) | | |
-| [bitly](services/bitly/) | | |
-| [bitrix24](services/bitrix24/) | | |
-| [bluesky](services/bluesky/) | | |
-| [brandfetch](services/brandfetch/) | | |
-| [brevo](services/brevo/) | | |
-| [bubble](services/bubble/) | | |
-| [cal-com](services/cal-com/) | | |
-| [chargebee](services/chargebee/) | | |
-| [chroma](services/chroma/) | | |
-| [circleci](services/circleci/) | | |
-| [clearbit](services/clearbit/) | | |
-| [clicksend](services/clicksend/) | | |
-| [clockify](services/clockify/) | | |
-| [cloudconvert](services/cloudconvert/) | | |
-| [cloudflare](services/cloudflare/) | | |
-| [cloudinary](services/cloudinary/) | | |
-| [cockpit](services/cockpit/) | | |
-| [coda](services/coda/) | | |
-| [cohere](services/cohere/) | | |
-| [coingecko](services/coingecko/) | | |
-| [contentful](services/contentful/) | | |
-| [copper](services/copper/) | | |
-| [cortex](services/cortex/) | | |
-| [cratedb](services/cratedb/) | | |
-| [customerio](services/customerio/) | | |
-| [databricks](services/databricks/) | | |
-| [datadog](services/datadog/) | | |
-| [dataforseo](services/dataforseo/) | | |
-| [deepgram](services/deepgram/) | | |
-| [deepl](services/deepl/) | | |
-| [deepseek](services/deepseek/) | | |
-| [demio](services/demio/) | | |
-| [dhl](services/dhl/) | | |
-| [discord](services/discord/) | | |
-| [discourse](services/discourse/) | | |
-| [disqus](services/disqus/) | | |
-| [drift](services/drift/) | | |
-| [dropcontact](services/dropcontact/) | | |
+| [action-network](services/action-network/) | ✅ | ✅ |
+| [activecampaign](services/activecampaign/) | ✅ | ✅ |
+| [acuity](services/acuity/) | ✅ | ✅ |
+| [acumatica](services/acumatica/) | ✅ | ✅ |
+| [adalo](services/adalo/) | ✅ | ✅ |
+| [affinity](services/affinity/) | ✅ | ✅ |
+| [agile-crm](services/agile-crm/) | ✅ | ✅ |
+| [ai-image-generator](services/ai-image-generator/) | ✅ | ✅ |
+| [ai-vision](services/ai-vision/) | ✅ | ✅ |
+| [airtop](services/airtop/) | ✅ | ✅ |
+| [amplitude](services/amplitude/) | ✅ | ✅ |
+| [anthropic-ai](services/anthropic-ai/) | ✅ | ✅ |
+| [apitemplate](services/apitemplate/) | ✅ | ✅ |
+| [aws-acm](services/aws-acm/) | ✅ | ✅ |
+| [aws-bedrock](services/aws-bedrock/) | ✅ | ✅ |
+| [aws-cognito](services/aws-cognito/) | ✅ | ✅ |
+| [aws-comprehend](services/aws-comprehend/) | ✅ | ✅ |
+| [aws-elb](services/aws-elb/) | ✅ | ✅ |
+| [aws-iam](services/aws-iam/) | ✅ | ✅ |
+| [aws-rekognition](services/aws-rekognition/) | ✅ | ✅ |
+| [aws-textract](services/aws-textract/) | ✅ | ✅ |
+| [aws-transcribe](services/aws-transcribe/) | ✅ | ✅ |
+| [azure-ai-search](services/azure-ai-search/) | ✅ | ✅ |
+| [azure-blob-storage](services/azure-blob-storage/) | ✅ | ✅ |
+| [azure-cosmos-db](services/azure-cosmos-db/) | ✅ | ✅ |
+| [azure-devops](services/azure-devops/) | ✅ | ✅ |
+| [azure-openai](services/azure-openai/) | ✅ | ✅ |
+| [azure-table-storage](services/azure-table-storage/) | ✅ | ✅ |
+| [bannerbear](services/bannerbear/) | ✅ | ✅ |
+| [baserow](services/baserow/) | ✅ | ✅ |
+| [beeminder](services/beeminder/) | ✅ | ✅ |
+| [bigquery](services/bigquery/) | ✅ | ✅ |
+| [billcom](services/billcom/) | ✅ | ✅ |
+| [bitbucket](services/bitbucket/) | ✅ | ✅ |
+| [bitly](services/bitly/) | ✅ | ✅ |
+| [bitrix24](services/bitrix24/) | ✅ | ✅ |
+| [bluesky](services/bluesky/) | ✅ | ✅ |
+| [brandfetch](services/brandfetch/) | ✅ | ✅ |
+| [brevo](services/brevo/) | ✅ | ✅ |
+| [bubble](services/bubble/) | ✅ | ✅ |
+| [cal-com](services/cal-com/) | ✅ | ✅ |
+| [chargebee](services/chargebee/) | ✅ | ✅ |
+| [chroma](services/chroma/) | ✅ | ✅ |
+| [circleci](services/circleci/) | ✅ | ✅ |
+| [clearbit](services/clearbit/) | ✅ | ✅ |
+| [clicksend](services/clicksend/) | ✅ | ✅ |
+| [clockify](services/clockify/) | ✅ | ✅ |
+| [cloudconvert](services/cloudconvert/) | ✅ | ✅ |
+| [cloudflare](services/cloudflare/) | ✅ | ✅ |
+| [cloudinary](services/cloudinary/) | ✅ | ✅ |
+| [cockpit](services/cockpit/) | ✅ | ✅ |
+| [coda](services/coda/) | ✅ | ✅ |
+| [cohere](services/cohere/) | ✅ | ✅ |
+| [coingecko](services/coingecko/) | ✅ | ✅ |
+| [contentful](services/contentful/) | ✅ | ✅ |
+| [copper](services/copper/) | ✅ | ✅ |
+| [cortex](services/cortex/) | ✅ | ✅ |
+| [cratedb](services/cratedb/) | ✅ | ✅ |
+| [customerio](services/customerio/) | ✅ | ✅ |
+| [databricks](services/databricks/) | ✅ | ✅ |
+| [datadog](services/datadog/) | ✅ | ✅ |
+| [dataforseo](services/dataforseo/) | ✅ | ✅ |
+| [deepgram](services/deepgram/) | ✅ | ✅ |
+| [deepl](services/deepl/) | ✅ | ✅ |
+| [deepseek](services/deepseek/) | ✅ | ✅ |
+| [demio](services/demio/) | ✅ | ✅ |
+| [dhl](services/dhl/) | ✅ | ✅ |
+| [discord](services/discord/) | ✅ | ✅ |
+| [discourse](services/discourse/) | ✅ | ✅ |
+| [disqus](services/disqus/) | ✅ | ✅ |
+| [drift](services/drift/) | ✅ | ✅ |
+| [dropcontact](services/dropcontact/) | ✅ | ✅ |
 | [dynamodb-service](services/dynamodb-service/) | | |
-| [easypost](services/easypost/) | | |
-| [easyship](services/easyship/) | | |
-| [elasticsearch](services/elasticsearch/) | | |
-| [elevenlabs](services/elevenlabs/) | | |
-| [erpnext](services/erpnext/) | | |
-| [eventbrite](services/eventbrite/) | | |
-| [facebook](services/facebook/) | | |
-| [figma](services/figma/) | | |
-| [filemaker](services/filemaker/) | | |
-| [firecrawl](services/firecrawl/) | | |
-| [fireflies-service](services/fireflies-service/) | | |
-| [formio](services/formio/) | | |
-| [formstack](services/formstack/) | | |
-| [freshdesk](services/freshdesk/) | | |
-| [freshservice](services/freshservice/) | | |
-| [freshworks-crm](services/freshworks-crm/) | | |
-| [front-service](services/front-service/) | | |
+| [easypost](services/easypost/) | ✅ | ✅ |
+| [easyship](services/easyship/) | ✅ | ✅ |
+| [elasticsearch](services/elasticsearch/) | ✅ | ✅ |
+| [elevenlabs](services/elevenlabs/) | ✅ | ✅ |
+| [erpnext](services/erpnext/) | ✅ | ✅ |
+| [eventbrite](services/eventbrite/) | ✅ | ✅ |
+| [facebook](services/facebook/) | ✅ | ✅ |
+| [figma](services/figma/) | ✅ | ✅ |
+| [filemaker](services/filemaker/) | ✅ | ✅ |
+| [firecrawl](services/firecrawl/) | ✅ | ✅ |
+| [fireflies-service](services/fireflies-service/) | ✅ | ✅ |
+| [formio](services/formio/) | ✅ | ✅ |
+| [formstack](services/formstack/) | ✅ | ✅ |
+| [freshdesk](services/freshdesk/) | ✅ | ✅ |
+| [freshservice](services/freshservice/) | ✅ | ✅ |
+| [freshworks-crm](services/freshworks-crm/) | ✅ | ✅ |
+| [front-service](services/front-service/) | ✅ | ✅ |
 | [gemini-ai](services/gemini-ai/) | | |
 | [getresponse](services/getresponse/) | | |
 | [ghost](services/ghost/) | | |
@@ -220,14 +220,14 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [grist](services/grist/) | | |
 | [groq](services/groq/) | | |
 | [gumroad](services/gumroad/) | | |
-| [hackernews](services/hackernews/) | | |
-| [halopsa](services/halopsa/) | | |
-| [harvest](services/harvest/) | | |
-| [help-scout](services/help-scout/) | | |
-| [heygen](services/heygen/) | | |
-| [home-assistant](services/home-assistant/) | | |
-| [huggingface](services/huggingface/) | | |
-| [hunter](services/hunter/) | | |
+| [hackernews](services/hackernews/) | ✅ | ✅ |
+| [halopsa](services/halopsa/) | ✅ | ✅ |
+| [harvest](services/harvest/) | ✅ | ✅ |
+| [help-scout](services/help-scout/) | ✅ | ✅ |
+| [heygen](services/heygen/) | ✅ | ✅ |
+| [home-assistant](services/home-assistant/) | ✅ | ✅ |
+| [huggingface](services/huggingface/) | ✅ | ✅ |
+| [hunter](services/hunter/) | ✅ | ✅ |
 | [instantly](services/instantly/) | | |
 | [invoice-ninja](services/invoice-ninja/) | | |
 | [iterable](services/iterable/) | | |
