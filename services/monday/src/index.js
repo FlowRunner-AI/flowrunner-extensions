@@ -106,6 +106,7 @@ class MondayDotCom {
     const params = new URLSearchParams()
 
     params.append('client_id', this.clientId)
+    params.append('response_type', 'code')
     params.append('scope', DEFAULT_SCOPES)
 
     return `${ OAUTH_AUTHORIZE_URL }?${ params.toString() }`
