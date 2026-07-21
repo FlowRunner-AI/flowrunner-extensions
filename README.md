@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 163 | 163 | 122 |
-| **All Services** | **385** | **211** | **163** | **174** |
+| API Key Extensions | 285 | 167 | 167 | 118 |
+| **All Services** | **385** | **215** | **167** | **170** |
 
 ## OAuth Extensions
 
@@ -282,11 +282,11 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [monica](services/monica/) | ✅ | ✅ |
 | [msg91](services/msg91/) | ✅ | ✅ |
 | [mysql](services/mysql/) | ✅ | ✅ |
-| [nasa](services/nasa/) | | |
-| [netlify](services/netlify/) | | |
-| [nextcloud](services/nextcloud/) | | |
-| [nocodb](services/nocodb/) | | |
-| [npm](services/npm/) | | |
+| [nasa](services/nasa/) | ✅ | ✅ |
+| [netlify](services/netlify/) | ✅ | ✅ |
+| [nextcloud](services/nextcloud/) | ✅ | ✅ |
+| [nocodb](services/nocodb/) | ✅ | ✅ |
+| [npm](services/npm/) | ✅ | ✅ |
 | [odoo](services/odoo/) | | |
 | [okta](services/okta/) | | |
 | [ollama](services/ollama/) | | |

@@ -143,7 +143,13 @@ function createRequestMock() {
     }
   }
 
-  const Request = {}
+  // Request is callable as a function for custom HTTP methods (e.g. WebDAV PROPFIND/MKCOL/MOVE/COPY):
+  //   Flowrunner.Request('PROPFIND', url)
+  // and also has standard method helpers:
+  //   Flowrunner.Request.get(url)
+  const Request = function(method, url) {
+    return createChain(method.toLowerCase(), url)
+  }
 
   for (const method of ['get', 'post', 'put', 'patch', 'delete', 'head']) {
     Request[method] = (url) => createChain(method, url)
@@ -170,6 +176,7 @@ function createRequestMock() {
     onDelete(url) { return createReplyBuilder('delete', url) },
     onHead(url) { return createReplyBuilder('head', url) },
     onAny(url) { return createReplyBuilder('any', url) },
+    on(method, url) { return createReplyBuilder(method.toLowerCase(), url) },
 
     reset() {
       history.length = 0

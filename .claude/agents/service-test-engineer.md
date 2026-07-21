@@ -149,7 +149,17 @@ mock.onPatch(url).reply(responseData)
 mock.onDelete(url).reply(responseData)
 mock.onHead(url).reply(responseData)
 mock.onAny().reply({ fallback: true })  // catch-all
+
+// Custom HTTP methods (e.g. WebDAV PROPFIND/MKCOL/MOVE/COPY)
+mock.on('propfind', url).reply(xmlString)
+mock.on('mkcol', url).reply('')
+mock.on('move', url).reply('')
+mock.on('copy', url).reply('')
 ```
+
+The mock `Request` is also callable as a function for custom HTTP methods:
+`Flowrunner.Request('PROPFIND', url)` — this matches how services use non-standard HTTP verbs.
+Use `mock.on(method, url)` (lowercase method name) to register handlers for these.
 
 ### Error responses
 
