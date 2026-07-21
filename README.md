@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 167 | 167 | 118 |
-| **All Services** | **385** | **215** | **167** | **170** |
+| API Key Extensions | 285 | 168 | 168 | 117 |
+| **All Services** | **385** | **216** | **168** | **169** |
 
 ## OAuth Extensions
 
