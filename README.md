@@ -220,14 +220,14 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [grist](services/grist/) | | |
 | [groq](services/groq/) | | |
 | [gumroad](services/gumroad/) | | |
-| [hackernews](services/hackernews/) | | |
-| [halopsa](services/halopsa/) | | |
-| [harvest](services/harvest/) | | |
-| [help-scout](services/help-scout/) | | |
-| [heygen](services/heygen/) | | |
-| [home-assistant](services/home-assistant/) | | |
-| [huggingface](services/huggingface/) | | |
-| [hunter](services/hunter/) | | |
+| [hackernews](services/hackernews/) | ✅ | ✅ |
+| [halopsa](services/halopsa/) | ✅ | ✅ |
+| [harvest](services/harvest/) | ✅ | ✅ |
+| [help-scout](services/help-scout/) | ✅ | ✅ |
+| [heygen](services/heygen/) | ✅ | ✅ |
+| [home-assistant](services/home-assistant/) | ✅ | ✅ |
+| [huggingface](services/huggingface/) | ✅ | ✅ |
+| [hunter](services/hunter/) | ✅ | ✅ |
 | [instantly](services/instantly/) | | |
 | [invoice-ninja](services/invoice-ninja/) | | |
 | [iterable](services/iterable/) | | |
