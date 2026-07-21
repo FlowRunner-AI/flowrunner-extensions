@@ -1791,6 +1791,7 @@ Flowrunner.ServerCode.addService(BillComService, [
     displayName: 'Developer Key',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
+    shared: false,
     hint: 'Developer key from your BILL.com developer account at developer.bill.com.',
   },
   {
@@ -1798,6 +1799,7 @@ Flowrunner.ServerCode.addService(BillComService, [
     displayName: 'Username',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
+    shared: false,
     hint: 'Email address used to sign in to your BILL.com account.',
   },
   {
@@ -1805,6 +1807,7 @@ Flowrunner.ServerCode.addService(BillComService, [
     displayName: 'Password',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
+    shared: false,
     hint: 'Password for your BILL.com account.',
   },
   {
@@ -1812,6 +1815,7 @@ Flowrunner.ServerCode.addService(BillComService, [
     displayName: 'Organization ID',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
+    shared: false,
     hint: 'Your BILL.com organization ID. Found in your developer account settings.',
   },
   {
@@ -1820,6 +1824,7 @@ Flowrunner.ServerCode.addService(BillComService, [
     type: Flowrunner.ServerCode.ConfigItems.TYPES.CHOICE,
     defaultValue: 'Production',
     required: true,
+    shared: false,
     options: ['Production', 'Sandbox'],
     hint: 'Select Sandbox for development/testing, Production for live data.',
   },

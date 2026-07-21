@@ -35,6 +35,18 @@ function encodeJsonParam(value) {
   return typeof value === 'string' ? value : JSON.stringify(value)
 }
 
+// A string only "looks like" JSON if it opens with a container/quote token.
+// Plain identifiers (e.g. a bare field name) are passed through untouched.
+function looksLikeJson(value) {
+  if (typeof value !== 'string') {
+    return false
+  }
+
+  const trimmed = value.trim()
+
+  return trimmed.startsWith('[') || trimmed.startsWith('{') || trimmed.startsWith('"')
+}
+
 // Strip out undefined/null/'' so we never send empty query params.
 function clean(obj) {
   if (!obj) {
@@ -304,13 +316,21 @@ class ERPNextService {
   async getValue(doctype, fieldname, filters) {
     const logTag = '[getValue]'
 
+    // A single field is the documented common case and arrives as a plain
+    // string (e.g. "customer_group") that is not valid JSON. Only parse/encode
+    // when the value is an array/object or a JSON string; otherwise pass the
+    // bare field name through unchanged.
+    const fieldnameParam = looksLikeJson(fieldname) || typeof fieldname === 'object'
+      ? encodeJsonParam(parseJsonParam(fieldname, 'fieldname'))
+      : fieldname
+
     return await this.#apiRequest({
       logTag,
       path: '/api/method/frappe.client.get_value',
       method: 'get',
       query: {
         doctype,
-        fieldname: encodeJsonParam(parseJsonParam(fieldname, 'fieldname')) || fieldname,
+        fieldname: fieldnameParam,
         filters: encodeJsonParam(parseJsonParam(filters, 'filters')),
       },
     })

@@ -15,20 +15,22 @@ const superagent = require('superagent')
 function createRealRequest() {
   const Request = {}
 
-  for (const method of ['get', 'post', 'put', 'patch', 'delete']) {
+  for (const method of ['get', 'post', 'put', 'patch', 'delete', 'head']) {
     Request[method] = (url) => {
       const req = superagent[method](url)
       let encoding = undefined
+      let unwrap = true
 
       // Wrap .then so that awaiting the chain returns response.body (not the response object),
-      // matching Flowrunner.Request behavior.
+      // matching Flowrunner.Request behavior. When unwrapBody(false) is called, resolve with the
+      // full response instead (so binary downloads can read res.body + res.headers).
       const originalThen = req.then.bind(req)
 
       req.then = (resolve, reject) => {
         return originalThen(
           (res) => {
-            const body = encoding === null ? res.body : res.body
-            return resolve ? resolve(body) : body
+            const result = unwrap === false ? res : res.body
+            return resolve ? resolve(result) : result
           },
           (err) => {
             // Attach body and status to the error like Flowrunner does
@@ -63,6 +65,13 @@ function createRealRequest() {
           }))
         }
 
+        return req
+      }
+
+      // Match Flowrunner.Request.unwrapBody: false → resolve with the full response
+      // object (headers + body) instead of just response.body.
+      req.unwrapBody = (flag) => {
+        unwrap = flag
         return req
       }
 

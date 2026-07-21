@@ -72,6 +72,14 @@ function createRequestMock() {
         return chain
       },
 
+      unwrapBody(flag) {
+        // Records the flag and stays chainable. The configured reply is what the
+        // awaited chain resolves to, so a test exercising an unwrapBody(false) path
+        // sets its mock reply to the response-shaped object the service expects.
+        callRecord.unwrapBody = flag
+        return chain
+      },
+
       then(resolve, reject) {
         history.push(callRecord)
 
@@ -132,7 +140,7 @@ function createRequestMock() {
 
   const Request = {}
 
-  for (const method of ['get', 'post', 'put', 'patch', 'delete']) {
+  for (const method of ['get', 'post', 'put', 'patch', 'delete', 'head']) {
     Request[method] = (url) => createChain(method, url)
   }
 
@@ -155,6 +163,7 @@ function createRequestMock() {
     onPut(url) { return createReplyBuilder('put', url) },
     onPatch(url) { return createReplyBuilder('patch', url) },
     onDelete(url) { return createReplyBuilder('delete', url) },
+    onHead(url) { return createReplyBuilder('head', url) },
     onAny(url) { return createReplyBuilder('any', url) },
 
     reset() {
