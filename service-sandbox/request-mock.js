@@ -137,7 +137,7 @@ function createRequestMock() {
 
   const Request = {}
 
-  for (const method of ['get', 'post', 'put', 'patch', 'delete']) {
+  for (const method of ['get', 'post', 'put', 'patch', 'delete', 'head']) {
     Request[method] = (url) => createChain(method, url)
   }
 
@@ -160,6 +160,7 @@ function createRequestMock() {
     onPut(url) { return createReplyBuilder('put', url) },
     onPatch(url) { return createReplyBuilder('patch', url) },
     onDelete(url) { return createReplyBuilder('delete', url) },
+    onHead(url) { return createReplyBuilder('head', url) },
     onAny(url) { return createReplyBuilder('any', url) },
 
     reset() {

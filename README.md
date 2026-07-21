@@ -184,12 +184,12 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [drift](services/drift/) | | |
 | [dropcontact](services/dropcontact/) | | |
 | [dynamodb-service](services/dynamodb-service/) | | |
-| [easypost](services/easypost/) | | |
-| [easyship](services/easyship/) | | |
-| [elasticsearch](services/elasticsearch/) | | |
-| [elevenlabs](services/elevenlabs/) | | |
-| [erpnext](services/erpnext/) | | |
-| [eventbrite](services/eventbrite/) | | |
+| [easypost](services/easypost/) | ✅ | ✅ |
+| [easyship](services/easyship/) | ✅ | ✅ |
+| [elasticsearch](services/elasticsearch/) | ✅ | ✅ |
+| [elevenlabs](services/elevenlabs/) | ✅ | ✅ |
+| [erpnext](services/erpnext/) | ✅ | ✅ |
+| [eventbrite](services/eventbrite/) | ✅ | ✅ |
 | [facebook](services/facebook/) | | |
 | [figma](services/figma/) | | |
 | [filemaker](services/filemaker/) | | |
