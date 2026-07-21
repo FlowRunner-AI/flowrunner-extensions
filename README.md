@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 107 | 107 | 178 |
-| **All Services** | **385** | **155** | **107** | **230** |
+| API Key Extensions | 285 | 119 | 119 | 166 |
+| **All Services** | **385** | **167** | **119** | **218** |
 
 ## OAuth Extensions
 
@@ -248,13 +248,13 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [kit](services/kit/) | ✅ | ✅ |
 | [klaviyo](services/klaviyo/) | ✅ | ✅ |
 | [kobotoolbox](services/kobotoolbox/) | ✅ | ✅ |
-| [lambda-service](services/lambda-service/) | | |
-| [ldap](services/ldap/) | | |
-| [leafy-plant](services/leafy-plant/) | | |
-| [lemlist](services/lemlist/) | | |
-| [line](services/line/) | | |
-| [linear](services/linear/) | | |
-| [lingvanex](services/lingvanex/) | | |
+| [lambda-service](services/lambda-service/) | ✅ | ✅ |
+| [ldap](services/ldap/) | ✅ | ✅ |
+| [leafy-plant](services/leafy-plant/) | ✅ | ✅ |
+| [lemlist](services/lemlist/) | ✅ | ✅ |
+| [line](services/line/) | ✅ | ✅ |
+| [linear](services/linear/) | ✅ | ✅ |
+| [lingvanex](services/lingvanex/) | ✅ | ✅ |
 | [magento](services/magento/) | | |
 | [mailbox](services/mailbox/) | | |
 | [mailchimp-transactional](services/mailchimp-transactional/) | | |
