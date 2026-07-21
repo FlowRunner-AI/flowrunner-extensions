@@ -139,50 +139,50 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [azure-devops](services/azure-devops/) | ✅ | ✅ |
 | [azure-openai](services/azure-openai/) | ✅ | ✅ |
 | [azure-table-storage](services/azure-table-storage/) | ✅ | ✅ |
-| [bannerbear](services/bannerbear/) | | |
-| [baserow](services/baserow/) | | |
-| [beeminder](services/beeminder/) | | |
-| [bigquery](services/bigquery/) | | |
-| [billcom](services/billcom/) | | |
-| [bitbucket](services/bitbucket/) | | |
-| [bitly](services/bitly/) | | |
-| [bitrix24](services/bitrix24/) | | |
-| [bluesky](services/bluesky/) | | |
-| [brandfetch](services/brandfetch/) | | |
-| [brevo](services/brevo/) | | |
-| [bubble](services/bubble/) | | |
-| [cal-com](services/cal-com/) | | |
-| [chargebee](services/chargebee/) | | |
-| [chroma](services/chroma/) | | |
-| [circleci](services/circleci/) | | |
-| [clearbit](services/clearbit/) | | |
-| [clicksend](services/clicksend/) | | |
-| [clockify](services/clockify/) | | |
-| [cloudconvert](services/cloudconvert/) | | |
-| [cloudflare](services/cloudflare/) | | |
-| [cloudinary](services/cloudinary/) | | |
-| [cockpit](services/cockpit/) | | |
-| [coda](services/coda/) | | |
-| [cohere](services/cohere/) | | |
-| [coingecko](services/coingecko/) | | |
-| [contentful](services/contentful/) | | |
-| [copper](services/copper/) | | |
-| [cortex](services/cortex/) | | |
-| [cratedb](services/cratedb/) | | |
-| [customerio](services/customerio/) | | |
-| [databricks](services/databricks/) | | |
-| [datadog](services/datadog/) | | |
-| [dataforseo](services/dataforseo/) | | |
-| [deepgram](services/deepgram/) | | |
-| [deepl](services/deepl/) | | |
-| [deepseek](services/deepseek/) | | |
-| [demio](services/demio/) | | |
-| [dhl](services/dhl/) | | |
-| [discord](services/discord/) | | |
-| [discourse](services/discourse/) | | |
-| [disqus](services/disqus/) | | |
-| [drift](services/drift/) | | |
-| [dropcontact](services/dropcontact/) | | |
+| [bannerbear](services/bannerbear/) | ✅ | ✅ |
+| [baserow](services/baserow/) | ✅ | ✅ |
+| [beeminder](services/beeminder/) | ✅ | ✅ |
+| [bigquery](services/bigquery/) | ✅ | ✅ |
+| [billcom](services/billcom/) | ✅ | ✅ |
+| [bitbucket](services/bitbucket/) | ✅ | ✅ |
+| [bitly](services/bitly/) | ✅ | ✅ |
+| [bitrix24](services/bitrix24/) | ✅ | ✅ |
+| [bluesky](services/bluesky/) | ✅ | ✅ |
+| [brandfetch](services/brandfetch/) | ✅ | ✅ |
+| [brevo](services/brevo/) | ✅ | ✅ |
+| [bubble](services/bubble/) | ✅ | ✅ |
+| [cal-com](services/cal-com/) | ✅ | ✅ |
+| [chargebee](services/chargebee/) | ✅ | ✅ |
+| [chroma](services/chroma/) | ✅ | ✅ |
+| [circleci](services/circleci/) | ✅ | ✅ |
+| [clearbit](services/clearbit/) | ✅ | ✅ |
+| [clicksend](services/clicksend/) | ✅ | ✅ |
+| [clockify](services/clockify/) | ✅ | ✅ |
+| [cloudconvert](services/cloudconvert/) | ✅ | ✅ |
+| [cloudflare](services/cloudflare/) | ✅ | ✅ |
+| [cloudinary](services/cloudinary/) | ✅ | ✅ |
+| [cockpit](services/cockpit/) | ✅ | ✅ |
+| [coda](services/coda/) | ✅ | ✅ |
+| [cohere](services/cohere/) | ✅ | ✅ |
+| [coingecko](services/coingecko/) | ✅ | ✅ |
+| [contentful](services/contentful/) | ✅ | ✅ |
+| [copper](services/copper/) | ✅ | ✅ |
+| [cortex](services/cortex/) | ✅ | ✅ |
+| [cratedb](services/cratedb/) | ✅ | ✅ |
+| [customerio](services/customerio/) | ✅ | ✅ |
+| [databricks](services/databricks/) | ✅ | ✅ |
+| [datadog](services/datadog/) | ✅ | ✅ |
+| [dataforseo](services/dataforseo/) | ✅ | ✅ |
+| [deepgram](services/deepgram/) | ✅ | ✅ |
+| [deepl](services/deepl/) | ✅ | ✅ |
+| [deepseek](services/deepseek/) | ✅ | ✅ |
+| [demio](services/demio/) | ✅ | ✅ |
+| [dhl](services/dhl/) | ✅ | ✅ |
+| [discord](services/discord/) | ✅ | ✅ |
+| [discourse](services/discourse/) | ✅ | ✅ |
+| [disqus](services/disqus/) | ✅ | ✅ |
+| [drift](services/drift/) | ✅ | ✅ |
+| [dropcontact](services/dropcontact/) | ✅ | ✅ |
 | [dynamodb-service](services/dynamodb-service/) | | |
 | [easypost](services/easypost/) | ✅ | ✅ |
 | [easyship](services/easyship/) | ✅ | ✅ |
