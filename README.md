@@ -2,6 +2,14 @@
 
 A collection of third-party service integrations for FlowRunner. Each extension provides a self-contained connector that exposes API operations as FlowRunner actions, triggers, and dictionary methods. Extensions are FlowRunner-native, built and deployed directly in this repository.
 
+## Services Stats
+
+| | Total | Unit Tests | E2E Tests | No Tests |
+|---|---|---|---|---|
+| OAuth Extensions | 100 | 48 | 0 | 52 |
+| API Key Extensions | 285 | 107 | 107 | 178 |
+| **All Services** | **385** | **155** | **107** | **230** |
+
 ## OAuth Extensions
 
 | Extension Name | Unit Tests | E2E Tests |
