@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 168 | 168 | 117 |
-| **All Services** | **385** | **216** | **168** | **169** |
+| API Key Extensions | 285 | 181 | 181 | 104 |
+| **All Services** | **385** | **229** | **181** | **156** |
 
 ## OAuth Extensions
 
@@ -287,19 +287,19 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [nextcloud](services/nextcloud/) | ✅ | ✅ |
 | [nocodb](services/nocodb/) | ✅ | ✅ |
 | [npm](services/npm/) | ✅ | ✅ |
-| [odoo](services/odoo/) | | |
-| [okta](services/okta/) | | |
-| [ollama](services/ollama/) | | |
-| [one-simple-api](services/one-simple-api/) | | |
-| [onesignal](services/onesignal/) | | |
-| [onfleet](services/onfleet/) | | |
-| [openai-ai](services/openai-ai/) | | |
-| [openrouter](services/openrouter/) | | |
-| [openthesaurus](services/openthesaurus/) | | |
-| [openweathermap](services/openweathermap/) | | |
-| [oracle-database](services/oracle-database/) | | |
-| [ortto](services/ortto/) | | |
-| [oura](services/oura/) | | |
+| [odoo](services/odoo/) | ✅ | ✅ |
+| [okta](services/okta/) | ✅ | ✅ |
+| [ollama](services/ollama/) | ✅ | ✅ |
+| [one-simple-api](services/one-simple-api/) | ✅ | ✅ |
+| [onesignal](services/onesignal/) | ✅ | ✅ |
+| [onfleet](services/onfleet/) | ✅ | ✅ |
+| [openai-ai](services/openai-ai/) | ✅ | ✅ |
+| [openrouter](services/openrouter/) | ✅ | ✅ |
+| [openthesaurus](services/openthesaurus/) | ✅ | ✅ |
+| [openweathermap](services/openweathermap/) | ✅ | ✅ |
+| [oracle-database](services/oracle-database/) | ✅ | ✅ |
+| [ortto](services/ortto/) | ✅ | ✅ |
+| [oura](services/oura/) | ✅ | ✅ |
 | [paddle](services/paddle/) | | |
 | [pandadoc](services/pandadoc/) | | |
 | [parseur](services/parseur/) | | |
