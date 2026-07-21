@@ -235,11 +235,11 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [jina](services/jina/) | ✅ | ✅ |
 | [jira-issues](services/jira-issues/) | ✅ | ✅ |
 | [jotform](services/jotform/) | ✅ | ✅ |
-| [kajabi](services/kajabi/) | | |
-| [keap](services/keap/) | | |
-| [kit](services/kit/) | | |
-| [klaviyo](services/klaviyo/) | | |
-| [kobotoolbox](services/kobotoolbox/) | | |
+| [kajabi](services/kajabi/) | ✅ | ✅ |
+| [keap](services/keap/) | ✅ | ✅ |
+| [kit](services/kit/) | ✅ | ✅ |
+| [klaviyo](services/klaviyo/) | ✅ | ✅ |
+| [kobotoolbox](services/kobotoolbox/) | ✅ | ✅ |
 | [lambda-service](services/lambda-service/) | | |
 | [ldap](services/ldap/) | | |
 | [leafy-plant](services/leafy-plant/) | | |
