@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 181 | 181 | 104 |
-| **All Services** | **385** | **229** | **181** | **156** |
+| API Key Extensions | 285 | 182 | 182 | 103 |
+| **All Services** | **385** | **230** | **182** | **155** |
 
 ## OAuth Extensions
 
@@ -191,7 +191,7 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [disqus](services/disqus/) | ✅ | ✅ |
 | [drift](services/drift/) | ✅ | ✅ |
 | [dropcontact](services/dropcontact/) | ✅ | ✅ |
-| [dynamodb-service](services/dynamodb-service/) | | |
+| [dynamodb-service](services/dynamodb-service/) | ✅ | ✅ |
 | [easypost](services/easypost/) | ✅ | ✅ |
 | [easyship](services/easyship/) | ✅ | ✅ |
 | [elasticsearch](services/elasticsearch/) | ✅ | ✅ |
