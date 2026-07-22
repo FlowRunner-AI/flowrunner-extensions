@@ -6,9 +6,9 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
-| OAuth Extensions | 100 | 48 | 0 | 52 |
+| OAuth Extensions | 100 | 53 | 0 | 47 |
 | API Key Extensions | 285 | 285 | 285 | 0 |
-| **All Services** | **385** | **333** | **285** | **52** |
+| **All Services** | **385** | **338** | **285** | **47** |
 
 ## OAuth Extensions
 
@@ -54,17 +54,17 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [google-forms](services/google-forms/) | ✅ | |
 | [google-meet](services/google-meet/) | ✅ | |
 | [google-search-console](services/google-search-console/) | ✅ | |
-| [google-sheets](services/google-sheets/) | | |
+| [google-sheets](services/google-sheets/) | ✅ | |
 | [google-slides](services/google-slides/) | ✅ | |
 | [google-tasks](services/google-tasks/) | ✅ | |
 | [google-workspace-admin](services/google-workspace-admin/) | ✅ | |
 | [gotowebinar](services/gotowebinar/) | ✅ | |
 | [hubspot](services/hubspot/) | ✅ | |
 | [instagram-business](services/instagram-business/) | ✅ | |
-| [intercom](services/intercom/) | | |
+| [intercom](services/intercom/) | ✅ | |
 | [linkedin](services/linkedin/) | ✅ | |
 | [mailchimp-marketing](services/mailchimp-marketing/) | ✅ | |
-| [meta-ads](services/meta-ads/) | | |
+| [meta-ads](services/meta-ads/) | ✅ | |
 | [microsoft-excel](services/microsoft-excel/) | | |
 | [microsoft-onedrive](services/microsoft-onedrive/) | | |
 | [microsoft-onenote](services/microsoft-onenote/) | | |
@@ -72,8 +72,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [microsoft-power-bi](services/microsoft-power-bi/) | | |
 | [microsoft-teams](services/microsoft-teams/) | | |
 | [microsoft-todo](services/microsoft-todo/) | | |
-| [monday](services/monday/) | | |
-| [ms-graph-security](services/ms-graph-security/) | | |
+| [monday](services/monday/) | ✅ | |
+| [ms-graph-security](services/ms-graph-security/) | ✅ | |
 | [netsuite](services/netsuite/) | | |
 | [notion](services/notion/) | | |
 | [outlook](services/outlook/) | | |
