@@ -1428,6 +1428,746 @@ describe('Okta Service', () => {
     })
   })
 
+  // ── Network Zones (expanded) ──
+
+  describe('getNetworkZone', () => {
+    it('sends GET to correct path', async () => {
+      mock.onGet(`${BASE}/zones/z1`).reply(wrap({ id: 'z1', name: 'HQ', type: 'IP' }))
+
+      const result = await service.getNetworkZone('z1')
+
+      expect(result).toEqual({ id: 'z1', name: 'HQ', type: 'IP' })
+      expect(mock.history[0].method).toBe('get')
+    })
+  })
+
+  describe('listNetworkZones (expanded)', () => {
+    it('sends defaults when no params', async () => {
+      mock.onGet(`${BASE}/zones`).reply(wrap([{ id: 'z1' }]))
+
+      const result = await service.listNetworkZones()
+
+      expect(mock.history[0].query).toMatchObject({ limit: 20 })
+      expect(result.items).toHaveLength(1)
+    })
+
+    it('passes filter and cursor', async () => {
+      mock.onGet(`${BASE}/zones`).reply(wrap([]))
+
+      await service.listNetworkZones('type eq "IP"', 10, 'cursorZ')
+
+      expect(mock.history[0].query).toMatchObject({ filter: 'type eq "IP"', limit: 10, after: 'cursorZ' })
+    })
+  })
+
+  describe('createNetworkZone (expanded)', () => {
+    it('includes proxies when provided', async () => {
+      mock.onPost(`${BASE}/zones`).reply(wrap({ id: 'z2', type: 'IP' }))
+
+      await service.createNetworkZone('Office', 'IP', 'Policy', 'Active', [{ type: 'CIDR', value: '10.0.0.0/8' }], [{ type: 'RANGE', value: '192.168.1.1-192.168.1.255' }])
+
+      expect(mock.history[0].body).toMatchObject({
+        name: 'Office',
+        type: 'IP',
+        usage: 'POLICY',
+        status: 'ACTIVE',
+        gateways: [{ type: 'CIDR', value: '10.0.0.0/8' }],
+        proxies: [{ type: 'RANGE', value: '192.168.1.1-192.168.1.255' }],
+      })
+    })
+
+    it('omits gateways and proxies when empty', async () => {
+      mock.onPost(`${BASE}/zones`).reply(wrap({ id: 'z3', type: 'IP' }))
+
+      await service.createNetworkZone('Empty', 'IP')
+
+      expect(mock.history[0].body.gateways).toBeUndefined()
+      expect(mock.history[0].body.proxies).toBeUndefined()
+    })
+  })
+
+  describe('updateNetworkZone', () => {
+    it('sends PUT with correct body', async () => {
+      mock.onPut(`${BASE}/zones/z1`).reply(wrap({ id: 'z1', name: 'Updated' }))
+
+      await service.updateNetworkZone('z1', 'Updated', 'IP', 'Blocklist', [{ type: 'CIDR', value: '1.2.3.0/24' }])
+
+      expect(mock.history[0].method).toBe('put')
+      expect(mock.history[0].body).toMatchObject({
+        id: 'z1',
+        name: 'Updated',
+        type: 'IP',
+        usage: 'BLOCKLIST',
+        gateways: [{ type: 'CIDR', value: '1.2.3.0/24' }],
+      })
+    })
+
+    it('omits usage when not provided', async () => {
+      mock.onPut(`${BASE}/zones/z1`).reply(wrap({ id: 'z1' }))
+
+      await service.updateNetworkZone('z1', 'Name', 'IP')
+
+      expect(mock.history[0].body.usage).toBeUndefined()
+    })
+  })
+
+  describe('activateNetworkZone', () => {
+    it('sends POST to lifecycle/activate', async () => {
+      mock.onPost(`${BASE}/zones/z1/lifecycle/activate`).reply(wrap({ id: 'z1', status: 'ACTIVE' }))
+
+      const result = await service.activateNetworkZone('z1')
+
+      expect(result).toEqual({ id: 'z1', status: 'ACTIVE' })
+      expect(mock.history[0].method).toBe('post')
+    })
+  })
+
+  describe('deactivateNetworkZone', () => {
+    it('sends POST to lifecycle/deactivate', async () => {
+      mock.onPost(`${BASE}/zones/z1/lifecycle/deactivate`).reply(wrap({ id: 'z1', status: 'INACTIVE' }))
+
+      const result = await service.deactivateNetworkZone('z1')
+
+      expect(result).toEqual({ id: 'z1', status: 'INACTIVE' })
+    })
+  })
+
+  // ── Trusted Origins (expanded) ──
+
+  describe('listTrustedOrigins (expanded)', () => {
+    it('passes search and cursor', async () => {
+      mock.onGet(`${BASE}/trustedOrigins`).reply(wrap([]))
+
+      await service.listTrustedOrigins('example', 10, 'cursorTO')
+
+      expect(mock.history[0].query).toMatchObject({ q: 'example', limit: 10, after: 'cursorTO' })
+    })
+
+    it('uses default limit when not provided', async () => {
+      mock.onGet(`${BASE}/trustedOrigins`).reply(wrap([{ id: 'to1' }]))
+
+      await service.listTrustedOrigins()
+
+      expect(mock.history[0].query).toMatchObject({ limit: 20 })
+    })
+  })
+
+  describe('getTrustedOrigin', () => {
+    it('sends GET to correct path', async () => {
+      mock.onGet(`${BASE}/trustedOrigins/to1`).reply(wrap({ id: 'to1', name: 'My Origin', origin: 'https://example.com' }))
+
+      const result = await service.getTrustedOrigin('to1')
+
+      expect(result).toMatchObject({ id: 'to1', name: 'My Origin' })
+    })
+  })
+
+  describe('createTrustedOrigin (expanded)', () => {
+    it('handles single scope', async () => {
+      mock.onPost(`${BASE}/trustedOrigins`).reply(wrap({ id: 'to2' }))
+
+      await service.createTrustedOrigin('App', 'https://app.com', 'CORS')
+
+      expect(mock.history[0].body).toMatchObject({
+        name: 'App',
+        origin: 'https://app.com',
+        scopes: [{ type: 'CORS' }],
+      })
+    })
+  })
+
+  describe('updateTrustedOrigin', () => {
+    it('sends PUT with correct body', async () => {
+      mock.onPut(`${BASE}/trustedOrigins/to1`).reply(wrap({ id: 'to1', name: 'Updated' }))
+
+      await service.updateTrustedOrigin('to1', 'Updated', 'https://updated.com', 'CORS,Redirect')
+
+      expect(mock.history[0].method).toBe('put')
+      expect(mock.history[0].body).toMatchObject({
+        id: 'to1',
+        name: 'Updated',
+        origin: 'https://updated.com',
+      })
+      expect(mock.history[0].body.scopes).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ type: 'CORS' }),
+          expect.objectContaining({ type: 'REDIRECT' }),
+        ])
+      )
+    })
+  })
+
+  describe('activateTrustedOrigin', () => {
+    it('sends POST to lifecycle/activate', async () => {
+      mock.onPost(`${BASE}/trustedOrigins/to1/lifecycle/activate`).reply(wrap({ id: 'to1', status: 'ACTIVE' }))
+
+      const result = await service.activateTrustedOrigin('to1')
+
+      expect(result).toEqual({ id: 'to1', status: 'ACTIVE' })
+    })
+  })
+
+  describe('deactivateTrustedOrigin', () => {
+    it('sends POST to lifecycle/deactivate', async () => {
+      mock.onPost(`${BASE}/trustedOrigins/to1/lifecycle/deactivate`).reply(wrap({ id: 'to1', status: 'INACTIVE' }))
+
+      const result = await service.deactivateTrustedOrigin('to1')
+
+      expect(result).toEqual({ id: 'to1', status: 'INACTIVE' })
+    })
+  })
+
+  // ── Event Hooks (expanded) ──
+
+  describe('getEventHook', () => {
+    it('sends GET to correct path', async () => {
+      mock.onGet(`${BASE}/eventHooks/eh1`).reply(wrap({ id: 'eh1', name: 'My Hook', status: 'ACTIVE' }))
+
+      const result = await service.getEventHook('eh1')
+
+      expect(result).toMatchObject({ id: 'eh1', name: 'My Hook' })
+    })
+  })
+
+  describe('createEventHook (expanded)', () => {
+    it('includes filter expression when provided', async () => {
+      mock.onPost(`${BASE}/eventHooks`).reply(wrap({ id: 'eh2' }))
+
+      await service.createEventHook('Filtered', ['user.lifecycle.create'], 'https://example.com/hook', 'Authorization', 'Bearer abc', null, 'event.outcome eq "SUCCESS"')
+
+      expect(mock.history[0].body.events.filter).toMatchObject({
+        type: 'EXPRESSION_LANGUAGE',
+        eventFilterMap: [{ event: 'user.lifecycle.create', condition: { expression: 'event.outcome eq "SUCCESS"' } }],
+      })
+    })
+
+    it('omits filter when not provided', async () => {
+      mock.onPost(`${BASE}/eventHooks`).reply(wrap({ id: 'eh3' }))
+
+      await service.createEventHook('NoFilter', ['user.lifecycle.activate'], 'https://example.com/hook2')
+
+      expect(mock.history[0].body.events.filter).toBeUndefined()
+    })
+
+    it('omits authScheme when no authHeaderValue', async () => {
+      mock.onPost(`${BASE}/eventHooks`).reply(wrap({ id: 'eh4' }))
+
+      await service.createEventHook('NoAuth', ['user.lifecycle.create'], 'https://example.com/hook3')
+
+      expect(mock.history[0].body.channel.config.authScheme).toBeUndefined()
+    })
+  })
+
+  describe('updateEventHook', () => {
+    it('sends PUT with correct body', async () => {
+      mock.onPut(`${BASE}/eventHooks/eh1`).reply(wrap({ id: 'eh1', name: 'Updated' }))
+
+      await service.updateEventHook('eh1', 'Updated', ['group.user_membership.add'], 'https://new.com/hook', 'X-Auth', 'secret123')
+
+      expect(mock.history[0].method).toBe('put')
+      expect(mock.history[0].body).toMatchObject({
+        name: 'Updated',
+        events: { type: 'EVENT_TYPE', items: ['group.user_membership.add'] },
+        channel: {
+          type: 'HTTP',
+          version: '1.0.0',
+          config: {
+            uri: 'https://new.com/hook',
+            authScheme: { type: 'HEADER', key: 'X-Auth', value: 'secret123' },
+          },
+        },
+      })
+    })
+
+    it('includes filter expression on update', async () => {
+      mock.onPut(`${BASE}/eventHooks/eh1`).reply(wrap({ id: 'eh1' }))
+
+      await service.updateEventHook('eh1', 'Name', ['user.lifecycle.create'], 'https://example.com', null, null, null, 'event.target eq "user"')
+
+      expect(mock.history[0].body.events.filter).toMatchObject({
+        type: 'EXPRESSION_LANGUAGE',
+      })
+    })
+  })
+
+  describe('activateEventHook', () => {
+    it('sends POST to lifecycle/activate', async () => {
+      mock.onPost(`${BASE}/eventHooks/eh1/lifecycle/activate`).reply(wrap({ id: 'eh1', status: 'ACTIVE' }))
+
+      const result = await service.activateEventHook('eh1')
+
+      expect(result).toEqual({ id: 'eh1', status: 'ACTIVE' })
+    })
+  })
+
+  describe('deactivateEventHook', () => {
+    it('sends POST to lifecycle/deactivate', async () => {
+      mock.onPost(`${BASE}/eventHooks/eh1/lifecycle/deactivate`).reply(wrap({ id: 'eh1', status: 'INACTIVE' }))
+
+      const result = await service.deactivateEventHook('eh1')
+
+      expect(result).toEqual({ id: 'eh1', status: 'INACTIVE' })
+    })
+  })
+
+  describe('verifyEventHook', () => {
+    it('sends POST to lifecycle/verify', async () => {
+      mock.onPost(`${BASE}/eventHooks/eh1/lifecycle/verify`).reply(wrap({ id: 'eh1', status: 'ACTIVE', verificationStatus: 'VERIFIED' }))
+
+      const result = await service.verifyEventHook('eh1')
+
+      expect(result).toMatchObject({ id: 'eh1', verificationStatus: 'VERIFIED' })
+    })
+  })
+
+  // ── Inline Hooks (expanded) ──
+
+  describe('listInlineHooks (expanded)', () => {
+    it('passes type filter', async () => {
+      mock.onGet(`${BASE}/inlineHooks`).reply(wrap([]))
+
+      await service.listInlineHooks('OAuth2 Token Transform')
+
+      expect(mock.history[0].query).toMatchObject({ type: 'com.okta.oauth2.tokens.transform' })
+    })
+
+    it('sends empty query when no type', async () => {
+      mock.onGet(`${BASE}/inlineHooks`).reply(wrap([{ id: 'ih1' }]))
+
+      await service.listInlineHooks()
+
+      expect(mock.history[0].query.type).toBeUndefined()
+    })
+  })
+
+  describe('createInlineHook', () => {
+    it('sends POST with correct body', async () => {
+      mock.onPost(`${BASE}/inlineHooks`).reply(wrap({ id: 'ih1', type: 'com.okta.oauth2.tokens.transform' }))
+
+      await service.createInlineHook('Token Hook', 'OAuth2 Token Transform', 'https://example.com/tokenHook', 'Authorization', 'Bearer xyz')
+
+      expect(mock.history[0].body).toMatchObject({
+        name: 'Token Hook',
+        type: 'com.okta.oauth2.tokens.transform',
+        version: '1.0.0',
+        channel: {
+          type: 'HTTP',
+          version: '1.0.0',
+          config: {
+            uri: 'https://example.com/tokenHook',
+            method: 'POST',
+            authScheme: { type: 'HEADER', key: 'Authorization', value: 'Bearer xyz' },
+          },
+        },
+      })
+    })
+
+    it('omits authScheme when no secret', async () => {
+      mock.onPost(`${BASE}/inlineHooks`).reply(wrap({ id: 'ih2' }))
+
+      await service.createInlineHook('Hook', 'Password Import', 'https://example.com/pw')
+
+      expect(mock.history[0].body.channel.config.authScheme).toBeUndefined()
+      expect(mock.history[0].body.channel.config.method).toBe('POST')
+    })
+  })
+
+  describe('getInlineHook', () => {
+    it('sends GET to correct path', async () => {
+      mock.onGet(`${BASE}/inlineHooks/ih1`).reply(wrap({ id: 'ih1', name: 'Token Hook', type: 'com.okta.oauth2.tokens.transform' }))
+
+      const result = await service.getInlineHook('ih1')
+
+      expect(result).toMatchObject({ id: 'ih1', name: 'Token Hook' })
+    })
+  })
+
+  describe('updateInlineHook', () => {
+    it('sends POST with correct body', async () => {
+      mock.onPost(`${BASE}/inlineHooks/ih1`).reply(wrap({ id: 'ih1', name: 'New Name' }))
+
+      await service.updateInlineHook('ih1', 'New Name', 'https://new.com/hook', 'X-Secret', 'val')
+
+      expect(mock.history[0].method).toBe('post')
+      expect(mock.history[0].body).toMatchObject({
+        name: 'New Name',
+        version: '1.0.0',
+        channel: {
+          type: 'HTTP',
+          version: '1.0.0',
+          config: {
+            uri: 'https://new.com/hook',
+            method: 'POST',
+            authScheme: { type: 'HEADER', key: 'X-Secret', value: 'val' },
+          },
+        },
+      })
+    })
+  })
+
+  describe('activateInlineHook', () => {
+    it('sends POST to lifecycle/activate', async () => {
+      mock.onPost(`${BASE}/inlineHooks/ih1/lifecycle/activate`).reply(wrap({ id: 'ih1', status: 'ACTIVE' }))
+
+      const result = await service.activateInlineHook('ih1')
+
+      expect(result).toEqual({ id: 'ih1', status: 'ACTIVE' })
+    })
+  })
+
+  describe('deactivateInlineHook', () => {
+    it('sends POST to lifecycle/deactivate', async () => {
+      mock.onPost(`${BASE}/inlineHooks/ih1/lifecycle/deactivate`).reply(wrap({ id: 'ih1', status: 'INACTIVE' }))
+
+      const result = await service.deactivateInlineHook('ih1')
+
+      expect(result).toEqual({ id: 'ih1', status: 'INACTIVE' })
+    })
+  })
+
+  describe('executeInlineHook', () => {
+    it('sends POST with object payload', async () => {
+      mock.onPost(`${BASE}/inlineHooks/ih1/execute`).reply(wrap({ commands: [{ type: 'com.okta.action.update', value: { credential: 'VERIFIED' } }] }))
+
+      const payload = { source: 'test', data: { key: 'value' } }
+      const result = await service.executeInlineHook('ih1', payload)
+
+      expect(mock.history[0].body).toEqual(payload)
+      expect(result).toHaveProperty('commands')
+    })
+
+    it('parses string payload as JSON', async () => {
+      mock.onPost(`${BASE}/inlineHooks/ih1/execute`).reply(wrap({ commands: [] }))
+
+      await service.executeInlineHook('ih1', '{"source":"test"}')
+
+      expect(mock.history[0].body).toEqual({ source: 'test' })
+    })
+
+    it('throws on invalid JSON string payload', async () => {
+      await expect(service.executeInlineHook('ih1', 'not-json')).rejects.toThrow('valid JSON')
+    })
+  })
+
+  // ── Applications (expanded CRUD + lifecycle) ──
+
+  describe('createApplication', () => {
+    it('sends POST with BOOKMARK app', async () => {
+      mock.onPost(`${BASE}/apps`).reply(wrap({ id: 'app1', signOnMode: 'BOOKMARK', label: 'My Bookmark' }))
+
+      await service.createApplication('My Bookmark', 'Bookmark (Link Tile)', { url: 'https://example.com' })
+
+      expect(mock.history[0].body).toMatchObject({
+        label: 'My Bookmark',
+        signOnMode: 'BOOKMARK',
+        name: 'bookmark',
+        settings: { app: { url: 'https://example.com' } },
+      })
+    })
+
+    it('sends POST with SWA AUTO_LOGIN app', async () => {
+      mock.onPost(`${BASE}/apps`).reply(wrap({ id: 'app2', signOnMode: 'AUTO_LOGIN' }))
+
+      await service.createApplication('SWA App', 'SWA Auto-Login', { loginUrl: 'https://login.example.com', redirectUrl: 'https://example.com/home' })
+
+      expect(mock.history[0].body).toMatchObject({
+        label: 'SWA App',
+        signOnMode: 'AUTO_LOGIN',
+        settings: { signOn: { loginUrl: 'https://login.example.com', redirectUrl: 'https://example.com/home' } },
+      })
+      expect(mock.history[0].body.name).toBeUndefined()
+    })
+
+    it('passes activate=false query', async () => {
+      mock.onPost(`${BASE}/apps`).reply(wrap({ id: 'app3' }))
+
+      await service.createApplication('App', 'Bookmark (Link Tile)', { url: 'https://example.com' }, false)
+
+      expect(mock.history[0].query).toMatchObject({ activate: false })
+    })
+
+    it('omits activate query when not explicitly false', async () => {
+      mock.onPost(`${BASE}/apps`).reply(wrap({ id: 'app4' }))
+
+      await service.createApplication('App', 'Bookmark (Link Tile)', { url: 'https://example.com' })
+
+      expect(mock.history[0].query.activate).toBeUndefined()
+    })
+  })
+
+  describe('replaceApplication', () => {
+    it('sends PUT with BOOKMARK body', async () => {
+      mock.onPut(`${BASE}/apps/app1`).reply(wrap({ id: 'app1', label: 'Updated' }))
+
+      await service.replaceApplication('app1', 'Updated', 'Bookmark (Link Tile)', { url: 'https://new.com' })
+
+      expect(mock.history[0].method).toBe('put')
+      expect(mock.history[0].body).toMatchObject({
+        label: 'Updated',
+        signOnMode: 'BOOKMARK',
+        name: 'bookmark',
+        settings: { app: { url: 'https://new.com' } },
+      })
+    })
+
+    it('sends PUT with AUTO_LOGIN body', async () => {
+      mock.onPut(`${BASE}/apps/app2`).reply(wrap({ id: 'app2' }))
+
+      await service.replaceApplication('app2', 'SWA', 'SWA Auto-Login', { loginUrl: 'https://login.com' })
+
+      expect(mock.history[0].body).toMatchObject({
+        signOnMode: 'AUTO_LOGIN',
+        settings: { signOn: { loginUrl: 'https://login.com' } },
+      })
+    })
+  })
+
+  describe('deleteApplication', () => {
+    it('sends DELETE and returns confirmation', async () => {
+      mock.onDelete(`${BASE}/apps/app1`).reply(wrap({}))
+
+      const result = await service.deleteApplication('app1')
+
+      expect(result).toEqual({ deleted: true, appId: 'app1' })
+    })
+  })
+
+  describe('activateApplication', () => {
+    it('sends POST to lifecycle/activate', async () => {
+      mock.onPost(`${BASE}/apps/app1/lifecycle/activate`).reply(wrap({}))
+
+      const result = await service.activateApplication('app1')
+
+      expect(result).toEqual({ activated: true, appId: 'app1' })
+    })
+  })
+
+  describe('deactivateApplication', () => {
+    it('sends POST to lifecycle/deactivate', async () => {
+      mock.onPost(`${BASE}/apps/app1/lifecycle/deactivate`).reply(wrap({}))
+
+      const result = await service.deactivateApplication('app1')
+
+      expect(result).toEqual({ deactivated: true, appId: 'app1' })
+    })
+  })
+
+  // ── Application Users & Groups ──
+
+  describe('listApplicationUsers', () => {
+    it('returns list with default limit', async () => {
+      mock.onGet(`${BASE}/apps/app1/users`).reply(wrap([{ id: 'au1' }]))
+
+      const result = await service.listApplicationUsers('app1')
+
+      expect(mock.history[0].query).toMatchObject({ limit: 50 })
+      expect(result.items).toHaveLength(1)
+    })
+
+    it('passes limit and after', async () => {
+      mock.onGet(`${BASE}/apps/app1/users`).reply(wrap([]))
+
+      await service.listApplicationUsers('app1', 10, 'cursorAU')
+
+      expect(mock.history[0].query).toMatchObject({ limit: 10, after: 'cursorAU' })
+    })
+  })
+
+  describe('listApplicationGroupAssignments', () => {
+    it('returns group assignments', async () => {
+      mock.onGet(`${BASE}/apps/app1/groups`).reply(wrap([{ id: 'g1', priority: 0 }]))
+
+      const result = await service.listApplicationGroupAssignments('app1')
+
+      expect(result.items).toHaveLength(1)
+    })
+  })
+
+  describe('getApplicationUser', () => {
+    it('sends GET to correct path', async () => {
+      mock.onGet(`${BASE}/apps/app1/users/u1`).reply(wrap({ id: 'u1', scope: 'USER', status: 'ACTIVE' }))
+
+      const result = await service.getApplicationUser('app1', 'u1')
+
+      expect(result).toMatchObject({ id: 'u1', scope: 'USER' })
+    })
+
+    it('passes expand query param', async () => {
+      mock.onGet(`${BASE}/apps/app1/users/u1`).reply(wrap({ id: 'u1' }))
+
+      await service.getApplicationUser('app1', 'u1', 'user')
+
+      expect(mock.history[0].query).toMatchObject({ expand: 'user' })
+    })
+  })
+
+  describe('updateApplicationUser', () => {
+    it('sends POST with credentials', async () => {
+      mock.onPost(`${BASE}/apps/app1/users/u1`).reply(wrap({ id: 'u1' }))
+
+      await service.updateApplicationUser('app1', 'u1', 'newuser', 'newpass')
+
+      expect(mock.history[0].body).toMatchObject({
+        credentials: { userName: 'newuser', password: { value: 'newpass' } },
+      })
+    })
+
+    it('sends POST with profile only', async () => {
+      mock.onPost(`${BASE}/apps/app1/users/u1`).reply(wrap({ id: 'u1' }))
+
+      await service.updateApplicationUser('app1', 'u1', null, null, { name: 'Test' })
+
+      expect(mock.history[0].body).toMatchObject({ profile: { name: 'Test' } })
+      expect(mock.history[0].body.credentials).toBeUndefined()
+    })
+
+    it('sends POST with userName only', async () => {
+      mock.onPost(`${BASE}/apps/app1/users/u1`).reply(wrap({ id: 'u1' }))
+
+      await service.updateApplicationUser('app1', 'u1', 'jsmith')
+
+      expect(mock.history[0].body.credentials).toMatchObject({ userName: 'jsmith' })
+      expect(mock.history[0].body.credentials.password).toBeUndefined()
+    })
+  })
+
+  describe('updateApplicationUserProfile', () => {
+    it('sends POST with definitions', async () => {
+      mock.onPost(`${BASE}/meta/schemas/apps/app1/default`).reply(wrap({ id: 'schema1' }))
+
+      const definitions = { custom: { id: '#custom', type: 'object', properties: { field1: { title: 'Field', type: 'string' } } } }
+      await service.updateApplicationUserProfile('app1', definitions)
+
+      expect(mock.history[0].body).toMatchObject({ definitions })
+    })
+  })
+
+  describe('getApplicationGroupAssignment', () => {
+    it('sends GET to correct path', async () => {
+      mock.onGet(`${BASE}/apps/app1/groups/g1`).reply(wrap({ id: 'g1', priority: 0, profile: {} }))
+
+      const result = await service.getApplicationGroupAssignment('app1', 'g1')
+
+      expect(result).toMatchObject({ id: 'g1', priority: 0 })
+    })
+
+    it('passes expand query param', async () => {
+      mock.onGet(`${BASE}/apps/app1/groups/g1`).reply(wrap({ id: 'g1' }))
+
+      await service.getApplicationGroupAssignment('app1', 'g1', 'group')
+
+      expect(mock.history[0].query).toMatchObject({ expand: 'group' })
+    })
+  })
+
+  describe('updateGroupAssignmentToApplication', () => {
+    it('sends PATCH with operations', async () => {
+      mock.onPatch(`${BASE}/apps/app1/groups/g1`).reply(wrap({ id: 'g1', profile: { manager: 'New Manager' } }))
+
+      const ops = [{ op: 'replace', path: '/profile/manager', value: 'New Manager' }]
+      await service.updateGroupAssignmentToApplication('app1', 'g1', ops)
+
+      expect(mock.history[0].method).toBe('patch')
+      expect(mock.history[0].body).toEqual(ops)
+    })
+  })
+
+  // ── Application Credentials (Keys, CSRs) ──
+
+  describe('generateApplicationKey', () => {
+    it('sends POST with validityYears query', async () => {
+      mock.onPost(`${BASE}/apps/app1/credentials/keys/generate`).reply(wrap({ kid: 'k1', kty: 'RSA' }))
+
+      const result = await service.generateApplicationKey('app1', 5)
+
+      expect(mock.history[0].query).toMatchObject({ validityYears: 5 })
+      expect(result).toMatchObject({ kid: 'k1', kty: 'RSA' })
+    })
+  })
+
+  describe('getApplicationKey', () => {
+    it('sends GET to correct path', async () => {
+      mock.onGet(`${BASE}/apps/app1/credentials/keys/k1`).reply(wrap({ kid: 'k1', kty: 'RSA', use: 'sig' }))
+
+      const result = await service.getApplicationKey('app1', 'k1')
+
+      expect(result).toMatchObject({ kid: 'k1', use: 'sig' })
+    })
+  })
+
+  describe('cloneApplicationKey', () => {
+    it('sends POST with targetAid query', async () => {
+      mock.onPost(`${BASE}/apps/app1/credentials/keys/k1/clone`).reply(wrap({ kid: 'k1', kty: 'RSA' }))
+
+      const result = await service.cloneApplicationKey('app1', 'k1', 'app2')
+
+      expect(mock.history[0].query).toMatchObject({ targetAid: 'app2' })
+      expect(result).toMatchObject({ kid: 'k1' })
+    })
+  })
+
+  describe('listCsrsForApplication', () => {
+    it('returns CSR list', async () => {
+      mock.onGet(`${BASE}/apps/app1/credentials/csrs`).reply(wrap([{ id: 'csr1', kty: 'RSA' }]))
+
+      const result = await service.listCsrsForApplication('app1')
+
+      expect(result.items).toHaveLength(1)
+      expect(result.items[0]).toMatchObject({ id: 'csr1' })
+    })
+  })
+
+  describe('generateCsrForApplication', () => {
+    it('sends POST with required common name only', async () => {
+      mock.onPost(`${BASE}/apps/app1/credentials/csrs`).reply(wrap({ id: 'csr1', kty: 'RSA' }))
+
+      await service.generateCsrForApplication('app1', 'example.com')
+
+      expect(mock.history[0].body).toEqual({ subject: { commonName: 'example.com' } })
+    })
+
+    it('sends POST with all subject fields and DNS SANs', async () => {
+      mock.onPost(`${BASE}/apps/app1/credentials/csrs`).reply(wrap({ id: 'csr2' }))
+
+      await service.generateCsrForApplication('app1', 'example.com', 'Acme Inc', 'Engineering', 'San Francisco', 'California', 'US', ['api.example.com', 'www.example.com'])
+
+      expect(mock.history[0].body).toMatchObject({
+        subject: {
+          commonName: 'example.com',
+          organizationName: 'Acme Inc',
+          organizationalUnitName: 'Engineering',
+          localityName: 'San Francisco',
+          stateOrProvinceName: 'California',
+          countryName: 'US',
+        },
+        subjectAltNames: { dnsNames: ['api.example.com', 'www.example.com'] },
+      })
+    })
+  })
+
+  describe('revokeCsrFromApplication', () => {
+    it('sends DELETE and returns confirmation', async () => {
+      mock.onDelete(`${BASE}/apps/app1/credentials/csrs/csr1`).reply(wrap({}))
+
+      const result = await service.revokeCsrFromApplication('app1', 'csr1')
+
+      expect(result).toEqual({ revoked: true, csrId: 'csr1' })
+    })
+  })
+
+  describe('publishCsrFromApplication', () => {
+    it('sends POST with PEM certificate body', async () => {
+      mock.onPost(`${BASE}/apps/app1/credentials/csrs/csr1/lifecycle/publish`).reply(wrap({ kid: 'k1', kty: 'RSA' }))
+
+      const pem = '-----BEGIN CERTIFICATE-----\nMIID...\n-----END CERTIFICATE-----'
+      const result = await service.publishCsrFromApplication('app1', 'csr1', pem)
+
+      expect(mock.history[0].body).toBe(pem)
+      expect(mock.history[0].headers['Content-Type']).toBe('application/x-pem-file')
+      expect(result).toMatchObject({ kid: 'k1' })
+    })
+  })
+
   // ── unwrapBody(false) behavior ──
 
   describe('unwrapBody(false) for pagination', () => {
