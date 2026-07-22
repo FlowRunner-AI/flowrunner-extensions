@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 182 | 182 | 103 |
-| **All Services** | **385** | **230** | **182** | **155** |
+| API Key Extensions | 285 | 187 | 187 | 98 |
+| **All Services** | **385** | **235** | **187** | **150** |
 
 ## OAuth Extensions
 
@@ -323,11 +323,11 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [pushbullet](services/pushbullet/) | | |
 | [pushcut](services/pushcut/) | | |
 | [pushover](services/pushover/) | | |
-| [qdrant](services/qdrant/) | | |
-| [questdb](services/questdb/) | | |
-| [quickbase](services/quickbase/) | | |
-| [quickchart](services/quickchart/) | | |
-| [qwen-ai](services/qwen-ai/) | | |
+| [qdrant](services/qdrant/) | ✅ | ✅ |
+| [questdb](services/questdb/) | ✅ | ✅ |
+| [quickbase](services/quickbase/) | ✅ | ✅ |
+| [quickchart](services/quickchart/) | ✅ | ✅ |
+| [qwen-ai](services/qwen-ai/) | ✅ | ✅ |
 | [raindrop](services/raindrop/) | | |
 | [ramp-service](services/ramp-service/) | | |
 | [razorpay](services/razorpay/) | | |
