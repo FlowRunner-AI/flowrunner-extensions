@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 196 | 196 | 89 |
-| **All Services** | **385** | **244** | **196** | **141** |
+| API Key Extensions | 285 | 208 | 208 | 77 |
+| **All Services** | **385** | **256** | **208** | **129** |
 
 ## OAuth Extensions
 
@@ -366,19 +366,19 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [supabase](services/supabase/) | | |
 | [surveymonkey](services/surveymonkey/) | | |
 | [syncromsp](services/syncromsp/) | | |
-| [taiga](services/taiga/) | | |
-| [tally](services/tally/) | | |
-| [tapfiliate](services/tapfiliate/) | | |
-| [tavily](services/tavily/) | | |
+| [taiga](services/taiga/) | ✅ | ✅ |
+| [tally](services/tally/) | ✅ | ✅ |
+| [tapfiliate](services/tapfiliate/) | ✅ | ✅ |
+| [tavily](services/tavily/) | ✅ | ✅ |
 | [telegram](services/telegram/) | ✅ | ✅ |
-| [thehive](services/thehive/) | | |
-| [timescaledb](services/timescaledb/) | | |
-| [todoist](services/todoist/) | | |
-| [toggl](services/toggl/) | | |
-| [travis-ci](services/travis-ci/) | | |
-| [trello](services/trello/) | | |
-| [turbodocx-service](services/turbodocx-service/) | | |
-| [twilio](services/twilio/) | | |
+| [thehive](services/thehive/) | ✅ | ✅ |
+| [timescaledb](services/timescaledb/) | ✅ | ✅ |
+| [todoist](services/todoist/) | ✅ | ✅ |
+| [toggl](services/toggl/) | ✅ | ✅ |
+| [travis-ci](services/travis-ci/) | ✅ | ✅ |
+| [trello](services/trello/) | ✅ | ✅ |
+| [turbodocx-service](services/turbodocx-service/) | ✅ | ✅ |
+| [twilio](services/twilio/) | ✅ | ✅ |
 | [unleashed](services/unleashed/) | | |
 | [uplead](services/uplead/) | | |
 | [uproc](services/uproc/) | | |
