@@ -166,7 +166,13 @@ class ZulipService {
       const trimmed = to.trim()
 
       if (trimmed.startsWith('[')) {
-        recipients = JSON.parse(trimmed)
+        try {
+          recipients = JSON.parse(trimmed)
+        } catch (error) {
+          logger.error(`${ logTag } - failed to parse recipients: ${ error.message }`)
+
+          throw new Error('Zulip API error: Recipients must be a valid JSON array of user emails or IDs, e.g. ["user@example.com"] or [9,10]')
+        }
       }
     }
 

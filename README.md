@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 213 | 213 | 72 |
-| **All Services** | **385** | **261** | **213** | **124** |
+| API Key Extensions | 285 | 222 | 222 | 63 |
+| **All Services** | **385** | **270** | **222** | **115** |
 
 ## OAuth Extensions
 
@@ -379,11 +379,11 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [trello](services/trello/) | ✅ | ✅ |
 | [turbodocx-service](services/turbodocx-service/) | ✅ | ✅ |
 | [twilio](services/twilio/) | ✅ | ✅ |
-| [unleashed](services/unleashed/) | | |
-| [uplead](services/uplead/) | | |
-| [uproc](services/uproc/) | | |
-| [uptimerobot](services/uptimerobot/) | | |
-| [urlscan](services/urlscan/) | | |
+| [unleashed](services/unleashed/) | ✅ | ✅ |
+| [uplead](services/uplead/) | ✅ | ✅ |
+| [uproc](services/uproc/) | ✅ | ✅ |
+| [uptimerobot](services/uptimerobot/) | ✅ | ✅ |
+| [urlscan](services/urlscan/) | ✅ | ✅ |
 | [vapi](services/vapi/) | ✅ | ✅ |
 | [vero](services/vero/) | ✅ | ✅ |
 | [vonage](services/vonage/) | ✅ | ✅ |
@@ -400,7 +400,7 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [wufoo](services/wufoo/) | | |
 | [xai-grok](services/xai-grok/) | ✅ | ✅ |
 | [yourls](services/yourls/) | ✅ | ✅ |
-| [zammad](services/zammad/) | | |
-| [zendesk](services/zendesk/) | | |
-| [zep](services/zep/) | | |
-| [zulip](services/zulip/) | | |
+| [zammad](services/zammad/) | ✅ | ✅ |
+| [zendesk](services/zendesk/) | ✅ | ✅ |
+| [zep](services/zep/) | ✅ | ✅ |
+| [zulip](services/zulip/) | ✅ | ✅ |
