@@ -1655,7 +1655,9 @@ describe('Meta Ads Service', () => {
       await expect(service.listAdAccounts()).rejects.toThrow('Meta Ads API error: Zeroed | code=0 | error_subcode=0')
     })
 
-    it('surfaces error_user_msg only when it is the envelope message', async () => {
+    // error_user_msg is Meta's human-facing explanation and is far more actionable than the
+    // generic `message` ("Invalid parameter"), so it takes precedence when present.
+    it('prefers error_user_msg over the generic envelope message', async () => {
       mock.onGet(URL).replyWithError({
         message: 'Bad Request',
         body: {
@@ -1668,7 +1670,17 @@ describe('Meta Ads Service', () => {
         },
       })
 
-      // The service reports error.message; error_user_msg is not surfaced.
+      await expect(service.listAdAccounts()).rejects.toThrow(
+        'Meta Ads API error: Your ad account is not authorized. | type=OAuthException | code=190'
+      )
+    })
+
+    it('falls back to the envelope message when error_user_msg is absent', async () => {
+      mock.onGet(URL).replyWithError({
+        message: 'Bad Request',
+        body: { error: { message: 'Invalid parameter', type: 'OAuthException', code: 190 } },
+      })
+
       await expect(service.listAdAccounts()).rejects.toThrow(
         'Meta Ads API error: Invalid parameter | type=OAuthException | code=190'
       )
@@ -1676,6 +1688,42 @@ describe('Meta Ads Service', () => {
   })
 
   // ── Error propagation sweep across every Graph-backed operation ──
+
+  // Destructive operations interpolate the id straight into the Graph path. Without a guard a
+  // missing id issues `DELETE /v25.0/undefined` against Meta rather than failing fast locally.
+  describe('destructive operation guards', () => {
+    const DESTRUCTIVE = [
+      ['deleteCampaign', 'Campaign ID', id => service.deleteCampaign(id)],
+      ['deleteAdSet', 'Ad Set ID', id => service.deleteAdSet(id)],
+      ['deleteAd', 'Ad ID', id => service.deleteAd(id)],
+      ['deleteCustomAudience', 'Audience ID', id => service.deleteCustomAudience(id)],
+      ['removeUsersFromAudience', 'Audience ID', id => service.removeUsersFromAudience(id, null, ['a@b.com'], 'Email')],
+    ]
+
+    const MISSING = [['undefined', undefined], ['null', null], ['empty string', ''], ['whitespace', '   ']]
+
+    for (const [name, label, call] of DESTRUCTIVE) {
+      it.each(MISSING)(`${ name } rejects a %s id and issues no request`, async (_desc, id) => {
+        await expect(call(id)).rejects.toThrow(`${ label } is required.`)
+        expect(mock.history).toHaveLength(0)
+      })
+    }
+
+    it('still deletes when a valid id is supplied', async () => {
+      mock.onDelete(`${ GRAPH }/123`).reply({ success: true })
+
+      await expect(service.deleteAd('123')).resolves.toEqual({ success: true })
+      expect(mock.history).toHaveLength(1)
+    })
+
+    it('trims a padded id rather than sending it raw', async () => {
+      mock.onDelete(`${ GRAPH }/123`).reply({ success: true })
+
+      await service.deleteAd('  123  ')
+
+      expect(mock.history[0].url).toBe(`${ GRAPH }/123`)
+    })
+  })
 
   describe('error propagation', () => {
     const targeting = { geo_locations: { countries: ['US'] } }

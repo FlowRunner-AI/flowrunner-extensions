@@ -1738,20 +1738,24 @@ describe('Intercom Service', () => {
       await expect(service.getCompaniesDictionary({})).resolves.toEqual({ items: [], cursor: null })
     })
 
-    // KNOWN SERVICE BUG (services/intercom/src/index.js — getCompaniesDictionary):
-    //   const nextCursor = typeof nextPage === 'object' ? (nextPage.page || null) : (nextPage || null)
-    // `typeof null === 'object'`, so an explicit `pages.next: null` — which is exactly what
-    // Intercom returns on the LAST page of a list response — dereferences null and throws
-    // "Cannot read properties of null (reading 'page')". The picker therefore fails whenever
-    // the workspace's companies fit in (or reach) a single page. The fix is a null guard, e.g.
-    //   nextPage && typeof nextPage === 'object' ? ... : (nextPage || null)
-    // This test pins the CURRENT (buggy) behaviour and must be inverted once the service is fixed.
-    it('throws on an explicit pages.next of null (known service bug)', async () => {
-      mock.onPost(`${ API }/companies/list`).reply({ data: [], pages: { next: null } })
+    // Regression guard: `typeof null === 'object'`, and Intercom sends an explicit
+    // `pages.next: null` on the LAST page of every list response. Ordering the object check
+    // before a null check dereferences it and breaks the picker for any workspace whose
+    // companies fit in a single page.
+    it.each([
+      ['an explicit null', { next: null }],
+      ['an omitted next', {}],
+      ['no pages envelope at all', undefined],
+    ])('returns a null cursor for %s', async (_label, pages) => {
+      mock.onPost(`${ API }/companies/list`).reply({ data: [], ...(pages ? { pages } : {}) })
 
-      await expect(service.getCompaniesDictionary({})).rejects.toThrow(
-        "Cannot read properties of null (reading 'page')"
-      )
+      await expect(service.getCompaniesDictionary({})).resolves.toEqual({ items: [], cursor: null })
+    })
+
+    it('still reads the page number from an object cursor', async () => {
+      mock.onPost(`${ API }/companies/list`).reply({ data: [], pages: { next: { page: 3 } } })
+
+      await expect(service.getCompaniesDictionary({})).resolves.toEqual({ items: [], cursor: '3' })
     })
 
     it('converts the cursor to a page number on the request', async () => {

@@ -708,6 +708,43 @@ describe('Monday.com Service', () => {
     })
   })
 
+  // monday ids are interpolated into the GraphQL query text as literals rather than passed as
+  // variables, so a non-numeric value would either produce a malformed query or inject GraphQL.
+  describe('numeric id validation', () => {
+    const INVALID = [
+      ['a GraphQL injection payload', '1]) { id } } mutation { delete_board (board_id: 999'],
+      ['a non-numeric string', 'abc'],
+      ['an empty string', ''],
+      ['undefined', undefined],
+      ['null', null],
+      ['a decimal', '1.5'],
+    ]
+
+    it.each(INVALID)('getBoard rejects %s', async (_label, id) => {
+      await expect(service.getBoard(id)).rejects.toThrow(/Board ID must be a numeric id/)
+      expect(mock.history).toHaveLength(0)
+    })
+
+    it.each(INVALID)('getItem rejects %s', async (_label, id) => {
+      await expect(service.getItem(id)).rejects.toThrow(/Item ID must be a numeric id/)
+      expect(mock.history).toHaveLength(0)
+    })
+
+    it('accepts a numeric id supplied as a Number', async () => {
+      graphql([['boards', { data: { boards: [{ id: '987', name: 'Board' }] } }]])
+
+      await expect(service.getBoard(987)).resolves.toBeDefined()
+    })
+
+    it('trims surrounding whitespace on a valid id', async () => {
+      graphql([['boards', { data: { boards: [{ id: '987', name: 'Board' }] } }]])
+
+      await service.getBoard('  987  ')
+
+      expect(queryAt(0)).toContain('ids: [987]')
+    })
+  })
+
   describe('changeMultipleColumnValues', () => {
     const withColumnTypes = (columns, result = { change_multiple_column_values: { id: '1', name: 'Task' } }) => {
       graphql([
@@ -822,17 +859,44 @@ describe('Monday.com Service', () => {
       expect(queryAt(1)).toContain(`column_values: ${ JSON.stringify('{"c":{"hour":9,"minute":0}}') }`)
     })
 
-    it('passes an Array value through untouched instead of wrapping it', async () => {
-      // KNOWN SERVICE BUG (minor): #wrapColumnValue delegates to #asObject first, and
-      // #asObject treats any Array as an already-structured value. A people/dropdown/tags
-      // column given a real Array therefore skips its wrapping branch and is sent raw,
-      // which monday.com rejects. Only comma-separated Strings get wrapped. As a
-      // consequence the Array.isArray branch of #toList is unreachable.
+    // Regression guard: `typeof [] === 'object'`, so routing list-shaped columns through
+    // #asObject passed a real Array straight to monday (which rejects it) and left only the
+    // comma-separated-String path working.
+    it.each([
+      ['a real Array', ['7', '8']],
+      ['a comma-separated String', '7,8'],
+      ['a JSON-array String', '["7","8"]'],
+    ])('wraps a people column given %s', async (_label, value) => {
       withColumnTypes([{ id: 'c', type: 'people' }])
 
-      await service.changeMultipleColumnValues('987', '1', { c: ['7'] })
+      await service.changeMultipleColumnValues('987', '1', { c: value })
 
-      expect(queryAt(1)).toContain(`column_values: ${ JSON.stringify('{"c":["7"]}') }`)
+      expect(queryAt(1)).toContain(`column_values: ${ JSON.stringify(
+        '{"c":{"personsAndTeams":[{"id":7,"kind":"person"},{"id":8,"kind":"person"}]}}'
+      ) }`)
+    })
+
+    it.each([
+      ['dropdown', ['A', 'B'], '{"c":{"labels":["A","B"]}}'],
+      ['tags', ['1', '2'], '{"c":{"tag_ids":[1,2]}}'],
+    ])('wraps an Array for a %s column', async (type, value, expected) => {
+      withColumnTypes([{ id: 'c', type }])
+
+      await service.changeMultipleColumnValues('987', '1', { c: value })
+
+      expect(queryAt(1)).toContain(`column_values: ${ JSON.stringify(expected) }`)
+    })
+
+    it('still passes an already-shaped object through untouched', async () => {
+      withColumnTypes([{ id: 'c', type: 'people' }])
+
+      await service.changeMultipleColumnValues('987', '1', {
+        c: { personsAndTeams: [{ id: 7, kind: 'person' }] },
+      })
+
+      expect(queryAt(1)).toContain(`column_values: ${ JSON.stringify(
+        '{"c":{"personsAndTeams":[{"id":7,"kind":"person"}]}}'
+      ) }`)
     })
 
     it('wraps API failures', async () => {

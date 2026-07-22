@@ -2263,8 +2263,10 @@ class Intercom {
         note: company.company_id || '',
       }))
 
+    // `typeof null === 'object'`, and Intercom sends an explicit `pages.next: null` on the last
+    // page — so the null check has to come first or the object branch dereferences it.
     const nextPage = result?.pages?.next
-    const nextCursor = typeof nextPage === 'object' ? (nextPage.page || null) : (nextPage || null)
+    const nextCursor = nextPage && typeof nextPage === 'object' ? (nextPage.page || null) : (nextPage || null)
 
     return { items, cursor: nextCursor ? String(nextCursor) : null }
   }

@@ -16,6 +16,11 @@ const MY_DRIVE_ID = 'MY_GOOGLE_DRIVE'
 const MY_DRIVE_LABEL = 'My Google Drive'
 const DEFAULT_LIMIT = 100
 
+// Drive push channels expire; refresh once one is within this window of expiring. The refresh
+// handler runs every 60s (see refreshIntervalInSeconds), so this leaves several attempts before
+// the channel actually lapses.
+const WEBHOOK_REFRESH_LEAD_MS = 5 * 60 * 1000
+
 const DEFAULT_SCOPE_LIST = [
   'https://www.googleapis.com/auth/spreadsheets',
   'https://www.googleapis.com/auth/spreadsheets.readonly',
@@ -115,6 +120,35 @@ class GoogleSheets {
   }
 
   /**
+   * Build a URL-safe A1 range. Sheet titles containing spaces, apostrophes, '!' or '/' must be
+   * single-quoted in A1 notation (with any internal apostrophe doubled) or Google rejects the
+   * range — and the result still has to be percent-encoded to survive the URL path.
+   * @private
+   */
+  #a1Range(sheetName, range) {
+    const quoted = `'${ String(sheetName).replace(/'/g, "''") }'`
+
+    return encodeURIComponent(`${ quoted }!${ range }`)
+  }
+
+  /**
+   * Spreadsheet column letter for a zero-based index: 0 -> A, 25 -> Z, 26 -> AA.
+   * String.fromCharCode(65 + index) alone produces '[', '\' … past column Z.
+   * @private
+   */
+  #columnLetter(index) {
+    let n = Number(index)
+    let letters = ''
+
+    do {
+      letters = String.fromCharCode(65 + (n % 26)) + letters
+      n = Math.floor(n / 26) - 1
+    } while (n >= 0)
+
+    return letters
+  }
+
+  /**
    * @private
    */
   #getAccessToken() {
@@ -167,7 +201,7 @@ class GoogleSheets {
     } catch (error) {
       logger.debug('refreshToken error:', error.message)
 
-      if (error.body.error === 'invalid_grant') {
+      if (error.body?.error === 'invalid_grant') {
         throw new Error('Refresh token expired or invalid, please re-authenticate.')
       }
 
@@ -215,7 +249,7 @@ class GoogleSheets {
       identityName = `${ name } (${ email })`
       identityImageURL = picture
     } catch (e) {
-      logger.debug(`Can't load user profile: ${ JSON.stringify({ error: e.body.error, currentScope: this.scope }) }`)
+      logger.debug(`Can't load user profile: ${ JSON.stringify({ error: e.body?.error || e.message, currentScope: this.scope }) }`)
     }
 
     return {
@@ -302,7 +336,7 @@ class GoogleSheets {
     try {
       await drive.channels.stop({ requestBody: { id: channelId, resourceId } })
     } catch (error) {
-      logger.error(`failed to delete a webhook. ${ JSON.stringify({ error: error.response.data.error }) }`)
+      logger.error(`failed to delete a webhook. ${ JSON.stringify({ error: error.response?.data?.error || error.message }) }`)
     }
   }
 
@@ -358,8 +392,15 @@ class GoogleSheets {
 
     for (const fileId of Object.keys(webhookData)) {
       const { channelId, expiration, resourceId, callbackUrl } = webhookData[fileId]
+      const expiresAt = Number(expiration)
 
-      if (Number(expiration) - 1000 > Date.now()) {
+      // Refresh when the channel is CLOSE to expiring. The comparison used to be inverted, which
+      // recreated healthy channels every cycle and never renewed the ones about to lapse. An
+      // unusable expiration is treated as due so the channel cannot get stuck.
+      const isDueForRefresh = !Number.isFinite(expiresAt) ||
+        expiresAt - WEBHOOK_REFRESH_LEAD_MS <= Date.now()
+
+      if (isDueForRefresh) {
         await this.deleteWebhook(channelId, resourceId)
         webhookData[fileId] = await this.createWebhook(callbackUrl, fileId)
       }
@@ -910,11 +951,11 @@ class GoogleSheets {
     }
 
     const { values } = await Flowrunner.Request
-      .get(`https://sheets.googleapis.com/v4/spreadsheets/${ spreadsheetID }/values/${ sheetName }!1:1`)
+      .get(`https://sheets.googleapis.com/v4/spreadsheets/${ spreadsheetID }/values/${ this.#a1Range(sheetName, '1:1') }`)
       .set({ Authorization: `Bearer ${ this.#getAccessToken() }` })
 
     const columns = (values?.[0] || []).map((name, index) => ({
-      id: `COL$${ String.fromCharCode(65 + index) }`,
+      id: `COL$${ this.#columnLetter(index) }`,
       name,
     }))
 
@@ -1027,7 +1068,13 @@ class GoogleSheets {
   async addSheet(documentId, title, sheetId, headerValues) {
     return this.#executeApiMethod('addSheet', { documentId, title, sheetId, headerValues }, async () => {
       assert(!sheetId || typeof sheetId === 'number', 'Sheet ID must be a number.')
-      assert(Array.isArray(headerValues) && headerValues.length, 'Header Values must be provided.')
+
+      // Header Values is documented (and defaulted below) as optional — only validate its shape
+      // when the caller actually supplies one.
+      assert(
+        headerValues === undefined || headerValues === null || Array.isArray(headerValues),
+        'Header Values must be an array.'
+      )
 
       const doc = this.#getDocument(documentId)
 
@@ -1118,10 +1165,13 @@ class GoogleSheets {
                   },
                 },
                 fields: [
-                  backgroundColor
+                  // Gate the mask on the SAME condition as the style above. Keying the mask off
+                  // the raw label meant an unrecognized colour listed the field without supplying
+                  // a value, which tells Sheets to clear the cell's existing colour.
+                  ColorMap[backgroundColor]
                     ? 'userEnteredFormat.backgroundColorStyle'
                     : '',
-                  textColor
+                  ColorMap[textColor]
                     ? 'userEnteredFormat.textFormat.foregroundColorStyle'
                     : '',
                   'userEnteredFormat.textFormat.bold',

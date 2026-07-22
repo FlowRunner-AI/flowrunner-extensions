@@ -358,10 +358,12 @@ describe('Google Sheets Service', () => {
     // KNOWN SERVICE BUG: the catch block dereferences `error.body.error` without a
     // guard, so a transport error with no `body` is masked by a TypeError instead of
     // surfacing the original failure.
-    it('masks body-less transport errors with a TypeError', async () => {
+    // Regression guard: `error.body.error` was dereferenced unguarded, so a transport error
+    // surfaced as a TypeError instead of the real cause.
+    it('propagates a body-less transport error unchanged', async () => {
       mock.onPost(TOKEN_URL).replyWithError(new Error('socket hang up'))
 
-      await expect(service.refreshToken('whatever')).rejects.toThrow(TypeError)
+      await expect(service.refreshToken('whatever')).rejects.toThrow('socket hang up')
     })
   })
 
@@ -580,10 +582,12 @@ describe('Google Sheets Service', () => {
 
     // KNOWN SERVICE BUG: the catch handler dereferences `error.response.data.error`
     // unguarded, so a plain network Error escapes the "swallow" logic as a TypeError.
-    it('throws a TypeError when the stop failure has no response envelope', async () => {
+    // Regression guard: `error.response.data.error` was dereferenced unguarded inside the
+    // swallow, so a plain Error escaped as a TypeError and aborted the caller's loop.
+    it('swallows a stop failure that has no response envelope', async () => {
       mockDriveChannelsStop.mockRejectedValue(new Error('network down'))
 
-      await expect(service.deleteWebhook('chan-1', 'res-1')).rejects.toThrow(TypeError)
+      await expect(service.deleteWebhook('chan-1', 'res-1')).resolves.toBeUndefined()
     })
   })
 
@@ -652,41 +656,49 @@ describe('Google Sheets Service', () => {
   })
 
   describe('handleTriggerRefreshWebhook', () => {
-    // KNOWN SERVICE BUG: the guard is `Number(expiration) - 1000 > Date.now()`, which
-    // recreates channels that are still far from expiring and never refreshes ones that
-    // are about to expire — the comparison is inverted.
-    it('recreates channels whose expiration is still in the future', async () => {
-      const future = Date.now() + 60 * 60 * 1000
-
-      const result = await service.handleTriggerRefreshWebhook({
-        webhookData: {
-          'file-a': {
-            channelId: 'c1',
-            resourceId: 'r1',
-            expiration: String(future),
-            callbackUrl: 'https://cb.example.com/hook',
-          },
+    // Regression guard: the comparison used to be inverted, so healthy channels were torn down
+    // and recreated every cycle while the ones about to lapse were never renewed — realtime
+    // triggers silently died at channel expiry.
+    const refresh = expiration => service.handleTriggerRefreshWebhook({
+      webhookData: {
+        'file-a': {
+          channelId: 'c1',
+          resourceId: 'r1',
+          expiration: expiration === undefined ? undefined : String(expiration),
+          callbackUrl: 'https://cb.example.com/hook',
         },
-      })
-
-      expect(mockDriveChannelsStop).toHaveBeenCalledTimes(1)
-      expect(mockDriveFilesWatch).toHaveBeenCalledTimes(1)
-      expect(result.refreshIntervalInSeconds).toBe(60)
-      expect(result.webhookData['file-a']).toMatchObject({ fileId: 'file-a' })
+      },
     })
 
-    it('leaves already-expired channels untouched', async () => {
-      const past = Date.now() - 60 * 1000
-
-      const result = await service.handleTriggerRefreshWebhook({
-        webhookData: {
-          'file-a': { channelId: 'c1', resourceId: 'r1', expiration: String(past) },
-        },
-      })
+    it('leaves a channel that is not close to expiring alone', async () => {
+      const result = await refresh(Date.now() + 60 * 60 * 1000)
 
       expect(mockDriveChannelsStop).not.toHaveBeenCalled()
       expect(mockDriveFilesWatch).not.toHaveBeenCalled()
       expect(result.webhookData['file-a'].channelId).toBe('c1')
+      expect(result.refreshIntervalInSeconds).toBe(60)
+    })
+
+    it.each([
+      ['is inside the 5-minute lead window', Date.now() + 60 * 1000],
+      ['has already expired', Date.now() - 60 * 1000],
+      ['expires exactly at the lead boundary', Date.now() - 5 * 60 * 1000],
+    ])('recreates a channel that %s', async (_label, expiration) => {
+      const result = await refresh(expiration)
+
+      expect(mockDriveChannelsStop).toHaveBeenCalledTimes(1)
+      expect(mockDriveFilesWatch).toHaveBeenCalledTimes(1)
+      expect(result.webhookData['file-a']).toMatchObject({ fileId: 'file-a' })
+    })
+
+    it.each([
+      ['a missing expiration', undefined],
+      ['a non-numeric expiration', 'not-a-number'],
+    ])('treats %s as due for refresh rather than getting stuck', async (_label, expiration) => {
+      await refresh(expiration)
+
+      expect(mockDriveChannelsStop).toHaveBeenCalledTimes(1)
+      expect(mockDriveFilesWatch).toHaveBeenCalledTimes(1)
     })
 
     it('handles a missing webhookData map', async () => {
@@ -1184,7 +1196,7 @@ describe('Google Sheets Service', () => {
         sheets: [{ properties: { sheetId: SHEET_ID, title: 'Sheet1' } }],
       })
 
-      mock.onGet(`${ SHEETS_API }/${ DOC_ID }/values/Sheet1!1:1`).reply({
+      mock.onGet(`${ SHEETS_API }/${ DOC_ID }/values/${ encodeURIComponent("'Sheet1'!1:1") }`).reply({
         values: [['Date', 'Amount', 'Notes']],
       })
 
@@ -1209,7 +1221,7 @@ describe('Google Sheets Service', () => {
         sheets: [{ properties: { sheetId: SHEET_ID, title: 'Sheet1' } }],
       })
 
-      mock.onGet(`${ SHEETS_API }/${ DOC_ID }/values/Sheet1!1:1`).reply({
+      mock.onGet(`${ SHEETS_API }/${ DOC_ID }/values/${ encodeURIComponent("'Sheet1'!1:1") }`).reply({
         values: [['Date', 'Amount']],
       })
 
@@ -1226,7 +1238,7 @@ describe('Google Sheets Service', () => {
         sheets: [{ properties: { sheetId: SHEET_ID, title: 'Sheet1' } }],
       })
 
-      mock.onGet(`${ SHEETS_API }/${ DOC_ID }/values/Sheet1!1:1`).reply({})
+      mock.onGet(`${ SHEETS_API }/${ DOC_ID }/values/${ encodeURIComponent("'Sheet1'!1:1") }`).reply({})
 
       const result = await service.getSheetColumnsDictionary({
         criteria: { documentId: DOC_ID, sheetId: SHEET_ID },
@@ -1240,7 +1252,7 @@ describe('Google Sheets Service', () => {
         sheets: [{ properties: { sheetId: SHEET_ID, title: 'Sheet1' } }],
       })
 
-      mock.onGet(`${ SHEETS_API }/${ DOC_ID }/values/Sheet1!1:1`).reply({ values: [['', 'B']] })
+      mock.onGet(`${ SHEETS_API }/${ DOC_ID }/values/${ encodeURIComponent("'Sheet1'!1:1") }`).reply({ values: [['', 'B']] })
 
       const result = await service.getSheetColumnsDictionary({
         criteria: { documentId: DOC_ID, sheetId: SHEET_ID },
@@ -1261,14 +1273,13 @@ describe('Google Sheets Service', () => {
       expect(mock.history).toHaveLength(1)
     })
 
-    // KNOWN SERVICE BUG: the A1 range is interpolated raw — sheet titles containing
-    // spaces, quotes or '#' are neither wrapped in single quotes nor URL-encoded, so
-    // Google rejects (or misinterprets) the range.
+    // Regression guard: an A1 sheet title containing spaces, apostrophes or '/' must be
+    // single-quoted (apostrophes doubled) AND percent-encoded, or Google rejects the range.
     it.each([
-      ['Q1 Budget', `${ SHEETS_API }/${ DOC_ID }/values/Q1 Budget!1:1`],
-      ['Bob\'s Sheet', `${ SHEETS_API }/${ DOC_ID }/values/Bob's Sheet!1:1`],
-      ['A/B #2', `${ SHEETS_API }/${ DOC_ID }/values/A/B #2!1:1`],
-    ])('builds an unescaped A1 range for the sheet title %p', async (title, expectedUrl) => {
+      ['Q1 Budget', `${ SHEETS_API }/${ DOC_ID }/values/${ encodeURIComponent("'Q1 Budget'!1:1") }`],
+      ['Bob\'s Sheet', `${ SHEETS_API }/${ DOC_ID }/values/${ encodeURIComponent("'Bob''s Sheet'!1:1") }`],
+      ['A/B #2', `${ SHEETS_API }/${ DOC_ID }/values/${ encodeURIComponent("'A/B #2'!1:1") }`],
+    ])('escapes the A1 range for the sheet title %p', async (title, expectedUrl) => {
       mock.onGet(`${ SHEETS_API }/${ DOC_ID }`).reply({
         sheets: [{ properties: { sheetId: SHEET_ID, title } }],
       })
@@ -1283,24 +1294,24 @@ describe('Google Sheets Service', () => {
       expect(result.items).toEqual([{ label: 'Col', note: 'ID: COL$A', value: 'Col' }])
     })
 
-    // KNOWN SERVICE BUG: column ids are derived with String.fromCharCode(65 + index),
-    // so the 27th column and beyond produce non-letter ids ('[', '\\', ...) instead of
-    // the expected 'AA', 'AB'. Only the informational `note` is affected.
-    it('produces non-letter column ids past column Z', async () => {
+    // Regression guard: ids were built with String.fromCharCode(65 + index), which yields
+    // '[', '\\' … past column Z instead of 'AA', 'AB'.
+    it('produces spreadsheet-style column ids past column Z', async () => {
       const header = Array.from({ length: 28 }, (_, i) => `C${ i }`)
 
       mock.onGet(`${ SHEETS_API }/${ DOC_ID }`).reply({
         sheets: [{ properties: { sheetId: SHEET_ID, title: 'Sheet1' } }],
       })
 
-      mock.onGet(`${ SHEETS_API }/${ DOC_ID }/values/Sheet1!1:1`).reply({ values: [header] })
+      mock.onGet(`${ SHEETS_API }/${ DOC_ID }/values/${ encodeURIComponent("'Sheet1'!1:1") }`).reply({ values: [header] })
 
       const result = await service.getSheetColumnsDictionary({
         criteria: { documentId: DOC_ID, sheetId: SHEET_ID },
       })
 
       expect(result.items[25].note).toBe('ID: COL$Z')
-      expect(result.items[26].note).toBe('ID: COL$[')
+      expect(result.items[26].note).toBe('ID: COL$AA')
+      expect(result.items[27].note).toBe('ID: COL$AB')
     })
   })
 
@@ -1341,6 +1352,24 @@ describe('Google Sheets Service', () => {
   // ── Sheet management ──
 
   describe('addSheet', () => {
+    // Regression guard: Header Values is documented Optional and has a `|| []` fallback, but was
+    // asserted required — the JSDoc contract and the code disagreed.
+    it.each([
+      ['omitted', undefined],
+      ['null', null],
+      ['an empty array', []],
+    ])('creates a sheet with header values %s', async (_label, headerValues) => {
+      const result = await service.addSheet(DOC_ID, 'New Tab', 555, headerValues)
+
+      expect(doc.addSheet).toHaveBeenCalledWith({
+        title: 'New Tab',
+        sheetId: 555,
+        headerValues: [],
+      })
+
+      expect(result).toEqual({ sheetId: 555 })
+    })
+
     it('creates a sheet with an explicit id and header values', async () => {
       const result = await service.addSheet(DOC_ID, 'New Tab', 555, ['A', 'B'])
 
@@ -1873,10 +1902,10 @@ describe('Google Sheets Service', () => {
       expect(request.range).toEqual({ sheetId: SHEET_ID, startRowIndex: 0, endRowIndex: 1 })
     })
 
-    // KNOWN SERVICE BUG: the field mask is driven by the raw label truthiness while the
-    // style object is driven by ColorMap lookup, so an unknown colour label adds the
-    // field to the mask without a corresponding style — clearing the existing colour.
-    it('adds a field-mask entry with no style for an unrecognised colour label', async () => {
+    // Regression guard: the field mask and the style object must be gated on the SAME
+    // condition. Listing a field in the mask with no value tells Sheets to CLEAR it, so an
+    // unrecognised colour label used to wipe the cell's existing colour.
+    it('omits the field-mask entry for an unrecognised colour label', async () => {
       mock.onPost(url).reply({})
 
       await service.formatSpreadsheetRow(DOC_ID, SHEET_ID, 1, 'Chartreuse')
@@ -1884,6 +1913,27 @@ describe('Google Sheets Service', () => {
       const request = mock.history[0].body.requests[0].repeatCell
 
       expect(request.cell.userEnteredFormat.backgroundColorStyle).toBeUndefined()
+      expect(request.fields).not.toContain('userEnteredFormat.backgroundColorStyle')
+    })
+
+    it('omits the text-colour field-mask entry for an unrecognised label', async () => {
+      mock.onPost(url).reply({})
+
+      await service.formatSpreadsheetRow(DOC_ID, SHEET_ID, 1, undefined, 'Chartreuse')
+
+      const request = mock.history[0].body.requests[0].repeatCell
+
+      expect(request.fields).not.toContain('userEnteredFormat.textFormat.foregroundColorStyle')
+    })
+
+    it('still includes the field-mask entry for a recognised colour label', async () => {
+      mock.onPost(url).reply({})
+
+      await service.formatSpreadsheetRow(DOC_ID, SHEET_ID, 1, 'Green')
+
+      const request = mock.history[0].body.requests[0].repeatCell
+
+      expect(request.cell.userEnteredFormat.backgroundColorStyle).toBeDefined()
       expect(request.fields).toContain('userEnteredFormat.backgroundColorStyle')
     })
 
@@ -2037,14 +2087,9 @@ describe('Google Sheets Service', () => {
         'Sheet ID must be a number.',
       ],
       [
-        'addSheet without header values',
-        () => service.addSheet(DOC_ID, 'T', 555),
-        'Header Values must be provided.',
-      ],
-      [
-        'addSheet with empty header values',
-        () => service.addSheet(DOC_ID, 'T', 555, []),
-        'Header Values must be provided.',
+        'addSheet with a non-array header values',
+        () => service.addSheet(DOC_ID, 'T', 555, 'A,B'),
+        'Header Values must be an array.',
       ],
       [
         'formatSpreadsheetRow with a non-numeric sheet id',

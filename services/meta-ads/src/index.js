@@ -103,7 +103,9 @@ class MetaAdsService {
       return body !== undefined ? await request.send(body) : await request
     } catch (error) {
       const metaError = error.body?.error
-      const message = metaError?.message || error.message
+      // `error_user_msg` is Meta's human-facing explanation ("Your ad account is not authorized…")
+      // and is far more actionable than the generic `message`; prefer it when present.
+      const message = metaError?.error_user_msg || metaError?.message || error.message
 
       logger.error(`${ logTag } - failed: ${ message } (trace: ${ metaError?.fbtrace_id || 'n/a' })`)
 
@@ -127,6 +129,16 @@ class MetaAdsService {
 
       throw new Error(parts.join(' | '))
     }
+  }
+
+  // Destructive operations interpolate the id straight into the Graph path, so a missing value
+  // would issue a request against `.../undefined` instead of failing fast.
+  #requireId(value, label) {
+    if (value === undefined || value === null || String(value).trim() === '') {
+      throw new Error(`${ label } is required.`)
+    }
+
+    return String(value).trim()
   }
 
   /**
@@ -436,9 +448,11 @@ class MetaAdsService {
    * @sampleResult {"success":true}
    */
   async deleteCampaign(campaignId, accountId) {
+    const id = this.#requireId(campaignId, 'Campaign ID')
+
     return await this.#apiRequest({
       logTag: '[deleteCampaign]',
-      url: `${ API_BASE_GRAPH_URL }/${ campaignId }`,
+      url: `${ API_BASE_GRAPH_URL }/${ id }`,
       method: 'delete',
     })
   }
@@ -615,9 +629,11 @@ class MetaAdsService {
    * @sampleResult {"success":true}
    */
   async deleteAdSet(adSetId, accountId) {
+    const id = this.#requireId(adSetId, 'Ad Set ID')
+
     return await this.#apiRequest({
       logTag: '[deleteAdSet]',
-      url: `${ API_BASE_GRAPH_URL }/${ adSetId }`,
+      url: `${ API_BASE_GRAPH_URL }/${ id }`,
       method: 'delete',
     })
   }
@@ -732,9 +748,11 @@ class MetaAdsService {
    * @sampleResult {"success":true}
    */
   async deleteAd(adId) {
+    const id = this.#requireId(adId, 'Ad ID')
+
     return await this.#apiRequest({
       logTag: '[deleteAd]',
-      url: `${ API_BASE_GRAPH_URL }/${ adId }`,
+      url: `${ API_BASE_GRAPH_URL }/${ id }`,
       method: 'delete',
     })
   }
@@ -1064,12 +1082,13 @@ class MetaAdsService {
    * @sampleResult {"audience_id":"120214000000000000","session_id":9778994,"num_received":120,"num_invalid_entries":0}
    */
   async removeUsersFromAudience(audienceId, accountId, users, schema) {
+    const id = this.#requireId(audienceId, 'Audience ID')
     const schemaValue = this.#resolveChoice(schema, { 'Email': 'EMAIL_SHA256', 'Phone': 'PHONE_SHA256' }) || 'EMAIL_SHA256'
     const data = (users || []).map(value => [this.#hashIdentifier(value, schemaValue)])
 
     return await this.#apiRequest({
       logTag: '[removeUsersFromAudience]',
-      url: `${ API_BASE_GRAPH_URL }/${ audienceId }/users`,
+      url: `${ API_BASE_GRAPH_URL }/${ id }/users`,
       method: 'delete',
       body: {
         payload: {
@@ -1091,9 +1110,11 @@ class MetaAdsService {
    * @sampleResult {"success":true}
    */
   async deleteCustomAudience(audienceId, accountId) {
+    const id = this.#requireId(audienceId, 'Audience ID')
+
     return await this.#apiRequest({
       logTag: '[deleteCustomAudience]',
-      url: `${ API_BASE_GRAPH_URL }/${ audienceId }`,
+      url: `${ API_BASE_GRAPH_URL }/${ id }`,
       method: 'delete',
     })
   }

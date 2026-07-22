@@ -405,7 +405,7 @@ class MondayDotCom {
 
     try {
       const data = await this.#graphqlRequest({
-        query: `{ boards(ids: [${ boardId }]) { groups { id title } } }`,
+        query: `{ boards(ids: [${ this.#numId(boardId, 'Board ID') }]) { groups { id title } } }`,
         logTag: 'getGroupsDictionary',
       })
 
@@ -450,7 +450,7 @@ class MondayDotCom {
 
     try {
       const data = await this.#graphqlRequest({
-        query: `{ boards(ids: [${ boardId }]) { columns { id title type } } }`,
+        query: `{ boards(ids: [${ this.#numId(boardId, 'Board ID') }]) { columns { id title type } } }`,
         logTag: 'getColumnsDictionary',
       })
 
@@ -508,7 +508,7 @@ class MondayDotCom {
         itemsPage = data.next_items_page || {}
       } else {
         const data = await this.#graphqlRequest({
-          query: `{ boards(ids: [${ boardId }]) { items_page(limit: 100) { cursor items { id name } } } }`,
+          query: `{ boards(ids: [${ this.#numId(boardId, 'Board ID') }]) { items_page(limit: 100) { cursor items { id name } } } }`,
           logTag: 'getItemsDictionary',
         })
 
@@ -568,7 +568,7 @@ class MondayDotCom {
       const escapedName = itemName.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
 
       const data = await this.#graphqlRequest({
-        query: `mutation { create_item(board_id: ${ boardId }, group_id: "${ groupId }", item_name: "${ escapedName }"${ columnValuesClause }) { id name } }`,
+        query: `mutation { create_item(board_id: ${ this.#numId(boardId, 'Board ID') }, group_id: "${ groupId }", item_name: "${ escapedName }"${ columnValuesClause }) { id name } }`,
         logTag,
       })
 
@@ -599,7 +599,7 @@ class MondayDotCom {
 
     try {
       const data = await this.#graphqlRequest({
-        query: `{ items(ids: [${ itemId }]) { id name created_at updated_at group { id title } board { id name } column_values { id column { title } text type value } } }`,
+        query: `{ items(ids: [${ this.#numId(itemId, 'Item ID') }]) { id name created_at updated_at group { id title } board { id name } column_values { id column { title } text type value } } }`,
         logTag,
       })
 
@@ -652,7 +652,7 @@ class MondayDotCom {
         const queryParamsClause = filter ? `, query_params: ${ this.#toGraphQLLiteral(filter) }` : ''
 
         data = await this.#graphqlRequest({
-          query: `{ boards(ids: [${ boardId }]) { items_page(limit: ${ pageSize }${ queryParamsClause }) { cursor items { id name column_values { id column { title } text type value } } } } }`,
+          query: `{ boards(ids: [${ this.#numId(boardId, 'Board ID') }]) { items_page(limit: ${ pageSize }${ queryParamsClause }) { cursor items { id name column_values { id column { title } text type value } } } } }`,
           logTag,
         })
       }
@@ -689,7 +689,7 @@ class MondayDotCom {
       const escapedName = newName.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
 
       const data = await this.#graphqlRequest({
-        query: `mutation { change_simple_column_value(board_id: ${ boardId }, item_id: ${ itemId }, column_id: "name", value: "${ escapedName }") { id name } }`,
+        query: `mutation { change_simple_column_value(board_id: ${ this.#numId(boardId, 'Board ID') }, item_id: ${ this.#numId(itemId, 'Item ID') }, column_id: "name", value: "${ escapedName }") { id name } }`,
         logTag,
       })
 
@@ -724,7 +724,7 @@ class MondayDotCom {
       const jsonValue = this.#toColumnJson(value)
 
       const data = await this.#graphqlRequest({
-        query: `mutation { change_column_value(board_id: ${ boardId }, item_id: ${ itemId }, column_id: "${ columnId }", value: ${ JSON.stringify(jsonValue) }) { id name } }`,
+        query: `mutation { change_column_value(board_id: ${ this.#numId(boardId, 'Board ID') }, item_id: ${ this.#numId(itemId, 'Item ID') }, column_id: "${ columnId }", value: ${ JSON.stringify(jsonValue) }) { id name } }`,
         logTag,
       })
 
@@ -758,7 +758,7 @@ class MondayDotCom {
       const formatted = await this.#formatColumnValues(columnValues, boardId)
 
       const data = await this.#graphqlRequest({
-        query: `mutation { change_multiple_column_values(board_id: ${ boardId }, item_id: ${ itemId }, column_values: ${ JSON.stringify(formatted) }) { id name } }`,
+        query: `mutation { change_multiple_column_values(board_id: ${ this.#numId(boardId, 'Board ID') }, item_id: ${ this.#numId(itemId, 'Item ID') }, column_values: ${ JSON.stringify(formatted) }) { id name } }`,
         logTag,
       })
 
@@ -797,7 +797,7 @@ class MondayDotCom {
       // Monday's file upload is a GraphQL multipart request to the /v2/file endpoint: the mutation
       // declares a $file: File! variable, the `map` part binds the "image" form field to that
       // variable, and the file bytes are sent as the "image" part.
-      const query = `mutation ($file: File!) { add_file_to_column(item_id: ${ itemId }, column_id: "${ columnId }", file: $file) { id name url } }`
+      const query = `mutation ($file: File!) { add_file_to_column(item_id: ${ this.#numId(itemId, 'Item ID') }, column_id: "${ columnId }", file: $file) { id name url } }`
 
       const formData = new Flowrunner.Request.FormData()
       formData.append('query', query)
@@ -843,7 +843,7 @@ class MondayDotCom {
 
     try {
       const data = await this.#graphqlRequest({
-        query: `mutation { move_item_to_group(item_id: ${ itemId }, group_id: "${ groupId }") { id name } }`,
+        query: `mutation { move_item_to_group(item_id: ${ this.#numId(itemId, 'Item ID') }, group_id: "${ groupId }") { id name } }`,
         logTag,
       })
 
@@ -891,7 +891,7 @@ class MondayDotCom {
       }
 
       const data = await this.#graphqlRequest({
-        query: `mutation { move_item_to_board(board_id: ${ boardId }, group_id: "${ groupId }", item_id: ${ itemId }${ mappingClause }) { id name } }`,
+        query: `mutation { move_item_to_board(board_id: ${ this.#numId(boardId, 'Board ID') }, group_id: "${ groupId }", item_id: ${ this.#numId(itemId, 'Item ID') }${ mappingClause }) { id name } }`,
         logTag,
       })
 
@@ -922,7 +922,7 @@ class MondayDotCom {
 
     try {
       const data = await this.#graphqlRequest({
-        query: `mutation { archive_item(item_id: ${ itemId }) { id name } }`,
+        query: `mutation { archive_item(item_id: ${ this.#numId(itemId, 'Item ID') }) { id name } }`,
         logTag,
       })
 
@@ -953,7 +953,7 @@ class MondayDotCom {
 
     try {
       const data = await this.#graphqlRequest({
-        query: `mutation { delete_item(item_id: ${ itemId }) { id } }`,
+        query: `mutation { delete_item(item_id: ${ this.#numId(itemId, 'Item ID') }) { id } }`,
         logTag,
       })
 
@@ -997,7 +997,7 @@ class MondayDotCom {
       const escapedName = subitemName.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
 
       const data = await this.#graphqlRequest({
-        query: `mutation { create_subitem(parent_item_id: ${ parentItemId }, item_name: "${ escapedName }"${ columnValuesClause }) { id name board { id } } }`,
+        query: `mutation { create_subitem(parent_item_id: ${ this.#numId(parentItemId, 'Parent Item ID') }, item_name: "${ escapedName }"${ columnValuesClause }) { id name board { id } } }`,
         logTag,
       })
 
@@ -1027,7 +1027,7 @@ class MondayDotCom {
 
     try {
       const data = await this.#graphqlRequest({
-        query: `mutation { delete_item(item_id: ${ subitemId }) { id } }`,
+        query: `mutation { delete_item(item_id: ${ this.#numId(subitemId, 'Subitem ID') }) { id } }`,
         logTag,
       })
 
@@ -1063,7 +1063,7 @@ class MondayDotCom {
       const escapedBody = body.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')
 
       const data = await this.#graphqlRequest({
-        query: `mutation { create_update(item_id: ${ itemId }, body: "${ escapedBody }") { id body created_at creator { id name } } }`,
+        query: `mutation { create_update(item_id: ${ this.#numId(itemId, 'Item ID') }, body: "${ escapedBody }") { id body created_at creator { id name } } }`,
         logTag,
       })
 
@@ -1173,7 +1173,7 @@ class MondayDotCom {
       }
 
       const data = await this.#graphqlRequest({
-        query: `mutation { duplicate_board(board_id: ${ boardId }, duplicate_type: ${ duplicateType }${ boardNameClause }) { board { id name } } }`,
+        query: `mutation { duplicate_board(board_id: ${ this.#numId(boardId, 'Board ID') }, duplicate_type: ${ duplicateType }${ boardNameClause }) { board { id name } } }`,
         logTag,
       })
 
@@ -1203,7 +1203,7 @@ class MondayDotCom {
 
     try {
       const data = await this.#graphqlRequest({
-        query: `{ boards(ids: [${ boardId }]) { id name description board_kind state permissions columns { id title type } groups { id title color } owners { id name } } }`,
+        query: `{ boards(ids: [${ this.#numId(boardId, 'Board ID') }]) { id name description board_kind state permissions columns { id title type } groups { id title color } owners { id name } } }`,
         logTag,
       })
 
@@ -1239,7 +1239,7 @@ class MondayDotCom {
 
     try {
       const data = await this.#graphqlRequest({
-        query: `mutation { delete_board(board_id: ${ boardId }) { id } }`,
+        query: `mutation { delete_board(board_id: ${ this.#numId(boardId, 'Board ID') }) { id } }`,
         logTag,
       })
 
@@ -1274,7 +1274,7 @@ class MondayDotCom {
       const escapedName = groupName.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
 
       const data = await this.#graphqlRequest({
-        query: `mutation { create_group(board_id: ${ boardId }, group_name: "${ escapedName }") { id title } }`,
+        query: `mutation { create_group(board_id: ${ this.#numId(boardId, 'Board ID') }, group_name: "${ escapedName }") { id title } }`,
         logTag,
       })
 
@@ -1305,7 +1305,7 @@ class MondayDotCom {
 
     try {
       const data = await this.#graphqlRequest({
-        query: `mutation { delete_group(board_id: ${ boardId }, group_id: "${ groupId }") { id deleted } }`,
+        query: `mutation { delete_group(board_id: ${ this.#numId(boardId, 'Board ID') }, group_id: "${ groupId }") { id deleted } }`,
         logTag,
       })
 
@@ -1339,7 +1339,7 @@ class MondayDotCom {
       const addToTopClause = addToTop ? ', add_to_top: true' : ''
 
       const data = await this.#graphqlRequest({
-        query: `mutation { duplicate_group(board_id: ${ boardId }, group_id: "${ groupId }"${ addToTopClause }) { id title } }`,
+        query: `mutation { duplicate_group(board_id: ${ this.#numId(boardId, 'Board ID') }, group_id: "${ groupId }"${ addToTopClause }) { id title } }`,
         logTag,
       })
 
@@ -1428,7 +1428,7 @@ class MondayDotCom {
       }
 
       const data = await this.#graphqlRequest({
-        query: `mutation { create_column(board_id: ${ boardId }, title: "${ escapedTitle }", column_type: ${ columnType }${ descriptionClause }) { id title type } }`,
+        query: `mutation { create_column(board_id: ${ this.#numId(boardId, 'Board ID') }, title: "${ escapedTitle }", column_type: ${ columnType }${ descriptionClause }) { id title type } }`,
         logTag,
       })
 
@@ -1455,7 +1455,7 @@ class MondayDotCom {
 
     try {
       const data = await this.#graphqlRequest({
-        query: `{ boards(ids: [${ boardId }]) { columns { id title type } } }`,
+        query: `{ boards(ids: [${ this.#numId(boardId, 'Board ID') }]) { columns { id title type } } }`,
         logTag: 'columnValuesSchemaLoader',
       })
 
@@ -1647,7 +1647,7 @@ class MondayDotCom {
   async #getColumnTypeMap(boardId) {
     try {
       const data = await this.#graphqlRequest({
-        query: `{ boards(ids: [${ boardId }]) { columns { id type } } }`,
+        query: `{ boards(ids: [${ this.#numId(boardId, 'Board ID') }]) { columns { id type } } }`,
         logTag: 'getColumnTypeMap',
       })
 
@@ -1677,13 +1677,13 @@ class MondayDotCom {
       case 'status':
         return this.#asObject(value) || { label: String(value) }
       case 'dropdown':
-        return this.#asObject(value) || { labels: this.#toList(value) }
+        return this.#asRecord(value) || { labels: this.#toList(value) }
       case 'date':
         return this.#asObject(value) || { date: String(value) }
       case 'checkbox':
         return this.#asObject(value) || (this.#toBoolean(value) ? { checked: 'true' } : {})
       case 'people':
-        return this.#asObject(value) || { personsAndTeams: this.#toList(value).map(id => ({ id: Number(id), kind: 'person' })) }
+        return this.#asRecord(value) || { personsAndTeams: this.#toList(value).map(id => ({ id: Number(id), kind: 'person' })) }
       case 'email':
         return this.#asObject(value) || { email: String(value), text: String(value) }
       case 'link':
@@ -1706,7 +1706,7 @@ class MondayDotCom {
       }
 
       case 'tags':
-        return this.#asObject(value) || { tag_ids: this.#toList(value).map(Number) }
+        return this.#asRecord(value) || { tag_ids: this.#toList(value).map(Number) }
       case 'timeline':
       case 'week':
       case 'location':
@@ -1748,7 +1748,43 @@ class MondayDotCom {
       return value
     }
 
+    // A JSON-array String ('["7","8"]') is a list too — splitting it on commas would produce
+    // garbage fragments like '["7"'.
+    const parsed = this.#asObject(value)
+
+    if (Array.isArray(parsed)) {
+      return parsed
+    }
+
     return String(value).split(',').map(part => part.trim()).filter(Boolean)
+  }
+
+  /**
+   * monday ids are numeric and are interpolated straight into the GraphQL query text (the API
+   * takes them as literals, not variables). Validating here keeps a non-numeric value from
+   * producing a malformed query — or injecting arbitrary GraphQL — and gives a clear error
+   * instead of a confusing parse failure from the server.
+   */
+  #numId(value, label) {
+    const id = String(value ?? '').trim()
+
+    if (!/^\d+$/.test(id)) {
+      throw new Error(`${ label } must be a numeric id, received: ${ JSON.stringify(value) }`)
+    }
+
+    return id
+  }
+
+  /**
+   * Like #asObject, but treats an Array as raw input rather than an already-shaped payload.
+   * List-shaped columns (dropdown, people, tags) must wrap an Array into their own envelope;
+   * `typeof [] === 'object'` means #asObject would otherwise hand it straight to monday, which
+   * rejects it.
+   */
+  #asRecord(value) {
+    const parsed = this.#asObject(value)
+
+    return Array.isArray(parsed) ? null : parsed
   }
 
   /** Coerce a checkbox value (Boolean toggle or String) to a Boolean. */
@@ -1845,7 +1881,7 @@ class MondayDotCom {
 
     try {
       const first = await this.#graphqlRequest({
-        query: `{ boards(ids: [${ boardId }]) { items_page(limit: 100) { cursor items { ${ itemFields } } } } }`,
+        query: `{ boards(ids: [${ this.#numId(boardId, 'Board ID') }]) { items_page(limit: 100) { cursor items { ${ itemFields } } } } }`,
         logTag,
       })
 
