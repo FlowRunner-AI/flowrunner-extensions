@@ -239,7 +239,7 @@ class CiscoWebexService {
       response = await Flowrunner.Request.get(fileUrl)
         .set({ 'Authorization': `Bearer ${ this.accessToken }` })
         .setEncoding(null)
-        .buffer(true)
+        .unwrapBody(false)
     } catch (error) {
       const message = error.body?.message || error.message
       logger.error(`${ logTag } - download failed: ${ message }`)

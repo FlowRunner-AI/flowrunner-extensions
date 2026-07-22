@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 222 | 222 | 63 |
-| **All Services** | **385** | **270** | **222** | **115** |
+| API Key Extensions | 285 | 233 | 233 | 52 |
+| **All Services** | **385** | **281** | **233** | **104** |
 
 ## OAuth Extensions
 
@@ -387,17 +387,17 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [vapi](services/vapi/) | ✅ | ✅ |
 | [vero](services/vero/) | ✅ | ✅ |
 | [vonage](services/vonage/) | ✅ | ✅ |
-| [weaviate](services/weaviate/) | | |
-| [webex](services/webex/) | | |
-| [wekan](services/wekan/) | | |
-| [whatsapp](services/whatsapp/) | | |
-| [wise](services/wise/) | | |
-| [wix](services/wix/) | | |
-| [wiza](services/wiza/) | | |
-| [woocommerce](services/woocommerce/) | | |
-| [wordpress](services/wordpress/) | | |
-| [workable](services/workable/) | | |
-| [wufoo](services/wufoo/) | | |
+| [weaviate](services/weaviate/) | ✅ | ✅ |
+| [webex](services/webex/) | ✅ | ✅ |
+| [wekan](services/wekan/) | ✅ | ✅ |
+| [whatsapp](services/whatsapp/) | ✅ | ✅ |
+| [wise](services/wise/) | ✅ | ✅ |
+| [wix](services/wix/) | ✅ | ✅ |
+| [wiza](services/wiza/) | ✅ | ✅ |
+| [woocommerce](services/woocommerce/) | ✅ | ✅ |
+| [wordpress](services/wordpress/) | ✅ | ✅ |
+| [workable](services/workable/) | ✅ | ✅ |
+| [wufoo](services/wufoo/) | ✅ | ✅ |
 | [xai-grok](services/xai-grok/) | ✅ | ✅ |
 | [yourls](services/yourls/) | ✅ | ✅ |
 | [zammad](services/zammad/) | ✅ | ✅ |

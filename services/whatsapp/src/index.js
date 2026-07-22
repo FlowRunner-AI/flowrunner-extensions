@@ -510,6 +510,7 @@ Flowrunner.ServerCode.addService(WhatsAppService, [
     displayName: 'Access Token',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
+    shared: false,
     hint: 'WhatsApp Business API access token from Meta Business Platform. Get it from https://developers.facebook.com/apps/ > Your App > WhatsApp > API Setup.',
   },
   {
@@ -517,6 +518,7 @@ Flowrunner.ServerCode.addService(WhatsAppService, [
     displayName: 'Phone Number ID',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
+    shared: false,
     hint: 'Phone number ID from Meta Business Platform. Found in WhatsApp > API Setup > Phone numbers section.',
   },
   {
@@ -524,6 +526,7 @@ Flowrunner.ServerCode.addService(WhatsAppService, [
     displayName: 'Business ID',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: false,
+    shared: false,
     hint: 'Business account ID for accessing message templates. Optional, but required for template operations. Found in Business Settings.',
   },
   {
@@ -531,6 +534,7 @@ Flowrunner.ServerCode.addService(WhatsAppService, [
     displayName: 'Webhook Verify Token',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: false,
+    shared: false,
     hint: 'Token for webhook verification. Optional, used for webhook endpoint security. Set in WhatsApp > Configuration > Webhooks.',
   },
 ])

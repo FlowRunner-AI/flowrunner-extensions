@@ -616,6 +616,7 @@ Flowrunner.ServerCode.addService(Wiza, [
     displayName: 'API Key',
     type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
     required: true,
+    shared: false,
     name: 'apiKey',
     hint: 'Your Wiza account API key.',
   },
