@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 208 | 208 | 77 |
-| **All Services** | **385** | **256** | **208** | **129** |
+| API Key Extensions | 285 | 211 | 211 | 74 |
+| **All Services** | **385** | **259** | **211** | **126** |
 
 ## OAuth Extensions
 
@@ -384,9 +384,9 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [uproc](services/uproc/) | | |
 | [uptimerobot](services/uptimerobot/) | | |
 | [urlscan](services/urlscan/) | | |
-| [vapi](services/vapi/) | | |
-| [vero](services/vero/) | | |
-| [vonage](services/vonage/) | | |
+| [vapi](services/vapi/) | ✅ | ✅ |
+| [vero](services/vero/) | ✅ | ✅ |
+| [vonage](services/vonage/) | ✅ | ✅ |
 | [weaviate](services/weaviate/) | | |
 | [webex](services/webex/) | | |
 | [wekan](services/wekan/) | | |
