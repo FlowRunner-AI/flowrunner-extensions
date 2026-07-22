@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 187 | 187 | 98 |
-| **All Services** | **385** | **235** | **187** | **150** |
+| API Key Extensions | 285 | 196 | 196 | 89 |
+| **All Services** | **385** | **244** | **196** | **141** |
 
 ## OAuth Extensions
 
@@ -328,15 +328,15 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [quickbase](services/quickbase/) | ✅ | ✅ |
 | [quickchart](services/quickchart/) | ✅ | ✅ |
 | [qwen-ai](services/qwen-ai/) | ✅ | ✅ |
-| [raindrop](services/raindrop/) | | |
-| [ramp-service](services/ramp-service/) | | |
-| [razorpay](services/razorpay/) | | |
-| [recruitee](services/recruitee/) | | |
-| [redis](services/redis/) | | |
-| [resend](services/resend/) | | |
-| [rocketchat](services/rocketchat/) | | |
-| [rundeck](services/rundeck/) | | |
-| [runway](services/runway/) | | |
+| [raindrop](services/raindrop/) | ✅ | ✅ |
+| [ramp-service](services/ramp-service/) | ✅ | ✅ |
+| [razorpay](services/razorpay/) | ✅ | ✅ |
+| [recruitee](services/recruitee/) | ✅ | ✅ |
+| [redis](services/redis/) | ✅ | ✅ |
+| [resend](services/resend/) | ✅ | ✅ |
+| [rocketchat](services/rocketchat/) | ✅ | ✅ |
+| [rundeck](services/rundeck/) | ✅ | ✅ |
+| [runway](services/runway/) | ✅ | ✅ |
 | [s3](services/s3/) | | |
 | [salesmate](services/salesmate/) | | |
 | [sap-business-one](services/sap-business-one/) | | |
