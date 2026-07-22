@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 256 | 256 | 29 |
-| **All Services** | **385** | **304** | **256** | **81** |
+| API Key Extensions | 285 | 285 | 285 | 0 |
+| **All Services** | **385** | **333** | **285** | **52** |
 
 ## OAuth Extensions
 
@@ -337,35 +337,35 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [rocketchat](services/rocketchat/) | ✅ | ✅ |
 | [rundeck](services/rundeck/) | ✅ | ✅ |
 | [runway](services/runway/) | ✅ | ✅ |
-| [s3](services/s3/) | | |
-| [salesmate](services/salesmate/) | | |
-| [sap-business-one](services/sap-business-one/) | | |
-| [seatable](services/seatable/) | | |
-| [securityscorecard](services/securityscorecard/) | | |
-| [segment](services/segment/) | | |
-| [sendgrid](services/sendgrid/) | | |
-| [sendy](services/sendy/) | | |
-| [sentry](services/sentry/) | | |
-| [ses-service](services/ses-service/) | | |
-| [seven](services/seven/) | | |
-| [sftp](services/sftp/) | | |
-| [shippo](services/shippo/) | | |
-| [shipstation](services/shipstation/) | | |
-| [signl4](services/signl4/) | | |
-| [smartsheet](services/smartsheet/) | | |
-| [snowflake](services/snowflake/) | | |
-| [sns-service](services/sns-service/) | | |
-| [splunk](services/splunk/) | | |
-| [sql-server](services/sql-server/) | | |
-| [sqs-service](services/sqs-service/) | | |
-| [square](services/square/) | | |
-| [squarespace](services/squarespace/) | | |
-| [stackby](services/stackby/) | | |
-| [storyblok](services/storyblok/) | | |
-| [strapi](services/strapi/) | | |
-| [supabase](services/supabase/) | | |
-| [surveymonkey](services/surveymonkey/) | | |
-| [syncromsp](services/syncromsp/) | | |
+| [s3](services/s3/) | ✅ | ✅ |
+| [salesmate](services/salesmate/) | ✅ | ✅ |
+| [sap-business-one](services/sap-business-one/) | ✅ | ✅ |
+| [seatable](services/seatable/) | ✅ | ✅ |
+| [securityscorecard](services/securityscorecard/) | ✅ | ✅ |
+| [segment](services/segment/) | ✅ | ✅ |
+| [sendgrid](services/sendgrid/) | ✅ | ✅ |
+| [sendy](services/sendy/) | ✅ | ✅ |
+| [sentry](services/sentry/) | ✅ | ✅ |
+| [ses-service](services/ses-service/) | ✅ | ✅ |
+| [seven](services/seven/) | ✅ | ✅ |
+| [sftp](services/sftp/) | ✅ | ✅ |
+| [shippo](services/shippo/) | ✅ | ✅ |
+| [shipstation](services/shipstation/) | ✅ | ✅ |
+| [signl4](services/signl4/) | ✅ | ✅ |
+| [smartsheet](services/smartsheet/) | ✅ | ✅ |
+| [snowflake](services/snowflake/) | ✅ | ✅ |
+| [sns-service](services/sns-service/) | ✅ | ✅ |
+| [splunk](services/splunk/) | ✅ | ✅ |
+| [sql-server](services/sql-server/) | ✅ | ✅ |
+| [sqs-service](services/sqs-service/) | ✅ | ✅ |
+| [square](services/square/) | ✅ | ✅ |
+| [squarespace](services/squarespace/) | ✅ | ✅ |
+| [stackby](services/stackby/) | ✅ | ✅ |
+| [storyblok](services/storyblok/) | ✅ | ✅ |
+| [strapi](services/strapi/) | ✅ | ✅ |
+| [supabase](services/supabase/) | ✅ | ✅ |
+| [surveymonkey](services/surveymonkey/) | ✅ | ✅ |
+| [syncromsp](services/syncromsp/) | ✅ | ✅ |
 | [taiga](services/taiga/) | ✅ | ✅ |
 | [tally](services/tally/) | ✅ | ✅ |
 | [tapfiliate](services/tapfiliate/) | ✅ | ✅ |
