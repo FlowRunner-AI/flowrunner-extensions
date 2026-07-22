@@ -6,9 +6,9 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
-| OAuth Extensions | 100 | 53 | 0 | 47 |
+| OAuth Extensions | 100 | 62 | 0 | 38 |
 | API Key Extensions | 285 | 285 | 285 | 0 |
-| **All Services** | **385** | **338** | **285** | **47** |
+| **All Services** | **385** | **347** | **285** | **38** |
 
 ## OAuth Extensions
 
@@ -65,18 +65,18 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [linkedin](services/linkedin/) | ✅ | |
 | [mailchimp-marketing](services/mailchimp-marketing/) | ✅ | |
 | [meta-ads](services/meta-ads/) | ✅ | |
-| [microsoft-excel](services/microsoft-excel/) | | |
-| [microsoft-onedrive](services/microsoft-onedrive/) | | |
-| [microsoft-onenote](services/microsoft-onenote/) | | |
-| [microsoft-planner](services/microsoft-planner/) | | |
-| [microsoft-power-bi](services/microsoft-power-bi/) | | |
-| [microsoft-teams](services/microsoft-teams/) | | |
-| [microsoft-todo](services/microsoft-todo/) | | |
+| [microsoft-excel](services/microsoft-excel/) | ✅ | |
+| [microsoft-onedrive](services/microsoft-onedrive/) | ✅ | |
+| [microsoft-onenote](services/microsoft-onenote/) | ✅ | |
+| [microsoft-planner](services/microsoft-planner/) | ✅ | |
+| [microsoft-power-bi](services/microsoft-power-bi/) | ✅ | |
+| [microsoft-teams](services/microsoft-teams/) | ✅ | |
+| [microsoft-todo](services/microsoft-todo/) | ✅ | |
 | [monday](services/monday/) | ✅ | |
 | [ms-graph-security](services/ms-graph-security/) | ✅ | |
 | [netsuite](services/netsuite/) | | |
 | [notion](services/notion/) | | |
-| [outlook](services/outlook/) | | |
+| [outlook](services/outlook/) | ✅ | |
 | [outreach](services/outreach/) | | |
 | [pagerduty](services/pagerduty/) | | |
 | [pinterest](services/pinterest/) | | |
@@ -91,7 +91,7 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [salesforce-pro](services/salesforce-pro/) | | |
 | [salesloft](services/salesloft/) | | |
 | [servicenow](services/servicenow/) | | |
-| [sharepoint](services/sharepoint/) | | |
+| [sharepoint](services/sharepoint/) | ✅ | |
 | [shipbob](services/shipbob/) | | |
 | [shopify](services/shopify/) | | |
 | [slack](services/slack/) | | |
