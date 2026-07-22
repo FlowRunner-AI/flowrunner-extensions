@@ -15,11 +15,11 @@ then it is deployed and tested in FlowRunner.
 These are the rules unique to this repo. Get these wrong and the service won't fit. They are
 verified against the 64 services currently in `services/`.
 
-- **Namespace is `Flowrunner.*`, never `Backendless.*`:**
+- **Namespace is `Flowrunner.*`**
   - `Flowrunner.Request[method](url)` for all HTTP calls
   - `Flowrunner.ServerCode.addService(...)` to register
   - `Flowrunner.ServerCode.ConfigItems.TYPES.*` for config item types
-  - `Flowrunner.Files.*` / `this.flowrunner.Files.*` for files
+  - `this.flowrunner.Files.*` for files
   - `new Flowrunner.Request.FormData()` for multipart
   - (The only files containing `Backendless.*` are the dedicated `backendless-*` services that
     call the Backendless **product** API — irrelevant to new integrations.)
@@ -344,8 +344,7 @@ const { url } = await this.flowrunner.Files.uploadFile(buffer, {
    */
   class AIImageGenerator {}
   ```
-- `this.flowrunner.Files.uploadFile(...)` is the ONLY sanctioned upload API. Never use
-  `Flowrunner.Files.saveFile(...)` — it does not provision storage correctly.
+- `this.flowrunner.Files.uploadFile(...)` is the ONLY sanctioned upload API.
 
 For binary **downloads**, fetch with `.setEncoding(null)` and wrap in a Buffer:
 ```js
@@ -437,5 +436,5 @@ Examine **both** the JSDoc annotations AND the implementation. Fix bugs and inco
 - [ ] Action methods use individual params; dictionaries use canonical `payload` + typedef with
       `search`/`cursor`.
 - [ ] If the service calls the Files API, the class has `@usesFileStorage` and uploads use
-      `this.flowrunner.Files.uploadFile` — no `Flowrunner.Files.saveFile` anywhere.
+      `this.flowrunner.Files.uploadFile`
 - [ ] All descriptions clear, specific, professional.

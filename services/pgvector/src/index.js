@@ -551,7 +551,7 @@ class PGVector {
    */
   async deleteEmbeddings(table, ids, idColumn, where) {
     const hasIds = Array.isArray(ids) && ids.length > 0
-    const hasWhere = where && typeof where === 'object' && !Array.isArray(where) && Object.keys(where).length > 0
+    const hasWhere = Boolean(where && typeof where === 'object' && !Array.isArray(where) && Object.keys(where).length > 0)
 
     if (hasIds === hasWhere) {
       throw new Error('Provide exactly one of IDs or Where to select the rows to delete.')

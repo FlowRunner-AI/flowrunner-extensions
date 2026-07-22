@@ -412,6 +412,7 @@ const ROTATE_KEY_USE_LABELS = { 'Signing': 'sig' }
  */
 
 /**
+ * @usesFileStorage
  * @integrationName Okta
  * @integrationIcon /icon.svg
  */
@@ -9379,10 +9380,10 @@ class Okta {
   async uploadApplicationLogo(appId, logoFile) {
     // API: https://developer.okta.com/docs/api/openapi/okta-management/management/tag/ApplicationLogos/
     // Multipart binary upload (form field `file`), so there is no JSON body to diff against the docs, and
-    // Flowrunner.Files only resolves on a deployed instance - confirm with a live test. The Flowrunner
+    // this.flowrunner.Files only resolves on a deployed instance - confirm with a live test. The Flowrunner
     // file at logoFile is streamed as the `file` part.
     const form = new FormData()
-    const file = await Flowrunner.Files.getFileDownloadUrl(logoFile)
+    const file = await this.flowrunner.Files.getFileDownloadUrl(logoFile)
 
     form.append('file', file)
 

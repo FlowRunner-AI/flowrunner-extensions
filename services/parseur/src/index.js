@@ -214,7 +214,7 @@ class ParseurService {
    * @returns {Object}
    * @sampleResult {"success":true,"message":"Document queued for reprocessing","documentId":"doc_xyz789"}
    */
-  async reprocessDocument(mailboxId, documentId) {
+  async reprocessDocument(documentId) {
     const logTag = '[reprocessDocument]'
 
     if (!documentId) {
@@ -223,7 +223,7 @@ class ParseurService {
 
     const result = await this.#apiRequest({
       url: `${ API_BASE_URL }/parser/document/${ documentId }/process`,
-      method: 'process',
+      method: 'POST',
       logTag,
     })
 

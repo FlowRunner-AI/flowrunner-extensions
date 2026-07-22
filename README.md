@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 233 | 233 | 52 |
-| **All Services** | **385** | **281** | **233** | **104** |
+| API Key Extensions | 285 | 256 | 256 | 29 |
+| **All Services** | **385** | **304** | **256** | **81** |
 
 ## OAuth Extensions
 
@@ -300,29 +300,29 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [oracle-database](services/oracle-database/) | ✅ | ✅ |
 | [ortto](services/ortto/) | ✅ | ✅ |
 | [oura](services/oura/) | ✅ | ✅ |
-| [paddle](services/paddle/) | | |
-| [pandadoc](services/pandadoc/) | | |
-| [parseur](services/parseur/) | | |
-| [paypal](services/paypal/) | | |
-| [pdfco](services/pdfco/) | | |
-| [peekalink](services/peekalink/) | | |
-| [perplexity](services/perplexity/) | | |
-| [personio](services/personio/) | | |
-| [perspective](services/perspective/) | | |
-| [pgvector](services/pgvector/) | | |
-| [phantombuster](services/phantombuster/) | | |
-| [philips-hue](services/philips-hue/) | | |
-| [pinecone](services/pinecone/) | | |
-| [plivo](services/plivo/) | | |
-| [postgresql](services/postgresql/) | | |
-| [posthog](services/posthog/) | | |
-| [postmark](services/postmark/) | | |
-| [prestashop](services/prestashop/) | | |
-| [printful](services/printful/) | | |
-| [profitwell](services/profitwell/) | | |
-| [pushbullet](services/pushbullet/) | | |
-| [pushcut](services/pushcut/) | | |
-| [pushover](services/pushover/) | | |
+| [paddle](services/paddle/) | ✅ | ✅ |
+| [pandadoc](services/pandadoc/) | ✅ | ✅ |
+| [parseur](services/parseur/) | ✅ | ✅ |
+| [paypal](services/paypal/) | ✅ | ✅ |
+| [pdfco](services/pdfco/) | ✅ | ✅ |
+| [peekalink](services/peekalink/) | ✅ | ✅ |
+| [perplexity](services/perplexity/) | ✅ | ✅ |
+| [personio](services/personio/) | ✅ | ✅ |
+| [perspective](services/perspective/) | ✅ | ✅ |
+| [pgvector](services/pgvector/) | ✅ | ✅ |
+| [phantombuster](services/phantombuster/) | ✅ | ✅ |
+| [philips-hue](services/philips-hue/) | ✅ | ✅ |
+| [pinecone](services/pinecone/) | ✅ | ✅ |
+| [plivo](services/plivo/) | ✅ | ✅ |
+| [postgresql](services/postgresql/) | ✅ | ✅ |
+| [posthog](services/posthog/) | ✅ | ✅ |
+| [postmark](services/postmark/) | ✅ | ✅ |
+| [prestashop](services/prestashop/) | ✅ | ✅ |
+| [printful](services/printful/) | ✅ | ✅ |
+| [profitwell](services/profitwell/) | ✅ | ✅ |
+| [pushbullet](services/pushbullet/) | ✅ | ✅ |
+| [pushcut](services/pushcut/) | ✅ | ✅ |
+| [pushover](services/pushover/) | ✅ | ✅ |
 | [qdrant](services/qdrant/) | ✅ | ✅ |
 | [questdb](services/questdb/) | ✅ | ✅ |
 | [quickbase](services/quickbase/) | ✅ | ✅ |

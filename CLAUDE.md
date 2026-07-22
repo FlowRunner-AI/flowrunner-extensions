@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is the FlowRunner Extensions repository, containing services that integrate third-party APIs with FlowRunner. Services are **FlowRunner-native** and independent of Backendless: they use the `Flowrunner.*` runtime (`Flowrunner.Request`, `Flowrunner.ServerCode`, `Flowrunner.Files`), are built directly in this repo, and are deployed and tested in FlowRunner.
+This is the FlowRunner Extensions repository, containing services that integrate third-party APIs with FlowRunner. Services are **FlowRunner-native** and independent of Backendless: they use the `Flowrunner.*` runtime (`Flowrunner.Request`, `Flowrunner.ServerCode`), are built directly in this repo, and are deployed and tested in FlowRunner.
 
 
 ## Common Development Commands
