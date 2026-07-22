@@ -1324,12 +1324,12 @@ class GmailService {
       }
     }
 
-    if (!invocation.state?.labels) {
-      const labelsList = invocation.state.labels.map(({ id }) => id)
-
+    // The guard, the read below and both writes must all use `labelsList`. Seeding one key and
+    // checking another re-seeds on every poll, so the trigger never emits.
+    if (!invocation.state?.labelsList) {
       return {
         events: [],
-        state: { labelsList },
+        state: { labelsList: labels.map(({ id }) => id) },
       }
     }
 
@@ -1340,7 +1340,7 @@ class GmailService {
 
     return {
       events: newLabels,
-      state: { labels },
+      state: { labelsList: labels.map(({ id }) => id) },
     }
   }
 
@@ -1374,7 +1374,9 @@ class GmailService {
 
     logger.debug(`onEmailStarred.messages.length=${ messages.length }`)
 
-    if (!invocation.state?.messages) {
+    // The guard, the read below and both writes must all use `messagesIds`. Seeding one key and
+    // checking another re-seeds on every poll, so the trigger never emits.
+    if (!invocation.state?.messagesIds) {
       return {
         events: [],
         state: { messagesIds: messages.map(({ id }) => id) },
@@ -1388,7 +1390,7 @@ class GmailService {
 
     return {
       events: newMessages,
-      state: { messages },
+      state: { messagesIds: messages.map(({ id }) => id) },
     }
   }
 
@@ -1421,7 +1423,9 @@ class GmailService {
       }
     }
 
-    if (!invocation.state?.threads) {
+    // The guard, the read below and both writes must all use `threadsIds`. Seeding one key and
+    // checking another re-seeds on every poll, so the trigger never emits.
+    if (!invocation.state?.threadsIds) {
       return {
         events: [],
         state: { threadsIds: threads.map(({ id }) => id) },
