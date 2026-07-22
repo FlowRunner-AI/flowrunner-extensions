@@ -2209,8 +2209,7 @@ class CloseCRMService {
     if (!type) throw new Error('Operation is required — choose Set Lead Status, Set Custom Field, or Clear Custom Field.')
 
     const operation = this.#resolveChoice(type, CHOICE_MAPS.bulkEditType)
-    const sQuery = buildSearchQuery({ objectType: 'lead', ...this.#parseFilter(filter) })
-    if (!sQuery) throw new Error('Filter is required — provide a structured filter to select which leads to edit.')
+    const sQuery = this.#buildBulkQuery(filter, 'edit')
 
     const body = { type: operation, s_query: sQuery }
 
@@ -2242,8 +2241,7 @@ class CloseCRMService {
    */
   // docs: https://developer.close.com/api/resources/bulk-actions/delete/create.md
   async bulkDeleteLeads(filter) {
-    const sQuery = buildSearchQuery({ objectType: 'lead', ...this.#parseFilter(filter) })
-    if (!sQuery) throw new Error('Filter is required — provide a structured filter to select which leads to delete.')
+    const sQuery = this.#buildBulkQuery(filter, 'delete')
 
     return this.apiRequest({
       url: `${ API_BASE_URL }/bulk_action/delete/`,
@@ -2271,8 +2269,7 @@ class CloseCRMService {
     if (!templateId) throw new Error('Template is required — pick one via Get Email Templates Dictionary.')
     if (!contactPreference) throw new Error('Contact Preference is required — choose Primary Contact Only or All Contacts.')
 
-    const sQuery = buildSearchQuery({ objectType: 'lead', ...this.#parseFilter(filter) })
-    if (!sQuery) throw new Error('Filter is required — provide a structured filter to select which leads to email.')
+    const sQuery = this.#buildBulkQuery(filter, 'email')
 
     const body = deepClean({
       s_query: sQuery,
@@ -3021,6 +3018,20 @@ class CloseCRMService {
     const parsed = typeof filter === 'string' ? parseMaybeJSON(filter) : filter
 
     return parsed || {}
+  }
+
+  // Builds the s_query for a bulk action and refuses to return one that matches every lead.
+  // buildSearchQuery always yields at least the object_type node, so a missing or unusable
+  // filter produces a truthy-but-unrestricted query — checking `!sQuery` alone is not enough.
+  #buildBulkQuery(filter, action) {
+    const sQuery = buildSearchQuery({ objectType: 'lead', ...this.#parseFilter(filter) })
+    const unrestricted = !sQuery || (sQuery.type === 'object_type' && !sQuery.queries)
+
+    if (unrestricted) {
+      throw new Error(`Filter is required — provide a structured filter to select which leads to ${ action }. Refusing to ${ action } every lead in the organization.`)
+    }
+
+    return sQuery
   }
 }
 

@@ -48,7 +48,13 @@ const GC_REASON_HINT = {
 }
 
 function extractGoCardlessError(error) {
-  const body = error?.body || error?.response?.body
+  // apiRequest rethrows a friendly Error that keeps the transport error on `originalError`, so the
+  // GoCardless envelope may sit one level down. Accept both shapes — callers downstream of
+  // apiRequest (idempotent replay recovery) only ever see the wrapped form.
+  const body = error?.body ||
+    error?.response?.body ||
+    error?.originalError?.body ||
+    error?.originalError?.response?.body
 
   if (!body) return null
 

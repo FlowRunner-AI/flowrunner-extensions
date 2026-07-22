@@ -3466,4 +3466,12 @@ Flowrunner.ServerCode.addService(Marketo, [
     shared: false,
     hint: 'Your REST endpoint base, e.g. https://123-ABC-456.mktorest.com (Admin > Integration > Web Services).',
   },
+  {
+    name: 'rootFolderId',
+    displayName: 'Root Folder ID',
+    type: Flowrunner.ServerCode.ConfigItems.TYPES.STRING,
+    required: false,
+    shared: false,
+    hint: 'Optional. Top-level folder ID used to populate the Folders and Smart Lists dropdowns. Without it those dropdowns stay empty and folder IDs must be typed manually.',
+  },
 ])

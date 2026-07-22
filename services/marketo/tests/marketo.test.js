@@ -50,7 +50,21 @@ describe('Marketo Service', () => {
         expect.objectContaining({ name: 'clientId', displayName: 'Client ID', required: true, shared: true }),
         expect.objectContaining({ name: 'clientSecret', displayName: 'Client Secret', required: true, shared: true }),
         expect.objectContaining({ name: 'baseUrl', displayName: 'Base URL', required: true, shared: false }),
+        expect.objectContaining({ name: 'rootFolderId', displayName: 'Root Folder ID', required: false, shared: false }),
       ])
+    })
+
+    // Regression guard: rootFolderId was read by getFoldersDictionary / getSmartListsDictionary
+    // but never registered, so it was unsettable in production and both dictionaries were
+    // permanently empty. Every config key the service reads must be registered.
+    it('registers every config key the service reads', () => {
+      const registered = sandbox.getConfigItems().map(item => item.name)
+      const source = require('fs').readFileSync(require.resolve('../src/index.js'), 'utf8')
+      const read = [...new Set([...source.matchAll(/this\.config\.([A-Za-z0-9_]+)/g)].map(m => m[1]))]
+
+      // Guard against a vacuous pass if the scan ever stops matching.
+      expect(read).toEqual(expect.arrayContaining(['rootFolderId', 'baseUrl']))
+      expect(read.sort()).toEqual([...read].sort().filter(key => registered.includes(key)))
     })
   })
 
@@ -66,6 +80,7 @@ describe('Marketo Service', () => {
       // First call is token, second is the API call
       expect(mock.history).toHaveLength(2)
       expect(mock.history[0].url).toBe(TOKEN_URL)
+
       expect(mock.history[0].query).toMatchObject({
         grant_type: 'client_credentials',
         client_id: CLIENT_ID,
@@ -86,8 +101,9 @@ describe('Marketo Service', () => {
 
     it('retries on token error (601/602)', async () => {
       mockToken()
+
       // First API call returns token error, then after refresh the retry succeeds
-      mock.onGet(`${ REST }/leads/describe.json`).replyWith((call) => {
+      mock.onGet(`${ REST }/leads/describe.json`).replyWith(call => {
         // First call (after token) returns 601, second call returns success
         const apiCalls = mock.history.filter(h => h.url.includes('/leads/describe.json'))
 
@@ -983,6 +999,7 @@ describe('Marketo Service', () => {
   describe('getListsDictionary', () => {
     it('maps lists to dictionary items', async () => {
       mockToken()
+
       mock.onGet(`${ REST }/lists.json`).reply({
         ...OK,
         result: [
@@ -997,11 +1014,13 @@ describe('Marketo Service', () => {
         { label: 'My List', value: '1027', note: 'ID: 1027 · Newsletter' },
         { label: 'Other List', value: '1028', note: 'ID: 1028' },
       ])
+
       expect(result.cursor).toBeNull()
     })
 
     it('filters by search term', async () => {
       mockToken()
+
       mock.onGet(`${ REST }/lists.json`).reply({
         ...OK,
         result: [
@@ -1039,6 +1058,7 @@ describe('Marketo Service', () => {
   describe('getCampaignsDictionary', () => {
     it('maps campaigns to dictionary items', async () => {
       mockToken()
+
       mock.onGet(`${ REST }/campaigns.json`).reply({
         ...OK,
         result: [{ id: 1069, name: 'Test Campaign', type: 'trigger' }],
@@ -1057,6 +1077,7 @@ describe('Marketo Service', () => {
   describe('getActivityTypesDictionary', () => {
     it('maps activity types to dictionary items', async () => {
       mockToken()
+
       mock.onGet(`${ REST }/activities/types.json`).reply({
         ...OK,
         result: [{ id: 2, name: 'Fill Out Form', description: 'User fills out a form' }],
@@ -1069,6 +1090,7 @@ describe('Marketo Service', () => {
         value: '2',
         note: 'User fills out a form',
       })
+
       expect(result.cursor).toBeNull()
     })
   })
@@ -1076,6 +1098,7 @@ describe('Marketo Service', () => {
   describe('getCustomObjectsDictionary', () => {
     it('maps custom objects to dictionary items', async () => {
       mockToken()
+
       mock.onGet(`${ REST }/customobjects.json`).reply({
         ...OK,
         result: [{ name: 'car_c', displayName: 'Car' }],
@@ -1092,6 +1115,7 @@ describe('Marketo Service', () => {
 
     it('filters by displayName and name', async () => {
       mockToken()
+
       mock.onGet(`${ REST }/customobjects.json`).reply({
         ...OK,
         result: [
@@ -1110,6 +1134,7 @@ describe('Marketo Service', () => {
   describe('getProgramsDictionary', () => {
     it('maps programs to dictionary items via asset endpoint', async () => {
       mockToken()
+
       mock.onGet(`${ ASSET }/programs.json`).reply({
         ...OK,
         result: [{ id: 1107, name: 'Newsletter', type: 'Default' }],
@@ -1148,6 +1173,7 @@ describe('Marketo Service', () => {
   describe('getFoldersDictionary', () => {
     it('returns folders using rootFolderId config', async () => {
       mockToken()
+
       mock.onGet(`${ ASSET }/folders.json`).reply({
         ...OK,
         result: [{ id: 1035, name: 'Marketing' }],
@@ -1160,6 +1186,7 @@ describe('Marketo Service', () => {
         value: '1035',
         note: 'Folder · ID: 1035',
       })
+
       expect(mock.history[1].query).toMatchObject({
         root: JSON.stringify({ id: 1035, type: 'Folder' }),
       })
@@ -1205,11 +1232,13 @@ describe('Marketo Service', () => {
 
     it('returns activities on subsequent polls', async () => {
       mockToken()
+
       // Resolve the activity type
       mock.onGet(`${ REST }/activities/types.json`).reply({
         ...OK,
         result: [{ id: 12, name: 'New Lead' }],
       })
+
       mock.onGet(`${ REST }/activities.json`).reply({
         ...OK,
         result: [{ id: 1001, leadId: 100, activityTypeId: 12 }],
@@ -1262,6 +1291,7 @@ describe('Marketo Service', () => {
 
     it('queries leadchanges on subsequent polls', async () => {
       mockToken()
+
       mock.onGet(`${ REST }/activities/leadchanges.json`).reply({
         ...OK,
         result: [{ id: 54, leadId: 100 }],
@@ -1301,6 +1331,7 @@ describe('Marketo Service', () => {
 
     it('queries deletedleads on subsequent polls', async () => {
       mockToken()
+
       mock.onGet(`${ REST }/activities/deletedleads.json`).reply({
         ...OK,
         result: [{ id: 999, leadId: 50 }],
@@ -1320,6 +1351,7 @@ describe('Marketo Service', () => {
   describe('error handling', () => {
     it('surfaces Marketo API error messages', async () => {
       mockToken()
+
       mock.onGet(`${ REST }/leads/describe.json`).reply({
         success: false,
         errors: [{ code: '603', message: 'Access denied — the API user lacks permission' }],
@@ -1330,6 +1362,7 @@ describe('Marketo Service', () => {
 
     it('surfaces error hints for known error codes', async () => {
       mockToken()
+
       mock.onGet(`${ REST }/leads/describe.json`).reply({
         success: false,
         errors: [{ code: '606', message: 'Rate limit exceeded' }],
@@ -1343,6 +1376,1630 @@ describe('Marketo Service', () => {
       mock.onGet(`${ REST }/leads/describe.json`).replyWithError({ message: 'Internal Server Error' })
 
       await expect(service.describeLeadFields()).rejects.toThrow()
+    })
+  })
+
+  // ==========================================================================
+  //  EXTENDED COVERAGE
+  // ==========================================================================
+
+  // ── Auth: caching, refresh, token-exchange failures ──
+
+  describe('access token lifecycle', () => {
+    it('caches the token across calls and only exchanges once', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/leads/describe.json`).reply({ ...OK, result: [] })
+      mock.onGet(`${ REST }/activities/types.json`).reply({ ...OK, result: [] })
+
+      await service.describeLeadFields()
+      await service.getActivityTypes()
+
+      const tokenCalls = mock.history.filter(h => h.url === TOKEN_URL)
+
+      expect(tokenCalls).toHaveLength(1)
+    })
+
+    it('re-exchanges when the cached token is inside the expiry skew', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/leads/describe.json`).reply({ ...OK, result: [] })
+
+      // Expires in 5s — inside the 60s skew, so it must be refreshed.
+      service._token = { token: 'stale', expiresAt: Date.now() + 5000 }
+
+      await service.describeLeadFields()
+
+      expect(mock.history[0].url).toBe(TOKEN_URL)
+      expect(mock.history[1].headers.Authorization).toBe('Bearer mock-token-123')
+    })
+
+    it('reuses a token that is comfortably in-date', async () => {
+      mock.onGet(`${ REST }/leads/describe.json`).reply({ ...OK, result: [] })
+
+      service._token = { token: 'fresh', expiresAt: Date.now() + 600000 }
+
+      await service.describeLeadFields()
+
+      expect(mock.history).toHaveLength(1)
+      expect(mock.history[0].headers.Authorization).toBe('Bearer fresh')
+    })
+
+    it('defaults expires_in to 3600 when absent', async () => {
+      mock.onGet(TOKEN_URL).reply({ access_token: 'no-expiry' })
+      mock.onGet(`${ REST }/leads/describe.json`).reply({ ...OK, result: [] })
+
+      const before = Date.now()
+
+      await service.describeLeadFields()
+
+      expect(service._token.token).toBe('no-expiry')
+      expect(service._token.expiresAt).toBeGreaterThanOrEqual(before + 3600 * 1000 - 50)
+    })
+
+    it('throws when the token exchange returns no access_token', async () => {
+      mock.onGet(TOKEN_URL).reply({ token_type: 'bearer' })
+
+      await expect(service.describeLeadFields()).rejects.toThrow('Token exchange returned no access_token')
+    })
+
+    it('throws when the token exchange returns an empty body', async () => {
+      mock.onGet(TOKEN_URL).reply(undefined)
+
+      await expect(service.describeLeadFields()).rejects.toThrow('Token exchange returned no access_token')
+    })
+
+    it('surfaces an HTTP failure from the token endpoint', async () => {
+      mock.onGet(TOKEN_URL).replyWithError({ message: 'unauthorized_client' })
+
+      await expect(service.describeLeadFields()).rejects.toThrow('unauthorized_client')
+    })
+
+    it('refreshes on a 602 token error and retries once', async () => {
+      mockToken()
+
+      mock.onGet(`${ REST }/leads/describe.json`).replyWith(() => {
+        const apiCalls = mock.history.filter(h => h.url.includes('/leads/describe.json'))
+
+        if (apiCalls.length <= 1) {
+          return { success: false, errors: [{ code: 602, message: 'Access token expired' }] }
+        }
+
+        return { ...OK, result: [{ id: 1 }] }
+      })
+
+      const result = await service.describeLeadFields()
+
+      expect(result.result[0].id).toBe(1)
+      expect(mock.history.filter(h => h.url === TOKEN_URL)).toHaveLength(2)
+    })
+
+    it('does not retry a second time — a persistent token error surfaces', async () => {
+      mockToken()
+
+      mock.onGet(`${ REST }/leads/describe.json`).reply({
+        success: false,
+        errors: [{ code: '601', message: 'Access token invalid' }],
+      })
+
+      await expect(service.describeLeadFields()).rejects.toThrow('Access token invalid')
+    })
+  })
+
+  // ── Error shaping ──
+
+  describe('error shaping', () => {
+    it.each([
+      ['body.errors[0].message', { body: { errors: [{ message: 'from errors array' }] } }, 'from errors array'],
+      ['body.error.message', { body: { error: { message: 'from error object' } } }, 'from error object'],
+      ['body.message', { body: { message: 'from body message' } }, 'from body message'],
+      ['error.message', { message: 'from error message' }, 'from error message'],
+    ])('prefers %s', async (_label, errorShape, expected) => {
+      mockToken()
+      mock.onGet(`${ REST }/leads/describe.json`).replyWithError({ message: 'fallback', ...errorShape })
+
+      await expect(service.describeLeadFields()).rejects.toThrow(expected)
+    })
+
+    it('falls back to a generic message when success:false has no errors', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/leads/describe.json`).reply({ success: false })
+
+      await expect(service.describeLeadFields()).rejects.toThrow('Marketo request failed.')
+    })
+
+    it('uses the raw message for an unmapped error code', async () => {
+      mockToken()
+
+      mock.onGet(`${ REST }/leads/describe.json`).reply({
+        success: false,
+        errors: [{ code: '9999', message: 'Something exotic happened' }],
+      })
+
+      await expect(service.describeLeadFields()).rejects.toThrow('Something exotic happened')
+    })
+
+    it('combines the hint and the API message for a mapped code', async () => {
+      mockToken()
+
+      mock.onGet(`${ REST }/leads/describe.json`).reply({
+        success: false,
+        errors: [{ code: 610, message: 'Requested resource not found' }],
+      })
+
+      await expect(service.describeLeadFields()).rejects.toThrow(
+        'Requested resource not found — verify the ID or API name. (Requested resource not found)'
+      )
+    })
+
+    it('attaches the Marketo code to the thrown error', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/leads/describe.json`).reply({ success: false, errors: [{ code: 1004 }] })
+
+      await expect(service.describeLeadFields()).rejects.toMatchObject({ marketoCode: '1004' })
+    })
+  })
+
+  // ── Choice mapping & list coercion helpers (exercised through public methods) ──
+
+  describe('choice mapping and list coercion', () => {
+    it.each([
+      ['Create or Update', 'createOrUpdate'],
+      ['Create Only', 'createOnly'],
+      ['Update Only', 'updateOnly'],
+      ['Create Duplicate', 'createDuplicate'],
+      ['createDuplicate', 'createDuplicate'],
+    ])('maps action label %s to %s', async (label, apiValue) => {
+      mockToken()
+      mock.onPost(`${ REST }/leads.json`).reply(OK)
+
+      await service.syncLeads([{ id: 1 }], label)
+
+      const call = mock.history.find(h => h.method === 'post')
+
+      expect(call.body.action).toBe(apiValue)
+    })
+
+    it.each([
+      ['Email', 'email'],
+      ['Marketo ID', 'id'],
+      ['Cookie', 'cookies'],
+      ['myCustomField', 'myCustomField'],
+    ])('maps lookup field %s to %s', async (label, apiValue) => {
+      mockToken()
+      mock.onPost(`${ REST }/leads.json`).reply(OK)
+
+      await service.syncLeads([{ id: 1 }], undefined, label)
+
+      const call = mock.history.find(h => h.method === 'post')
+
+      expect(call.body.lookupField).toBe(apiValue)
+    })
+
+    it('accepts a comma-separated string wherever an array is expected', async () => {
+      mockToken()
+      mock.onPost(`${ REST }/leads/delete.json`).reply(OK)
+
+      await service.deleteLeads('235, 766 ,')
+
+      const call = mock.history.find(h => h.url.includes('/leads/delete.json'))
+
+      expect(call.body).toEqual({ input: [{ id: 235 }, { id: 766 }] })
+    })
+
+    it('keeps non-numeric IDs as strings', async () => {
+      mockToken()
+      mock.onPost(`${ REST }/leads/delete.json`).reply(OK)
+
+      await service.deleteLeads(['abc'])
+
+      const call = mock.history.find(h => h.url.includes('/leads/delete.json'))
+
+      expect(call.body).toEqual({ input: [{ id: 'abc' }] })
+    })
+
+    it('treats a null list as empty', async () => {
+      await expect(service.deleteLeads(null)).rejects.toThrow('Lead IDs is required')
+    })
+  })
+
+  // ── Asset API: GET reads ──
+
+  describe('asset API reads', () => {
+    it.each([
+      ['getFolderById', ['1035'], `${ ASSET }/folder/1035.json`, { type: 'Folder' }],
+      ['getFolderById', ['1035', 'Program'], `${ ASSET }/folder/1035.json`, { type: 'Program' }],
+      ['getTokensByFolder', ['1035'], `${ ASSET }/folder/1035/tokens.json`, { folderType: 'Folder' }],
+      ['getTokensByFolder', ['1107', 'Program'], `${ ASSET }/folder/1107/tokens.json`, { folderType: 'Program' }],
+      ['getEmailContent', ['1356', 'Approved'], `${ ASSET }/email/1356/content.json`, { status: 'approved' }],
+      ['getEmailContent', ['1356'], `${ ASSET }/email/1356/content.json`, {}],
+      ['getFormById', ['1029'], `${ ASSET }/form/1029.json`, {}],
+      ['getLandingPageById', ['500'], `${ ASSET }/landingPage/500.json`, {}],
+      ['getLandingPageContent', ['500'], `${ ASSET }/landingPage/500/content.json`, {}],
+      ['getSmartListById', ['77', true], `${ ASSET }/smartList/77.json`, { includeRules: true }],
+      ['getSmartListById', ['77'], `${ ASSET }/smartList/77.json`, {}],
+      ['getSnippetContent', ['33'], `${ ASSET }/snippet/33/content.json`, {}],
+    ])('%s issues GET %s', async (methodName, args, url, query) => {
+      mockToken()
+      mock.onGet(url).reply({ ...OK, result: [{ id: 1 }] })
+
+      const result = await service[methodName](...args)
+
+      expect(result.success).toBe(true)
+
+      const call = mock.history.find(h => h.url === url)
+
+      expect(call.method).toBe('get')
+      expect(call.query).toEqual(query)
+    })
+
+    it('browseEmails sends an empty query when no filters are supplied', async () => {
+      mockToken()
+      mock.onGet(`${ ASSET }/emails.json`).reply({ ...OK, result: [] })
+
+      await service.browseEmails()
+
+      expect(mock.history[1].query).toEqual({})
+    })
+
+    it('browseForms sends an empty query when no filters are supplied', async () => {
+      mockToken()
+      mock.onGet(`${ ASSET }/forms.json`).reply({ ...OK, result: [] })
+
+      await service.browseForms()
+
+      expect(mock.history[1].query).toEqual({})
+    })
+
+    it('browseLandingPages sends an empty query when no filters are supplied', async () => {
+      mockToken()
+      mock.onGet(`${ ASSET }/landingPages.json`).reply({ ...OK, result: [] })
+
+      await service.browseLandingPages()
+
+      expect(mock.history[1].query).toEqual({})
+    })
+
+    it('browsePrograms sends an empty query when no filters are supplied', async () => {
+      mockToken()
+      mock.onGet(`${ ASSET }/programs.json`).reply({ ...OK, result: [] })
+
+      await service.browsePrograms()
+
+      expect(mock.history[1].query).toEqual({})
+    })
+
+    it.each([
+      ['On', 'on'],
+      ['Off', 'off'],
+      ['Unlocked', 'unlocked'],
+      ['somethingElse', 'somethingElse'],
+    ])('browsePrograms maps status %s to %s', async (label, apiValue) => {
+      mockToken()
+      mock.onGet(`${ ASSET }/programs.json`).reply({ ...OK, result: [] })
+
+      await service.browsePrograms(label)
+
+      expect(mock.history[1].query.status).toBe(apiValue)
+    })
+
+    it('browseFolders omits optional paging params', async () => {
+      mockToken()
+      mock.onGet(`${ ASSET }/folders.json`).reply({ ...OK, result: [] })
+
+      await service.browseFolders('1035')
+
+      expect(mock.history[1].query).toEqual({ root: JSON.stringify({ id: 1035, type: 'Folder' }) })
+    })
+
+    it('browseSmartLists omits optional paging params', async () => {
+      mockToken()
+      mock.onGet(`${ ASSET }/smartLists.json`).reply({ ...OK, result: [] })
+
+      await service.browseSmartLists('1035')
+
+      expect(mock.history[1].query).toEqual({ folder: JSON.stringify({ id: 1035, type: 'Folder' }) })
+    })
+
+    it('folder refs keep a non-numeric id verbatim', async () => {
+      mockToken()
+      mock.onGet(`${ ASSET }/folders.json`).reply({ ...OK, result: [] })
+
+      await service.browseFolders('root-alias')
+
+      expect(mock.history[1].query.root).toBe(JSON.stringify({ id: 'root-alias', type: 'Folder' }))
+    })
+  })
+
+  // ── Asset API: bodyless POST lifecycle operations ──
+
+  describe('asset API approve / unapprove / delete operations', () => {
+    it.each([
+      ['approveEmailProgram', ['1107'], `${ ASSET }/program/1107/approve.json`],
+      ['unapproveEmailProgram', ['1107'], `${ ASSET }/program/1107/unapprove.json`],
+      ['deleteEmail', ['1356'], `${ ASSET }/email/1356/delete.json`],
+      ['approveEmail', ['1356'], `${ ASSET }/email/1356/approveDraft.json`],
+      ['unapproveEmail', ['1356'], `${ ASSET }/email/1356/unapprove.json`],
+      ['approveForm', ['1029'], `${ ASSET }/form/1029/approve.json`],
+      ['unapproveForm', ['1029'], `${ ASSET }/form/1029/unapprove.json`],
+      ['deleteForm', ['1029'], `${ ASSET }/form/1029/delete.json`],
+      ['approveLandingPage', ['500'], `${ ASSET }/landingPage/500/approve.json`],
+      ['unapproveLandingPage', ['500'], `${ ASSET }/landingPage/500/unapprove.json`],
+      ['deleteLandingPage', ['500'], `${ ASSET }/landingPage/500/delete.json`],
+      ['deleteSmartList', ['77'], `${ ASSET }/smartList/77/delete.json`],
+      ['approveSnippetDraft', ['33'], `${ ASSET }/snippet/33/approveDraft.json`],
+      ['deleteSnippet', ['33'], `${ ASSET }/snippet/33/delete.json`],
+    ])('%s issues POST %s', async (methodName, args, url) => {
+      mockToken()
+      mock.onPost(url).reply({ ...OK, result: [{ id: 1 }] })
+
+      const result = await service[methodName](...args)
+
+      expect(result.success).toBe(true)
+
+      const call = mock.history.find(h => h.url === url)
+
+      expect(call.method).toBe('post')
+      expect(call.body).toBeUndefined()
+    })
+  })
+
+  // ── Asset API: form-encoded writes ──
+
+  describe('asset API form-encoded writes', () => {
+    it.each([
+      [
+        'updateProgram', ['1107', 'Renamed', 'Desc'], `${ ASSET }/program/1107.json`,
+        ['name=Renamed', 'description=Desc'],
+      ],
+      [
+        'cloneProgram', ['1107', 'Copy', '1035', 'Desc'], `${ ASSET }/program/1107/clone.json`,
+        ['name=Copy', 'folder=%7B%22id%22%3A1035', 'description=Desc'],
+      ],
+      [
+        'updateFolder', ['1035', 'Program', 'Renamed', 'Desc', true], `${ ASSET }/folder/1035.json`,
+        ['type=Program', 'name=Renamed', 'description=Desc', 'isArchive=true'],
+      ],
+      [
+        'updateFolder', ['1035'], `${ ASSET }/folder/1035.json`,
+        ['type=Folder'],
+      ],
+      [
+        'deleteFolder', ['1035'], `${ ASSET }/folder/1035/delete.json`,
+        ['type=Folder'],
+      ],
+      [
+        'deleteFolder', ['1035', 'Program'], `${ ASSET }/folder/1035/delete.json`,
+        ['type=Program'],
+      ],
+      [
+        'createToken', ['1107', 'Program', 'my.Title', 'Rich Text', 'Hello'], `${ ASSET }/folder/1107/tokens.json`,
+        ['name=my.Title', 'type=rich%20text', 'value=Hello', 'folderType=Program'],
+      ],
+      [
+        'createToken', ['1107', undefined, 'my.Score', 'Score', '0'], `${ ASSET }/folder/1107/tokens.json`,
+        ['type=score', 'folderType=Folder'],
+      ],
+      [
+        'deleteToken', ['1107', 'Program', 'my.Title', 'Text'], `${ ASSET }/folder/1107/tokens/delete.json`,
+        ['name=my.Title', 'type=text', 'folderType=Program'],
+      ],
+      [
+        'updateEmail', ['1356', 'Renamed', 'Desc'], `${ ASSET }/email/1356.json`,
+        ['name=Renamed', 'description=Desc'],
+      ],
+      [
+        'cloneEmail', ['1356', 'Copy', '1035', 'Desc'], `${ ASSET }/email/1356/clone.json`,
+        ['name=Copy', 'folder=%7B%22id%22%3A1035', 'description=Desc'],
+      ],
+      [
+        'createForm', ['Signup', '1035', 'Desc', 'English', 'simple', true], `${ ASSET }/forms.json`,
+        ['name=Signup', 'description=Desc', 'language=English', 'theme=simple', 'progressiveProfiling=true'],
+      ],
+      [
+        'createForm', ['Signup', '1035'], `${ ASSET }/forms.json`,
+        ['name=Signup', 'folder=%7B%22id%22%3A1035'],
+      ],
+      [
+        'updateForm', ['1029', 'Renamed', 'Desc', false], `${ ASSET }/form/1029.json`,
+        ['name=Renamed', 'description=Desc', 'progressiveProfiling=false'],
+      ],
+      [
+        'cloneForm', ['1029', 'Copy', '1035', 'Desc'], `${ ASSET }/form/1029/clone.json`,
+        ['name=Copy', 'folder=%7B%22id%22%3A1035'],
+      ],
+      [
+        'createLandingPage', ['LP', '12', '1035', 'Title', 'Desc', true], `${ ASSET }/landingPages.json`,
+        ['name=LP', 'template=12', 'title=Title', 'description=Desc', 'mobileEnabled=true'],
+      ],
+      [
+        'createLandingPage', ['LP', '12', '1035'], `${ ASSET }/landingPages.json`,
+        ['name=LP', 'template=12'],
+      ],
+      [
+        'updateLandingPage', ['500', 'Title', 'Desc', false], `${ ASSET }/landingPage/500.json`,
+        ['title=Title', 'description=Desc', 'mobileEnabled=false'],
+      ],
+      [
+        'cloneLandingPage', ['500', 'Copy', '1035', '12', 'Desc'], `${ ASSET }/landingPage/500/clone.json`,
+        ['name=Copy', 'template=12', 'description=Desc'],
+      ],
+      [
+        'cloneSmartList', ['77', 'Copy', '1035', 'Desc'], `${ ASSET }/smartList/77/clone.json`,
+        ['name=Copy', 'folder=%7B%22id%22%3A1035', 'description=Desc'],
+      ],
+      [
+        'updateSnippet', ['33', 'Renamed', 'Desc'], `${ ASSET }/snippet/33.json`,
+        ['name=Renamed', 'description=Desc'],
+      ],
+      [
+        'updateSnippet', ['33'], `${ ASSET }/snippet/33.json`,
+        [],
+      ],
+    ])('%s posts a form-encoded body to %s', async (methodName, args, url, fragments) => {
+      mockToken()
+      mock.onPost(url).reply({ ...OK, result: [{ id: 1 }] })
+
+      await service[methodName](...args)
+
+      const call = mock.history.find(h => h.url === url && h.method === 'post')
+
+      expect(call.headers['Content-Type']).toBe('application/x-www-form-urlencoded')
+      expect(typeof call.body).toBe('string')
+      fragments.forEach(fragment => expect(call.body).toContain(fragment))
+    })
+
+    it('sendSampleEmail omits optional fields when not supplied', async () => {
+      mockToken()
+      mock.onPost(`${ ASSET }/email/1356/sendSample.json`).reply(OK)
+
+      await service.sendSampleEmail('1356', 'a@test.com')
+
+      const call = mock.history.find(h => h.url.includes('/sendSample.json'))
+
+      expect(call.body).toBe('emailAddress=a%40test.com')
+    })
+
+    it('createProgram omits description when not supplied', async () => {
+      mockToken()
+      mock.onPost(`${ ASSET }/programs.json`).reply(OK)
+
+      await service.createProgram('P', '1035', 'Default', 'Email Blast')
+
+      const call = mock.history.find(h => h.url.includes('/programs.json') && h.method === 'post')
+
+      expect(call.body).not.toContain('description')
+    })
+
+    it('createSnippet omits description when not supplied', async () => {
+      mockToken()
+      mock.onPost(`${ ASSET }/snippets.json`).reply(OK)
+
+      await service.createSnippet('S', '1035')
+
+      const call = mock.history.find(h => h.url.includes('/snippets.json') && h.method === 'post')
+
+      expect(call.body).not.toContain('description')
+    })
+
+    it('createFolder omits description when not supplied', async () => {
+      mockToken()
+      mock.onPost(`${ ASSET }/folders.json`).reply(OK)
+
+      await service.createFolder('F', '1035')
+
+      const call = mock.history.find(h => h.url.includes('/folders.json') && h.method === 'post')
+
+      expect(call.body).not.toContain('description')
+    })
+
+    it('createEmail omits every optional field when not supplied', async () => {
+      mockToken()
+      mock.onPost(`${ ASSET }/emails.json`).reply(OK)
+
+      await service.createEmail('E', '24', '1035')
+
+      const call = mock.history.find(h => h.url.includes('/emails.json') && h.method === 'post')
+
+      expect(call.body).toBe(`name=E&template=24&folder=${ encodeURIComponent(JSON.stringify({ id: 1035, type: 'Folder' })) }`)
+    })
+
+    it('updateSnippetContent posts the HTML content with type HTML', async () => {
+      mockToken()
+      mock.onPost(`${ ASSET }/snippet/33/content.json`).reply(OK)
+
+      await service.updateSnippetContent('33', '<p>Hi</p>')
+
+      const call = mock.history.find(h => h.url.includes('/content.json'))
+
+      expect(call.body).toBe('content=%3Cp%3EHi%3C%2Fp%3E&type=HTML')
+    })
+  })
+
+  // ── CRM object families ──
+
+  describe('CRM object families', () => {
+    const FAMILIES = [
+      ['Opportunity', 'Opportunities', 'opportunities'],
+      ['OpportunityRole', 'OpportunityRoles', 'opportunities/roles'],
+      ['Company', 'Companies', 'companies'],
+      ['SalesPerson', 'SalesPersons', 'salespersons'],
+      ['NamedAccount', 'NamedAccounts', 'namedaccounts'],
+    ]
+
+    it.each(FAMILIES)('describe%s issues GET /%s/describe.json', async (singular, _plural, family) => {
+      mockToken()
+      mock.onGet(`${ REST }/${ family }/describe.json`).reply({ ...OK, result: [] })
+
+      await service[`describe${ singular }`]()
+
+      expect(mock.history[1].url).toBe(`${ REST }/${ family }/describe.json`)
+    })
+
+    it.each(FAMILIES)('query%2$s issues GET /%3$s.json with mapped filters', async (_singular, plural, family) => {
+      mockToken()
+      mock.onGet(`${ REST }/${ family }.json`).reply({ ...OK, result: [] })
+
+      await service[`query${ plural }`]('Marketo ID', ['1', '2'], ['a', 'b'], 25, 'TOK')
+
+      const call = mock.history.find(h => h.url === `${ REST }/${ family }.json`)
+
+      expect(call.query).toEqual({
+        filterType: 'id',
+        filterValues: '1,2',
+        fields: 'a,b',
+        batchSize: 25,
+        nextPageToken: 'TOK',
+      })
+    })
+
+    it.each(FAMILIES)('query%2$s omits optional params', async (_singular, plural, family) => {
+      mockToken()
+      mock.onGet(`${ REST }/${ family }.json`).reply({ ...OK, result: [] })
+
+      await service[`query${ plural }`]('externalId', 'X-1')
+
+      const call = mock.history.find(h => h.url === `${ REST }/${ family }.json`)
+
+      expect(call.query).toEqual({ filterType: 'externalId', filterValues: 'X-1' })
+    })
+
+    it.each(FAMILIES)('sync%2$s posts records to /%3$s.json', async (_singular, plural, family) => {
+      mockToken()
+      mock.onPost(`${ REST }/${ family }.json`).reply({ ...OK, result: [] })
+
+      await service[`sync${ plural }`]([{ externalId: 'X-1' }], 'Update Only', 'ID Field')
+
+      const call = mock.history.find(h => h.url === `${ REST }/${ family }.json` && h.method === 'post')
+
+      expect(call.body).toEqual({ action: 'updateOnly', input: [{ externalId: 'X-1' }], dedupeBy: 'idField' })
+    })
+
+    it.each(FAMILIES)('sync%2$s defaults the action and omits dedupeBy', async (_singular, plural, family) => {
+      mockToken()
+      mock.onPost(`${ REST }/${ family }.json`).reply({ ...OK, result: [] })
+
+      await service[`sync${ plural }`]([{ externalId: 'X-1' }])
+
+      const call = mock.history.find(h => h.url === `${ REST }/${ family }.json` && h.method === 'post')
+
+      expect(call.body).toEqual({ action: 'createOrUpdate', input: [{ externalId: 'X-1' }] })
+    })
+
+    it.each(FAMILIES)('delete%2$s posts records to /%3$s/delete.json', async (_singular, plural, family) => {
+      mockToken()
+      mock.onPost(`${ REST }/${ family }/delete.json`).reply({ ...OK, result: [] })
+
+      await service[`delete${ plural }`]([{ externalId: 'X-1' }])
+
+      const call = mock.history.find(h => h.url === `${ REST }/${ family }/delete.json`)
+
+      expect(call.body).toEqual({ input: [{ externalId: 'X-1' }] })
+    })
+
+    it.each(FAMILIES)('delete%2$s rejects an empty record set', async (_singular, plural) => {
+      await expect(service[`delete${ plural }`]([])).rejects.toThrow('Records is required')
+    })
+
+    it.each(FAMILIES)('sync%2$s rejects a non-array record set', async (_singular, plural) => {
+      await expect(service[`sync${ plural }`]('not-an-array')).rejects.toThrow('Records is required')
+    })
+
+    it.each(FAMILIES)('query%2$s rejects a missing filter field', async (_singular, plural) => {
+      await expect(service[`query${ plural }`]('')).rejects.toThrow('Filter Field is required')
+    })
+
+    it.each(FAMILIES)('query%2$s rejects empty filter values', async (_singular, plural) => {
+      await expect(service[`query${ plural }`]('Email', [])).rejects.toThrow('Filter Values is required')
+    })
+  })
+
+  // ── Bulk: lead import ──
+
+  describe('importLeads', () => {
+    const FILE_URL = 'https://files.example.com/leads.csv'
+
+    it('streams the file as multipart and sends the mapped query', async () => {
+      mockToken()
+      mock.onGet(FILE_URL).reply('email\na@test.com')
+      mock.onPost(`${ BULK }/leads.json`).reply({ ...OK, result: [{ batchId: 1, status: 'Queued' }] })
+
+      const result = await service.importLeads(FILE_URL, 'TSV', 'Marketo ID', '1027', 'Partition A')
+
+      expect(result.result[0].status).toBe('Queued')
+
+      const call = mock.history.find(h => h.url === `${ BULK }/leads.json`)
+
+      expect(call.query).toEqual({ lookupField: 'id', listId: '1027', partitionName: 'Partition A' })
+      expect(call.formData._fields.map(f => f.name)).toEqual(['format', 'file'])
+      expect(call.formData._fields[0].value).toBe('tsv')
+      expect(call.formData._fields[1].filename).toEqual({ filename: 'leads.tsv' })
+      expect(Buffer.isBuffer(call.formData._fields[1].value)).toBe(true)
+    })
+
+    it('defaults the format to csv and omits optional query params', async () => {
+      mockToken()
+      mock.onGet(FILE_URL).reply('email\na@test.com')
+      mock.onPost(`${ BULK }/leads.json`).reply(OK)
+
+      await service.importLeads(FILE_URL)
+
+      const call = mock.history.find(h => h.url === `${ BULK }/leads.json`)
+
+      expect(call.query).toEqual({})
+      expect(call.formData._fields[0].value).toBe('csv')
+    })
+
+    it('passes an already-buffered file through unchanged', async () => {
+      mockToken()
+
+      const buffer = Buffer.from('email\nb@test.com')
+
+      mock.onGet(FILE_URL).reply(buffer)
+      mock.onPost(`${ BULK }/leads.json`).reply(OK)
+
+      await service.importLeads(FILE_URL)
+
+      const call = mock.history.find(h => h.url === `${ BULK }/leads.json`)
+
+      expect(call.formData._fields[1].value).toBe(buffer)
+    })
+
+    it('surfaces a Marketo success:false body', async () => {
+      mockToken()
+      mock.onGet(FILE_URL).reply('email\na@test.com')
+
+      mock.onPost(`${ BULK }/leads.json`).reply({
+        success: false,
+        errors: [{ code: '1003', message: 'Invalid columns' }],
+      })
+
+      await expect(service.importLeads(FILE_URL)).rejects.toThrow('Invalid data')
+    })
+
+    it('surfaces an HTTP failure', async () => {
+      mockToken()
+      mock.onGet(FILE_URL).reply('email\na@test.com')
+      mock.onPost(`${ BULK }/leads.json`).replyWithError({ message: 'Bad Gateway' })
+
+      await expect(service.importLeads(FILE_URL)).rejects.toThrow('Bad Gateway')
+    })
+
+    it('throws when the file URL is missing', async () => {
+      await expect(service.importLeads('')).rejects.toThrow('File is required')
+    })
+  })
+
+  describe('import batch status endpoints', () => {
+    it('getImportLeadStatus issues GET on the bulk batch endpoint', async () => {
+      mockToken()
+      mock.onGet(`${ BULK }/leads/batch/B1.json`).reply({ ...OK, result: [{ batchId: 1, status: 'Complete' }] })
+
+      const result = await service.getImportLeadStatus('B1')
+
+      expect(result.result[0].status).toBe('Complete')
+    })
+
+    it('getImportLeadFailures returns the CSV payload', async () => {
+      mockToken()
+      mock.onGet(`${ BULK }/leads/batch/B1/failures.json`).reply('email,reason\na@test.com,bad')
+
+      const result = await service.getImportLeadFailures('B1')
+
+      expect(result).toEqual({ batchId: 'B1', csv: 'email,reason\na@test.com,bad' })
+    })
+
+    it('getImportLeadWarnings normalizes an empty payload to an empty string', async () => {
+      mockToken()
+      mock.onGet(`${ BULK }/leads/batch/B1/warnings.json`).reply(undefined)
+
+      const result = await service.getImportLeadWarnings('B1')
+
+      expect(result).toEqual({ batchId: 'B1', csv: '' })
+    })
+
+    it.each([
+      ['getImportLeadStatus'],
+      ['getImportLeadFailures'],
+      ['getImportLeadWarnings'],
+    ])('%s throws when the batch is missing', async methodName => {
+      await expect(service[methodName]('')).rejects.toThrow('Import Batch is required')
+    })
+  })
+
+  // ── Bulk: export jobs ──
+
+  describe('createLeadExport', () => {
+    it('builds a filter with a static list and a mapped date window', async () => {
+      mockToken()
+      mock.onPost(`${ BULK }/leads/export/create.json`).reply({ ...OK, result: [{ exportId: 'e1' }] })
+
+      await service.createLeadExport(['email', 'firstName'], 'TSV', 'Updated At', '2025-01-01', '2025-02-01', '1027')
+
+      const call = mock.history.find(h => h.url === `${ BULK }/leads/export/create.json`)
+
+      expect(call.body).toEqual({
+        fields: ['email', 'firstName'],
+        format: 'TSV',
+        filter: { staticListId: 1027, updatedAt: { startAt: '2025-01-01', endAt: '2025-02-01' } },
+      })
+    })
+
+    it('defaults the filter key to createdAt and the format to CSV', async () => {
+      mockToken()
+      mock.onPost(`${ BULK }/leads/export/create.json`).reply(OK)
+
+      await service.createLeadExport('email', undefined, undefined, '2025-01-01')
+
+      const call = mock.history.find(h => h.url === `${ BULK }/leads/export/create.json`)
+
+      expect(call.body).toEqual({
+        fields: ['email'],
+        format: 'CSV',
+        filter: { createdAt: { startAt: '2025-01-01' } },
+      })
+    })
+
+    it('sends an empty filter when no window or list is supplied', async () => {
+      mockToken()
+      mock.onPost(`${ BULK }/leads/export/create.json`).reply(OK)
+
+      await service.createLeadExport(['email'])
+
+      const call = mock.history.find(h => h.url === `${ BULK }/leads/export/create.json`)
+
+      expect(call.body.filter).toEqual({})
+    })
+
+    it('keeps a non-numeric static list id verbatim', async () => {
+      mockToken()
+      mock.onPost(`${ BULK }/leads/export/create.json`).reply(OK)
+
+      await service.createLeadExport(['email'], 'CSV', undefined, undefined, undefined, 'list-alias')
+
+      const call = mock.history.find(h => h.url === `${ BULK }/leads/export/create.json`)
+
+      expect(call.body.filter).toEqual({ staticListId: 'list-alias' })
+    })
+
+    it('throws when fields are empty', async () => {
+      await expect(service.createLeadExport([])).rejects.toThrow('Fields is required')
+    })
+  })
+
+  describe('createActivityExport', () => {
+    it('builds the createdAt window and numeric activity type IDs', async () => {
+      mockToken()
+      mock.onPost(`${ BULK }/activities/export/create.json`).reply({ ...OK, result: [{ exportId: 'a1' }] })
+
+      await service.createActivityExport(['leadId', 'activityDate'], 'CSV', '2025-01-01', '2025-02-01', ['1', '2'])
+
+      const call = mock.history.find(h => h.url === `${ BULK }/activities/export/create.json`)
+
+      expect(call.body).toEqual({
+        fields: ['leadId', 'activityDate'],
+        format: 'CSV',
+        filter: { createdAt: { startAt: '2025-01-01', endAt: '2025-02-01' }, activityTypeIds: [1, 2] },
+      })
+    })
+
+    it('omits activityTypeIds when none are supplied', async () => {
+      mockToken()
+      mock.onPost(`${ BULK }/activities/export/create.json`).reply(OK)
+
+      await service.createActivityExport(['leadId'], undefined, '2025-01-01', '2025-02-01')
+
+      const call = mock.history.find(h => h.url === `${ BULK }/activities/export/create.json`)
+
+      expect(call.body.filter.activityTypeIds).toBeUndefined()
+      expect(call.body.format).toBe('CSV')
+    })
+
+    it.each([
+      [[[], 'CSV', 's', 'e'], 'Fields is required'],
+      [[['leadId'], 'CSV', '', 'e'], 'Start is required'],
+      [[['leadId'], 'CSV', 's', ''], 'End is required'],
+    ])('rejects invalid input %#', async (args, message) => {
+      await expect(service.createActivityExport(...args)).rejects.toThrow(message)
+    })
+  })
+
+  describe('activity export lifecycle', () => {
+    it.each([
+      ['enqueueActivityExport', 'post', `${ BULK }/activities/export/a1/enqueue.json`],
+      ['getActivityExportStatus', 'get', `${ BULK }/activities/export/a1/status.json`],
+      ['cancelActivityExport', 'post', `${ BULK }/activities/export/a1/cancel.json`],
+    ])('%s issues %s %s', async (methodName, httpMethod, url) => {
+      mockToken()
+      mock.on(httpMethod, url).reply({ ...OK, result: [{ exportId: 'a1' }] })
+
+      const result = await service[methodName]('a1')
+
+      expect(result.result[0].exportId).toBe('a1')
+
+      const call = mock.history.find(h => h.url === url)
+
+      expect(call.method).toBe(httpMethod)
+    })
+
+    it('getActivityExportFile returns the file content', async () => {
+      mockToken()
+      mock.onGet(`${ BULK }/activities/export/a1/file.json`).reply('leadId,activityDate\n1,2025')
+
+      const result = await service.getActivityExportFile('a1')
+
+      expect(result).toEqual({ exportId: 'a1', content: 'leadId,activityDate\n1,2025' })
+    })
+
+    it('getLeadExportFile normalizes an empty payload', async () => {
+      mockToken()
+      mock.onGet(`${ BULK }/leads/export/e1/file.json`).reply(undefined)
+
+      const result = await service.getLeadExportFile('e1')
+
+      expect(result).toEqual({ exportId: 'e1', content: '' })
+    })
+
+    it.each([
+      ['enqueueActivityExport'],
+      ['getActivityExportStatus'],
+      ['getActivityExportFile'],
+      ['cancelActivityExport'],
+      ['getLeadExportFile'],
+      ['cancelLeadExport'],
+    ])('%s throws when the export job is missing', async methodName => {
+      await expect(service[methodName]('')).rejects.toThrow('Export Job is required')
+    })
+  })
+
+  // ── Asset dictionaries ──
+
+  describe('asset dictionaries', () => {
+    it.each([
+      ['getEmailsDictionary', `${ ASSET }/emails.json`, { id: 1, name: 'Welcome', status: 'approved' }, 'approved · ID: 1'],
+      ['getEmailsDictionary', `${ ASSET }/emails.json`, { id: 1, name: 'Welcome' }, 'email · ID: 1'],
+      ['getFormsDictionary', `${ ASSET }/forms.json`, { id: 2, name: 'Signup', status: 'draft' }, 'draft · ID: 2'],
+      ['getFormsDictionary', `${ ASSET }/forms.json`, { id: 2, name: 'Signup' }, 'form · ID: 2'],
+      ['getLandingPagesDictionary', `${ ASSET }/landingPages.json`, { id: 3, name: 'LP', status: 'approved' }, 'approved · ID: 3'],
+      ['getLandingPagesDictionary', `${ ASSET }/landingPages.json`, { id: 3, name: 'LP' }, 'page · ID: 3'],
+      ['getProgramsDictionary', `${ ASSET }/programs.json`, { id: 4, name: 'Prog' }, 'Program · ID: 4'],
+    ])('%s maps %#', async (methodName, url, record, note) => {
+      mockToken()
+      mock.onGet(url).reply({ ...OK, result: [record] })
+
+      const result = await service[methodName]({})
+
+      expect(result.items).toEqual([{ label: record.name, value: String(record.id), note }])
+      expect(result.cursor).toBeNull()
+    })
+
+    it.each([
+      ['getEmailsDictionary', `${ ASSET }/emails.json`],
+      ['getFormsDictionary', `${ ASSET }/forms.json`],
+      ['getLandingPagesDictionary', `${ ASSET }/landingPages.json`],
+      ['getProgramsDictionary', `${ ASSET }/programs.json`],
+    ])('%s filters by search and honours the offset cursor', async (methodName, url) => {
+      mockToken()
+
+      mock.onGet(url).reply({
+        ...OK,
+        result: [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }],
+      })
+
+      const result = await service[methodName]({ search: 'BET', cursor: '400' })
+
+      expect(result.items).toHaveLength(1)
+      expect(result.items[0].value).toBe('2')
+      expect(mock.history[1].query).toMatchObject({ maxReturn: 200, offset: 400 })
+    })
+
+    it.each([
+      ['getEmailsDictionary', `${ ASSET }/emails.json`],
+      ['getFormsDictionary', `${ ASSET }/forms.json`],
+      ['getLandingPagesDictionary', `${ ASSET }/landingPages.json`],
+    ])('%s handles a null payload and an empty result', async (methodName, url) => {
+      mockToken()
+      mock.onGet(url).reply({ ...OK })
+
+      const result = await service[methodName](null)
+
+      expect(result).toEqual({ items: [], cursor: null })
+      expect(mock.history[1].query).toMatchObject({ maxReturn: 200, offset: 0 })
+    })
+
+    it('advances the cursor by maxReturn when a page comes back full', async () => {
+      mockToken()
+
+      const items = Array.from({ length: 200 }, (_, i) => ({ id: i, name: `E${ i }` }))
+
+      mock.onGet(`${ ASSET }/emails.json`).reply({ ...OK, result: items })
+
+      const result = await service.getEmailsDictionary({ cursor: '200' })
+
+      expect(result.cursor).toBe('400')
+    })
+  })
+
+  describe('getFoldersDictionary', () => {
+    it('filters by search term', async () => {
+      mockToken()
+
+      mock.onGet(`${ ASSET }/folders.json`).reply({
+        ...OK,
+        result: [{ id: 1, name: 'Marketing' }, { id: 2, name: 'Sales' }],
+      })
+
+      const result = await service.getFoldersDictionary({ search: 'sal' })
+
+      expect(result.items).toEqual([{ label: 'Sales', value: '2', note: 'Folder · ID: 2' }])
+    })
+
+    it('advances the cursor when the page is full', async () => {
+      mockToken()
+
+      const items = Array.from({ length: 200 }, (_, i) => ({ id: i, name: `F${ i }` }))
+
+      mock.onGet(`${ ASSET }/folders.json`).reply({ ...OK, result: items })
+
+      const result = await service.getFoldersDictionary({ cursor: '200' })
+
+      expect(result.cursor).toBe('400')
+      expect(mock.history[1].query).toMatchObject({ offset: 200 })
+    })
+
+    it('handles a null payload and an empty result', async () => {
+      mockToken()
+      mock.onGet(`${ ASSET }/folders.json`).reply({ ...OK })
+
+      const result = await service.getFoldersDictionary(null)
+
+      expect(result).toEqual({ items: [], cursor: null })
+    })
+  })
+
+  describe('getSmartListsDictionary', () => {
+    it('maps smart lists using the configured root folder', async () => {
+      mockToken()
+
+      mock.onGet(`${ ASSET }/smartLists.json`).reply({
+        ...OK,
+        result: [{ id: 77, name: 'Engaged' }, { id: 78, name: 'Churned' }],
+      })
+
+      const result = await service.getSmartListsDictionary({})
+
+      expect(result.items).toEqual([
+        { label: 'Engaged', value: '77', note: 'ID: 77' },
+        { label: 'Churned', value: '78', note: 'ID: 78' },
+      ])
+
+      expect(mock.history[1].query).toMatchObject({
+        folder: JSON.stringify({ id: 1035, type: 'Folder' }),
+        maxReturn: 200,
+        offset: 0,
+      })
+    })
+
+    it('filters by search term and advances a full page cursor', async () => {
+      mockToken()
+
+      const items = Array.from({ length: 200 }, (_, i) => ({ id: i, name: `SL${ i }` }))
+
+      mock.onGet(`${ ASSET }/smartLists.json`).reply({ ...OK, result: items })
+
+      const result = await service.getSmartListsDictionary({ search: 'sl199', cursor: '200' })
+
+      expect(result.items).toEqual([{ label: 'SL199', value: '199', note: 'ID: 199' }])
+      expect(result.cursor).toBe('400')
+    })
+
+    it('handles a null payload and an empty result', async () => {
+      mockToken()
+      mock.onGet(`${ ASSET }/smartLists.json`).reply({ ...OK })
+
+      const result = await service.getSmartListsDictionary(null)
+
+      expect(result).toEqual({ items: [], cursor: null })
+    })
+  })
+
+  describe('REST dictionaries', () => {
+    it('getCampaignsDictionary filters by search and forwards the cursor', async () => {
+      mockToken()
+
+      mock.onGet(`${ REST }/campaigns.json`).reply({
+        ...OK,
+        result: [{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }],
+        nextPageToken: 'NEXT',
+      })
+
+      const result = await service.getCampaignsDictionary({ search: 'alp', cursor: 'PREV' })
+
+      expect(result.items).toEqual([{ label: 'Alpha', value: '1', note: 'campaign · ID: 1' }])
+      expect(result.cursor).toBe('NEXT')
+      expect(mock.history[1].query).toMatchObject({ batchSize: 300, nextPageToken: 'PREV' })
+    })
+
+    it('getCampaignsDictionary handles a null payload and an empty result', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/campaigns.json`).reply({ ...OK })
+
+      const result = await service.getCampaignsDictionary(null)
+
+      expect(result).toEqual({ items: [], cursor: null })
+    })
+
+    it('getActivityTypesDictionary filters by search and falls back to an ID note', async () => {
+      mockToken()
+
+      mock.onGet(`${ REST }/activities/types.json`).reply({
+        ...OK,
+        result: [{ id: 2, name: 'Fill Out Form' }, { id: 3, name: 'Click Link' }],
+      })
+
+      const result = await service.getActivityTypesDictionary({ search: 'click' })
+
+      expect(result.items).toEqual([{ label: 'Click Link', value: '3', note: 'ID: 3' }])
+    })
+
+    it('getActivityTypesDictionary handles a null payload and an empty result', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/activities/types.json`).reply({ ...OK })
+
+      const result = await service.getActivityTypesDictionary(null)
+
+      expect(result).toEqual({ items: [], cursor: null })
+    })
+
+    it('getCustomObjectsDictionary falls back to the API name as the label', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/customobjects.json`).reply({ ...OK, result: [{ name: 'car_c' }] })
+
+      const result = await service.getCustomObjectsDictionary(null)
+
+      expect(result.items).toEqual([{ label: 'car_c', value: 'car_c', note: 'API name: car_c' }])
+    })
+
+    it('getCustomObjectsDictionary handles an empty result', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/customobjects.json`).reply({ ...OK })
+
+      const result = await service.getCustomObjectsDictionary({})
+
+      expect(result).toEqual({ items: [], cursor: null })
+    })
+
+    it('getListsDictionary handles an empty result', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/lists.json`).reply({ ...OK })
+
+      const result = await service.getListsDictionary({})
+
+      expect(result).toEqual({ items: [], cursor: null })
+    })
+  })
+
+  // ── Triggers: pagination draining and dispatch ──
+
+  describe('polling trigger pagination', () => {
+    it('onNewLead drains every page while moreResult is true', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/activities/types.json`).reply({ ...OK, result: [{ id: 12, name: 'New Lead' }] })
+
+      let page = 0
+
+      mock.onGet(`${ REST }/activities.json`).replyWith(() => {
+        page += 1
+
+        if (page === 1) {
+          return { ...OK, result: [{ id: 1 }], nextPageToken: 'P2', moreResult: true }
+        }
+
+        return { ...OK, result: [{ id: 2 }], nextPageToken: 'P3', moreResult: false }
+      })
+
+      const result = await service.onNewLead({ state: { nextPageToken: 'P1' } })
+
+      expect(result.events.map(e => e.id)).toEqual([1, 2])
+      expect(result.state.nextPageToken).toBe('P3')
+      expect(page).toBe(2)
+    })
+
+    it('onNewLead falls back to activity type 12 when no "New Lead" type is returned', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/activities/types.json`).reply({ ...OK, result: [{ id: 5, name: 'Other' }] })
+      mock.onGet(`${ REST }/activities.json`).reply({ ...OK, result: [], moreResult: false })
+
+      await service.onNewLead({ state: { nextPageToken: 'P1' } })
+
+      const call = mock.history.find(h => h.url === `${ REST }/activities.json`)
+
+      expect(call.query.activityTypeIds).toBe(12)
+    })
+
+    it('onNewLead falls back to activity type 12 when the types response is empty', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/activities/types.json`).reply({ ...OK })
+      mock.onGet(`${ REST }/activities.json`).reply({ ...OK, result: [], moreResult: false })
+
+      await service.onNewLead({ state: { nextPageToken: 'P1' } })
+
+      const call = mock.history.find(h => h.url === `${ REST }/activities.json`)
+
+      expect(call.query.activityTypeIds).toBe(12)
+    })
+
+    it('onNewLead anchors with a null token when the paging token is absent', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/activities/pagingtoken.json`).reply({ ...OK })
+
+      const result = await service.onNewLead({})
+
+      expect(result).toEqual({ events: [], state: { nextPageToken: null } })
+    })
+
+    it('onNewActivity drains pages and joins the requested type IDs', async () => {
+      mockToken()
+
+      let page = 0
+
+      mock.onGet(`${ REST }/activities.json`).replyWith(() => {
+        page += 1
+
+        if (page === 1) {
+          return { ...OK, result: [{ id: 1 }], nextPageToken: 'P2', moreResult: true }
+        }
+
+        return { ...OK, result: [{ id: 2 }], moreResult: false }
+      })
+
+      const result = await service.onNewActivity({
+        state: { nextPageToken: 'P1' },
+        triggerData: { activityTypeIds: ['1', '2'] },
+      })
+
+      expect(result.events).toHaveLength(2)
+      // No nextPageToken on the final page, so the previous token is retained.
+      expect(result.state.nextPageToken).toBe('P2')
+      expect(mock.history[1].query.activityTypeIds).toBe('1,2')
+    })
+
+    it('onNewActivity accepts a comma-separated type list', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/activities.json`).reply({ ...OK, result: [], moreResult: false })
+
+      await service.onNewActivity({
+        state: { nextPageToken: 'P1' },
+        triggerData: { activityTypeIds: '1, 2' },
+      })
+
+      expect(mock.history[1].query.activityTypeIds).toBe('1,2')
+    })
+
+    it('onLeadFieldChange omits listId when not configured and drains pages', async () => {
+      mockToken()
+
+      let page = 0
+
+      mock.onGet(`${ REST }/activities/leadchanges.json`).replyWith(() => {
+        page += 1
+
+        if (page === 1) {
+          return { ...OK, result: [{ id: 1 }], nextPageToken: 'P2', moreResult: true }
+        }
+
+        return { ...OK, result: [{ id: 2 }], nextPageToken: 'P3', moreResult: false }
+      })
+
+      const result = await service.onLeadFieldChange({
+        state: { nextPageToken: 'P1' },
+        triggerData: { fields: ['email'] },
+      })
+
+      expect(result.events).toHaveLength(2)
+      expect(result.state.nextPageToken).toBe('P3')
+      expect(mock.history[1].query.listId).toBeUndefined()
+    })
+
+    it('onDeletedLead drains pages', async () => {
+      mockToken()
+
+      let page = 0
+
+      mock.onGet(`${ REST }/activities/deletedleads.json`).replyWith(() => {
+        page += 1
+
+        if (page === 1) {
+          return { ...OK, result: [{ id: 1 }], nextPageToken: 'P2', moreResult: true }
+        }
+
+        return { ...OK, result: [{ id: 2 }], nextPageToken: 'P3', moreResult: false }
+      })
+
+      const result = await service.onDeletedLead({ state: { nextPageToken: 'P1' } })
+
+      expect(result.events).toHaveLength(2)
+      expect(result.state.nextPageToken).toBe('P3')
+    })
+
+    it('onNewActivity anchors with an undefined invocation-less state', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/activities/pagingtoken.json`).reply({ ...OK, nextPageToken: 'A==' })
+
+      const result = await service.onNewActivity({ triggerData: { activityTypeIds: ['1'] } })
+
+      expect(result).toEqual({ events: [], state: { nextPageToken: 'A==' } })
+    })
+
+    it('onDeletedLead anchors when invoked with no arguments', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/activities/pagingtoken.json`).reply({ ...OK, nextPageToken: 'A==' })
+
+      const result = await service.onDeletedLead()
+
+      expect(result).toEqual({ events: [], state: { nextPageToken: 'A==' } })
+    })
+
+    it('onLeadFieldChange throws when invoked with no arguments', async () => {
+      await expect(service.onLeadFieldChange()).rejects.toThrow('Fields to Watch is required')
+    })
+
+    it('onNewActivity throws when invoked with no arguments', async () => {
+      await expect(service.onNewActivity()).rejects.toThrow('Activity Types is required')
+    })
+  })
+
+  describe('handleTriggerPollingForEvent', () => {
+    it.each([
+      ['onNewLead'],
+      ['onDeletedLead'],
+    ])('dispatches to %s', async eventName => {
+      mockToken()
+      mock.onGet(`${ REST }/activities/pagingtoken.json`).reply({ ...OK, nextPageToken: 'A==' })
+
+      const result = await service.handleTriggerPollingForEvent({ eventName, state: {} })
+
+      expect(result).toEqual({ events: [], state: { nextPageToken: 'A==' } })
+    })
+
+    it('dispatches to onNewActivity with trigger data', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/activities/pagingtoken.json`).reply({ ...OK, nextPageToken: 'A==' })
+
+      const result = await service.handleTriggerPollingForEvent({
+        eventName: 'onNewActivity',
+        state: {},
+        triggerData: { activityTypeIds: ['1'] },
+      })
+
+      expect(result.events).toEqual([])
+    })
+  })
+
+  // ── Required-parameter guards ──
+
+  describe('required parameter guards', () => {
+    it.each([
+      ['getProgramById', [''], 'Program is required'],
+      ['updateProgram', [''], 'Program is required'],
+      ['cloneProgram', [''], 'Program is required'],
+      ['cloneProgram', ['1107', ''], 'New Name is required'],
+      ['cloneProgram', ['1107', 'Copy', ''], 'Destination Folder is required'],
+      ['deleteProgram', [''], 'Program is required'],
+      ['approveEmailProgram', [''], 'Program is required'],
+      ['unapproveEmailProgram', [''], 'Program is required'],
+      ['browseFolders', [''], 'Root Folder is required'],
+      ['getFolderById', [''], 'Folder is required'],
+      ['createFolder', [''], 'Name is required'],
+      ['createFolder', ['F', ''], 'Parent Folder is required'],
+      ['updateFolder', [''], 'Folder is required'],
+      ['deleteFolder', [''], 'Folder is required'],
+      ['getTokensByFolder', [''], 'Folder / Program is required'],
+      ['createToken', [''], 'Folder / Program is required'],
+      ['createToken', ['1035', 'Folder', ''], 'Token Name is required'],
+      ['createToken', ['1035', 'Folder', 'my.T', ''], 'Token Type is required'],
+      ['createToken', ['1035', 'Folder', 'my.T', 'Text', ''], 'Value is required'],
+      ['createToken', ['1035', 'Folder', 'my.T', 'Text', null], 'Value is required'],
+      ['deleteToken', [''], 'Folder / Program is required'],
+      ['deleteToken', ['1035', 'Folder', ''], 'Token Name is required'],
+      ['deleteToken', ['1035', 'Folder', 'my.T', ''], 'Token Type is required'],
+      ['getEmailById', [''], 'Email is required'],
+      ['getEmailContent', [''], 'Email is required'],
+      ['createEmail', [''], 'Name is required'],
+      ['createEmail', ['E', ''], 'Email Template ID is required'],
+      ['createEmail', ['E', '24', ''], 'Folder is required'],
+      ['updateEmail', [''], 'Email is required'],
+      ['cloneEmail', [''], 'Email is required'],
+      ['cloneEmail', ['1356', ''], 'New Name is required'],
+      ['cloneEmail', ['1356', 'Copy', ''], 'Destination Folder is required'],
+      ['deleteEmail', [''], 'Email is required'],
+      ['approveEmail', [''], 'Email is required'],
+      ['unapproveEmail', [''], 'Email is required'],
+      ['sendSampleEmail', [''], 'Email is required'],
+      ['sendSampleEmail', ['1356', ''], 'Recipient is required'],
+      ['getFormById', [''], 'Form is required'],
+      ['getFormFields', [''], 'Form is required'],
+      ['createForm', [''], 'Name is required'],
+      ['createForm', ['F', ''], 'Folder is required'],
+      ['updateForm', [''], 'Form is required'],
+      ['cloneForm', [''], 'Form is required'],
+      ['cloneForm', ['1029', ''], 'New Name is required'],
+      ['cloneForm', ['1029', 'Copy', ''], 'Destination Folder is required'],
+      ['approveForm', [''], 'Form is required'],
+      ['unapproveForm', [''], 'Form is required'],
+      ['deleteForm', [''], 'Form is required'],
+      ['getLandingPageById', [''], 'Landing Page is required'],
+      ['getLandingPageContent', [''], 'Landing Page is required'],
+      ['createLandingPage', [''], 'Name is required'],
+      ['createLandingPage', ['LP', ''], 'Landing Page Template ID is required'],
+      ['createLandingPage', ['LP', '12', ''], 'Folder is required'],
+      ['updateLandingPage', [''], 'Landing Page is required'],
+      ['cloneLandingPage', [''], 'Landing Page is required'],
+      ['cloneLandingPage', ['500', ''], 'New Name is required'],
+      ['cloneLandingPage', ['500', 'Copy', ''], 'Destination Folder is required'],
+      ['cloneLandingPage', ['500', 'Copy', '1035', ''], 'Template ID is required'],
+      ['approveLandingPage', [''], 'Landing Page is required'],
+      ['unapproveLandingPage', [''], 'Landing Page is required'],
+      ['deleteLandingPage', [''], 'Landing Page is required'],
+      ['browseSmartLists', [''], 'Folder is required'],
+      ['getSmartListById', [''], 'Smart List is required'],
+      ['cloneSmartList', [''], 'Smart List is required'],
+      ['cloneSmartList', ['77', ''], 'New Name is required'],
+      ['cloneSmartList', ['77', 'Copy', ''], 'Destination Folder is required'],
+      ['deleteSmartList', [''], 'Smart List is required'],
+      ['getSnippetContent', [''], 'Snippet is required'],
+      ['createSnippet', [''], 'Name is required'],
+      ['createSnippet', ['S', ''], 'Folder is required'],
+      ['updateSnippet', [''], 'Snippet is required'],
+      ['updateSnippetContent', [''], 'Snippet is required'],
+      ['updateSnippetContent', ['33', null], 'HTML Content is required'],
+      ['approveSnippetDraft', [''], 'Snippet is required'],
+      ['deleteSnippet', [''], 'Snippet is required'],
+      ['queryCustomObjects', [''], 'Custom Object is required'],
+      ['queryCustomObjects', ['car_c', ''], 'Filter Field is required'],
+      ['queryCustomObjects', ['car_c', 'vin', []], 'Filter Values is required'],
+      ['syncCustomObjects', [''], 'Custom Object is required'],
+      ['syncCustomObjects', ['car_c', []], 'Records is required'],
+      ['deleteCustomObjects', [''], 'Custom Object is required'],
+      ['deleteCustomObjects', ['car_c', []], 'Records is required'],
+      ['addLeadsToList', [''], 'List is required'],
+      ['removeLeadsFromList', [''], 'List is required'],
+      ['removeLeadsFromList', ['1027', []], 'Lead IDs is required'],
+      ['isMemberOfList', [''], 'List is required'],
+      ['isMemberOfList', ['1027', []], 'Lead IDs is required'],
+      ['requestCampaign', [''], 'Campaign is required'],
+      ['scheduleCampaign', [''], 'Campaign is required'],
+      ['mergeLeads', ['100', []], 'Losing Leads is required'],
+      ['pushLead', [''], 'Program is required'],
+      ['pushLead', ['My Program', []], 'Leads is required'],
+      ['submitForm', [''], 'Form is required'],
+      ['associateLead', [''], 'Lead is required'],
+      ['associateLead', ['100', ''], 'Munchkin Cookie is required'],
+      ['syncLeads', ['not-an-array'], 'Leads is required'],
+    ])('%s%j throws "%s"', async (methodName, args, message) => {
+      await expect(service[methodName](...args)).rejects.toThrow(message)
+    })
+
+    it('makes no HTTP call when a guard rejects', async () => {
+      await expect(service.deleteProgram('')).rejects.toThrow('Program is required')
+
+      expect(mock.history).toHaveLength(0)
+    })
+  })
+
+  // ── Remaining REST action coverage ──
+
+  describe('remaining REST actions', () => {
+    it('getLeadById omits fields when none are supplied', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/lead/123.json`).reply({ ...OK, result: [] })
+
+      await service.getLeadById('123')
+
+      expect(mock.history[1].query).toEqual({})
+    })
+
+    it('getLeads omits optional params', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/leads.json`).reply({ ...OK, result: [] })
+
+      await service.getLeads('Email', 'a@test.com')
+
+      const call = mock.history.find(h => h.url === `${ REST }/leads.json`)
+
+      expect(call.query).toEqual({ filterType: 'email', filterValues: 'a@test.com' })
+    })
+
+    it('getLists sends an empty query with no filters', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/lists.json`).reply({ ...OK, result: [] })
+
+      await service.getLists()
+
+      expect(mock.history[1].query).toEqual({})
+    })
+
+    it('getLeadsByList omits optional params', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/lists/1027/leads.json`).reply({ ...OK, result: [] })
+
+      await service.getLeadsByList('1027')
+
+      expect(mock.history[1].query).toEqual({})
+    })
+
+    it('getCampaigns sends an empty query with no filters', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/campaigns.json`).reply({ ...OK, result: [] })
+
+      await service.getCampaigns()
+
+      expect(mock.history[1].query).toEqual({})
+    })
+
+    it('getCampaigns forwards isTriggerable false', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/campaigns.json`).reply({ ...OK, result: [] })
+
+      await service.getCampaigns(undefined, undefined, false)
+
+      expect(mock.history[1].query).toEqual({ isTriggerable: false })
+    })
+
+    it('scheduleCampaign sends an empty input when nothing optional is supplied', async () => {
+      mockToken()
+      mock.onPost(`${ REST }/campaigns/1069/schedule.json`).reply(OK)
+
+      await service.scheduleCampaign('1069')
+
+      const call = mock.history.find(h => h.url.includes('/schedule.json'))
+
+      expect(call.body).toEqual({ input: {} })
+    })
+
+    it('scheduleCampaign ignores an empty tokens array', async () => {
+      mockToken()
+      mock.onPost(`${ REST }/campaigns/1069/schedule.json`).reply(OK)
+
+      await service.scheduleCampaign('1069', '2026-01-01T00:00:00Z', undefined, [])
+
+      const call = mock.history.find(h => h.url.includes('/schedule.json'))
+
+      expect(call.body).toEqual({ input: { runAt: '2026-01-01T00:00:00Z' } })
+    })
+
+    it('getLeadActivities omits optional params', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/activities.json`).reply({ ...OK, result: [] })
+
+      await service.getLeadActivities('TOK', ['1'])
+
+      const call = mock.history.find(h => h.url === `${ REST }/activities.json`)
+
+      expect(call.query).toEqual({ nextPageToken: 'TOK', activityTypeIds: '1' })
+    })
+
+    it('listCustomObjectTypes sends an empty query when no names are supplied', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/customobjects.json`).reply({ ...OK, result: [] })
+
+      await service.listCustomObjectTypes()
+
+      expect(mock.history[1].query).toEqual({})
+    })
+
+    it('queryCustomObjects omits optional params', async () => {
+      mockToken()
+      mock.onGet(`${ REST }/customobjects/car_c.json`).reply({ ...OK, result: [] })
+
+      await service.queryCustomObjects('car_c', 'vin', 'VIN1')
+
+      const call = mock.history.find(h => h.url === `${ REST }/customobjects/car_c.json`)
+
+      expect(call.query).toEqual({ filterType: 'vin', filterValues: 'VIN1' })
+    })
+
+    it('syncCustomObjects defaults the action and omits dedupeBy', async () => {
+      mockToken()
+      mock.onPost(`${ REST }/customobjects/car_c.json`).reply(OK)
+
+      await service.syncCustomObjects('car_c', [{ vin: 'V1' }])
+
+      const call = mock.history.find(h => h.url === `${ REST }/customobjects/car_c.json` && h.method === 'post')
+
+      expect(call.body).toEqual({ action: 'createOrUpdate', input: [{ vin: 'V1' }] })
+    })
+
+    it('deleteCustomObjects omits deleteBy when not supplied', async () => {
+      mockToken()
+      mock.onPost(`${ REST }/customobjects/car_c/delete.json`).reply(OK)
+
+      await service.deleteCustomObjects('car_c', [{ vin: 'V1' }])
+
+      const call = mock.history.find(h => h.url.includes('/customobjects/car_c/delete.json'))
+
+      expect(call.body).toEqual({ input: [{ vin: 'V1' }] })
+    })
+
+    it('mergeLeads omits mergeInCRM when not supplied', async () => {
+      mockToken()
+      mock.onPost(`${ REST }/leads/100/merge.json`).reply(OK)
+
+      await service.mergeLeads('100', ['200'])
+
+      const call = mock.history.find(h => h.url.includes('/merge.json'))
+
+      expect(call.query).toEqual({ leadIds: '200' })
+    })
+
+    it('pushLead omits source and reason when not supplied', async () => {
+      mockToken()
+      mock.onPost(`${ REST }/leads/push.json`).reply(OK)
+
+      await service.pushLead('My Program', [{ email: 'a@test.com' }])
+
+      const call = mock.history.find(h => h.url.includes('/leads/push.json'))
+
+      expect(call.body).toEqual({
+        programName: 'My Program',
+        lookupField: 'email',
+        input: [{ email: 'a@test.com' }],
+      })
+    })
+
+    it('submitForm omits cookie and visitorData when not supplied', async () => {
+      mockToken()
+      mock.onPost(`${ REST }/leads/submitForm.json`).reply(OK)
+
+      await service.submitForm('1029', { email: 'a@test.com' })
+
+      const call = mock.history.find(h => h.url.includes('/submitForm.json'))
+
+      expect(call.body).toEqual({ formId: 1029, input: [{ leadFormFields: { email: 'a@test.com' } }] })
+    })
+
+    it('submitForm keeps a non-numeric form id verbatim', async () => {
+      mockToken()
+      mock.onPost(`${ REST }/leads/submitForm.json`).reply(OK)
+
+      await service.submitForm('form-alias', { email: 'a@test.com' })
+
+      const call = mock.history.find(h => h.url.includes('/submitForm.json'))
+
+      expect(call.body.formId).toBe('form-alias')
+    })
+
+    it('submitForm rejects a non-object field map', async () => {
+      await expect(service.submitForm('1029', 'not-an-object')).rejects.toThrow('Form Fields is required')
+    })
+
+    it('syncLeads omits partitionName when not supplied', async () => {
+      mockToken()
+      mock.onPost(`${ REST }/leads.json`).reply(OK)
+
+      await service.syncLeads([{ email: 'a@test.com' }])
+
+      const call = mock.history.find(h => h.method === 'post')
+
+      expect(call.body.partitionName).toBeUndefined()
     })
   })
 })
