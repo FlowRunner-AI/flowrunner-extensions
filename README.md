@@ -7,8 +7,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | | Total | Unit Tests | E2E Tests | No Tests |
 |---|---|---|---|---|
 | OAuth Extensions | 100 | 48 | 0 | 52 |
-| API Key Extensions | 285 | 211 | 211 | 74 |
-| **All Services** | **385** | **259** | **211** | **126** |
+| API Key Extensions | 285 | 213 | 213 | 72 |
+| **All Services** | **385** | **261** | **213** | **124** |
 
 ## OAuth Extensions
 
@@ -398,8 +398,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [wordpress](services/wordpress/) | | |
 | [workable](services/workable/) | | |
 | [wufoo](services/wufoo/) | | |
-| [xai-grok](services/xai-grok/) | | |
-| [yourls](services/yourls/) | | |
+| [xai-grok](services/xai-grok/) | ✅ | ✅ |
+| [yourls](services/yourls/) | ✅ | ✅ |
 | [zammad](services/zammad/) | | |
 | [zendesk](services/zendesk/) | | |
 | [zep](services/zep/) | | |
