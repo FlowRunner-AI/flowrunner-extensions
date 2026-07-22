@@ -1025,21 +1025,28 @@ describe('Front Service', () => {
     const nowSeconds = Math.floor(Date.now() / 1000)
 
     it('returns latest inbound message in learning mode', async () => {
-      const searchQuery = encodeURIComponent(`after:${nowSeconds - 60}`)
+      mock.onAny().replyWith((call) => {
+        if (call.url.includes('/search/')) {
+          return {
+            _results: [{ id: 'cnv_1' }],
+            _pagination: { next: null },
+          }
+        }
 
-      mock.onGet(`${BASE}/conversations/search/${searchQuery}`).reply({
-        _results: [{ id: 'cnv_1' }],
-        _pagination: { next: null },
-      })
-      mock.onGet(`${BASE}/conversations/cnv_1/messages`).reply({
-        _results: [{
-          id: 'msg_1',
-          is_inbound: true,
-          created_at: nowSeconds,
-          recipients: [{ handle: 'alice@test.com', role: 'from' }],
-          attachments: [],
-        }],
-        _pagination: { next: null },
+        if (call.url.includes('/messages')) {
+          return {
+            _results: [{
+              id: 'msg_1',
+              is_inbound: true,
+              created_at: nowSeconds,
+              recipients: [{ handle: 'alice@test.com', role: 'from' }],
+              attachments: [],
+            }],
+            _pagination: { next: null },
+          }
+        }
+
+        return { _results: [], _pagination: { next: null } }
       })
 
       const invocation = {
@@ -1117,19 +1124,26 @@ describe('Front Service', () => {
     const nowSeconds = Math.floor(Date.now() / 1000)
 
     it('returns latest comment in learning mode', async () => {
-      const searchQuery = encodeURIComponent(`after:${nowSeconds - 60}`)
+      mock.onAny().replyWith((call) => {
+        if (call.url.includes('/search/')) {
+          return {
+            _results: [{ id: 'cnv_1' }],
+            _pagination: { next: null },
+          }
+        }
 
-      mock.onGet(`${BASE}/conversations/search/${searchQuery}`).reply({
-        _results: [{ id: 'cnv_1' }],
-        _pagination: { next: null },
-      })
-      mock.onGet(`${BASE}/conversations/cnv_1/comments`).reply({
-        _results: [{
-          id: 'com_1',
-          body: 'Note',
-          posted_at: nowSeconds,
-        }],
-        _pagination: { next: null },
+        if (call.url.includes('/comments')) {
+          return {
+            _results: [{
+              id: 'com_1',
+              body: 'Note',
+              posted_at: nowSeconds,
+            }],
+            _pagination: { next: null },
+          }
+        }
+
+        return { _results: [], _pagination: { next: null } }
       })
 
       const invocation = {
@@ -1217,6 +1231,303 @@ describe('Front Service', () => {
 
       // The search URL should contain the inbox filter
       expect(mock.history[0].url).toContain('inbox%3Ainb_1')
+    })
+  })
+
+  // ── Additional coverage ──
+
+  describe('getAttachment - extension inference', () => {
+    it('appends extension from mime type when filename has no extension', async () => {
+      mock.onGet(`${BASE}/download/fil_noext`).reply({
+        body: Buffer.from('data'),
+        headers: { 'content-type': 'image/png' },
+      })
+
+      service.flowrunner = {
+        Files: {
+          uploadFile: jest.fn().mockResolvedValue({ url: 'https://storage.example.com/file.png' }),
+        },
+      }
+
+      await service.getAttachment('fil_noext', 'myimage')
+
+      expect(service.flowrunner.Files.uploadFile).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ filename: 'myimage.png' })
+      )
+    })
+
+    it('does not double-append extension when filename already has one', async () => {
+      mock.onGet(`${BASE}/download/fil_ext`).reply({
+        body: Buffer.from('data'),
+        headers: { 'content-type': 'application/pdf' },
+      })
+
+      service.flowrunner = {
+        Files: {
+          uploadFile: jest.fn().mockResolvedValue({ url: 'https://storage.example.com/doc.pdf' }),
+        },
+      }
+
+      await service.getAttachment('fil_ext', 'report.pdf')
+
+      expect(service.flowrunner.Files.uploadFile).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ filename: 'report.pdf' })
+      )
+    })
+
+    it('uses fileOptions scope when provided', async () => {
+      mock.onGet(`${BASE}/download/fil_scope`).reply({
+        body: Buffer.from('data'),
+        headers: { 'content-type': 'text/plain' },
+      })
+
+      service.flowrunner = {
+        Files: {
+          uploadFile: jest.fn().mockResolvedValue({ url: 'https://storage.example.com/file.txt' }),
+        },
+      }
+
+      await service.getAttachment('fil_scope', 'notes.txt', { scope: 'APP' })
+
+      expect(service.flowrunner.Files.uploadFile).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ scope: 'APP' })
+      )
+    })
+
+    it('rejects invalid URL format', async () => {
+      await expect(service.getAttachment('https://not a valid url')).rejects.toThrow('Attachment URL is not a valid URL')
+    })
+
+    it('handles unknown mime type without appending extension', async () => {
+      mock.onGet(`${BASE}/download/fil_unk`).reply({
+        body: Buffer.from('data'),
+        headers: { 'content-type': 'application/octet-stream' },
+      })
+
+      service.flowrunner = {
+        Files: {
+          uploadFile: jest.fn().mockResolvedValue({ url: 'https://storage.example.com/file' }),
+        },
+      }
+
+      await service.getAttachment('fil_unk', 'binary')
+
+      expect(service.flowrunner.Files.uploadFile).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ filename: 'binary' })
+      )
+    })
+
+    it('derives filename from URL when not provided', async () => {
+      mock.onGet(`${BASE}/download/fil_abc`).reply({
+        body: Buffer.from('data'),
+        headers: { 'content-type': 'application/pdf' },
+      })
+
+      service.flowrunner = {
+        Files: {
+          uploadFile: jest.fn().mockResolvedValue({ url: 'https://storage.example.com/fil_abc' }),
+        },
+      }
+
+      await service.getAttachment('fil_abc')
+
+      expect(service.flowrunner.Files.uploadFile).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ filename: 'fil_abc.pdf' })
+      )
+    })
+  })
+
+  describe('getTeammatesDictionary - label fallbacks', () => {
+    it('uses email as label when names and username are empty', async () => {
+      mock.onGet(`${BASE}/teammates`).reply({
+        _results: [
+          { id: 'tea_1', first_name: '', last_name: '', email: 'solo@test.com', username: '' },
+        ],
+        _pagination: { next: null },
+      })
+
+      const result = await service.getTeammatesDictionary({})
+
+      expect(result.items[0].label).toBe('solo@test.com')
+    })
+
+    it('filters teammates by username', async () => {
+      mock.onGet(`${BASE}/teammates`).reply({
+        _results: [
+          { id: 'tea_1', first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', username: 'jdoe' },
+          { id: 'tea_2', first_name: 'Bob', last_name: 'Smith', email: 'bob@test.com', username: 'bsmith' },
+        ],
+        _pagination: { next: null },
+      })
+
+      const result = await service.getTeammatesDictionary({ search: 'jdoe' })
+
+      expect(result.items).toHaveLength(1)
+      expect(result.items[0].value).toBe('tea_1')
+    })
+  })
+
+  describe('getChannelsDictionary - default note', () => {
+    it('uses "channel" as note when type is falsy', async () => {
+      mock.onGet(`${BASE}/channels`).reply({
+        _results: [
+          { id: 'cha_1', name: 'Test', address: 'test@test.com' },
+        ],
+        _pagination: { next: null },
+      })
+
+      const result = await service.getChannelsDictionary({})
+
+      expect(result.items[0].note).toBe('channel')
+    })
+  })
+
+  describe('getInboxesDictionary - default note', () => {
+    it('uses "inbox" as note when type is falsy', async () => {
+      mock.onGet(`${BASE}/inboxes`).reply({
+        _results: [
+          { id: 'inb_1', name: 'Test' },
+        ],
+        _pagination: { next: null },
+      })
+
+      const result = await service.getInboxesDictionary({})
+
+      expect(result.items[0].note).toBe('inbox')
+    })
+  })
+
+  describe('onNewInboundMessage - inbox filter', () => {
+    it('includes inbox in search query when provided', async () => {
+      mock.onAny().reply({
+        _results: [],
+        _pagination: { next: null },
+      })
+
+      const invocation = {
+        eventName: 'onNewInboundMessage',
+        triggerData: { inboxId: 'inb_1' },
+        learningMode: true,
+      }
+
+      await service.handleTriggerPollingForEvent(invocation)
+
+      expect(mock.history[0].url).toContain('inbox%3Ainb_1')
+    })
+  })
+
+  describe('onNewInboundMessage - attachment normalization', () => {
+    it('normalizes attachments with metadata', async () => {
+      const nowSec = Math.floor(Date.now() / 1000)
+
+      mock.onAny().replyWith((call) => {
+        if (call.url.includes('/search/')) {
+          return {
+            _results: [{ id: 'cnv_1' }],
+            _pagination: { next: null },
+          }
+        }
+
+        if (call.url.includes('/messages')) {
+          return {
+            _results: [{
+              id: 'msg_att',
+              is_inbound: true,
+              created_at: nowSec,
+              recipients: [{ handle: 'sender@test.com', role: 'from' }],
+              attachments: [{
+                id: 'fil_1',
+                filename: 'doc.pdf',
+                content_type: 'application/pdf',
+                size: 1024,
+                url: 'https://api2.frontapp.com/download/fil_1',
+                metadata: { is_inline: true },
+              }],
+            }],
+            _pagination: { next: null },
+          }
+        }
+
+        return { _results: [], _pagination: { next: null } }
+      })
+
+      const invocation = {
+        eventName: 'onNewInboundMessage',
+        triggerData: {},
+        learningMode: true,
+      }
+
+      const result = await service.handleTriggerPollingForEvent(invocation)
+
+      expect(result.events[0].attachments[0]).toEqual({
+        id: 'fil_1',
+        filename: 'doc.pdf',
+        content_type: 'application/pdf',
+        size: 1024,
+        url: 'https://api2.frontapp.com/download/fil_1',
+        is_inline: true,
+      })
+    })
+  })
+
+  describe('onNewConversation - empty results', () => {
+    it('returns empty events in learning mode when no conversations', async () => {
+      mock.onGet(`${BASE}/conversations`).reply({
+        _results: [],
+        _pagination: { next: null },
+      })
+
+      const invocation = {
+        eventName: 'onNewConversation',
+        triggerData: {},
+        learningMode: true,
+      }
+
+      const result = await service.handleTriggerPollingForEvent(invocation)
+
+      expect(result.events).toHaveLength(0)
+      expect(result.state).toBeNull()
+    })
+  })
+
+  describe('error handling - non-object error body', () => {
+    it('JSON-stringifies non-string, non-_error error bodies', async () => {
+      mock.onGet(`${BASE}/conversations/cnv_bad`).replyWithError({
+        message: { code: 500, detail: 'Internal error' },
+      })
+
+      await expect(service.getConversation('cnv_bad')).rejects.toThrow('Front API error:')
+    })
+  })
+
+  describe('listContacts - custom limit', () => {
+    it('passes custom limit to API', async () => {
+      mock.onGet(`${BASE}/contacts`).reply({
+        _results: [],
+        _pagination: { next: null },
+      })
+
+      await service.listContacts(undefined, 50)
+
+      expect(mock.history[0].query).toMatchObject({ limit: 50 })
+    })
+  })
+
+  describe('listAccounts - custom limit', () => {
+    it('passes custom limit to API', async () => {
+      mock.onGet(`${BASE}/accounts`).reply({
+        _results: [],
+        _pagination: { next: null },
+      })
+
+      await service.listAccounts(undefined, 50)
+
+      expect(mock.history[0].query).toMatchObject({ limit: 50 })
     })
   })
 

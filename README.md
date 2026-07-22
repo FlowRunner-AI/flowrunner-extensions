@@ -2,6 +2,14 @@
 
 A collection of third-party service integrations for FlowRunner. Each extension provides a self-contained connector that exposes API operations as FlowRunner actions, triggers, and dictionary methods. Extensions are FlowRunner-native, built and deployed directly in this repository.
 
+## Services Stats
+
+| | Total | Unit Tests | E2E Tests | No Tests |
+|---|---|---|---|---|
+| OAuth Extensions | 100 | 48 | 0 | 52 |
+| API Key Extensions | 285 | 213 | 213 | 72 |
+| **All Services** | **385** | **261** | **213** | **124** |
+
 ## OAuth Extensions
 
 | Extension Name | Unit Tests | E2E Tests |
@@ -183,7 +191,7 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [disqus](services/disqus/) | ✅ | ✅ |
 | [drift](services/drift/) | ✅ | ✅ |
 | [dropcontact](services/dropcontact/) | ✅ | ✅ |
-| [dynamodb-service](services/dynamodb-service/) | | |
+| [dynamodb-service](services/dynamodb-service/) | ✅ | ✅ |
 | [easypost](services/easypost/) | ✅ | ✅ |
 | [easyship](services/easyship/) | ✅ | ✅ |
 | [elasticsearch](services/elasticsearch/) | ✅ | ✅ |
@@ -201,25 +209,25 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [freshservice](services/freshservice/) | ✅ | ✅ |
 | [freshworks-crm](services/freshworks-crm/) | ✅ | ✅ |
 | [front-service](services/front-service/) | ✅ | ✅ |
-| [gemini-ai](services/gemini-ai/) | | |
-| [getresponse](services/getresponse/) | | |
-| [ghost](services/ghost/) | | |
-| [gitlab](services/gitlab/) | | |
-| [gong](services/gong/) | | |
-| [google-books](services/google-books/) | | |
-| [google-cloud-storage](services/google-cloud-storage/) | | |
-| [google-firestore](services/google-firestore/) | | |
-| [google-maps](services/google-maps/) | | |
-| [google-natural-language](services/google-natural-language/) | | |
-| [google-translate](services/google-translate/) | | |
-| [google-vertex-ai](services/google-vertex-ai/) | | |
-| [gotify](services/gotify/) | | |
-| [grafana](services/grafana/) | | |
-| [gravity-forms](services/gravity-forms/) | | |
-| [greenhouse](services/greenhouse/) | | |
-| [grist](services/grist/) | | |
-| [groq](services/groq/) | | |
-| [gumroad](services/gumroad/) | | |
+| [gemini-ai](services/gemini-ai/) | ✅ | ✅ |
+| [getresponse](services/getresponse/) | ✅ | ✅ |
+| [ghost](services/ghost/) | ✅ | ✅ |
+| [gitlab](services/gitlab/) | ✅ | ✅ |
+| [gong](services/gong/) | ✅ | ✅ |
+| [google-books](services/google-books/) | ✅ | ✅ |
+| [google-cloud-storage](services/google-cloud-storage/) | ✅ | ✅ |
+| [google-firestore](services/google-firestore/) | ✅ | ✅ |
+| [google-maps](services/google-maps/) | ✅ | ✅ |
+| [google-natural-language](services/google-natural-language/) | ✅ | ✅ |
+| [google-translate](services/google-translate/) | ✅ | ✅ |
+| [google-vertex-ai](services/google-vertex-ai/) | ✅ | ✅ |
+| [gotify](services/gotify/) | ✅ | ✅ |
+| [grafana](services/grafana/) | ✅ | ✅ |
+| [gravity-forms](services/gravity-forms/) | ✅ | ✅ |
+| [greenhouse](services/greenhouse/) | ✅ | ✅ |
+| [grist](services/grist/) | ✅ | ✅ |
+| [groq](services/groq/) | ✅ | ✅ |
+| [gumroad](services/gumroad/) | ✅ | ✅ |
 | [hackernews](services/hackernews/) | ✅ | ✅ |
 | [halopsa](services/halopsa/) | ✅ | ✅ |
 | [harvest](services/harvest/) | ✅ | ✅ |
@@ -228,70 +236,70 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [home-assistant](services/home-assistant/) | ✅ | ✅ |
 | [huggingface](services/huggingface/) | ✅ | ✅ |
 | [hunter](services/hunter/) | ✅ | ✅ |
-| [instantly](services/instantly/) | | |
-| [invoice-ninja](services/invoice-ninja/) | | |
-| [iterable](services/iterable/) | | |
-| [jenkins](services/jenkins/) | | |
-| [jina](services/jina/) | | |
-| [jira-issues](services/jira-issues/) | | |
-| [jotform](services/jotform/) | | |
-| [kajabi](services/kajabi/) | | |
-| [keap](services/keap/) | | |
-| [kit](services/kit/) | | |
-| [klaviyo](services/klaviyo/) | | |
-| [kobotoolbox](services/kobotoolbox/) | | |
-| [lambda-service](services/lambda-service/) | | |
-| [ldap](services/ldap/) | | |
-| [leafy-plant](services/leafy-plant/) | | |
-| [lemlist](services/lemlist/) | | |
-| [line](services/line/) | | |
-| [linear](services/linear/) | | |
-| [lingvanex](services/lingvanex/) | | |
-| [magento](services/magento/) | | |
-| [mailbox](services/mailbox/) | | |
-| [mailchimp-transactional](services/mailchimp-transactional/) | | |
-| [mailer-send](services/mailer-send/) | | |
-| [mailerlite](services/mailerlite/) | | |
-| [mailgun](services/mailgun/) | | |
-| [mailjet](services/mailjet/) | | |
-| [manychat](services/manychat/) | | |
-| [marketo](services/marketo/) | | |
-| [marketstack](services/marketstack/) | | |
-| [matrix](services/matrix/) | | |
-| [mattermost](services/mattermost/) | | |
-| [mautic](services/mautic/) | | |
-| [medium](services/medium/) | | |
-| [messagebird](services/messagebird/) | | |
-| [metabase](services/metabase/) | | |
-| [milvus](services/milvus/) | | |
-| [mindee](services/mindee/) | | |
-| [misp](services/misp/) | | |
-| [mistral-ai](services/mistral-ai/) | | |
-| [mixpanel](services/mixpanel/) | | |
-| [mocean](services/mocean/) | | |
-| [mollie](services/mollie/) | | |
-| [mongodb](services/mongodb/) | | |
-| [monica](services/monica/) | | |
-| [msg91](services/msg91/) | | |
-| [mysql](services/mysql/) | | |
-| [nasa](services/nasa/) | | |
-| [netlify](services/netlify/) | | |
-| [nextcloud](services/nextcloud/) | | |
-| [nocodb](services/nocodb/) | | |
-| [npm](services/npm/) | | |
-| [odoo](services/odoo/) | | |
-| [okta](services/okta/) | | |
-| [ollama](services/ollama/) | | |
-| [one-simple-api](services/one-simple-api/) | | |
-| [onesignal](services/onesignal/) | | |
-| [onfleet](services/onfleet/) | | |
-| [openai-ai](services/openai-ai/) | | |
-| [openrouter](services/openrouter/) | | |
-| [openthesaurus](services/openthesaurus/) | | |
-| [openweathermap](services/openweathermap/) | | |
-| [oracle-database](services/oracle-database/) | | |
-| [ortto](services/ortto/) | | |
-| [oura](services/oura/) | | |
+| [instantly](services/instantly/) | ✅ | ✅ |
+| [invoice-ninja](services/invoice-ninja/) | ✅ | ✅ |
+| [iterable](services/iterable/) | ✅ | ✅ |
+| [jenkins](services/jenkins/) | ✅ | ✅ |
+| [jina](services/jina/) | ✅ | ✅ |
+| [jira-issues](services/jira-issues/) | ✅ | ✅ |
+| [jotform](services/jotform/) | ✅ | ✅ |
+| [kajabi](services/kajabi/) | ✅ | ✅ |
+| [keap](services/keap/) | ✅ | ✅ |
+| [kit](services/kit/) | ✅ | ✅ |
+| [klaviyo](services/klaviyo/) | ✅ | ✅ |
+| [kobotoolbox](services/kobotoolbox/) | ✅ | ✅ |
+| [lambda-service](services/lambda-service/) | ✅ | ✅ |
+| [ldap](services/ldap/) | ✅ | ✅ |
+| [leafy-plant](services/leafy-plant/) | ✅ | ✅ |
+| [lemlist](services/lemlist/) | ✅ | ✅ |
+| [line](services/line/) | ✅ | ✅ |
+| [linear](services/linear/) | ✅ | ✅ |
+| [lingvanex](services/lingvanex/) | ✅ | ✅ |
+| [magento](services/magento/) | ✅ | ✅ |
+| [mailbox](services/mailbox/) | ✅ | ✅ |
+| [mailchimp-transactional](services/mailchimp-transactional/) | ✅ | ✅ |
+| [mailer-send](services/mailer-send/) | ✅ | ✅ |
+| [mailerlite](services/mailerlite/) | ✅ | ✅ |
+| [mailgun](services/mailgun/) | ✅ | ✅ |
+| [mailjet](services/mailjet/) | ✅ | ✅ |
+| [manychat](services/manychat/) | ✅ | ✅ |
+| [marketo](services/marketo/) | ✅ | ✅ |
+| [marketstack](services/marketstack/) | ✅ | ✅ |
+| [matrix](services/matrix/) | ✅ | ✅ |
+| [mattermost](services/mattermost/) | ✅ | ✅ |
+| [mautic](services/mautic/) | ✅ | ✅ |
+| [medium](services/medium/) | ✅ | ✅ |
+| [messagebird](services/messagebird/) | ✅ | ✅ |
+| [metabase](services/metabase/) | ✅ | ✅ |
+| [milvus](services/milvus/) | ✅ | ✅ |
+| [mindee](services/mindee/) | ✅ | ✅ |
+| [misp](services/misp/) | ✅ | ✅ |
+| [mistral-ai](services/mistral-ai/) | ✅ | ✅ |
+| [mixpanel](services/mixpanel/) | ✅ | ✅ |
+| [mocean](services/mocean/) | ✅ | ✅ |
+| [mollie](services/mollie/) | ✅ | ✅ |
+| [mongodb](services/mongodb/) | ✅ | ✅ |
+| [monica](services/monica/) | ✅ | ✅ |
+| [msg91](services/msg91/) | ✅ | ✅ |
+| [mysql](services/mysql/) | ✅ | ✅ |
+| [nasa](services/nasa/) | ✅ | ✅ |
+| [netlify](services/netlify/) | ✅ | ✅ |
+| [nextcloud](services/nextcloud/) | ✅ | ✅ |
+| [nocodb](services/nocodb/) | ✅ | ✅ |
+| [npm](services/npm/) | ✅ | ✅ |
+| [odoo](services/odoo/) | ✅ | ✅ |
+| [okta](services/okta/) | ✅ | ✅ |
+| [ollama](services/ollama/) | ✅ | ✅ |
+| [one-simple-api](services/one-simple-api/) | ✅ | ✅ |
+| [onesignal](services/onesignal/) | ✅ | ✅ |
+| [onfleet](services/onfleet/) | ✅ | ✅ |
+| [openai-ai](services/openai-ai/) | ✅ | ✅ |
+| [openrouter](services/openrouter/) | ✅ | ✅ |
+| [openthesaurus](services/openthesaurus/) | ✅ | ✅ |
+| [openweathermap](services/openweathermap/) | ✅ | ✅ |
+| [oracle-database](services/oracle-database/) | ✅ | ✅ |
+| [ortto](services/ortto/) | ✅ | ✅ |
+| [oura](services/oura/) | ✅ | ✅ |
 | [paddle](services/paddle/) | | |
 | [pandadoc](services/pandadoc/) | | |
 | [parseur](services/parseur/) | | |
@@ -315,20 +323,20 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [pushbullet](services/pushbullet/) | | |
 | [pushcut](services/pushcut/) | | |
 | [pushover](services/pushover/) | | |
-| [qdrant](services/qdrant/) | | |
-| [questdb](services/questdb/) | | |
-| [quickbase](services/quickbase/) | | |
-| [quickchart](services/quickchart/) | | |
-| [qwen-ai](services/qwen-ai/) | | |
-| [raindrop](services/raindrop/) | | |
-| [ramp-service](services/ramp-service/) | | |
-| [razorpay](services/razorpay/) | | |
-| [recruitee](services/recruitee/) | | |
-| [redis](services/redis/) | | |
-| [resend](services/resend/) | | |
-| [rocketchat](services/rocketchat/) | | |
-| [rundeck](services/rundeck/) | | |
-| [runway](services/runway/) | | |
+| [qdrant](services/qdrant/) | ✅ | ✅ |
+| [questdb](services/questdb/) | ✅ | ✅ |
+| [quickbase](services/quickbase/) | ✅ | ✅ |
+| [quickchart](services/quickchart/) | ✅ | ✅ |
+| [qwen-ai](services/qwen-ai/) | ✅ | ✅ |
+| [raindrop](services/raindrop/) | ✅ | ✅ |
+| [ramp-service](services/ramp-service/) | ✅ | ✅ |
+| [razorpay](services/razorpay/) | ✅ | ✅ |
+| [recruitee](services/recruitee/) | ✅ | ✅ |
+| [redis](services/redis/) | ✅ | ✅ |
+| [resend](services/resend/) | ✅ | ✅ |
+| [rocketchat](services/rocketchat/) | ✅ | ✅ |
+| [rundeck](services/rundeck/) | ✅ | ✅ |
+| [runway](services/runway/) | ✅ | ✅ |
 | [s3](services/s3/) | | |
 | [salesmate](services/salesmate/) | | |
 | [sap-business-one](services/sap-business-one/) | | |
@@ -358,27 +366,27 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [supabase](services/supabase/) | | |
 | [surveymonkey](services/surveymonkey/) | | |
 | [syncromsp](services/syncromsp/) | | |
-| [taiga](services/taiga/) | | |
-| [tally](services/tally/) | | |
-| [tapfiliate](services/tapfiliate/) | | |
-| [tavily](services/tavily/) | | |
+| [taiga](services/taiga/) | ✅ | ✅ |
+| [tally](services/tally/) | ✅ | ✅ |
+| [tapfiliate](services/tapfiliate/) | ✅ | ✅ |
+| [tavily](services/tavily/) | ✅ | ✅ |
 | [telegram](services/telegram/) | ✅ | ✅ |
-| [thehive](services/thehive/) | | |
-| [timescaledb](services/timescaledb/) | | |
-| [todoist](services/todoist/) | | |
-| [toggl](services/toggl/) | | |
-| [travis-ci](services/travis-ci/) | | |
-| [trello](services/trello/) | | |
-| [turbodocx-service](services/turbodocx-service/) | | |
-| [twilio](services/twilio/) | | |
+| [thehive](services/thehive/) | ✅ | ✅ |
+| [timescaledb](services/timescaledb/) | ✅ | ✅ |
+| [todoist](services/todoist/) | ✅ | ✅ |
+| [toggl](services/toggl/) | ✅ | ✅ |
+| [travis-ci](services/travis-ci/) | ✅ | ✅ |
+| [trello](services/trello/) | ✅ | ✅ |
+| [turbodocx-service](services/turbodocx-service/) | ✅ | ✅ |
+| [twilio](services/twilio/) | ✅ | ✅ |
 | [unleashed](services/unleashed/) | | |
 | [uplead](services/uplead/) | | |
 | [uproc](services/uproc/) | | |
 | [uptimerobot](services/uptimerobot/) | | |
 | [urlscan](services/urlscan/) | | |
-| [vapi](services/vapi/) | | |
-| [vero](services/vero/) | | |
-| [vonage](services/vonage/) | | |
+| [vapi](services/vapi/) | ✅ | ✅ |
+| [vero](services/vero/) | ✅ | ✅ |
+| [vonage](services/vonage/) | ✅ | ✅ |
 | [weaviate](services/weaviate/) | | |
 | [webex](services/webex/) | | |
 | [wekan](services/wekan/) | | |
@@ -390,8 +398,8 @@ A collection of third-party service integrations for FlowRunner. Each extension 
 | [wordpress](services/wordpress/) | | |
 | [workable](services/workable/) | | |
 | [wufoo](services/wufoo/) | | |
-| [xai-grok](services/xai-grok/) | | |
-| [yourls](services/yourls/) | | |
+| [xai-grok](services/xai-grok/) | ✅ | ✅ |
+| [yourls](services/yourls/) | ✅ | ✅ |
 | [zammad](services/zammad/) | | |
 | [zendesk](services/zendesk/) | | |
 | [zep](services/zep/) | | |

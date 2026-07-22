@@ -12,6 +12,10 @@ skip straight to writing tests. First analyze the service auth type, determine w
 needed, and — for API-key services — interact with the developer to collect configs and test values
 before writing e2e tests.
 
+**CRITICAL: Do NOT read tests from other services.** This document contains ALL patterns and
+templates you need. If you encounter a scenario not covered here, ask the orchestrator to update
+these instructions — never copy patterns from another service's test files.
+
 ---
 
 ## 1. Test infrastructure overview
@@ -24,6 +28,10 @@ before writing e2e tests.
 | **E2E** (`*.e2e.test.js`) | Real HTTP against live APIs for quick local validation | `e2e` | `npm run test:e2e` | `coverage/services-e2e` |
 
 Both projects are defined in a single `jest.config.js` using Jest projects. The IDE Jest plugin sees both, so you can run any test file directly from the editor.
+
+### Jest setup (`jest.setup.js`)
+
+All test projects use a shared setup file that silences `console.log`, `console.info`, `console.debug`, and `console.warn` during tests to reduce noise. `console.error` is kept visible so real failures are obvious. This means `console.log()` calls in test skip messages (e.g., "Skipping: testValue not set") won't appear in output — that's fine.
 
 ### npm scripts
 
@@ -105,6 +113,26 @@ const { chatId } = sandbox.getTestValues()
 - `configs` — maps to service config items (what the constructor receives).
 - `testValues` — arbitrary extra data for tests (IDs, emails, etc.).
 
+### Sandbox internals (for reference — do NOT read sandbox source files)
+
+The sandbox sets up a `global.Flowrunner` with:
+
+- `Flowrunner.ServerCode.addService(ServiceClass, configItems)` — called by the service entry file
+- `Flowrunner.ServerCode.ConfigItems.TYPES` — `{ STRING, BOOL, DATE, CHOICE, TEXT }`
+- `Flowrunner.Request` — mock (unit) or real superagent wrapper (e2e)
+
+Unit sandbox: `createSandbox(config)` passes `config` directly as the constructor argument.
+E2E sandbox: `createE2ESandbox(serviceId)` reads config from `e2e-config.json`.
+
+Both sandboxes expose:
+- `getService()` — returns the instantiated service class
+- `getConfigItems()` — returns the config items array passed to `addService()`
+- `cleanup()` — removes the global and resets state
+
+E2E sandbox additionally exposes:
+- `validateConfigs()` — checks required configs, writes placeholders if missing, throws
+- `getTestValues()` — returns the `testValues` object from `e2e-config.json`
+
 ---
 
 ## 3. Request mock API (`service-sandbox/request-mock.js`)
@@ -119,8 +147,19 @@ mock.onPost('https://api.example.com/items').reply({ id: '123' })
 mock.onPut(url).reply(responseData)
 mock.onPatch(url).reply(responseData)
 mock.onDelete(url).reply(responseData)
+mock.onHead(url).reply(responseData)
 mock.onAny().reply({ fallback: true })  // catch-all
+
+// Custom HTTP methods (e.g. WebDAV PROPFIND/MKCOL/MOVE/COPY)
+mock.on('propfind', url).reply(xmlString)
+mock.on('mkcol', url).reply('')
+mock.on('move', url).reply('')
+mock.on('copy', url).reply('')
 ```
+
+The mock `Request` is also callable as a function for custom HTTP methods:
+`Flowrunner.Request('PROPFIND', url)` — this matches how services use non-standard HTTP verbs.
+Use `mock.on(method, url)` (lowercase method name) to register handlers for these.
 
 ### Error responses
 
@@ -143,13 +182,30 @@ mock.onGet(url).replyWith((callRecord) => {
 
 ```js
 mock.history          // Array of all call records
-mock.history[0].method   // 'get', 'post', etc.
-mock.history[0].url      // request URL
-mock.history[0].headers  // { 'api-key': '...' }
-mock.history[0].query    // { limit: 50, offset: 0 }
-mock.history[0].body     // POST/PUT/PATCH body
-mock.history[0].formData // FormData instance (if .form() was used)
-mock.history[0].encoding // null for binary, undefined otherwise
+mock.history[0].method      // 'get', 'post', etc.
+mock.history[0].url         // request URL
+mock.history[0].headers     // { 'api-key': '...' }
+mock.history[0].query       // { limit: 50, offset: 0 }
+mock.history[0].body        // POST/PUT/PATCH body
+mock.history[0].formData    // FormData instance (if .form() was used)
+mock.history[0].encoding    // null for binary, undefined otherwise
+mock.history[0].contentType // set by .type() — e.g. 'form'
+mock.history[0].unwrapBody  // set by .unwrapBody(flag) — true/false
+```
+
+### Chainable methods on request
+
+The mock supports the same chaining API as real `Flowrunner.Request`:
+
+```js
+Flowrunner.Request.get(url)
+  .set(headers)           // merge headers
+  .query(params)          // merge query params
+  .send(body)             // set request body
+  .form(formData)         // attach FormData
+  .type(contentType)      // set content type (e.g. 'form')
+  .setEncoding(enc)       // null for binary downloads
+  .unwrapBody(flag)       // false → resolve with full response instead of body
 ```
 
 ### Reset between tests
@@ -264,6 +320,84 @@ describe('ServiceName Service', () => {
 7. **Dictionary methods** — verify search filtering, pagination cursor, item shape.
 8. **Trigger methods** — verify event shaping, filtering, webhook setup/teardown.
 
+### Dictionary method test patterns
+
+Dictionary methods accept `{search?, cursor?, criteria?}` and return `{items: [{label, value, note?}], cursor}`.
+Test these scenarios:
+
+```js
+describe('getItemsDictionary', () => {
+  it('returns mapped items with label and value', async () => {
+    mock.onGet(`${BASE}/items`).reply({ data: [{ id: '1', name: 'Alpha' }] })
+
+    const result = await service.getItemsDictionary({})
+
+    expect(result).toEqual({
+      items: [{ label: 'Alpha', value: '1' }],
+      cursor: null,
+    })
+  })
+
+  it('filters by case-insensitive search', async () => {
+    mock.onGet(`${BASE}/items`).reply({
+      data: [{ id: '1', name: 'Alpha' }, { id: '2', name: 'Beta' }],
+    })
+
+    const result = await service.getItemsDictionary({ search: 'ALP' })
+
+    expect(result.items).toHaveLength(1)
+    expect(result.items[0].value).toBe('1')
+  })
+
+  it('handles null payload', async () => {
+    mock.onGet(`${BASE}/items`).reply({ data: [{ id: '1', name: 'A' }] })
+
+    const result = await service.getItemsDictionary(null)
+
+    expect(result.items).toHaveLength(1)
+    expect(result.cursor).toBeNull()
+  })
+
+  it('handles empty or null data', async () => {
+    mock.onGet(`${BASE}/items`).reply({ data: null })
+
+    const result = await service.getItemsDictionary({})
+
+    expect(result).toEqual({ items: [], cursor: null })
+  })
+})
+```
+
+### Error handling test patterns
+
+Test both HTTP transport errors and API-level errors (where the response itself indicates failure):
+
+```js
+// HTTP transport error (network failure, 401, 500, etc.)
+it('throws on HTTP error', async () => {
+  mock.onGet(url).replyWithError({
+    message: 'Unauthorized',
+    body: { message: 'Invalid API key' },
+  })
+
+  await expect(service.getItems()).rejects.toThrow()
+})
+
+// API-level error (HTTP 200 but response body indicates failure)
+it('throws on API error response', async () => {
+  mock.onGet(url).reply({ type: 'error', message: 'Resource not found' })
+
+  await expect(service.getItems()).rejects.toThrow('Resource not found')
+})
+
+// Error with body fallback to message
+it('uses error.message when body is missing', async () => {
+  mock.onGet(url).replyWithError({ message: 'Network timeout' })
+
+  await expect(service.getItems()).rejects.toThrow('Network timeout')
+})
+```
+
 ### What NOT to test in unit tests
 
 - Don't test that the external API returns correct data (that's e2e).
@@ -339,6 +473,37 @@ describe('ServiceName Service (e2e)', () => {
 4. **Group create/update/delete** in a single `describe` to manage lifecycle.
 5. **Skip OAuth services** — e2e tests are only for services that don't require OAuth (for now).
 6. **Maximize coverage** — aim to cover as many service methods/branches as possible.
+
+### Graceful skip when testValues are missing
+
+Some e2e tests depend on optional `testValues` the developer may not have set up. Use an early
+return with a log message so the test passes silently instead of failing:
+
+```js
+it('sends an SMS using a flow template', async () => {
+  const { mobile, smsTemplateId } = testValues
+
+  if (!mobile || !smsTemplateId) {
+    console.log('Skipping sendSms: testValues.mobile or testValues.smsTemplateId not set')
+    return
+  }
+
+  const result = await service.sendSms(smsTemplateId, [{ mobiles: mobile }])
+  expect(result).toHaveProperty('type', 'success')
+})
+```
+
+Use this pattern for any test that depends on testValues the developer may not have configured.
+
+### E2E real request behavior
+
+The e2e sandbox uses a real HTTP client (superagent) that matches `Flowrunner.Request` semantics:
+
+- Awaiting a request chain returns `response.body` directly (not the response object)
+- When `.unwrapBody(false)` is used, the full response object is returned (with `.body` and `.headers`)
+- On HTTP errors, `err.body`, `err.status`, and `err.statusCode` are set from the response
+- `.setEncoding(null)` enables binary response handling
+- `.form(formData)` attaches FormData fields
 
 ### Preparing e2e configs
 
@@ -467,17 +632,20 @@ Only after the developer has provided (or declined to provide) configs and test 
 ## 10. Quick reference: running tests
 
 ```bash
-# Unit tests
-npm test                    # run all unit tests
-npm run test:coverage       # run all unit tests with coverage
+# Unit tests — single service
+npm test -- --testPathPatterns services/{name}
 
-# E2E tests (edit package.json test:e2e script to target a service)
-npm run test:e2e            # run e2e for the configured service with coverage
-```
+# Unit tests — all services
+npm test
 
-To change the e2e target service, edit `package.json`:
-```json
-"test:e2e": "rm -rf coverage/services-e2e && jest --selectProjects e2e --coverage --testPathPatterns services/{name}"
+# Unit tests — all services with coverage
+npm run test:coverage
+
+# E2E tests — single service (agent use)
+npm run test:e2e -- --testPathPatterns services/{name}
+
+# E2E tests — developer use (edit package.json test:e2e script to target a service)
+npm run test:e2e
 ```
 
 Both test types are defined as Jest projects in a single `jest.config.js`. The IDE Jest plugin picks up both projects, so individual test files can be run directly from the editor.
